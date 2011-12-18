@@ -1,0 +1,1 @@
+Applyed patch from http://drupal.org/node/1275284#comment-5087878
