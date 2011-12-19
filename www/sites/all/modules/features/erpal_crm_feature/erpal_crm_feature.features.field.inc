@@ -855,6 +855,79 @@ function erpal_crm_feature_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_contact-field_contact_relations'
+  $fields['node-erpal_contact-field_contact_relations'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_contact_relations',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'relation_select',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'relation',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contact',
+      'default_value' => array(
+        0 => array(
+          'exposed_filters' => array(
+            'bundle' => 'erpal_contact',
+            'element_id' => 'edit-field-contact-relations-und-0',
+            'form_build_id' => 'form-HYfIpKJJPb6SVnYfqk7q5gt3nvLCXqWBb5Vg1vPmFfI',
+            'form_id' => 'relation_select_views_exposed_form',
+            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
+            'label' => '',
+            'view_display_id' => 'default',
+            'view_name' => 'relation_select_node',
+          ),
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'relation_dummy_field',
+          'settings' => array(),
+          'type' => 'relation_default',
+          'weight' => 15,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_contact_relations',
+      'label' => 'Contact Relations',
+      'required' => 0,
+      'settings' => array(
+        'relation_type' => 'works_at',
+        'relation_view' => 'contacts:entityreference_view_widget_1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'relation_select',
+        'settings' => array(),
+        'type' => 'relation_select',
+        'weight' => '14',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_contact-field_contact_type'
   $fields['node-erpal_contact-field_contact_type'] = array(
     'field_config' => array(
@@ -1155,88 +1228,6 @@ function erpal_crm_feature_field_default_fields() {
         ),
         'type' => 'text_textfield',
         'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_contact-field_organisation_member'
-  $fields['node-erpal_contact-field_organisation_member'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_organisation_member',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'target_entity' => array(
-          0 => 'target_type',
-          1 => 'target_id',
-        ),
-      ),
-      'module' => 'entityreference',
-      'settings' => array(
-        'handler' => 'base',
-        'handler_settings' => array(
-          'sort' => array(
-            'direction' => 'ASC',
-            'field' => 'body:value',
-            'property' => 'nid',
-            'type' => 'none',
-          ),
-          'target_bundles' => array(
-            'erpal_contact' => 'erpal_contact',
-          ),
-        ),
-        'handler_submit' => 'Change handler',
-        'target_type' => 'node',
-      ),
-      'translatable' => '0',
-      'type' => 'entityreference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_contact',
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => FALSE,
-          ),
-          'type' => 'entityreference_label',
-          'weight' => 15,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_organisation_member',
-      'label' => 'Organisation Member',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'entityreference_view_widget',
-        'settings' => array(
-          'pass_argument' => 1,
-          'view' => 'contacts|entityreference_view_widget_1',
-        ),
-        'type' => 'entityreference_view_widget',
-        'weight' => '14',
       ),
     ),
   );
@@ -1644,6 +1635,147 @@ function erpal_crm_feature_field_default_fields() {
     ),
   );
 
+  // Exported field: 'relation-works_at-endpoints'
+  $fields['relation-works_at-endpoints'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'endpoints',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'relation' => array(
+          0 => 'entity_type',
+          1 => 'entity_id',
+          2 => 'r_index',
+        ),
+      ),
+      'module' => 'relation_endpoint',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'relation_endpoint',
+    ),
+    'field_instance' => array(
+      'bundle' => 'works_at',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'relation_endpoint',
+          'settings' => array(),
+          'type' => 'relation_endpoint',
+          'weight' => 0,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'endpoints',
+      'label' => 'endpoints',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'relation_endpoint',
+        'settings' => array(),
+        'type' => 'relation_endpoint',
+        'weight' => '0',
+      ),
+    ),
+  );
+
+  // Exported field: 'relation-works_at-field_date'
+  $fields['relation-works_at-field_date'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_date',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'date',
+      'settings' => array(
+        'granularity' => array(
+          'day' => 'day',
+          'hour' => 0,
+          'minute' => 0,
+          'month' => 'month',
+          'second' => 0,
+          'year' => 'year',
+        ),
+        'repeat' => 0,
+        'timezone_db' => '',
+        'todate' => 'optional',
+        'tz_handling' => 'none',
+      ),
+      'translatable' => '0',
+      'type' => 'datetime',
+    ),
+    'field_instance' => array(
+      'bundle' => 'works_at',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+            'show_repeat_rule' => 'show',
+          ),
+          'type' => 'date_default',
+          'weight' => 1,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'field_date',
+      'label' => 'Period',
+      'required' => 0,
+      'settings' => array(
+        'default_value' => 'now',
+        'default_value2' => 'blank',
+        'default_value_code' => '',
+        'default_value_code2' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'date',
+        'settings' => array(
+          'display_all_day' => 0,
+          'increment' => '15',
+          'input_format' => 'm/d/Y - H:i:s',
+          'input_format_custom' => '',
+          'label_position' => 'above',
+          'repeat_collapsed' => 0,
+          'text_parts' => array(),
+          'year_range' => '-3:+3',
+        ),
+        'type' => 'date_popup',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Address Type');
@@ -1651,6 +1783,7 @@ function erpal_crm_feature_field_default_fields() {
   t('Birthday');
   t('City');
   t('Company Name');
+  t('Contact Relations');
   t('Contact Type');
   t('Country');
   t('Facebook');
@@ -1659,7 +1792,7 @@ function erpal_crm_feature_field_default_fields() {
   t('Lastname');
   t('Number');
   t('Number Type');
-  t('Organisation Member');
+  t('Period');
   t('Phone Numbers');
   t('Street');
   t('Street  Number');
@@ -1668,6 +1801,7 @@ function erpal_crm_feature_field_default_fields() {
   t('Website');
   t('XING');
   t('ZIP Code');
+  t('endpoints');
 
   return $fields;
 }

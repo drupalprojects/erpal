@@ -288,7 +288,7 @@ function erpal_crm_feature_conditional_fields_default_fields() {
   $items[] = array(
     'entity' => 'node',
     'bundle' => 'erpal_contact',
-    'dependent' => 'field_organisation_member',
+    'dependent' => 'field_contact_relations',
     'dependee' => 'field_contact_type',
     'options' => 
       array (
