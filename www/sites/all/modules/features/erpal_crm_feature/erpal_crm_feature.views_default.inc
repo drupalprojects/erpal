@@ -200,6 +200,10 @@ function erpal_crm_feature_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'crm/contacts';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'CRM';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
 
   /* Display: Contact Reference */
   $handler = $view->new_display('entityreference_view_widget', 'Contact Reference', 'entityreference_view_widget_1');
@@ -303,18 +307,6 @@ function erpal_crm_feature_views_default_views() {
   $handler->display->display_options['filters']['type']['expose']['required'] = FALSE;
   $handler->display->display_options['filters']['type']['expose']['remember'] = FALSE;
   $handler->display->display_options['filters']['type']['expose']['multiple'] = FALSE;
-  /* Filter criterion: Content: Contact Type (field_contact_type) */
-  $handler->display->display_options['filters']['field_contact_type_value']['id'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['table'] = 'field_data_field_contact_type';
-  $handler->display->display_options['filters']['field_contact_type_value']['field'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['value'] = array(
-    'company' => 'company',
-  );
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator_id'] = 'field_contact_type_value_op';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Typ';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['reduce'] = 0;
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';

@@ -885,6 +885,61 @@ function erpal_crm_feature_field_default_fields() {
             'view_name' => 'relation_select_node',
           ),
         ),
+        1 => array(
+          'exposed_filters' => array(
+            'element_id' => 'edit-field-contact-relations-und-1',
+            'form_build_id' => 'form-WW8BCo9gWos5qbGiZrzv84lXjt_WYFzZdGV5jTjgdAs',
+            'form_id' => 'relation_select_views_exposed_form',
+            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
+            'title' => '',
+            'view_display_id' => 'entityreference_view_widget_1',
+            'view_name' => 'contacts',
+          ),
+        ),
+        2 => array(
+          'exposed_filters' => array(
+            'element_id' => 'edit-field-contact-relations-und-2',
+            'form_build_id' => 'form-7tdOXP0mqMKtgcmvIVPQyvZ-OzsXZOBi84JYWCEHasU',
+            'form_id' => 'relation_select_views_exposed_form',
+            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
+            'title' => '',
+            'view_display_id' => 'entityreference_view_widget_1',
+            'view_name' => 'contacts',
+          ),
+        ),
+        3 => array(
+          'exposed_filters' => array(
+            'element_id' => 'edit-field-contact-relations-und-3',
+            'form_build_id' => 'form-GEdlR67cZzGY5nPC91IfFGug0M2CrQHvDBpzW6zJkN0',
+            'form_id' => 'relation_select_views_exposed_form',
+            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
+            'title' => '',
+            'view_display_id' => 'entityreference_view_widget_1',
+            'view_name' => 'contacts',
+          ),
+        ),
+        4 => array(
+          'exposed_filters' => array(
+            'element_id' => 'edit-field-contact-relations-und-4',
+            'form_build_id' => 'form-P_QdVyXNKh7cxcDOHuKWDQ3HaI-1AWhTyy9jyfUmYNU',
+            'form_id' => 'relation_select_views_exposed_form',
+            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
+            'title' => '',
+            'view_display_id' => 'entityreference_view_widget_1',
+            'view_name' => 'contacts',
+          ),
+        ),
+        5 => array(
+          'exposed_filters' => array(
+            'element_id' => 'edit-field-contact-relations-und-5',
+            'form_build_id' => 'form-W9ZOiqcFNMPJmrP68gLBueo9PlrPsBj69rkH_DTCjiw',
+            'form_id' => 'relation_select_views_exposed_form',
+            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
+            'title' => '',
+            'view_display_id' => 'entityreference_view_widget_1',
+            'view_name' => 'contacts',
+          ),
+        ),
       ),
       'deleted' => '0',
       'description' => '',
@@ -1776,6 +1831,79 @@ function erpal_crm_feature_field_default_fields() {
     ),
   );
 
+  // Exported field: 'relation-works_at-field_work_at_rel_tags'
+  $fields['relation-works_at-field_work_at_rel_tags'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_work_at_rel_tags',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'company_relation_tags',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'works_at',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 2,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'field_work_at_rel_tags',
+      'label' => 'Relation Tags',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Address Type');
@@ -1794,6 +1922,7 @@ function erpal_crm_feature_field_default_fields() {
   t('Number Type');
   t('Period');
   t('Phone Numbers');
+  t('Relation Tags');
   t('Street');
   t('Street  Number');
   t('Twitter');
