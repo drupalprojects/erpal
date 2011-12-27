@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * erpal_crm_feature.features.taxonomy.inc
+ * erpal_basic.features.taxonomy.inc
  */
 
 /**
  * Implements hook_taxonomy_default_vocabularies().
  */
-function erpal_crm_feature_taxonomy_default_vocabularies() {
+function erpal_basic_taxonomy_default_vocabularies() {
   return array(
     'company_relation_tags' => array(
       'name' => 'Company relation tags',

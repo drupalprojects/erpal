@@ -9,14 +9,6 @@
  */
 function erpal_crm_feature_ctools_plugin_api() {
   list($module, $api) = func_get_args();
-  if ($module == "field_group" && $api == "field_group") {
-    return array("version" => "1");
-  }
-  list($module, $api) = func_get_args();
-  if ($module == "relation" && $api == "relation_type_default") {
-    return array("version" => "1");
-  }
-  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -37,12 +29,12 @@ function erpal_crm_feature_views_api() {
  */
 function erpal_crm_feature_node_info() {
   $items = array(
-    'erpal_contact' => array(
-      'name' => t('erpal_contact'),
+    'erpal_crm_activity' => array(
+      'name' => t('erpal_crm_activity'),
       'base' => 'node_content',
-      'description' => t('This is the basic content type for contacts in ERPAL'),
+      'description' => t('This is a activity with a contact, e.g a proposal, project request and other conversations.'),
       'has_title' => '1',
-      'title_label' => t('Full Name'),
+      'title_label' => t('Title'),
       'help' => '',
     ),
   );

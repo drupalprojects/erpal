@@ -1,0 +1,9 @@
+core = "7.x"
+description = "ERPAL BASIC Helper"
+name = "erpal_basic_helper"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_basic_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_basic_helper.module

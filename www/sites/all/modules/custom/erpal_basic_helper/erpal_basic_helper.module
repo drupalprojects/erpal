@@ -1,0 +1,38 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_basic_helper module.
+ */
+
+ 
+/**
+* This function is called by the view contacts. Links for creating some nodes are added. 
+* With the hook other modules like erpal_crm could add some more links.
+*/
+function _erpal_basic_helper_view_contacts_header_content() {
+
+  $q = current_path();
+  $add_erpal_contact =  l(
+    t("Create new contact"), "node/add/erpal-contact", array(
+        'query' => array(
+          'destination' => $q,
+        ),
+    )
+  );
+  
+  $my_content = array(
+    $add_erpal_contact,
+  );
+  
+  //ask all other modules for content in the header area of the view
+  $other_module_content = module_invoke_all('view_contacts_header_content');
+  
+  $all_content = array_merge($other_module_content, $my_content);
+  
+  $content = '';
+  foreach ($all_content as $a_content) {
+    $content .= '<br>'.$a_content;
+  }
+  
+  return $content;
+}

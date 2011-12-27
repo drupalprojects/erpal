@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * erpal_crm_feature.field_group.inc
+ * erpal_basic.field_group.inc
  */
 
 /**
  * Implements hook_field_group_info().
  */
-function erpal_crm_feature_field_group_info() {
+function erpal_basic_field_group_info() {
   $export = array();
 
   $field_group = new stdClass;

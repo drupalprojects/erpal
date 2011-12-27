@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * erpal_crm_feature.relation_type_default.inc
+ * erpal_basic.relation_type_default.inc
  */
 
 /**
  * Implements hook_relation_default_relation_types().
  */
-function erpal_crm_feature_relation_default_relation_types() {
+function erpal_basic_relation_default_relation_types() {
   $export = array();
 
   $relation_type = new stdClass;

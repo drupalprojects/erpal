@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * erpal_crm_feature.features.conditional_fields.inc
+ * erpal_basic.features.conditional_fields.inc
  */
 
 /**
  * Implements hook_conditional_fields_default_fields().
  */
-function erpal_crm_feature_conditional_fields_default_fields() {
+function erpal_basic_conditional_fields_default_fields() {
   $items = array();
   $items[] = array(
     'entity' => 'node',

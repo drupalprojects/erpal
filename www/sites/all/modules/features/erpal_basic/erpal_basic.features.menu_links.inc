@@ -1,21 +1,21 @@
 <?php
 /**
  * @file
- * erpal_crm_feature.features.menu_links.inc
+ * erpal_basic.features.menu_links.inc
  */
 
 /**
  * Implements hook_menu_default_menu_links().
  */
-function erpal_crm_feature_menu_default_menu_links() {
+function erpal_basic_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-erpal-menu:crm/activities
-  $menu_links['menu-erpal-menu:crm/activities'] = array(
+  // Exported menu link: menu-erpal-menu:crm/contacts
+  $menu_links['menu-erpal-menu:crm/contacts'] = array(
     'menu_name' => 'menu-erpal-menu',
-    'link_path' => 'crm/activities',
-    'router_path' => 'crm/activities',
-    'link_title' => 'CRM Activities',
+    'link_path' => 'crm/contacts',
+    'router_path' => 'crm/contacts',
+    'link_title' => 'Contacts',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -26,11 +26,11 @@ function erpal_crm_feature_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-49',
+    'weight' => '-50',
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('CRM Activities');
+  t('Contacts');
 
 
   return $menu_links;

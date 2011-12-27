@@ -1,0 +1,79 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_crm_helper module.
+ */
+
+function erpal_crm_helper_view_contacts_header_content() {
+  
+  //link for creating an activity
+  $add_erpal_activity =  _erpal_crm_helper_create_activity_link();
+  
+  return array(
+    $add_erpal_activity,
+  );
+}
+
+/**
+* Implements hook_node_view
+*/
+function erpal_crm_helper_node_view(&$node, $view_mode, $langcode) {
+
+  $type = $node->type;
+
+  if ($view_mode == 'full') {
+    if ($type == 'erpal_contact')
+    {
+      //add links to create activitys from that contact (contact will be referenced as a customer
+      $query_arr = array('edit[field_customer_ref]und[0][nid]' => $node->nid);
+
+      $node->content['body'] = array(
+        '#weight' => 100,
+        '#markup' => _erpal_crm_helper_create_activity_link(false, $query_arr),
+      );
+    }
+  }
+
+}
+
+function _erpal_crm_helper_view_activities_header_content()
+{
+  $q = current_path();
+  $add_erpal_activity =  _erpal_crm_helper_create_activity_link();
+  
+  $my_content = array(
+    $add_erpal_activity,
+  );
+  
+  //ask all other modules for content in the header area of the view
+  $other_module_content = module_invoke_all('view_activities_header_content');
+  
+  $all_content = array_merge($other_module_content, $my_content);
+  
+  $content = '';
+  foreach ($all_content as $a_content) {
+    $content .= '<br>'.$a_content;
+  }
+  
+  return $content;
+}
+
+/**
+* Helper function to create new activity link
+*/
+function _erpal_crm_helper_create_activity_link($q_arg = false, $query_arr = array())
+{
+  if (!$q_arg)
+    $q = current_path();
+  else 
+    $q = $q_arg;
+  
+  if (!isset($query_arr['destination']) || $q_arg)
+    $query_arr['destination'] = $q;
+  
+  return l(
+    t("Create new activity"), "node/add/erpal-crm-activity", array(
+        'query' => $query_arr,
+    )
+  );
+}
