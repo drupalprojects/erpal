@@ -1,0 +1,1 @@
+Patched du to http://drupal.org/node/1278742
