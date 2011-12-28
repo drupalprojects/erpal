@@ -1,0 +1,10 @@
+core = "7.x"
+description = "ERPAL ASTERISK Helper"
+name = "erpal_asterisk_helper"
+package = "ERPAL CRM"
+php = "5.2.4"
+project = "erpal_asterisk_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_asterisk_helper.module
+dependencies[] = erpal_asterisk_feature
