@@ -4,6 +4,9 @@
  * Code for the erpal_crm_helper module.
  */
 
+/**
+* Implements hook_view_contacts_header_content called by module erpal_basic_helper
+*/
 function erpal_crm_helper_view_contacts_header_content() {
   
   //link for creating an activity
@@ -14,27 +17,6 @@ function erpal_crm_helper_view_contacts_header_content() {
   );
 }
 
-/**
-* Implements hook_node_view
-*/
-function erpal_crm_helper_node_view(&$node, $view_mode, $langcode) {
-
-  $type = $node->type;
-
-  if ($view_mode == 'full') {
-    if ($type == 'erpal_contact')
-    {
-      //add links to create activitys from that contact (contact will be referenced as a customer
-      $query_arr = array('edit[field_customer_ref]und[0][nid]' => $node->nid);
-
-      $node->content['body'] = array(
-        '#weight' => 100,
-        '#markup' => _erpal_crm_helper_create_activity_link(false, $query_arr),
-      );
-    }
-  }
-
-}
 
 function _erpal_crm_helper_view_activities_header_content()
 {

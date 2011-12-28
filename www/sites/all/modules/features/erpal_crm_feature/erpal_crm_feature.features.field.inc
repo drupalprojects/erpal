@@ -150,7 +150,7 @@ function erpal_crm_feature_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '4',
+        'weight' => '6',
       ),
     ),
   );
@@ -234,7 +234,7 @@ function erpal_crm_feature_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '5',
+        'weight' => '7',
       ),
     ),
   );
@@ -313,6 +313,77 @@ function erpal_crm_feature_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_crm_activity-field_chance'
+  $fields['node-erpal_crm_activity-field_chance'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_chance',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Never',
+          1 => 'Almost NO chance',
+          2 => 'Middle (dont know)',
+          3 => 'Good chance',
+          4 => 'MUST',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'The chance, you guess, the proposal will be contracted',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 7,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_chance',
+      'label' => 'Chance',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '5',
       ),
     ),
   );
@@ -465,15 +536,26 @@ function erpal_crm_feature_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_customer_ref',
       'label' => 'Customer',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
+        'module' => 'nodereference_url',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 1,
+          'fallback' => 'select',
+          'node_link' => array(
+            'destination' => 'default',
+            'full' => 1,
+            'hover_title' => '',
+            'teaser' => 0,
+            'title' => 'Create Activity',
+          ),
+        ),
+        'type' => 'nodereference_url',
         'weight' => '1',
       ),
     ),
@@ -561,7 +643,78 @@ function erpal_crm_feature_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '6',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_crm_activity-field_volume'
+  $fields['node-erpal_crm_activity-field_volume'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_volume',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(
+        'decimal_separator' => '.',
+        'precision' => '10',
+        'scale' => '2',
+      ),
+      'translatable' => '0',
+      'type' => 'number_decimal',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'The volume for the activities proposal or the budget for the request',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => 6,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_volume',
+      'label' => 'Volume',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '4',
       ),
     ),
   );
@@ -572,11 +725,15 @@ function erpal_crm_feature_field_default_fields() {
   t('Activity status');
   t('Any other contacts that are related to this activity');
   t('Body');
+  t('Chance');
   t('Comment');
   t('Contacts');
   t('Customer');
   t('Next Contact');
+  t('The chance, you guess, the proposal will be contracted');
+  t('The volume for the activities proposal or the budget for the request');
   t('This is the Customer (in most cases a company) that requests that activity. It can always be ONE customer!');
+  t('Volume');
 
   return $fields;
 }
