@@ -10,6 +10,67 @@
 function erpal_docs_feature_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'comment-comment_node_erpal_file-comment_body'
+  $fields['comment-comment_node_erpal_file-comment_body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'comment',
+      ),
+      'field_name' => 'comment_body',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'comment_node_erpal_file',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'comment',
+      'field_name' => 'comment_body',
+      'label' => 'Comment',
+      'required' => TRUE,
+      'settings' => array(
+        'text_processing' => 1,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'text',
+        'settings' => array(
+          'rows' => 5,
+        ),
+        'type' => 'text_textarea',
+        'weight' => 0,
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_crm_activity-field_asset_files'
   $fields['node-erpal_crm_activity-field_asset_files'] = array(
     'field_config' => array(
@@ -53,7 +114,7 @@ function erpal_docs_feature_field_default_fields() {
       'bundle' => 'erpal_crm_activity',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Select or add files from / to the asset management',
+      'description' => 'Select or add files from / to the document management system',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -71,7 +132,7 @@ function erpal_docs_feature_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_asset_files',
-      'label' => 'Files',
+      'label' => 'Global documents',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -89,7 +150,79 @@ function erpal_docs_feature_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '9',
+        'weight' => '12',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_crm_activity-field_file'
+  $fields['node-erpal_crm_activity-field_file'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_file',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 1,
+        'display_field' => 1,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'deleted' => '0',
+      'description' => 'Upload files that are save at this activity, NOT in the document management system',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 9,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_file',
+      'label' => 'Local documents',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => 'local_files',
+        'file_extensions' => 'txt pdf doc docx xls csv bmp jpg',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '13',
       ),
     ),
   );
@@ -170,7 +303,7 @@ function erpal_docs_feature_field_default_fields() {
   $fields['node-erpal_file-field_file'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_file',
@@ -314,11 +447,14 @@ function erpal_docs_feature_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
+  t('Comment');
   t('File');
-  t('Files');
-  t('Select or add files from / to the asset management');
+  t('Global documents');
+  t('Local documents');
+  t('Select or add files from / to the document management system');
   t('Sidwide tags for this file');
   t('Tags');
+  t('Upload files that are save at this activity, NOT in the document management system');
 
   return $fields;
 }

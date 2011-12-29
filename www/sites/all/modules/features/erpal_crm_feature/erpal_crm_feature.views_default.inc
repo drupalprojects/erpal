@@ -196,6 +196,17 @@ echo _erpal_crm_helper_view_activities_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
+  /* Filter criterion: Content: Account Manager (field_account_manager) */
+  $handler->display->display_options['filters']['field_account_manager_uid']['id'] = 'field_account_manager_uid';
+  $handler->display->display_options['filters']['field_account_manager_uid']['table'] = 'field_data_field_account_manager';
+  $handler->display->display_options['filters']['field_account_manager_uid']['field'] = 'field_account_manager_uid';
+  $handler->display->display_options['filters']['field_account_manager_uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['operator_id'] = 'field_account_manager_uid_op';
+  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['label'] = 'Account Manage';
+  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['operator'] = 'field_account_manager_uid_op';
+  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['identifier'] = 'field_account_manager_uid';
+  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['remember'] = 1;
+  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['reduce'] = 0;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
