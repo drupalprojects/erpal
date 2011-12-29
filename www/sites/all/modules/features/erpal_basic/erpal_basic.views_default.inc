@@ -124,7 +124,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['fields']['field_contact_type']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_contact_type']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_contact_type']['field_api_classes'] = 0;
-  /* Field: Node: Edit link */
+  /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
@@ -211,6 +211,26 @@ echo _erpal_basic_helper_view_contacts_header_content();
 
   /* Display: Contact Reference */
   $handler = $view->new_display('entityreference_view_widget', 'Contact Reference', 'entityreference_view_widget_1');
+
+  /* Display: Reference Dialog Search Contacts */
+  $handler = $view->new_display('references_dialog', 'Reference Dialog Search Contacts', 'references_dialog_1');
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<?php
+echo _erpal_basic_helper_view_contacts_header_content(true);
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
+  $handler->display->display_options['attach'] = array(
+    0 => 'node:field_contact_ref:erpal_crm_activity',
+  );
   $export['contacts'] = $view;
 
   return $export;

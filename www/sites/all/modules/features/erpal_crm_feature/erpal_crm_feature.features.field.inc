@@ -415,6 +415,7 @@ function erpal_crm_feature_field_default_fields() {
           'article' => 0,
           'erpal_contact' => 'erpal_contact',
           'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
           'page' => 0,
         ),
         'view' => array(
@@ -461,9 +462,17 @@ function erpal_crm_feature_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
         'weight' => '2',
       ),
     ),

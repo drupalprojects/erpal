@@ -9,7 +9,7 @@
 * This function is called by the view contacts. Links for creating some nodes are added. 
 * With the hook other modules like erpal_crm could add some more links.
 */
-function _erpal_basic_helper_view_contacts_header_content() {
+function _erpal_basic_helper_view_contacts_header_content($onlyContactLink=false) {
 
   $q = current_path();
   $add_erpal_contact =  l(
@@ -20,10 +20,15 @@ function _erpal_basic_helper_view_contacts_header_content() {
     )
   );
   
+  //if only the contacts are interessting, e.g if the view for selecting a contact to reference is shown
+  //skipp the hooks an show only the "create contact" link
+  if ($onlyContactLink)
+	return $add_erpal_contact;
+  
   $my_content = array(
     $add_erpal_contact,
   );
-  
+    
   //ask all other modules for content in the header area of the view
   $other_module_content = module_invoke_all('view_contacts_header_content');
   

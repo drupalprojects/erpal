@@ -250,6 +250,17 @@ function erpal_crm_feature_views_default_views() {
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'CRM activities';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<?php
+echo _erpal_crm_helper_view_activities_header_content();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
   $handler->display->display_options['path'] = 'crm/activities';
   $handler->display->display_options['menu']['title'] = 'CRM activities';
   $handler->display->display_options['menu']['weight'] = '0';
