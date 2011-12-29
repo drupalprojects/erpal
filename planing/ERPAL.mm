@@ -50,7 +50,7 @@
 <font NAME="SansSerif" SIZE="16"/>
 </node>
 </node>
-<node COLOR="#0033ff" CREATED="1323536905242" FOLDED="true" ID="ID_308869000" MODIFIED="1325097127797" POSITION="right">
+<node COLOR="#0033ff" CREATED="1323536905242" ID="ID_308869000" MODIFIED="1325153538834" POSITION="right">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -471,6 +471,21 @@
 <node COLOR="#00b439" CREATED="1323537392619" ID="ID_902017313" MODIFIED="1323537586738" TEXT="Vertragsverwaltung">
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
+<node COLOR="#990000" CREATED="1325153546381" ID="ID_127497399" MODIFIED="1325153554854" TEXT="Wiederkehrende Forderungen">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1325153555080" ID="ID_551519941" MODIFIED="1325153559841" TEXT="Wiederkehrende Verbindlichkeiten">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1325153560050" ID="ID_1827286455" MODIFIED="1325153566423" TEXT="K&#xfc;ndigungsm&#xf6;glichkeiten">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1325153566617" ID="ID_552442892" MODIFIED="1325153575377" TEXT="Abrechnungsintervall">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1325153575540" ID="ID_959243006" MODIFIED="1325153601182" TEXT="Drupal Modul - &quot;job_scheduler&quot;">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
 </node>
 <node COLOR="#00b439" CREATED="1323537405528" FOLDED="true" ID="ID_467599389" MODIFIED="1325097115454" TEXT="Dokumentenmanagement">
 <edge STYLE="bezier" WIDTH="thin"/>
