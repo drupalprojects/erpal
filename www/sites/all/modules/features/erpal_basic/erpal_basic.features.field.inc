@@ -1031,7 +1031,7 @@ function erpal_basic_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'relation_type' => 'works_at',
-        'relation_view' => 'contacts:entityreference_view_widget_1',
+        'relation_view' => 'contacts:page_1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(

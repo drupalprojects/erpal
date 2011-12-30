@@ -41,6 +41,10 @@ function eva_field_extra_fields() {
  * we'll use a list of special cases to trigger this special handling. 
  */
 function eva_entity_view_alter(&$build, $type) {
+  if ($build['#entity_type'] == 'relation') {
+    return;
+  }
+  
   $view_mode = $build['#view_mode'];
   $language = $build['#language'];
 

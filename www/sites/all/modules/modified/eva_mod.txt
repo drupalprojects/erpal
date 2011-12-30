@@ -1,1 +1,3 @@
 Patched du to http://drupal.org/node/1278742
+
+Added http://drupal.org/node/1376456#comment-5382220
