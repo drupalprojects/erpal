@@ -25,7 +25,7 @@
 <node CREATED="1325241353697" ID="ID_1689205978" MODIFIED="1325241372090" TEXT="Zuordnung Attribut:Typ f&#xfc;r jedes Feld n&#xf6;tig"/>
 <node CREATED="1325241571037" ID="ID_1385706114" MODIFIED="1325241666930" TEXT="EINDEUTIGES mapping von Feldinhalt mit Attribut auf VCard Typ (Entity muss attribut haben)"/>
 </node>
-<node CREATED="1323622727075" FOLDED="true" ID="ID_1481893726" MODIFIED="1325241679644" TEXT="Mehrere CCK Felder pro VCard Feld ">
+<node CREATED="1323622727075" ID="ID_1481893726" MODIFIED="1325245123025" TEXT="Mehrere CCK Felder pro VCard Feld ">
 <font NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_cancel"/>
 <node CREATED="1323622912611" ID="ID_901180347" MODIFIED="1323622921084" TEXT="Button &quot;weiteres Feld&quot;"/>
@@ -34,7 +34,7 @@
 <node CREATED="1323622949700" ID="ID_400197293" MODIFIED="1323622968219" TEXT="ALTERNATIV: VCard-Feldbelegung &#xfc;ber Tokens wenn sinnvoller"/>
 </node>
 </node>
-<node CREATED="1325241707708" ID="ID_61177458" MODIFIED="1325243989734" TEXT="Useraccounts">
+<node CREATED="1325241707708" ID="ID_61177458" MODIFIED="1325245295130" TEXT="Useraccounts">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -44,7 +44,7 @@
       Funamboluser: Da ja jeder seinen eigenen Satz daten w&#228;hlen kann, die er syncen will, braucht auch jeder einen eigenen useraccount.
     </p>
     <p>
-      Was passiert, wenn ein user einen Datensatz, der schonmal auf gesyncht war, aus der Auswahlliste herausnimmt, wird dieser an funambol als &quot;delete&quot; geschickt oder bleibt er einfach vorhanden? (meiner Meinung nach m&#252;sste er gel&#246;scht werden)
+      Was passiert, wenn ein user einen Datensatz, der schonmal auf gesyncht war, aus der Auswahlliste herausnimmt, wird dieser an funambol als &quot;delete&quot; geschickt oder bleibt er einfach vorhanden? (meiner Meinung nach m&#252;sste er gel&#246;scht werden) - Meiner Meinunge (@Manuel) muss er dann auch gel&#246;scht werden. Wenn es nur endlich viele Alternativen gibt, sollte man das in der Configmaske des Moduls einstellen k&#246;nnen.
     </p>
   </body>
 </html>
@@ -57,7 +57,7 @@
 <node CREATED="1323621922562" ID="ID_1810953053" MODIFIED="1323621932187" TEXT="Welche Felder auf welches VCard Feld gemapped"/>
 <node CREATED="1323621932412" ID="ID_1826390760" MODIFIED="1323621955166" TEXT="Auswahl wie Syncen">
 <node CREATED="1323621955166" ID="ID_1107622884" MODIFIED="1323621964823" TEXT="Bidirektional"/>
-<node CREATED="1323621965031" ID="ID_1442166402" MODIFIED="1325243953529" TEXT="Unidirektional">
+<node CREATED="1323621965031" FOLDED="true" ID="ID_1442166402" MODIFIED="1325245341696" TEXT="Unidirektional">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -71,6 +71,9 @@
     </p>
     <p>
       
+    </p>
+    <p>
+      - Das ist auch in Ordnung so, ich will nur nicht, dass Kontakte im CRM manipuliert werden, bzw nur wenn der User das in den Modulsettings explizit will.
     </p>
   </body>
 </html>
@@ -89,7 +92,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1323622109488" ID="ID_932604778" MODIFIED="1325244836184" POSITION="right" TEXT="Zu Syncende Nodes ausw&#xe4;hlen">
+<node CREATED="1323622109488" ID="ID_932604778" MODIFIED="1325245274116" POSITION="right" TEXT="Zu Syncende Nodes ausw&#xe4;hlen">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -106,6 +109,12 @@
     </p>
     <p>
       Der user ben&#246;tigt dann nat&#252;rlich noch eine eigene View, in der er seine kontakte markieren kann (falls die &quot;geflaggt&quot; variante benutzt wird).
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Doch das wird der User sicher selbst ausw&#228;hlen wollen (mit einer Bulk Operation bestimmt auch mal alle im einzelfall) aber selbst ich (@manuel) will nicht alle kontakte auf meinem Handy haben sondern nur die, diegerade aktuell sind. So will ich z.B. wenn ein Projekt rum ist auch Kontakte wieder unflaggen k&#246;nnen, weil ich dann den Kontakt nicht mehr brauche.
     </p>
   </body>
 </html>
