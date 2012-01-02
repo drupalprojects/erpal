@@ -334,75 +334,6 @@ function erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_addresses-field_street_number'
-  $fields['field_collection_item-field_addresses-field_street_number'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_street_number',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(
-        'max_length' => '8',
-      ),
-      'translatable' => '0',
-      'type' => 'text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'field_addresses',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 1,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '2',
-        ),
-      ),
-      'entity_type' => 'field_collection_item',
-      'field_name' => 'field_street_number',
-      'label' => 'Street  Number',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '0',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'size' => '60',
-        ),
-        'type' => 'text_textfield',
-        'weight' => '2',
-      ),
-    ),
-  );
-
   // Exported field: 'field_collection_item-field_addresses-field_zip_code'
   $fields['field_collection_item-field_addresses-field_zip_code'] = array(
     'field_config' => array(
@@ -2057,7 +1988,6 @@ function erpal_basic_field_default_fields() {
   t('Phone Numbers');
   t('Relation Tags');
   t('Street');
-  t('Street  Number');
   t('Twitter');
   t('VAT Number');
   t('Website');
