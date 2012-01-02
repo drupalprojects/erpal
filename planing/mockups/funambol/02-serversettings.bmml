@@ -82,69 +82,35 @@
         <text>Server%20Settings%2C%20User%20Accounts%2C%20Access%20Restriction%2C%20Contact%20Settings%2C%20Calendar%20Settings</text>
       </controlProperties>
     </control>
-    <control controlID="23" controlTypeID="com.balsamiq.mockups::FieldSet" x="100" y="455" w="522" h="106" measuredW="200" measuredH="170" zOrder="15" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Info</text>
-      </controlProperties>
-    </control>
-    <control controlID="24" controlTypeID="com.balsamiq.mockups::Label" x="118" y="471" w="491" h="120" measuredW="1003" measuredH="17" zOrder="16" locked="false" isInGroup="-1">
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::Label" x="379" y="166" w="235" h="82" measuredW="1003" measuredH="17" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
         <size>10</size>
         <text>This%20page%20allows%20you%20to%20enter%20the%20Server%20URL.%20You%20can%20specify%20if%20you%20want%20to%20use%20one%20specific%20Funambol%20Account%20for%20this%20Server%2C%20or%20if%20every%20user%20has%20his/her%20own%20Account.%20The%20Accounts%20can%20be%20managed%20under%20%22User%20Accounts%22.</text>
       </controlProperties>
     </control>
-    <control controlID="25" controlTypeID="com.balsamiq.mockups::Label" x="117" y="515" w="492" h="55" measuredW="355" measuredH="17" zOrder="17" locked="false" isInGroup="-1">
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::Label" x="379" y="248" w="235" h="43" measuredW="355" measuredH="17" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
         <size>10</size>
         <text>If%20you%20want%20to%20activate%20the%20sync%20process%20for%20this%20profile%2C%20go%20to%20the%20following%20url%3A</text>
       </controlProperties>
     </control>
-    <control controlID="26" controlTypeID="com.balsamiq.mockups::Link" x="117" y="531" w="-1" h="-1" measuredW="205" measuredH="21" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::Link" x="379" y="278" w="-1" h="-1" measuredW="220" measuredH="22" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
+        <size>14</size>
         <text>http%3A//my.domain.com/fsync/profile1</text>
       </controlProperties>
     </control>
-    <control controlID="27" controlTypeID="com.balsamiq.mockups::FieldSet" x="368" y="132" w="259" h="312" measuredW="200" measuredH="170" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::FieldSet" x="368" y="132" w="259" h="312" measuredW="200" measuredH="170" zOrder="15" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Sync%20options</text>
+        <text>Info</text>
       </controlProperties>
     </control>
-    <control controlID="28" controlTypeID="com.balsamiq.mockups::CheckBoxGroup" x="388" y="170" w="206" h="22" measuredW="111" measuredH="21" zOrder="21" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%5Bx%5D%20Sync%20Contacts</text>
-      </controlProperties>
-    </control>
-    <control controlID="30" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="388" y="210" w="-1" h="-1" measuredW="180" measuredH="63" zOrder="22" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%28o%29%20One-way%20%28Drupal-%3EServer%29%0A%28%20%29%20Two-way%0A%28%20%29%20One-way%20%28Server-%3EDrupal%29</text>
-      </controlProperties>
-    </control>
-    <control controlID="33" controlTypeID="com.balsamiq.mockups::StickyNote" x="637" y="9" w="219" h="142" measuredW="109" measuredH="123" zOrder="23" locked="false" isInGroup="-1">
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::StickyNote" x="637" y="9" w="219" h="142" measuredW="109" measuredH="123" zOrder="16" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Diese%20Tabs%20erscheinen%20erst%2C%20wenn%20f%FCr%20das%20Handling%20der%20Kontakte/Kalender/etc%20das%20zugeh%F6rige%20Modul%20installiert%20ist.</text>
       </controlProperties>
     </control>
-    <control controlID="34" controlTypeID="com.balsamiq.mockups::FieldSet" x="379" y="154" w="230" h="134" measuredW="200" measuredH="170" zOrder="20" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Contacts</text>
-      </controlProperties>
-    </control>
-    <control controlID="35" controlTypeID="com.balsamiq.mockups::FieldSet" x="379" y="296" w="230" h="143" measuredW="200" measuredH="170" zOrder="24" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Calendar</text>
-      </controlProperties>
-    </control>
-    <control controlID="36" controlTypeID="com.balsamiq.mockups::CheckBoxGroup" x="388" y="311" w="206" h="23" measuredW="111" measuredH="21" zOrder="25" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%5Bx%5D%20Sync%20Calendar</text>
-      </controlProperties>
-    </control>
-    <control controlID="37" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="388" y="348" w="180" h="67" measuredW="180" measuredH="63" zOrder="26" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%28o%29%20One-way%20%28Drupal-%3EServer%29%0A%28%20%29%20Two-way%0A%28%20%29%20One-way%20%28Server-%3EDrupal%29</text>
-      </controlProperties>
-    </control>
-    <control controlID="38" controlTypeID="com.balsamiq.mockups::Arrow" x="522" y="33" w="100" h="53" measuredW="150" measuredH="100" zOrder="27" locked="false" isInGroup="-1">
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::Arrow" x="522" y="33" w="100" h="53" measuredW="150" measuredH="100" zOrder="17" locked="false" isInGroup="-1">
       <controlProperties>
         <curvature>1</curvature>
         <direction>bottom</direction>
@@ -152,7 +118,7 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="39" controlTypeID="com.balsamiq.mockups::Arrow" x="435" y="32" w="187" h="63" measuredW="150" measuredH="100" zOrder="28" locked="false" isInGroup="-1">
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::Arrow" x="435" y="32" w="187" h="63" measuredW="150" measuredH="100" zOrder="18" locked="false" isInGroup="-1">
       <controlProperties>
         <curvature>1</curvature>
         <direction>bottom</direction>
