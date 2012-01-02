@@ -1,0 +1,88 @@
+<mockup version="1.0" skin="sketch" measuredW="627" measuredH="444" mockupW="529" mockupH="426">
+  <controls>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::SubTitle" x="100" y="18" w="-1" h="-1" measuredW="270" measuredH="33" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Funambol%20Admin%20Settings</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="66" w="-1" h="-1" measuredW="288" measuredH="29" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Profile%201%2C%20Profile%202%2C%20Add%20new%20profile</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::FieldSet" x="98" y="134" w="257" h="310" measuredW="200" measuredH="170" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>User%20Accounts</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="556" y="401" w="-1" h="-1" measuredW="54" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Save</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="119" y="160" w="-1" h="-1" measuredW="40" measuredH="21" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Users</text>
+      </controlProperties>
+    </control>
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="95" w="-1" h="-1" measuredW="456" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <selectedIndex>1</selectedIndex>
+        <size>9</size>
+        <text>Server%20Settings%2C%20User%20Accounts%2C%20Access%20Restriction%2C%20Contact%20Settings%2C%20Calendar%20Settings</text>
+      </controlProperties>
+    </control>
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::FieldSet" x="370" y="134" w="257" h="310" measuredW="200" measuredH="170" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Account%20credentials</text>
+      </controlProperties>
+    </control>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::TextInput" x="388" y="217" w="220" h="-1" measuredW="89" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>MrHenderson</text>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::Label" x="385" y="196" w="-1" h="-1" measuredW="86" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Account%20name</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::TextInput" x="388" y="281" w="220" h="-1" measuredW="68" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>*********</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::Label" x="388" y="260" w="-1" h="-1" measuredW="60" measuredH="21" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Password</text>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::List" x="117" y="187" w="220" h="200" measuredW="100" measuredH="126" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <selectedIndex>2</selectedIndex>
+        <text>Mr%20X%0AMr%20Y%0AMrHenderson%0AMrs%20Behave</text>
+      </controlProperties>
+    </control>
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::Button" x="284" y="402" w="-1" h="-1" measuredW="53" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Filter</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::TextInput" x="119" y="400" w="159" h="-1" measuredW="28" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Mr</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Label" x="387" y="315" w="218" h="62" measuredW="457" measuredH="21" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>This%20settings%20can%20be%20changed%20in%20the%20user%20profile%2C%20if%20the%20permissions%20are%20granted.</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::CheckBox" x="385" y="159" w="-1" h="-1" measuredW="216" measuredH="22" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>selected</state>
+        <text>Enable%20this%20user%20to%20use%20%22Profile%201%22</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

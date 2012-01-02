@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node COLOR="#000000" CREATED="1323533989420" ID="ID_1130789471" MODIFIED="1325096672605" STYLE="fork" TEXT="ERPAL">
+<node COLOR="#000000" CREATED="1323533989420" ID="ID_1130789471" MODIFIED="1325253832710" STYLE="fork" TEXT="ERPAL">
 <font NAME="SansSerif" SIZE="20"/>
 <hook NAME="accessories/plugins/AutomaticLayout.properties"/>
 <node COLOR="#0033ff" CREATED="1323535987048" FOLDED="true" HGAP="21" ID="ID_460964690" MODIFIED="1324132554680" POSITION="left" TEXT="Vermarktung" VSHIFT="-45">
