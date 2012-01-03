@@ -112,9 +112,9 @@
         <text>field_address</text>
       </controlProperties>
     </control>
-    <control controlID="43" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="432" w="99" h="-1" measuredW="65" measuredH="24" zOrder="21" locked="false" isInGroup="-1">
+    <control controlID="43" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="432" w="99" h="-1" measuredW="61" measuredH="24" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>street</text>
+        <text>value</text>
       </controlProperties>
     </control>
     <control controlID="44" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="432" w="99" h="-1" measuredW="86" measuredH="24" zOrder="22" locked="false" isInGroup="-1">
@@ -122,9 +122,9 @@
         <text>Privatadr.</text>
       </controlProperties>
     </control>
-    <control controlID="45" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="432" w="99" h="-1" measuredW="65" measuredH="24" zOrder="23" locked="false" isInGroup="-1">
+    <control controlID="45" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="432" w="99" h="-1" measuredW="36" measuredH="24" zOrder="23" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>street</text>
+        <text>-</text>
       </controlProperties>
     </control>
     <control controlID="46" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="464" w="98" h="-1" measuredW="108" measuredH="24" zOrder="24" locked="false" isInGroup="-1">
@@ -132,19 +132,19 @@
         <text>field_address</text>
       </controlProperties>
     </control>
-    <control controlID="47" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="463" w="99" h="-1" measuredW="49" measuredH="24" zOrder="25" locked="false" isInGroup="-1">
+    <control controlID="47" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="463" w="99" h="-1" measuredW="61" measuredH="24" zOrder="25" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>plz</text>
+        <text>value</text>
       </controlProperties>
     </control>
-    <control controlID="48" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="463" w="99" h="-1" measuredW="86" measuredH="24" zOrder="26" locked="false" isInGroup="-1">
+    <control controlID="48" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="463" w="99" h="-1" measuredW="98" measuredH="24" zOrder="26" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Privatadr.</text>
+        <text>Gesch.Adr.</text>
       </controlProperties>
     </control>
-    <control controlID="49" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="463" w="99" h="-1" measuredW="49" measuredH="24" zOrder="27" locked="false" isInGroup="-1">
+    <control controlID="49" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="463" w="99" h="-1" measuredW="36" measuredH="24" zOrder="27" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>zip</text>
+        <text>-</text>
       </controlProperties>
     </control>
     <control controlID="50" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="496" w="98" h="-1" measuredW="108" measuredH="24" zOrder="28" locked="false" isInGroup="-1">
@@ -154,17 +154,17 @@
     </control>
     <control controlID="51" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="495" w="99" h="-1" measuredW="61" measuredH="24" zOrder="29" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>stadt</text>
+        <text>value</text>
       </controlProperties>
     </control>
-    <control controlID="52" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="495" w="99" h="-1" measuredW="86" measuredH="24" zOrder="30" locked="false" isInGroup="-1">
+    <control controlID="52" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="495" w="99" h="-1" measuredW="94" measuredH="24" zOrder="30" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Privatadr.</text>
+        <text>Paket.Adr.</text>
       </controlProperties>
     </control>
-    <control controlID="53" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="495" w="99" h="-1" measuredW="53" measuredH="24" zOrder="31" locked="false" isInGroup="-1">
+    <control controlID="53" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="495" w="99" h="-1" measuredW="36" measuredH="24" zOrder="31" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>city</text>
+        <text>-</text>
       </controlProperties>
     </control>
     <control controlID="54" controlTypeID="com.balsamiq.mockups::StickyNote" x="621" y="377" w="392" h="170" measuredW="109" measuredH="123" zOrder="32" locked="false" isInGroup="-1">
