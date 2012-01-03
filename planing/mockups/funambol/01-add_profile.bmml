@@ -7,6 +7,8 @@
     </control>
     <control controlID="2" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="66" w="-1" h="-1" measuredW="206" measuredH="29" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
+        <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C01-add_profile%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml</hrefs>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%220%2C48%2C79%2C77%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%2281%2C48%2C208%2C77%22%20href%3D%2201-add_profile.bmml%22%20alt%3D%2201-add_profile%22%20id%3D%222_1%22/%3E%0A</map>
         <selectedIndex>1</selectedIndex>
         <text>Profile%201%2C%20Add%20new%20profile</text>
       </controlProperties>
@@ -50,6 +52,8 @@
     </control>
     <control controlID="28" controlTypeID="com.balsamiq.mockups::Button" x="430" y="356" w="-1" h="-1" measuredW="54" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
       <controlProperties>
+        <href>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22330%2C338%2C384%2C365%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%2228%22/%3E</map>
         <text>Save</text>
       </controlProperties>
     </control>

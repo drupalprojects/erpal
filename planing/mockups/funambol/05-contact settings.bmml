@@ -7,6 +7,8 @@
     </control>
     <control controlID="2" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="66" w="-1" h="-1" measuredW="288" measuredH="29" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
+        <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C%2C01-add_profile%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml</hrefs>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%220%2C48%2C79%2C77%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22165%2C48%2C292%2C77%22%20href%3D%2201-add_profile.bmml%22%20alt%3D%2201-add_profile%22%20id%3D%222_1%22/%3E%0A</map>
         <text>Profile%201%2C%20Profile%202%2C%20Add%20new%20profile</text>
       </controlProperties>
     </control>
@@ -22,6 +24,8 @@
     </control>
     <control controlID="22" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="95" w="-1" h="-1" measuredW="456" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
+        <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C03-usersettings%26bm%3B03-usersettings.bmml%26bm%3B03-usersettings.bmml%26bm%3B03-usersettings.bmml%2C04-accessrestriction%26bm%3B04-accessrestriction.bmml%26bm%3B04-accessrestriction.bmml%26bm%3B04-accessrestriction.bmml%2C05-contact%20settings%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%2C05-contact%20settings%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml</hrefs>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%220%2C77%2C89%2C101%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%2222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%2291%2C77%2C173%2C101%22%20href%3D%2203-usersettings.bmml%22%20alt%3D%2203-usersettings%22%20id%3D%2222_1%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22175%2C77%2C273%2C101%22%20href%3D%2204-accessrestriction.bmml%22%20alt%3D%2204-accessrestriction%22%20id%3D%2222_2%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22275%2C77%2C365%2C101%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_3%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22367%2C77%2C464%2C101%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_4%22/%3E%0A</map>
         <selectedIndex>3</selectedIndex>
         <size>9</size>
         <text>Server%20Settings%2C%20User%20Accounts%2C%20Access%20Restriction%2C%20Contact%20Settings%2C%20Calendar%20Settings</text>
