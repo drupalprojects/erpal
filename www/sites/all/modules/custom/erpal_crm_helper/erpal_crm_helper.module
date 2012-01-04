@@ -5,6 +5,21 @@
  */
 
 /**
+* Implements hook_menu
+*/ 
+function erpal_crm_helper_menu(){
+
+  $items = array();
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpalcrm_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+}
+  
+ 
+/**
 * Implements hook_view_contacts_header_content called by module erpal_basic_helper
 */
 function erpal_crm_helper_view_contacts_header_content() {
