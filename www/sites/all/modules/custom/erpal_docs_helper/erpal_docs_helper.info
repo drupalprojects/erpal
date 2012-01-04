@@ -1,0 +1,9 @@
+core = "7.x"
+description = "ERPAL DOCS Helper"
+name = "erpal_docs_helper"
+package = "ERPAL DOCS"
+php = "5.2.4"
+project = "erpal_docs_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_docs_helper.module

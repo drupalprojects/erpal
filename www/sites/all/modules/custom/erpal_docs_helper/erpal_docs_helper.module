@@ -1,0 +1,50 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_docs_helper module.
+ */
+
+/**
+* This function is called in header area of documents view
+*/
+function _erpal_crm_helper_view_documents_header_content()
+{
+  $q = current_path();
+  $add_erpal_activity =  _erpal_docs_helper_create_document_link();
+  
+  $my_content = array(
+    $add_erpal_activity,
+  );
+  
+  //ask all other modules for content in the header area of the view
+  $other_module_content = module_invoke_all('view_documents_header_content');
+  
+  $all_content = array_merge($other_module_content, $my_content);
+  
+  $content = '';
+  foreach ($all_content as $a_content) {
+    $content .= '<br>'.$a_content;
+  }
+  
+  return $content;
+}
+
+/**
+* Helper function to create new document link
+*/
+function _erpal_docs_helper_create_document_link($q_arg = false, $query_arr = array())
+{
+  if (!$q_arg)
+    $q = current_path();
+  else 
+    $q = $q_arg;
+  
+  if (!isset($query_arr['destination']) || $q_arg)
+    $query_arr['destination'] = $q;
+  
+  return l(
+    t("Create new document"), "node/add/erpal-file", array(
+        'query' => $query_arr,
+    )
+  );
+}
