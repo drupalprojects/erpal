@@ -1,0 +1,57 @@
+<mockup version="1.0" skin="sketch" measuredW="556" measuredH="444" mockupW="458" mockupH="426">
+  <controls>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::SubTitle" x="100" y="18" w="-1" h="-1" measuredW="270" measuredH="33" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Funambol%20Admin%20Settings</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="66" w="-1" h="-1" measuredW="288" measuredH="29" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C%2C01-add_profile%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml</hrefs>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%222%2C48%2C81%2C77%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22167%2C48%2C294%2C77%22%20href%3D%2201-add_profile.bmml%22%20alt%3D%2201-add_profile%22%20id%3D%222_1%22/%3E%0A</map>
+        <text>Profile%201%2C%20Profile%202%2C%20Add%20new%20profile</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::FieldSet" x="98" y="134" w="290" h="310" measuredW="200" measuredH="170" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Access%20Restriction</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="119" y="160" w="-1" h="-1" measuredW="40" measuredH="21" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Users</text>
+      </controlProperties>
+    </control>
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="95" w="-1" h="-1" measuredW="456" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C03-usersettings%26bm%3B03-usersettings.bmml%26bm%3B03-usersettings.bmml%26bm%3B03-usersettings.bmml%2C04-accessrestriction%26bm%3B04-accessrestriction.bmml%26bm%3B04-accessrestriction.bmml%26bm%3B04-accessrestriction.bmml%2C05-contact%20settings%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%2C05-contact%20settings%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml</hrefs>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%222%2C77%2C91%2C101%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%2222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%2293%2C77%2C175%2C101%22%20href%3D%2203-usersettings.bmml%22%20alt%3D%2203-usersettings%22%20id%3D%2222_1%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22177%2C77%2C275%2C101%22%20href%3D%2204-accessrestriction.bmml%22%20alt%3D%2204-accessrestriction%22%20id%3D%2222_2%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22277%2C77%2C367%2C101%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_3%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22369%2C77%2C466%2C101%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_4%22/%3E%0A</map>
+        <selectedIndex>2</selectedIndex>
+        <size>9</size>
+        <text>Server%20Settings%2C%20User%20Accounts%2C%20Access%20Restriction%2C%20Contact%20Settings%2C%20Calendar%20Settings</text>
+      </controlProperties>
+    </control>
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::Button" x="316" y="402" w="-1" h="-1" measuredW="54" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Save</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::TextInput" x="120" y="238" w="243" h="-1" measuredW="189" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>up</state>
+        <text>access%20profile1%20synchronization</text>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="120" y="188" w="-1" h="-1" measuredW="198" measuredH="42" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%28%20%29%20no%20access%20restriction%0A%28o%29%20use%20a%20permission%20for%20this%20profile</text>
+      </controlProperties>
+    </control>
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Label" x="120" y="272" w="250" h="149" measuredW="1322" measuredH="17" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>10</size>
+        <text>This%20screen%20allows%20to%20restrict%20access%20to%20this%20funambol%20profile%20based%20on%20a%20permission.%20This%20is%20additional%20to%20whatever%20options%20you%20have%20chosen%20in%20the%20Server%20Settings%20and%20User%20Accounts%20panel.%20This%20can%20be%20used%20to%20allow%20Synchronization%20for%20certain%20user%20groups%20to%20a%20profile%20that%20uses%20a%20single%20funambol%20login.</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

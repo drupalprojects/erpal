@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1323621720092" ID="ID_1225563429" MODIFIED="1323623109398" TEXT="bs_funambol">
+<node CREATED="1323621720092" ID="ID_1225563429" MODIFIED="1325504149832" TEXT="bs_funambol">
 <node CREATED="1323621888435" HGAP="-95" ID="ID_355473706" MODIFIED="1323622809430" POSITION="left" TEXT="Adminsettings" VSHIFT="-128">
 <node CREATED="1323621896245" ID="ID_1440481595" MODIFIED="1323622076347" TEXT="Funambolserver"/>
 <node CREATED="1323622128223" ID="ID_445649539" MODIFIED="1323623022344" TEXT="Inhaltstypen">
@@ -47,8 +47,7 @@
       Was passiert, wenn ein user einen Datensatz, der schonmal auf gesyncht war, aus der Auswahlliste herausnimmt, wird dieser an funambol als &quot;delete&quot; geschickt oder bleibt er einfach vorhanden? (meiner Meinung nach m&#252;sste er gel&#246;scht werden) - Meiner Meinunge (@Manuel) muss er dann auch gel&#246;scht werden. Wenn es nur endlich viele Alternativen gibt, sollte man das in der Configmaske des Moduls einstellen k&#246;nnen.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node CREATED="1325241741732" ID="ID_1642972124" MODIFIED="1325241749438" TEXT="Useraccounts Funambol"/>
 <node CREATED="1325241753463" ID="ID_477007532" MODIFIED="1325241764461" TEXT="Zuordnung Funamboluser-&gt;Drupaluser"/>
 </node>
@@ -76,8 +75,7 @@
       - Das ist auch in Ordnung so, ich will nur nicht, dass Kontakte im CRM manipuliert werden, bzw nur wenn der User das in den Modulsettings explizit will.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node CREATED="1323621969861" ID="ID_791829822" MODIFIED="1323621974510" TEXT="Nodes nur Lesen"/>
 <node CREATED="1323621974703" ID="ID_1323405754" MODIFIED="1323621994377" TEXT="Nodes nur Schreiben"/>
 </node>
@@ -92,7 +90,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1323622109488" ID="ID_932604778" MODIFIED="1325245274116" POSITION="right" TEXT="Zu Syncende Nodes ausw&#xe4;hlen">
+<node CREATED="1323622109488" ID="ID_932604778" MODIFIED="1325254061003" POSITION="right" TEXT="Zu Syncende Nodes ausw&#xe4;hlen">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -116,9 +114,14 @@
     <p>
       Doch das wird der User sicher selbst ausw&#228;hlen wollen (mit einer Bulk Operation bestimmt auch mal alle im einzelfall) aber selbst ich (@manuel) will nicht alle kontakte auf meinem Handy haben sondern nur die, diegerade aktuell sind. So will ich z.B. wenn ein Projekt rum ist auch Kontakte wieder unflaggen k&#246;nnen, weil ich dann den Kontakt nicht mehr brauche.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      Ja da gibt es dann ja diese View in der er sich kontakte zum synchen flaggen kann. Aber er braucht keine view, in der zwei kontakte w&#228;hlt, und dann &quot;synchronisere nur diese zwei&quot; klickt. das geht auch technisch garnicht, weil von funambol immer alle (sonstwo) ge&#228;nderten zur&#252;ckkommen. Er muss nur eine m&#246;glichkeit haben, seinen &quot;Pool&quot; von zu synchronisierenden Kontakten zu w&#228;hlen.
+    </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="messagebox_warning"/>
 <node CREATED="1323622121151" ID="ID_1239881646" MODIFIED="1325241234856" TEXT="Auswahl eines Views">
 <node CREATED="1323622325731" ID="ID_1506658149" MODIFIED="1323622364057" TEXT="M&#xf6;glich nur geflaggte Kontakte von User"/>
@@ -131,5 +134,6 @@
 <node CREATED="1323623155050" ID="ID_1482142176" MODIFIED="1323623221094" TEXT="Alternativ als Shellscript"/>
 <node CREATED="1323623221303" ID="ID_657276068" MODIFIED="1323623227342" TEXT="Fortschrittsanzeige"/>
 </node>
+<node CREATED="1325504159022" ID="ID_1793692369" LINK="funambol%20sync%20-%20technik.mm" MODIFIED="1325504172404" POSITION="left" TEXT="Technische Detailmap"/>
 </node>
 </map>
