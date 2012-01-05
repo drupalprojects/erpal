@@ -568,9 +568,19 @@
 <arrowlink DESTINATION="ID_317208507" ENDARROW="Default" ENDINCLINATION="137;0;" ID="Arrow_ID_1923815586" STARTARROW="None" STARTINCLINATION="137;0;"/>
 </node>
 </node>
-<node COLOR="#990000" CREATED="1325234237764" ID="ID_1335358806" MODIFIED="1325234243867" TEXT="Meetings abstimmen">
+<node COLOR="#990000" CREATED="1325234237764" FOLDED="true" ID="ID_1335358806" MODIFIED="1325698456360" TEXT="Meetings abstimmen">
 <font NAME="SansSerif" SIZE="14"/>
 <node COLOR="#111111" CREATED="1325234243873" ID="ID_856338985" MODIFIED="1325234249861" TEXT="&#xe4;hnlich wie doodle"/>
+</node>
+<node COLOR="#990000" CREATED="1325698457175" ID="ID_370285482" MODIFIED="1325698464945" TEXT="Terminkollisionen anzeigen und warnen">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1325787299755" ID="ID_1986165959" MODIFIED="1325787307406" TEXT="Kalender freigeben">
+<font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1325787307407" ID="ID_774888759" MODIFIED="1325787310500" TEXT="Pro Termin"/>
+<node COLOR="#111111" CREATED="1325787310696" ID="ID_890861582" MODIFIED="1325787321648" TEXT="pro Kalender (=Termin Kategorien)">
+<node COLOR="#111111" CREATED="1325787321654" ID="ID_82486107" MODIFIED="1325787340774" TEXT="Terminkategorien frei pflegbar pro User"/>
+</node>
 </node>
 </node>
 <node COLOR="#00b439" CREATED="1323555751777" ID="ID_52632354" MODIFIED="1325258247279" TEXT="Passwortverwaltung">
@@ -651,7 +661,7 @@
 </node>
 </node>
 </node>
-<node COLOR="#00b439" CREATED="1323623475128" FOLDED="true" ID="ID_694782873" MODIFIED="1325097179204" TEXT="Sprache">
+<node COLOR="#00b439" CREATED="1323623475128" ID="ID_694782873" MODIFIED="1325787248685" TEXT="Sprache">
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
 <node COLOR="#990000" CREATED="1323623488543" ID="ID_1924219273" MODIFIED="1323623492380" TEXT="Basiert auf TRex">
@@ -663,6 +673,26 @@
 <node COLOR="#990000" CREATED="1323623497823" FOLDED="true" ID="ID_1998058611" MODIFIED="1324132554841" TEXT="Deutsche &#xdc;bersetzung">
 <font NAME="SansSerif" SIZE="14"/>
 <node COLOR="#111111" CREATED="1323623508363" ID="ID_1535217029" MODIFIED="1323623525211" TEXT="f&#xfc;r alle Entwickelten Module und Features"/>
+</node>
+</node>
+<node COLOR="#00b439" CREATED="1325787249353" ID="ID_1785456206" MODIFIED="1325787254943" TEXT="Deployment">
+<edge STYLE="bezier" WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="16"/>
+<node COLOR="#990000" CREATED="1325787254945" ID="ID_1876286284" MODIFIED="1325787261412" TEXT="ERPUNTU">
+<font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1325787261413" ID="ID_569016905" MODIFIED="1325787290325" TEXT="Eigene Linux Distribution als VM, siehe notiz">
+<richcontent TYPE="NOTE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bisher waren wir bereits bei einer Drupal-Distribution angelangt welche noch installiert und konfiguriert werden muss.<br />Aber ein Produkt im Sinne eines fassbaren Mediums hatten wir noch nicht.<br /><br />Meine Idee ist Folgende:<br /><br />Eine virtuelle Server Applianz erstellen die perfekt konfiguriert ist f&#252;r den Betrieb mit Drupal/Erpal (Ubuntu-Server) und auf der Erpal vorinstalliert wird.<br />Wir k&#246;nnen dann die ganze Applianz verkaufen.<br />Das ist prima. Denn VMWare-Server sind echt verbreitet und bequem ist es auch noch, ein Produkt zu kaufen und einfach wo reinzuh&#228;ngen um es quasi direkt nutzen zu k&#246;nnen.<br /><br />Das m&#252;ssten wir auch gar nicht auf VMWare beschr&#228;nken. Es gibt noch weitere V-Server-Systeme die man derartig bedienen k&#246;nnte.<br /><br />Wir k&#246;nnten das auch direkt auf ne CD-Pressen, in eine sch&#246;ne H&#252;lle stecken und der Kunde packt es quasi nur noch aus, h&#228;ngt es ein und nutzt es.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 </node>
 </node>
 </node>
