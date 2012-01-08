@@ -12,7 +12,7 @@ function erpal_basic_conditional_fields_default_fields() {
   $items[] = array(
     'entity' => 'node',
     'bundle' => 'erpal_contact',
-    'dependent' => 'field_company_name',
+    'dependent' => 'field_lastname',
     'dependee' => 'field_contact_type',
     'options' => 
       array (
@@ -88,12 +88,12 @@ function erpal_basic_conditional_fields_default_fields() {
         ),
         'selector' => '',
         'values_set' => '1',
-        'value_form' => 'company',
+        'value_form' => 'person',
         'value' => 
         array (
           0 => 
           array (
-            'value' => 'company',
+            'value' => 'person',
           ),
         ),
         'values' => 
@@ -196,7 +196,7 @@ function erpal_basic_conditional_fields_default_fields() {
   $items[] = array(
     'entity' => 'node',
     'bundle' => 'erpal_contact',
-    'dependent' => 'field_lastname',
+    'dependent' => 'field_company_name',
     'dependee' => 'field_contact_type',
     'options' => 
       array (
@@ -272,12 +272,12 @@ function erpal_basic_conditional_fields_default_fields() {
         ),
         'selector' => '',
         'values_set' => '1',
-        'value_form' => 'person',
+        'value_form' => 'company',
         'value' => 
         array (
           0 => 
           array (
-            'value' => 'person',
+            'value' => 'company',
           ),
         ),
         'values' => 
