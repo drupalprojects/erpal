@@ -1001,7 +1001,7 @@ function erpal_basic_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           'person' => 'Person',
-          'company' => 'Company',
+          'company' => 'Company / Organisation',
         ),
         'allowed_values_function' => '',
       ),
