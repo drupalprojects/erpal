@@ -34,53 +34,15 @@ function erpal_crm_feature_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '50';
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
-  $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
-    'field_activity_status' => 'field_activity_status',
-    'field_customer_ref' => 'field_customer_ref',
-    'field_next_contact' => 'field_next_contact',
-  );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_activity_status' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_customer_ref' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_next_contact' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
-  $handler->display->display_options['style_options']['override'] = 1;
-  $handler->display->display_options['style_options']['sticky'] = 0;
-  $handler->display->display_options['style_options']['empty_table'] = 0;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = FALSE;
-  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<?php
+echo _erpal_crm_helper_view_activities_header_content();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -234,33 +196,11 @@ function erpal_crm_feature_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
-  /* Filter criterion: Content: Account Manager (field_account_manager) */
-  $handler->display->display_options['filters']['field_account_manager_uid']['id'] = 'field_account_manager_uid';
-  $handler->display->display_options['filters']['field_account_manager_uid']['table'] = 'field_data_field_account_manager';
-  $handler->display->display_options['filters']['field_account_manager_uid']['field'] = 'field_account_manager_uid';
-  $handler->display->display_options['filters']['field_account_manager_uid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['operator_id'] = 'field_account_manager_uid_op';
-  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['label'] = 'Account Manager';
-  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['operator'] = 'field_account_manager_uid_op';
-  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['identifier'] = 'field_account_manager_uid';
-  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['remember'] = 1;
-  $handler->display->display_options['filters']['field_account_manager_uid']['expose']['reduce'] = 0;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'CRM activities';
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<?php
-echo _erpal_crm_helper_view_activities_header_content();
-?>';
-  $handler->display->display_options['header']['area']['format'] = 'php_code';
-  $handler->display->display_options['header']['area']['tokenize'] = 0;
   $handler->display->display_options['path'] = 'crm/activities';
   $handler->display->display_options['menu']['title'] = 'CRM activities';
   $handler->display->display_options['menu']['weight'] = '0';
@@ -284,126 +224,6 @@ echo _erpal_crm_helper_view_activities_header_content();
     0 => 'erpal_contact',
   );
   $handler->display->display_options['show_title'] = 1;
-
-  /* Display: Upcoming CRM activities */
-  $handler = $view->new_display('block', 'Upcoming CRM activities', 'block_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Upcoming CRM activities';
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'fields';
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = FALSE;
-  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['header']['area']['tokenize'] = 0;
-  $handler->display->display_options['defaults']['empty'] = FALSE;
-  /* No results behavior: Global: Text area */
-  $handler->display->display_options['empty']['area']['id'] = 'area';
-  $handler->display->display_options['empty']['area']['table'] = 'views';
-  $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
-  $handler->display->display_options['empty']['area']['content'] = 'No upcoming activities';
-  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['empty']['area']['tokenize'] = 0;
-  $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Next Contact (field_next_contact) */
-  $handler->display->display_options['sorts']['field_next_contact_value']['id'] = 'field_next_contact_value';
-  $handler->display->display_options['sorts']['field_next_contact_value']['table'] = 'field_data_field_next_contact';
-  $handler->display->display_options['sorts']['field_next_contact_value']['field'] = 'field_next_contact_value';
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'erpal_crm_activity' => 'erpal_crm_activity',
-  );
-  /* Filter criterion: Date: Date (node) */
-  $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
-  $handler->display->display_options['filters']['date_filter']['table'] = 'node';
-  $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
-  $handler->display->display_options['filters']['date_filter']['operator'] = '>=';
-  $handler->display->display_options['filters']['date_filter']['default_date'] = 'now';
-  $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
-    'field_data_field_next_contact.field_next_contact_value' => 'field_data_field_next_contact.field_next_contact_value',
-  );
-
-  /* Display: Missed CRM activities */
-  $handler = $view->new_display('block', 'Missed CRM activities', 'block_3');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Missed CRM activities';
-  $handler->display->display_options['display_description'] = 'Missed CRM activities';
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'fields';
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['empty'] = FALSE;
-  /* No results behavior: Global: Text area */
-  $handler->display->display_options['empty']['area']['id'] = 'area';
-  $handler->display->display_options['empty']['area']['table'] = 'views';
-  $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
-  $handler->display->display_options['empty']['area']['content'] = 'No missed activities';
-  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['empty']['area']['tokenize'] = 0;
-  $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Next Contact (field_next_contact) */
-  $handler->display->display_options['sorts']['field_next_contact_value']['id'] = 'field_next_contact_value';
-  $handler->display->display_options['sorts']['field_next_contact_value']['table'] = 'field_data_field_next_contact';
-  $handler->display->display_options['sorts']['field_next_contact_value']['field'] = 'field_next_contact_value';
-  $handler->display->display_options['sorts']['field_next_contact_value']['expose']['label'] = 'Next Contact (field_next_contact)';
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'erpal_crm_activity' => 'erpal_crm_activity',
-  );
-  /* Filter criterion: Date: Date (node) */
-  $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
-  $handler->display->display_options['filters']['date_filter']['table'] = 'node';
-  $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
-  $handler->display->display_options['filters']['date_filter']['operator'] = '<';
-  $handler->display->display_options['filters']['date_filter']['default_date'] = 'now';
-  $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
-    'field_data_field_next_contact.field_next_contact_value' => 'field_data_field_next_contact.field_next_contact_value',
-  );
-  /* Filter criterion: Date: Date (node) */
-  $handler->display->display_options['filters']['date_filter_1']['id'] = 'date_filter_1';
-  $handler->display->display_options['filters']['date_filter_1']['table'] = 'node';
-  $handler->display->display_options['filters']['date_filter_1']['field'] = 'date_filter';
-  $handler->display->display_options['filters']['date_filter_1']['operator'] = '>';
-  $handler->display->display_options['filters']['date_filter_1']['default_date'] = 'now -90 days';
-  $handler->display->display_options['filters']['date_filter_1']['date_fields'] = array(
-    'field_data_field_next_contact.field_next_contact_value' => 'field_data_field_next_contact.field_next_contact_value',
-  );
-  $handler->display->display_options['filters']['date_filter_1']['date_method'] = 'AND';
   $export['crm_activities'] = $view;
 
   return $export;

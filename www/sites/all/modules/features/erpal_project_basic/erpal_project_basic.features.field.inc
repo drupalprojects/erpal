@@ -331,9 +331,7 @@ function erpal_project_basic_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'erpal_project',
       'default_value' => array(
-        0 => array(
-          
-        ),
+        0 => array(),
       ),
       'deleted' => '0',
       'description' => '',
@@ -375,7 +373,7 @@ function erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => 0,
+        'weight' => '0',
       ),
     ),
   );
@@ -784,47 +782,45 @@ function erpal_project_basic_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_task_status',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
+      'foreign keys' => array(),
       'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
+        'value' => array(
+          0 => 'value',
         ),
       ),
-      'module' => 'taxonomy',
+      'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'task_status',
-            'parent' => '0',
-          ),
+          'inserted' => 'inserted',
+          'in_progress' => 'in progress',
+          'on_hold' => 'on hold',
+          'testing' => 'Testing',
+          'test_ok' => 'Test OK',
+          'completed' => 'completed',
+          'question' => 'Question',
+          'buggy' => 'buggy',
         ),
+        'allowed_values_function' => '',
       ),
       'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'list_text',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
       'default_value' => array(
         0 => array(
-          'tid' => '5',
+          'value' => 'inserted',
         ),
       ),
       'deleted' => '0',
-      'description' => 'The working status of the tasks',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
+          'module' => 'list',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 4,
+          'type' => 'list_default',
+          'weight' => 9,
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -851,7 +847,7 @@ function erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '6',
       ),
     ),
   );
@@ -864,43 +860,40 @@ function erpal_project_basic_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_task_type',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
+      'foreign keys' => array(),
       'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
+        'value' => array(
+          0 => 'value',
         ),
       ),
-      'module' => 'taxonomy',
+      'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'task_types',
-            'parent' => '0',
-          ),
+          'question' => 'Question',
+          'support' => 'Support',
+          'task' => 'Tasks',
         ),
+        'allowed_values_function' => '',
       ),
       'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'list_text',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'task',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
+          'module' => 'list',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 3,
+          'type' => 'list_default',
+          'weight' => 8,
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -917,16 +910,17 @@ function erpal_project_basic_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_task_type',
-      'label' => 'Task type',
-      'required' => FALSE,
+      'label' => 'Task Type',
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '0',
+        'weight' => '5',
       ),
     ),
   );
@@ -943,10 +937,9 @@ function erpal_project_basic_field_default_fields() {
   t('Price mode');
   t('Pricing');
   t('Project');
+  t('Task Type');
   t('Task status');
-  t('Task type');
   t('The description of a task');
-  t('The working status of the tasks');
   t('Time estimated for this task');
 
   return $fields;

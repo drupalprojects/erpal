@@ -64,7 +64,7 @@ function erpal_docs_feature_views_default_views() {
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: File */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
   $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
@@ -85,8 +85,6 @@ function erpal_docs_feature_views_default_views() {
   $handler->display->display_options['fields']['field_file']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_file']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_file']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_file']['field_api_classes'] = 0;
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -220,7 +218,7 @@ echo _erpal_crm_helper_view_documents_header_content();
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['title']['link_to_node'] = 0;
-  /* Field: Content: File */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
   $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
@@ -241,8 +239,6 @@ echo _erpal_crm_helper_view_documents_header_content();
   $handler->display->display_options['fields']['field_file']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_file']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_file']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_file']['field_api_classes'] = 0;
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';

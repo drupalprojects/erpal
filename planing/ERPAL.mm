@@ -49,13 +49,30 @@
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
 </node>
-<node COLOR="#00b439" CREATED="1326456617666" ID="ID_945679238" MODIFIED="1326456853052" TEXT="Produktgruppe">
+<node COLOR="#00b439" CREATED="1326456617666" ID="ID_945679238" MODIFIED="1326459583734" TEXT="Produktgruppe">
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
 <node COLOR="#990000" CREATED="1326456624306" ID="ID_163500241" MODIFIED="1326456689475" TEXT="kostenloser Core">
 <font NAME="SansSerif" SIZE="14"/>
 <node COLOR="#111111" CREATED="1326456689475" ID="ID_454437701" MODIFIED="1326456697322" TEXT="Eingabe aller m&#xf6;glichen Daten"/>
-<node COLOR="#111111" CREATED="1326456697499" ID="ID_131129202" MODIFIED="1326456707470" TEXT="open source"/>
+<node COLOR="#111111" CREATED="1326456697499" ID="ID_131129202" MODIFIED="1326456707470" TEXT="open source">
+<node COLOR="#111111" CREATED="1326459589922" ID="ID_82150477" MODIFIED="1326459716141" TEXT="Da Funktionaler ASpekt das wichtigste ist, jederzeit erweiterbar">
+<richcontent TYPE="NOTE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Siehe https://support.brightsolutions.de/node/17401
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node COLOR="#111111" CREATED="1326457675229" ID="ID_6197871" MODIFIED="1326457721946" TEXT="schafft Anbieterunabh&#xe4;ngigkeit">
+<node COLOR="#111111" CREATED="1326457723844" ID="ID_1608174314" MODIFIED="1326457741846" TEXT="Kernfunktionen k&#xf6;nnen extern weiterentwickelt werden"/>
+<node COLOR="#111111" CREATED="1326457685748" ID="ID_1734559294" MODIFIED="1326457708366" TEXT="Vorteil um mit &quot;den Etablierten&quot; mithalten zu k&#xf6;nnen"/>
+</node>
 </node>
 <node COLOR="#990000" CREATED="1326456708224" ID="ID_168620871" MODIFIED="1326456863855" TEXT="Kostenpflichtige Features">
 <font NAME="SansSerif" SIZE="14"/>
@@ -74,8 +91,7 @@
       Alle Module, die nach der Dateneingabe als sinnvoll erachtet werden k&#246;nnen und erhebliches Know How beinhalten sind kostenpflichtig. Z.B. Project Planing (Pflichtenheft etc), Reports,Funambol, Asterisk etc.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node COLOR="#111111" CREATED="1326456746290" ID="ID_1544041615" MODIFIED="1326456756544" TEXT="Reporting"/>
 <node COLOR="#111111" CREATED="1326456757064" ID="ID_1655326444" MODIFIED="1326456758938" TEXT="Controling"/>
 <node COLOR="#111111" CREATED="1326456759131" ID="ID_1913835525" MODIFIED="1326456770286" TEXT="Anbindung extern"/>
@@ -83,6 +99,19 @@
 </node>
 <node COLOR="#990000" CREATED="1326456855039" ID="ID_1094179937" MODIFIED="1326456862825" TEXT="Kostenpflichtiger Support">
 <font NAME="SansSerif" SIZE="14"/>
+</node>
+</node>
+<node COLOR="#00b439" CREATED="1326459461786" ID="ID_397773143" MODIFIED="1326459465852" TEXT="Kundengrupp">
+<edge STYLE="bezier" WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="16"/>
+<node COLOR="#990000" CREATED="1326459465852" ID="ID_1905618817" MODIFIED="1326459469962" TEXT="KMUs">
+<font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1326459469962" ID="ID_1250112932" MODIFIED="1326459480648" TEXT="Fokus auf kleine und mittlere Agentur"/>
+<node COLOR="#111111" CREATED="1326459480873" ID="ID_1465801568" MODIFIED="1326459487443" TEXT="Web und Werbeagenturen"/>
+<node COLOR="#111111" CREATED="1326459487651" ID="ID_620873645" MODIFIED="1326459492848" TEXT="Softwareh&#xe4;u&#xdf;er"/>
+<node COLOR="#111111" CREATED="1326459493057" ID="ID_50784415" MODIFIED="1326459514156" TEXT="Firmen im Projektgesch&#xe4;ft"/>
+<node COLOR="#111111" CREATED="1326459519941" ID="ID_157598529" MODIFIED="1326459532174" TEXT="3-30 Mitarbeiter in Stufe 1"/>
+<node COLOR="#111111" CREATED="1326459532351" ID="ID_1863496828" MODIFIED="1326459544115" TEXT="30-100 Mitarbeiter in Stufe 2"/>
 </node>
 </node>
 </node>
@@ -480,21 +509,23 @@
       In diesem Feature sind die Inhaltstypen Task und Projekt noch NICHT verlinkt. Das passiert dann &#252;ber das project_og_feature oder &#252;ber das project_ref_featrure. Es k&#246;nnen auch beide gleichzeitig angeschaltet sein, ein &quot;switch&quot; von OG zu Node REf ist nur m&#246;glich, wenn noch keine Tasks verlinkt sind.
     </p>
   </body>
-</html>
-</richcontent>
-<node COLOR="#111111" CREATED="1323539018050" ID="ID_1774042835" MODIFIED="1326456260785" TEXT="Baistype erpal_project">
+</html></richcontent>
+<node COLOR="#111111" CREATED="1323539018050" ID="ID_1774042835" MODIFIED="1326464678285" TEXT="Baistype erpal_project">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#111111" CREATED="1323539044190" ID="ID_146149104" MODIFIED="1323539485353" TEXT="Kunde">
+<node COLOR="#111111" CREATED="1323539044190" ID="ID_146149104" MODIFIED="1326463786115" TEXT="Kunde">
 <arrowlink DESTINATION="ID_818563981" ENDARROW="Default" ENDINCLINATION="502;0;" ID="Arrow_ID_1895279614" STARTARROW="None" STARTINCLINATION="502;0;"/>
+<icon BUILTIN="button_ok"/>
 </node>
 <node COLOR="#111111" CREATED="1323539506310" FOLDED="true" ID="ID_689829087" MODIFIED="1326456264591" TEXT="Vorgang">
 <arrowlink DESTINATION="ID_929873873" ENDARROW="Default" ENDINCLINATION="405;0;" ID="Arrow_ID_1157707942" STARTARROW="None" STARTINCLINATION="405;0;"/>
 <node COLOR="#111111" CREATED="1326039941858" ID="ID_1715127487" MODIFIED="1326046826890" TEXT="wenn crm feature aktiv ist"/>
 </node>
-<node COLOR="#111111" CREATED="1323539565402" ID="ID_1274766187" MODIFIED="1326040023813" TEXT="princing">
+<node COLOR="#111111" CREATED="1323539565402" ID="ID_1274766187" MODIFIED="1326463800483" TEXT="princing">
 <arrowlink DESTINATION="ID_47842502" ENDARROW="Default" ENDINCLINATION="684;0;" ID="Arrow_ID_785305531" STARTARROW="None" STARTINCLINATION="684;0;"/>
+<icon BUILTIN="button_ok"/>
 </node>
-<node COLOR="#111111" CREATED="1323540206213" FOLDED="true" ID="ID_1813482372" MODIFIED="1326456439773" TEXT="Status Field">
+<node COLOR="#111111" CREATED="1323540206213" FOLDED="true" ID="ID_1813482372" MODIFIED="1326463777426" TEXT="Status Field">
+<icon BUILTIN="button_ok"/>
 <node COLOR="#111111" CREATED="1323540212884" ID="ID_1993542667" MODIFIED="1323540223011" TEXT="In Progress"/>
 <node COLOR="#111111" CREATED="1323540223235" ID="ID_1756212119" MODIFIED="1323540234672" TEXT="Abgebrochen"/>
 <node COLOR="#111111" CREATED="1326040045451" ID="ID_712776182" MODIFIED="1326040055387" TEXT="Abnahmebereit"/>
@@ -506,7 +537,7 @@
 <node COLOR="#111111" CREATED="1326040089633" ID="ID_1895072389" MODIFIED="1326040096608" TEXT="Management"/>
 <node COLOR="#111111" CREATED="1326040097004" ID="ID_991943678" MODIFIED="1326455109432" TEXT="per taggbaren relation entity"/>
 </node>
-<node COLOR="#111111" CREATED="1324639972683" FOLDED="true" ID="ID_588656335" MODIFIED="1326456454843" TEXT="Verwantwortliche intern">
+<node COLOR="#111111" CREATED="1324639972683" FOLDED="true" ID="ID_588656335" MODIFIED="1326463807815" TEXT="Verwantwortliche intern">
 <arrowlink DESTINATION="ID_818563981" ENDARROW="Default" ENDINCLINATION="521;0;" ID="Arrow_ID_447464825" STARTARROW="None" STARTINCLINATION="521;0;"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#111111" CREATED="1324639987222" ID="ID_1689286852" MODIFIED="1324639989144" TEXT="Konzept"/>
@@ -517,7 +548,7 @@
 <node COLOR="#111111" CREATED="1324640006945" ID="ID_1565806931" MODIFIED="1324640016836" TEXT="Content Architektur"/>
 <node COLOR="#111111" CREATED="1326455127870" ID="ID_1315673225" MODIFIED="1326455131865" TEXT="per taggbaren relation entity"/>
 </node>
-<node COLOR="#111111" CREATED="1323538562535" ID="ID_1159877029" MODIFIED="1326455172457" TEXT="Tasks">
+<node COLOR="#111111" CREATED="1323538562535" FOLDED="true" ID="ID_1159877029" MODIFIED="1326463824538" TEXT="Tasks">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#111111" CREATED="1326455146880" ID="ID_486874031" MODIFIED="1326456595718" TEXT="Link &#xfc;ber OG feature">
 <arrowlink DESTINATION="ID_64032888" ENDARROW="Default" ENDINCLINATION="434;0;" ID="Arrow_ID_1636129345" STARTARROW="None" STARTINCLINATION="434;0;"/>
@@ -536,12 +567,12 @@
 <node COLOR="#111111" CREATED="1326031358394" ID="ID_1308964590" MODIFIED="1326031378988" TEXT="In Projekt OG "/>
 </node>
 </node>
-<node COLOR="#111111" CREATED="1326031293893" FOLDED="true" ID="ID_889631080" MODIFIED="1326052181834" TEXT="Datei Upload">
+<node COLOR="#111111" CREATED="1326031293893" ID="ID_889631080" MODIFIED="1326466199124" TEXT="Datei Upload">
 <node COLOR="#111111" CREATED="1326031303622" ID="ID_982888154" MODIFIED="1326031315587" TEXT="in Dokumentenmanagement Ablage"/>
 <node COLOR="#111111" CREATED="1326031315796" ID="ID_1833958737" MODIFIED="1326031321102" TEXT="als einzelne Datei"/>
 <node COLOR="#111111" CREATED="1326039564987" ID="ID_834214549" MODIFIED="1326039580207" TEXT="integration mit erpal DOCS feature"/>
 </node>
-<node COLOR="#111111" CREATED="1326031486793" FOLDED="true" ID="ID_1581515873" MODIFIED="1326456116266" TEXT="Felder">
+<node COLOR="#111111" CREATED="1326031486793" ID="ID_1581515873" MODIFIED="1326463874146" TEXT="Felder">
 <node COLOR="#111111" CREATED="1326031492325" ID="ID_1124803174" MODIFIED="1326040170706" TEXT="Zeitsch&#xe4;tzung">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -585,7 +616,7 @@
 <node COLOR="#111111" CREATED="1326032922969" ID="ID_232048696" MODIFIED="1326032931510" TEXT="per hour mit obergrenze"/>
 <node COLOR="#111111" CREATED="1326032935531" ID="ID_1326863139" MODIFIED="1326038123342" TEXT="Wartungsvertr&#xe4;ge oder Supportbudgets die per tasks bearbeitet weeden"/>
 </node>
-<node COLOR="#111111" CREATED="1326034551115" FOLDED="true" ID="ID_1605714028" MODIFIED="1326052181834" TEXT="auch an Project">
+<node COLOR="#111111" CREATED="1326034551115" FOLDED="true" ID="ID_1605714028" MODIFIED="1326466109705" TEXT="auch an Project">
 <node COLOR="#111111" CREATED="1326034559143" ID="ID_118263526" MODIFIED="1326034576912" TEXT="Tasks erbt von Project als preset"/>
 </node>
 </node>
@@ -632,8 +663,7 @@
       SO kann man zentral Views mit Filter schreiben (z.B. alle Tasks in einem Projekt). Diesem view ist es dann egal, die Tasks-Projekt Referenz &#252;ber eine Noderef oder OG zustande kommt.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node COLOR="#111111" CREATED="1326455515504" ID="ID_410190802" MODIFIED="1326455520576" TEXT="user_access"/>
@@ -736,7 +766,7 @@
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 </node>
-<node COLOR="#00b439" CREATED="1323537405528" FOLDED="true" ID="ID_467599389" MODIFIED="1326454392916" TEXT="Dokumentenmanagement">
+<node COLOR="#00b439" CREATED="1323537405528" ID="ID_467599389" MODIFIED="1326457899684" TEXT="Dokumentenmanagement">
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
 <node COLOR="#990000" CREATED="1323537460596" FOLDED="true" ID="ID_448488141" MODIFIED="1326228465026" TEXT="Dokumenten&#xfc;bersicht">
@@ -763,9 +793,16 @@
 <node COLOR="#111111" CREATED="1325609914344" ID="ID_234114203" MODIFIED="1325609969103" TEXT="Alle Dateien zu einem Projekt"/>
 </node>
 <node COLOR="#111111" CREATED="1326229133480" ID="ID_118560521" MODIFIED="1326229138182" TEXT="Metadaten"/>
+<node COLOR="#111111" CREATED="1326457910641" ID="ID_162615107" MODIFIED="1326457920627" TEXT="Tags = Ablagekontainer"/>
 </node>
 <node COLOR="#990000" CREATED="1323537600457" ID="ID_477017093" MODIFIED="1323537665854" TEXT="Javapluging lokal bearbeiten">
 <font NAME="SansSerif" SIZE="14"/>
+<node COLOR="#111111" CREATED="1326458417675" ID="ID_684348343" MODIFIED="1326458425517" TEXT="Dateien mit neuer Version direkt ablegen"/>
+<node COLOR="#111111" CREATED="1326458425705" ID="ID_534800378" MODIFIED="1326458474957" TEXT="NICE: Speicherort &quot;doc&quot; bereitstellen">
+<node COLOR="#111111" CREATED="1326458447397" ID="ID_157143247" MODIFIED="1326458458527" TEXT="neue Dokumente direkt im DMS ablegen">
+<node COLOR="#111111" CREATED="1326458458527" ID="ID_563793565" MODIFIED="1326458466657" TEXT="Kategorisierung erfolgt sp&#xe4;ter"/>
+</node>
+</node>
 </node>
 </node>
 <node COLOR="#00b439" CREATED="1325254914717" ID="ID_1910228855" MODIFIED="1325254918530" TEXT="Wiki / News">
@@ -862,7 +899,7 @@
 </node>
 </node>
 </node>
-<node COLOR="#00b439" CREATED="1326277524068" ID="ID_788748576" MODIFIED="1326277533668" TEXT="ERPAL Bash (nice)">
+<node COLOR="#00b439" CREATED="1326277524068" FOLDED="true" ID="ID_788748576" MODIFIED="1326459376698" TEXT="ERPAL Bash (nice)">
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
 <node COLOR="#990000" CREATED="1326277533669" ID="ID_238774864" MODIFIED="1326277553525" TEXT="Konsole im Projekt">
@@ -889,9 +926,21 @@
       Das kann dann auf beliebige Nodes erweitert werden und ist hier nur ein erste Weg. Das Konzept ist noch auszuarbeiten, aber erst dann, wenn Erpal schon sehr weit vorangeschritten ist.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
+</node>
+</node>
+<node COLOR="#00b439" CREATED="1326459377702" ID="ID_95723867" MODIFIED="1326459437007" TEXT="Bewusst AUSGEKLAMMERT">
+<edge STYLE="bezier" WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="16"/>
+<node COLOR="#990000" CREATED="1326459384310" ID="ID_275243506" MODIFIED="1326459389833" TEXT="Logistik">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1326459389979" ID="ID_1896515404" MODIFIED="1326459391837" TEXT="Lager">
+<font NAME="SansSerif" SIZE="14"/>
+</node>
+<node COLOR="#990000" CREATED="1326459391968" ID="ID_703029165" MODIFIED="1326459451001" TEXT="Anbindung online-shops">
+<font NAME="SansSerif" SIZE="14"/>
 </node>
 </node>
 </node>
@@ -954,10 +1003,10 @@
 <node COLOR="#111111" CREATED="1323623508363" ID="ID_1535217029" MODIFIED="1323623525211" TEXT="f&#xfc;r alle Entwickelten Module und Features"/>
 </node>
 </node>
-<node COLOR="#00b439" CREATED="1325787249353" ID="ID_1785456206" MODIFIED="1325787254943" TEXT="Deployment">
+<node COLOR="#00b439" CREATED="1325787249353" ID="ID_1785456206" MODIFIED="1326464470910" TEXT="Deployment">
 <edge STYLE="bezier" WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="16"/>
-<node COLOR="#990000" CREATED="1325787254945" ID="ID_1876286284" MODIFIED="1325787261412" TEXT="ERPUNTU">
+<node COLOR="#990000" CREATED="1325787254945" FOLDED="true" ID="ID_1876286284" MODIFIED="1326464471799" TEXT="ERPUNTU">
 <font NAME="SansSerif" SIZE="14"/>
 <node COLOR="#111111" CREATED="1325787261413" ID="ID_569016905" MODIFIED="1326456228415" TEXT="Eigene Linux Distribution als VM, siehe notiz">
 <richcontent TYPE="NOTE"><html>
@@ -969,9 +1018,22 @@
       Bisher waren wir bereits bei einer Drupal-Distribution angelangt welche noch installiert und konfiguriert werden muss.<br />Aber ein Produkt im Sinne eines fassbaren Mediums hatten wir noch nicht.<br /><br />Meine Idee ist Folgende:<br /><br />Eine virtuelle Server Applianz erstellen die perfekt konfiguriert ist f&#252;r den Betrieb mit Drupal/Erpal (Ubuntu-Server) und auf der Erpal vorinstalliert wird.<br />Wir k&#246;nnen dann die ganze Applianz verkaufen.<br />Das ist prima. Denn VMWare-Server sind echt verbreitet und bequem ist es auch noch, ein Produkt zu kaufen und einfach wo reinzuh&#228;ngen um es quasi direkt nutzen zu k&#246;nnen.<br /><br />Das m&#252;ssten wir auch gar nicht auf VMWare beschr&#228;nken. Es gibt noch weitere V-Server-Systeme die man derartig bedienen k&#246;nnte.<br /><br />Wir k&#246;nnten das auch direkt auf ne CD-Pressen, in eine sch&#246;ne H&#252;lle stecken und der Kunde packt es quasi nur noch aus, h&#228;ngt es ein und nutzt es.
     </p>
   </body>
+</html></richcontent>
+</node>
+</node>
+<node COLOR="#990000" CREATED="1326464472179" ID="ID_1787628722" MODIFIED="1326464557182" TEXT="Features f&#xfc;r Kunden individuell">
+<richcontent TYPE="NOTE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Alle bestehenden als auch neuen Features k&#246;nnen Kundenindividuell angepasst werden und werden kundenindividuell versioniert.
+    </p>
+  </body>
 </html>
 </richcontent>
-</node>
+<font NAME="SansSerif" SIZE="14"/>
 </node>
 </node>
 </node>

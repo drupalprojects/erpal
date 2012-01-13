@@ -51,6 +51,12 @@ function erpal_docs_feature_field_default_fields() {
           'type' => 'text_default',
           'weight' => 0,
         ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
       ),
       'entity_type' => 'comment',
       'field_name' => 'comment_body',
@@ -123,6 +129,12 @@ function erpal_docs_feature_field_default_fields() {
           'type' => 'node_reference_default',
           'weight' => 8,
         ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -151,78 +163,6 @@ function erpal_docs_feature_field_default_fields() {
         ),
         'type' => 'node_reference_autocomplete',
         'weight' => '12',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_crm_activity-field_file'
-  $fields['node-erpal_crm_activity-field_file'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_file',
-      'foreign keys' => array(
-        'fid' => array(
-          'columns' => array(
-            'fid' => 'fid',
-          ),
-          'table' => 'file_managed',
-        ),
-      ),
-      'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
-        ),
-      ),
-      'module' => 'file',
-      'settings' => array(
-        'display_default' => 1,
-        'display_field' => 1,
-        'uri_scheme' => 'public',
-      ),
-      'translatable' => '0',
-      'type' => 'file',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_crm_activity',
-      'deleted' => '0',
-      'description' => 'Upload files that are save at this activity, NOT in the document management system',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'file',
-          'settings' => array(),
-          'type' => 'file_default',
-          'weight' => 9,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_file',
-      'label' => 'Local documents',
-      'required' => 0,
-      'settings' => array(
-        'description_field' => 0,
-        'file_directory' => 'local_files',
-        'file_extensions' => 'txt pdf doc docx xls csv bmp jpg',
-        'max_filesize' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'file',
-        'settings' => array(
-          'progress_indicator' => 'throbber',
-        ),
-        'type' => 'file_generic',
-        'weight' => '13',
       ),
     ),
   );
@@ -268,6 +208,12 @@ function erpal_docs_feature_field_default_fields() {
           'type' => 'text_default',
           'weight' => 0,
         ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -299,14 +245,14 @@ function erpal_docs_feature_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_file-field_file'
-  $fields['node-erpal_file-field_file'] = array(
+  // Exported field: 'node-erpal_file-field_docs_file'
+  $fields['node-erpal_file-field_docs_file'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_file',
+      'field_name' => 'field_docs_file',
       'foreign keys' => array(
         'fid' => array(
           'columns' => array(
@@ -322,8 +268,8 @@ function erpal_docs_feature_field_default_fields() {
       ),
       'module' => 'file',
       'settings' => array(
-        'display_default' => 1,
-        'display_field' => 1,
+        'display_default' => 0,
+        'display_field' => 0,
         'uri_scheme' => 'public',
       ),
       'translatable' => '0',
@@ -339,7 +285,13 @@ function erpal_docs_feature_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => 1,
+          'weight' => 4,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -349,12 +301,12 @@ function erpal_docs_feature_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_file',
+      'field_name' => 'field_docs_file',
       'label' => 'File',
       'required' => 0,
       'settings' => array(
         'description_field' => 0,
-        'file_directory' => 'documents',
+        'file_directory' => '',
         'file_extensions' => 'txt pdf doc docx xls csv bmp jpg',
         'max_filesize' => '',
         'user_register_form' => FALSE,
@@ -366,7 +318,7 @@ function erpal_docs_feature_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '-3',
+        'weight' => '1',
       ),
     ),
   );
@@ -417,6 +369,12 @@ function erpal_docs_feature_field_default_fields() {
           'type' => 'taxonomy_term_reference_link',
           'weight' => 2,
         ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -450,11 +408,9 @@ function erpal_docs_feature_field_default_fields() {
   t('Comment');
   t('File');
   t('Global documents');
-  t('Local documents');
   t('Select or add files from / to the document management system');
   t('Sidwide tags for this file');
   t('Tags');
-  t('Upload files that are save at this activity, NOT in the document management system');
 
   return $fields;
 }

@@ -12,7 +12,7 @@ function erpal_crm_feature_conditional_fields_default_fields() {
   $items[] = array(
     'entity' => 'node',
     'bundle' => 'erpal_crm_activity',
-    'dependent' => 'field_chance',
+    'dependent' => 'field_volume',
     'dependee' => 'field_activity_status',
     'options' => 
       array (
@@ -116,7 +116,7 @@ function erpal_crm_feature_conditional_fields_default_fields() {
   $items[] = array(
     'entity' => 'node',
     'bundle' => 'erpal_crm_activity',
-    'dependent' => 'field_volume',
+    'dependent' => 'field_chance',
     'dependee' => 'field_activity_status',
     'options' => 
       array (
