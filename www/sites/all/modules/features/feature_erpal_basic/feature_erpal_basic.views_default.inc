@@ -30,8 +30,38 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
-  $handler->display->display_options['style_plugin'] = 'relation_select';
+  $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['group_rendered'] = 1;
+  $handler->display->display_options['style_options']['columns'] = array(
+    'title' => 'title',
+    'field_contact_type' => 'field_contact_type',
+    'edit_node' => 'edit_node',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_contact_type' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['override'] = 1;
+  $handler->display->display_options['style_options']['sticky'] = 0;
+  $handler->display->display_options['style_options']['empty_table'] = 0;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
@@ -182,6 +212,17 @@ echo _erpal_basic_helper_view_contacts_header_content();
 
   /* Display: Contact Reference Project */
   $handler = $view->new_display('entityreference_view_widget', 'Contact Reference Project', 'entityreference_view_widget_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['defaults']['exposed_form'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'entityreference_view_widget';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['columns'] = '3';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'entity';
+  $handler->display->display_options['row_options']['view_mode'] = 'entityreference_view_widget';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
 
   /* Display: Contact Dialog Search Project */
   $handler = $view->new_display('references_dialog', 'Contact Dialog Search Project', 'references_dialog_customer_project');
@@ -244,6 +285,35 @@ echo _erpal_basic_helper_view_contacts_header_content();
   /* Display: Contact Relation Search */
   $handler = $view->new_display('page', 'Contact Relation Search', 'page_1');
   $handler->display->display_options['display_description'] = 'Search for another contact to build a relation with';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'relation_select';
+  $handler->display->display_options['style_options']['group_rendered'] = 1;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_contact' => 'erpal_contact',
+  );
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
+  $handler->display->display_options['filters']['type']['expose']['use_operator'] = FALSE;
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['required'] = FALSE;
+  $handler->display->display_options['filters']['type']['expose']['remember'] = FALSE;
+  $handler->display->display_options['filters']['type']['expose']['multiple'] = FALSE;
   $handler->display->display_options['path'] = 'crm/contacts/relation/select';
   $export['contacts'] = $view;
 
