@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the erpal_crm_feature feature.
- */
-
-include_once('erpal_crm_feature.features.inc');
