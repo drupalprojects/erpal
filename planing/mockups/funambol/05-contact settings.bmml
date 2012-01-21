@@ -1,4 +1,4 @@
-<mockup version="1.0" skin="sketch" measuredW="1013" measuredH="685" mockupW="913" mockupH="667">
+<mockup version="1.0" skin="sketch" measuredW="877" measuredH="844" mockupW="777" mockupH="826">
   <controls>
     <control controlID="1" controlTypeID="com.balsamiq.mockups::SubTitle" x="100" y="18" w="-1" h="-1" measuredW="285" measuredH="33" zOrder="0" locked="false" isInGroup="-1">
       <controlProperties>
@@ -17,7 +17,7 @@
         <text>Contact%20Settings</text>
       </controlProperties>
     </control>
-    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="524" y="574" w="-1" h="-1" measuredW="52" measuredH="27" zOrder="15" locked="false" isInGroup="-1">
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="814" y="810" w="-1" h="-1" measuredW="52" measuredH="27" zOrder="15" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Save</text>
       </controlProperties>
@@ -31,7 +31,7 @@
         <text>Server%20Settings%2C%20User%20Accounts%2C%20Access%20Restriction%2C%20Contact%20Settings%2C%20Calendar%20Settings</text>
       </controlProperties>
     </control>
-    <control controlID="23" controlTypeID="com.balsamiq.mockups::FieldSet" x="100" y="324" w="493" h="288" measuredW="200" measuredH="170" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::FieldSet" x="100" y="324" w="777" h="520" measuredW="200" measuredH="170" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Content%20Type</text>
       </controlProperties>
@@ -82,9 +82,9 @@
         <text>person</text>
       </controlProperties>
     </control>
-    <control controlID="37" controlTypeID="com.balsamiq.mockups::DataGrid" x="120" y="377" w="458" h="191" measuredW="301" measuredH="116" zOrder="14" locked="false" isInGroup="-1">
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::DataGrid" x="107" y="376" w="761" h="432" measuredW="186" measuredH="26" zOrder="14" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Field%2C%20datafield%2C%20%2CVCard-Item%2CVCard-Value%20%0A%20%0A%20%0A%20%0A%7B25%25%2C%2025%25%2C%202%25%2C%2025%25%2C%2025%25%7D</text>
+        <text>Field%2C%2CVCard-Item%2C%20Glue%0A%7B60%25%2C%202%25%2C%2028%25%2C%2010%25%7D</text>
       </controlProperties>
     </control>
     <control controlID="38" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="403" w="98" h="-1" measuredW="56" measuredH="24" zOrder="16" locked="false" isInGroup="-1">
@@ -92,89 +92,225 @@
         <text>Title</text>
       </controlProperties>
     </control>
-    <control controlID="39" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="402" w="99" h="-1" measuredW="36" measuredH="24" zOrder="17" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>-</text>
-      </controlProperties>
-    </control>
-    <control controlID="40" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="402" w="99" h="-1" measuredW="66" measuredH="24" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="41" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="403" w="189" h="-1" measuredW="66" measuredH="24" zOrder="17" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Name</text>
       </controlProperties>
     </control>
-    <control controlID="41" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="402" w="99" h="-1" measuredW="36" measuredH="24" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="42" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="433" w="191" h="-1" measuredW="100" measuredH="24" zOrder="18" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>-</text>
+        <text>field_telefon</text>
       </controlProperties>
     </control>
-    <control controlID="42" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="433" w="98" h="-1" measuredW="108" measuredH="24" zOrder="20" locked="false" isInGroup="-1">
+    <control controlID="45" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="433" w="50" h="-1" measuredW="39" measuredH="24" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>field_address</text>
+        <text>0</text>
       </controlProperties>
     </control>
-    <control controlID="43" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="432" w="99" h="-1" measuredW="61" measuredH="24" zOrder="21" locked="false" isInGroup="-1">
+    <control controlID="49" controlTypeID="com.balsamiq.mockups::ComboBox" x="385" y="433" w="81" h="-1" measuredW="61" measuredH="24" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
         <text>value</text>
       </controlProperties>
     </control>
-    <control controlID="44" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="432" w="99" h="-1" measuredW="86" measuredH="24" zOrder="22" locked="false" isInGroup="-1">
+    <control controlID="56" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="463" w="191" h="-1" measuredW="106" measuredH="24" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Privatadr.</text>
+        <text>field_telprivat</text>
       </controlProperties>
     </control>
-    <control controlID="45" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="432" w="99" h="-1" measuredW="36" measuredH="24" zOrder="23" locked="false" isInGroup="-1">
+    <control controlID="57" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="463" w="50" h="-1" measuredW="39" measuredH="24" zOrder="22" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>-</text>
+        <text>0</text>
       </controlProperties>
     </control>
-    <control controlID="46" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="464" w="98" h="-1" measuredW="108" measuredH="24" zOrder="24" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>field_address</text>
-      </controlProperties>
-    </control>
-    <control controlID="47" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="463" w="99" h="-1" measuredW="61" measuredH="24" zOrder="25" locked="false" isInGroup="-1">
+    <control controlID="58" controlTypeID="com.balsamiq.mockups::ComboBox" x="385" y="463" w="81" h="-1" measuredW="61" measuredH="24" zOrder="23" locked="false" isInGroup="-1">
       <controlProperties>
         <text>value</text>
       </controlProperties>
     </control>
-    <control controlID="48" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="463" w="99" h="-1" measuredW="98" measuredH="24" zOrder="26" locked="false" isInGroup="-1">
+    <control controlID="59" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="495" w="191" h="-1" measuredW="105" measuredH="24" zOrder="24" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Gesch.Adr.</text>
+        <text>field_strasse</text>
       </controlProperties>
     </control>
-    <control controlID="49" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="463" w="99" h="-1" measuredW="36" measuredH="24" zOrder="27" locked="false" isInGroup="-1">
+    <control controlID="60" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="495" w="50" h="-1" measuredW="39" measuredH="24" zOrder="25" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>-</text>
+        <text>0</text>
       </controlProperties>
     </control>
-    <control controlID="50" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="496" w="98" h="-1" measuredW="108" measuredH="24" zOrder="28" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>field_address</text>
-      </controlProperties>
-    </control>
-    <control controlID="51" controlTypeID="com.balsamiq.mockups::ComboBox" x="238" y="495" w="99" h="-1" measuredW="61" measuredH="24" zOrder="29" locked="false" isInGroup="-1">
+    <control controlID="61" controlTypeID="com.balsamiq.mockups::ComboBox" x="385" y="495" w="81" h="-1" measuredW="61" measuredH="24" zOrder="26" locked="false" isInGroup="-1">
       <controlProperties>
         <text>value</text>
       </controlProperties>
     </control>
-    <control controlID="52" controlTypeID="com.balsamiq.mockups::ComboBox" x="352" y="495" w="99" h="-1" measuredW="94" measuredH="24" zOrder="30" locked="false" isInGroup="-1">
+    <control controlID="62" controlTypeID="com.balsamiq.mockups::ComboBox" x="155" y="643" w="165" h="-1" measuredW="107" measuredH="24" zOrder="27" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Paket.Adr.</text>
+        <text>field_job_title</text>
       </controlProperties>
     </control>
-    <control controlID="53" controlTypeID="com.balsamiq.mockups::ComboBox" x="466" y="495" w="99" h="-1" measuredW="36" measuredH="24" zOrder="31" locked="false" isInGroup="-1">
+    <control controlID="63" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="643" w="50" h="-1" measuredW="39" measuredH="24" zOrder="28" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>-</text>
+        <text>0</text>
       </controlProperties>
     </control>
-    <control controlID="54" controlTypeID="com.balsamiq.mockups::StickyNote" x="621" y="377" w="392" h="170" measuredW="109" measuredH="123" zOrder="32" locked="false" isInGroup="-1">
+    <control controlID="64" controlTypeID="com.balsamiq.mockups::ComboBox" x="385" y="643" w="81" h="-1" measuredW="61" measuredH="24" zOrder="29" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Die%20Auswahlm%F6glichkeiten%20hier%20sind%20so%20noch%20nicht%20gut%2C%20eigentlich%20brauchen%20wir%20%28f%FCr%20die%20Entities%29%20noch%20eine%20Zuordnung%20wie%20man%20zum%20Beispiel%20eine%20als%20%22privat%22%20markierte%20Adresse%20%28welches%20eine%20Entity%20ist%29%20dann%20zuweist.%20Da%20f%E4llt%20mir%20aber%20gerade%20keine%20Oberfl%E4che%20ein%2C%20die%20das%20leisten%20kann.%20%28Thorsten%20fragen%29</text>
+        <text>value</text>
       </controlProperties>
     </control>
-    <control controlID="55" controlTypeID="com.balsamiq.mockups::StickyNote" x="621" y="562" w="348" h="123" measuredW="109" measuredH="123" zOrder="33" locked="false" isInGroup="-1">
+    <control controlID="65" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="433" w="189" h="-1" measuredW="133" measuredH="24" zOrder="30" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Ganz%20gro%DFes%20Problem%20ist%20auch%2C%20das%20Adressen%20in%20VCards%20immer%20%22ein%20Feld%22%20sind%2C%20in%20nodetypen/entities%20h%F6chstwahrscheinlich%20aber%20als%20mehrfeld%20gespeichert%20werden.</text>
+        <text>Telefon%20gesch%E4ftl.</text>
+      </controlProperties>
+    </control>
+    <control controlID="66" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="463" w="189" h="-1" measuredW="107" measuredH="24" zOrder="31" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Telefon%20privat</text>
+      </controlProperties>
+    </control>
+    <control controlID="67" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="522" w="191" h="-1" measuredW="79" measuredH="24" zOrder="32" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>field_plz</text>
+      </controlProperties>
+    </control>
+    <control controlID="68" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="522" w="50" h="-1" measuredW="39" measuredH="24" zOrder="33" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>0</text>
+      </controlProperties>
+    </control>
+    <control controlID="69" controlTypeID="com.balsamiq.mockups::ComboBox" x="385" y="522" w="81" h="-1" measuredW="61" measuredH="24" zOrder="34" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>value</text>
+      </controlProperties>
+    </control>
+    <control controlID="70" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="553" w="191" h="-1" measuredW="77" measuredH="24" zOrder="35" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>field_ort</text>
+      </controlProperties>
+    </control>
+    <control controlID="71" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="553" w="50" h="-1" measuredW="39" measuredH="24" zOrder="36" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>0</text>
+      </controlProperties>
+    </control>
+    <control controlID="72" controlTypeID="com.balsamiq.mockups::ComboBox" x="385" y="553" w="81" h="-1" measuredW="61" measuredH="24" zOrder="37" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>value</text>
+      </controlProperties>
+    </control>
+    <control controlID="73" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="495" w="189" h="-1" measuredW="116" measuredH="24" zOrder="38" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Adresse%20Privat</text>
+      </controlProperties>
+    </control>
+    <control controlID="74" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="522" w="189" h="-1" measuredW="116" measuredH="24" zOrder="39" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Adresse%20Privat</text>
+      </controlProperties>
+    </control>
+    <control controlID="75" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="553" w="189" h="-1" measuredW="116" measuredH="24" zOrder="40" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Adresse%20Privat</text>
+      </controlProperties>
+    </control>
+    <control controlID="76" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="401" w="64" h="-1" measuredW="79" measuredH="28" zOrder="41" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="77" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="432" w="64" h="-1" measuredW="79" measuredH="28" zOrder="42" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="79" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="494" w="64" h="-1" measuredW="79" measuredH="28" zOrder="43" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="80" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="521" w="64" h="-1" measuredW="65" measuredH="28" zOrder="44" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%7Bnewline%7D</text>
+      </controlProperties>
+    </control>
+    <control controlID="81" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="552" w="64" h="-1" measuredW="57" measuredH="28" zOrder="45" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%7Bspace%7D</text>
+      </controlProperties>
+    </control>
+    <control controlID="83" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="582" w="64" h="-1" measuredW="79" measuredH="28" zOrder="46" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="85" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="642" w="64" h="-1" measuredW="79" measuredH="28" zOrder="47" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="86" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="462" w="64" h="-1" measuredW="79" measuredH="28" zOrder="48" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="87" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="775" w="191" h="-1" measuredW="114" measuredH="24" zOrder="49" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Add%20new%20Field</text>
+      </controlProperties>
+    </control>
+    <control controlID="88" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="613" w="191" h="-1" measuredW="79" measuredH="24" zOrder="50" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>field_job</text>
+      </controlProperties>
+    </control>
+    <control controlID="89" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="613" w="50" h="-1" measuredW="39" measuredH="24" zOrder="51" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>0</text>
+      </controlProperties>
+    </control>
+    <control controlID="91" controlTypeID="com.balsamiq.mockups::Label" x="385" y="614" w="153" h="22" measuredW="93" measuredH="22" zOrder="52" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Field%20collection</text>
+      </controlProperties>
+    </control>
+    <control controlID="92" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="643" w="194" h="-1" measuredW="62" measuredH="24" zOrder="53" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Beruf</text>
+      </controlProperties>
+    </control>
+    <control controlID="96" controlTypeID="com.balsamiq.mockups::ComboBox" x="155" y="712" w="165" h="-1" measuredW="53" measuredH="24" zOrder="54" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>title</text>
+      </controlProperties>
+    </control>
+    <control controlID="99" controlTypeID="com.balsamiq.mockups::TextInput" x="792" y="711" w="64" h="-1" measuredW="79" measuredH="28" zOrder="55" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="100" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="682" w="191" h="-1" measuredW="115" measuredH="24" zOrder="56" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>field_company</text>
+      </controlProperties>
+    </control>
+    <control controlID="101" controlTypeID="com.balsamiq.mockups::ComboBox" x="328" y="682" w="50" h="-1" measuredW="39" measuredH="24" zOrder="57" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>0</text>
+      </controlProperties>
+    </control>
+    <control controlID="102" controlTypeID="com.balsamiq.mockups::Label" x="385" y="683" w="153" h="22" measuredW="98" measuredH="22" zOrder="58" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Node%20Reference</text>
+      </controlProperties>
+    </control>
+    <control controlID="103" controlTypeID="com.balsamiq.mockups::ComboBox" x="578" y="712" w="194" h="-1" measuredW="65" measuredH="24" zOrder="59" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Firma</text>
+      </controlProperties>
+    </control>
+    <control controlID="104" controlTypeID="com.balsamiq.mockups::Label" x="129" y="736" w="372" h="24" measuredW="312" measuredH="22" zOrder="60" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13576743</color>
+        <text>ATTENTION%3A%20Node%20references%20can%20not%20be%20saved%20back</text>
       </controlProperties>
     </control>
   </controls>
