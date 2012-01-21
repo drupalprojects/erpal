@@ -150,7 +150,7 @@
         <text>Speichert%20generelle%20Profildaten.%0AAndere%20Module%20k%F6nnen%20sich%20in%20den%20Speichervorgang%20der%20Profildaten%20einhooken%2C%20um%20ihre%20eigenen%20Daten%20mitzuspeichern.%20zB%20das%20Funambol%20Contact%20Modul%20tut%20dies.</text>
       </controlProperties>
     </control>
-    <control controlID="37" controlTypeID="com.balsamiq.mockups::Canvas" x="1064" y="608" w="501" h="117" measuredW="100" measuredH="70" zOrder="30" locked="false" isInGroup="-1">
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Canvas" x="1064" y="608" w="501" h="238" measuredW="100" measuredH="70" zOrder="30" locked="false" isInGroup="-1">
       <controlProperties>
         <borderStyle>square</borderStyle>
       </controlProperties>
@@ -160,9 +160,9 @@
         <text>Funambol%20Execute</text>
       </controlProperties>
     </control>
-    <control controlID="39" controlTypeID="com.balsamiq.mockups::Paragraph" x="1071" y="639" w="479" h="86" measuredW="200" measuredH="140" zOrder="32" locked="false" isInGroup="-1">
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::Paragraph" x="1071" y="639" w="479" h="198" measuredW="200" measuredH="140" zOrder="32" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>F%FChrt%20den%20Sync%20eines%20Profils%20aus.%20Holt%20sich%20die%20Daten%20eines%20Profils%20und%20executed%20das%20angegebene%20View%20usw.%0AF%FChrt%20f%FCr%20ankommende/ausgehende%20Inhalte%20die%20entsprechenden%20Funktionen%20der%20%22Funambol%20contact%22%20und%20%22Funambol%20Calendar%22%20Module%20aus.%20Diese%20handeln%20dann%20%22ihren%22%20Inhaltstyp.</text>
+        <text>F%FChrt%20den%20Sync%20eines%20Profils%20aus.%20Holt%20sich%20die%20Daten%20eines%20Profils%20und%20executed%20das%20angegebene%20View%20usw.%0AF%FChrt%20f%FCr%20ankommende/ausgehende%20Inhalte%20die%20entsprechenden%20Funktionen%20der%20%22Funambol%20contact%22%20und%20%22Funambol%20Calendar%22%20Module%20aus.%20Diese%20handeln%20dann%20%22ihren%22%20Inhaltstyp.%0A%20%0AHier%20werden%20die%20%22jobs%22%20erstellt%20und%20verwaltet.%20Wenn%20ein%20%22job%20an%20das%20Jobhandler%20modul%20abgesetzt%20wird%20kommt%20eine%20Job-id%20zur%FCck.%20Anhand%20dieser%20kann%20dann%20immer%20der%20Status%20des%20Jobs%20gepr%FCft%20werden.</text>
       </controlProperties>
     </control>
     <control controlID="40" controlTypeID="com.balsamiq.mockups::Arrow" x="1272" y="454" w="52" h="168" measuredW="150" measuredH="100" zOrder="33" locked="false" isInGroup="-1">
@@ -189,7 +189,7 @@
       </controlProperties>
     </control>
     <control controlID="43" controlTypeID="com.balsamiq.mockups::Canvas" x="1666" y="373" w="385" h="200" measuredW="100" measuredH="70" zOrder="36" locked="false" isInGroup="-1"/>
-    <control controlID="44" controlTypeID="com.balsamiq.mockups::SubTitle" x="1681" y="395" w="-1" h="-1" measuredW="279" measuredH="33" zOrder="37" locked="false" isInGroup="-1">
+    <control controlID="44" controlTypeID="com.balsamiq.mockups::SubTitle" x="1681" y="395" w="-1" h="-1" measuredW="296" measuredH="33" zOrder="37" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Hilfsklasse%20f%FCr%20Inhaltstypen</text>
       </controlProperties>
