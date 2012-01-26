@@ -55,7 +55,7 @@
 <node COLOR="#990000" CREATED="1326456624306" ID="ID_163500241" MODIFIED="1326456689475" TEXT="kostenloser Core">
 <font NAME="SansSerif" SIZE="14"/>
 <node COLOR="#111111" CREATED="1326456689475" ID="ID_454437701" MODIFIED="1326456697322" TEXT="Eingabe aller m&#xf6;glichen Daten"/>
-<node COLOR="#111111" CREATED="1326456697499" ID="ID_131129202" MODIFIED="1326456707470" TEXT="open source">
+<node COLOR="#111111" CREATED="1326456697499" ID="ID_131129202" MODIFIED="1327597781739" TEXT="open source">
 <node COLOR="#111111" CREATED="1326459589922" ID="ID_82150477" MODIFIED="1326459716141" TEXT="Da Funktionaler ASpekt das wichtigste ist, jederzeit erweiterbar">
 <richcontent TYPE="NOTE"><html>
   <head>
@@ -68,6 +68,7 @@
   </body>
 </html></richcontent>
 </node>
+<node COLOR="#111111" CREATED="1327597783694" ID="ID_656089565" MODIFIED="1327597789127" TEXT="Weitere Argumente: https://www.acquia.com/blog/proprietary-cms-know-when-fold-em"/>
 </node>
 <node COLOR="#111111" CREATED="1326457675229" ID="ID_6197871" MODIFIED="1326457721946" TEXT="schafft Anbieterunabh&#xe4;ngigkeit">
 <node COLOR="#111111" CREATED="1326457723844" ID="ID_1608174314" MODIFIED="1326457741846" TEXT="Kernfunktionen k&#xf6;nnen extern weiterentwickelt werden"/>
