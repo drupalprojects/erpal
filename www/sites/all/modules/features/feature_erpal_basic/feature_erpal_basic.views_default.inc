@@ -203,8 +203,9 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['title']['expose']['remember'] = 1;
   $handler->display->display_options['filters']['title']['expose']['multiple'] = FALSE;
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
+  /* Display: Contacts */
+  $handler = $view->new_display('page', 'Contacts', 'page');
+  $handler->display->display_options['display_description'] = 'List of all contacts';
   $handler->display->display_options['path'] = 'crm/contacts';
   $handler->display->display_options['menu']['title'] = 'CRM';
   $handler->display->display_options['menu']['weight'] = '0';

@@ -11,22 +11,32 @@ function erpal_basic_helper_menu(){
 
   $items = array();
   
+  //define memu items
+  $items['crm/contacts/autocomplete'] = array(
+    'page callback' => '_erpal_basic_helper_contacts_autocomplete',    
+    'access callback' => '_erpal_basic_helper_contacts_autocomplete_access',
+    'type' => MENU_CALLBACK,
+  );
+  
   require_once 'inc/config.inc';
   $config_items = _erpal_basic_helper_config_menu();
   
   $items = array_merge($items, $config_items);
   return $items;
-}
- 
+} 
+
 /**
 * Implements hook_permission
-*/ 
+*/
 function erpal_basic_helper_permission(){
-
   return array(
-    'access erpal config' => array(
-      'title' => t('Administer ERPAL'),
-      'description' => t('Provides general access to the ERPAL config'),
+    'config erpal basic' => array(
+      'title' => t('Administer ERPAL CORE'), 
+      'description' => t('Perform administration tasks for ERPAL BASIC core module.'),
+    ),
+    'config erpal' => array(
+      'title' => t('Administer ERPAL'), 
+      'description' => t('Perform administration tasks for ERPAL modules.'),
     ),
   );
 }
@@ -35,26 +45,14 @@ function erpal_basic_helper_permission(){
 * This function is called by the view contacts. Links for creating some nodes are added. 
 * With the hook other modules like erpal_crm could add some more links.
 */
-function _erpal_basic_helper_view_contacts_header_content($onlyContactLink=false){
-
-  $q = current_path();
-  $add_erpal_contact =  l(
-    t("Create new contact"), "node/add/erpal-contact", array(
-        'query' => array(
-          'destination' => $q,
-        ),
-    )
-  );
+function _erpal_basic_helper_view_contacts_header_content() {
   
-  //if only the contacts are interessting, e.g if the view for selecting a contact to reference is shown
-  //skipp the hooks an show only the "create contact" link
-  if ($onlyContactLink)
-	return $add_erpal_contact;
+  $add_erpal_contact = _erpal_basic_helper_create_contact_link();
   
   $my_content = array(
     $add_erpal_contact,
   );
-    
+  
   //ask all other modules for content in the header area of the view
   $other_module_content = module_invoke_all('view_contacts_header_content');
   
@@ -66,4 +64,61 @@ function _erpal_basic_helper_view_contacts_header_content($onlyContactLink=false
   }
   
   return $content;
+}
+
+/**
+* Helper function to create new contact link
+*/
+function _erpal_basic_helper_create_contact_link($q_arg = false, $query_arr = array(), $title=false){
+  if (!$q_arg)
+    $q = current_path();
+  else 
+    $q = $q_arg;
+  
+  if (!isset($query_arr['destination']) || $q_arg)
+    $query_arr['destination'] = $q;
+  
+  if (!$title)
+    $title = t("Create new contact");
+    
+  return l(
+    $title, "node/add/erpal-contact", array(
+        'query' => $query_arr,
+    )
+  );
+}
+
+/**
+* Returns all contacts for autocomplete (first used in settings to choose "my Company"
+*/
+function _erpal_basic_helper_contacts_autocomplete($string){
+  
+  $matches = array();
+  
+  //Start a query over the node table
+  $query = db_select('node', 'n');
+  // Select rows that match the string within type erpal_contact
+  $return = $query
+    ->fields('n', array('title'))
+    ->fields('n', array('nid'))
+    ->condition('n.title', '%' . db_like($string) . '%', 'LIKE')
+    ->condition('n.type', 'erpal_contact', '=')
+    ->range(0, 10)
+    ->execute();
+  
+  // add matches to $matches  
+  foreach ($return as $row) {
+    $matches[check_plain($row->title)." [nid:".$row->nid."]"] = $row->title;
+  }
+  
+  // return for JS
+  drupal_json_output($matches);
+}
+
+/**
+* Validate if user has access to the autocomplete path
+* If we have an own access function we could implement complex logics for access validation
+*/
+function _erpal_basic_helper_contacts_autocomplete_access(){
+  return user_access('config erpal basic');
 }
