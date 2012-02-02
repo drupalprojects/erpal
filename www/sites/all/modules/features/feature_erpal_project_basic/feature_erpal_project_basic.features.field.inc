@@ -774,6 +774,85 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_task-field_task_assigned_users'
+  $fields['node-erpal_task-field_task_assigned_users'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_task_assigned_users',
+      'foreign keys' => array(
+        'uid' => array(
+          'columns' => array(
+            'uid' => 'uid',
+          ),
+          'table' => 'users',
+        ),
+      ),
+      'indexes' => array(
+        'uid' => array(
+          0 => 'uid',
+        ),
+      ),
+      'module' => 'user_reference',
+      'settings' => array(
+        'referenceable_roles' => array(
+          2 => 0,
+          3 => 0,
+          4 => 0,
+          5 => '5',
+        ),
+        'referenceable_status' => array(
+          0 => 0,
+          1 => '1',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'user_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
+          'weight' => 10,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_task_assigned_users',
+      'label' => 'Assigned To Users',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '7',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_task-field_task_status'
   $fields['node-erpal_task-field_task_status'] = array(
     'field_config' => array(
@@ -927,6 +1006,7 @@ function feature_erpal_project_basic_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Assigned To Users');
   t('Body');
   t('Customer');
   t('Customer of the project');
