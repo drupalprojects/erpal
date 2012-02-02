@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * erpal_project_spec.strongarm.inc
+ * feature_erpal_project_spec.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function erpal_project_spec_strongarm() {
+function feature_erpal_project_spec_strongarm() {
   $export = array();
 
   $strongarm = new stdClass;
