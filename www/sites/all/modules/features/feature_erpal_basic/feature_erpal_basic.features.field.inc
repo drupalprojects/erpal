@@ -942,7 +942,7 @@ function feature_erpal_basic_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Choose another contact that belongs to this contact (e.g works at this company)',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -970,7 +970,7 @@ function feature_erpal_basic_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'relation_type' => 'works_at',
-        'relation_view' => 'contacts:entityreference_view_widget_1',
+        'relation_view' => 'contacts:page_1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -2128,6 +2128,7 @@ function feature_erpal_basic_field_default_fields() {
   t('Addresses');
   t('Birthday');
   t('Categorise this contact');
+  t('Choose another contact that belongs to this contact (e.g works at this company)');
   t('City');
   t('Company Name');
   t('Contact Relations');

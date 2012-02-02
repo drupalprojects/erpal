@@ -378,6 +378,62 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_project-field_project_contacts'
+  $fields['node-erpal_project-field_project_contacts'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_project_contacts',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'relation_select',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'relation',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_project',
+      'default_value' => array(
+        0 => '',
+      ),
+      'deleted' => '0',
+      'description' => 'Choose contacts that are involved in this project',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'relation_select',
+          'settings' => array(),
+          'type' => 'relation_select',
+          'weight' => 4,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_project_contacts',
+      'label' => 'Contacts',
+      'required' => 0,
+      'settings' => array(
+        'relation_type' => 'participate_in',
+        'relation_view' => 'contacts:page_1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'relation_select',
+        'settings' => array(),
+        'type' => 'relation_select',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_task-body'
   $fields['node-erpal_task-body'] = array(
     'field_config' => array(
@@ -1004,10 +1060,129 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'relation-participate_in-endpoints'
+  $fields['relation-participate_in-endpoints'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'endpoints',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'relation' => array(
+          0 => 'entity_type',
+          1 => 'entity_id',
+          2 => 'r_index',
+        ),
+      ),
+      'module' => 'relation_endpoint',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'relation_endpoint',
+    ),
+    'field_instance' => array(
+      'bundle' => 'participate_in',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'relation_endpoint',
+          'settings' => array(),
+          'type' => 'relation_endpoint',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'endpoints',
+      'label' => 'endpoints',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'relation_endpoint',
+        'settings' => array(),
+        'type' => 'relation_endpoint',
+        'weight' => '0',
+      ),
+    ),
+  );
+
+  // Exported field: 'relation-participate_in-field_projet_role_rel_tags'
+  $fields['relation-participate_in-field_projet_role_rel_tags'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_projet_role_rel_tags',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'project_role_tags',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'participate_in',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 1,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'field_projet_role_rel_tags',
+      'label' => 'Role in project',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Assigned To Users');
   t('Body');
+  t('Choose contacts that are involved in this project');
+  t('Contacts');
   t('Customer');
   t('Customer of the project');
   t('Date');
@@ -1017,10 +1192,12 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Price mode');
   t('Pricing');
   t('Project');
+  t('Role in project');
   t('Task Type');
   t('Task status');
   t('The description of a task');
   t('Time estimated for this task');
+  t('endpoints');
 
   return $fields;
 }
