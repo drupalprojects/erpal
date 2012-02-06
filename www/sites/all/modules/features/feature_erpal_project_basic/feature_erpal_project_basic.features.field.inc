@@ -425,6 +425,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'delete' => 'Delete',
             'description' => TRUE,
             'edit' => 'Edit',
+            'view_mode' => 'full',
           ),
           'type' => 'field_collection_view',
           'weight' => 2,
@@ -589,7 +590,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '-4',
+        'weight' => '1',
       ),
     ),
   );
@@ -784,6 +785,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'delete' => 'Delete',
             'description' => TRUE,
             'edit' => 'Edit',
+            'view_mode' => 'full',
           ),
           'type' => 'field_collection_view',
           'weight' => 5,
@@ -813,6 +815,81 @@ function feature_erpal_project_basic_field_default_fields() {
         'settings' => array(),
         'type' => 'field_collection_embed',
         'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_task-field_progress_percent'
+  $fields['node-erpal_task-field_progress_percent'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_progress_percent',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '0%',
+          10 => '10%',
+          20 => '20%',
+          30 => '30%',
+          40 => '40%',
+          50 => '50%',
+          60 => '60%',
+          70 => '70%',
+          80 => '80%',
+          90 => '90%',
+          100 => '100%',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Work progress of field',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 12,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_progress_percent',
+      'label' => 'Progress',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '6',
       ),
     ),
   );
@@ -906,7 +983,7 @@ function feature_erpal_project_basic_field_default_fields() {
           ),
         ),
         'type' => 'nodereference_url',
-        'weight' => '4',
+        'weight' => '3',
       ),
     ),
   );
@@ -985,7 +1062,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -1063,7 +1140,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -1273,6 +1350,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Price');
   t('Price mode');
   t('Pricing');
+  t('Progress');
   t('Project');
   t('Role in project');
   t('Task Type');
@@ -1280,6 +1358,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('The description of a task');
   t('Time estimated for this task');
   t('When will the project be developed? Only for planing purpose.');
+  t('Work progress of field');
   t('endpoints');
 
   return $fields;
