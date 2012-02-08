@@ -181,7 +181,8 @@ function feature_erpal_crm_field_default_fields() {
         'referenceable_roles' => array(
           2 => 0,
           3 => 0,
-          4 => '4',
+          4 => 0,
+          5 => '5',
         ),
         'referenceable_status' => array(
           0 => 0,
