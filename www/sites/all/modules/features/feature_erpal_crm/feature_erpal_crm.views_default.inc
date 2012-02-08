@@ -23,6 +23,7 @@ function feature_erpal_crm_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Activities as Customer';
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
@@ -207,7 +208,7 @@ echo _erpal_crm_helper_view_activities_header_content();
   $handler->display->display_options['menu']['name'] = 'menu-erpal-menu';
 
   /* Display: Activities as Customer */
-  $handler = $view->new_display('entity_view', 'Activities as Customer', 'entity_view_1');
+  $handler = $view->new_display('entity_view', 'Activities as Customer', 'activities_as_customer');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Activities as Customer';
   $handler->display->display_options['display_description'] = 'All activities as customer are attached to a contact node by this view';

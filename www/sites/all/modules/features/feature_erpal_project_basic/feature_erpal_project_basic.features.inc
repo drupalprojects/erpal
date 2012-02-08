@@ -57,6 +57,14 @@ function feature_erpal_project_basic_node_info() {
       'title_label' => t('Title'),
       'help' => '',
     ),
+    'erpal_timetracking' => array(
+      'name' => t('erpal_timetracking'),
+      'base' => 'node_content',
+      'description' => t('Content type to create timetracking to nodes'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
   );
   return $items;
 }
