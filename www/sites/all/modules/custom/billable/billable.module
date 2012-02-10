@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * @file
+ * Module for the Billable Entity - developed within erpal to create billing line 
+ * items and items to bill in general
+ */  
+
+require_once 'billable.entity.inc';
+require_once 'billable.vat.inc';
+ 
+/**
+ * Implement hook_entity_info().
+ *
+ * We define two entities here - the actual entity that will hold our domain
+ * specific information 
+ */
+function billable_entity_info() {
+  $return['billable'] = array(
+    'label' => t('Billable'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'Billable',
+    'controller class' => 'BillableController',
+    'base table' => 'billable',
+    'file' => 'billable.entity.inc',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+        'id' => 'billable_id',
+        'bundle' => 'type',
+    ),
+/*  dont need bundles! So we have a default billable bundle. Thats it and everything we need.
+    // Bundles are defined by the billable types below
+    'bundles' => array(),
+    // Bundle keys tell the FieldAPI how to extract information from the bundle objects
+    'bundle keys' => array(
+      'bundle' => 'type',
+    ),
+ */
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => 'billable_create',
+    'access callback' => 'billable_access',
+    'module' => 'billable',
+    // The information below is used by the BillableUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/billables',
+      'file' => 'billable.admin.inc',
+      'controller class' => 'BillableUIController',
+      'menu wildcard' => '%billable',
+    ),
+  );
+
+  return $return;
+}
+ 
+/**
+ * Implements hook_permission().
+ */
+function billable_permission() {
+  // We set up permisssions to manage entity types, manage all entities and the
+  // permissions for each individual entity
+  $permissions = array(
+    'administer billable types' => array(
+      'title' => t('Administer billable types'),
+      'description' => t('Create and delete fields for billable types, and set their permissions.'),
+    ),
+    'administer billables' => array(
+      'title' => t('Administer billables'),
+      'description' => t('Edit and delete all billables'),
+    ),  
+  );
+  
+  $permissions += array(
+    "edit any billable" => array(
+      'title' => t('Edit any billable'),
+    ),
+    "view any billable" => array(
+      'title' => t('View any billable'),
+    ),
+  );
+  return $permissions;  
+}
+
+
+/**
+ * Determines whether the given user has access to a billable.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $billable
+ *   Optionally a billable or a billable type to check access for. If nothing is
+ *   given, access for all billables is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function billable_access($op, $billable = NULL, $account = NULL) {
+  if (user_access('administer billables', $account)) {
+    return TRUE;
+  }
+  if (isset($billable) && $type_name = $billable->type) {
+    $op = ($op == 'view') ? 'view' : 'edit';
+    if (user_access("$op any billable", $account)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Implement hook_theme().
+ */
+function billable_theme() {
+  //themes for our billable entity
+  require_once('billable.entity.inc');
+  $themes = _billable_entity_theme();
+  return $themes;
+}  
+
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function billable_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  // Add action link 'admin/structure/billables/add' on 'admin/structure/billables'.
+  if ($root_path == 'admin/content/billables') {
+    $item = menu_get_item('admin/content/billables/add');
+    if ($item['access']) {
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+  }
+}

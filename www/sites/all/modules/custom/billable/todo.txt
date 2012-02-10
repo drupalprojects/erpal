@@ -1,0 +1,19 @@
+- siehe commerce_line_item.module 740: Feld für Referenz auf ein billable Entity braucht dann die Rechnung, 
+	die diese Entities referenziert (oder entity Reference?)
+- Billable entity kann andere billable entities referenzieren
+- unterstützung für uuid?
+- Rechte für view / edit OWN billabes?
+- weitere Werte zur Class Billable hizufügen
+- Funktion buildContent im billableController implementierten
+- wenn ein billable entity gelöscht wird, müssen alle gelöscht werden, die ihn refernzieren (durch verdichten z.B.)
+
+
+- Eingabeformular: Kunde MUSS gewählt sein / als Argument in URL, Betreff, Menge, einzelpreis, mwst satz
+
+- hook um mehrwertsteuersätze zu verwalten, dazu ein Formular
+
+- ganzen Entity kram in eine Datei entity.inc auslagern
+
+- ein billable entity muss auch von usern erstellt werden können, nicht nur von admins
+- wenn man einen billable entity eingibt muss sichergestellt sein, dass er einen Kunden kontakt refernziert.
+
