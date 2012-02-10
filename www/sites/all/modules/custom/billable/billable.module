@@ -9,6 +9,17 @@
 require_once 'billable.entity.inc';
 require_once 'billable.vat.inc';
  
+
+/**
+ * Implements hook_views_api().
+ */
+function billable_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'billable') . '/views',
+  );
+} 
+ 
 /**
  * Implement hook_entity_info().
  *

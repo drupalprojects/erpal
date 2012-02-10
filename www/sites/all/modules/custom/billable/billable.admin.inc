@@ -21,24 +21,10 @@ class BillableUIController extends EntityDefaultUIController {
   public function hook_menu() {
     
     $items = array();
-    $id_count = count(explode('/', $this->path));
-    $wildcard = isset($this->entityInfo['admin ui']['menu wildcard']) ? $this->entityInfo['admin ui']['menu wildcard'] : '%' . $this->entityType;
-
-    $items[$this->path] = array(
-      'title' => 'Billables',
-      'description' => 'Add edit and update billables.',
-      'page callback' => 'system_admin_menu_block_page',
-      'access arguments' => array('access administration pages'),
-      'file path' => drupal_get_path('module', 'system'),
-      'file' => 'system.admin.inc',
-    );
-    
-    // Change the overview menu type for the list of billables.
-    $items[$this->path]['type'] = MENU_LOCAL_TASK;
-    
+  
     
     // Add menu items to add a billable (no other bundles)
-    $items[$this->path . '/add/billable'] = array( //billable is the only bundle!
+    $items['billable/add'] = array( //billable is the only bundle!
       'title' => 'Add billable',
       'page callback' => 'billable_form_wrapper',
       'page arguments' => array(billable_create(array('type' => 'billable'))),
@@ -49,29 +35,26 @@ class BillableUIController extends EntityDefaultUIController {
     );
 
     // Loading and editing billable entities
-    $items[$this->path . '/billable/' . $wildcard] = array(
+    $items['billable/%/edit'] = array(
+      'title' => 'Edit',      
       'page callback' => 'billable_form_wrapper',
-      'page arguments' => array($id_count + 1),
+      'page arguments' => array(1),
       'access callback' => 'billable_access',
-      'access arguments' => array('edit', $id_count + 1),
+      'access arguments' => array('edit', ),
       'weight' => 0,
       'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+      'type' => MENU_DEFAULT_LOCAL_TASK,
       'file' => 'billable.admin.inc',
       'file path' => drupal_get_path('module', $this->entityInfo['module'])
     );
-    $items[$this->path . '/billable/' . $wildcard . '/edit'] = array(
-      'title' => 'Edit',
-      'type' => MENU_DEFAULT_LOCAL_TASK,
-      'weight' => -10,
-      'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-    );
+   
     
-    $items[$this->path . '/billable/' . $wildcard . '/delete'] = array(
+    $items['billable/%/delete'] = array(
       'title' => 'Delete',
       'page callback' => 'billable_delete_form_wrapper',
-      'page arguments' => array($id_count + 1),
+      'page arguments' => array(1),
       'access callback' => 'billable_access',
-      'access arguments' => array('edit', $id_count + 1),
+      'access arguments' => array('edit', 1),
       'type' => MENU_LOCAL_TASK,
       'context' => MENU_CONTEXT_INLINE,
       'weight' => 10,
@@ -80,7 +63,7 @@ class BillableUIController extends EntityDefaultUIController {
     );
     
     // Menu item for viewing billables
-    $items['billable/' . $wildcard] = array(
+    $items['billable/%/view'] = array(
       //'title' => 'Title',
       'title callback' => 'billable_page_title',
       'title arguments' => array(1),
@@ -173,7 +156,7 @@ function billable_edit_form($form, &$form_state, $billable) {
     '#maxlength' => 255,
     '#required' => TRUE,
   );
-
+print_r($billable);
   $delivery_date = $billable->date_delivery;
   $format = _billable_get_date_format();
   $popup_default_format = 'y-m-d';
@@ -267,7 +250,7 @@ function billable_edit_form_submit(&$form, &$form_state) {
   $billable->changed = time();
   
   $billable->save();
-  $form_state['redirect'] = 'admin/content/billables';
+  $form_state['redirect'] = 'billables';
 }
 
 /**
@@ -276,7 +259,7 @@ function billable_edit_form_submit(&$form, &$form_state) {
  * @todo Remove hard-coded path
  */
 function billable_form_submit_delete(&$form, &$form_state) {
-  $form_state['redirect'] = 'admin/content/billables/billable/' . $form_state['billable']->billable_id . '/delete';
+  $form_state['redirect'] = 'billable/' . $form_state['billable']->billable_id . '/delete';
 }
 
 
@@ -316,7 +299,7 @@ function billable_delete_form_submit($form, &$form_state) {
   drupal_set_message(t('The billable %name has been deleted.', array('%name' => $billable->name)));
   watchdog('billable', 'Deleted billable %name.', array('%name' => $billable->name));
 
-  $form_state['redirect'] = 'admin/content/billables';
+  $form_state['redirect'] = 'billables';
 }
 
 
@@ -372,7 +355,7 @@ function billable_set_breadcrumb() {
     l(t('Home'), '<front>'),
     l(t('Administration'), 'admin'),
     l(t('Content'), 'admin/content'),
-    l(t('Billables'), 'admin/content/billables'),
+    l(t('Billables'), 'billables'),
   );
 
   drupal_set_breadcrumb($breadcrumb);

@@ -125,16 +125,6 @@ function billable_page_view($billable, $view_mode = 'full') {
 
 
 /**
- * Implements hook_views_api().
- */
-function billable_views_api() {
-  return array(
-    'api' => 3,
-    'path' => drupal_get_path('module', 'billable') . '/views',
-  );
-}
-
-/**
 * @return
 *   Themes of our billable entity
 */
@@ -202,10 +192,19 @@ class BillableController extends EntityAPIController {
     $values += array( 
       'billable_id' => '',
       'is_new' => TRUE,
-      'title' => '',
+      'subject' => '',
       'created' => time(),
       'changed' => time(),
       'data' => '',
+      'date_delivery' => 0,
+      'weight' => 0,
+      'parent_billable' => 0,
+      'subject_nid' => 0,
+      'customer_nid' => 0,
+      'amount' => 1,
+      'single_price' => 0,
+      //@todo weitere Felder hinzufügen
+      
     );
     
     $billable = parent::create($values);
