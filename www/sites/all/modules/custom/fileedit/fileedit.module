@@ -153,10 +153,10 @@ function _fileedit_file_edit_allowed($fid, $auser=false) {
     global $user;
     $auser = $user;
   }
-  
+
   if (!user_access('use file edit', $auser))
     return false;  //use has no rights, so change nothing here
-    
+
   $fid  = intval($fid);
   $file = file_load($fid);
 
@@ -282,14 +282,6 @@ function _fileedit_user_by_sid($sid) {
   // So we are moving session closure before destructing objects.
   drupal_register_shutdown_function('session_write_close');
 
-  // Handle the case of first time visitors and clients that don't store
-  // cookies (eg. web crawlers).
-  $insecure_session_name = substr(session_name(), 1);
-  if (!isset($_COOKIE[session_name()]) && !isset($_COOKIE[$insecure_session_name])) {
-    $user = drupal_anonymous_user();
-    
-    return $user;
-  }
 
   // Otherwise, if the session is still active, we have a record of the
   // client's session in the database. If it's HTTPS then we are either have
