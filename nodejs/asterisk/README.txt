@@ -1,0 +1,1 @@
+Node JS Server to handle Asterisk kommunikation and display calls as contacts in CRM
