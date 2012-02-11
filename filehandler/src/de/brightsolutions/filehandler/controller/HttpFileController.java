@@ -11,10 +11,14 @@ import java.net.URLConnection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 
 import de.brightsolutions.filehandler.FileHandlerCallback;
 
@@ -78,10 +82,23 @@ public class HttpFileController extends FileController {
 
 		try {
 
-			HttpPost httpPost = new HttpPost(url);
-			FileEntity entity = new FileEntity(new File(localFileName), "binary/octet-stream");
-			httpPost.setEntity(entity);
+//			HttpPost httpPost = new HttpPost(url);
+//			FileEntity entity = new FileEntity(new File(localFileName), "binary/octet-stream");
+//			entity.setContentType("binary/octet-stream");
+//			httpPost.setEntity(entity);
+
+		    HttpPost httpPost = new HttpPost(url);
+		    File file = new File(localFileName);
+
+		    MultipartEntity mpEntity = new MultipartEntity();
+		    ContentBody cbFile = new FileBody(file, "binary/octet-stream");
+		    mpEntity.addPart("userfile", cbFile);
+
+
+		    httpPost.setEntity(mpEntity);
+
 			HttpClient httpClient = new DefaultHttpClient();
+			httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 
 			HttpResponse rs = httpClient.execute(httpPost);
 			String rsString = streamToString(rs.getEntity().getContent());

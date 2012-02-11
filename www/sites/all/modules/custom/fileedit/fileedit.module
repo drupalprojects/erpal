@@ -92,6 +92,8 @@ function fileedit_edit_access($fid) {
 */
 function fileedit_edit($fid) {    
   header('Content-type: application/x-java-jnlp-file');
+  header('Pragma: no-cache');
+  header('Expires: 0');
   
   //and then return the xml file
   $xml = _fileedit_get_edit_xml($fid);
@@ -128,6 +130,7 @@ function fileedit_download($fid) {
 */
 function fileedit_upload($fid) {
   //@todo
+  print_r($_FILES);
   die('upload');
 }
 
@@ -211,6 +214,7 @@ function _fileedit_get_edit_xml($file) {
   $args['arguments']['upload'] = _fileedit_upload_url($file)."/".$user->sid;
   $args['arguments']['session'] = $user->sid;
   $args['arguments']['fid'] = $file->fid;
+  $args['arguments']['filename'] = $file->filename;
   $xml = theme('fileedit_xml', array('file' => $file, 'args' => $args));
   $xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;  //wen wir das mit in die tpl Datei packen, gibt das ein Fehler
   
@@ -249,6 +253,7 @@ function _fileedit_get_jar_urls() {
     'httpclient_jar_url' => url($module_path.'/jar/httpclient-4.1.2.jar', array('absolute' => true)),
     'httpcore_jar_url' => url($module_path.'/jar/httpcore-4.1.2.jar', array('absolute' => true)),
     'filehandler_jar_url' => url($module_path.'/jar/FileHandler.jar', array('absolute' => true)),
+    'httpmime_jar_url' => url($module_path.'/jar/httpmime-4.1.2.jar', array('absolute' => true)),
   );
 }
 

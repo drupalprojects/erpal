@@ -9,6 +9,7 @@
         <jar href="<?php  echo $args['commons_logging_jar_url']; ?>" download="eager" />
         <jar href="<?php  echo $args['httpclient_jar_url']; ?>" download="eager" />
         <jar href="<?php  echo $args['httpcore_jar_url']; ?>" download="eager" />
+		<jar href="<?php  echo $args['httpmime_jar_url']; ?>" download="eager" />
     </resources>
 <security>
 <all-permissions/>

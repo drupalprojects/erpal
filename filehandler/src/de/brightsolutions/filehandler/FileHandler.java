@@ -46,6 +46,7 @@ public class FileHandler {
 	private static final String ARG_UPLOAD_LINK = "upload=";
 	private static final String ARG_SESSION = "session=";
 	private static final String ARG_FILE_ID = "fid=";
+	private static final String ARG_FILE_NAME = "filename=";
 
 	/**
 	 * download/upload listener
@@ -122,6 +123,7 @@ public class FileHandler {
 		String uploadUrl = null; // = "http://localhost/plupload/examples/upload.php?name=";
 		String sessionId = null; // = "";
 		String fileId = null; // = "someFileId";
+		String filename = null;
 		for (String arg : args) {
 			if (arg.startsWith(ARG_DOWNLOAD_LINK)) {
 				downloadUrl = arg.split("=")[1];
@@ -131,6 +133,8 @@ public class FileHandler {
 				sessionId = arg.split("=")[1];
 			} else if (arg.startsWith(ARG_FILE_ID)) {
 				fileId = arg.split("=")[1];
+			} else if (arg.startsWith(ARG_FILE_NAME)) {
+				filename = arg.split("=")[1];
 			} else {
 				System.out.println("ignoring unknown argument " + arg);
 			}
@@ -141,21 +145,21 @@ public class FileHandler {
 		String pathName = System.getProperty("user.home", "/");
 		pathName += File.separator + "Downloads";
 		new File(pathName).mkdirs();
-		String fileName = "";
-		URL url;
-		try {
-			url = new URL(downloadUrl);
-			fileName = extractFileName(url.getFile());
-			if (fileName == null || "".equals(fileName)) {
-				fileName = fileId;
-			}
-			controller.downloadFile(downloadUrl, pathName + File.separator + fileName);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			fileHandlerPanel.append("unable to download from: " + downloadUrl + " - " + e.getMessage());
-			shutdown();
-		}
-		File file = new File(pathName, fileName);
+		controller.downloadFile(downloadUrl, pathName + File.separator + filename);
+		//String fileName = "";
+		//URL url;
+		//		try {
+		//			//url = new URL(downloadUrl);
+		//			//			fileName = extractFileName(url.getFile());
+		//			//			if (fileName == null || "".equals(fileName)) {
+		//			//				fileName = fileId;
+		//			//			}
+		//		} catch (MalformedURLException e) {
+		//			e.printStackTrace();
+		//			fileHandlerPanel.append("unable to download from: " + downloadUrl + " - " + e.getMessage());
+		//			shutdown();
+		//		}
+		File file = new File(pathName, filename);
 
 		// attempt to open file with default application
 		fileHandlerPanel.append("opening file " + file.getPath() + " ...");
