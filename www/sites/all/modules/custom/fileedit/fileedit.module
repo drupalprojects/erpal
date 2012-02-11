@@ -102,8 +102,25 @@ function fileedit_edit($fid) {
 * Callback URL for downloading URL
 */
 function fileedit_download($fid) {
-  //@todo
-  die('download');
+  //dass es die Datei wirklich gibt, und wir hier auch Zugriff rauf haben
+  //wurde schon in der fileedit_upload_access festgestellt!
+  //ok die Datei gibt es wirklich!
+  
+  $file = file_load($fid);
+  
+  $headers = array(
+    'Content-Type'              => 'force-download',
+    'Content-Disposition'       => 'attachment; filename="' . $file->filename . '"',
+    'Content-Length'            => $file->filesize,
+    'Content-Transfer-Encoding' => 'binary',
+    'Pragma'                    => 'no-cache',
+    'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
+    'Expires'                   => '0',
+    'Accept-Ranges'             => 'bytes'
+  );
+
+  file_transfer($file->uri, $headers);
+
 }
 
 /**
@@ -169,7 +186,7 @@ function fileedit_theme_registry_alter(&$registry) {
 function fileedit_file_link_preprocess(&$variables) {
   global $user;
   $file = $variables['file'];
-  
+
   if (!_fileedit_file_edit_allowed($file->fid))
     return;  //use has no rights, so change nothing here
   
@@ -242,9 +259,11 @@ function theme_file_link_fileedit(&$variables) {
     
   
   $edit_link = '';
-  $edit_url = $variables['edit_url'];
-  if ($edit_url)
+  $edit_url = '';
+  if (isset($variables['edit_url'])) {
+    $edit_url = $variables['edit_url'];  
     $edit_link = l(t('EDIT'), $edit_url);
+  }
       
   return theme_file_link($variables).$edit_link;
 }
