@@ -10,7 +10,20 @@
 * Implements hook_enable to provide a default bundle
 */
 function billable_enable() {
+  //add the customer_ref field from feature_erpal_basic to the entity!
+  $instance = array(
+    'label' => t('Customer'),
+    'field_name' => 'field_customer_ref',
+    'entity_type' => 'billable',
+    'bundle' => 'billable',
+    'required' => true,
+  );
+
+  //create if not exists
+  $ainstance = field_info_instance('billable', 'field_customer_ref', 'billable');
   
+  if (!$ainstance['id'])
+    field_create_instance($instance);
 }
 
 /**
@@ -42,6 +55,19 @@ function billable_schema() {
         'not null' => TRUE,
         'default' => '',
       ),
+      'currency' => array(
+        'description' => 'The currency',
+        'type' => 'varchar',
+        'length' => 5,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'billed' => array(
+        'description' => 'Flag if the entity is already billed',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'weight' => array(
         'description' => 'The weight of the billable entity e.g in a bill',
         'type' => 'int',
@@ -59,15 +85,9 @@ function billable_schema() {
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
-      ),
-      'customer_nid' => array(
-        'description' => 'The nid of the customer contact, the entity will be billed to',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-      ),
-      'amount' => array(
-        'description' => 'The amount of the billable entity',
+      ),      
+      'quantity' => array(
+        'description' => 'The quantity of the billable entity',
         'type' => 'float',
         'not null' => TRUE,
         'default' => 0,
@@ -131,7 +151,6 @@ function billable_schema() {
     'primary key' => array('billable_id'),
     'indexes' => array(
       'type' => array('type'),
-      'customer' => array('customer_nid'),
       'delivery' => array('date_delivery'),
     ),
   );

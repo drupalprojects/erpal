@@ -4,12 +4,61 @@
  * @file
  * Providing extra functionality for the Billable UI via views.
  */
+ 
+/**
+* Implementation of hook_date_api_fields
+*/
+function to_system_date_api_fields($field) {
 
+  $values = array(
+    // The type of date: DATE_UNIX, DATE_ISO, DATE_DATETIME.
+    'sql_type' => DATE_UNIX,
+    // Timezone handling options: 'none', 'site', 'date', 'utc'.
+    'tz_handling' => 'date',
+    // Needed only for dates that use 'date' tz_handling.
+    'timezone_field' => '',
+    // Needed only for dates that use 'date' tz_handling.
+    'offset_field' => '',
+    // Array of "table.field" values for related fields that should be
+    // loaded automatically in the Views SQL.
+    'related_fields' => array(),
+    // Granularity of this date field's db data.
+    'granularity' => array('year', 'month', 'day'),
+  );
+ 
+  switch ($field) {
+    case 'billable.date_delivery':
+    case 'billable.created':
+    case 'billable.changed':
+      return $values;
+  }
+}
+ 
 
 /**
  * Implements hook_views_data()
  */
-function billable_views_data_alter(&$data) { 
+function billable_views_data_alter(&$data) {     
+  
+  //make date fields handled like date fields!
+  //date_delivery field integration
+  $data['billable']['date_delivery']['field']['handler'] = 'views_handler_field_date';
+  $data['billable']['date_delivery']['filter']['handler'] = 'date_views_filter_handler_simple';
+  
+  //created field integration
+  $data['billable']['created']['field']['handler'] = 'views_handler_field_date';
+  $data['billable']['created']['filter']['handler'] = 'date_views_filter_handler_simple';
+  
+  //changed field integration
+  $data['billable']['changed']['field']['handler'] = 'views_handler_field_date';
+  $data['billable']['changed']['filter']['handler'] = 'date_views_filter_handler_simple';
+  
+  $data['billable']['billed']['field']['handler'] = 'views_handler_field_boolean';
+  $data['billable']['billed']['filter']['handler'] = 'views_handler_filter_boolean_operator';
+  
+  
+
+  //add fields for the links
   $data['billable']['link_billable'] = array(
     'field' => array(
       'title' => t('Link'),
@@ -42,6 +91,9 @@ function billable_views_data_alter(&$data) {
   );
 }
 
+
+
+//@TODO Default view for admin!
 
 /**
  * Implements hook_views_default_views().

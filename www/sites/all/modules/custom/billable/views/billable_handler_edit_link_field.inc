@@ -26,6 +26,6 @@ class billable_handler_edit_link_field extends billable_handler_link_field {
     $text = !empty($this->options['text']) ? $this->options['text'] : t('edit');
     $billable_id = $values->{$this->aliases['billable_id']};
     
-    return l($text, 'admin/content/billables/billable/' . $billable_id . '/edit');
+    return l($text, 'billable/' . $billable_id . '/edit');
   }
 }

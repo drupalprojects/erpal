@@ -130,14 +130,10 @@ function billable_page_view($billable, $view_mode = 'full') {
 */
 function _billable_entity_theme() {
   
-  return array(
-    'billable_add_list' => array(
-      'variables' => array('content' => array()),
-      'file' => 'inc/billable.admin.inc',
-    ),
-    'billable' => array(
-      'render element' => 'elements',
-      'template' => 'billable',
+  return array(    
+    'billable_view' => array(
+      'variables' => array('billable' => false),
+      'template' => 'billable_view',
     ),
   );
 }
@@ -149,11 +145,78 @@ function _billable_entity_theme() {
  * The class used for billable entities
  */
 class Billable extends Entity {
+  //numers to round
+  protected $round_digits = 2;
+  
+  private function calculate_values() {
+    //prepare values, especially float values
+    $this->convert_quantity();
+    $this->convert_single_price();
+
+    //prepare some calculated values here!
+    //ORDER IS IMPORTANT!
+    $this->calculate_total_price_no_vat();    
+    $this->calculate_total_vat();
+    $this->calculate_total_price(); 
+  }
+  
+  /**
+  * Calculate quantity as a valid float, replace , with .
+  */
+  private function convert_quantity() {
+    $this->quantity = $this->force_float($this->quantity);
+  }
+  
+  /**
+  * Calculate quantity as a valid float, replace , with .
+  */
+  private function convert_single_price() {
+    $this->single_price = $this->force_float($this->single_price, true);
+  }
+  
+  /**
+  * Calculate price with given values of quantity and single_price
+  */
+  private function calculate_total_price_no_vat() {
+    $total_price_no_vat = $this->quantity * $this->single_price;
+    $this->total_price_no_vat = $this->force_float($total_price_no_vat, true);
+  }
+  
+  /**
+  * Calculate single vat with given values of single_price and vat_rate
+  */
+  private function calculate_total_vat() {
+    $total_vat = $this->single_price * ($this->vat_rate / 100);
+    $this->total_vat = $this->force_float($total_vat, true);
+  }
+  
+  /**
+  * Calculate total price with given values of single price and vat_rate
+  */
+  private function calculate_total_price() {
+    $total_price = $this->total_price_no_vat + $this->total_vat;
+    $this->total_price = $this->force_float($total_price, true);
+  }
+  
+  private function force_float($value, $do_round=false) {
+    $value = str_replace(',', '.', $value);
+    $value = floatval($value);
+
+    if ($do_round)
+      $value = round($value, $this->round_digits);
+
+    return $value;
+  }
   
   public function __construct($values = array()) {
     parent::__construct($values, 'billable');
   }
 
+  public function save() {
+    $this->calculate_values();
+    parent::save();
+  }
+  
   protected function defaultLabel() {
     return $this->subject;
   }
@@ -200,11 +263,13 @@ class BillableController extends EntityAPIController {
       'weight' => 0,
       'parent_billable' => 0,
       'subject_nid' => 0,
-      'customer_nid' => 0,
-      'amount' => 1,
+      'quantity' => 1,
       'single_price' => 0,
-      //@todo weitere Felder hinzufügen
-      
+      'total_price' => 0,
+      'total_price_no_vat' => 0,
+      'total_vat' => 0,
+      'vat_rate' => 0,     
+      'currency' => 'EUR', 
     );
     
     $billable = parent::create($values);
@@ -216,8 +281,8 @@ class BillableController extends EntityAPIController {
    */
   public function buildContent($entity, $view_mode = 'full', $langcode = NULL, $content = array()) {
     $content = parent::buildContent($entity, $view_mode, $langcode, $content);
-    $content['billable_sample_data'] =  array(
-      '#markup' => theme('billable_sample_data', array('billable_sample_data' => check_plain($entity->data['sample_data']), 'billable' => $entity)),
+    $content['billable'] =  array(
+      '#markup' => theme('billable_view', array('billable' => $entity)),
     );
 
     return $content;

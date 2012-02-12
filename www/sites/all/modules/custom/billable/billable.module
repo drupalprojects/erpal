@@ -131,19 +131,21 @@ function billable_theme() {
   return $themes;
 }  
 
+/**
+* Returns the currency used
+* @todo we have to let the user choose his available currencies
+*/
+function _billable_get_currencies() {
+  return array(
+    'EUR' => 'EUR', 
+    'USD' => 'USD',
+  );
+}
 
 /**
- * Implements hook_menu_local_tasks_alter().
- */
-function billable_menu_local_tasks_alter(&$data, $router_item, $root_path) {
-  // Add action link 'admin/structure/billables/add' on 'admin/structure/billables'.
-  if ($root_path == 'admin/content/billables') {
-    $item = menu_get_item('admin/content/billables/add');
-    if ($item['access']) {
-      $data['actions']['output'][] = array(
-        '#theme' => 'menu_local_action',
-        '#link' => $item,
-      );
-    }
-  }
+* So we can make the user change the date format by changing this variable 
+*/
+function _billable_get_date_format(){
+  return variable_get('date_format_short_date_only', 'Y/m/d');
 }
+
