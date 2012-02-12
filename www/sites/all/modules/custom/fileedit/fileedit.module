@@ -91,9 +91,9 @@ function fileedit_edit_access($fid) {
 * Callback for Edit Request
 */
 function fileedit_edit($fid) {    
-  header('Content-type: application/x-java-jnlp-file');
-  header('Pragma: no-cache');
-  header('Expires: 0');
+  header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+  header("Expires: Thu, 01 Jan 1970 00:00:01 GMT"); // Former times
+  header("Content-type: application/x-java-jnlp-file");
   
   //and then return the xml file
   $xml = _fileedit_get_edit_xml($fid);
