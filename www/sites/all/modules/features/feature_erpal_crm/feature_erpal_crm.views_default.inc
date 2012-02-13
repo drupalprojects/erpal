@@ -91,7 +91,7 @@ echo _erpal_crm_helper_view_activities_header_content();
   $handler->display->display_options['fields']['field_activity_status']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_activity_status']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_activity_status']['field_api_classes'] = 0;
-  /* Field: Content: Customer */
+  /* Field: Field: Customer */
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
@@ -147,7 +147,7 @@ echo _erpal_crm_helper_view_activities_header_content();
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: Customer (field_customer_ref) */
+  /* Contextual filter: Field: Customer (field_customer_ref) */
   $handler->display->display_options['arguments']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
   $handler->display->display_options['arguments']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['arguments']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
