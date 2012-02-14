@@ -1,0 +1,192 @@
+<?php
+/*
+ * @file
+ * Code for the erpal_asterisk_notify module.
+ */
+
+// Define used constants
+define("VIEWCONTENTTYPE", "erpal_contact");
+
+
+/*
+* Implements hook_menu
+*/ 
+function erpal_asterisk_notify_menu(){
+
+  require_once 'inc/config.inc';
+  $items = _erpal_asterisk_notify_menu();
+  return $items;
+} 
+
+/*
+ * Forms wich list all views in erpal
+ * @return array $form  Forms  
+ */
+
+function _erpal_asterisk_notify_get_view_form() {
+  
+  $form= array();
+  
+  $form['description'] = array(
+    '#type' => 'fieldset', 
+    '#title' => t('Select view wich you want to set as default'),
+    '#collapsible' => TRUE, // Added 
+    '#collapsed' => FALSE, // Added
+  );
+  
+  $form['description']['views'] = array(
+    '#type' => 'radios',
+    '#title' => t('Views'),
+    '#options' => _erpal_asterisk_notify_get_views_of_type_erpal_contact(),
+    '#default_value' => variable_get('asterisk_default_view'),
+    '#required' => TRUE,
+  );
+  
+  $form['description']['default_message'] = array(
+    '#title' => t('Default message'),
+    '#type' => 'textarea',
+    '#description' => t('This message will set, if number in not found / For number set: %number%'),
+    '#default_value' => variable_get('asterisk_default_message'),
+    '#rows' => 10,
+    '#cols' => 60,
+    '#resizable' => TRUE,
+  );
+  
+  $form['description']['unknown_number_message'] = array(
+    '#title' => t('Unknown number message'),
+    '#type' => 'textarea',
+    '#description' => t('This message will set no number is given'),
+    '#default_value' => variable_get('asterisk_unknown_number_message'),
+    '#rows' => 10,
+    '#cols' => 60,
+    '#resizable' => TRUE,
+  );
+  
+  $form['submit'] = array(
+    '#type' => 'submit', 
+    '#value' => t('Save as default'),
+  );
+ 
+  return $form;
+  
+}
+
+/*
+ *  Implemtent form Submit Function 
+ */
+function _erpal_asterisk_notify_get_view_form_submit(&$form, &$form_state) {
+
+  variable_set('asterisk_default_view'   , $form_state['values']['views']);
+  variable_set('asterisk_default_message', $form_state['values']['default_message']);
+  variable_set('asterisk_unknown_number_message', $form_state['values']['unknown_number_message']);
+ 
+}
+
+/*
+ * Function witch get all views in erpal of erpal_contact
+ * @return array $views  Array with views
+ */
+function _erpal_asterisk_notify_get_views_of_type_erpal_contact(){
+  
+  //get all views of erpal
+  $views = views_get_all_views();
+  $views_array = array();
+  
+  foreach ($views as $key => $value) {
+   
+    if(isset($value->display['default']->display_options['filters']['type']['value'])) { 
+      //save contenttype of view in array 
+      $filter_content_type = $value->display['default']->display_options['filters']['type']['value']; 
+      if(in_array(VIEWCONTENTTYPE, $filter_content_type)){
+        $views_array[$key] = $value->human_name;
+      
+      }
+    }
+  }
+  return $views_array;
+}
+
+/*
+ * This is a callback function for configuration of erpal 
+ */
+
+function _erpal_asterisk_notify_config(){
+  
+   //return _erpal_notify_ingoing_call('01574463596');
+   return drupal_get_form('_erpal_asterisk_notify_get_view_form');
+  
+}
+
+/*
+ * Implement Functions wich get des and source number.
+ * It call the function _erpal_asterisk_get_view to get view number from erpal
+ * if it doesen't exist it gives an template with content of unknown number
+ * @param string $dest 		Destination number
+ * @param string $source	Source number 
+ */
+
+function erpal_asterisk_notify_ingoing_call($destination, $source) {
+
+  
+  $view = _erpal_asterisk_get_view($source);
+  if($source!=NULL) {
+    
+    return theme('erpal_asterisk_view', array('output' => $view));
+  
+  } else {
+  
+    return theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
+    
+  }
+}
+
+/*
+ * This function build defaul text for view
+ */
+function _erpal_asterisk_notify_get_default_message($phone_number){
+
+  $text = variable_get('asterisk_default_message');
+  return str_replace(array('%number%'), $phone_number, $text);
+  
+}
+
+/*
+ * Implement Function with get view by given $phone_number
+ * @param   string $phone_number ingiong phone number
+ * @return  string $view Html of given view 
+ */
+function _erpal_asterisk_get_view($phone_number){
+  
+  $display_id = 'page';
+  $view = views_get_view(variable_get('asterisk_default_view'));
+ 
+  // field_phone_number_value
+  if (! $view->access($display_id)) {
+    return false;
+  }
+  
+  $view->display_handler->options['filters']['field_phone_number_value']['value']  =$phone_number;
+  $view->display_handler->options['empty']['area']['content']                      = _erpal_asterisk_notify_get_default_message($phone_number);
+  
+  return $view->preview($display_id, array (
+  	'field_phone_number_value' => $phone_number 
+  ));
+}
+
+
+/*
+ * Implements hook_theme.
+ */
+function erpal_asterisk_notify_theme($existing, $type, $theme, $path) {
+  
+  return array (
+    'erpal_asterisk_view' => array (
+      'template'  => 'templates/erpal_asterisk_notify_view',
+      'variables' => array ('output') 
+    ),
+    'erpal_asterisk_unknown_number' => array (
+      'template'  => 'templates/erpal_asterisk_unknown_number',
+      'variables' => array ('source_number') 
+    ) 
+  );
+}
