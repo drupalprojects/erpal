@@ -1,0 +1,181 @@
+<?php
+/**
+* @file
+* Code for the erpal_project billable module.
+* ERPAL projects billable adds billable entity after saving timetracking to 
+* agil project or task with payment informationto fixed price project
+*/
+
+require_once 'include/task.inc';
+require_once 'include/timetracking.inc';
+
+/**
+* Implements hook_node_insert
+*/
+function erpal_projects_billable_node_insert($node) {
+  $type = $node->type;
+  if ($type == 'erpal_timetracking')
+    _erpal_projects_billable_insert_timetracking($node);
+ 
+  if ($type == 'erpal_task')
+    _erpal_projects_billable_insert_task($node);
+}
+
+/**
+* Implements hook_node_insert
+*/
+function erpal_projects_billable_node_update($node) {
+  $type = $node->type;
+  if ($type == 'erpal_timetracking')
+    _erpal_projects_billable_update_timetracking($node);
+ 
+  if ($type == 'erpal_task')
+    _erpal_projects_billable_update_task($node);
+}
+
+/**
+* Creates a new bilable entity
+* @param $billabel if set, this billable will be updated, otherwise a new billable will be created
+*/
+function _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, $billable=false) {
+
+  //@todo sollte das besser mit billable_create aus dem modul billable in billable.entity.inc getan werden?
+  if (!$billable)
+    $billable = new Billable;
+  else
+    if ($billable->billed)
+      return false; //this is already billed so it could not be changed!
+    
+  $billable->subject = $subject_title;
+  $billable->type = 'billable';
+  $billable->currency = $currency;
+  $billable->billed = false;
+  $billable->subject_nid = $subject_nid;
+  $billable->quantity = $quantity;
+  $billable->single_price = $single_price;
+  $billable->vat_rate = $vat_rate;
+  $billable->date_delivery = $date_delivery;
+  $billable->created = time();
+  $billable->changed = time();
+  $billable->field_customer_ref['und'][0]['nid'] = $customer_nid;
+  entity_save('billable', $billable);
+  
+  return true;
+}
+
+
+/**
+* Function that checks if a given subject is billable
+* @param a node as subject
+* @return an array with billing information necessary for creating a new billable entiy
+*/
+function _erpal_projects_billable_subject_billabel_information_subject($node) {
+
+  $type = $node->type;  
+  switch ($type) {
+    case 'erpal_task': return _erpal_projects_billable_subject_billabel_information_task_subject($node);    
+    case 'erpal_timetracking': return _erpal_projects_billable_subject_billabel_information_timetracking_subject($node);  
+  }
+  
+  return array();
+}
+
+/**
+* returns the billing information of a task
+* @param tha task node
+* @retur an array with billing information like price mode, price etc
+*/
+function _erpal_projects_billable_subject_billabel_information_task_subject($node) {
+
+  $pricing = _erpal_projects_billable_get_pricing($node);
+  
+  $info['price_mode'] = $pricing['price_mode'];
+  $info['price'] = $pricing['price'];
+  $info['vat_rate'] = $pricing['vat_rate'];
+  $info['currency'] = $pricing['currency'];
+  
+  //add the customer 
+  //first get the project
+  $project_nid = $node->field_project_ref['und'][0]['nid'];
+  $project_node = node_load($project_nid);
+  
+  //now get customer of project
+  $customer_nid = $project_node->field_customer_ref['und'][0]['nid'];
+  $customer_node = node_load($customer_nid);
+  
+  $info['customer'] = false;
+  if ($customer_node->nid)
+    $info['customer'] = $customer_node;  
+    
+  return $info;
+}
+
+/**
+* Return the billing information of the task of the timetracking!
+* @param $node the timetracking node
+*/
+function _erpal_projects_billable_subject_billabel_information_timetracking_subject($node) {
+  //get the referenced node first
+  
+  $subject_nid = $node->field_timetracking_subject['und'][0]['nid'];
+  $subject_node = node_load($subject_nid);
+  
+  return _erpal_projects_billable_subject_billabel_information_task_subject($subject_node);
+}
+
+/**
+* returns the price mode to an project or task
+* @param a project or task node
+*/
+function _erpal_projects_billable_get_pricing($node) {
+
+  $type = $node->type;
+  
+  if ($type == 'erpal_project' || $type == 'erpal_task') {
+    //get the pricing field collection    
+    $pricing_entity_id = $node->field_pricing['und'][0]['value'];
+
+    $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
+
+    $price_mode = $pricing_entity[$pricing_entity_id]->field_price_mode['und'][0]['value']; 
+    $price = 0;
+    if (isset($pricing_entity[$pricing_entity_id]->field_price['und']))
+      $price = $pricing_entity[$pricing_entity_id]->field_price['und'][0]['value'];
+    
+    $currency  = 'EUR'; //@todo this must be added as a field to the pricing field collection and then get from this!
+    $vat_rate  = 19; //@todo this must be added as a field to the pricing field collection and then get from this!
+    
+    return array(
+      'price_mode' => $price_mode,
+      'price' => $price,
+      'vat_rate' => $vat_rate,
+      'currency' => $currency,
+    );
+  }
+}
+
+/**
+* returns all billables to a given subject
+*/
+function _erpal_projects_billable_billbales_by_subject_nid($subject_nid, $loaded=false) {
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'billable')
+    ->entityCondition('bundle', 'billable')
+    ->propertyCondition('subject_nid', $subject_nid, '='); // run the query as user 1
+    
+  $result = $query->execute();
+  
+  $ret = array();
+  if (isset($result['billable'])) {  
+    foreach ($result['billable'] as $id => $obj) {    
+      if ($loaded) {
+        $billable = entity_load('billable', array($obj->billable_id));
+        $ret[$obj->billable_id] = $billable[$obj->billable_id];
+      } else
+        $ret[$obj->billable_id] = $obj->billable_id;
+    }
+  }
+
+  return $ret;
+}

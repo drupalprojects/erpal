@@ -55,8 +55,7 @@ function billable_views_data_alter(&$data) {
   
   $data['billable']['billed']['field']['handler'] = 'views_handler_field_boolean';
   $data['billable']['billed']['filter']['handler'] = 'views_handler_filter_boolean_operator';
-  
-  
+ 
 
   //add fields for the links
   $data['billable']['link_billable'] = array(
@@ -90,7 +89,6 @@ function billable_views_data_alter(&$data) {
     ),
   );
 }
-
 
 
 //@TODO Default view for admin!

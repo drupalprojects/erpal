@@ -151,10 +151,11 @@ function billable_edit_form($form, &$form_state, $billable) {
     '#maxlength' => 255,
     '#required' => TRUE,
   );
+
  
   $form['quantity'] = array(
     '#type' => 'textfield',
-    '#title' => t('quantity'),
+    '#title' => t('Quantity'),
     '#default_value' => isset($billable->quantity) ? $billable->quantity : 1,
     '#maxlength' => 255,
     '#required' => TRUE,

@@ -3,7 +3,8 @@
  * @file
  * Code for the erpal_projects_helper module.
  */
-
+require_once 'inc/timetracking.inc';  //@todo should be in hook_init?
+ 
 /**
 * Implements hook_menu
 */ 
@@ -56,6 +57,18 @@ function _erpal_projects_helper_view_projects_header_content()
   
   return $content;
 }
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_projects_helper_node_presave($node) {
+  $type = $node->type;
+ 
+  if ($type == 'erpal_timetracking') {
+    erpal_projects_helper_node_presave_timetracking($node);
+  }
+}
+
 
 /**
 * Helper function to create new project link

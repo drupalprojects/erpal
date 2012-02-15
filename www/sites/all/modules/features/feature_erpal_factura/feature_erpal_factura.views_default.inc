@@ -48,28 +48,6 @@ echo _erpal_factura_helper_view_billables_header_content();
   $handler->display->display_options['fields']['billable_id']['id'] = 'billable_id';
   $handler->display->display_options['fields']['billable_id']['table'] = 'billable';
   $handler->display->display_options['fields']['billable_id']['field'] = 'billable_id';
-  /* Field: Field: Customer */
-  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
   /* Field: Billable: Billed */
   $handler->display->display_options['fields']['billed']['id'] = 'billed';
   $handler->display->display_options['fields']['billed']['table'] = 'billable';
@@ -282,20 +260,32 @@ echo _erpal_factura_helper_view_billables_header_content();
   $handler->display->display_options['fields']['edit_billable']['hide_empty'] = 0;
   $handler->display->display_options['fields']['edit_billable']['empty_zero'] = 0;
   $handler->display->display_options['fields']['edit_billable']['hide_alter_empty'] = 1;
+  /* Field: Field: Customer */
+  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
   /* Sort criterion: Billable: Date_delivery */
   $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
   $handler->display->display_options['sorts']['date_delivery']['table'] = 'billable';
   $handler->display->display_options['sorts']['date_delivery']['field'] = 'date_delivery';
-  /* Filter criterion: Field: Customer (field_customer_ref) */
-  $handler->display->display_options['filters']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator_id'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['label'] = 'Customer';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['identifier'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['reduce'] = 0;
   /* Filter criterion: Billable: Date_delivery */
   $handler->display->display_options['filters']['date_delivery']['id'] = 'date_delivery';
   $handler->display->display_options['filters']['date_delivery']['table'] = 'billable';
@@ -321,6 +311,16 @@ echo _erpal_factura_helper_view_billables_header_content();
   $handler->display->display_options['filters']['billed']['expose']['identifier'] = 'billed';
   $handler->display->display_options['filters']['billed']['expose']['required'] = 1;
   $handler->display->display_options['filters']['billed']['expose']['multiple'] = FALSE;
+  /* Filter criterion: Field: Customer (field_customer_ref) */
+  $handler->display->display_options['filters']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator_id'] = 'field_customer_ref_nid_op';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['label'] = 'Customer';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator'] = 'field_customer_ref_nid_op';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['identifier'] = 'field_customer_ref_nid';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['reduce'] = 0;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');

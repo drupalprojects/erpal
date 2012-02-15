@@ -10,6 +10,7 @@
 * Implements hook_enable to provide a default bundle
 */
 function billable_enable() {
+
   //add the customer_ref field from feature_erpal_basic to the entity!
   $instance = array(
     'label' => t('Customer'),
@@ -21,9 +22,29 @@ function billable_enable() {
 
   //create if not exists
   $ainstance = field_info_instance('billable', 'field_customer_ref', 'billable');
-  
+
   if (!$ainstance['id'])
     field_create_instance($instance);
+}
+
+/**
+* Implements hook_disbale
+*/
+function billable_disable() {
+  //remove customer_ref field instance
+  $ainstance = array(
+    'label' => t('Customer'),
+    'field_name' => 'field_customer_ref',
+    'entity_type' => 'billable',
+    'bundle' => 'billable',
+    'required' => true,
+  );
+
+  //create if not exists
+  $ainstance = field_info_instance('billable', 'field_customer_ref', 'billable');
+
+  if ($ainstance['id'])
+    field_delete_instance($ainstance);
 }
 
 /**
