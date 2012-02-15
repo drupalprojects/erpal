@@ -11,8 +11,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -100,6 +98,11 @@ public class FileHandler {
 		@Override
 		public void onProgressUpdate(int progress) {
 			fileHandlerPanel.append("progress update: " + progress);
+		}
+
+		@Override
+		public void onMessage(String message) {
+			fileHandlerPanel.append(message);
 		}
 
 	}

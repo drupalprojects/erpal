@@ -21,5 +21,7 @@ public interface FileHandlerCallback {
 	void onUploadFileFailed(String message);
 
 	void onProgressUpdate(int progress);
+	
+	void onMessage(String message);
 
 }

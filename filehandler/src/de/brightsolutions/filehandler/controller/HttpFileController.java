@@ -82,20 +82,14 @@ public class HttpFileController extends FileController {
 
 		try {
 
-//			HttpPost httpPost = new HttpPost(url);
-//			FileEntity entity = new FileEntity(new File(localFileName), "binary/octet-stream");
-//			entity.setContentType("binary/octet-stream");
-//			httpPost.setEntity(entity);
+			HttpPost httpPost = new HttpPost(url);
+			File file = new File(localFileName);
 
-		    HttpPost httpPost = new HttpPost(url);
-		    File file = new File(localFileName);
+			MultipartEntity mpEntity = new MultipartEntity();
+			ContentBody cbFile = new FileBody(file, "binary/octet-stream");
+			mpEntity.addPart("userfile", cbFile);
 
-		    MultipartEntity mpEntity = new MultipartEntity();
-		    ContentBody cbFile = new FileBody(file, "binary/octet-stream");
-		    mpEntity.addPart("userfile", cbFile);
-
-
-		    httpPost.setEntity(mpEntity);
+			httpPost.setEntity(mpEntity);
 
 			HttpClient httpClient = new DefaultHttpClient();
 			httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
@@ -105,6 +99,10 @@ public class HttpFileController extends FileController {
 			int status = rs.getStatusLine().getStatusCode();
 			System.out.println("rs status: " + status);
 			System.out.println("rs: " + rsString);
+			if (listener != null) {
+				listener.onMessage("rs status: " + status);
+				listener.onMessage("rs status: " + rsString);
+			}
 			if (HttpStatus.SC_OK != status) {
 				if (listener != null) {
 					listener.onUploadFileFailed("upload failed. status 200 expected. received " + status + ".");
