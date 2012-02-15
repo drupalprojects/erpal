@@ -101,6 +101,7 @@ function fileedit_edit($fid) {
   header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
   header("Expires: Thu, 01 Jan 1970 00:00:01 GMT"); // Former times
   header("Content-type: application/x-java-jnlp-file");
+  header("Last-Modified: " . time());
   
   //and then return the xml file
   $xml = _fileedit_get_edit_xml($fid);
@@ -258,10 +259,10 @@ function _fileedit_get_jar_urls() {
   
   //deliver jar files with php script  to control response header
   return array(
-    'commons_logging_jar_url' => url('fileedit/getjarfile/commons-logging-1.1.1.jar/1.1.1', array('absolute' => true)),
+    'commons_logging_jar_url' => url('fileedit/getjarfile/commons-logging/1.1.1', array('absolute' => true)),
     'httpclient_jar_url' => url('fileedit/getjarfile/httpclient/4.1.2', array('absolute' => true)),
     'httpcore_jar_url' => url('fileedit/getjarfile/httpcore/4.1.2', array('absolute' => true)),
-    'filehandler_jar_url' => url('fileedit/getjarfile/FileHandler/4.1.2', array('absolute' => true)),
+    'filehandler_jar_url' => url('fileedit/getjarfile/FileHandler/0.0.1', array('absolute' => true)),
     'httpmime_jar_url' => url('fileedit/getjarfile/httpmime/4.1.2', array('absolute' => true)),
   );
   
@@ -341,9 +342,13 @@ function fileedit_get_jars($filename, $version_string) {
   //get the file, must be located in jar folder
   //send version header
   header("x-java-jnlp-version-id: ".$version_string);
+  header("Content-Transfer-Encoding: binary");
+  header("Pragma: no-cache");
+  header("Accept-Ranges: bytes");
 
   //send file
   if (file_exists($filename))
     readfile($filename);
- 
+  else
+	echo "file not found: ".$filename; 
 }
