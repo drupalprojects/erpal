@@ -1,0 +1,107 @@
+<?php
+/*
+ * @file
+ * Code for the erpal_asterisk module.
+ */
+
+
+
+/*
+* Implements hook_menu
+*/ 
+function erpal_asterisk_menu(){
+
+  require_once 'inc/config.inc';
+  $items = _erpal_asterisk_menu();
+  return $items;
+} 
+
+
+/*
+ * This function is callback for configuration of cor module
+ */
+function _erpal_asterisk_config(){
+  
+  return drupal_get_form('_erpal_asterisk_config_form');
+
+}
+
+
+/*
+ * Forms wich list all views in erpal
+ * @return array $form  Forms  
+ */
+
+function _erpal_asterisk_config_form() {
+  
+  $form= array();
+  
+  $form['description'] = array(
+    '#type' => 'fieldset', 
+    '#title' => t('Configurations of asterisk cor'),
+    '#collapsible' => TRUE, // Added 
+    '#collapsed' => FALSE, // Added
+  );
+    
+  $form['description']['host'] = array(
+    '#type'    	   => 'textfield', 
+    '#title'       => t('HOST:'),
+    '#default_value'		 => variable_get('asterisk_nodejs_host'),
+    '#description' => t('Host of NodeJs Server'),
+  );
+  
+  $form['description']['port'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('PORT :'),
+    '#default_value'		 => variable_get('asterisk_nodejs_port'),
+    '#description' => t('Port of NodeJs Server'),
+  );
+  
+  $form['description']['lifetime'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('LIFETIME :'),
+    '#default_value'		 => variable_get('asterisk_nodejs_lifetime'),
+    '#description' => t('Lifetime of call'),
+  );
+  
+  $form['submit'] = array(
+    '#type' => 'submit', 
+    '#value' => t('Save configurations'),
+  );
+ 
+  return $form;
+  
+}
+
+/*
+ *  Implemtent form Submit Function 
+ */
+function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
+
+  variable_set('asterisk_nodejs_host'  	 , $form_state['values']['host']);
+  variable_set('asterisk_nodejs_port'    , $form_state['values']['port']);
+  variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
+   
+}
+
+/*
+ * This function implements hook of asterisknotify module and get view of an contact
+ */
+
+function _erpal_asterisk_call($destination, $source = NULL){
+  
+  return implode (
+  	'', 
+    module_invoke_all('ingoing_call', $destination, $source)
+  ); 
+  //_erpal_asterisk_request();
+}
+
+
+function _erpal_asterisk_request($destination, $source = False, $html){
+
+   // JAVASCRIPT REQUEST FOLGT HIER
+   return $html; 
+}
+
+
