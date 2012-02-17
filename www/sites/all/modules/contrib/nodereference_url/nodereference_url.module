@@ -372,6 +372,7 @@ function nodereference_url_node_link_validate($element, &$form_state, $form) {
  * Implements hook_field_widget_form().
  */
 function nodereference_url_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+
   $field_name = $field['field_name'];
   $field_name_url = preg_replace('/^field_/', '', $field_name);
   $referenced_nid = NULL;

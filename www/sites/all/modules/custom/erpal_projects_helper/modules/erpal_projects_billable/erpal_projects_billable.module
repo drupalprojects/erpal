@@ -58,8 +58,7 @@ function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_s
   
   $form['field_pricing']['und'][0]['#prefix'] = '<div id="pricing_wrapper">';
   $form['field_pricing']['und'][0]['#suffix'] = '</div>';
-  //$form['field_project_ref']['und'][0]['nid']['#ajax'] = array(
-  $form['field_project_ref']['und']['#ajax'] = array(
+  $form['field_project_ref']['und'][0]['nid']['#ajax'] = array(
     'callback' => '_erpal_projects_billable_ajax_pricing_preselect_callback',
     'wrapper' => 'pricing_wrapper',
     'method' => 'replace',
@@ -72,12 +71,13 @@ function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_s
 */
 function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state) {
 
+dpm($form);
   $project_nid = $form['field_project_ref']['und']['#default_value'];
  
   //perhaps, there is a project_nid in form_state, we can use that because it has been submitted by ajax!
   if (!empty($form_state['values']['field_project_ref']))
     $project_nid = $form_state['values']['field_project_ref']['und'][0]['nid'];
-
+dpm($project_nid);
   if (!$project_nid)
     return; //if we dont have a project, we dont have data to preselect the task price fields with
     
