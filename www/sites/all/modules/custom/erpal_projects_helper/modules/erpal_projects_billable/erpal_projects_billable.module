@@ -35,6 +35,13 @@ function erpal_projects_billable_node_update($node) {
     _erpal_projects_billable_update_task($node);
 }
 
+/**
+* Implements hook_element_info_alter
+*/
+function erpal_projects_billable_element_info_alter(&$type) {
+
+  _erpal_projects_billable_element_alter_nodereference_url($type);
+}
 
 /**
 * implements hook_form_alter
@@ -71,13 +78,12 @@ function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_s
 */
 function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state) {
 
-dpm($form);
-  $project_nid = $form['field_project_ref']['und']['#default_value'];
+  $project_nid = $form['field_project_ref']['und'][0]['nid']['#default_value'];
  
   //perhaps, there is a project_nid in form_state, we can use that because it has been submitted by ajax!
   if (!empty($form_state['values']['field_project_ref']))
     $project_nid = $form_state['values']['field_project_ref']['und'][0]['nid'];
-dpm($project_nid);
+
   if (!$project_nid)
     return; //if we dont have a project, we dont have data to preselect the task price fields with
     
@@ -85,20 +91,17 @@ dpm($project_nid);
   //price mode "per_hour" we preselect the price (this is the price per hour).
   $preselects = _erpal_projects_billable_get_task_preselects($project_nid);
 
-  $form['field_pricing']['und'][0]['field_price_mode']['und']['#default_value'] = $preselects['price_mode'];
-  $form['field_pricing']['und'][0]['field_vat_rate']['und']['#default_value'] = $preselects['vat_rate'];
-  $form['field_pricing']['und'][0]['field_currency']['und']['#default_value'] = $preselects['currency'];
+  $form['field_pricing']['und'][0]['field_price_mode']['und']['#value'] = $preselects['price_mode'];
+  $form['field_pricing']['und'][0]['field_vat_rate']['und']['#value'] = $preselects['vat_rate'];
+  $form['field_pricing']['und'][0]['field_currency']['und']['#value'] = $preselects['currency'];
   
-  //@TODO: ACHTUNG: Das Feld project_ref muss wieder ein REferenze from url widget werden. DAmit klappt der AJAX kram
-  //jedoch nicht, daher wurde das erstmal wieder umgebaut. WEnn das hier klappt, muss geschaut werden, wasrum das mit reference from
-  //URL nicht geht.
-  dpm($form['field_pricing']['und'][0]);
-  dpm($preselects);
+  $price = '';
   if ($preselects['price_mode'] == 'per_hour') {
     //Fill the price per hour
     $price = $preselects['price'];
-    $form['field_pricing']['und'][0]['field_price']['und'][0]['value']['#default_value'] = $price;
   }
+  
+  $form['field_pricing']['und'][0]['field_price']['und'][0]['value']['#value'] = $price;
 }
 
 /**

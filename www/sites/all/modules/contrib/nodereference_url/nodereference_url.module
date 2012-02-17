@@ -464,6 +464,7 @@ function nodereference_url_field_widget_form(&$form, &$form_state, $field, $inst
  * note that $element['#value'] is already set.
  */
 function _nodereference_url_process($element, $form_state, $form) {
+  
   if (isset($element['#value']) && is_numeric($element['#value']) && ($node = node_load($element['#value']))) {
     $element['#display_title'] = check_plain($node->title);
   }
