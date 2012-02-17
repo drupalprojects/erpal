@@ -31,6 +31,7 @@ function erpal_projects_helper_permission(){
   );
 }
 
+
 /**
 * This function is called by the projects view to add a link for new project node
 * it provides a hook to allow other modules to add a link to that view by implementing

@@ -6,8 +6,10 @@
 * agil project or task with payment informationto fixed price project
 */
 
+//@todo should not be loaded on every request or posted in hook_init
 require_once 'include/task.inc';
 require_once 'include/timetracking.inc';
+require_once 'include/ajax.inc';
 
 /**
 * Implements hook_node_insert
@@ -32,6 +34,82 @@ function erpal_projects_billable_node_update($node) {
   if ($type == 'erpal_task')
     _erpal_projects_billable_update_task($node);
 }
+
+
+/**
+* implements hook_form_alter
+*/
+function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_task_node_form') {
+    $nid = $form['nid']['#value'];
+    if (!$nid) { //only alter the form fields if the node will be created, not at update
+      _erpal_projects_billable_preselect_task_create_form($form, $form_state);      
+    }
+    
+    _erpal_projects_billable_prepare_ajax_pricing_preselect($form, $form_state);
+  }  
+}
+
+/**
+* Adds ajax handler to project ref field to preselect pricing information
+* if a task is created NOT BY using the reference by url widget
+*/
+function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_state) {
+  
+  $form['field_pricing']['und'][0]['#prefix'] = '<div id="pricing_wrapper">';
+  $form['field_pricing']['und'][0]['#suffix'] = '</div>';
+  //$form['field_project_ref']['und'][0]['nid']['#ajax'] = array(
+  $form['field_project_ref']['und']['#ajax'] = array(
+    'callback' => '_erpal_projects_billable_ajax_pricing_preselect_callback',
+    'wrapper' => 'pricing_wrapper',
+    'method' => 'replace',
+    'effect' => 'fade',
+  );
+}
+
+/**
+* preselects the task node form with pricing information from the referenced project (if one is referenced)
+*/
+function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state) {
+
+  $project_nid = $form['field_project_ref']['und']['#default_value'];
+ 
+  //perhaps, there is a project_nid in form_state, we can use that because it has been submitted by ajax!
+  if (!empty($form_state['values']['field_project_ref']))
+    $project_nid = $form_state['values']['field_project_ref']['und'][0]['nid'];
+
+  if (!$project_nid)
+    return; //if we dont have a project, we dont have data to preselect the task price fields with
+    
+  //we prefill the price mode of the task the same as at the project. If the project has
+  //price mode "per_hour" we preselect the price (this is the price per hour).
+  $preselects = _erpal_projects_billable_get_task_preselects($project_nid);
+
+  $form['field_pricing']['und'][0]['field_price_mode']['und']['#default_value'] = $preselects['price_mode'];
+  $form['field_pricing']['und'][0]['field_vat_rate']['und']['#default_value'] = $preselects['vat_rate'];
+  $form['field_pricing']['und'][0]['field_currency']['und']['#default_value'] = $preselects['currency'];
+  
+  //@TODO: ACHTUNG: Das Feld project_ref muss wieder ein REferenze from url widget werden. DAmit klappt der AJAX kram
+  //jedoch nicht, daher wurde das erstmal wieder umgebaut. WEnn das hier klappt, muss geschaut werden, wasrum das mit reference from
+  //URL nicht geht.
+  dpm($form['field_pricing']['und'][0]);
+  dpm($preselects);
+  if ($preselects['price_mode'] == 'per_hour') {
+    //Fill the price per hour
+    $price = $preselects['price'];
+    $form['field_pricing']['und'][0]['field_price']['und'][0]['value']['#default_value'] = $price;
+  }
+}
+
+/**
+* Returns pricing preset values for a task according to its referenced node
+*/
+function _erpal_projects_billable_get_task_preselects($project_nid) {
+
+  $project_node = node_load($project_nid);
+  return _erpal_projects_billable_get_pricing($project_node);
+}
+
 
 /**
 * Creates a new bilable entity
@@ -136,14 +214,14 @@ function _erpal_projects_billable_get_pricing($node) {
     $pricing_entity_id = $node->field_pricing['und'][0]['value'];
 
     $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
-
-    $price_mode = $pricing_entity[$pricing_entity_id]->field_price_mode['und'][0]['value']; 
+    $pricing_entity = $pricing_entity[$pricing_entity_id];
+    $price_mode = $pricing_entity->field_price_mode['und'][0]['value']; 
     $price = 0;
-    if (isset($pricing_entity[$pricing_entity_id]->field_price['und']))
-      $price = $pricing_entity[$pricing_entity_id]->field_price['und'][0]['value'];
-    
-    $currency  = 'EUR'; //@todo this must be added as a field to the pricing field collection and then get from this!
-    $vat_rate  = 19; //@todo this must be added as a field to the pricing field collection and then get from this!
+    if (isset($pricing_entity->field_price['und']))
+      $price = $pricing_entity->field_price['und'][0]['value'];
+
+    $currency  = $pricing_entity->field_currency['und'][0]['value'];
+    $vat_rate  = $pricing_entity->field_vat_rate['und'][0]['value'];
     
     return array(
       'price_mode' => $price_mode,
@@ -178,4 +256,18 @@ function _erpal_projects_billable_billbales_by_subject_nid($subject_nid, $loaded
   }
 
   return $ret;
+}
+
+/**
+* Callback function for returnin all available VAT
+*/
+function erpal_billable_field_vat_rate_allowed_values() {
+  return _billable_vat_rates();
+}
+
+/**
+* Callback function for returnin all available currencies
+*/
+function erpal_billable_field_currency_allowed_values() {
+  return _billable_get_currencies();
 }
