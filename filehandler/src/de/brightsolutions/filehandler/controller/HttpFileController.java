@@ -6,13 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
@@ -42,23 +41,36 @@ public class HttpFileController extends FileController {
 
 		FileOutputStream fos = null;
 		try {
-			URLConnection conn = new URL(url).openConnection();
-			InputStream rs = conn.getInputStream();
-			//			String rsString = streamToString(rs);
-			//			System.out.println("rs: " + rsString);
+			//			URLConnection conn = new URL(url).openConnection();
+			//			InputStream rs = conn.getInputStream();
+			HttpGet get = new HttpGet(url);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse rs = client.execute(get);
+			int status = rs.getStatusLine().getStatusCode();
+			System.out.println("rs status: " + status);
+			InputStream rsStream = rs.getEntity().getContent();
 
-			fos = new FileOutputStream(localFileName);
-			byte buf[] = new byte[1024];
-			int len;
-			while ((len = rs.read(buf)) > 0) {
-				fos.write(buf, 0, len);
+			if (HttpStatus.SC_OK != status) {
+				if (listener != null) {
+					listener.onDownloadFileFailed("download failed. status 200 expected. received " + status + ".");
+				}
+				String rsString = streamToString(rsStream);
+				System.out.println("rs: " + rsString);
+			} else {
+
+				fos = new FileOutputStream(localFileName);
+				byte buf[] = new byte[1024];
+				int len;
+				while ((len = rsStream.read(buf)) > 0) {
+					fos.write(buf, 0, len);
+				}
+				System.out.println("wrote to file: " + localFileName);
 			}
-			System.out.println("wrote to file: " + localFileName);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (listener != null) {
-				listener.onDownloadFileFailed("upload failed: " + e.getMessage());
+				listener.onDownloadFileFailed("download failed: " + e.getMessage());
 			}
 		} finally {
 			if (fos != null) {
