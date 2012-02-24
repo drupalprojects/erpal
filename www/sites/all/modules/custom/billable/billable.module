@@ -109,6 +109,9 @@ function billable_permission() {
  *   Whether access is allowed or not.
  */
 function billable_access($op, $billable = NULL, $account = NULL) {
+  if (!is_object($billable))
+    return false;
+  
   if (user_access('administer billables', $account)) {
     return TRUE;
   }

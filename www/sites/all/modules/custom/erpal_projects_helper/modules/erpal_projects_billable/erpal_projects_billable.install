@@ -1,0 +1,15 @@
+<?php
+
+/**
+* @file installation file of module erpal_projects_billable
+*/
+
+/**
+* Implements hook_enable
+*/
+function erpal_projects_billable_enable() {
+  require_once "erpal_projects_billable.fields.inc";
+
+  _erpal_billable_add_vat_field_instances();
+  _erpal_billable_add_currency_field_instances();
+}

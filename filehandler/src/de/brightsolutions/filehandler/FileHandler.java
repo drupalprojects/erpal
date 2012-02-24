@@ -1,24 +1,14 @@
 package de.brightsolutions.filehandler;
 
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
-import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
-import java.nio.file.WatchEvent.Kind;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -34,6 +24,30 @@ import de.brightsolutions.filehandler.ui.FileHandlerPanel;
  */
 public class FileHandler {
 
+	private static class WatchFileAndUploadTimerTask extends TimerTask {
+
+		private final String uploadUrl;
+		private final String localFileName;
+
+		public WatchFileAndUploadTimerTask(String uploadUrl, String localFileName) {
+			this.uploadUrl = uploadUrl;
+			this.localFileName = localFileName;
+		}
+
+		@Override
+		public void run() {
+			File f = new File(localFileName);
+			if (f.exists() && lastModification > 0 && f.lastModified() > lastModification) {
+				lastModification = f.lastModified();
+				fileHandlerPanel.append("uploading to " + uploadUrl);
+				fileHandlerPanel.append(localFileName + "...");
+				fileHandlerPanel.setProgressBarText("uploading...");
+				controller.uploadFile(localFileName, uploadUrl);
+			}
+		}
+
+	}
+
 	private static FileHandlerPanel fileHandlerPanel;
 
 	private static HttpFileController controller;
@@ -45,6 +59,8 @@ public class FileHandler {
 	private static final String ARG_SESSION = "session=";
 	private static final String ARG_FILE_ID = "fid=";
 	private static final String ARG_FILE_NAME = "filename=";
+
+	private static long lastModification = 0;
 
 	/**
 	 * download/upload listener
@@ -64,6 +80,7 @@ public class FileHandler {
 		public void onDownloadFileFinished(String filename) {
 			fileHandlerPanel.append("file download finished: " + filename);
 			fileHandlerPanel.setProgressBarText("done");
+			lastModification = System.currentTimeMillis();
 		}
 
 		@Override
@@ -83,7 +100,7 @@ public class FileHandler {
 		public void onUploadFileFinished(String source, String destination) {
 			fileHandlerPanel.append("file upload finished: " + source + " -> " + destination);
 			fileHandlerPanel.setProgressBarText("done");
-			fileHandlerPanel.disableProgressbar();
+			//fileHandlerPanel.disableProgressbar();
 			shutdown();
 		}
 
@@ -124,7 +141,9 @@ public class FileHandler {
 		// extract arguments
 		String downloadUrl = null; // = "http://www.rfc-editor.org/rfc/rfc1880.txt";
 		String uploadUrl = null; // = "http://localhost/plupload/examples/upload.php?name=";
+		@SuppressWarnings("unused")
 		String sessionId = null; // = "";
+		@SuppressWarnings("unused")
 		String fileId = null; // = "someFileId";
 		String filename = null;
 		for (String arg : args) {
@@ -148,20 +167,8 @@ public class FileHandler {
 		String pathName = System.getProperty("user.home", "/");
 		pathName += File.separator + "Downloads";
 		new File(pathName).mkdirs();
-		controller.downloadFile(downloadUrl, pathName + File.separator + filename);
-		//String fileName = "";
-		//URL url;
-		//		try {
-		//			//url = new URL(downloadUrl);
-		//			//			fileName = extractFileName(url.getFile());
-		//			//			if (fileName == null || "".equals(fileName)) {
-		//			//				fileName = fileId;
-		//			//			}
-		//		} catch (MalformedURLException e) {
-		//			e.printStackTrace();
-		//			fileHandlerPanel.append("unable to download from: " + downloadUrl + " - " + e.getMessage());
-		//			shutdown();
-		//		}
+		String localFileName = pathName + File.separator + filename;
+		controller.downloadFile(downloadUrl, localFileName);
 		File file = new File(pathName, filename);
 
 		// attempt to open file with default application
@@ -179,43 +186,52 @@ public class FileHandler {
 
 		if (fileOpened) {
 			try {
-				// register directory watch service
-				WatchService watcher = FileSystems.getDefault().newWatchService();
-				fileHandlerPanel.append("observing directory: " + pathName);
-				Path path = Paths.get(pathName);
-				WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-
-				// start listening for changes in directory indefinitely
+				// TODO java.nio available in java 7+. so do stuff by hand for now 
+				//				// register directory watch service
+				//				WatchService watcher = FileSystems.getDefault().newWatchService();
+				//				fileHandlerPanel.append("observing directory: " + pathName);
+				//				Path path = Paths.get(pathName);
+				//				WatchKey key = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+				//
+				//				// start listening for changes in directory indefinitely
+				//				while (fileHandlerPanel.isVisible()) {
+				//					for (WatchEvent<?> event : key.pollEvents()) {
+				//						Kind<?> kind = event.kind();
+				//						if (kind == OVERFLOW) {
+				//							continue;
+				//						}
+				//						WatchEvent<Path> ev = cast(event);
+				//						Path changedPath = ev.context();
+				//						Path child = path.resolve(changedPath);
+				//						String s = String.format("%s: %s", event.kind().name(), child);
+				//						System.out.println(s);
+				//						fileHandlerPanel.append("found - " + s);
+				//						// child.getFileName().toString()
+				//
+				//						// uploading
+				//						if (kind == ENTRY_MODIFY) {
+				//							fileHandlerPanel.append("uploading to " + uploadUrl);
+				//							fileHandlerPanel.append(child + "...");
+				//							fileHandlerPanel.setProgressBarText("uploading...");
+				//
+				//							//controller.uploadFile(child.toString(), uploadUrl + child.getFileName().toString());
+				//							controller.uploadFile(child.toString(), uploadUrl);
+				//						}
+				//					}
+				//					try {
+				//						Thread.sleep(WATCH_INTERVAL);
+				//					} catch (InterruptedException e) {
+				//					}
+				//				}
 				while (fileHandlerPanel.isVisible()) {
-					for (WatchEvent<?> event : key.pollEvents()) {
-						Kind<?> kind = event.kind();
-						if (kind == OVERFLOW) {
-							continue;
-						}
-						WatchEvent<Path> ev = cast(event);
-						Path changedPath = ev.context();
-						Path child = path.resolve(changedPath);
-						String s = String.format("%s: %s", event.kind().name(), child);
-						System.out.println(s);
-						fileHandlerPanel.append("found - " + s);
-						// child.getFileName().toString()
-
-						// uploading
-						if (kind == ENTRY_MODIFY) {
-							fileHandlerPanel.append("uploading to " + uploadUrl);
-							fileHandlerPanel.append(child + "...");
-							fileHandlerPanel.setProgressBarText("uploading...");
-
-							//controller.uploadFile(child.toString(), uploadUrl + child.getFileName().toString());
-							controller.uploadFile(child.toString(), uploadUrl);
-						}
-					}
+					new Timer().schedule(new WatchFileAndUploadTimerTask(uploadUrl, localFileName), 1);
 					try {
 						Thread.sleep(WATCH_INTERVAL);
 					} catch (InterruptedException e) {
 					}
+					fileHandlerPanel.setProgressBarText("observing file for changes");
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				fileHandlerPanel.append("not able to observe directory - " + e.getMessage());
 				e.printStackTrace();
 			}
@@ -227,16 +243,6 @@ public class FileHandler {
 		 * and our jframe's default close operation doesn't kick in
 		 */
 		shutdown();
-	}
-
-	private static String extractFileName(String url) {
-		if (url != null) {
-			String[] u = url.split("/");
-			if (u.length > 0) {
-				return u[u.length - 1];
-			}
-		}
-		return "";
 	}
 
 	@SuppressWarnings("unchecked")

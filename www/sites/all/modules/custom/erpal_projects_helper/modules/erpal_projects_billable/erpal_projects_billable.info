@@ -9,6 +9,8 @@ project = "erpal_projects_billable"
 version = "7.x-1.0-dev"
 
 files[] = erpal_projects_billable.module
+files[] = erpal_projects_billable.install
+files[] = erpal_projects_billable.fields.inc
 
 dependencies[] = feature_erpal_factura
 dependencies[] = billable

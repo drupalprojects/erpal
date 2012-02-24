@@ -142,58 +142,6 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_pricing-field_vat_rate'
-  $fields['field_collection_item-field_pricing-field_vat_rate'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_vat_rate',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'field_pricing',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 2,
-        ),
-      ),
-      'entity_type' => 'field_collection_item',
-      'field_name' => 'field_vat_rate',
-      'label' => 'VAT rate',
-      'required' => FALSE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '3',
-      ),
-    ),
-  );
-
   // Exported field: 'node-erpal_project-body'
   $fields['node-erpal_project-body'] = array(
     'field_config' => array(
@@ -1790,7 +1738,6 @@ function feature_erpal_project_basic_field_default_fields() {
   t('The description of a task');
   t('The duration that will be billed to the customer');
   t('Time estimated for this task');
-  t('VAT rate');
   t('When will the project be developed? Only for planing purpose.');
   t('Work progress of field');
   t('endpoints');
