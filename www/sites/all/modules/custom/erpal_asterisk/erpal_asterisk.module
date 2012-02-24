@@ -85,10 +85,25 @@ function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
 }
 
 /*
+ *	Send data to the data dispatch server
+ *
+ *	@param data (string) The data to be sent
+ *	@result A boolean indicating whether the communication was successful or not
+ */
+function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
+	$file	= drupal_get_path('module','erpal_asterisk').'/last_call.htm';
+	file_put_contents( $file, $data );
+}
+
+
+/*
  * This function implements hook of asterisknotify module and get view of an contact
  */
 
 function _erpal_asterisk_call($destination, $source = NULL){
+  
+  module_invoke_all('ingoing_call', $destination, $source);
+  die();
   
   return implode (
   	'', 

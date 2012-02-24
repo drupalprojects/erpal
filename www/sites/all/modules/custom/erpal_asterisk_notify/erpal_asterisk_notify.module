@@ -7,6 +7,19 @@
 // Define used constants
 define("VIEWCONTENTTYPE", "erpal_contact");
 
+/*
+* Implements hook_init
+*/
+function erpal_asterisk_notify_init() {
+	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );
+	
+	drupal_add_js( $path . '/js/erpal_asterisk.js', Array( 'every_page'=>TRUE ) );
+	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/swfobject.js', Array( 'every_page'=>TRUE ) );
+	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/FABridge.js', Array( 'every_page'=>TRUE ) );
+	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/web_socket.js', Array( 'every_page'=>TRUE ) );
+	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/webpush.js', Array( 'every_page'=>TRUE ) );
+}
+
 
 /*
 * Implements hook_menu
@@ -131,13 +144,15 @@ function erpal_asterisk_notify_ingoing_call($destination, $source) {
   $view = _erpal_asterisk_get_view($source);
   if($source!=NULL) {
     
-    return theme('erpal_asterisk_view', array('output' => $view));
+    $out	= theme('erpal_asterisk_view', array('output' => $view));
   
   } else {
   
-    return theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
+    $out	= theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
     
   }
+  
+  erpal_asterisk_send_dispatch_data( $out, $source, $destination );
 }
 
 /*
@@ -159,6 +174,20 @@ function _erpal_asterisk_get_view($phone_number){
   
   $display_id = 'page';
   $view = views_get_view(variable_get('asterisk_default_view'));
+  
+  // Thiemo; Update to new flow
+  $view->set_arguments( Array( "004961513910793", /*$phone_number*/ ) );
+  $view->init_display();
+  $view->pre_execute();
+  $view->execute();
+  
+  $result	= $view->render();
+  
+  //echo $result;
+  
+  return $result;
+  
+  return $view->result;
  
   // field_phone_number_value
   if (! $view->access($display_id)) {

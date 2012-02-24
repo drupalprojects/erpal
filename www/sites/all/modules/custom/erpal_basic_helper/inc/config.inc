@@ -129,7 +129,7 @@ function _erpal_basic_helper_config(){
   $tree = menu_tree_data($links);
   $node_links = array();
   menu_tree_collect_node_links($tree, $node_links);
-  dpm($tree);
+  //dpm($tree);
   // We indicate that a menu administrator is running the menu access check.
   $menu_admin = TRUE;
   menu_tree_check_access($tree, $node_links);
