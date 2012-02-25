@@ -45,12 +45,16 @@ Daemon.prototype.getCMDArgument = function (key, defaultValue) {
  * Kills the master process.
  */
 Daemon.prototype.killMasterAndExit = function () {
-	
-//	var process = require ('process');
-	var pid 	= this.getMasterPid();
+
+	var pid = this.getMasterPid();
 	
 	process.kill(pid);
 	process.exit ();
+	
+	node.fs.unlink("bs_asterisk_server.pid", function (status) {
+		  if (status == 0) 
+		    console.log("successfully deleted pid file.");
+	});	
 	
 	return;
 };

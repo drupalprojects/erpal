@@ -14,6 +14,8 @@ function Socket () {
 
 		connection.on('connect', function() {
 	
+			   console.log ('Client ' + connection.remoteAddress + ' connected.');
+			
 			   self.clientManager.saveSocketClientObject (
 						connection.remoteAddress,
 						connection
@@ -24,6 +26,8 @@ function Socket () {
 			
 		connection.on('close', function() {
 				
+				console.log ('Client ' + connection.remoteAddress + ' disconnected.');
+			
 				self.clientManager.removeClientBySocketClientObject (connection);
 				
 				return;
@@ -53,9 +57,8 @@ function Socket () {
 
 /*
  * Sends data to the client.
- * @param	string	ip		The IP address of the client.
- * @param 	string	data	The data string.
- * @return  boolen			TRUE on success.
+ * @param 	string	postData	The post data string.
+ * @return  boolen				TRUE on success.
  */
 Socket.prototype.sendData = function (postData) {
 
