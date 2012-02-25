@@ -140,9 +140,25 @@ function fileedit_download($fid) {
 * Callback URL for uploading URL
 */
 function fileedit_upload($fid) {
-  //@todo
+  //@todo handle revisions if revisions should be created at this entity bundle
   print_r($_FILES);
-  die('upload');
+  $tmp_name = $_FILES['userfile']['tmp_name'];
+  
+  //load the file
+  $file = file_load(array($fid));
+  $uri = $file->uri;
+  //save the new file back to its uri
+  drupal_move_uploaded_file($tmp_name, $uri);
+  
+  print_r($file);
+  die();
+  echo $fid."--".$tmp_name;
+  die();
+
+  //@todo do something if the file was not uploaded successfully
+  
+  
+  //file_save_upload($tmp_name, );
 }
 
 /**
@@ -271,15 +287,6 @@ function _fileedit_get_jar_urls() {
     'httpmime_jar_url' => url('fileedit/getjarfile/httpmime/4.1.2', array('absolute' => true)),
   );
   
-  /*
-  return array(
-    'commons_logging_jar_url' => url($module_path.'/jar/commons-logging-1.1.1.jar', array('absolute' => true)),
-    'httpclient_jar_url' => url($module_path.'/jar/httpclient-4.1.2.jar', array('absolute' => true)),
-    'httpcore_jar_url' => url($module_path.'/jar/httpcore-4.1.2.jar', array('absolute' => true)),
-    'filehandler_jar_url' => url($module_path.'/jar/FileHandler.jar', array('absolute' => true)),
-    'httpmime_jar_url' => url($module_path.'/jar/httpmime-4.1.2.jar', array('absolute' => true)),
-  );
-  */
 }
 
 /**
