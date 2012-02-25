@@ -4,6 +4,7 @@
  * Code for the fileedit module.
  */
 
+ 
 /**
 * Implements hook_menu
 */ 
@@ -73,12 +74,10 @@ function fileedit_theme() {
 * Access Callback URL for downloading URL
 */
 function fileedit_download_access($fid, $sid) {
-  // TODO fixen!
-  return true;
 
   //user must have a valid session ID
   $auser = _fileedit_user_by_sid($sid);
-  
+ 
   if (!is_object($auser))
     return false;
 
@@ -165,8 +164,6 @@ function fileedit_upload($fid) {
 * Access Callback URL for uploading URL
 */
 function fileedit_upload_access($fid, $sid) {
-  // TODO fixen!
-  return true;
   
   //user must have a valid session ID
   $auser = _fileedit_user_by_sid($sid);
@@ -338,7 +335,7 @@ function _fileedit_user_by_sid($sid) {
   else {
     $user = db_query("SELECT u.*, s.* FROM {users} u INNER JOIN {sessions} s ON u.uid = s.uid WHERE s.sid = :sid", array(':sid' => $sid))->fetchObject();
   }
-  
+
   return $user;
 }
 
