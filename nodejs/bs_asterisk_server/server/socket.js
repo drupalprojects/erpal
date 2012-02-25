@@ -22,7 +22,7 @@ function Socket () {
 				return;
 		});
 			
-		connection.on('end', function() {
+		connection.on('close', function() {
 				
 				self.clientManager.removeClientBySocketClientObject (connection);
 				
