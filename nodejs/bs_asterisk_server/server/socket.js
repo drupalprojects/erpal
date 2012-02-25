@@ -57,15 +57,17 @@ function Socket () {
  * @param 	string	data	The data string.
  * @return  boolen			TRUE on success.
  */
-Socket.prototype.sendData = function (ip, data) {
+Socket.prototype.sendData = function (postData) {
 
-	var clientIndex = this.clientManager.get (ip);
+	var socketClientObject = this.clientManager.getSocketClientByPhoneNumber(
+			postData['receiverPhoneNumber']
+	);
 	
-	if (clientIndex == -1) {
+	if (socketClientObject == null) {
 		return false;
 	}
 	
-	this.clients[clientIndex].connection.write (data);
+	socketClientObject.write (postData['caller_data']);
 
 	return true;
 };

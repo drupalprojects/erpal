@@ -46,7 +46,7 @@ Daemon.prototype.getCMDArgument = function (key, defaultValue) {
  */
 Daemon.prototype.killMasterAndExit = function () {
 	
-	var process = require ('process');
+//	var process = require ('process');
 	var pid 	= this.getMasterPid();
 	
 	process.kill(pid);

@@ -71,7 +71,7 @@ HTTPPerDrupal.prototype.handleIngoingData = function (request, response) {
 
     	var post = self.queryString.parse (postData);	 
 
-		self.eventHandler.invokeListeners('sendData',  post['ip'], post['caller_data']);
+		self.eventHandler.invokeListeners('sendData',  post);
 		
 		response.writeHead ('Content-Type: application/json');
         response.write ('{"status": ok}'); // Pro forma

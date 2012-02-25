@@ -1,7 +1,7 @@
 /**
  * Provides a client manager.
  * 
- * @author 		Marc Sven Kleinböhl
+ * @author 		Marc Sven KleinbÃ¶hl
  * @copyright 	2012 (c) Bright Solutions GmbH
  * 				All rights reserved.
  */
@@ -16,7 +16,7 @@ function ClientManager () {
 ClientManager.prototype.register = function (phoneNumbers, ip) {
 	
 	this.clientEntities[ip] = {
-			'phoneNumbers': 		phoneNumbers,
+			'phoneNumbers': 		JSON.parse (phoneNumbers),
 			'socketClientObject': 	this.socketClients[ip],
 			'status':				true
 	};
