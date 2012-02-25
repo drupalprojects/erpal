@@ -18,7 +18,7 @@ function feature_erpal_basic_default_fe_block_settings() {
     'delta' => 'menu-erpal-menu',
     'theme' => 'bartik',
     'status' => '1',
-    'weight' => '-7',
+    'weight' => '-10',
     'region' => 'sidebar_first',
     'custom' => '0',
     'visibility' => '0',
