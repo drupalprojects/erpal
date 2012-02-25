@@ -13,6 +13,7 @@ define("VIEWCONTENTTYPE", "erpal_contact");
 function erpal_asterisk_notify_init() {
 	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );
 	
+  //@todo externe libraries mit dem libraries modul einbinden, dürfen nicht in der Distribution mitgeliefert werden
 	drupal_add_js( $path . '/js/erpal_asterisk.js', Array( 'every_page'=>TRUE ) );
 	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/swfobject.js', Array( 'every_page'=>TRUE ) );
 	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/FABridge.js', Array( 'every_page'=>TRUE ) );
@@ -110,6 +111,8 @@ function _erpal_asterisk_notify_get_views_of_type_erpal_contact(){
     if(isset($value->display['default']->display_options['filters']['type']['value'])) { 
       //save contenttype of view in array 
       $filter_content_type = $value->display['default']->display_options['filters']['type']['value']; 
+      
+      //@todo macht wenig sinn, der User soll sich ja irgendein view aussuchen egal ob das View einen filter auf diesen Content Type hat!
       if(in_array(VIEWCONTENTTYPE, $filter_content_type)){
         $views_array[$key] = $value->human_name;
       
