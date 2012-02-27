@@ -10,7 +10,7 @@ class BillableTestCase extends DrupalUnitTestCase {
     return array(
       'name' => 'Billable test',
       'description' => 'Unit test to ensure that the billable module functions properly.',
-      'group' => 'Factura',
+      'group' => 'Invoice',
     );
   }
   

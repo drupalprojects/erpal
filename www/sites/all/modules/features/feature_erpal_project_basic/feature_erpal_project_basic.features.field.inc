@@ -10,6 +10,82 @@
 function feature_erpal_project_basic_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'field_collection_item-field_pricing-field_currency'
+  $fields['field_collection_item-field_pricing-field_currency'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'bundle' => 'field_pricing',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'description' => 'Add a field for selecting the currency',
+      'entity_type' => 'field_collection_item',
+      'entity_types' => array(),
+      'field_instance' => array(
+        'widget' => array(
+          'module' => 'options',
+          'settings' => array(),
+          'type' => 'options_select',
+          'weight' => '4',
+        ),
+      ),
+      'field_name' => 'field_currency',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'label' => 'Currency',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(),
+        'allowed_values_function' => 'erpal_billable_field_currency_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_pricing',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Add a field for selecting the currency',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 3,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_instance' => array(
+        'widget' => array(
+          'module' => 'options',
+          'settings' => array(),
+          'type' => 'options_select',
+          'weight' => '4',
+        ),
+      ),
+      'field_name' => 'field_currency',
+      'label' => 'Currency',
+      'required' => FALSE,
+      'settings' => array(
+        'allowed_values' => array(),
+        'allowed_values_function' => 'erpal_billable_field_currency_allowed_values',
+        'user_register_form' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+      'widget' => array(
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 4,
+      ),
+    ),
+  );
+
   // Exported field: 'field_collection_item-field_pricing-field_price'
   $fields['field_collection_item-field_pricing-field_price'] = array(
     'field_config' => array(
@@ -138,6 +214,82 @@ function feature_erpal_project_basic_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'field_collection_item-field_pricing-field_vat_rate'
+  $fields['field_collection_item-field_pricing-field_vat_rate'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'bundle' => 'field_pricing',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'description' => 'Add a reference to a specification to erpal_tasks node type',
+      'entity_type' => 'field_collection_item',
+      'entity_types' => array(),
+      'field_instance' => array(
+        'widget' => array(
+          'module' => 'options',
+          'settings' => array(),
+          'type' => 'options_select',
+          'weight' => '3',
+        ),
+      ),
+      'field_name' => 'field_vat_rate',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'label' => 'VAT',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(),
+        'allowed_values_function' => 'erpal_billable_field_vat_rate_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_pricing',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Add a reference to a specification to erpal_tasks node type',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 2,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_instance' => array(
+        'widget' => array(
+          'module' => 'options',
+          'settings' => array(),
+          'type' => 'options_select',
+          'weight' => '3',
+        ),
+      ),
+      'field_name' => 'field_vat_rate',
+      'label' => 'VAT',
+      'required' => FALSE,
+      'settings' => array(
+        'allowed_values' => array(),
+        'allowed_values_function' => 'erpal_billable_field_vat_rate_allowed_values',
+        'user_register_form' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+      'widget' => array(
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 3,
       ),
     ),
   );
@@ -1712,11 +1864,14 @@ function feature_erpal_project_basic_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Add a field for selecting the currency');
+  t('Add a reference to a specification to erpal_tasks node type');
   t('Assigned To Users');
   t('Billing Duration');
   t('Body');
   t('Choose contacts that are involved in this project');
   t('Contacts');
+  t('Currency');
   t('Customer');
   t('Customer of the project');
   t('Date');
@@ -1738,6 +1893,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('The description of a task');
   t('The duration that will be billed to the customer');
   t('Time estimated for this task');
+  t('VAT');
   t('When will the project be developed? Only for planing purpose.');
   t('Work progress of field');
   t('endpoints');

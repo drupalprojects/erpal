@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Serial module.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function serial_uninstall() {
+  /*
+   * Schema tables are now dropped automatically.  However, if any work needs
+   * to be done before this, do it here.
+   */
+}
+
+/**
+ * Implements hook_field_schema().
+ */
+function serial_field_schema($field) {
+  switch ($field['type']) {
+    case 'serial':
+      $columns['value'] = array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'sortable' => TRUE,
+        'views' => TRUE,
+        'index' => TRUE,
+      );
+      break;
+  }
+  return array(
+    'columns' => $columns
+  );
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function serial_schema() {
+  // Get the standard schema:
+  module_load_include('inc', 'serial');
+  $table_schema = _serial_get_table_schema();
+
+  // Build the schema by iteration over all the serial field instances:
+  $schema = array();
+  $query = "SELECT i.bundle AS bundle, f.field_name AS field_name ".
+           "FROM {field_config} f, {field_config_instance} i ".
+           "WHERE f.field_name = i.field_name AND f.type = 'serial' AND i.deleted = 0";
+  $result = db_query($query);
+  foreach ($result as $field) {
+    $table = _serial_get_table_name($field->bundle, $field->field_name);
+    $schema[$table] = $table_schema;
+  }
+
+  // Return the schema of all the assistant tables (one per serial field instance):
+  return $schema;
+}
+

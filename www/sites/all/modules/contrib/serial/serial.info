@@ -1,0 +1,14 @@
+name = Serial
+description = Defines atomic auto increment (serial) field type.
+package = Fields
+core = 7.x
+dependencies[] = field
+files[] = serial.module
+
+
+; Information added by drupal.org packaging script on 2011-11-05
+version = "7.x-1.2"
+core = "7.x"
+project = "serial"
+datestamp = "1320468935"
+

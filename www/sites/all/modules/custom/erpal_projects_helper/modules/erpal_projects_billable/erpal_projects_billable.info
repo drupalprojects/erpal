@@ -12,6 +12,6 @@ files[] = erpal_projects_billable.module
 files[] = erpal_projects_billable.install
 files[] = erpal_projects_billable.fields.inc
 
-dependencies[] = feature_erpal_factura
+dependencies[] = feature_erpal_invoice
 dependencies[] = billable
 dependencies[] = feature_erpal_project_basic
