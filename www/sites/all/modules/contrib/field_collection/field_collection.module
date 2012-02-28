@@ -190,6 +190,7 @@ class FieldCollectionItemEntity extends Entity {
       $this->hostEntity = $entity;
       $this->langcode = LANGUAGE_NONE;
       list($this->hostEntityId) = entity_extract_ids($this->hostEntityType, $this->hostEntity);
+
       // If the host entity is not saved yet, set the id to FALSE. So
       // fetchHostDetails() does not try to load the host entity details.
       if (!isset($this->hostEntityId)) {

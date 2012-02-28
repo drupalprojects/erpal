@@ -13,7 +13,7 @@ function _erpal_projects_billable_insert_task($node) {
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);
   
   //only process if the task is completed!
-  $task_status = $node->field_task_status['und'][0]['value'];
+  $task_status = $node->field_task_status[LANGUAGE_NONE][0]['value'];
   if ($task_status != 'completed')
     return;
   
@@ -86,7 +86,7 @@ function _erpal_projects_billable_update_task($node) {
       
   //There should be only one billable to this task. But we get an array so we process it completely 
   $has_billable = false;
-  $task_status = $node->field_task_status['und'][0]['value'];
+  $task_status = $node->field_task_status[LANGUAGE_NONE][0]['value'];
   foreach ($billables as $id=>$billable) {
     $has_billable = true;
     if ($billable->billed)

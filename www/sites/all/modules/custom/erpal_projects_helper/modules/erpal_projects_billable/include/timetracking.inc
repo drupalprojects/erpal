@@ -10,7 +10,7 @@
 */
 function _erpal_projects_billable_insert_timetracking($node) {
   
-  $subject_nid = $node->field_timetracking_subject['und'][0]['nid'];
+  $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
   $subject_node = node_load($subject_nid);
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($subject_node);
   //$billing_duration = _erpal_projects_helper_get_billing_duration($node);
@@ -24,7 +24,7 @@ function _erpal_projects_billable_insert_timetracking($node) {
     $single_price = $price;
     $customer_nid = $customer_node->nid;
     $subject_nid = $node->nid;  //the subject is the timetracking itself
-    $quantity = $node->field_billing_duration['und'][0]['value']; //due to other hook this field should allways be filled
+    $quantity = $node->field_billing_duration[LANGUAGE_NONE][0]['value']; //due to other hook this field should allways be filled
     $currency = $billable_information['currency'];
     $vat_rate = $billable_information['vat_rate'];
     $subject_title = $node->title;
@@ -87,7 +87,7 @@ function _erpal_projects_billable_update_timetracking($node) {
       $single_price = $price;
       $customer_nid = $customer_node->nid;
       $subject_nid = $subject_node->nid;  //the subject is the timetracking itself
-      $quantity = $subject_node->field_billing_duration['und'][0]['value']; //due to other hook this field should allways be filled
+      $quantity = $subject_node->field_billing_duration[LANGUAGE_NONE][0]['value']; //due to other hook this field should allways be filled
       $currency = $billable_information['currency'];
       $vat_rate = $billable_information['vat_rate'];
       $subject_title = $subject_node->title;

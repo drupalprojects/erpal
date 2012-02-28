@@ -3,7 +3,7 @@
  * @file
  * Code for the erpal_invoice_helper module.
  */
-
+module_load_include('inc', 'erpal_invoice_helper', 'inc/views_links');
 /**
 * Implements hook_menu
 */ 
@@ -29,50 +29,25 @@ function erpal_invoice_helper_permission(){
     ),
   );
 }
- 
+
 /**
-* This function is called by the view billables. Links for creating some billables are added. 
-* With the hook other modules could add some more links.
+* Function to start caclulating all the fields on an invoice node
+* @param $invoice the invoice node the caclulation will be processed
 */
-function _erpal_invoice_helper_view_billables_header_content() {
-  
-  $add_erpal_billable = _erpal_invoice_helper_create_billable_link();
-  
-  $my_content = array(
-    $add_erpal_billable,
-  );
-  
-  //ask all other modules for content in the header area of the view
-  $other_module_content = module_invoke_all('view_billables_header_content');
-  
-  $all_content = array_merge($other_module_content, $my_content);
-  
-  $content = '';
-  foreach ($all_content as $a_content) {
-    $content .= '<br>'.$a_content;
-  }
-  
-  return $content;
+function _erpal_invoice_helper_caclulate_invoice($invoice) {
+
+  module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+  _erpal_invoice_helper_calculate_fields($invoice);
 }
 
 /**
-* Helper function to create new contact link
+* Implements hook_node_save
 */
-function _erpal_invoice_helper_create_billable_link($q_arg = false, $query_arr = array(), $title=false){
-  if (!$q_arg)
-    $q = current_path();
-  else 
-    $q = $q_arg;
-  
-  if (!isset($query_arr['destination']) || $q_arg)
-    $query_arr['destination'] = $q;
-  
-  if (!$title)
-    $title = t("Create new billable");
-    
-  return l(
-    $title, "billable/add", array(
-        'query' => $query_arr,
-    )
-  );
+function erpal_invoice_helper_node_presave($node) {
+  //it must be an invoice node
+  $type = node_type_get_type($node);
+
+  if ($type->type == 'erpal_invoice')
+    _erpal_invoice_helper_caclulate_invoice($node);
 }
+ 

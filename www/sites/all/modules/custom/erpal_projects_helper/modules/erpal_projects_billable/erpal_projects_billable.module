@@ -63,9 +63,9 @@ function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
 */
 function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_state) {
   
-  $form['field_pricing']['und'][0]['#prefix'] = '<div id="pricing_wrapper">';
-  $form['field_pricing']['und'][0]['#suffix'] = '</div>';
-  $form['field_project_ref']['und'][0]['nid']['#ajax'] = array(
+  $form['field_pricing'][LANGUAGE_NONE][0]['#prefix'] = '<div id="pricing_wrapper">';
+  $form['field_pricing'][LANGUAGE_NONE][0]['#suffix'] = '</div>';
+  $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#ajax'] = array(
     'callback' => '_erpal_projects_billable_ajax_pricing_preselect_callback',
     'wrapper' => 'pricing_wrapper',
     'method' => 'replace',
@@ -78,11 +78,11 @@ function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_s
 */
 function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state) {
 
-  $project_nid = $form['field_project_ref']['und'][0]['nid']['#default_value'];
+  $project_nid = $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
  
   //perhaps, there is a project_nid in form_state, we can use that because it has been submitted by ajax!
   if (!empty($form_state['values']['field_project_ref']))
-    $project_nid = $form_state['values']['field_project_ref']['und'][0]['nid'];
+    $project_nid = $form_state['values']['field_project_ref'][LANGUAGE_NONE][0]['nid'];
 
   if (!$project_nid)
     return; //if we dont have a project, we dont have data to preselect the task price fields with
@@ -91,9 +91,9 @@ function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state
   //price mode "per_hour" we preselect the price (this is the price per hour).
   $preselects = _erpal_projects_billable_get_task_preselects($project_nid);
 
-  $form['field_pricing']['und'][0]['field_price_mode']['und']['#value'] = $preselects['price_mode'];
-  $form['field_pricing']['und'][0]['field_vat_rate']['und']['#value'] = $preselects['vat_rate'];
-  $form['field_pricing']['und'][0]['field_currency']['und']['#value'] = $preselects['currency'];
+  $form['field_pricing'][LANGUAGE_NONE][0]['field_price_mode'][LANGUAGE_NONE]['#value'] = $preselects['price_mode'];
+  $form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#value'] = $preselects['vat_rate'];
+  $form['field_pricing'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#value'] = $preselects['currency'];
   
   $price = '';
   if ($preselects['price_mode'] == 'per_hour') {
@@ -101,7 +101,7 @@ function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state
     $price = $preselects['price'];
   }
   
-  $form['field_pricing']['und'][0]['field_price']['und'][0]['value']['#value'] = $price;
+  $form['field_pricing'][LANGUAGE_NONE][0]['field_price'][LANGUAGE_NONE][0]['value']['#value'] = $price;
 }
 
 /**
@@ -138,7 +138,7 @@ function _erpal_project_billable_save_billable($subject_title, $customer_nid, $s
   $billable->date_delivery = $date_delivery;
   $billable->created = time();
   $billable->changed = time();
-  $billable->field_customer_ref['und'][0]['nid'] = $customer_nid;
+  $billable->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
   entity_save('billable', $billable);
   
   return true;
@@ -177,11 +177,11 @@ function _erpal_projects_billable_subject_billabel_information_task_subject($nod
   
   //add the customer 
   //first get the project
-  $project_nid = $node->field_project_ref['und'][0]['nid'];
+  $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['nid'];
   $project_node = node_load($project_nid);
   
   //now get customer of project
-  $customer_nid = $project_node->field_customer_ref['und'][0]['nid'];
+  $customer_nid = $project_node->field_customer_ref[LANGUAGE_NONE][0]['nid'];
   $customer_node = node_load($customer_nid);
   
   $info['customer'] = false;
@@ -198,7 +198,7 @@ function _erpal_projects_billable_subject_billabel_information_task_subject($nod
 function _erpal_projects_billable_subject_billabel_information_timetracking_subject($node) {
   //get the referenced node first
   
-  $subject_nid = $node->field_timetracking_subject['und'][0]['nid'];
+  $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
   $subject_node = node_load($subject_nid);
   
   return _erpal_projects_billable_subject_billabel_information_task_subject($subject_node);
@@ -214,17 +214,17 @@ function _erpal_projects_billable_get_pricing($node) {
   
   if ($type == 'erpal_project' || $type == 'erpal_task') {
     //get the pricing field collection    
-    $pricing_entity_id = $node->field_pricing['und'][0]['value'];
+    $pricing_entity_id = $node->field_pricing[LANGUAGE_NONE][0]['value'];
 
     $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
     $pricing_entity = $pricing_entity[$pricing_entity_id];
-    $price_mode = $pricing_entity->field_price_mode['und'][0]['value']; 
+    $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']; 
     $price = 0;
-    if (isset($pricing_entity->field_price['und']))
-      $price = $pricing_entity->field_price['und'][0]['value'];
+    if (isset($pricing_entity->field_price[LANGUAGE_NONE]))
+      $price = $pricing_entity->field_price[LANGUAGE_NONE][0]['value'];
 
-    $currency  = $pricing_entity->field_currency['und'][0]['value'];
-    $vat_rate  = $pricing_entity->field_vat_rate['und'][0]['value'];
+    $currency  = $pricing_entity->field_currency[LANGUAGE_NONE][0]['value'];
+    $vat_rate  = $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
     
     return array(
       'price_mode' => $price_mode,

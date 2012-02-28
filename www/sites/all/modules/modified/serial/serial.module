@@ -10,7 +10,7 @@
 //==================//
 
 /**
- * Implementation of hook_field_info().
+ * Implements hook_field_info().
  */
 function serial_field_info() {
   return array(
@@ -24,7 +24,7 @@ function serial_field_info() {
 }
 
 /**
- * Implementation of hook_field_create_instance().
+ * Implements hook_field_create_instance().
  */
 function serial_field_create_instance($instance) {
   $field = field_read_field($instance['field_name']);
@@ -45,7 +45,7 @@ function serial_field_create_instance($instance) {
 }
 
 /**
- * Implementation of hook_field_delete_instance().
+ * Implements hook_field_delete_instance().
  */
 function serial_field_delete_instance($instance) {
   $field = field_read_field($instance['field_name']);
@@ -57,7 +57,7 @@ function serial_field_delete_instance($instance) {
 }
 
 /**
- * Implementation of hook_form_alter().
+ * Implements hook_form_alter().
  */
 function serial_form_alter(&$form, $form_state, $form_id) {
 
@@ -76,37 +76,50 @@ function serial_form_alter(&$form, $form_state, $form_id) {
 }
 
 /**
- * Implementation of hook_field_insert().
+ * Implements hook_field_presave().
  */
-function serial_field_insert($entity_type, $entity, $field, $instance, $langcode, &$items) {
-    module_load_include('inc', 'serial');
-    $sid = _serial_generate_value($entity->nid, $instance['bundle'], $field['field_name']);
+function serial_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  module_load_include('inc', 'serial');
+  if (empty($items)) {
+    $sid = _serial_generate_value($instance['bundle'], $field['field_name']);
     $items = array(array('value' => $sid));
-    $entity->$field['field_name'] = $items;
+  }
 }
 
+
 /**
- * Implementation of hook_field_is_empty().
+ * Implements hook_field_is_empty().
  */
 function serial_field_is_empty($item, $field) {
   return FALSE; // never should be treated as empty
 }
 
 /**
- * Implementation of hook_node_type_update()
+ * Implements hook_node_presave().
+ */
+function serial_node_presave($node) {
+  if (module_exists('auto_nodetitle')) {
+    if (auto_nodetitle_get_setting($node->type)) {
+      auto_nodetitle_set_title($node);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_type_update().
  */
 function serial_node_type_update($info) {
-    // Handle content type rename:
-    if (isset($info->old_type) && ($info->old_type != $info->type)) {
-      module_load_include('inc', 'serial');
-      _serial_rename_tables($info->old_type, $info->type);
-    }
+  // Handle content type rename:
+  if (isset($info->old_type) && ($info->old_type != $info->type)) {
+    module_load_include('inc', 'serial');
+    _serial_rename_tables($info->old_type, $info->type);
+  }
 }
 
 // Tokens for fields are currently not supported - http://drupal.org/node/691078.
 
 ///**
-// * Implementation of hook_token_info().
+// * Implements hook_token_info().
 // */
 //function serial_token_info() {
 //  $type = array(
@@ -126,7 +139,7 @@ function serial_node_type_update($info) {
 //}
 //
 ///**
-// * Implementation of hook_tokens().
+// * Implements hook_tokens().
 // */
 //function serial_tokens($type, $tokens, $data, $options) {
 //  // TODO
@@ -137,7 +150,7 @@ function serial_node_type_update($info) {
 //=================//
 
 /**
- * Implementation of hook_field_formatter_info().
+ * Implements hook_field_formatter_info().
  */
 function serial_field_formatter_info() {
   return array(
@@ -165,12 +178,12 @@ function serial_field_formatter_view($entity_type, $entity, $field, $instance, $
   return $element;
 }
 
-/****************************************************************************
- ** Theme Functions *********************************************************
-/****************************************************************************/
+/**
+ * Theme Functions
+ */
 
 /**
- * Implementation of hook_theme().
+ * Implements hook_theme().
  */
 function serial_theme() {
 
@@ -196,7 +209,7 @@ function theme_serial_formatter_default($variables) {
 //==============//
 
 /**
- * Implementation of hook_field_widget_info().
+ * Implements hook_field_widget_info().
  */
 function serial_field_widget_info() {
   return array(
@@ -208,7 +221,7 @@ function serial_field_widget_info() {
 }
 
 /**
- * Implementation of hook_field_widget().
+ * Implements hook_field_widget().
  */
 function serial_field_widget(&$form, &$form_state, $field, $instance, $items, $delta = 0) {
   return array(
@@ -218,4 +231,3 @@ function serial_field_widget(&$form, &$form_state, $field, $instance, $items, $d
     )
   );
 }
-

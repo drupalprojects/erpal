@@ -114,16 +114,16 @@ function _serial_get_table_schema() {
         'not null' => TRUE,
         'description' => 'The atomic serial field.',
       ),
-      'nid' => array(
-        'type' => 'int',
-        'unsigned' => TRUE,
+      'uniqid' => array(
+        'description' => 'Unique temporary allocation Id.',
+        'type' => 'varchar',
+        'length' => 23,
         'not null' => TRUE,
-        'description' => 'Id of the owner node.',
-      ),
+        'default' => ''),
     ),
     'primary key' => array('sid'),
     'unique keys' => array(
-      'nid' => array('nid'),
+      'uniqid' => array('uniqid'),
     ),
   );
 }
@@ -142,29 +142,30 @@ function _serial_get_table_schema() {
  * @return
  *   the unique serial value number.
  */
-function _serial_generate_value($nid, $bundle, $field_name, $delete = TRUE) {
+function _serial_generate_value($bundle, $field_name, $delete = TRUE) {
 
   // Get the name of the relevant table.
   $table = _serial_get_table_name($bundle, $field_name);
 
-  // Create a temporary record for this node and retrieve the serial value.
+  // Insert a temporary record to get a new unique serial value.
+  $uniqid = uniqid('', TRUE);
   $sid = db_insert($table)
     ->fields(array(
-      'nid' => $nid,
+      'uniqid' => $uniqid,
     ))
     ->execute();
 
   // If there's a reason why it's come back undefined, reset it.
   $sid = isset($sid) ? $sid : 0;
 
-  // Delete old temporary records:
+  // Delete the temporary record.
   if ($delete && ($sid % 10) == 0) {
-    db_delete($table)
-      ->condition('nid', $nid, '<')
-      ->execute();
+  db_delete($table)
+    ->condition('uniqid', $uniqid, '=')
+    ->execute();
   }
 
-  // Return the new unique serial value:
+  // Return the new unique serial value.
   return $sid;
 }
 
@@ -189,22 +190,27 @@ function _serial_init_old_nodes($bundle, $field_name) {
   foreach ($result as $node) {
     $nid = $node->nid;
     $node = node_load($nid);
-    $sid = _serial_generate_value($nid, $bundle, $field_name, FALSE);
+    $sid = _serial_generate_value($bundle, $field_name, FALSE);
     $node->{$field_name} = array('und' => array(array('value' => $sid)));
     node_save($node);
-    $last_nid = $nid;
     $count++;
-  }
-
-  // Delete temporary records (except the last):
-  if (isset($last_nid)) {
-    $serial_table = _serial_get_table_name($bundle, $field_name);
-    db_delete($serial_table)
-      ->condition('nid', $last_nid, '<')
-      ->execute();
   }
 
   // Return the number of existing nodes that have been initialized:
   return $count;
 }
 
+/**
+ * Retrieves all the managed serial fields.
+ *
+ * @return result set containing pairs of (node type name, field name).
+ */
+function _serial_get_all_fields() {
+  $query = db_select('field_config', 'f');
+  $query->join('field_config_instance', 'i', 'i.field_name = f.field_name');
+  $query->fields('i', array('bundle', 'field_name'))
+        ->condition('f.type', 'serial', '=')
+        ->condition('i.deleted', 0, '=');
+  $result = $query->execute();
+  return $result->fetchAll();
+}

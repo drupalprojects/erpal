@@ -4,7 +4,7 @@
 * @file this file handles all functions needed for ajax requests in the module erpal_projects_billable
 */
 function _erpal_projects_billable_ajax_pricing_preselect_callback($form, $form_state) {
-  return $form['field_pricing']['und'][0];  //form has already been processed, so just return the elements
+  return $form['field_pricing'][LANGUAGE_NONE][0];  //form has already been processed, so just return the elements
 }
 
 /**
