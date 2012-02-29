@@ -129,9 +129,9 @@ function page_manager_http_response_admin_summary($handler, $task, $subtask, $pa
   $plugin = page_manager_get_task_handler($handler->handler);
 
   $object = ctools_context_handler_get_task_object($task, $subtask, $handler);
-  $context = ctools_context_load_contexts($object, TRUE);
+  $display->context = ctools_context_load_contexts($object, TRUE);
 
-  $access = ctools_access_group_summary(!empty($handler->conf['access']) ? $handler->conf['access'] : array(), $context);
+  $access = ctools_access_group_summary(!empty($handler->conf['access']) ? $handler->conf['access'] : array(), $display->context);
   if ($access) {
     $access = t('This panel will be selected if @conditions.', array('@conditions' => $access));
   }

@@ -46,7 +46,6 @@ function page_manager_term_view_page_manager_tasks() {
       // Allow this to be enabled or disabled:
       'disabled' => variable_get('page_manager_term_view_disabled', TRUE),
       'enable callback' => 'page_manager_term_view_enable',
-      'access callback' => 'page_manager_term_view_access_check',
 
       // Allow additional operations
       'operations' => array(
@@ -310,18 +309,3 @@ function page_manager_term_view_admin_summary($task, $subtask) {
   return $output;
 }
 
-/**
- * Callback to determine if a page is accessible.
- *
- * @param $task
- *   The task plugin.
- * @param $subtask_id
- *   The subtask id
- * @param $contexts
- *   The contexts loaded for the task.
- * @return
- *   TRUE if the current user can access the page.
- */
-function page_manager_term_view_access_check($task, $subtask_id, $contexts) {
-  return user_access('access content');
-}

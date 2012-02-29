@@ -69,11 +69,11 @@ function _erpal_projects_billable_update_task($node) {
   $price_mode = isset($billable_information['per_hour']) ? $billable_information['per_hour'] : 0;
   $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
   $customer_node = $billable_information['customer'];
-  
+
   //not a fixed price project, no customer or no price set? Skip!
   if (!($price_mode == 'fixed_price' && $price && $customer_node))
     return;
-  
+
   //otherwise prepare data for the billable entity
   $single_price = $price;
   $customer_nid = $customer_node->nid;
@@ -83,7 +83,7 @@ function _erpal_projects_billable_update_task($node) {
   $vat_rate = $billable_information['vat_rate'];
   $subject_title = $node->title;
   $date_delivery = $node->created;
-      
+
   //There should be only one billable to this task. But we get an array so we process it completely 
   $has_billable = false;
   $task_status = $node->field_task_status[LANGUAGE_NONE][0]['value'];

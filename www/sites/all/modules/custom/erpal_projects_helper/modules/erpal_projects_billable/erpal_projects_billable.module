@@ -16,6 +16,7 @@ require_once 'include/ajax.inc';
 */
 function erpal_projects_billable_node_insert($node) {
   $type = $node->type;
+
   if ($type == 'erpal_timetracking')
     _erpal_projects_billable_insert_timetracking($node);
  
@@ -28,6 +29,7 @@ function erpal_projects_billable_node_insert($node) {
 */
 function erpal_projects_billable_node_update($node) {
   $type = $node->type;
+
   if ($type == 'erpal_timetracking')
     _erpal_projects_billable_update_timetracking($node);
  
@@ -47,11 +49,18 @@ function erpal_projects_billable_element_info_alter(&$type) {
 * implements hook_form_alter
 */
 function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
+
   if ($form_id == 'erpal_task_node_form') {
     $nid = $form['nid']['#value'];
-    if (!$nid) { //only alter the form fields if the node will be created, not at update
-      _erpal_projects_billable_preselect_task_create_form($form, $form_state);      
-    }
+    //if (!$nid) { //only alter the form fields if the node will be created, not at update
+      if (count($form_state['input']) <= 0 || isset($form_state['triggering_element'])) {
+        //if we dont do that if statement, the form will be altered after submission which will lead to 
+        //another altering of pricing information, which is bad!
+        dpm('drin');
+        _erpal_projects_billable_preselect_task_create_form($form, $form_state);      
+      }
+      dpm('drunter');
+    //}
     
     _erpal_projects_billable_prepare_ajax_pricing_preselect($form, $form_state);
   }  
@@ -62,7 +71,8 @@ function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
 * if a task is created NOT BY using the reference by url widget
 */
 function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_state) {
-  
+  dpm($form_state);
+  dpm($form);
   $form['field_pricing'][LANGUAGE_NONE][0]['#prefix'] = '<div id="pricing_wrapper">';
   $form['field_pricing'][LANGUAGE_NONE][0]['#suffix'] = '</div>';
   $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#ajax'] = array(
@@ -110,7 +120,12 @@ function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state
 function _erpal_projects_billable_get_task_preselects($project_nid) {
 
   $project_node = node_load($project_nid);
-  return _erpal_projects_billable_get_pricing($project_node);
+  $preselects = _erpal_projects_billable_get_pricing($project_node);
+  
+  if ($preselects['price_mode'] == 'fixed_price')  
+    $preselects['price_mode'] = 'not_billable'; //in most cases if the project is a fixed price project, the task is not billable
+    
+  return $preselects;
 }
 
 
@@ -222,9 +237,14 @@ function _erpal_projects_billable_get_pricing($node) {
     $price = 0;
     if (isset($pricing_entity->field_price[LANGUAGE_NONE]))
       $price = $pricing_entity->field_price[LANGUAGE_NONE][0]['value'];
-
-    $currency  = $pricing_entity->field_currency[LANGUAGE_NONE][0]['value'];
-    $vat_rate  = $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
+    
+    $currency = 0;
+    if (isset($pricing_entity->field_currency[LANGUAGE_NONE]))
+      $currency  = $pricing_entity->field_currency[LANGUAGE_NONE][0]['value'];
+    
+    $vat_rate = 0;
+    if (isset($pricing_entity->field_vat_rate[LANGUAGE_NONE]))
+      $vat_rate  = $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
     
     return array(
       'price_mode' => $price_mode,

@@ -32,7 +32,7 @@ $plugin = array(
  */
 function ctools_context_create_node_add_form($empty, $data = NULL, $conf = FALSE) {
   static $creating = FALSE;
-  $context = new ctools_context(array('form', 'node_add', 'node_form', 'node'));
+  $context = new ctools_context(array('form', 'node_add', 'node_form'));
   $context->plugin = 'node_add_form';
 
   if ($empty || ($creating)) {

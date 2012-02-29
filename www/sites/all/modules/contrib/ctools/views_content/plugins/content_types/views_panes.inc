@@ -596,10 +596,8 @@ function views_content_views_panes_content_type_admin_info($subtype, $conf, $con
     $argument_input = $view->display_handler->get_option('argument_input');
 
     foreach ($conf['arguments'] as $key => $value) {
-      if(!empty($value)){
-        $label = $argument_input[$key]['label'];
-        $info[] = $label . ': ' . $value;
-      }
+      $label = $argument_input[$key]['label'];
+      $info[] = $label . ': ' . $value;
     }
   }
 

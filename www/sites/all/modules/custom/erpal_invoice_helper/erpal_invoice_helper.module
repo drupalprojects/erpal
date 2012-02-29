@@ -11,6 +11,11 @@ function erpal_invoice_helper_menu(){
 
   $items = array();
   
+  $items['admin/erpal/debug'] = array(
+    'page callback' => '_erpal_invoice_helper_debug',    
+    'access callback' => true,
+  );
+  
   require_once 'inc/config.inc';
   $config_items = _erpal_invoice_helper_config_menu();
   
@@ -41,13 +46,51 @@ function _erpal_invoice_helper_caclulate_invoice($invoice) {
 }
 
 /**
-* Implements hook_node_save
+* Implements hook_node_update
 */
-function erpal_invoice_helper_node_presave($node) {
+function erpal_invoice_helper_node_update($node) {
   //it must be an invoice node
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice')
     _erpal_invoice_helper_caclulate_invoice($node);
+}
+
+/**
+* Implements hook_node_insert
+*/
+function erpal_invoice_helper_node_insert($node) {
+  //it must be an invoice node
+  $type = node_type_get_type($node);
+
+  if ($type->type == 'erpal_invoice')
+    _erpal_invoice_helper_caclulate_invoice($node);
+}
+
+//################ DEBUG ################
+function _erpal_invoice_helper_debug() {
+  test_cllection_attach();
+}
+
+function test_cllection_attach() {
+  
+  $values = array();
+  $values['field_name'] = 'field_invoice_vat';   
+  $values['field_vat_rate']['und'][0]['value'] = 19;   
+  $values['field_vat_total']['und'][0]['value'] = 98;   
+  $node = node_load(71);
+  dpm($node);
+
+  $vat_rate_collection = entity_create('field_collection_item', $values);
+  $vat_rate_collection->setHostEntity('node', $node);
+  
+  //$vat_rate_collection->field_vat_rate['und']['value'] = 19;
+  //$vat_rate_collection->field_vat_total['und']['value'] = 120;
+dpm($vat_rate_collection);
+  $vat_rate_collection->save(); //last param skipps host save, because this will result in an endless loop!
+  
+  dpm('drin');
+  
+  return 'fertig';
 }
  

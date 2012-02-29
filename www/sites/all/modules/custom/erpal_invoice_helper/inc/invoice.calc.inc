@@ -50,6 +50,7 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
       continue;
       
     $billable = billable_load($line_item['target_id']);
+
     $vat_rate = $billable->vat_rate;
     $vat = $billable->total_vat;
     if (!isset($vat_rates[$vat_rate]))
@@ -75,41 +76,41 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
     if (isset($invoice->field_invoice_vat[LANGUAGE_NONE][$delta])) {
       //if there is already an entitiy, load it and re-caclulate its values
       $id = $invoice->field_invoice_vat[LANGUAGE_NONE][$delta];
+      $id = $id['value'];
       $vat_rate_collection = entity_load('field_collection_item', array($id));
-      dpm($invoice);
-      dpm($vat_rate_collection);
-      dpm('ff');
-    }
 
+      if (is_array($vat_rate_collection))
+        $vat_rate_collection = array_shift($vat_rate_collection);
+    }
+    
     if(!$vat_rate_collection) {
       //create a new field_collection_item entity
       $values = array();
       $values['field_name'] = 'field_invoice_vat';      
-
+      $values['field_vat_rate'][LANGUAGE_NONE][0]['value'] = $vat_rate;   
+      $values['field_vat_total'][LANGUAGE_NONE][0]['value'] = $vat;   
+      
+      //save the entity to link it to the host with its id, otherwise we dont have an id      
       $vat_rate_collection = entity_create('field_collection_item', $values);
       
       // Attach the field_collection entity to the application node. This has to
       // happen separately so that it actually works -- you can't just specify
       // this via the $values array.
       //@see http://drupal.org/node/1353926
-      $vat_rate_collection->setHostEntity('node', $invoice, LANGUAGE_NONE, FALSE); //last param: true= link node to host
+      $vat_rate_collection->setHostEntity('node', $invoice, LANGUAGE_NONE, TRUE); //last param: true= link node to host
       
-      //save the entity to link it to the host with its id, otherwise we dont have an id
-      $vat_rate_collection->field_vat_rate[LANGUAGE_NONE]['value'] = $vat_rate;
-      $vat_rate_collection->field_vat_total[LANGUAGE_NONE]['value'] = $vat;
+      dpm('ggg');
+      
+      $vat_rate_collection->save();  //last param skipps host save, because this will result in an endless loop!
+    } else    
+    if (is_object($vat_rate_collection)) {
+      //add values here, too because we manipulate an existing entity
+      $vat_rate_collection->field_vat_rate[LANGUAGE_NONE][0]['value'] = $vat_rate;
+      $vat_rate_collection->field_vat_total[LANGUAGE_NONE][0]['value'] = $vat;
+      dpm('hhhh');
+      //no set host entity needed cause the collection entity is already attached to the node
       $vat_rate_collection->save(true); //last param skipps host save, because this will result in an endless loop!
-      
-      //we create the link from the host to the entity manually
-      //otherwise it will noot work (bug in setHostEntity whil using it in hook_node_presave like we do?
-      $invoice->field_invoice_vat[LANGUAGE_NONE][]['value'] = $vat_rate_collection->item_id;
     }
-    
-    //now we are sure that we have a vat field collection entity, we set the values
-    if (is_array($vat_rate_collection))
-      $vat_rate_collection = array_shift($vat_rate_collection);
-    //$vat_rate_collection->field_vat_rate[LANGUAGE_NONE]['value'] = $vat_rate;
-    //$vat_rate_collection->field_vat_total[LANGUAGE_NONE]['value'] = $vat;
-    //$vat_rate_collection->save(true); //last param skipps host save, because this will result in an endless loop!
     
     $delta++;
   }
