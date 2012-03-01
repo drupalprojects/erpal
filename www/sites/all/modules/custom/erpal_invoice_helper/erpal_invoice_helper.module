@@ -67,30 +67,21 @@ function erpal_invoice_helper_node_insert($node) {
     _erpal_invoice_helper_caclulate_invoice($node);
 }
 
-//################ DEBUG ################
-function _erpal_invoice_helper_debug() {
-  test_cllection_attach();
-}
+/**
+* Node gets validated
+*/
+function erpal_invoice_helper_node_validate($node, $form, &$form_state) {
+  //it must be an invoice node
+  $type = node_type_get_type($node);
 
-function test_cllection_attach() {
-  
-  $values = array();
-  $values['field_name'] = 'field_invoice_vat';   
-  $values['field_vat_rate']['und'][0]['value'] = 19;   
-  $values['field_vat_total']['und'][0]['value'] = 98;   
-  $node = node_load(71);
-  dpm($node);
-
-  $vat_rate_collection = entity_create('field_collection_item', $values);
-  $vat_rate_collection->setHostEntity('node', $node);
-  
-  //$vat_rate_collection->field_vat_rate['und']['value'] = 19;
-  //$vat_rate_collection->field_vat_total['und']['value'] = 120;
-dpm($vat_rate_collection);
-  $vat_rate_collection->save(); //last param skipps host save, because this will result in an endless loop!
-  
-  dpm('drin');
-  
-  return 'fertig';
+  if ($type->type == 'erpal_invoice') {
+     module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.validate');
+    $errors = _erpal_invoice_helper_invoice_validate($node);
+    //now set form errors
+    foreach ($errors as $fieldname=>$field_errors) {
+      foreach ($field_errors as $text) {
+        form_set_error($fieldname, $text);
+      } 
+    }
+  }
 }
- 

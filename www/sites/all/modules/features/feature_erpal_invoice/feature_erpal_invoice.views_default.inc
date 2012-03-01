@@ -48,6 +48,27 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['billable_id']['id'] = 'billable_id';
   $handler->display->display_options['fields']['billable_id']['table'] = 'billable';
   $handler->display->display_options['fields']['billable_id']['field'] = 'billable_id';
+  /* Field: Billable: Subject */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'billable';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['subject']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['subject']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['subject']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['subject']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['subject']['hide_alter_empty'] = 1;
   /* Field: Billable: Billed */
   $handler->display->display_options['fields']['billed']['id'] = 'billed';
   $handler->display->display_options['fields']['billed']['table'] = 'billable';
@@ -305,7 +326,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['filters']['billed']['value'] = '0';
   $handler->display->display_options['filters']['billed']['exposed'] = TRUE;
   $handler->display->display_options['filters']['billed']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['billed']['expose']['label'] = 'True';
+  $handler->display->display_options['filters']['billed']['expose']['label'] = 'Billed';
   $handler->display->display_options['filters']['billed']['expose']['use_operator'] = FALSE;
   $handler->display->display_options['filters']['billed']['expose']['operator'] = 'billed_op';
   $handler->display->display_options['filters']['billed']['expose']['identifier'] = 'billed';
@@ -368,6 +389,16 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['style_options']['override'] = 1;
   $handler->display->display_options['style_options']['sticky'] = 0;
   $handler->display->display_options['style_options']['empty_table'] = 0;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<?php
+echo _erpal_invoice_helper_view_invoices_header_content();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -384,7 +415,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Customer */
+  /* Field: Content: Contacts */
   $handler->display->display_options['fields']['field_contact_ref']['id'] = 'field_contact_ref';
   $handler->display->display_options['fields']['field_contact_ref']['table'] = 'field_data_field_contact_ref';
   $handler->display->display_options['fields']['field_contact_ref']['field'] = 'field_contact_ref';
@@ -599,7 +630,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Customer (field_contact_ref) */
+  /* Filter criterion: Content: Contacts (field_contact_ref) */
   $handler->display->display_options['filters']['field_contact_ref_nid']['id'] = 'field_contact_ref_nid';
   $handler->display->display_options['filters']['field_contact_ref_nid']['table'] = 'field_data_field_contact_ref';
   $handler->display->display_options['filters']['field_contact_ref_nid']['field'] = 'field_contact_ref_nid';

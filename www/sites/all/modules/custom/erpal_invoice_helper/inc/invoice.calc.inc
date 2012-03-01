@@ -11,9 +11,8 @@
 function _erpal_invoice_helper_calculate_fields($invoice) {
 
   _erpal_invoice_helper_calculate_payment_date($invoice);
-  dpm($invoice);
   _erpal_invoice_helper_calculate_prices($invoice);  //@todo muss das in hook update oder insert?
-  dpm($invoice);
+  _erpal_invoice_helper_set_billables_billed($invoice);
 }
 
 /**
@@ -99,15 +98,16 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
       //@see http://drupal.org/node/1353926
       $vat_rate_collection->setHostEntity('node', $invoice, LANGUAGE_NONE, TRUE); //last param: true= link node to host
       
-      dpm('ggg');
-      
-      $vat_rate_collection->save();  //last param skipps host save, because this will result in an endless loop!
+      $vat_rate_collection->save(true);  //save the entity AND save the host againg, so next save step there will      
+      $invoice->is_new = false; //otherwise the node will be added to the database again which leads to an duolicate entry in node table
+      node_save($invoice); //manuelly save the host node
+      //already be a vat_rate_collection entity which leads to the next section of this if condition.
     } else    
     if (is_object($vat_rate_collection)) {
       //add values here, too because we manipulate an existing entity
       $vat_rate_collection->field_vat_rate[LANGUAGE_NONE][0]['value'] = $vat_rate;
       $vat_rate_collection->field_vat_total[LANGUAGE_NONE][0]['value'] = $vat;
-      dpm('hhhh');
+
       //no set host entity needed cause the collection entity is already attached to the node
       $vat_rate_collection->save(true); //last param skipps host save, because this will result in an endless loop!
     }
@@ -115,4 +115,29 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
     $delta++;
   }
   
+  $lastDelta = $delta-1;
+  //delete all vat entities that have delta index bigger than the last $delta value
+  foreach ($invoice->field_invoice_vat[LANGUAGE_NONE] as $delta=>$entity) {
+    if ($delta > $lastDelta) {
+      //delete and unset this entity, it is not needed here
+      $entity_id = $entity['value'];
+      entity_delete('field_collection_item', $entity_id);
+      unset($invoice->field_invoice_vat[LANGUAGE_NONE][$delta]);
+    }
+  }
+  
+}
+
+/**
+* Set all billable entities attached to that invoice as billed and saves them again
+*/
+function _erpal_invoice_helper_set_billables_billed($invoice) {
+  //go throug each line item and pick the vat
+  $line_items = $invoice->field_billables_ref[LANGUAGE_NONE];
+  
+  foreach ($line_items as $line_item) {
+    $billable = billable_load($line_item['target_id']);
+    $billable->set_billed(true);
+    $billable->save();
+  }
 }

@@ -327,96 +327,6 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_contact_ref'
-  $fields['node-erpal_invoice-field_contact_ref'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_contact_ref',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_contact' => 'erpal_contact',
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 0,
-          'erpal_invoice' => 0,
-          'erpal_project' => 0,
-          'erpal_project_spec' => 0,
-          'erpal_task' => 0,
-          'erpal_timetracking' => 0,
-          'features_test' => 0,
-          'page' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_invoice',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Select a customer to which the invoice will be created to.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_contact_ref',
-      'label' => 'Customer',
-      'required' => 1,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'references_dialog_add' => 1,
-          'references_dialog_edit' => 1,
-          'references_dialog_search' => 1,
-          'references_dialog_search_view' => '',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '-3',
-      ),
-    ),
-  );
-
   // Exported field: 'node-erpal_invoice-field_credit_period'
   $fields['node-erpal_invoice-field_credit_period'] = array(
     'field_config' => array(
@@ -545,6 +455,96 @@ function feature_erpal_invoice_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '0',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_invoice-field_customer_ref'
+  $fields['node-erpal_invoice-field_customer_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_customer_ref',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_contact' => 'erpal_contact',
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_project_spec' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
+          'page' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_invoice',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 13,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_customer_ref',
+      'label' => 'Customer',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '12',
       ),
     ),
   );
@@ -1156,7 +1156,6 @@ function feature_erpal_invoice_field_default_fields() {
   t('Note');
   t('Payed');
   t('Payment date');
-  t('Select a customer to which the invoice will be created to.');
   t('Skonto');
   t('The currency of the invoice');
   t('This lines will be added to the invoice as line items');

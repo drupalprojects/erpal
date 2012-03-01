@@ -217,6 +217,10 @@ class Billable extends Entity {
     parent::save();
   }
   
+  public function set_billed($value) {
+    $this->billed = $value;
+  }
+  
   protected function defaultLabel() {
     return $this->subject;
   }
