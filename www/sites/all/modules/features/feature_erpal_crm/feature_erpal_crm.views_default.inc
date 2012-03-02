@@ -225,6 +225,31 @@ echo _erpal_crm_helper_view_activities_header_content();
     0 => 'erpal_contact',
   );
   $handler->display->display_options['show_title'] = 1;
+  $translatables['crm_activities'] = array(
+    t('Master'),
+    t('Activities as Customer'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('<?php
+echo _erpal_crm_helper_view_activities_header_content();
+?>'),
+    t('This contact has no customer activities'),
+    t('Activity status'),
+    t('Customer'),
+    t('Next Contact'),
+    t('All'),
+    t('Title'),
+    t('Page'),
+    t('CRM activities'),
+    t('All activities as customer are attached to a contact node by this view'),
+  );
   $export['crm_activities'] = $view;
 
   return $export;

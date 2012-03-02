@@ -394,7 +394,7 @@ function feature_erpal_crm_field_default_fields() {
   $fields['node-erpal_crm_activity-field_contact_ref'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_contact_ref',
@@ -417,6 +417,13 @@ function feature_erpal_crm_field_default_fields() {
           'article' => 0,
           'erpal_contact' => 'erpal_contact',
           'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_project_spec' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
           'page' => 0,
         ),
         'view' => array(
@@ -467,100 +474,6 @@ function feature_erpal_crm_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '2',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_crm_activity-field_customer_ref'
-  $fields['node-erpal_crm_activity-field_customer_ref'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_customer_ref',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_contact' => 'erpal_contact',
-          'erpal_crm_activity' => 0,
-          'erpal_project' => 0,
-          'erpal_task' => 0,
-          'page' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_crm_activity',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'This is the Customer (in most cases a company) that requests that activity. It can always be ONE customer!',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 2,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_customer_ref',
-      'label' => 'Customer',
-      'required' => 1,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'nodereference_url',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'edit_fallback' => 1,
-          'fallback' => 'select',
-          'node_link' => array(
-            'destination' => 'default',
-            'full' => 1,
-            'hover_title' => '',
-            'teaser' => 0,
-            'title' => 'Create Activity',
-          ),
-        ),
-        'type' => 'nodereference_url',
-        'weight' => '1',
       ),
     ),
   );
@@ -810,13 +723,11 @@ function feature_erpal_crm_field_default_fields() {
   t('Chance');
   t('Comment');
   t('Contacts');
-  t('Customer');
   t('Files uploaded here will not added to the document management system');
   t('Local files');
   t('Next Contact');
   t('The chance, you guess, the proposal will be contracted');
   t('The volume for the activities proposal or the budget for the request');
-  t('This is the Customer (in most cases a company) that requests that activity. It can always be ONE customer!');
   t('Volume');
 
   return $fields;

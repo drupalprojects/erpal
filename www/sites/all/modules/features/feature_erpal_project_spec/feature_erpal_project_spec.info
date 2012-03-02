@@ -29,3 +29,5 @@ package = "Features"
 php = "5.2.4"
 project = "feature_erpal_project_spec"
 version = "7.x-1.0-dev"
+
+files[] = "feature_erpal_project_spec.install"

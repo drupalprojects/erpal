@@ -52,13 +52,14 @@ function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
 
   if ($form_id == 'erpal_task_node_form') {
     $nid = $form['nid']['#value'];
-    //if (!$nid) { //only alter the form fields if the node will be created, not at update
+    if (!$nid) { //only alter the form fields if the node will be created, not at update
       if (count($form_state['input']) <= 0 || isset($form_state['triggering_element'])) {
         //if we dont do that if statement, the form will be altered after submission which will lead to 
         //another altering of pricing information, which is bad!
-        _erpal_projects_billable_preselect_task_create_form($form, $form_state);      
+        _erpal_projects_billable_preselect_task_create_form($form, $form_state);     
+        
       }
-    //}
+    }
     
     _erpal_projects_billable_prepare_ajax_pricing_preselect($form, $form_state);
   }  

@@ -4,36 +4,33 @@
  * billable tests.
  */
 
-class BillableTestCase extends DrupalUnitTestCase {
-  
+class BillableTestCase extends DrupalWebTestCase  {
+
   public static function getInfo() {
     return array(
-      'name' => 'Billable test',
+      'name' => 'Billable unit tests',
       'description' => 'Unit test to ensure that the billable module functions properly.',
       'group' => 'Invoice',
     );
   }
   
-  function testEmptyMySQLDate() {
+  function setUp() {
+    parent::setUp('billable');
+  }
+  
+  /**
+  * Test for caclulating values when a billable is saved
+  */
+  function testCalculateBillableValues() {
+   
+    $entity = billable_create();
+    $entity->quantity = 1;
+    $entity->single_price = 10;
+    $entity->vat_rate = 19;
+    $entity->save();
+    //check if the vat etc is calculated
+    $message = 'Vat total of 10 is 1.9';
+    $this->assertEqual($entity->total_vat, 1.9, $message, $group= 'billable vat');
 
-    $result = simpletest_example_empty_mysql_date(NULL);
-    // Note: Test output messages should not be translated.
-    $message = 'A NULL value should return TRUE.';
-    $this->assertTrue($result, $message);
-
-    $result = simpletest_example_empty_mysql_date('');
-    $message = 'An empty string should return TRUE.';
-    $this->assertTrue($result, $message);
-
-    $result = simpletest_example_empty_mysql_date('0000-00-00');
-    $message = 'An "empty" MySQL DATE should return TRUE.';
-    $this->assertTrue($result, $message);
-
-    $result = simpletest_example_empty_mysql_date(date('Y-m-d'));
-    $message = 'A valid date should return FALSE.';
-    $this->assertFalse($result, $message);
-
+  }
 }
-}
- 
-?>

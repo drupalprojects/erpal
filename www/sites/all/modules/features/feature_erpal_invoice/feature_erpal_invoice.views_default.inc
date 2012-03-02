@@ -346,6 +346,37 @@ echo _erpal_invoice_helper_view_billables_header_content();
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'invoice/billables';
+  $translatables['billables'] = array(
+    t('Master'),
+    t('Billables'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('<?php
+echo _erpal_invoice_helper_view_billables_header_content();
+?>'),
+    t('Billable ID'),
+    t('.'),
+    t(','),
+    t('Subject'),
+    t('Billed'),
+    t('Date delivery'),
+    t('Quantity'),
+    t('Single price'),
+    t('Total excl. VAT'),
+    t('Total VAT'),
+    t('Total'),
+    t('Currency'),
+    t('Customer'),
+    t('Delivery'),
+    t('Page'),
+  );
   $export['billables'] = $view;
 
   $view = new view;
@@ -681,6 +712,32 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'invoice/invoices';
+  $translatables['invoices'] = array(
+    t('Master'),
+    t('Invoices'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('<?php
+echo _erpal_invoice_helper_view_invoices_header_content();
+?>'),
+    t('Contacts'),
+    t('Invoice Date'),
+    t('Invoice Number'),
+    t('Payed'),
+    t('Payment date'),
+    t('Total excl. VAT'),
+    t('Total incl. VAT'),
+    t('Currency'),
+    t('Customer'),
+    t('Page'),
+  );
   $export['invoices'] = $view;
 
   return $export;
