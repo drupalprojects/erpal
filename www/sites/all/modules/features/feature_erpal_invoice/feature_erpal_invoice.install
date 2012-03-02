@@ -1,0 +1,49 @@
+<?php
+
+/**
+* @file manuelly added to feature to attach the provided field_customer_ref to billable entity!
+*/ 
+
+
+/**
+* Implements hook_enable to provide a default bundle
+*/
+function feature_erpal_invoice_enable() {
+  //add the customer_ref field from feature_erpal_basic to the entity!
+  $ainstance = _feature_erpal_invoice_customer_ref_instance_def();
+
+  //create if not exists
+  $ainstance = field_info_instance('billable', 'field_customer_ref', 'billable');
+
+  if (!$ainstance['id'])
+    field_create_instance($instance);
+}
+
+/**
+* Implements hook_disbale
+*/
+function feature_erpal_invoice_disable() {
+  //remove customer_ref field instance
+  $ainstance = _feature_erpal_invoice_customer_ref_instance_def();
+
+  //create if not exists
+  $ainstance = field_info_instance('billable', 'field_customer_ref', 'billable');
+
+  if ($ainstance['id'])
+    field_delete_instance($ainstance);
+}
+
+/**
+* Returns the field_customer_ref instance definition
+*/
+function _feature_erpal_invoice_customer_ref_instance_def() {
+  $ainstance = array(
+    'label' => t('Customer'),
+    'field_name' => 'field_customer_ref',
+    'entity_type' => 'billable',
+    'bundle' => 'billable',
+    'required' => true,
+  );
+  
+  return $ainstance;
+}

@@ -1,0 +1,47 @@
+<?php
+
+/**
+* @file manually added file in this feature
+* add the field project_spec_ref to erpal_tasks node type
+*/
+
+/**
+* Implements hook_enable
+*/
+function feature_erpal_project_spec_enable() {
+  $instance = _feature_erpal_project_spec_customer_ref_instance_def();
+
+  //create if not exists
+  $ainstance = field_info_instance('node', 'field_spec_ref', 'erpal_task');
+
+  if (!$ainstance['id'])  
+    field_create_instance($instance);
+}
+
+/**
+* Implements hook_disable
+*/
+function feature_erpal_project_spec_disable() {
+  $instance = _feature_erpal_project_spec_customer_ref_instance_def();
+
+  //create if not exists
+  $ainstance = field_info_instance('node', 'field_spec_ref', 'erpal_task');
+
+  if ($ainstance['id'])
+    field_delete_instance($instance);
+}
+
+/**
+* Return the field_spec_ref instance definition
+*/
+function _feature_erpal_project_spec_customer_ref_instance_def() {
+  $instance = array(
+    'label' => t('Specification'),
+    'description' => t('Add a reference to a specification to erpal_tasks node type'),
+    'field_name' => 'field_spec_ref',
+    'entity_type' => 'node',
+    'bundle' => 'erpal_task',
+  );
+  
+  return $instance;
+}
