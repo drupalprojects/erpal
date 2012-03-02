@@ -56,10 +56,8 @@ function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
       if (count($form_state['input']) <= 0 || isset($form_state['triggering_element'])) {
         //if we dont do that if statement, the form will be altered after submission which will lead to 
         //another altering of pricing information, which is bad!
-        dpm('drin');
         _erpal_projects_billable_preselect_task_create_form($form, $form_state);      
       }
-      dpm('drunter');
     //}
     
     _erpal_projects_billable_prepare_ajax_pricing_preselect($form, $form_state);
@@ -71,8 +69,6 @@ function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
 * if a task is created NOT BY using the reference by url widget
 */
 function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_state) {
-  dpm($form_state);
-  dpm($form);
   $form['field_pricing'][LANGUAGE_NONE][0]['#prefix'] = '<div id="pricing_wrapper">';
   $form['field_pricing'][LANGUAGE_NONE][0]['#suffix'] = '</div>';
   $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#ajax'] = array(

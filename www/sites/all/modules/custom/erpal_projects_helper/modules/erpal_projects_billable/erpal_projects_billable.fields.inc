@@ -91,7 +91,7 @@ function _erpal_billable_add_currency_field_instances() {
   $currency_field = _erpal_billable_currency_field();
   
   $afield = field_info_field('field_currency');
-  dpm($afield);
+
   if (!$afield['id'])
     field_create_field($currency_field);
   
