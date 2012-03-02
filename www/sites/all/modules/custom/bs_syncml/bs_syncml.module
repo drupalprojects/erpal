@@ -1,0 +1,50 @@
+<?php
+/*
+ * @author Sebastian Kauschke, Bright Solutions GmbH
+ * 
+ */
+
+module_load_include("inc", "bs_syncml", "includes/bs_syncml.profile");
+
+function bs_syncml_init() {
+  bs_syncml_profile_getall(true);
+  
+  $profile = new BsSyncMlProfile("profile2", array('stuff'=>'yay'));
+  $profile->load(1);
+  
+  //$profile->save();
+  dpm($profile);
+  $profile->data['morestuff']="nay";
+  $profile->save();
+}
+
+
+/*
+ * implements hook_menu()
+ */
+function bs_syncml_menu() {
+  
+  /* The administration page */
+  $items['admin/config/bs_syncml'] = array(
+    'title' => 'BS Sync ML Administration',
+    'description' =>  'Administer Synchronization Settings.',
+    'page callback' => 'bs_syncml_administration_page',
+    'access arguments' => array('administer bs_syncml'),
+    'file' => 'includes/bs_syncml.admin.inc',
+  );
+  
+  return $items;
+}
+
+
+/*
+ * implements hook_permissions()
+ */
+function bs_syncml_permission() {
+  return array(
+    'administer bs_syncml' => array(
+      'title' => t('Administer BS SyncML Module'), 
+      'description' => t('Adjust Server and User Settings.'),
+    ),
+  );
+}
