@@ -1,0 +1,30 @@
+<?php
+/*
+ * @author Sebastian Kauschke, Bright Solutions GmbH
+ * 
+ */
+
+/*
+ * implements hook_menu()
+ */
+function bs_syncml_menu() {
+  
+  /* The administration page */
+  $items['admin/config/bs_syncml'] = array(
+    'title' => 'BS Sync ML Administration',
+    'description' =>  'Administer Synchronization Settings.',
+    'page callback' => 'bs_syncml_administration_page',
+    'access arguments' => array('administer bs_syncml'),
+    'file' => 'includes/bs_syncml.admin.inc',
+  );
+  
+  return $items;
+}
+
+
+/*
+ * implements hook_permissions()
+ */
+function bs_syncml_permission() {
+  
+}
