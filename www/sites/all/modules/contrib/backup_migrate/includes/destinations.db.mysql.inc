@@ -183,7 +183,6 @@ class backup_migrate_destination_db_mysql extends backup_migrate_destination_db 
     // get auto_increment values and names of all tables
     $tables = $this->query("show table status", array(), array('fetch' => PDO::FETCH_ASSOC));
     foreach ($tables as $table) {
-      dpm($table);
       $out[$table['name']] = $table;
     }
     return $out;
