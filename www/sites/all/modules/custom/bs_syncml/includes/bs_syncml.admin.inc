@@ -13,7 +13,7 @@
 function bs_syncml_administration_page() {
   
   $form['a'] = array(
-    '#markup'  => "Yeah this is happening.",
+    '#markup'  => "This is the admin page.",
   );
   
   return $form;

@@ -80,5 +80,36 @@ function bs_syncml_schema() {
       ),
       'primary key' => array('jid'),
   );
+  
+  
+  $schema['bs_syncml_profiles'] = array(
+      'description' => 'Stores all BS SyncML Profiles.',
+      'fields' => array(
+          'pid' => array(
+              'type' => 'serial',
+              'not null' => TRUE,
+              'description' => 'The Profile ID.',
+          ),
+          'name' => array(
+             'type' => 'varchar',
+              'length' => '64',
+              'not null' => TRUE,
+              'description' => 'The Profile machine name',
+          ),
+          'data' => array(
+              'type' => 'blob',
+              'size' => 'big',
+              'not null' => TRUE,
+              'serialize' => TRUE,
+              'description' => 'Serialized data containing the node-ids.',
+          ),
+      ),
+      'primary key' => array('pid'),
+      'indexes' =>  array(
+          'i_name'=>array('name')
+          )
+  );
+  
+  
   return $schema;
 }

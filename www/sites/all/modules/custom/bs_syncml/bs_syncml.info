@@ -6,7 +6,7 @@ name = BS SyncML
 description = Allows users to synchronize content with a SyncML Server.
 
 package = BrightSolutions
-version = 1.0
+version = 7.x.1.0
 core = 7.x
 
 files[] = bs_syncml.module
