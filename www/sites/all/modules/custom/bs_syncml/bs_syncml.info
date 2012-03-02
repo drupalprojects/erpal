@@ -1,0 +1,15 @@
+;##########################################
+;#  Copyright 2012 Bright Solutions GmbH  #
+;##########################################
+
+name = BS SyncML
+description = Allows users to synchronize content with a SyncML Server.
+
+package = BrightSolutions
+version = 1.0
+core = 7.x
+
+files[] = bs_syncml.module
+files[] = bs_syncml.install
+
+configure = admin/content/bs_syncml
