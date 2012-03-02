@@ -167,6 +167,25 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler = $view->new_display('page', 'Projects', 'page');
   $handler->display->display_options['display_description'] = 'List of all projects';
   $handler->display->display_options['path'] = 'projects/projects';
+  $translatables['projects'] = array(
+    t('Master'),
+    t('Projects'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('<?php
+echo _erpal_projects_helper_view_projects_header_content();
+?>'),
+    t('Status'),
+    t('Customer'),
+    t('List of all projects'),
+  );
   $export['projects'] = $view;
 
   $view = new view;
@@ -638,6 +657,32 @@ echo _erpal_projects_helper_view_projects_header_content();
     0 => 'erpal_project',
   );
   $handler->display->display_options['show_title'] = 1;
+  $translatables['tasks'] = array(
+    t('Master'),
+    t('Project tasks'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('Project'),
+    t('Status'),
+    t('Type'),
+    t('Time'),
+    t('[field_estimated_time] h'),
+    t('Edit'),
+    t('Users'),
+    t('Date'),
+    t('Tasks'),
+    t('A simple List with Tasks and task filters'),
+    t('Tasks by project'),
+    t('A simple list of tasks for a project'),
+    t('Progress'),
+  );
   $export['tasks'] = $view;
 
   return $export;
