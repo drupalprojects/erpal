@@ -4,17 +4,13 @@
  * Code for the erpal_invoice_helper module.
  */
 module_load_include('inc', 'erpal_invoice_helper', 'inc/views_links');
+
 /**
 * Implements hook_menu
 */ 
 function erpal_invoice_helper_menu(){
 
   $items = array();
-  
-  $items['admin/erpal/debug'] = array(
-    'page callback' => '_erpal_invoice_helper_debug',    
-    'access callback' => true,
-  );
   
   require_once 'inc/config.inc';
   $config_items = _erpal_invoice_helper_config_menu();

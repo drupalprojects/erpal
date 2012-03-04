@@ -8,8 +8,6 @@
 
 - Eingabeformular: Kunde MUSS gewählt sein / als Argument in URL, Betreff, Menge, einzelpreis, mwst satz
 
-- hook um mehrwertsteuersätze zu verwalten, dazu ein Formular
-
 - ganzen Entity kram in eine Datei entity.inc auslagern
 
 - ein billable entity muss auch von usern erstellt werden können, nicht nur von admins

@@ -186,7 +186,7 @@ class Billable extends Entity {
   * Calculate single vat with given values of single_price and vat_rate
   */
   private function calculate_total_vat() {
-    $total_vat = $this->single_price * ($this->vat_rate / 100);
+    $total_vat = $this->total_price_no_vat / 100 *  $this->vat_rate;
     $this->total_vat = $this->force_float($total_vat, true);
   }
   
@@ -259,6 +259,7 @@ class BillableController extends EntityAPIController {
     $values += array( 
       'billable_id' => '',
       'is_new' => TRUE,
+      'type' => 'billable', //allways fixed because we have no bundles
       'subject' => '',
       'created' => time(),
       'changed' => time(),
@@ -290,6 +291,15 @@ class BillableController extends EntityAPIController {
     );
 
     return $content;
+  }
+  
+  /**
+  * reduces all entities to a minimum set of entities
+  * @param $entity_ids array of all entities that should be reduced to a minimum set of entities with consistent data.
+  * @return an array with all ids of the resulting entities which reference to the new created entities
+  */
+  public function reduce($entity_ids) {
+    
   }
   
 }

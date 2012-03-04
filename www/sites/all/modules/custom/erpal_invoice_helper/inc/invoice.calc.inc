@@ -43,7 +43,7 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
   $total_excl_vat = 0;
   $total_incl_vat = 0;
 
-  //@todo prüfen ob hier evtl rechenfehler z.B. durch Rundung entstehen
+  //@todo prüfen ob hier evtl rechenfehler z.B. durch Rundung entstehen und in tests aufnehmen
   foreach ($line_items as $line_item) {
     if (!$line_item['target_id'])
       continue;
@@ -99,9 +99,9 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
       $vat_rate_collection->setHostEntity('node', $invoice, LANGUAGE_NONE, TRUE); //last param: true= link node to host
       
       $vat_rate_collection->save(true);  //save the entity AND save the host againg, so next save step there will      
-      $invoice->is_new = false; //otherwise the node will be added to the database again which leads to an duolicate entry in node table
+      $invoice->is_new = false; //otherwise the node will be added to the database again which leads to an duplicate entry in node table
       node_save($invoice); //manuelly save the host node
-      //already be a vat_rate_collection entity which leads to the next section of this if condition.
+      //already has a vat_rate_collection entity which leads to the next section of this if condition.
     } else    
     if (is_object($vat_rate_collection)) {
       //add values here, too because we manipulate an existing entity

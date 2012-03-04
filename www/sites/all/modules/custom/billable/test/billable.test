@@ -14,23 +14,58 @@ class BillableTestCase extends DrupalWebTestCase  {
     );
   }
   
-  function setUp() {
+  function setUp() {    
     parent::setUp('billable');
+    
+    // Run a features rebuild to ensure our feature is fully installed.
+    features_rebuild();
+    
+    // Clear all caches so everything from the feature is recognized now that it is fully loaded.
+    cache_clear_all();
   }
+  
   
   /**
   * Test for caclulating values when a billable is saved
   */
-  function testCalculateBillableValues() {
-   
-    $entity = billable_create();
-    $entity->quantity = 1;
-    $entity->single_price = 10;
+  function testBillableCalculateValues() {
+    $group= 'billable vat';
+  
+    $entity = entity_create('billable', array());
+    $entity->quantity = 3;
+    $entity->single_price = 12.56;
     $entity->vat_rate = 19;
     $entity->save();
+    
+    //check if total price without vat is calculated nust be 37,86
+    $total_excl_vat_must = 37.68;
+    $message = billabletest_format_message('Total excl vat caclulated', $total_excl_vat_must, $entity->total_price_no_vat); 
+    $this->assertEqual($entity->total_price_no_vat, $total_excl_vat_must, $message, $group);
+    
     //check if the vat etc is calculated
-    $message = 'Vat total of 10 is 1.9';
-    $this->assertEqual($entity->total_vat, 1.9, $message, $group= 'billable vat');
-
+    $total_vat_must = 7.16;
+    $message = billabletest_format_message('Total vat caclulated', $total_vat_must, $entity->total_vat); 
+    $this->assertEqual($entity->total_vat, $total_vat_must, $message, $group);
+    
+    //check if the total price including is caclulated without errors    
+    $total_incl_vat_must = $total_excl_vat_must + $total_vat_must;
+    $message = billabletest_format_message('Total incl. vat calculation', $total_incl_vat_must, $entity->total_price); 
+    $this->assertEqual($entity->total_price, $total_incl_vat_must, $message, $group);
+   
   }
+  
+  function testEntityReduce() {
+    //test if entites are reduced correctly
+  }
+}
+
+
+
+//########## HELPER FUNCTIONS FOR TESTS ################
+
+/**
+* Formats a message with values that should be calculated (must) and that are really calculated (is)
+*/
+function billabletest_format_message($message, $must, $is) {
+  return $message.' - is '.$is.' should be '.$must;
 }
