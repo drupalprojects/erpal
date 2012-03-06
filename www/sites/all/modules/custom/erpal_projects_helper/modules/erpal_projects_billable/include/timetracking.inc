@@ -13,7 +13,7 @@ function _erpal_projects_billable_insert_timetracking($node) {
   $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
   $subject_node = node_load($subject_nid);
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($subject_node);
-  //$billing_duration = _erpal_projects_helper_get_billing_duration($node);
+  
 
   //now we have all information to create a billable from this timetracking
   $price_mode = isset($billable_information['per_hour']) ? $billable_information['per_hour'] : 0;
