@@ -19,37 +19,6 @@ function _erpal_projects_billable_insert_project($node) {
     return;
     
   _erpal_billable_update_billable($node, 'insert');
-  
-  return;
-  
-  //now we have all information to create a billable from this timetracking
-  $price_mode = isset($billable_information['per_hour']) ? $billable_information['per_hour'] : 0;
-  $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
-  $customer_node = $billable_information['customer'];
-  if ($price_mode == 'fixed_price' && $price && $customer_node)
-  {  
-    $single_price = $price;
-    $customer_nid = $customer_node->nid;
-    $subject_nid = $node->nid;  //the subject is the timetracking itself
-    $quantity = 1; //cause it is fixed price
-    $currency = $billable_information['currency'];
-    $vat_rate = $billable_information['vat_rate'];
-    $subject_title = $node->title;
-    $date_delivery = $node->changed; //last change of the task node
-    
-    //last parameter is set false, so we create a new billable!
-    _erpal_project_billable_save_billable(
-      $subject_title, 
-      $customer_nid, 
-      $subject_nid, 
-      $quantity, 
-      $single_price, 
-      $currency, 
-      $vat_rate, 
-      $date_delivery, 
-      false
-    );
-  }
 }
 
 /**

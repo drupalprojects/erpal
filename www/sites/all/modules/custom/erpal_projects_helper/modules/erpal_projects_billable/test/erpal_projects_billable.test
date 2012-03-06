@@ -18,7 +18,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
   }
   
   function setUp() {    
-    parent::setUp('feature_erpal_project_basic', 'feature_erpal_invoice'); //these features will enables and use this module
+    parent::setUp('feature_erpal_project_basic', 'feature_erpal_invoice', 'simpletest_fixture'); //these features will enables and use this module
     
     // Run a features rebuild to ensure our feature is fully installed.
     features_rebuild();
@@ -130,7 +130,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
   */
   function testTaskCreateBillables() {
     //create billables for the task
-    $group= 'feature task billable';    
+    $group= 'feature project billable';    
     
     $pricing['price_mode'] = 'fixed_price';
     $pricing['price'] = '950';
@@ -216,7 +216,45 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
   * Validate that billables are created correctly on inserting timetrackings
   */
   function testTimetrackingCreateBillables() {
-    //@TODO
+    //create billables for the task
+    $group= 'feature project billable';    
+    
+    $pricing['price_mode'] = 'fixed_price';
+    $pricing['price'] = '95';
+    $pricing['currency'] = 'EUR';
+    $pricing['vat_rate'] = '7';
+    $pricing['quantity'] = 3.5; //hours
+    
+    //no billable entity should be kicked!
+    $task = _erpal_projects_billable_test_create_task($pricing, 'inserted');    
+    $tt = _erpal_projects_billable_test_create_timetracking($pricing['quantity'], $task);    
+    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billableOK = count($billable) <= 0;
+    $this->assertTrue($billableOK, 'Billable is not kicked on timetracking to a fiexd_price project', $group);
+      
+    //add a timetracking to a task with price mode per_hour -> billable should be kicked
+    $pricing['price_mode'] = 'per_hour';
+    $task = _erpal_projects_billable_test_create_task($pricing, 'inserted');
+    $tt = _erpal_projects_billable_test_create_timetracking($pricing['quantity'], $task);         
+    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);       
+    $this->assertTrue($billableOK, 'Billable kicked on task with price mode is per hour', $group);
+    
+    //change the duration of the task, the billable should change, too
+    $pricing['quantity'] = 2; //hours
+    $tt->field_timetracking_billing_duration[LANGUAGE_NONE][0]['value'] = $pricing['quantity'];
+    node_save($tt);
+    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);       
+    $this->assertTrue($billableOK, 'Billable price changed after timetracking duration changed', $group);
+
+      
   }
  
   /**

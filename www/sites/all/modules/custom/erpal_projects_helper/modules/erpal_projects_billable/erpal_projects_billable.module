@@ -345,8 +345,19 @@ function erpal_billable_field_currency_allowed_values() {
 * @param $op may be insert (if node is inserted) or update (if node is updated)
 */
 function _erpal_billable_update_billable($node, $op) {
+  
+  if ($node->type == 'erpal_timetracking') {
+    $timetracking_node = $node;
+    $quantity = $node->field_timetracking_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
+    $node = node_load($node->field_timetracking_subject[LANGUAGE_NONE][0]['nid']);    
+    $type = $timetracking_node->type;
+  } else {
+    $quantity = 1; //cause it is fixed price
+    $type = $node->type;
+  }
+  
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);  
-
+  
   //now we have all information to create a billable from this subject
   $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
   $customer_node = $billable_information['customer'];
@@ -354,15 +365,15 @@ function _erpal_billable_update_billable($node, $op) {
   $single_price = $price;
   $customer_nid = $customer_node->nid;
   $subject_nid = $node->nid;  //the subject is the timetracking itself
-  $quantity = 1; //cause it is fixed price
+ 
   $currency = $billable_information['currency'];
   $vat_rate = $billable_information['vat_rate'];
   $subject_title = $node->title;
   $date_delivery = $node->changed; //last change of the task node
   
-  if ($op == 'insert') {      
-    if (_erpal_billable_is_billable($billable_information, $node)) {      
-      //last parameter is set false, so we create a new billable!      
+  if ($op == 'insert') { 
+    if (_erpal_billable_is_billable($billable_information, $node, $type)) {      
+      //last parameter is set false, so we create a new billable!            
       _erpal_project_billable_save_billable(
         $subject_title, 
         $customer_nid, 
@@ -380,19 +391,20 @@ function _erpal_billable_update_billable($node, $op) {
     //get the current billables
     $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
     $has_billable = false;
-    $is_billable = _erpal_billable_is_billable($billable_information, $node);
+    $is_billable = _erpal_billable_is_billable($billable_information, $node, $type);
 
     foreach ($billables as $id=>$billable) {
       $has_billable = true;
       if ($billable->billed) {
         continue;  //do nothing, cause it is already billed
       }
- 
+
       //not billable any more?
       if (!$is_billable) {        
         //delete the billable, it is not allowed here, cause the task has not been completed!
         entity_delete('billable', $billable->billable_id);
-      } else {      
+      } else {   
+     dpm($quantity);
         //if task status is completed
         //last parameter is set false, so we create a new billable!
         _erpal_project_billable_save_billable(
@@ -432,8 +444,7 @@ function _erpal_billable_update_billable($node, $op) {
 /**
 * Checks dependend on the subject if this is billable
 */
-function _erpal_billable_is_billable($billable_information, $node) {
-  $type = $node->type;
+function _erpal_billable_is_billable($billable_information, $node, $type) {
   
   $price_mode = isset($billable_information['price_mode']) ? $billable_information['price_mode'] : 0;
   $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
