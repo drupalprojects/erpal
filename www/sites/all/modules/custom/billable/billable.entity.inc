@@ -299,7 +299,18 @@ class BillableController extends EntityAPIController {
   * @return an array with all ids of the resulting entities which reference to the new created entities
   */
   public function reduce($entity_ids) {
-    
+    //@todo anzeigen der reduzierten entites in der view des parents
+    //@todo wird ein entity gelöscht, der ein parent hat, kann das nur passieren, wenn der parent noch nicht billed ist
+    //@todo wird ein entity gelöscht, der ein parent hat, wird der Wert des Parent entsprechend angepasst.
+    //@todo wenn ein Parent entity gelöscht wird, kann das nur passieren, wenn dieser noch nicht billed ist
+    //@todo wenn ein parent entity gelöscht wird, wird gefragt ob alle "Children" (mit liste und link) auch gelöscht werden sollen,
+    //  wenn das so ist, werden diese gelöscht, wenn nicht wird nur der parent entfernt
+    //@todo Reduced kann nicht werden, wenn einer der zu reduzierenden entities bereits abgerechnet ist
+    //@todo wenn ein entity gespeichert wird, der ein parent hat, muss validiert werden, ob die validation vor dem reduce immer 
+      //noch true ist. Wenn soll ein Entity gespeichert wird muss der Kunde und die Mwst gleich dem parent sein.
+    //@todo validation vor dem reduce: alle zu verdichtenden Entities müssen den gleichen Kunden haben und die gleiche VAT rate. 
+    //
+    //@todo
   }
   
 }

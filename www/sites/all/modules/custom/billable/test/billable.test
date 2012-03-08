@@ -56,6 +56,25 @@ class BillableTestCase extends DrupalWebTestCase  {
   
   function testEntityReduce() {
     //test if entites are reduced correctly
+    $entity1 = entity_create('billable', array());
+    $entity1->quantity = 3;
+    $entity1->single_price = 12.56;
+    $entity1->vat_rate = 19;
+    $entity1->save();
+    
+    $entity2 = entity_create('billable', array());
+    $entity2->quantity = 2;
+    $entity2->single_price = 4.4;
+    $entity2->vat_rate = 7;
+    $entity2->save();
+    
+    $entity3 = entity_create('billable', array());
+    $entity3->quantity = 1;
+    $entity3->single_price = 3.23;
+    $entity3->vat_rate = 7;
+    $entity3->save();
+    
+    //testfälle und Beidingungen siehe auch billable.entity.inc 302 ff
   }
 }
 
