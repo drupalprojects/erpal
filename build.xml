@@ -43,9 +43,7 @@
 
  	<target name="metrics" description="Run the phpcs, phpcpd, and phploc tasks in parallel using a maximum of 2 threads.">
   		<parallel threadCount="2">
-			<!--
    			<antcall target="phpcs"/>
-			-->
    			<antcall target="phpcpd"/>
    			<antcall target="phploc"/>
   		</parallel>
