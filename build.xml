@@ -43,11 +43,12 @@
   		<mkdir dir="${basedir}/_logs/phploc" />
  	</target>
 
+	<!--
  	<target name="metrics" description="Run the phpcs, phpcpd, and phploc tasks in parallel using a maximum of 2 threads.">
   		<parallel threadCount="2">
    			<antcall target="phpcs"/>
    			<antcall target="phpcpd"/>
-   			<!-- <antcall target="phploc"/> -->
+   			<antcall target="phploc"/>
   		</parallel>
  	</target>
 
@@ -68,7 +69,8 @@
    			<arg line="--log-xml ${basedir}/_logs/phploc/phploc.csv --exclude ${metrics.ignore} --suffixes ${php.suffixes} ${basedir}/www/sites/all/modules/custom" />
   		</exec>
  	</target>
-
+	-->
+	
 	<target name="doxygen" description="Generate doxygen docs">
 		<exec dir="${basedir}" executable="doxygen">
 			<arg line="${basedir}/doxygen.conf" />
