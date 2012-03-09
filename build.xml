@@ -45,9 +45,9 @@
   		<parallel threadCount="2">
 			<!--
    			<antcall target="phpcs"/>
+			-->
    			<antcall target="phpcpd"/>
    			<antcall target="phploc"/>
-			-->
   		</parallel>
  	</target>
 
