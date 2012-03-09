@@ -55,23 +55,7 @@
  	</target>
 	-->
 	
-	<target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
-  		<exec executable="phpcs${ext}">
-   			<arg line="--tab-width=2 --report=checkstyle --report-file=${basedir}/_logs/phpcs/checkstyle.xml --standard=${metrics.standard} ${basedir}/www/sites/all/modules/custom --ignore=${metrics.ignore}" />
-  		</exec>
- 	</target>
-
- 	<target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
-  		<exec executable="phpcpd${ext}">
-   			<arg line="--log-pmd ${basedir}/_logs/phpcpd/pmd-cpd.xml --exclude ${metrics.ignore} --suffixes ${php.suffixes} ${basedir}/www/sites/all/modules/custom" />
-  		</exec>
- 	</target>
-
- 	<target name="phploc" description="Generate phploc.csv">
-  		<exec executable="phploc${ext}">
-   			<arg line="--log-xml ${basedir}/_logs/phploc/phploc.csv --exclude ${metrics.ignore} --suffixes ${php.suffixes} ${basedir}/www/sites/all/modules/custom" />
-  		</exec>
- 	</target>
+	
 	
 	<target name="doxygen" description="Generate doxygen docs">
 		<exec dir="${basedir}" executable="doxygen">
