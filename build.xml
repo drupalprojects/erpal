@@ -106,6 +106,7 @@
 	</target>
 
 	<!-- call with ant -Dsnapshot.tag=tag snapshot -->
+	<!-- 
 	<target name="snapshot" depends="updatescripts.run,doxygen,metrics" description="Creates a snapshot tag in git and an archive" >
 		<fail message="Please set snapshot.tag" unless="snapshot.tag" />
 		<exec executable="bash" failonerror="true" dir="${basedir}">
@@ -116,6 +117,7 @@
 		</exec>
         <antcall target="archive" />
 	</target>
-
+	-->
+	
 	<target name="build" depends="clean" />
 </project>
