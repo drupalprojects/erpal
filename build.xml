@@ -20,8 +20,10 @@
 	<property name="snapshot.new_paths" value="docs sql" />
 	
 	<!-- other properties for metrics -->
+	<!--
 	<property name="metrics.standard" value="Drupal" />
 	<property name="php.suffixes" value="php,inc,php5,module" />
+	-->
 	
 	<!-- Things below this line shouldn't need changing... -->
 	
