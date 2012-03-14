@@ -78,8 +78,7 @@
   			<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run AdminMenuLinksTestCase" />
         <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run BillableTestCase" />
         <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureInvoiceTestCase" />
-        <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureProjectsBillableTestCase" />
-        <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run testTaskCreateBillables" />
+        <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureProjectsBillableTestCase" />        
   		</exec>
  	</target>
 
