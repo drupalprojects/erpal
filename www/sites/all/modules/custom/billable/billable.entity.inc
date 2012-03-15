@@ -161,6 +161,18 @@ class Billable extends Entity {
   }
   
   /**
+  * Returns a value of a filed. Why? If we have fields attached to this entiy, we need to get the values
+  * not by calling just ->fieldname, but in some cases 'field_name[und][0]['nid'] etc. Things tha callee should not
+  * care about
+  */
+  function field_by_name($field_name) {
+    if ($field_name == 'customer') {
+      return $this->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+    } else
+      return $this->{$field_name};
+  }
+  
+  /**
   * Calculate quantity as a valid float, replace , with .
   */
   private function convert_quantity() {
@@ -295,22 +307,12 @@ class BillableController extends EntityAPIController {
   
   /**
   * reduces all entities to a minimum set of entities
-  * @param $entity_ids array of all entities that should be reduced to a minimum set of entities with consistent data.
+  * @param $billable_ids array of all entities that should be reduced to a minimum set of entities with consistent data.
   * @return an array with all ids of the resulting entities which reference to the new created entities
   */
-  public function reduce($entity_ids) {
-    //@todo anzeigen der reduzierten entites in der view des parents
-    //@todo wird ein entity gelöscht, der ein parent hat, kann das nur passieren, wenn der parent noch nicht billed ist
-    //@todo wird ein entity gelöscht, der ein parent hat, wird der Wert des Parent entsprechend angepasst.
-    //@todo wenn ein Parent entity gelöscht wird, kann das nur passieren, wenn dieser noch nicht billed ist
-    //@todo wenn ein parent entity gelöscht wird, wird gefragt ob alle "Children" (mit liste und link) auch gelöscht werden sollen,
-    //  wenn das so ist, werden diese gelöscht, wenn nicht wird nur der parent entfernt
-    //@todo Reduced kann nicht werden, wenn einer der zu reduzierenden entities bereits abgerechnet ist
-    //@todo wenn ein entity gespeichert wird, der ein parent hat, muss validiert werden, ob die validation vor dem reduce immer 
-      //noch true ist. Wenn soll ein Entity gespeichert wird muss der Kunde und die Mwst gleich dem parent sein.
-    //@todo validation vor dem reduce: alle zu verdichtenden Entities müssen den gleichen Kunden haben und die gleiche VAT rate. 
-    //
-    //@todo
+  public function reduce($billable_ids) {
+    module_load_include('inc', 'billable', 'billable.reduce');  
+    _billable_reduce($billable_ids);
   }
   
 }

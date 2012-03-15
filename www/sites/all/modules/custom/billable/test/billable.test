@@ -4,6 +4,8 @@
  * billable tests.
  */
 
+require_once 'billable.test.helper';
+ 
 class BillableTestCase extends DrupalWebTestCase  {
 
   public static function getInfo() {
@@ -55,26 +57,61 @@ class BillableTestCase extends DrupalWebTestCase  {
   }
   
   function testEntityReduce() {
-    //test if entites are reduced correctly
-    $entity1 = entity_create('billable', array());
-    $entity1->quantity = 3;
-    $entity1->single_price = 12.56;
-    $entity1->vat_rate = 19;
-    $entity1->save();
+    $group= 'billable reduce';
+    $test_data = _billable_create_reduce_test_data();
     
-    $entity2 = entity_create('billable', array());
-    $entity2->quantity = 2;
-    $entity2->single_price = 4.4;
-    $entity2->vat_rate = 7;
-    $entity2->save();
+    module_load_include('inc', 'billable', 'billable.reduce');
+    $billable_ids = array(
+      $test_data['b1']->billable_id, 
+      $test_data['b2']->billable_id, 
+      $test_data['b3']->billable_id, 
+      $test_data['b4']->billable_id,
+      $test_data['b5']->billable_id,
+      $test_data['b6']->billable_id,
+    );
+    $group_by = array(); //no group by privce, this will be checked in the next step
+    $new_billables = _billable_reduce($billable_ids);
     
-    $entity3 = entity_create('billable', array());
-    $entity3->quantity = 1;
-    $entity3->single_price = 3.23;
-    $entity3->vat_rate = 7;
-    $entity3->save();
+    //if they dont have the same customer, currency, vat_rate no reduce possible
+    //ensure that we have 2 new billables, with the given vat and the customers
+    //########################################
+    //CHECK NOT GROUPED BY SINGLE PRICE
+    //########################################
+    $needed_billables = _billable_create_reduce_test_data_needed($test_data, false);
     
-    //testfälle und Beidingungen siehe auch billable.entity.inc 302 ff
+    $billablesOK = _billable_reduce_test_check_after($billable_ids, $new_billables, $needed_billables, $group_by);
+    
+    $this->assertTrue($billablesOK, 'Reduce billables without grouping by single price', $group);
+    
+      
+    //########################################
+    //CHECK NOT GROUPED BY SINGLE PRICE
+    //########################################
+    $test_data = _billable_create_reduce_test_data();
+    $needed_billables = _billable_create_reduce_test_data_needed($test_data, true);
+
+    $billable_ids = array(
+      $test_data['b1']->billable_id, 
+      $test_data['b2']->billable_id, 
+      $test_data['b3']->billable_id, 
+      $test_data['b4']->billable_id,
+      $test_data['b5']->billable_id,
+      $test_data['b6']->billable_id,
+    );
+    
+    $group_by = array(); //no group by privce, this will be checked in the next step        
+    $group_by[] = 'single_price';
+    $new_billables = _billable_reduce($billable_ids, $group_by);
+    $billablesOK = _billable_reduce_test_check_after($billable_ids, $new_billables, $needed_billables, $group_by);
+    
+    $this->assertTrue($billablesOK, 'Reduce billables with grouping by single price', $group);
+   
+    //check that already billed billable entites cannot be reduced
+    //@TODO
+    
+    //check that if grouped by single_price the quantity is added and single price keeps the singleprice of the
+    //billable (it is equal in each billable in its group), otherwise it is always 1 and the single prices will be added
+    //@TODO
   }
 }
 

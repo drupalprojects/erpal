@@ -6,8 +6,8 @@
  * items and items to bill in general
  */  
 
-require_once 'billable.entity.inc';
-require_once 'billable.vat.inc';
+module_load_include('inc', 'billable', 'billable.entity');  
+module_load_include('inc', 'billable', 'billable.vat');  
  
 
 /**
