@@ -66,6 +66,24 @@ function billable_entity_info() {
 }
  
 /**
+* Implements hook_menu
+*/
+function billable_menu() {
+  
+  $items = array();
+  $items['admin/config/billable'] = array(
+    'title' => 'Billable config',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('billable_adminsettings'),
+    'access arguments' => array('administer billable'),
+    'file' => 'billable.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+ 
+/**
  * Implements hook_permission().
  */
 function billable_permission() {
@@ -80,6 +98,10 @@ function billable_permission() {
       'title' => t('Administer billables'),
       'description' => t('Edit and delete all billables'),
     ),  
+    'administer billable' => array(
+      'title' => t('Administer billable settings'),
+      'description' => t('Access the administration area of the billable module'),
+    ),
   );
   
   $permissions += array(
