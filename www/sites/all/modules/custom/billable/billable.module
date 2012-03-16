@@ -204,6 +204,21 @@ function template_preprocess_billable_view(&$variables) {
 }
 
 /**
+ * Implements hook_references_dialog_entity_admin_paths().
+ * Needed to provide a link path to create a new billable at an entity reference field in reference dialog widget
+ */
+function billable_references_dialog_entity_admin_paths() {
+  // We define the add and edit page callbacks for core entities here.
+  $admin_paths = array(
+    'billable' => array(
+      'add' => 'billable/add',
+      'edit' => 'billable/[entity_id]/edit',
+    ),
+  );
+  return $admin_paths;
+}
+
+/**
 * get ids of reduced billables that reference the given billable as a parent
 */
 function _billable_get_reduced_billables($parent_billable) {

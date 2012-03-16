@@ -217,6 +217,7 @@ function references_dialog_entityreference_link_helper($entity_type, $bundle = N
   else {
     $label = $info['label'];
   }
+  
   // We use entity_access here. We provide the bundle if this is a node type,
   // since node_access expects that to be passed to it as the entity when you
   // run node_access('create')

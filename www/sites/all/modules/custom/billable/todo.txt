@@ -1,5 +1,4 @@
 
-- Billable entity kann andere billable entities referenzieren
 - unterstützung für uuid?
 - Rechte für view / edit OWN billabes?
 
@@ -10,12 +9,6 @@
 
 - ganzen Entity kram in eine Datei entity.inc auslagern
 
-- ein billable entity muss auch von usern erstellt werden können, nicht nur von admins
-
-- admin ui aller billables (siehe model modul)
-
 - mit Rules integrierbar machen und mit Tokens (siehe Modul commerce - commerce_line_intem submodul)
-
-- Das Feld customer_ref kommt doch wieder als ID mit in die DB und es wird einfach ein NR views handler implementiert
 
 - unsinstall und install des Moduls klappt noch nicht, wenn schon Daten da sind

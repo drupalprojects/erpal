@@ -272,7 +272,9 @@ function feature_erpal_invoice_field_default_fields() {
             'property' => 'billable_id',
             'type' => 'none',
           ),
-          'target_bundles' => array(),
+          'target_bundles' => array(
+            'billable' => 'billable',
+          ),
         ),
         'handler_submit' => 'Change handler',
         'target_type' => 'billable',
