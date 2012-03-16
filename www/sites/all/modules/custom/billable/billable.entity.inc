@@ -167,7 +167,7 @@ class Billable extends Entity {
   */
   function field_by_name($field_name) {
     if ($field_name == 'customer') {
-      return $this->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+      return $this->customer_nid;
     } else
       return $this->{$field_name};
   }
@@ -280,6 +280,7 @@ class BillableController extends EntityAPIController {
       'weight' => 0,
       'parent_billable' => 0,
       'subject_nid' => 0,
+      'customer_nid' => 0,
       'quantity' => 1,
       'single_price' => 0,
       'total_price' => 0,

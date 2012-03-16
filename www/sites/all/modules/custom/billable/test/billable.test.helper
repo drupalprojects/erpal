@@ -28,42 +28,42 @@ function _billable_create_reduce_test_data() {
     $entity1->quantity = 3;
     $entity1->single_price = 12.56;
     $entity1->vat_rate = 19;
-    $entity1->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer2->nid;
+    $entity1->customer_nid = $customer2->nid;
     $entity1->save(); //this will not be reduced because it is the only one in a group
     
     $entity2 = entity_create('billable', array());
     $entity2->quantity = 2;
     $entity2->single_price = 4.4;
     $entity2->vat_rate = 7;
-    $entity2->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer2->nid;
+    $entity2->customer_nid = $customer2->nid;
     $entity2->save();
     
     $entity3 = entity_create('billable', array());
     $entity3->quantity = 1;
     $entity3->single_price = 3.23;
     $entity3->vat_rate = 7;
-    $entity3->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer2->nid;
+    $entity3->customer_nid = $customer2->nid;
     $entity3->save();
     
     $entity4 = entity_create('billable', array());
     $entity4->quantity = 1;
     $entity4->single_price = 20;
     $entity4->vat_rate = 7;
-    $entity4->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer1->nid;
+    $entity4->customer_nid = $customer1->nid;
     $entity4->save();
     
     $entity5 = entity_create('billable', array());
     $entity5->quantity = 2;
     $entity5->single_price = 20;
     $entity5->vat_rate = 7;
-    $entity5->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer1->nid;
+    $entity5->customer_nid = $customer1->nid;
     $entity5->save();
     
     $entity6 = entity_create('billable', array());
     $entity6->quantity = 2;
     $entity6->single_price = 21;
     $entity6->vat_rate = 19;  
-    $entity6->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer1->nid;
+    $entity6->customer_nid = $customer1->nid;
     $entity6->save();  //this will not be reduced because it is the only one in a group
 
   

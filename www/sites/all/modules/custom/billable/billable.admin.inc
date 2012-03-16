@@ -9,6 +9,8 @@
  * be end-user facing.
  */
 
+module_load_include('inc', 'billable', 'billable.configurable');
+
 /**
  * UI controller.
  */
@@ -152,6 +154,13 @@ function billable_edit_form($form, &$form_state, $billable) {
     '#required' => TRUE,
   );
 
+  $form['customer_nid'] = array(
+    '#type' => 'select',
+    '#options' => _billable_get_customers(),
+    '#title' => t('Customer'),
+    '#default_value' => isset($billable->customer) ? $billable->customer : '',
+    '#required' => TRUE,
+  );
  
   $form['quantity'] = array(
     '#type' => 'textfield',

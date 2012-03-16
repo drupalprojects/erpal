@@ -157,7 +157,7 @@ function _erpal_project_billable_save_billable($subject_title, $customer_nid, $s
   $billable->date_delivery = $date_delivery;
   $billable->created = time();
   $billable->changed = time();
-  $billable->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
+  $billable->customer_nid = $customer_nid;
   entity_save('billable', $billable);
   
   return true;

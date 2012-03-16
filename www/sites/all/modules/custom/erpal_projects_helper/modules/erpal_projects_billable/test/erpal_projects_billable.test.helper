@@ -129,7 +129,7 @@ function projectsbillable_check_billable($billable, $pricing, $node) {
       $billable->single_price == $pricing['price'] &&
       $billable->vat_rate == $pricing['vat_rate'] &
       $billable->currency == $pricing['currency'] &&
-      $billable->field_customer_ref[LANGUAGE_NONE][0]['nid'] > 0;
+      $billable->customer_nid > 0;
           //other calculated values of the billable are ensured in the billables module tests
 }
 

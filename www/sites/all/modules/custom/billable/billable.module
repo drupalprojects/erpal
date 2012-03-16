@@ -109,9 +109,7 @@ function billable_permission() {
  *   Whether access is allowed or not.
  */
 function billable_access($op, $billable = NULL, $account = NULL) {
-  if (!is_object($billable))
-    return false;
-  
+ 
   if (user_access('administer billables', $account)) {
     return TRUE;
   }
@@ -152,3 +150,72 @@ function _billable_get_date_format(){
   return variable_get('date_format_short_date_only', 'Y/m/d');
 }
 
+/**
+* Preprocess function für theme billable_view
+*/
+function template_preprocess_billable_view(&$variables) {
+  //get a list of reduced entites if there are other items that have this one as parent item
+  $reduced_billables = _billable_get_reduced_billables($variables['billable']); 
+
+  $header = array(
+    t('Billable ID'),
+    t('Subject'),
+    t('Billed'),
+    t('Date delivery'),
+    t('Quantity'),
+    t('Single price'),
+    t('Total excl. VAT'),
+    t('Total VAT'),
+    t('Total'),
+    t('Currency'),
+  );
+  
+  //prepare the reduced billables for display in theme table
+  if (count($reduced_billables) > 0) {
+    //now order the rows
+    $rows = array();
+    
+    //load all billables
+    $billable_ids = array_keys($reduced_billables);
+    $reduced_billables = billable_load_multiple($billable_ids);
+ 
+    foreach ($reduced_billables as $billable) {
+      $subject_nid = $billable->subject_nid;
+      $subject_node = node_load($billable->subject_nid);
+      $rows[] = array(
+        l($billable->billable_id, 'billable/'.$billable->billable_id.'/view'),
+        is_object($subject_node) ? l($subject_node->title, 'node/'.$subject_nid) : '',
+        $billable->billed,
+        date(format_date($billable->date_delivery, 'small')),
+        $billable->quantity,
+        $billable->single_price,
+        $billable->total_price_no_vat,
+        $billable->total_vat,
+        $billable->total_price,
+        $billable->currency
+      );
+    }
+    
+    $table_data['header'] = $header;
+    $table_data['rows'] = $rows;
+    $variables['reduced_list'] = theme('table', $table_data);  
+  } else
+    $variables['reduced_list'] = '';
+}
+
+/**
+* get ids of reduced billables that reference the given billable as a parent
+*/
+function _billable_get_reduced_billables($parent_billable) {
+  $billables = array();
+  
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'billable') // select nodes
+		          ->propertyCondition('parent_billable', $parent_billable->billable_id) // node referenced so the 2nd parameter is nid
+		          ->propertyOrderBy('created', 'desc') //most recent first
+		          ->execute();
+  
+  if (isset($result['billable']))
+    $billables = $result['billable'];
+  return $billables;
+}

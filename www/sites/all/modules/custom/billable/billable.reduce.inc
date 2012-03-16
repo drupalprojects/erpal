@@ -33,7 +33,7 @@ function _billable_group_for_reduce($billable_ids, $group_by=array(), $ignore_pa
     $groups[$unity]['vat_rate'] = $billable->vat_rate;
     $date_delivery = isset($groups[$unity]['date_delivery']) ? $groups[$unity]['date_delivery'] : 0;
     $groups[$unity]['date_delivery'] = max($date_delivery, $billable->date_delivery);  //get the latest deliverydate of all
-    $groups[$unity]['customer'] = $billable->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+    $groups[$unity]['customer'] = $billable->customer_nid;
 
     //if we group by single price, we add the quantity and keep the single price otherwise it is always one and the
     //single price is added because we don't have the same single price at each billable in a group
@@ -85,7 +85,7 @@ function _billable_reduce($billable_ids, $group_by=array()) {
     $new_billable->vat_rate = $group_data['vat_rate'];
     $new_billable->date_delivery = $group_data['date_delivery'];
     $new_billable->billables = $group_data['billables'];  //not saved to database
-    $new_billable->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $group_data['customer'];  
+    $new_billable->customer_nid = $group_data['customer'];  
     //@todo the field is external attached so this module should not know itbut it must be able to set the customer here....
     $new_billable->save();
     

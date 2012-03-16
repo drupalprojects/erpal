@@ -32,7 +32,10 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '30';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['style_plugin'] = 'table';
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -44,6 +47,11 @@ echo _erpal_invoice_helper_view_billables_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* Relationship: Billable: Customer */
+  $handler->display->display_options['relationships']['customer_nid']['id'] = 'customer_nid';
+  $handler->display->display_options['relationships']['customer_nid']['table'] = 'billable';
+  $handler->display->display_options['relationships']['customer_nid']['field'] = 'customer_nid';
+  $handler->display->display_options['relationships']['customer_nid']['required'] = 0;
   /* Field: Billable: Billable ID */
   $handler->display->display_options['fields']['billable_id']['id'] = 'billable_id';
   $handler->display->display_options['fields']['billable_id']['table'] = 'billable';
@@ -281,28 +289,30 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['edit_billable']['hide_empty'] = 0;
   $handler->display->display_options['fields']['edit_billable']['empty_zero'] = 0;
   $handler->display->display_options['fields']['edit_billable']['hide_alter_empty'] = 1;
-  /* Field: Field: Customer */
-  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'customer_nid';
+  $handler->display->display_options['fields']['title']['label'] = 'Customer';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
   /* Sort criterion: Billable: Date_delivery */
   $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
   $handler->display->display_options['sorts']['date_delivery']['table'] = 'billable';
@@ -332,16 +342,17 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['filters']['billed']['expose']['identifier'] = 'billed';
   $handler->display->display_options['filters']['billed']['expose']['required'] = 1;
   $handler->display->display_options['filters']['billed']['expose']['multiple'] = FALSE;
-  /* Filter criterion: Field: Customer (field_customer_ref) */
-  $handler->display->display_options['filters']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator_id'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['label'] = 'Customer';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['identifier'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['reduce'] = 0;
+  /* Filter criterion: Billable: Customer_nid */
+  $handler->display->display_options['filters']['customer_nid']['id'] = 'customer_nid';
+  $handler->display->display_options['filters']['customer_nid']['table'] = 'billable';
+  $handler->display->display_options['filters']['customer_nid']['field'] = 'customer_nid';
+  $handler->display->display_options['filters']['customer_nid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['customer_nid']['expose']['operator_id'] = 'customer_nid_op';
+  $handler->display->display_options['filters']['customer_nid']['expose']['label'] = 'Customer';
+  $handler->display->display_options['filters']['customer_nid']['expose']['operator'] = 'customer_nid_op';
+  $handler->display->display_options['filters']['customer_nid']['expose']['identifier'] = 'customer_nid';
+  $handler->display->display_options['filters']['customer_nid']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['customer_nid']['reduce_duplicates'] = 0;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -361,6 +372,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
     t('<?php
 echo _erpal_invoice_helper_view_billables_header_content();
 ?>'),
+    t('Customer'),
     t('Billable ID'),
     t('.'),
     t(','),
@@ -373,7 +385,6 @@ echo _erpal_invoice_helper_view_billables_header_content();
     t('Total VAT'),
     t('Total'),
     t('Currency'),
-    t('Customer'),
     t('Delivery'),
     t('Page'),
   );

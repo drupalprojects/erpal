@@ -120,6 +120,12 @@ function billable_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'customer_nid' => array(
+        'description' => 'Reference to an entity for the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'data' => array(
         'type' => 'blob',
         'not null' => FALSE,
@@ -132,8 +138,16 @@ function billable_schema() {
     'indexes' => array(
       'type' => array('type'),
       'delivery' => array('date_delivery'),
+      'customer' => array('customer_nid'),
     ),
   );
 
   return $schema;
+}
+
+/**
+* Implements hook_update to add customer field to billable table
+*/
+function billable_update_7001(&$sandbox) {
+    db_add_field('billable', 'customer_nid', array('type' => 'int', 'not null' => TRUE, 'description' => 'Reference to an entity for the customer.'));
 }
