@@ -164,7 +164,7 @@ function references_dialog_entityreference_edit_link($element, $widget_settings,
   if (isset($element['#default_value'])) {
     $entity_type = $field['settings']['target_type'];
     // Take "label (entity id)', match the id from parenthesis.
-    if (preg_match("/.\((\d)\)/", $element['#default_value'], $matches)) {
+    if (preg_match("/.\((\d*)\)/", $element['#default_value'], $matches)) {
         $value = $matches[1];
       }
     if (isset($value)) {
