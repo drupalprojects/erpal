@@ -8,8 +8,32 @@
 
 module_load_include('inc', 'billable', 'billable.entity');  
 module_load_include('inc', 'billable', 'billable.vat');  
+module_load_include('inc', 'billable', 'billable.actions');  
  
-
+/**
+ * Implements hook_action_info().
+ */
+function billable_action_info() {
+  return array(
+    'billable_reduce_action' => array(
+      'type' => 'entity',
+      'label' => t('Reduce billables'),
+      'description' => t('Reduce billables with parent and child billables.'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'billable_reduce_by_single_price_action' => array(
+      'type' => 'entity',
+      'label' => t('Reduce billables grouped by single price'),
+      'description' => t('Reduces billables grouping billables with the same single price as one.'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+  ); 
+}
+ 
 /**
  * Implements hook_views_api().
  */

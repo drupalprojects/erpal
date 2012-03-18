@@ -9,6 +9,10 @@ dependencies[] = date_popup
 
 files[] = billable.admin.inc
 files[] = billable.entity.inc
+files[] = billable.actions.inc
+files[] = billable.configurable.inc
+files[] = billable.reduce.inc
+files[] = billable.vat.inc
 files[] = test/billable.test
 files[] = views/billable.views.inc
 files[] = views/billable_handler_link_field.inc

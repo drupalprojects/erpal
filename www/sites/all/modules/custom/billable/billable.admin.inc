@@ -438,10 +438,3 @@ function _billable_get_node_types() {
   
   return $ret;
 }
-
-/**
-* Returns the current selected node type for customers
-*/
-function _billable_customer_type() {
-  return variable_get('billable_customer_type', false);
-}
