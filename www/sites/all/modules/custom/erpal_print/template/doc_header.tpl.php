@@ -1,0 +1,1 @@
+<img src="<?php echo erpal_print_logo_path(); ?>" />
