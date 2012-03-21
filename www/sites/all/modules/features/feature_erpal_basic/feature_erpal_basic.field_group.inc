@@ -21,7 +21,7 @@ function feature_erpal_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Legal information',
-    'weight' => '20',
+    'weight' => '15',
     'children' => array(
       0 => 'field_vat_number',
       1 => 'field_legal_other',

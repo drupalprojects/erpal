@@ -904,7 +904,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '17',
+        'weight' => '14',
       ),
     ),
   );
@@ -994,7 +994,7 @@ function feature_erpal_basic_field_default_fields() {
           'year_range' => '-100:+0',
         ),
         'type' => 'date_popup',
-        'weight' => '13',
+        'weight' => '10',
       ),
     ),
   );
@@ -1280,7 +1280,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'relation_select',
         'settings' => array(),
         'type' => 'relation_select',
-        'weight' => '14',
+        'weight' => '11',
       ),
     ),
   );
@@ -1359,7 +1359,7 @@ function feature_erpal_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '16',
+        'weight' => '13',
       ),
     ),
   );
@@ -1497,7 +1497,75 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '15',
+        'weight' => '12',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_contact-field_email'
+  $fields['node-erpal_contact-field_email'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_email',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contact',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 20,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_email',
+      'label' => 'Email Addresses',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '8',
       ),
     ),
   );
@@ -2509,6 +2577,7 @@ function feature_erpal_basic_field_default_fields() {
   t('Contact Type');
   t('Country');
   t('Customer Category');
+  t('Email Addresses');
   t('Facebook');
   t('Firstname');
   t('IBAN');
