@@ -5,6 +5,7 @@
  */
 module_load_include('inc', 'erpal_invoice_helper', 'inc/views_links');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
 
 /**
  * Implements hook_action_info().
@@ -31,11 +32,56 @@ function erpal_invoice_helper_action_info() {
 }
 
 /**
+* Implements hook_theme
+*/
+function erpal_invoice_helper_theme() {
+  return array(
+    'invoice_pdf_html' => array(
+      'variables' => array('invoice' => false),
+      'template' => 'template/invoice_pdf_html',
+    ),
+    'invoice_attachment_pdf_html' => array(
+      'variables' => array('invoice' => false, 'billables' => array()),
+      'template' => 'template/invoice_attachment_pdf_html',
+    ),    
+  );
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
+  //only if the node is an invoice, set the pdf link
+  if ($node->type == 'erpal_invoice') {
+  
+    $links[] = array(
+      'href' => 'invoice/'.$node->nid."/pdf",
+      'title' => t('PDF'),
+      'attributes' => array('class' => 'invoice_pdf_link'),
+    );
+    $node->content['links']['erpal_invoice_helper'] = array(
+      '#links' => $links,
+      '#attributes' => array('class' => array('links', 'inline')),
+    );
+  }
+}
+
+
+/**
 * Implements hook_menu
 */ 
 function erpal_invoice_helper_menu(){
 
   $items = array();
+  
+  $items['invoice/%/pdf'] = array(
+    'title' => 'Create PDF of invoice',
+    'page callback' => '_erpal_invoice_helper_invoice_pdf_menu_callback',    
+    'page arguments' => array(1),
+    'access arguments' => array('create erpal_invoice content'),
+    'file' => 'inc/invoice.pdf.inc',
+    'type' => MENU_CALLBACK,
+  );
   
   require_once 'inc/config.inc';
   $config_items = _erpal_invoice_helper_config_menu();
@@ -105,4 +151,76 @@ function erpal_invoice_helper_node_validate($node, $form, &$form_state) {
       } 
     }
   }
+}
+
+/**
+* Functions that returns all billables with sub billables (reduced) to a gven invoice
+*/
+function _erpal_invoice_helper_invoice_attachment_billables($invoice) {
+  $billables = array();
+
+  if (isset($invoice->field_billables_ref[LANGUAGE_NONE])) {
+    $billable_ids = $invoice->field_billables_ref[LANGUAGE_NONE][0];
+    if (is_array($billable_ids)) {
+      foreach ($billable_ids as $billable_id) {
+        if ($billable_id) {
+          $billable = billable_load($billable_id);
+          $billables[] = $billable;
+        }
+      }
+    }
+  }
+  
+  return $billables;
+}
+
+/**
+* Function to prepare variables for invoice
+*/
+function template_preprocess_invoice_pdf_html(&$variables) {
+
+  $invoice = $variables['invoice'];
+  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+  $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  
+  if (!$company_nid)
+    drupal_set_message(t('Please set !link', array('!link' => l('your company'), 'admin/erpal/basic')), 'warning');
+  
+  $company = node_load($company_nid);
+
+  //prepare all Data in an array
+  //get the address field collection of the company
+  
+ // hier weiter aber dafür brauchen wir noch ein Feld an der invoice, nämlich "company" und "company_address" welches
+ // festhällt wer die Rechnung geschrieben hat (also die "eigene" company).
+
+  $address_entity = _erpal_basic_helper_get_my_address_entity($company);
+  
+  dpm($address_entity);
+  $company_arr = array(
+    'name' => $company->title,
+    'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
+    'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
+    'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
+    //@TODO Country must be the display value of the field, not the database value (get it from allowed values of the country field)
+    'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+  );
+  
+  //get the customer
+  $customer = $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+  $customer_arr = array(
+    'name' => $customer->title,
+    
+  );
+  
+  $variabless['company'] = $company_arr;
+  $variables['company_node'] = $company;
+}
+
+/**
+* Implements hook_vat_rates provided by billable module
+*/
+function erpal_invoice_helper_vat_rates() {
+  module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
+  return _erpal_invoice_helper_vat_rates_arr(true);
 }
