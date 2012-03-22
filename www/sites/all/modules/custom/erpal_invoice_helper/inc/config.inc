@@ -60,7 +60,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
   $form['erpal_invoice_number_prefix'] = array(
     '#type' => 'textfield',
     '#title' => t('Invoice number prefix'),
-    '#default_value' => _erpal_invoice_helper_get_invoice_number_offset(),    
+    '#default_value' => _erpal_invoice_helper_get_invoice_number_prefix(),    
     '#description' => t('This prefix will be added as prefix to every invoice number'),
   );
   
@@ -77,6 +77,14 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#default_value' => _erpal_invoice_helper_get_credit_periods_string(),    
     '#description' => t('Enter credit period in days each in a separate line'),
   );
+  
+  $form['erpal_invoice_manuall_notes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Manuall invoice notes'),
+    '#default_value' => _erpal_invoice_helper_get_manuall_notes(),    
+    '#description' => t('Manually entered notes to show below your invoice calculation.'),
+  );
+  
   
   $form['submit'] = array(
     '#value' => t('save'),
@@ -96,13 +104,15 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
   variable_set('erpal_invoice_number_prefix', $values['erpal_invoice_number_prefix']);
   variable_set('erpal_invoice_vat_rates_string', $values['erpal_invoice_vat_rates']);
   variable_set('erpal_invoice_credit_periods_string', $values['erpal_invoice_credit_periods']);
+  variable_set('erpal_invoice_manuall_notes', $values['erpal_invoice_manuall_notes']);
+  
 }
 
 /**
-* Function to return the invoice number offset
+* Function to return the invoice number prefix
 */
-function _erpal_invoice_helper_get_invoice_number_offset() {
-  return variable_get('erpal_invoice_number_offset', '');
+function _erpal_invoice_helper_get_invoice_number_prefix() {
+  return variable_get('erpal_invoice_number_prefix', '');
 }
 
 /**
@@ -111,6 +121,7 @@ function _erpal_invoice_helper_get_invoice_number_offset() {
 function _erpal_invoice_helper_get_credit_periods_string() {
   return variable_get('erpal_invoice_credit_periods_string', '14');
 }
+
 
 /**
 * Function that returns credit periods as an array
@@ -126,6 +137,13 @@ function _erpal_invoice_helper_get_credit_periods_arr() {
   }
   
   return $periods;
+}
+
+/**
+* Function that returns manuall added notes to an invoice
+*/
+function _erpal_invoice_helper_get_manuall_notes() {
+  return variable_get('erpal_invoice_manuall_notes', '');
 }
 
 /**

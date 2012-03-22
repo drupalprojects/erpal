@@ -43,6 +43,7 @@ function _erpal_print_html_as_pdf($html, $destination=false, $download_filename=
   $pdf = new CI_document();
   
   $pdf->header_html = theme('doc_header');
+
   $pdf->footer_html = theme('doc_footer');
 
   $pdf->SetCreator(PDF_CREATOR);
@@ -116,5 +117,6 @@ function _erpal_print_split_pages($html){
 */
 function erpal_print_logo_path() {
   //@TODO make this dynamically!
-  return "/sites/default/files/logo.png";
+  $doc_root = $_SERVER['DOCUMENT_ROOT'];  
+  return "/sites/default/files/logo.jpg";
 }

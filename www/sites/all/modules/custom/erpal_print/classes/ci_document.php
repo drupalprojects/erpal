@@ -16,7 +16,7 @@ class CI_document extends TCPDF {
     
     $this->SetY(10);	
     $this->SetX(3);
-    $this->writeHTML($this->header_html."-", true, false, true, false, ''); 
+    $this->writeHTML($this->header_html, true, false, true, false, ''); 
 	}
   
 	public function Footer() {

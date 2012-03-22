@@ -82,7 +82,7 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
      
   //check that the given invoice_nid is of type erpal_invoice
   $invoice = node_load($invoice_nid);
-dpm($invoice);
+
   if ($invoice->type != 'erpal_invoice') {
     drupal_set_message(t('Sorry, but this is not an invoice. PLease export only invoices as PDF.'), 'error');
   }

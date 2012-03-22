@@ -10,9 +10,13 @@
 */
 function _erpal_invoice_helper_calculate_fields($invoice) {
 
+  //first of alle all fields that are directly attached to the 
+  //invoice node (no field collection and other entity refernces)  
   _erpal_invoice_helper_calculate_payment_date($invoice);
-  _erpal_invoice_helper_calculate_prices($invoice);  //@todo muss das in hook update oder insert?
-  _erpal_invoice_helper_set_billables_billed($invoice);
+  
+  //now the caclulations using entity references and field collections
+  _erpal_invoice_helper_calculate_prices($invoice);
+  _erpal_invoice_helper_set_billables_billed($invoice);  
 }
 
 /**
@@ -140,6 +144,65 @@ function _erpal_invoice_helper_set_billables_billed($invoice) {
     $billable->set_billed(true);
     $billable->save();
   }
+}
+
+/**
+* Function that creates the invoice note, wit automatically generated notes (e.g. from vat settings)
+* or from hook_invoice_notes by other moduls.
+*/
+function _erpal_invoice_helper_set_notes($invoice) {
+  $notes = array();
+  
+  $manual_notes = _erpal_invoice_helper_get_manuall_notes();
+  if ($manual_notes)
+    $notes[] = array('weight' => 1, 'note' => $manual_notes);
+    
+  //now make them alterable by other modules
+  $notes = module_invoke_all('invoice_notes_alter', $invoice, $notes);
+  
+  //order according to weight, an create the plain text that will be added to the invoice
+  $ordered_notes = array();
+  foreach ($notes as $note_arr) {
+    $weight = $note_arr['weight'];
+    $note = $note_arr['note'];
+    $ordered_notes[$weight] = $note;
+  }
+  
+  ksort($ordered_notes);
+  
+  $notes_string = implode("\r\n", $ordered_notes);
+
+  $invoice->field_note[LANGUAGE_NONE][0]['value'] = $notes_string;
+
+}
+
+/**
+* Implements hook_invoice_notes_alter
+* @param $invoice the invoice we create the notes for
+* @param $notes this array we add an array with key 'weight' and 'note' for each note line.
+*/
+function erpal_invoice_helper_invoice_notes_alter($invoice, $notes) {
+  //check if there is one vat rate that has a message, add the message to notes
+  $invoice_vat = $invoice->field_invoice_vat[LANGUAGE_NONE];
+  
+  $vat_rates = _erpal_invoice_helper_vat_rates_arr(true); //add notes to the labels
+  foreach ($invoice_vat as $delta=>$vat_arr) {
+    $id = $vat_arr['value'];
+    $vat_rate_collection = entity_load('field_collection_item', array($id));
+    $vat_rate_collection = $vat_rate_collection[$id];
+    $vat_rate = $vat_rate_collection->field_vat_rate[LANGUAGE_NONE][0]['value'];
+    
+    if (isset($vat_rates[$vat_rate])) {
+      if (isset($vat_rates[$vat_rate]['note']) && $vat_rates[$vat_rate]['note']) {
+        $notes[] = array(
+          'weight' => 2,  //@todo which value to preset here?
+          'note' => $vat_rates[$vat_rate]['note'],
+        );
+      }
+    }
+  }
+  
+  return $notes;
 }
 
 /**
