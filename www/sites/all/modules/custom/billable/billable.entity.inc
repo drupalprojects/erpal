@@ -36,7 +36,14 @@ function billable_load($billable_id, $reset = FALSE) {
  * @see billable_load()
  */
 function billable_load_multiple($billable_ids = array(), $conditions = array(), $reset = FALSE) {
-  return entity_load('billable', $billable_ids, $conditions, $reset);
+  $billables = entity_load('billable', $billable_ids, $conditions, $reset);
+  
+  //now add IDs of all billables that have this billable as parent, if reduced
+  foreach ($billables as $billable) {
+    $billable->reduced_billables = _billable_get_reduced_billables($billable);
+  }
+
+  return $billables;
 }
 
 
@@ -161,6 +168,18 @@ class Billable extends Entity {
   }
   
   /**
+  * Returns a value of a filed. Why? If we have fields attached to this entiy, we need to get the values
+  * not by calling just ->fieldname, but in some cases 'field_name[und][0]['nid'] etc. Things tha callee should not
+  * care about
+  */
+  function field_by_name($field_name) {
+    if ($field_name == 'customer') {
+      return $this->customer_nid;
+    } else
+      return $this->{$field_name};
+  }
+  
+  /**
   * Calculate quantity as a valid float, replace , with .
   */
   private function convert_quantity() {
@@ -268,6 +287,7 @@ class BillableController extends EntityAPIController {
       'weight' => 0,
       'parent_billable' => 0,
       'subject_nid' => 0,
+      'customer_nid' => 0,
       'quantity' => 1,
       'single_price' => 0,
       'total_price' => 0,
@@ -295,11 +315,12 @@ class BillableController extends EntityAPIController {
   
   /**
   * reduces all entities to a minimum set of entities
-  * @param $entity_ids array of all entities that should be reduced to a minimum set of entities with consistent data.
+  * @param $billable_ids array of all entities that should be reduced to a minimum set of entities with consistent data.
   * @return an array with all ids of the resulting entities which reference to the new created entities
   */
-  public function reduce($entity_ids) {
-    
+  public function reduce($billable_ids) {
+    module_load_include('inc', 'billable', 'billable.reduce');  
+    _billable_reduce($billable_ids);
   }
   
 }

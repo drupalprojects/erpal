@@ -7,13 +7,18 @@
 
 
 /**
-* @todo we have to provide an admin form to manage vat rates. 
-*   so this function could return these vat rates
+* central function that returns vat rates that are provided by other modules 
+* implementing hook_vat_rates;
 */
 function _billable_vat_rates() {
-  return array(
-    7 => '7% '.t('vat'),
-    19 => '19% '.t('vat'),
-    0 => '0% '.t('vat'),
-  );
+  
+  //provide a hook to let other modules ad vat rates
+  $vat_rates = module_invoke_all('vat_rates');
+
+  $rates = array();
+  foreach ($vat_rates as $rate_arr) {
+    $rates[$rate_arr['value']] = $rate_arr['label'];
+  }
+
+  return $rates;
 }

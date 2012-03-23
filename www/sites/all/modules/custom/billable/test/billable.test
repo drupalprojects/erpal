@@ -4,6 +4,8 @@
  * billable tests.
  */
 
+require_once 'billable.test.helper';
+ 
 class BillableTestCase extends DrupalWebTestCase  {
 
   public static function getInfo() {
@@ -55,7 +57,58 @@ class BillableTestCase extends DrupalWebTestCase  {
   }
   
   function testEntityReduce() {
-    //test if entites are reduced correctly
+    $group= 'billable reduce';
+    $test_data = _billable_create_reduce_test_data();
+    
+    module_load_include('inc', 'billable', 'billable.reduce');
+    $billable_ids = array(
+      $test_data['b1']->billable_id, 
+      $test_data['b2']->billable_id, 
+      $test_data['b3']->billable_id, 
+      $test_data['b4']->billable_id,
+      $test_data['b5']->billable_id,
+      $test_data['b6']->billable_id,
+    );
+    $group_by = array(); //no group by privce, this will be checked in the next step
+    $new_billables = _billable_reduce($billable_ids);
+    
+    //if they dont have the same customer, currency, vat_rate no reduce possible
+    //ensure that we have 2 new billables, with the given vat and the customers
+    //########################################
+    //CHECK NOT GROUPED BY SINGLE PRICE
+    //########################################
+    $needed_billables = _billable_create_reduce_test_data_needed($test_data, false);
+    
+    $billablesOK = _billable_reduce_test_check_after($billable_ids, $new_billables, $needed_billables, $group_by);
+    
+    $this->assertTrue($billablesOK, 'Reduce billables without grouping by single price', $group);
+    
+      
+    //########################################
+    //CHECK NOT GROUPED BY SINGLE PRICE
+    //########################################
+    $test_data = _billable_create_reduce_test_data();
+    $needed_billables = _billable_create_reduce_test_data_needed($test_data, true);
+
+    $billable_ids = array(
+      $test_data['b1']->billable_id, 
+      $test_data['b2']->billable_id, 
+      $test_data['b3']->billable_id, 
+      $test_data['b4']->billable_id,
+      $test_data['b5']->billable_id,
+      $test_data['b6']->billable_id,
+    );
+    
+    $group_by = array(); //no group by privce, this will be checked in the next step        
+    $group_by[] = 'single_price';
+    $new_billables = _billable_reduce($billable_ids, $group_by);
+    $billablesOK = _billable_reduce_test_check_after($billable_ids, $new_billables, $needed_billables, $group_by);
+    
+    $this->assertTrue($billablesOK, 'Reduce billables with grouping by single price', $group);
+
+    //check that already billed billable entites cannot be reduced
+    //@TODO
+ 
   }
 }
 

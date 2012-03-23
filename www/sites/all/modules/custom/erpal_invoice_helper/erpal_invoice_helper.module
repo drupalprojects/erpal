@@ -4,6 +4,119 @@
  * Code for the erpal_invoice_helper module.
  */
 module_load_include('inc', 'erpal_invoice_helper', 'inc/views_links');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+
+/**
+ * Implements hook_action_info().
+ */
+function erpal_invoice_helper_action_info() {
+  return array(
+    'erpal_invoice_helper_invoice_from_billables_action' => array(
+      'type' => 'entity',
+      'label' => t('Create invoice'),
+      'description' => t('Creates an invoice from billables, not reduced.'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'erpal_invoice_helper_invoice_from_billables_reduced_action' => array(
+      'type' => 'entity',
+      'label' => t('Create invoice reduced'),
+      'description' => t('Creates an invoice from billables with reducing billables.'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+  ); 
+}
+
+/**
+* Implements hook_theme
+*/
+function erpal_invoice_helper_theme() {
+  return array(
+    'invoice_pdf_html' => array(
+      'variables' => array('invoice' => false),
+      'template' => 'template/invoice_pdf_html',
+    ),
+    'invoice_attachment_pdf_html' => array(
+      'variables' => array('invoice' => false, 'billables' => array()),
+      'template' => 'template/invoice_attachment_pdf_html',
+    ),    
+  );
+}
+
+/**
+* implements hook_init
+*/
+function erpal_invoice_helper_init() {
+  //@TODO that is really bad, but we have no other chance right now. The problem is:
+  //if the customer changes in an invoice, we change the allowed values using #ajax at the customer
+  //form element. This ajax function sumbits the whole form. While rebuilding the form again, the function
+  //to get the allowed values of the field is called bevore hook_form_alter. But we need the value of the selected customer
+  //to decide which are the allowed values. So we need a oportunity to get the value of the customer field BEVORE 
+  //the function for allowed values is called. This is what we do here.
+  
+  if (isset($_POST['field_customer_ref']))
+    if (isset($_POST['field_customer_ref'][LANGUAGE_NONE]))
+      if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]))
+        if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['nid'])) {
+          $customer_nid = $_POST['field_customer_ref'][LANGUAGE_NONE][0]['nid'];
+          $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);
+          _erpal_invoice_helper_cache('erpal_ajax_adresses', $customer_nid);
+        }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_invoice_node_form') {
+    
+    $form['field_invoice_address_id'][LANGUAGE_NONE]['#prefix'] = '<div id="invoice_address_wrapper">';
+    $form['field_invoice_address_id'][LANGUAGE_NONE]['#suffix'] = '</div>';
+
+    $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
+  }
+}
+
+/**
+* Alters the field customer ref to have an ajax callback to change the addresses after changing
+*/
+function _erpal_invice_helper_field_customer_ref_alter($field) {
+
+  $field[LANGUAGE_NONE][0]['nid']['#ajax'] = array(
+    'callback' => '_erpal_invoice_helper_ajax_invoice_preselect_addresses',
+    'wrapper' => 'invoice_address_wrapper',
+    'method' => 'replace',
+    'effect' => 'fade',
+  );
+  
+  return $field;
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
+  //only if the node is an invoice, set the pdf link
+  if ($node->type == 'erpal_invoice') {
+  
+    $links[] = array(
+      'href' => 'invoice/'.$node->nid."/pdf",
+      'title' => t('PDF'),
+      'attributes' => array('class' => 'invoice_pdf_link'),
+    );
+    $node->content['links']['erpal_invoice_helper'] = array(
+      '#links' => $links,
+      '#attributes' => array('class' => array('links', 'inline')),
+    );
+  }
+}
+
 
 /**
 * Implements hook_menu
@@ -11,6 +124,15 @@ module_load_include('inc', 'erpal_invoice_helper', 'inc/views_links');
 function erpal_invoice_helper_menu(){
 
   $items = array();
+  
+  $items['invoice/%/pdf'] = array(
+    'title' => 'Create PDF of invoice',
+    'page callback' => '_erpal_invoice_helper_invoice_pdf_menu_callback',    
+    'page arguments' => array(1),
+    'access arguments' => array('create erpal_invoice content'),
+    'file' => 'inc/invoice.pdf.inc',
+    'type' => MENU_CALLBACK,
+  );
   
   require_once 'inc/config.inc';
   $config_items = _erpal_invoice_helper_config_menu();
@@ -36,8 +158,6 @@ function erpal_invoice_helper_permission(){
 * @param $invoice the invoice node the caclulation will be processed
 */
 function _erpal_invoice_helper_caclulate_invoice($invoice) {
-
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
   _erpal_invoice_helper_calculate_fields($invoice);
 }
 
@@ -51,6 +171,17 @@ function erpal_invoice_helper_node_update($node) {
   if ($type->type == 'erpal_invoice')
     _erpal_invoice_helper_caclulate_invoice($node);
 }
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_invoice_helper_node_presave($node) {
+  //it must be an invoice node
+  $type = node_type_get_type($node);
+
+  if ($type->type == 'erpal_invoice')
+    _erpal_invoice_helper_set_notes($node);
+} 
 
 /**
 * Implements hook_node_insert
@@ -80,4 +211,187 @@ function erpal_invoice_helper_node_validate($node, $form, &$form_state) {
       } 
     }
   }
+}
+
+/**
+* Functions that returns all billables with sub billables (reduced) to a gven invoice
+*/
+function _erpal_invoice_helper_invoice_attachment_billables($invoice) {
+  $billables = array();
+
+  if (isset($invoice->field_billables_ref[LANGUAGE_NONE])) {
+    $billable_ids = $invoice->field_billables_ref[LANGUAGE_NONE][0];
+    if (is_array($billable_ids)) {
+      foreach ($billable_ids as $billable_id) {
+        if ($billable_id) {
+          $billable = billable_load($billable_id);
+          $billables[] = $billable;
+        }
+      }
+    }
+  }
+  
+  return $billables;
+}
+
+/**
+* Function to prepare variables for invoice
+*/
+function template_preprocess_invoice_pdf_html(&$variables) {
+
+  $invoice = $variables['invoice'];
+  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+  $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  
+  if (!$company_nid)
+    drupal_set_message(t('Please set !link', array('!link' => l('your company'), 'admin/erpal/basic')), 'warning');
+  
+  $company = node_load($company_nid);
+
+  //prepare all Data in an array
+  //get the address field collection of the company
+  
+ // hier weiter aber dafür brauchen wir noch ein Feld an der invoice, nämlich "company" und "company_address" welches
+ // festhällt wer die Rechnung geschrieben hat (also die "eigene" company).
+
+  $address_entity = _erpal_basic_helper_get_my_address_entity($company);
+  
+  $company_arr = array(
+    'name' => $company->title,
+    'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
+    'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
+    'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
+    //@TODO Country must be the display value of the field, not the database value (get it from allowed values of the country field)
+    'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+  );
+  
+  //get the customer
+  $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+  $customer_node = node_load($customer_nid);
+  if (isset($customer_node->field_vat_number[LANGUAGE_NONE]) && isset($customer_node->field_vat_number[LANGUAGE_NONE][0]))
+    $vat_number = $customer_node->field_vat_number[LANGUAGE_NONE][0]['value'];
+    
+  //get the address entity of the invoice!
+  $entity_id = $invoice->field_invoice_address_id[LANGUAGE_NONE][0]['value'];
+  $address_entity = entity_load('field_collection_item', array($entity_id));
+  $address_entity = $address_entity[$entity_id];
+  $customer_arr = array(
+    'name' => $customer_node->title,
+    'vat_number' => isset($vat_number) ? $vat_number : '',    
+    'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
+    'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
+    'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
+    //@TODO Country must be the display value of the field, not the database value (get it from allowed values of the country field)
+    'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+  );
+  
+  $invoice_number = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
+  $invoice_date = $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'];
+  
+  //get the billables in an array
+  $billable_entity_ids = $invoice->field_billables_ref[LANGUAGE_NONE];
+  $billables = array();
+  foreach ($billable_entity_ids as $billable_id) {
+    $billable_id = $billable_id['target_id'];
+    $billable = billable_load($billable_id);
+
+    $billables[$billable_id] = array(
+      'subject' => $billable->subject,
+      'date_delivery' => format_date($billable->date_delivery, 'short'),
+      'subject_nid' => $billable->subject_nid,
+      'quantity' => $billable->quantity,
+      'single_price' => $billable->single_price,
+      'total_price' => $billable->total_price,
+      'total_price_no_vat' => $billable->total_price_no_vat,
+      'total_vat' => $billable->total_vat,
+      'vat_rate' => $billable->vat_rate,
+      'currency' => $billable->currency,
+    );
+  }
+  
+  $total = $invoice->field_invoice_total[LANGUAGE_NONE][0]['value'];
+  $total_excl_vat = $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'];
+  $payment_date = $invoice->field_payment_date[LANGUAGE_NONE][0]['value'];
+  $currency = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
+  
+  $notes = '';
+  if (isset($invoice->field_note[LANGUAGE_NONE]))
+    $notes = $invoice->field_note[LANGUAGE_NONE][0]['value'];
+  
+  //total_vat is a field collection, so load it an pack it into an array!
+  $total_vats = array();
+  $vat_entities = $invoice->field_invoice_vat[LANGUAGE_NONE];
+  foreach ($vat_entities as $vat_entity_id) {
+    $vat_entity_id = $vat_entity_id['value'];
+    $vat_entity = entity_load('field_collection_item', array($vat_entity_id));
+    $vat_entity = $vat_entity[$vat_entity_id];
+    $entity_vat_rate = $vat_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
+    $entity_vat_total = $vat_entity->field_vat_total[LANGUAGE_NONE][0]['value'];
+    $total_vats[] = array(
+      'var_rate' => $entity_vat_rate,
+      'vat_value' => $entity_vat_total,
+      'currency' => $currency, //this is the curency of the invoice, it must be equal anyway!
+    );
+  }
+  
+  $variables['company'] = $company_arr;
+  $variables['company_node'] = $company;
+  $variables['customer'] = $customer_arr;
+  $variables['invoice_number'] = _erpal_invoice_helper_get_invoice_number_prefix().$invoice_number;
+  $variables['invoice_date'] = format_date($invoice_date, 'short');
+  $variables['billables'] = $billables;
+  $variables['total'] = $total;
+  $variables['currency'] = $currency;
+  $variables['total_excl_vat'] = $total_excl_vat;
+  $variables['total_vat'] = $total_vats;
+  $variables['payment_date'] = format_date($payment_date, 'short');
+  $variables['notes'] = _erpal_invoice_helper_get_manuall_notes()."\r\n".$notes;
+  
+  dpm($variables);
+}
+
+/**
+* Implements hook_vat_rates provided by billable module
+*/
+function erpal_invoice_helper_vat_rates() {
+  module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
+  return _erpal_invoice_helper_vat_rates_arr(true);
+}
+
+/**
+* Callback after customer_ref field on invoice form has changed with ajax callback
+* assigned in feature_erpal_invoice
+*/
+function _erpal_invoice_helper_ajax_invoice_preselect_addresses($form, $form_state) {  
+  return $form['field_invoice_address_id'][LANGUAGE_NONE];  //form has already been processed, so just return the elements
+}
+
+/**
+* Callback function for returnin all available address of a customer 
+* in field_invoice_address_id at an invoice
+*/
+function erpal_invoice_helper_field_invoice_address_id_allowed_values($field) {
+  if ($field['field_name'] != 'field_invoice_address_id') {    
+    return array();
+  } else {
+    //@TODO getting the current node from url args is kind of dirty, but I actually
+    //dont know how to do it better and we need the current node to get information
+    //if it is edit and we have already a customer set to get its available addresses        
+    $invoice_nid = arg(1);
+  }
+
+  $cached_customer_nid = _erpal_invoice_helper_cache('erpal_ajax_adresses', false);  //get cached customer and clear cache
+  if ($cached_customer_nid) {
+    $customer_node = node_load($cached_customer_nid);
+  }
+  elseif ($invoice_nid && intval($invoice_nid)."" == $invoice_nid.""){ //ensure it is an integer and not "add"
+    $invoice_node = node_load($invoice_nid);  
+    $customer_nid = $invoice_node->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+    $customer_node = node_load($customer_nid);    
+  } else
+    return array();
+
+  $allowed_values = _erpal_basic_helper_get_contact_adresses($customer_node, true);
+
+  return $allowed_values;
 }

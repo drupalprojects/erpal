@@ -10,6 +10,7 @@
 function erpal_projects_helper_node_presave_timetracking($node) {
  
   //if no value is available, we caclulate the value using start and end time
+  dpm($node);
   $start_time = $node->field_date_time[LANGUAGE_NONE][0]['value'];
   $end_time = $node->field_date_time[LANGUAGE_NONE][0]['value2'];
   
@@ -19,14 +20,16 @@ function erpal_projects_helper_node_presave_timetracking($node) {
   
   $duration = 0;
   if (isset($node->field_timetracking_duration[LANGUAGE_NONE][0]))
-    $duration = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+    if (isset($node->field_timetracking_duration[LANGUAGE_NONE][0]['value']))
+      $duration = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
   
   if (!$duration)
     $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'] = $time_duration;
   
   $billing_duration = 0;
   if (isset($node->field_billing_duration[LANGUAGE_NONE][0]))
-    $billing_duration = $node->field_billing_duration[LANGUAGE_NONE][0]['value'];
+    if (isset($node->field_billing_duration[LANGUAGE_NONE][0]['value']))
+      $billing_duration = $node->field_billing_duration[LANGUAGE_NONE][0]['value'];
   
   if (!$billing_duration)
     $node->field_billing_duration[LANGUAGE_NONE][0]['value'] = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];

@@ -12,7 +12,7 @@
 	<property name="updatescripts.process.url" value="http://jenkins.${domain}/process_update_scripts/${updatescripts.key}" />
 
 	<!-- paths to ignore for code metrics -->
-	<property name="metrics.ignore" value="www/sites/all/modules/custom/dzbank/pdf_classes/" />
+	<property name="metrics.ignore" value="www/sites/all/modules/custom/erpal_asterisk_notify/nicokaiser-php-websocket" />
 	
 	<!-- paths that should be added to git when creating a snapshot -->
 	<property name="snapshot.new_paths" value="docs sql" />
@@ -78,6 +78,7 @@
   			<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run AdminMenuLinksTestCase" />
         <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run BillableTestCase" />
         <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureInvoiceTestCase" />
+        <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureProjectsBillableTestCase" />        
   		</exec>
  	</target>
 

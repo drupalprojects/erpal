@@ -4360,6 +4360,7 @@ function drupal_process_attached($elements, $group = JS_DEFAULT, $dependency_che
   // Add both the JavaScript and the CSS.
   // The parameters for drupal_add_js() and drupal_add_css() require special
   // handling.
+
   foreach (array('js', 'css') as $type) {
     foreach ($elements['#attached'][$type] as $data => $options) {
       // If the value is not an array, it's a filename and passed as first
@@ -4382,6 +4383,7 @@ function drupal_process_attached($elements, $group = JS_DEFAULT, $dependency_che
       if (isset($every_page)) {
         $options['every_page'] = $every_page;
       }
+
       call_user_func('drupal_add_' . $type, $data, $options);
     }
     unset($elements['#attached'][$type]);

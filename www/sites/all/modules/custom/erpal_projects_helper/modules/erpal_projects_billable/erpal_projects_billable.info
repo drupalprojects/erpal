@@ -11,6 +11,7 @@ version = "7.x-1.0-dev"
 files[] = erpal_projects_billable.module
 files[] = erpal_projects_billable.install
 files[] = erpal_projects_billable.fields.inc
+files[] = test/erpal_projects_billable.test
 
 dependencies[] = billable
 dependencies[] = feature_erpal_project_basic

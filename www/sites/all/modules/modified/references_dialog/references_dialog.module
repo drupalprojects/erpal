@@ -12,7 +12,7 @@ function references_dialog_element_info() {
   $types['references_dialog'] = array(
     '#input' => FALSE ,
     '#after_build' => array('references_dialog_build_element'),
-    '#attached' => references_dialog_attached(),
+    '#attached' => references_dialog_attached(false),
   );
   return $types;
 }
@@ -20,12 +20,18 @@ function references_dialog_element_info() {
 /**
  * Get everything that needs to be attached in order for the links to work.
  */
-function references_dialog_attached() {
-  return array(
-    'js' => array(drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js'),
-    'css' => array(drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css'),
-    'library' => array(array('system', 'ui.dialog')),
-  );
+function references_dialog_attached($element) {
+  if ($element) {
+    $element['#attached']['js'][] = drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js';
+    $element['#attached']['css'][] = drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css';
+    $element['#attached']['library'][] = array('system', 'ui.dialog');
+    return $element['#attached'];
+  } else
+    return array(
+      'js' => array(drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js'),
+      'css' => array(drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css'),
+      'library' => array(array('system', 'ui.dialog')),
+    );
 }
 
 /**
@@ -297,7 +303,7 @@ function references_dialog_process_widget(&$element) {
   }
   $dialog_widget = references_dialog_widget_load($widget_type);
   // Attach javascript and CSS needed.
-  $element['#attached'] = references_dialog_attached();
+  $element['#attached'] = references_dialog_attached($element);
   $element['#attached']['js'][] = references_dialog_js_settings($element['#id'], array('format' => $dialog_widget['format']));
   $link_options = array('attributes' => array('class' => array('references-dialog-activate')));
   $dialog_links = array();

@@ -13,37 +13,13 @@ function _erpal_projects_billable_insert_timetracking($node) {
   $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
   $subject_node = node_load($subject_nid);
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($subject_node);
-  //$billing_duration = _erpal_projects_helper_get_billing_duration($node);
 
-  //now we have all information to create a billable from this timetracking
-  $price_mode = isset($billable_information['per_hour']) ? $billable_information['per_hour'] : 0;
-  $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
-  $customer_node = $billable_information['customer'];
-  if ($price_mode == 'per_hour' && $price && $customer_node)
-  {  
-    $single_price = $price;
-    $customer_nid = $customer_node->nid;
-    $subject_nid = $node->nid;  //the subject is the timetracking itself
-    $quantity = $node->field_billing_duration[LANGUAGE_NONE][0]['value']; //due to other hook this field should allways be filled
-    $currency = $billable_information['currency'];
-    $vat_rate = $billable_information['vat_rate'];
-    $subject_title = $node->title;
-    $date_delivery = $node->created;
-    
-    //last parameter is set false, so we create a new billable!
-    _erpal_project_billable_save_billable(
-      $subject_title, 
-      $customer_nid, 
-      $subject_nid, 
-      $quantity, 
-      $single_price, 
-      $currency, 
-      $vat_rate, 
-      $date_delivery, 
-      false
-    );
-  }
-  
+  //only process if the task is completed!
+  if ($billable_information['price_mode'] != 'per_hour')
+    return;
+
+  _erpal_billable_update_billable($node, 'insert');
+
 }
 
 
@@ -58,6 +34,19 @@ function _erpal_projects_billable_update_timetracking($node) {
   //get the billabel
   $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
 
+  $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
+  $subject_node = node_load($subject_nid);
+  $billable_information = _erpal_projects_billable_subject_billabel_information_subject($subject_node);
+
+  //only process if the task is completed!
+  if ($billable_information['price_mode'] != 'per_hour')
+    return;
+
+  _erpal_billable_update_billable($node, 'update');
+  
+  return;
+  
+  
   foreach ($billables as $id=>$billable) {
     //save the billabel, last parameter is set, so this billable will be updated
     if ($billable->billed)

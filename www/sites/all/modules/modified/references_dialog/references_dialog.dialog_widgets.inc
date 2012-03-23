@@ -164,7 +164,7 @@ function references_dialog_entityreference_edit_link($element, $widget_settings,
   if (isset($element['#default_value'])) {
     $entity_type = $field['settings']['target_type'];
     // Take "label (entity id)', match the id from parenthesis.
-    if (preg_match("/.\((\d)\)/", $element['#default_value'], $matches)) {
+    if (preg_match("/.\((\d*)\)/", $element['#default_value'], $matches)) {
         $value = $matches[1];
       }
     if (isset($value)) {
@@ -217,6 +217,7 @@ function references_dialog_entityreference_link_helper($entity_type, $bundle = N
   else {
     $label = $info['label'];
   }
+  
   // We use entity_access here. We provide the bundle if this is a node type,
   // since node_access expects that to be passed to it as the entity when you
   // run node_access('create')
