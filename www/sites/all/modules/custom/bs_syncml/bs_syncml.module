@@ -7,15 +7,7 @@
 module_load_include("inc", "bs_syncml", "includes/bs_syncml.profile");
 
 function bs_syncml_init() {
-  bs_syncml_profile_getall(true);
   
-  $profile = new BsSyncMlProfile("profile2", array('stuff'=>'yay'));
-  $profile->load(1);
-  
-  //$profile->save();
-  dpm($profile);
-  $profile->data['morestuff']="nay";
-  $profile->save();
 }
 
 

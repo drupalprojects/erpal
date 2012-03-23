@@ -110,6 +110,34 @@ function bs_syncml_schema() {
           )
   );
   
+  $schema['bs_syncml_contentrelation'] = array(
+      'description' => 'Stores the relation: Contenttype->Plugin.',
+      'fields' => array(
+          'id' => array(
+              'type' => 'serial',
+              'not null' => TRUE,
+              'description' => 'ID.',
+          ),
+          'contenttype' => array(
+             'type' => 'varchar',
+              'length' => '64',
+              'not null' => TRUE,
+              'description' => 'The machine name of the content-type',
+          ),
+          'module' => array(
+              'type' => 'blob',
+              'size' => 'big',
+              'not null' => TRUE,
+              'serialize' => TRUE,
+              'description' => 'The plugin-module that handles this contenttype.',
+          ),
+      ),
+      'primary key' => array('id'),
+      'indexes' =>  array(
+          'i_contenttype'=>array('contenttype')
+          )
+  );
+  
   
   return $schema;
 }
