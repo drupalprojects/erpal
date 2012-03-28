@@ -324,7 +324,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -385,7 +385,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -456,7 +456,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -546,7 +546,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -605,7 +605,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -685,7 +685,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -736,7 +736,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'serial',
         'settings' => array(),
         'type' => 'serial',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -801,7 +801,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -861,7 +861,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -896,7 +896,7 @@ function feature_erpal_invoice_field_default_fields() {
       'bundle' => 'erpal_invoice',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'You could enter a message into the invoice',
+      'description' => 'You could enter a message into the invoice, it will be added to automatically generates notes.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -927,7 +927,7 @@ function feature_erpal_invoice_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -993,7 +993,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );
@@ -1073,7 +1073,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '14',
+        'weight' => '15',
       ),
     ),
   );
@@ -1145,7 +1145,7 @@ function feature_erpal_invoice_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '15',
+        'weight' => '16',
       ),
     ),
   );
@@ -1210,7 +1210,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -1270,7 +1270,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -1303,7 +1303,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('VAT rate');
   t('VAT total');
   t('Within which credit period will the discount be given');
-  t('You could enter a message into the invoice');
+  t('You could enter a message into the invoice, it will be added to automatically generates notes.');
 
   return $fields;
 }

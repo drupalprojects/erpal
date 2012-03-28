@@ -443,6 +443,7 @@ function views_bulk_operations_config_form($form, &$form_state, $view, $output) 
  * Multistep form callback for the "confirm" step.
  */
 function views_bulk_operations_confirm_form($form, &$form_state, $view, $output) {
+ 
   $vbo = _views_bulk_operations_get_field($view);
   $operation = $form_state['operation'];
   $rows = $form_state['selection'];

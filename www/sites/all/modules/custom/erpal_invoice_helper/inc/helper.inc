@@ -15,3 +15,23 @@ function _erpal_invoice_helper_cache($key, $value=false) {
     
   return $ret;
 }
+
+/**
+* Returns all customer nids to a given amount of billable ids
+*/
+function _erpal_invoice_helper_get_billable_customers($billable_id_arr) {
+  if (count($billable_id_arr) <= 0)
+    return array();
+  
+  $result = db_select('billable', 'b')
+    ->fields('b', array('customer_nid'))
+    ->condition('billable_id', $billable_id_arr,'IN')
+    ->execute();
+
+  $customers = array();
+  while($record = $result->fetchAssoc()) {
+      $customers[] = $record['customer_nid'];
+  }
+  
+  return $customers;
+}

@@ -82,12 +82,6 @@ echo _erpal_invoice_helper_view_billables_header_content();
       'override_label' => 0,
       'label' => '',
     ),
-    'erpal_invoice_helper_invoice_from_billables_reduced_action' => array(
-      'selected' => 1,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
     'views_bulk_operations_delete_item' => array(
       'selected' => 0,
       'use_queue' => 0,

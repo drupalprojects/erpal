@@ -17,16 +17,8 @@ function erpal_invoice_helper_action_info() {
     'erpal_invoice_helper_invoice_from_billables_action' => array(
       'type' => 'entity',
       'label' => t('Create invoice'),
-      'description' => t('Creates an invoice from billables, not reduced.'),
-      'configurable' => FALSE,
-      'hooks' => array(),
-      'aggregate' => TRUE,
-    ),
-    'erpal_invoice_helper_invoice_from_billables_reduced_action' => array(
-      'type' => 'entity',
-      'label' => t('Create invoice reduced'),
-      'description' => t('Creates an invoice from billables with reducing billables.'),
-      'configurable' => FALSE,
+      'description' => t('Creates an invoice from billables'),
+      'configurable' => TRUE,
       'hooks' => array(),
       'aggregate' => TRUE,
     ),
@@ -81,6 +73,7 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
 
     $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
   }
+  
 }
 
 /**
@@ -347,7 +340,6 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['payment_date'] = format_date($payment_date, 'short');
   $variables['notes'] = _erpal_invoice_helper_get_manuall_notes()."\r\n".$notes;
   
-  dpm($variables);
 }
 
 /**
