@@ -30,7 +30,7 @@ function _erpal_invoice_helper_get_billable_customers($billable_id_arr) {
 
   $customers = array();
   while($record = $result->fetchAssoc()) {
-      $customers[] = $record['customer_nid'];
+      $customers[$record['customer_nid']] = $record['customer_nid'];
   }
   
   return $customers;

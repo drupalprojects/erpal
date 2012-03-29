@@ -35,6 +35,20 @@ function erpal_invoice_helper_schema() {
         'unsigned' => TRUE,
         'default' => 0,
       ),
+      'skonto_percent' => array(
+        'description' => 'The default skonto in percent for the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'skonto_period' => array(
+        'description' => 'The default skonto period of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
       'notes' => array(
         'description' => 'The default notes on invoices of the customer.',
         'type' => 'text',

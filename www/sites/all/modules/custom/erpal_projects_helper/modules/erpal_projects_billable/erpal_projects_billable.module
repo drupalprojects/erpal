@@ -348,7 +348,7 @@ function _erpal_billable_update_billable($node, $op) {
   
   if ($node->type == 'erpal_timetracking') {
     $timetracking_node = $node;
-    $quantity = $node->field_timetracking_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
+    $quantity = $node->field_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
     $node = node_load($node->field_timetracking_subject[LANGUAGE_NONE][0]['nid']);    
     $type = $timetracking_node->type;
   } else {

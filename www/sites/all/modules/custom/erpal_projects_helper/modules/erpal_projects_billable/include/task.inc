@@ -39,14 +39,15 @@ function _erpal_projects_billable_update_task($node) {
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);
   
   //now we have all information to create a billable from this timetracking
-  $price_mode = isset($billable_information['per_hour']) ? $billable_information['per_hour'] : 0;
+  $price_mode = isset($billable_information['price_mode']) ? $billable_information['price_mode'] : 0;
   $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
   $customer_node = $billable_information['customer'];
 
-  //not a fixed price project, no customer or no price set? Skip!
+
+  //not a fixed price task, no customer or no price set? Skip!
   if (!($price_mode == 'fixed_price' && $price && $customer_node))
     return;
-    
+  
   _erpal_billable_update_billable($node, 'update');
     
 }

@@ -160,7 +160,7 @@ function billable_edit_form($form, &$form_state, $billable) {
     '#type' => 'select',
     '#options' => _billable_get_customers(),
     '#title' => t('Customer'),
-    '#default_value' => isset($billable->customer) ? $billable->customer : '',
+    '#default_value' => isset($billable->customer_nid) ? $billable->customer_nid : '',
     '#required' => TRUE,
   );
  

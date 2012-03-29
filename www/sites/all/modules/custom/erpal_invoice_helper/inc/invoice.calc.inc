@@ -220,13 +220,20 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
     'errors' => array(),
     'invoice' => false,
   );
-  
+
   if (count($billable_ids) <= 0) {
     $status['status'] = 0;
     $status['errors'][] = t('There are no billable items the invoice should be created from.');
     return $status;
   }
   
+  //perhaps there is no invoice address given, then we cannot create the invoice
+  if (!(isset($params['address_id']) && intval($params['address_id']))) {
+    $status['status'] = 0;
+    $status['errors'][] = t('There is no invoice address selected for the invoice.');
+    return $status;
+  }
+ 
   if ($reduced)
   {
     //reduce all billables given and then create the bill with the reduced entities
@@ -301,6 +308,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   
   //add customer
   $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
+  
+  //add address_id
+  $invoice->field_invoice_address_id[LANGUAGE_NONE][0]['value'] = $params['address_id'];
   
   //add skonto information from params if set!
   if (isset($params['skonto'])) {

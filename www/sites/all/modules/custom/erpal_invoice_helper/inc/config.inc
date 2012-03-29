@@ -153,6 +153,7 @@ function _erpal_invoice_helper_get_vat_rates_string() {
   return variable_get('erpal_invoice_vat_rates_string', '7#7');
 }
 
+
 /**
 * returns vat rates as array
 * @param $add_notes - if true the funciton adds all notes that are related to each vat rate.
