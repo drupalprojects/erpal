@@ -82,8 +82,31 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#type' => 'textarea',
     '#title' => t('Manuall invoice notes'),
     '#default_value' => _erpal_invoice_helper_get_manuall_notes(),    
-    '#description' => t('Manually entered notes to show below your invoice calculation.'),
+    '#description' => t('Manually entered notes to show below your invoice calculation. Please us the fallowing tokens to add invoice data to your text: [node:field_credit_period], '),
   );
+  
+  //show available Tokens
+  $token_types = array(
+    'theme' => 'token_tree',
+    'token_types' => array('erpal_invoice'),
+    'global_types' => FALSE,
+    'click_insert' => TRUE,
+    'recursion_limit' => 1,
+  );
+  
+  if (module_exists('token')) {
+    $form['token_tree'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => $token_types,
+    );
+  }
+  else {
+    $form['token_tree'] = array(
+      '#markup' => '<p>' . t('Enable the <a href="@drupal-token">Token module</a> to view the available token browser.', array('@drupal-token' => 'http://drupal.org/project/token')) . '</p>',
+    );
+  }
+  
+  
   
   
   $form['submit'] = array(
@@ -152,6 +175,7 @@ function _erpal_invoice_helper_get_manuall_notes() {
 function _erpal_invoice_helper_get_vat_rates_string() {
   return variable_get('erpal_invoice_vat_rates_string', '7#7');
 }
+
 
 /**
 * returns vat rates as array

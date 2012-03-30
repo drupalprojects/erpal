@@ -57,8 +57,26 @@ function erpal_invoice_helper_invoice_from_billables_action_form($context) {
 * Validation handler of bulk operation configuration form for creating an invoice
 */
 function erpal_invoice_helper_invoice_from_billables_action_validate($form, &$form_state) {
-  //@todo ?
   
+  $values = $form_state['values'];
+  //skoto: if skonto_period is set, skonto_percent must be set, too. Both values must be numeric
+  $skonto_period = 0;
+  $skonto_percent = 0;
+  if (isset($values['skonto_period']))
+    $skonto_period = $values['skonto_period'];
+  if (isset($values['skonto_percent']))
+    $skonto_percent = $values['skonto_percent'];
+  
+  if ($skonto_period && !$skonto_percent)
+    form_set_error('skonto_percent', t('If you enter skonto period, please enter skonto percent, too.'));
+  if (!$skonto_period && $skonto_percent)
+    form_set_error('skonto_period', t('If you enter skonto credit, please enter skonto percent, too.'));
+
+  //both must be numeric and only full numers, no floats
+  if ($skonto_period && (!is_numeric($skonto_period) || strpos($skonto_period, '.') > 0))
+    form_set_error('skonto_period', t('Please enter only full numeric values for skonto period.'));
+  if ($skonto_percent && (!is_numeric($skonto_percent) || strpos($skonto_percent, '.') > 0))
+    form_set_error('skonto_percent', t('Please enter only full numeric values for skonto percent.'));
 }
 
 /**
@@ -67,12 +85,14 @@ function erpal_invoice_helper_invoice_from_billables_action_validate($form, &$fo
 function erpal_invoice_helper_invoice_from_billables_action_submit($form, &$form_state) {
   //return other context option (the values that have been submitted) to have them in our action callback
   $values = $form_state['values'];
-  
+
   //save default invoice values für this customer!
   $defaults = array(
-    'address_id' => $values['address_id'],
-    'credit_period' => $values['credit_period'],
-    'notes' => $values['notes'],
+    'address_id' => isset($values['address_id']) ? $values['address_id'] : 0,
+    'credit_period' => isset($values['credit_period']) ? $values['credit_period'] : 0,    
+    'notes' => isset($values['notes']) ? $values['notes'] : '',
+    'skonto_percent' => isset($values['skonto_percent']) ? $values['skonto_percent'] : 0,
+    'skonto_period' => isset($values['skonto_period']) ? $values['skonto_period'] : 0,
   );
   $customer_nid = $values['customer_nid'];
   
@@ -96,8 +116,26 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
 
   if ($group_by_single_price)
     $params['group_by'] = array('single_price');
+  if (isset($context['credit_period']))
+    $params['credit_period'] = $context['credit_period']; 
+  if (isset($context['invoice_date']))
+    $params['invoice_date'] = strtotime($context['invoice_date']); 
+  if (isset($context['skonto_period']))
+    $params['skonto']['credit_period'] = $context['skonto_period']; 
+  if (isset($context['skonto_percent']))
+    $params['skonto']['discount_percent'] = $context['skonto_percent']; 
+  if (isset($context['address_id']))
+    $params['address_id'] = $context['address_id'];
 
- _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduce, $params);  
+ $status = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduce, $params);  
+ if (!$status['status']) {
+    drupal_set_message(t('There are several errors while creating the invoice.'), 'error');
+    //there are errors we should dislay!
+    foreach ($status['errors'] as $message) {      
+      drupal_set_message($message, 'error');
+    }
+ 
+ }
 }
 
 /**
@@ -108,11 +146,13 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
   $allowed_credit_periods = _erpal_invoice_helper_get_credit_periods_arr();
   
   $form = array();
-  
+
   $defaults = _erpal_invoice_helper_get_customer_defaults($customer_node->nid);
   $default_address = $defaults['address_id'];
   $default_credit_period = $defaults['credit_period'];
   $default_notes = $defaults['notes'];
+  $default_skonto_period = $defaults['skonto_period'];
+  $default_skonto_percent = $defaults['skonto_percent'];
  
   $form['customer_title'] = array(
     '#type' => 'item',
@@ -133,14 +173,48 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
     '#required' => true,
   );
   
+  $format = _billable_get_date_format();
+  $popup_default_format = 'Y-m-d H:i:s';
+  $form['invoice_date'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => $format,
+    '#title' => t('Invoice date'),
+    '#default_value' => date($popup_default_format),  //set today as default
+    '#required' => TRUE,
+  );
+  
   $form['credit_period'] = array(
     '#type' => 'select',
-    '#title' => t('Credit period'),
     '#options' => $allowed_credit_periods,
+    '#title' => t('Credit period'),
     '#default_value' => $default_credit_period,
-    '#required' => true,
+    '#required' => TRUE,
   );
-
+  
+  $form['skonto'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Skonto'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#tree' => false,
+  );
+  
+  $form['skonto']['skonto_period'] = array(
+    '#type' => 'textfield',
+    '#size' => 6,
+    '#title' => t('Credit period in days'),
+    '#description' => t('Within this credit period the skonto is granted.'),
+    '#default_value' => $default_skonto_period,
+  );
+  
+  $form['skonto']['skonto_percent'] = array(
+    '#type' => 'textfield',    
+    '#size' => 6,
+    '#title' => t('Credit in percent for skonto'),
+    '#default_value' => $default_skonto_percent,
+  );
+  
+  
   $form['notes'] = array(
     '#type' => 'textarea',
     '#title' => t('Notes'),
@@ -167,14 +241,16 @@ function _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults) {
   db_delete('erpal_invoice_defaults')
   ->condition('customer_nid', $customer_nid)
   ->execute();
-  
+
   //now insert new default values
   db_insert('erpal_invoice_defaults')
   ->fields(array(
     'customer_nid' => $customer_nid,
-    'address_id' => $defaults['address_id'],
-    'credit_period' => $defaults['credit_period'],
-    'notes' => $defaults['notes'],
+    'address_id' => $defaults['address_id'] ? $defaults['address_id'] : 0,
+    'credit_period' => $defaults['credit_period'] ? $defaults['credit_period'] : 0,
+    'notes' => $defaults['notes'] ? $defaults['notes'] : '',
+    'skonto_period' => $defaults['skonto_period'] ? $defaults['skonto_period'] : 0,
+    'skonto_percent' => $defaults['skonto_percent'] ? $defaults['skonto_percent'] : 0,
   ))
   ->execute();
 }
@@ -189,6 +265,8 @@ function _erpal_invoice_helper_get_customer_defaults($customer_nid) {
   $defaults = array(
     'address_id' => 0,
     'credit_period' => 14,
+    'skonto_period' => '',
+    'skonto_percent' => '',
     'notes' => _erpal_invoice_helper_get_manuall_notes(),
   );
 
@@ -196,7 +274,7 @@ function _erpal_invoice_helper_get_customer_defaults($customer_nid) {
   $query = db_select('erpal_invoice_defaults', 'd');
   // Select rows that match the string within type erpal_contact
   $return = $query
-    ->fields('d', array('customer_nid', 'address_id', 'credit_period', 'notes'))
+    ->fields('d', array('customer_nid', 'address_id', 'credit_period', 'notes', 'skonto_period', 'skonto_percent'))
     ->condition('d.customer_nid', $customer_nid, '=')
     ->execute();
   

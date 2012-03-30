@@ -10,7 +10,6 @@
 function erpal_projects_helper_node_presave_timetracking($node) {
  
   //if no value is available, we caclulate the value using start and end time
-  dpm($node);
   $start_time = $node->field_date_time[LANGUAGE_NONE][0]['value'];
   $end_time = $node->field_date_time[LANGUAGE_NONE][0]['value2'];
   

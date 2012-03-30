@@ -94,3 +94,21 @@ function _feature_erpal_invoice_test_check_invoice($invoice, $params) {
   
   return $invoiceOK;
 }
+
+/**
+*Checks that all invoice auto notes because of vat rate notes are available
+*/
+function _feature_erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required) {
+  $auto_notes = $invoice->field_auto_note[LANGUAGE_NONE];
+  $flat_auto_notes = array();
+  foreach ($auto_notes as $note) {
+    $flat_auto_notes[] = $note['value'];
+  }
+  
+  //now intersect the params and the notes, cardinality of elements should stay the sam
+  $intersection = array_intersect($auto_notes_required, $flat_auto_notes);
+
+  $invoiceOK = count($intersection) == count($auto_notes_required);
+  
+  return $invoiceOK;
+}

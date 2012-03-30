@@ -147,61 +147,103 @@ function _erpal_invoice_helper_set_billables_billed($invoice) {
 }
 
 /**
-* Function that creates the invoice note, wit automatically generated notes (e.g. from vat settings)
+* Function that creates the invoice note, with automatically generated notes (e.g. from vat settings)
 * or from hook_invoice_notes by other moduls.
 */
 function _erpal_invoice_helper_set_notes($invoice) {
   $notes = array();
   
   $manual_notes = _erpal_invoice_helper_get_manuall_notes();
-  if ($manual_notes)
-    $notes[] = array('weight' => 1, 'note' => $manual_notes);
-    
-  //now make them alterable by other modules
-  $notes = module_invoke_all('invoice_notes_alter', $invoice, $notes);
+  //add these manual notes to the text area
+  $invoice->field_note[LANGUAGE_NONE][0]['value'] = $manual_notes;
   
+  //now make them alterable by other modules and add these values to the auto notes
+  $notes = module_invoke_all('invoice_notes_alter', $invoice);
+
   //order according to weight, an create the plain text that will be added to the invoice
   $ordered_notes = array();
-  foreach ($notes as $note_arr) {
-    $weight = $note_arr['weight'];
-    $note = $note_arr['note'];
-    $ordered_notes[$weight] = $note;
+  if (isset($notes['add']) && is_array($notes['add'])) {
+    foreach ($notes['add'] as $note_arr) {
+      $weight = $note_arr['weight'];
+      $note = $note_arr['note'];
+      $ordered_notes[$weight] = $note;
+    }
   }
   
   ksort($ordered_notes);
   
-  $notes_string = implode("\r\n", $ordered_notes);
+  //add the nodes that should be added and delete the nodes that should be deleted!
 
-  $invoice->field_note[LANGUAGE_NONE][0]['value'] = $notes_string;
+  //first, delete notes that should be deleted!
+  if (isset($notes['del']) && is_array($notes['del'])) {
+    foreach ($notes['del'] as $note_to_del) {
+      foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $delta=>$auto_note) {
+        $note = $auto_note['value'];
+        if ($note == $note_to_del)
+          unset($invoice->field_auto_note[LANGUAGE_NONE][$delta]);
+      }
+    }
+  }
+
+  //and now add the other auto notes
+  foreach ($ordered_notes as $weight=>$note) {
+    //add it only if it does not exists
+    $exists = false;
+    foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $existing_note) {
+      if ($existing_note['value'] == $note) {
+        $exists = true;
+        break;
+      }
+    }
+    
+    if (!$exists)
+      $invoice->field_auto_note[LANGUAGE_NONE][]['value'] = $note;
+  }
 
 }
 
 /**
 * Implements hook_invoice_notes_alter
 * @param $invoice the invoice we create the notes for
-* @param $notes this array we add an array with key 'weight' and 'note' for each note line.
 */
-function erpal_invoice_helper_invoice_notes_alter($invoice, $notes) {
+function erpal_invoice_helper_invoice_notes_alter($invoice) {
   //check if there is one vat rate that has a message, add the message to notes
-  $invoice_vat = $invoice->field_invoice_vat[LANGUAGE_NONE];
+  //we do NOT check with the field invoice_vat because perhaps this field is actually not
+  //calculated. So we use the billables an the vat rate to check which var rates will be calculated at the billable
   
-  $vat_rates = _erpal_invoice_helper_vat_rates_arr(true); //add notes to the labels
-  foreach ($invoice_vat as $delta=>$vat_arr) {
-    $id = $vat_arr['value'];
-    $vat_rate_collection = entity_load('field_collection_item', array($id));
-    $vat_rate_collection = $vat_rate_collection[$id];
-    $vat_rate = $vat_rate_collection->field_vat_rate[LANGUAGE_NONE][0]['value'];
-    
-    if (isset($vat_rates[$vat_rate])) {
-      if (isset($vat_rates[$vat_rate]['note']) && $vat_rates[$vat_rate]['note']) {
-        $notes[] = array(
-          'weight' => 2,  //@todo which value to preset here?
-          'note' => $vat_rates[$vat_rate]['note'],
-        );
-      }
-    }
+  //get all vat rates of the invoice
+  $billables = $invoice->field_billables_ref[LANGUAGE_NONE];
+  $invoice_vat = array();
+  foreach ($billables as $delta=>$billable_id) {
+    //load the billable
+    $billable = billable_load($billable_id['target_id']);
+    $invoice_vat[] = $billable->vat_rate;
   }
-  
+
+  $notes = array();
+  $vat_rates = _erpal_invoice_helper_vat_rates_arr(true); //add notes to the labels
+
+  foreach ($vat_rates as $vat_rate=>$vat_arr) {
+    $vat_rate_note = $vat_arr['note'];
+    
+    $note_added = false;
+    foreach ($invoice_vat as $delta=>$invoice_vat_rate) {
+      if ($vat_rate == $invoice_vat_rate['value']) {
+        //add the note!
+        if (isset($vat_arr['note']) && $vat_arr['note']) {
+          $note_added = true;
+          $notes['add'][] = array(
+            'weight' => 2,  //@todo which value to preset here?
+            'note' => $vat_arr['note'],
+          );
+        }
+      }              
+    }
+    
+    if (!$note_added && isset($vat_arr['note']) && trim($vat_arr['note']))
+      $notes['del'][] = $vat_arr['note'];
+  }
+
   return $notes;
 }
 
@@ -220,13 +262,21 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
     'errors' => array(),
     'invoice' => false,
   );
-  
+
   if (count($billable_ids) <= 0) {
     $status['status'] = 0;
     $status['errors'][] = t('There are no billable items the invoice should be created from.');
     return $status;
   }
-  
+ 
+  //perhaps there is no invoice address given, then we cannot create the invoice
+  if (!(isset($params['address_id']) && intval($params['address_id']))) {
+    $status['status'] = 0;
+    $status['errors'][] = t('There is no invoice address selected for the invoice.');
+    return $status;
+  }
+
+ 
   if ($reduced)
   {
     //reduce all billables given and then create the bill with the reduced entities
@@ -301,6 +351,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   
   //add customer
   $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
+  
+  //add address_id
+  $invoice->field_invoice_address_id[LANGUAGE_NONE][0]['value'] = $params['address_id'];
   
   //add skonto information from params if set!
   if (isset($params['skonto'])) {

@@ -26,6 +26,72 @@ function erpal_invoice_helper_action_info() {
 }
 
 /**
+ * Implements hook_token_info().
+ */
+function erpal_invoice_helper_token_info() {
+  $types['erpal_invoice'] = array(
+    'name' => t("Erpal invoice token"),
+    'description' => t("Tokens for invoice notes."),
+  );
+
+  // Andy Pangus specific tokens.
+  $invoice['total'] = array(
+    'name' => t("Total price"),
+    'description' => t("The total price of the invoice."),
+  );
+  $invoice['credit_period'] = array(
+    'name' => t("Credit period"),
+    'description' => t("The credit period in days for the invoice."),
+  );
+  $invoice['invoice_date'] = array(
+    'name' => t("The invoice date"),
+    'description' => t("The date of the invoice."),
+  );
+  $invoice['payment_date'] = array(
+    'name' => t("The payment date"),
+    'description' => t("The date of the invoice whenit has to be payed."),
+  );
+  
+  return array(
+    'types' => $types,
+    'tokens' => array(
+      'erpal_invoice' => $invoice,
+    ),
+  );
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  global $user;
+  dpm($data);
+  
+  $replacements = array();
+  
+  if ($type == 'erpal_invoice') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'credit_period':
+          $replacements[$original] = $user->name;
+        break;
+        case 'total':
+          $replacements[$original] = $user->mail;
+        break;
+        case 'invoice_date':
+          $replacements[$original] = $user->mail;
+        break;
+        case 'payment_date':
+          $replacements[$original] = $user->mail;
+        break;
+      }
+    }
+  }
+  
+  return $replacements;
+}
+
+/**
 * Implements hook_theme
 */
 function erpal_invoice_helper_theme() {
@@ -72,6 +138,12 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#suffix'] = '</div>';
 
     $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
+    
+    //hide automatically calculated fields
+    $form['field_price_no_vat']['#type'] = 'hidden';
+    $form['field_invoice_vat']['#type'] = 'hidden';
+    $form['field_invoice_total']['#type'] = 'hidden';
+    
   }
   
 }
@@ -172,9 +244,11 @@ function erpal_invoice_helper_node_presave($node) {
   //it must be an invoice node
   $type = node_type_get_type($node);
 
-  if ($type->type == 'erpal_invoice')
+  if ($type->type == 'erpal_invoice') {
     _erpal_invoice_helper_set_notes($node);
+  }
 } 
+
 
 /**
 * Implements hook_node_insert
@@ -317,16 +391,25 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   foreach ($vat_entities as $vat_entity_id) {
     $vat_entity_id = $vat_entity_id['value'];
     $vat_entity = entity_load('field_collection_item', array($vat_entity_id));
-    $vat_entity = $vat_entity[$vat_entity_id];
-    $entity_vat_rate = $vat_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
-    $entity_vat_total = $vat_entity->field_vat_total[LANGUAGE_NONE][0]['value'];
-    $total_vats[] = array(
-      'var_rate' => $entity_vat_rate,
-      'vat_value' => $entity_vat_total,
-      'currency' => $currency, //this is the curency of the invoice, it must be equal anyway!
-    );
+    if (isset($vat_entity[$vat_entity_id])) {
+      $vat_entity = $vat_entity[$vat_entity_id];
+      $entity_vat_rate = $vat_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
+      $entity_vat_total = $vat_entity->field_vat_total[LANGUAGE_NONE][0]['value'];
+      $total_vats[] = array(
+        'var_rate' => $entity_vat_rate,
+        'vat_value' => $entity_vat_total,
+        'currency' => $currency, //this is the curency of the invoice, it must be equal anyway!
+      );
+    }
   }
   
+  //get auto notes add them
+
+  $flat_auto_notes = array();
+  foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $delta=>$value) {
+    $flat_auto_notes[] = $value['value'];
+  }
+
   $variables['company'] = $company_arr;
   $variables['company_node'] = $company;
   $variables['customer'] = $customer_arr;
@@ -338,8 +421,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['total_excl_vat'] = $total_excl_vat;
   $variables['total_vat'] = $total_vats;
   $variables['payment_date'] = format_date($payment_date, 'short');
-  $variables['notes'] = _erpal_invoice_helper_get_manuall_notes()."\r\n".$notes;
-  
+  $variables['notes'] = _erpal_invoice_helper_get_manuall_notes();
+  $variables['auto_notes'] = $flat_auto_notes;
 }
 
 /**

@@ -1,5 +1,5 @@
 <?php
-// spezielles stylesheet fÃ¼r rechnung adden.
+// spezielles stylesheet für rechnung adden.
 drupal_add_css(drupal_get_path("module", "erpal_invoice_helper") . "/template/printrechnung.css");
 ?>
 
@@ -42,12 +42,12 @@ drupal_add_css(drupal_get_path("module", "erpal_invoice_helper") . "/template/pr
   <table>
     <thead>
       <tr>
-        <th class='left executed'>AusgefÃ¼hrt</th>
+        <th class='left executed'>Ausgeführt</th>
         <th class='left amount'>Menge</th>
         <th class='left article'>Artikelnr.</th>
         <th class='left description'>Artikelbezeichnung</th>
-        <th class='right price'>Preis / St. in â‚¬</th>
-        <th class='right total'>Gesamtbetrag in â‚¬</th>
+        <th class='right price'>Preis / St. in €</th>
+        <th class='right total'>Gesamtbetrag in €</th>
       </tr>
     </thead>
 
@@ -65,7 +65,7 @@ drupal_add_css(drupal_get_path("module", "erpal_invoice_helper") . "/template/pr
         <td class='left'>05.03.2012</td>
         <td class='left'>1</td>
         <td class='left'>2</td>
-        <td class='left'>Projektarbeiten mit wesentlich lÃ¤ngerem Titel und effektiv gesehen ist das eine sehr viel zu lange Beschreibung aber egal.</td>
+        <td class='left'>Projektarbeiten mit wesentlich längerem Titel und effektiv gesehen ist das eine sehr viel zu lange Beschreibung aber egal.</td>
         <td class='right'>75,00</td>
         <td class='right'>375,00</td>
       </tr>
@@ -84,21 +84,21 @@ drupal_add_css(drupal_get_path("module", "erpal_invoice_helper") . "/template/pr
         <td class='left'></td>
         <td class='left'></td>
         <td class='right' colspan=2>Summe Netto:</td>
-        <td class='right'>98.123,12 â‚¬</td>
+        <td class='right'>98.123,12 €</td>
       </tr>
       <tr class='sumrow'>
         <td class='left'></td>
         <td class='left'></td>
         <td class='left'></td>
         <td class='right' colspan=2>gesetzl. MwSt.:</td>
-        <td class='right'>18.792,47 â‚¬</td>
+        <td class='right'>18.792,47 €</td>
       </tr>
       <tr class='sumrow'>
         <td class='left'></td>
         <td class='left'></td>
         <td class='left'></td>
         <td class='right' colspan=2>Summe Brutto:</td>
-        <td class='right'>116.247,12 â‚¬</td>
+        <td class='right'>116.247,12 €</td>
       </tr>
     </tbody>
   </table>
