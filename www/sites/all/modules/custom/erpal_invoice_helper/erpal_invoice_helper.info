@@ -10,4 +10,5 @@ dependencies[] = billable
 dependencies[] = erpal_print
 dependencies[] = erpal_basic_helper
 files[] = erpal_invoice_helper.module
+files[] = erpal_invoice_helper.install
 files[] = inc/config.inc

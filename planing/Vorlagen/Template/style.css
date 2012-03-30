@@ -1,0 +1,94 @@
+/*
+	Style fuer das Rechnungs-template
+	
+	
+	HINT: Abstände müssen noch für den Drucker ausgemessen werden.
+*/
+
+body.rechnung {
+	width: 720px;
+}
+
+.rechnung #head {
+	height: 150px;
+}
+
+.rechnung #absender { 
+	font-size: 0.8em;
+	margin-bottom: 1em;
+}
+
+.rechnung #anschrift {
+	height: 140px;
+ }
+ 
+ .rechnung #rechnungsnummer {
+	float: left;
+	margin-bottom: 1em;	
+ }
+ 
+ .rechnung #rechnungsdatum {	
+	float: right;
+ }
+ 
+ .rechnung #rechnungstabelle {
+	clear: both;
+	height: 640px;
+ }
+ 
+ .rechnung #rechnungstabelle table {
+	border-collapse: collapse;
+	width: 100%;
+ }
+ 
+  .rechnung #rechnungstabelle table th  {
+	background-color: #eee;
+	padding: 4px;
+  }
+  
+   .rechnung #rechnungstabelle table td  {
+	padding: 4px;
+  }
+  
+	.rechnung #rechnungstabelle th.left,
+	.rechnung #rechnungstabelle td.left	{
+		text-align: left;
+	}
+	
+	.rechnung #rechnungstabelle th.right,
+    .rechnung #rechnungstabelle td.right	{
+		text-align: right;
+	}
+	
+	.rechnung #rechnungstabelle td {
+		vertical-align: top;
+	}
+	
+	.rechnung #rechnungstabelle th.description {
+		width: 280px;
+	}
+	
+	.rechnung #rechnungstabelle tr.bordertop {
+		border-top: 1px solid #333;
+		margin-top: 5px;
+	}
+ 
+ .rechnung #rechnungstabelle table {
+	font-size: 12px;
+ }
+ 
+ .rechnung #rechnungshinweis {
+	margin-top: 3em;
+ }
+ 
+ 
+ 
+ 
+ table.footer {
+	width:100%; 
+ }
+ 
+ table.footer td {
+	vertical-align: top;
+	font-size: 11px;
+ }

@@ -13,5 +13,3 @@
 class SyncProcessor {
   //put your code here
 }
-
-?>

@@ -137,10 +137,11 @@ Class BsSyncMlProfile {
 
 function bs_syncml_profile_getall($full=false) {
 
-  $profiles = db_select('bs_syncml_profiles', 'p')
+  $request = db_select('bs_syncml_profiles', 'p')
           ->fields('p')
-          ->execute()
-          ->fetchAssoc();
+          ->execute();
+  
+  while($prof = $request->fetchAssoc()) $profiles[] = $prof;
 
-  dpm($profiles);
+  return $profiles;
 }
