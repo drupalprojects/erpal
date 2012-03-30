@@ -82,22 +82,17 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#type' => 'textarea',
     '#title' => t('Manuall invoice notes'),
     '#default_value' => _erpal_invoice_helper_get_manuall_notes(),    
-    '#description' => t('Manually entered notes to show below your invoice calculation. Please us the fallowing tokens to add invoice data to your text: [node:field_credit_period], '),
+    '#description' => t('Manually entered notes to show below your invoice calculation. Please use the following tokens to add invoice data to your text'),
   );
   
-  //show available Tokens
-  $token_types = array(
-    'theme' => 'token_tree',
-    'token_types' => array('erpal_invoice'),
-    'global_types' => FALSE,
-    'click_insert' => TRUE,
-    'recursion_limit' => 1,
-  );
-  
+  //show available Tokens  
   if (module_exists('token')) {
     $form['token_tree'] = array(
-      '#theme' => 'token_tree',
-      '#token_types' => $token_types,
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
     );
   }
   else {

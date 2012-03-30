@@ -83,7 +83,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     $pricing_entity->save(true); //save entity without saving the host entity
     node_save($project);
     $billables = _erpal_projects_billable_test_get_billable($project);
-    $this->assertTrue(count($billables) <= 0, 'Billable price mode not fixed - billable deleted if exists', $group);
+    $this->assertTrue(count($billables) <= 0, 'Billable price mode not "fixed price" - billable deleted if exists', $group);
     
     //insert new one with state completed -> create a new billable
     $pricing['price_mode'] = 'fixed_price';
@@ -245,7 +245,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     
     //change the duration of the task, the billable should change, too
     $pricing['quantity'] = 2; //hours
-    $tt->field_timetracking_billing_duration[LANGUAGE_NONE][0]['value'] = $pricing['quantity'];
+    $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $pricing['quantity'];
     node_save($tt);
     $billable = _erpal_projects_billable_test_get_billable($task);
     $billableOK = false;

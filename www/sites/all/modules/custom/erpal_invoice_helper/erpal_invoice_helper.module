@@ -51,6 +51,10 @@ function erpal_invoice_helper_token_info() {
     'name' => t("The payment date"),
     'description' => t("The date of the invoice whenit has to be payed."),
   );
+  $invoice['currency'] = array(
+    'name' => t("The currency"),
+    'description' => t("The currency of the invoice."),
+  );
   
   return array(
     'types' => $types,
@@ -64,30 +68,33 @@ function erpal_invoice_helper_token_info() {
  * Implements hook_tokens().
  */
 function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), array $options = array()) {
-  global $user;
-  dpm($data);
+  global $user;  
   
   $replacements = array();
   
   if ($type == 'erpal_invoice') {
+    $invoice = $data['erpal_invoice'];
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'credit_period':
-          $replacements[$original] = $user->name;
+          $replacements[$original] = $invoice->field_credit_period[LANGUAGE_NONE][0]['value'];
         break;
         case 'total':
-          $replacements[$original] = $user->mail;
+          $replacements[$original] = $invoice->field_invoice_total[LANGUAGE_NONE][0]['value'];
         break;
         case 'invoice_date':
-          $replacements[$original] = $user->mail;
+          $replacements[$original] = date('Y-m-d', $invoice->field_invoice_date[LANGUAGE_NONE][0]['value']); //@todo use drupal date_format with a date format without time!
         break;
         case 'payment_date':
-          $replacements[$original] = $user->mail;
+          $replacements[$original] = date('Y-m-d', $invoice->field_payment_date[LANGUAGE_NONE][0]['value']); //@todo use drupal date_format with a date format without time!
+        break;
+        case 'currency':
+          $replacements[$original] = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
         break;
       }
     }
   }
-  
+
   return $replacements;
 }
 
@@ -132,6 +139,36 @@ function erpal_invoice_helper_init() {
 * Implements hook_form_alter
 */
 function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'node_delete_confirm') {
+    if (arg(0) == 'node') {
+      $node = node_load($form['nid']['#value']);
+      if ($node->type == 'erpal_invoice') {
+        //add a checkbox to the confirmation form to let  the user decide wether to unbill all entities or not
+        $form['unbill_billables'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Set all billables of this invoice to "not billed"'),
+          '#default_value' => true,          
+        );
+        
+        //save the billable ids to modify in the form, because ofter submitting the confirm delete dialog, we cannot
+        //load the invoice again to geht the billables
+        $billables_id_arr = array();
+        $billables_ids = $node->field_billables_ref[LANGUAGE_NONE];
+        foreach ($node->field_billables_ref[LANGUAGE_NONE] as $delta=>$billable_id) {
+          $billables_id_arr[] = $billable_id['target_id'];
+        }
+        
+        $form['billable_ids'] = array(
+          '#type' => 'value',
+          '#value' => serialize($billables_id_arr),
+        );
+        
+        $form['#submit'][] = '_erpal_invoice_helper_confirm_delete_invoice_submit';
+      }
+        
+    }
+  }
+  
   if ($form_id == 'erpal_invoice_node_form') {
     
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#prefix'] = '<div id="invoice_address_wrapper">';
@@ -144,8 +181,44 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['field_invoice_vat']['#type'] = 'hidden';
     $form['field_invoice_total']['#type'] = 'hidden';
     
+    //if has no nid copy notes from defaults in admin settings if erpal_invoice
+    if (!$form['nid']['#value']) {
+      $manual_notes = _erpal_invoice_helper_get_manuall_notes();
+      //add these manual notes to the text area
+      $form['field_note'][LANGUAGE_NONE][0]['value']['#default_value'] = $manual_notes;
+    }
+    
+    //add available tokens to the form
+    //show available Tokens  
+    if (module_exists('token')) {
+      $form['field_note']['token_tree'] = array(
+        '#theme' => 'token_tree',   
+        '#token_types' => array('erpal_invoice'),
+        '#global_types' => FALSE,
+        '#click_insert' => TRUE,
+        '#recursion_limit' => 1,
+      );
+    }
+    else {
+      $form['field_note']['token_tree'] = array(
+        '#markup' => '<p>' . t('Enable the <a href="@drupal-token">Token module</a> to view the available token browser.', array('@drupal-token' => 'http://drupal.org/project/token')) . '</p>',
+      );
+    }
   }
   
+}
+
+/**
+* Submit handler after the confirm delete of invoice dialog is 
+*/
+function _erpal_invoice_helper_confirm_delete_invoice_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $unbill_billables = $values['unbill_billables'];
+  
+  if ($unbill_billables) {    
+    $billables_id_arr = unserialize($values['billable_ids']);    
+    _erpal_invoice_helper_unbill_billables($billables_id_arr);
+  }
 }
 
 /**
@@ -179,6 +252,9 @@ function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
       '#links' => $links,
       '#attributes' => array('class' => array('links', 'inline')),
     );
+    
+    _erpal_invoice_helper_replace_all_tokens($node, 'view');
+    
   }
 }
 
@@ -406,6 +482,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   //get auto notes add them
 
   $flat_auto_notes = array();
+  if (isset($invoice->field_auto_note[LANGUAGE_NONE]) && is_array($invoice->field_auto_note[LANGUAGE_NONE]))
   foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $delta=>$value) {
     $flat_auto_notes[] = $value['value'];
   }
@@ -421,7 +498,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['total_excl_vat'] = $total_excl_vat;
   $variables['total_vat'] = $total_vats;
   $variables['payment_date'] = format_date($payment_date, 'short');
-  $variables['notes'] = _erpal_invoice_helper_get_manuall_notes();
+  $variables['notes'] = $invoice->field_note[LANGUAGE_NONE][0]['value'];
   $variables['auto_notes'] = $flat_auto_notes;
 }
 
@@ -469,4 +546,21 @@ function erpal_invoice_helper_field_invoice_address_id_allowed_values($field) {
   $allowed_values = _erpal_basic_helper_get_contact_adresses($customer_node, true);
 
   return $allowed_values;
+}
+
+/**
+* replaces all invoice tokens
+*/
+function _erpal_invoice_helper_replace_all_tokens($invoice, $op) {
+  //replace tokens
+  if ($op == 'view') {
+    foreach ($invoice->content['field_note'] as $delta=>$note) {
+      if (is_numeric($delta) && intval($delta)."" == $delta."")
+        $invoice->content['field_note'][$delta]['#markup'] = token_replace($note['#markup'], array('erpal_invoice' => $invoice));
+    }
+  } elseif ($op == 'pdf') {
+    foreach ($invoice->field_note[LANGUAGE_NONE] as $delta=>$note) {
+      $invoice->field_note[LANGUAGE_NONE][$delta]['value'] = token_replace($note['value'], array('erpal_invoice' => $invoice));
+    }
+  }
 }

@@ -188,9 +188,11 @@ function _erpal_invoice_get_file_by_path($uri) {
 */
 function _erpal_invoice_helper_invoice_html($invoice, $documents) {
 
- $attachment_html = '';
- $invoice_html = '';
- $output = '';
+  $attachment_html = '';
+  $invoice_html = '';
+  $output = '';
+ 
+  _erpal_invoice_helper_replace_all_tokens($invoice, 'pdf');
  
   if (isset($documents['invoice']) && $documents['invoice'])
     $invoice_html = theme('invoice_pdf_html', array('invoice' => $invoice));

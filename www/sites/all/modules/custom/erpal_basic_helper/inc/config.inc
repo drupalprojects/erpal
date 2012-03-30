@@ -44,6 +44,12 @@ function erpal_basic_helper_config_form($form, &$form_state){
   $company_nid = _erpal_basic_helper_get_own_company_nid(false);
   $company_node = node_load($company_nid);
   
+  $form['erpal_debug'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Run ERPAL in debug mode'),
+    '#default_value' => erpal_debug(),
+  );
+  
   $show_edit_string = '';
   if ($company_nid)
     $show_edit_string = l(t('show'), 'node/'.$company_node->nid)." | ".l(t('edit'), 'node/'.$company_node->nid."/edit");
@@ -110,6 +116,8 @@ function erpal_basic_helper_config_form_submit($form, $form_state){
   $address_id = $values['my_address'];
   $phone_id = $values['my_phone'];
   $email = $values['my_email'];
+  $debug = $values['erpal_debug'];
+  variable_set('erpal_debug', $debug);  //erpal debug mode
   variable_set('erpal_config_my_company_nid', $company_nid);  //save company
   variable_set('my_field_addresses', $address_id);  //save address
   variable_set('my_field_phone', $phone_id);  //save phone number

@@ -45,8 +45,8 @@ function _erpal_projects_billable_update_task($node) {
 
 
   //not a fixed price task, no customer or no price set? Skip!
-  if (!($price_mode == 'fixed_price' && $price && $customer_node))
-    return;
+  //if (!($price_mode == 'fixed_price' && $price && $customer_node))
+    //return;
   
   _erpal_billable_update_billable($node, 'update');
     
