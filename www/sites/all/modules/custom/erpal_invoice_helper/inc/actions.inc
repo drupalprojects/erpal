@@ -241,7 +241,7 @@ function _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults) {
   db_delete('erpal_invoice_defaults')
   ->condition('customer_nid', $customer_nid)
   ->execute();
-  dpm($defaults);
+
   //now insert new default values
   db_insert('erpal_invoice_defaults')
   ->fields(array(

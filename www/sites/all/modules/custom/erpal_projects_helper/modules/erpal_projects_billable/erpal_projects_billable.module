@@ -404,7 +404,6 @@ function _erpal_billable_update_billable($node, $op) {
         //delete the billable, it is not allowed here, cause the task has not been completed!
         entity_delete('billable', $billable->billable_id);
       } else {   
-     dpm($quantity);
         //if task status is completed
         //last parameter is set false, so we create a new billable!
         _erpal_project_billable_save_billable(
