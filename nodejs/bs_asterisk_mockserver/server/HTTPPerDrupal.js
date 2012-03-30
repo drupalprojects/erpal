@@ -71,7 +71,7 @@ HTTPPerDrupal.prototype.handleIngoingData = function (request, response) {
 
     	var post = self.queryString.parse (postData);	 
 
-		// self.eventHandler.invokeListeners('sendData',  post);
+		self.eventHandler.invokeListeners('sendData',  post);
     console.log(post);
 		
     response.writeHead(200, {
@@ -106,7 +106,7 @@ HTTPPerDrupal.prototype.handleClientRegistering = function (request, response) {
 
     	var post = self.queryString.parse (postData);	 
 
-		// self.eventHandler.invokeListeners('registerClientData', post['phone_numbers'], post['ip']);
+		self.eventHandler.invokeListeners('registerClientData', post);
 
     response.writeHead(200, {
       'Content-Type': 'application/json',

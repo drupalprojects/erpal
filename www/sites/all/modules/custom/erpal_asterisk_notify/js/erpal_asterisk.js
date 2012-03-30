@@ -1,12 +1,31 @@
-WEB_SOCKET_SWF_LOCATION = "sites/all/modules/custom/erpal_asterisk_notify/nicokaiser-php-websocket/client/js/WebSocketMain.swf";
+
+
+
 
 (function($) {
 $(document).ready(function() {
 
-  $.post('http://localhost:8080/register', { ip : "127.0.0.1", phone_numbers : "[ '004961513910793' ]" } ,function(data, textStatus) {
+WEB_SOCKET_SWF_LOCATION = "sites/all/modules/custom/erpal_asterisk_notify/nicokaiser-php-websocket/client/js/WebSocketMain.swf";
+
+
+ var socket = io.connect('http://localhost:3081');
+  socket.on('caller_data', function (data) {
     console.log(data);
+    $("body").append("<div style='position:absolute; right:0; bottom:0;background:white;border:2px solid red;width:300px;'>" + data.caller_data + "</div>");
   });
   
+  socket.on('status', function (data) {
+    if(data.status == "ok") {
+      registerClient();
+    }
+  });
+
+
+function registerClient() {
+      $.post('http://localhost:8080/register', { ip : '127.0.0.1', phone_numbers : '[ "004961513910793" ]' } ,function(data, textStatus) {
+        console.log(data);
+      });
+}
   /*
   $.ajax({
       type: 'POST',

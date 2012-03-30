@@ -37,11 +37,12 @@ EventHandler.prototype.addListener = function (listenerObject, bypassedParams) {
 EventHandler.prototype.invokeListeners = function (method, eventParam) {
 	
 	for (listener in this.listeners) {
- 
+    //this.listeners[listener].listenerObject.registerClientData(eventParam);
+    
  		eval (
  				'try {this.listeners[listener].listenerObject.' + 
  				method + 
- 				'(eventParam, listener.bypassedParams);}' + 
+ 				'(eventParam);}' + 
  				'catch (e){console.log("Listener has not implemented required method.");}'
  	    );
 	}

@@ -14,11 +14,12 @@ function erpal_asterisk_notify_init() {
 	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );
 	
   //@todo externe libraries mit dem libraries modul einbinden, dürfen nicht in der Distribution mitgeliefert werden
-	drupal_add_js( $path . '/js/erpal_asterisk.js', Array( 'every_page'=>TRUE ) );
 	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/swfobject.js', Array( 'every_page'=>TRUE ) );
 	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/FABridge.js', Array( 'every_page'=>TRUE ) );
 	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/web_socket.js', Array( 'every_page'=>TRUE ) );
 	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/webpush.js', Array( 'every_page'=>TRUE ) );
+  drupal_add_js( $path . '/js/socketio/socket.io.min.js', Array( 'every_page'=>TRUE ) );
+  drupal_add_js( $path . '/js/erpal_asterisk.js', Array( 'every_page'=>TRUE ) );
 }
 
 

@@ -14,12 +14,19 @@ function ClientManager () {
 }
 
 ClientManager.prototype.register = function (phoneNumbers, ip) {
-	
+
+  console.log("register");
+  console.log(phoneNumbers + ", " + ip);
+
+  console.log(this.socketClients);
+  
 	this.clientEntities[ip] = {
 			'phoneNumbers': 		JSON.parse (phoneNumbers),
 			'socketClientObject': 	this.socketClients[ip],
 			'status':				true
 	};
+  
+  console.log(this.clientEntities);
 	
 	return;
 }; 
@@ -31,8 +38,8 @@ ClientManager.prototype.register = function (phoneNumbers, ip) {
  */
 ClientManager.prototype.getSocketClientByPhoneNumber = function (phoneNumber) {
 	
+  
 	for (clientIndex in this.clientEntities) {
-		
 		for (phoneNumberIndex in this.clientEntities[clientIndex].phoneNumbers) {
 			if (phoneNumber == this.clientEntities[clientIndex].phoneNumbers[phoneNumberIndex]) {
 				return this.clientEntities[clientIndex].socketClientObject;
@@ -65,9 +72,9 @@ ClientManager.prototype.removeClientBySocketClientObject = function (socketClien
  * @param object socketClientObject	The socket client object whose client data you want to save.
  */
 ClientManager.prototype.saveSocketClientObject = function (ip, socketClientObject) {
-	
+  console.log("saveSocketClientObject");
 	this.socketClients[ip] = socketClientObject;
-	
+	console.log(this.socketClients);
 	return;
 };
 
