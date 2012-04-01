@@ -54,7 +54,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#type' => 'item',
     '#title' => t('Your company'),
     '#markup' => $company_string,
-    '#description' => t('You can change your company in !link', array('!link' => l(t('ERPAL basic settings'), 'admin/erpal/basic'))),
+    '#description' => t('You can change your company in !link', array('!link' => l(t('ERPAL basic settings'), 'admin/erpal/basic'))),    
   );
   
   $form['erpal_invoice_number_prefix'] = array(
