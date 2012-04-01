@@ -180,6 +180,7 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['field_price_no_vat']['#type'] = 'hidden';
     $form['field_invoice_vat']['#type'] = 'hidden';
     $form['field_invoice_total']['#type'] = 'hidden';
+    $form['field_payment_date']['#type'] = 'hidden';
     
     //if has no nid copy notes from defaults in admin settings if erpal_invoice
     if (!$form['nid']['#value']) {
