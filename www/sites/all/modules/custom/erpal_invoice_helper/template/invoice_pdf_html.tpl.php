@@ -1,118 +1,153 @@
 <?php
-// spezielles stylesheet für rechnung adden.
-drupal_add_css(drupal_get_path("module", "erpal_invoice_helper") . "/template/printrechnung.css");
+/*
+ * Invoice-template
+ * 
+ * available variables:
+ * $company
+ * $customer
+ * $invoice_number
+ * $invoice_date
+ * $billables
+ * $auto_notes
+ * $notes
+ * 
+ * $total_excl_vat
+ * $total_vat
+ * $total
+ */
 ?>
+
+
+
+<style type="text/css" media='all'>
+<?php
+  include('/' . drupal_get_path("module", "erpal_invoice_helper") . "/template/printrechnung.css");
+?>
+</style>
 
 <!-- TEMPLATE Start -->
 
-<div id='absender'><?php print $company; ?></div>
+<div class='rechnung'>
 
-<div id='anschrift'>
-  <?php print implode("<br />", $customer); ?>
-</div>
+  <div id='absender'><?php print implode(" - ", $customer); ?></div>
 
-<div id='rechnungsnummer'>Rechnung Nr. <?php print $invoice_number; ?></div>
+  <div id='anschrift'>
+    <?php print implode("<br />", $customer); ?>
+  </div>
 
-<div id='rechnungsdatum'>Datum: <?php print theme("date", $invoice_date); ?></div>
+  <div id='rechnungsnummer'>Rechnung Nr. <?php print $invoice_number; ?></div>
 
-<div id='rechnungstabelle'>
+  <div id='rechnungsdatum'>Datum: <?php print $invoice_date; ?></div>
 
-  <?php
-  $table = array();
+  <div id='rechnungstabelle'>
 
-  $head = array(
-      'executed' => array('data' => t("Executed"), array("class" => "left executed")),
-      'amount' => array('data' => t("Executed"), array("class" => "left amount")),
-      'article' => array('data' => t("Executed"), array("class" => "left article")),
-      'description' => array('data' => t("Executed"), array("class" => "left description")),
-      'price' => array('data' => t("Executed"), array("class" => "right price")),
-      'total' => array('data' => t("Executed"), array("class" => "right total")),
-  );
-
-  dpm($billables);
-  if (is_array($billables))
-    foreach ($billables as $billable) {
-      $row = array();
-
-      //$row[] = array('data' => t("Executed"), array( "class" => "left" )),
-    }
-  ?>
-
-
-  <table>
-    <thead>
-      <tr>
-        <th class='left executed'>Ausgeführt</th>
-        <th class='left amount'>Menge</th>
-        <th class='left article'>Artikelnr.</th>
-        <th class='left description'>Artikelbezeichnung</th>
-        <th class='right price'>Preis / St. in €</th>
-        <th class='right total'>Gesamtbetrag in €</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      <tr class='odd'>
-        <td class='left'>06.03.2012</td>
-        <td class='left'>5</td>
-        <td class='left'>1</td>
-        <td class='left'>Projektarbeiten</td>
-        <td class='right'>75,00</td>
-        <td class='right'>375,00</td>
-      </tr>
-      <tr class='even'>
-        <td class='left'>05.03.2012</td>
-        <td class='left'>1</td>
-        <td class='left'>2</td>
-        <td class='left'>Projektarbeiten mit wesentlich längerem Titel und effektiv gesehen ist das eine sehr viel zu lange Beschreibung aber egal.</td>
-        <td class='right'>75,00</td>
-        <td class='right'>375,00</td>
-      </tr>
-      <tr class='odd'>
-        <td class='left'>04.03.2012</td>
-        <td class='left'>6842</td>
-        <td class='left'>13</td>
-        <td class='left'>Projektarbeiten</td>
-        <td class='right'>14,00</td>
-        <td class='right'>97.575,00</td>
-      </tr>
-
-
-      <tr class='sumrow bordertop'>
-        <td class='left'></td>
-        <td class='left'></td>
-        <td class='left'></td>
-        <td class='right' colspan=2>Summe Netto:</td>
-        <td class='right'>98.123,12 €</td>
-      </tr>
-      <tr class='sumrow'>
-        <td class='left'></td>
-        <td class='left'></td>
-        <td class='left'></td>
-        <td class='right' colspan=2>gesetzl. MwSt.:</td>
-        <td class='right'>18.792,47 €</td>
-      </tr>
-      <tr class='sumrow'>
-        <td class='left'></td>
-        <td class='left'></td>
-        <td class='left'></td>
-        <td class='right' colspan=2>Summe Brutto:</td>
-        <td class='right'>116.247,12 €</td>
-      </tr>
-    </tbody>
-  </table>
-
-
-  <div id='rechnungshinweis'>
     <?php
-    print $auto_notes;
-    print $notes;
+    $table = array();
+
+    $data['header'] = array(
+        'executed'    => array('data' => t("Executed"), "class" => "left executed"),
+        'amount'      => array('data' => t("Quantity"), "class" => "left amount"),
+        //'article'   => array('data' => t("Article nr."), "class" => "left article"),
+        'description' => array('data' => t("Description"), "class" => "left description"),
+        'price'       => array('data' => t("Price p.P. (%curr)", array('%curr' => $currency)), "class" => "right price"),
+        'total'       => array('data' => t("Total (%curr)", array('%curr' => $currency)), "class" => "right total"),
+    );
+    
+    // Billables-Table
+    if (is_array($billables)) {
+
+      $rows = array();
+      foreach ($billables as $billable) {
+
+        $curr = ' '.$currency;
+
+        $row = array();
+
+        // Executed
+        $row[] = array('data' => $billable['date_delivery'],
+            "class" => "left");
+
+        // Amount
+        $row[] = array('data' => $billable['quantity'],
+            "class" => "left");
+
+        // Article number
+//        $row[] = array('data' => $billable['article_nr'],
+//                      "class" => "left");
+        // Description
+        $row[] = array('data' => $billable['subject'],
+            "class" => "left");
+
+        // price
+        $row[] = array('data' => $billable['single_price'],
+            "class" => "right");
+        // total
+        $row[] = array('data' => $billable['total_price'],
+            "class" => "right");
+
+        // Add the Row to the array:
+        $rows[] = $row;
+      }
+
+
+      // Sum netto
+      $rows[] = array('data' => array(
+              0 => '',
+              1 => '',
+              2 => array('data' => t("Sum excl. VAT"), 'class' => 'right', 'colspan' => 2),
+              3 => array('data' => $total_excl_vat.$curr, 'class' => 'right'),
+          ),
+          'class' => array('sumrow', 'bordertop'),
+      );
+
+      // VAT
+      dpm($total_vat);
+      $totalvatstring = "";
+      if(is_array($total_vat)) foreach ( $total_vat as $vatposition ) {
+        
+        $vatvalues = array("!var_rate" => $vatposition['var_rate'],
+            "!vat_value" => $vatposition['vat_value'],
+            "!currency" => $vatposition['currency'],
+            );
+        $totalvatstring .= t("Rate: !var_rate%, Amount: !vat_value !currency", $vatvalues)." <br />";
+      }
+      $rows[] = array('data' => array(
+              0 => '',
+              1 => '',
+              2 => array('data' => t("VAT"), 'class' => 'right', 'colspan' => 2),
+              3 => array('data' => $totalvatstring, 'class' => 'right'),
+          ),
+          'class' => array('sumrow'),
+      );
+
+      // Sum brutto
+      $rows[] = array('data' => array(
+              0 => '',
+              1 => '',
+              2 => array('data' => t("Sum incl. VAT"), 'class' => 'right', 'colspan' => 2),
+              3 => array('data' => $total.$curr, 'class' => 'right'),
+          ),
+          'class' => array('sumrow'),
+      );
+
+      $data['rows'] = $rows;
+
+      //print( theme('table', array(), $rows) );
+      print( theme("table", $data));
+    }
     ?>
+
+
+
+    <div id='rechnungshinweis'>
+      <?php
+      print implode("<br />", $auto_nodes);
+      print $notes;
+      ?>
+    </div>
+
   </div>
 
 </div>
-
-
 
 <!-- TEMPLATE END -->
