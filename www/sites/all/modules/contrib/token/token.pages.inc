@@ -49,7 +49,7 @@ function theme_token_tree($variables) {
     ),
   );
   if ($cached_output = token_render_cache_get($element)) {
-    return $cached_output;
+    //return $cached_output;
   }
 
   $options = array(
@@ -65,7 +65,7 @@ function theme_token_tree($variables) {
       continue;
     }
 
-    if ($multiple_token_types) {
+    if ($multiple_token_types) {      
       $row = _token_token_tree_format_row($type, $type_info, TRUE);
       unset($row['data']['value']);
       $rows[] = $row;

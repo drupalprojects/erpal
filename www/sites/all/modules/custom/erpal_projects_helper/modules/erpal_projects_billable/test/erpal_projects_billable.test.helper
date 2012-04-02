@@ -114,9 +114,11 @@ function _erpal_projects_billable_test_create_timetracking($time_h, $task) {
   $tt->field_timetracking_subject[LANGUAGE_NONE][]['nid'] = $task->nid;
   $tt->field_date_time[LANGUAGE_NONE][0]['value'] = time();
   $tt->field_date_time[LANGUAGE_NONE][0]['value2'] = time();
-  $tt->field_timetracking_billing_duration[LANGUAGE_NONE][0]['value'] = $time_h;
+  $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $time_h;
+ 
   node_object_prepare($tt);
   node_save($tt); 
+  
   return $tt;
 }
 

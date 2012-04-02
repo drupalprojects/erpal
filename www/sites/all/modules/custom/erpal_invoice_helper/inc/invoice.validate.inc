@@ -44,7 +44,10 @@ function _erpal_invoice_helper_invoice_validate_billables($invoice) {
         $invoice_node = node_load($invoice_nid);
         $invoice_title = $invoice_node->title;
         $billable_title = $billable->subject;
-        $errors['field_billables_ref]['.LANGUAGE_NONE.']['.$i.'][target_id'][] = t('Billable %billable_subject already included in invoice %invoice_title', array('%billable_subject' => $billable_title, '%invoice_title' => $invoice_title));
+        
+        
+        if (!erpal_debug())
+          $errors['field_billables_ref]['.LANGUAGE_NONE.']['.$i.'][target_id'][] = t('Billable %billable_subject already included in invoice %invoice_title', array('%billable_subject' => $billable_title, '%invoice_title' => $invoice_title));
       }
     }
     

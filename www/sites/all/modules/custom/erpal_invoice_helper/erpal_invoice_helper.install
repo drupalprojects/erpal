@@ -6,6 +6,14 @@
  */
 
 /**
+* Implements hook_enable
+*/
+function erpal_invoice_helper_enable() {
+  //set the type customer type for erpal billable module
+  variable_set('billable_customer_type', 'erpal_contact');
+}
+ 
+/**
  * Implements hook_schema().
  */
 function erpal_invoice_helper_schema() {

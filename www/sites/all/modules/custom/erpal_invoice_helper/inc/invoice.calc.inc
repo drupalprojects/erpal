@@ -152,7 +152,14 @@ function _erpal_invoice_helper_set_billables_billed($invoice) {
 */
 function _erpal_invoice_helper_set_notes($invoice) {
   $notes = array();
-  
+ 
+  //if value is already set, skipp!
+  if (isset($invoice->field_note[LANGUAGE_NONE])) {    
+    if ($invoice->field_note[LANGUAGE_NONE][0]['value']) {
+      return;
+    }
+  }
+
   $manual_notes = _erpal_invoice_helper_get_manuall_notes();
   //add these manual notes to the text area
   $invoice->field_note[LANGUAGE_NONE][0]['value'] = $manual_notes;
@@ -177,10 +184,12 @@ function _erpal_invoice_helper_set_notes($invoice) {
   //first, delete notes that should be deleted!
   if (isset($notes['del']) && is_array($notes['del'])) {
     foreach ($notes['del'] as $note_to_del) {
-      foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $delta=>$auto_note) {
-        $note = $auto_note['value'];
-        if ($note == $note_to_del)
-          unset($invoice->field_auto_note[LANGUAGE_NONE][$delta]);
+      if (isset($invoice->field_auto_note[LANGUAGE_NONE])) {
+        foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $delta=>$auto_note) {
+          $note = $auto_note['value'];
+          if ($note == $note_to_del)
+            unset($invoice->field_auto_note[LANGUAGE_NONE][$delta]);
+        }
       }
     }
   }
@@ -382,5 +391,16 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   $status['invoice'] = $invoice;
   
   return $status;
+}
+
+/**
+* function sets all billable, the current invoce references, unbilled
+*/
+function _erpal_invoice_helper_unbill_billables($billables_id_arr) {
+  foreach($billables_id_arr as $delta=>$billable_id) {
+    $billable = billable_load($billable_id);
+    $billable->set_billed(false);
+    $billable->save();
+  }
 }
 
