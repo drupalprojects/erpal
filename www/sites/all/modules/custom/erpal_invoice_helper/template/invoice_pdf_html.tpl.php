@@ -21,7 +21,7 @@
 
 <style type="text/css" media='all'>
 <?php
-  include('/' . drupal_get_path("module", "erpal_invoice_helper") . "/template/printrechnung.css");
+include('/' . drupal_get_path("module", "erpal_invoice_helper") . "/template/printrechnung.css");
 ?>
 </style>
 
@@ -45,39 +45,36 @@
     $table = array();
 
     $data['header'] = array(
-        'executed'    => array('data' => t("Executed"), "class" => "left executed"),
-        'amount'      => array('data' => t("Quantity"), "class" => "left amount"),
+        'executed' => array('data' => t("Executed"), "class" => "left executed"),
+        'amount' => array('data' => t("Quantity"), "class" => "left amount"),
         //'article'   => array('data' => t("Article nr."), "class" => "left article"),
         'description' => array('data' => t("Description"), "class" => "left description"),
-        'price'       => array('data' => t("Price p.P. (%curr)", array('%curr' => $currency)), "class" => "right price"),
-        'total'       => array('data' => t("Total (%curr)", array('%curr' => $currency)), "class" => "right total"),
+        'price' => array('data' => t("Price p.P. (%curr)", array('%curr' => $currency)), "class" => "right price"),
+        'total' => array('data' => t("Total (%curr)", array('%curr' => $currency)), "class" => "right total"),
     );
-    
+
     // Billables-Table
     if (is_array($billables)) {
 
       $rows = array();
       foreach ($billables as $billable) {
 
-        $curr = ' '.$currency;
+        $curr = ' ' . $currency;
 
         $row = array();
 
         // Executed
         $row[] = array('data' => $billable['date_delivery'],
             "class" => "left");
-
         // Amount
         $row[] = array('data' => $billable['quantity'],
             "class" => "left");
-
-        // Article number
+//       // Article number
 //        $row[] = array('data' => $billable['article_nr'],
 //                      "class" => "left");
         // Description
         $row[] = array('data' => $billable['subject'],
             "class" => "left");
-
         // price
         $row[] = array('data' => $billable['single_price'],
             "class" => "right");
@@ -95,22 +92,22 @@
               0 => '',
               1 => '',
               2 => array('data' => t("Sum excl. VAT"), 'class' => 'right', 'colspan' => 2),
-              3 => array('data' => $total_excl_vat.$curr, 'class' => 'right'),
+              3 => array('data' => $total_excl_vat . $curr, 'class' => 'right'),
           ),
           'class' => array('sumrow', 'bordertop'),
       );
 
       // VAT
-      dpm($total_vat);
       $totalvatstring = "";
-      if(is_array($total_vat)) foreach ( $total_vat as $vatposition ) {
-        
-        $vatvalues = array("!var_rate" => $vatposition['var_rate'],
-            "!vat_value" => $vatposition['vat_value'],
-            "!currency" => $vatposition['currency'],
-            );
-        $totalvatstring .= t("Rate: !var_rate%, Amount: !vat_value !currency", $vatvalues)." <br />";
-      }
+      if (is_array($total_vat))
+        foreach ($total_vat as $vatposition) {
+
+          $vatvalues = array("!var_rate" => $vatposition['var_rate'],
+              "!vat_value" => $vatposition['vat_value'],
+              "!currency" => $vatposition['currency'],
+          );
+          $totalvatstring .= t("Rate: !var_rate%, Amount: !vat_value !currency", $vatvalues) . " <br />";
+        }
       $rows[] = array('data' => array(
               0 => '',
               1 => '',
@@ -125,7 +122,7 @@
               0 => '',
               1 => '',
               2 => array('data' => t("Sum incl. VAT"), 'class' => 'right', 'colspan' => 2),
-              3 => array('data' => $total.$curr, 'class' => 'right'),
+              3 => array('data' => $total . $curr, 'class' => 'right'),
           ),
           'class' => array('sumrow'),
       );
