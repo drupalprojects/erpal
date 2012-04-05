@@ -1,0 +1,31 @@
+changed the regular expression in line 167 to 
+if (preg_match("/.\((\d*)\)/", $element['#default_value'], $matches)) {
+
+instead of
+
+if (preg_match("/.\((\d+)\)/", $element['#default_value'], $matches)) {
+
+in references_dialog.dialog_widgets.inc
+
+#########################################################################
+
+Made references dialog more externdable for ajax functions
+so changed the 
+
+function references_dialog_attached() {
+
+completely to
+
+function references_dialog_attached($element) {
+
+and changed 
+
+// Attach javascript and CSS needed.
+  $element['#attached'] = references_dialog_attached();
+  
+to 
+
+// Attach javascript and CSS needed.
+  $element['#attached'] = references_dialog_attached($element);
+  
+in references_dialog.module

@@ -60,9 +60,11 @@ function _billable_group_for_reduce($billable_ids, $group_by=array(), $ignore_pa
 * @see billable.entity.inc function reduce()
 * @param $entity_ids an array of ids of billables that should be reduces to a minimum
 * @param $group_by is an array of strings that identifys which fields must be equal to group
+* @param $return_unreduce if true, billables that are not reduced because their group has only 
+*   one element, are returned as "new billables", too
 * @return all new created billables
 */
-function _billable_reduce($billable_ids, $group_by=array()) {
+function _billable_reduce($billable_ids, $group_by=array(), $return_unreduced=false) {
   
   $new_billables = array();
   
@@ -72,8 +74,13 @@ function _billable_reduce($billable_ids, $group_by=array()) {
   //now we got all billables into groups, get on reduced billable for each group 
   foreach ($groups as $group_key=>$group_data) {
     //reduce only if there a more than 1 billables per group
-    if (count($group_data['billables']) < 2)
+    if (count($group_data['billables']) < 2) {
+      if ($return_unreduced) {
+        foreach ($group_data['billables'] as $billable)
+          $new_billables[$billable->billable_id] = $billable;
+      }
       continue;
+    }
     
     //create a new billable
     $new_billable = entity_create('billable', array());
@@ -89,7 +96,7 @@ function _billable_reduce($billable_ids, $group_by=array()) {
     //@todo the field is external attached so this module should not know itbut it must be able to set the customer here....
     $new_billable->save();
     
-    $new_billables[] = $new_billable;
+    $new_billables[$new_billable->billable_id] = $new_billable;
     
     //and now set the id of the new billable entity as parent for each reduced billable in this group
     foreach ($group_data['billables'] as $billable) {

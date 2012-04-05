@@ -75,6 +75,8 @@ class BillableUIController extends EntityDefaultUIController {
       'access arguments' => array('view', 1),
       'type' => MENU_CALLBACK,
     );
+    
+    
     return $items;
   }
   
@@ -158,7 +160,7 @@ function billable_edit_form($form, &$form_state, $billable) {
     '#type' => 'select',
     '#options' => _billable_get_customers(),
     '#title' => t('Customer'),
-    '#default_value' => isset($billable->customer) ? $billable->customer : '',
+    '#default_value' => isset($billable->customer_nid) ? $billable->customer_nid : '',
     '#required' => TRUE,
   );
  
@@ -405,5 +407,34 @@ function billable_set_breadcrumb() {
   drupal_set_breadcrumb($breadcrumb);
 }
 
+/**
+* Callback for the administration form
+*/
+function billable_adminsettings($form_state) {
+  $form = array();
+  
+  $form['billable_customer_type'] = array(
+    '#type' => 'select',
+    '#options' => _billable_get_node_types(),
+    '#title' => t('Customer node type'),
+    '#description' => t('Select which node type could be referenced as customer of a billable'),
+    '#default_value' => _billable_customer_type(),
+  );
+  
+  return system_settings_form($form);
+}
 
-
+/**
+* Returns available node types for possible customer type
+*/
+function _billable_get_node_types() {
+  $types = node_type_get_types();
+  
+  //prepare for displaying in a select box
+  $ret = array();
+  foreach ($types as $type) {
+    $ret[$type->type] = $type->name;
+  }
+  
+  return $ret;
+}

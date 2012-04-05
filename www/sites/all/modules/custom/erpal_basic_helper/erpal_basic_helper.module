@@ -4,6 +4,8 @@
  * Code for the erpal_basic_helper module.
  */
 
+module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+ 
 /**
 * Implements hook_menu
 */ 
@@ -121,4 +123,194 @@ function _erpal_basic_helper_contacts_autocomplete($string){
 */
 function _erpal_basic_helper_contacts_autocomplete_access(){
   return user_access('config erpal basic');
+}
+
+/**
+* Returns all available addresses for a given contact node
+*/
+function _erpal_basic_helper_get_contact_adresses($contact_node, $for_options=false) {
+  return _erpal_basic_helper_get_field_values('field_addresses', $contact_node, $for_options);
+}
+
+/**
+* Returns all available addresses for a given contact node
+*/
+function _erpal_basic_helper_get_contact_phones($contact_node, $for_options=false) {
+  return _erpal_basic_helper_get_field_values('field_phone', $contact_node, $for_options);
+}
+
+/**
+* returns an array of all Emailaddresses of a contact node
+*/
+function _erpal_basic_helper_get_contact_emails($contact_node) {
+  $ret = array();
+
+  if (isset($contact_node->field_email[LANGUAGE_NONE])) {    
+    $mails = $contact_node->field_email[LANGUAGE_NONE];
+
+    foreach ($mails as $mail) {
+      $mail = $mail['value'];
+      
+      $ret[$mail] = $mail;
+    }
+  }
+
+  return $ret;
+}
+
+/**
+* Returns all available phone numbers for a given contact node
+*
+*/
+function _erpal_basic_helper_get_contact_phone($contact_node, $for_options=false) {
+  return _erpal_basic_helper_get_field_values('field_phone', $contact_node, $for_options);
+}
+
+/**
+* Returns values of a field collection as array of entities or as array with a string representation of this entity
+* @param $for_options if true, the return value is an array with key=>value pairs (key=entity id, value=string represent. of entities)
+* @param $contact_node the contact node for which the entities should be returned
+* @return an array of strings or, if $for_options is false, an array of entity field_collection entities
+*/
+function _erpal_basic_helper_get_field_values($field_name, $contact_node, $for_options=false) {
+  $values = array();
+
+  if (!isset($contact_node->{$field_name}[LANGUAGE_NONE]))
+    return $values;
+
+  foreach ($contact_node->{$field_name}[LANGUAGE_NONE] as $entity_id) {
+    $field_entity_id = $entity_id['value'];
+    $field_entity = entity_load('field_collection_item', array($field_entity_id));
+    $field_entity = $field_entity[$field_entity_id];
+
+    $entity_string = module_invoke_all('entity_as_string', $field_entity); //each module shoul deliver a string representation of its entity
+    
+    if (isset($entity_string[0]))
+      $entity_string = $entity_string[0];
+    else
+      $entity_string = '';
+     
+    if ($for_options) {
+      $values[$field_entity_id] = $entity_string;
+    } else {
+      $values[$field_entity_id] = $field_entity;
+    }
+  }
+
+  return $values;
+}
+
+/**
+* Implements hook_entity_as_string provided by erpal_basic_helper module to get a string representation of all entities provided
+* in this module or in features which depend on that module
+*/
+function erpal_basic_helper_entity_as_string($entity) {
+  if ($entity->field_name == 'field_addresses') {
+    $street = $entity->field_street[LANGUAGE_NONE][0]['value'];
+    $zip_code = $entity->field_zip_code[LANGUAGE_NONE][0]['value'];
+    $country = $entity->field_country[LANGUAGE_NONE][0]['value'];
+    $city = $entity->field_city[LANGUAGE_NONE][0]['value'];
+    $address_type = $entity->field_address_type[LANGUAGE_NONE][0]['value'];
+    $entity_string = $street." - ".$zip_code." - ".$city." (".$address_type.")";
+  } elseif ($entity->field_name == 'field_phone') {
+    $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
+    $phone_type = $entity->field_phone_type[LANGUAGE_NONE][0]['value'];
+    $entity_string = $phone_number." (".$phone_type.")";
+  }
+
+  return $entity_string;
+}
+
+/**
+* Function returns the address entity which has been selected in erpal_basic_helper config for "my address"
+*/
+function _erpal_basic_helper_get_my_address_entity() {
+  return _erpal_basic_helper_return_my_value('field_addresses');
+}
+
+/**
+* Get bank accounts as array of entities for a given contact
+*/
+function _erpal_basic_helper_get_bank_accounts($contact, $for_options) {
+  $accounts = array();
+
+  if (!isset($contact_node->field_bank_accounts[LANGUAGE_NONE]))
+    return $accounts;
+
+  foreach ($contact_node->field_bank_accounts[LANGUAGE_NONE] as $entity_id) {
+    $account_entity_id = $entity_id['value'];
+    $account_entity = entity_load('field_collection_item', array($account_entity_id));
+    $account_entity = $account_entity[$account_entity_id];
+
+    $bank_number = $account_entity->field_bank_number[LANGUAGE_NONE][0]['value'];
+    $account_number = $account_entity->field_account_number[LANGUAGE_NONE][0]['value'];
+    $bank_name = $account_entity->field_bank_name[LANGUAGE_NONE][0]['value'];
+
+    $account_string = $account_number." - ".$bank_name." - ".$bank_number;
+    
+    if ($for_options) {
+      $accounts[$account_entity_id] = $account_string;
+    } else {
+      $accounts[$account_entity_id] = $account_entity;
+    }
+  }
+  
+  return $accounts;
+}
+
+/**
+* Function returns the email address entity which has been selected in erpal_basic_helper config for "my email"
+*/
+function _erpal_basic_helper_get_my_email_entity() {
+  return _erpal_basic_helper_return_my_value('field_email');
+}
+
+/**
+* Function returns the phone number entity which has been selected in erpal_basic_helper config for "my phone"
+*/
+function _erpal_basic_helper_get_my_phone_entity() {
+  return _erpal_basic_helper_return_my_value('field_phone');
+}
+
+/**
+* Function to return an entity (in most cases out of multiple field values) that has be definied as the main value
+* @param $field_name the name of the field for which a value should be returned. CAUTION: Field must be a field_collection_item!
+*/
+function _erpal_basic_helper_return_my_value($field_name) {
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);  
+  $my_company_node = node_load($my_company_nid);
+  
+  //does the company have value set for this field?
+  $my_value_id = 0;
+  if (isset($my_company_node->{$field_name}[LANGUAGE_NONE])) {
+    //does this company have only one value set? 
+    if (count($my_company_node->{$field_name}[LANGUAGE_NONE]) == 1) {
+      //it must be this value!
+      $my_value_id = $my_company_node->{$field_name}[LANGUAGE_NONE][0]['value'];      
+    }
+  }
+  
+  if (!$my_value_id) {
+    $my_value_id = variable_get('my_'.$field_name, $my_value_id);
+  }
+   
+  if (!$my_value_id)
+    return false;
+  
+
+  if (intval($my_value_id)."" == $my_value_id) { //check that it is integer, otherwise return the value
+    $my_value_entity = entity_load('field_collection_item', array($my_value_id));
+    $my_value_entity = $my_value_entity[$my_value_id];    
+  } else
+    $my_value_entity = $my_value_id;
+  
+  return $my_value_entity;
+}
+
+/**
+* Function that returns if we are in debug mode
+*/
+function erpal_debug() {
+  $debug = variable_get('erpal_debug', 0);
+  return $debug;
 }

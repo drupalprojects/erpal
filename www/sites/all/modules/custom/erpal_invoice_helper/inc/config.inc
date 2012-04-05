@@ -32,7 +32,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
 
   $form = array();
   
-  //@todo: Mehrwerteuersï¿½tze, zahlungsziele etc
+  //@todo: Mehrwerteuersätze, zahlungsziele etc
   
   $form['submit'] = array(
     '#value' => t('save'),

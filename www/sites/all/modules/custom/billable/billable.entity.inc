@@ -36,7 +36,14 @@ function billable_load($billable_id, $reset = FALSE) {
  * @see billable_load()
  */
 function billable_load_multiple($billable_ids = array(), $conditions = array(), $reset = FALSE) {
-  return entity_load('billable', $billable_ids, $conditions, $reset);
+  $billables = entity_load('billable', $billable_ids, $conditions, $reset);
+  
+  //now add IDs of all billables that have this billable as parent, if reduced
+  foreach ($billables as $billable) {
+    $billable->reduced_billables = _billable_get_reduced_billables($billable);
+  }
+
+  return $billables;
 }
 
 

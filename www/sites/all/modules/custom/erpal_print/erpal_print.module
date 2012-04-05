@@ -1,0 +1,122 @@
+<?php
+/**
+ * @file
+ * Module to provide helper functions and basic templates for creating pdf
+ */
+
+//marker is placed in html output to insert page breaks in pdf export
+define('PDF_PAGE_BREAK', '###break###');
+ 
+/**
+* Implements hook_theme
+*/ 
+function erpal_print_theme() {
+  return array(
+    'doc_header' => array(
+      'variables' => array(),
+      'template' => 'template/doc_header',
+    ),
+    'doc_footer' => array(
+      'variables' => array(),
+      'template' => 'template/doc_footer',
+    ),
+    'pdf_pagebreak' => array(
+      'variables' => array(),
+      'template' => 'template/pdf_pagebreak',
+    ),
+  );
+}
+ 
+/**
+* Function to render the given html string as PDF
+* @param $html the html that should be rendered into pdf
+* @param $destination if set, PDF will be saved to the given destionation, otherwise
+*   it will directly by given as download to the users
+* @param $download_filename the filename if the document is put as download
+*/ 
+function _erpal_print_html_as_pdf($html, $destination=false, $download_filename=false) {
+  
+  _erpal_print_require_tcpdf();
+
+  require_once 'classes/ci_document.php';
+  
+  $pdf = new CI_document();
+  
+  $pdf->header_html = theme('doc_header');
+
+  $pdf->footer_html = theme('doc_footer');
+
+  $pdf->SetCreator(PDF_CREATOR);
+  $pdf->SetAuthor('BrightSolutions GmbH'); //@todo set dynamically
+  $pdf->SetTitle(t('Invoice'));
+
+  // set header and footer fonts
+  $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+  $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+  // set default monospaced font
+  $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+  //set margins
+  $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+  //$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+  $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+  //set auto page breaks
+  $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+  //set image scale factor
+  $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+  // ---------------------------------------------------------
+  $pdf->setPrintFooter(true);
+  
+  $parts = _erpal_print_split_pages($html);
+  foreach ($parts as $part_html) {
+    $pdf->AddPage();
+    $pdf->writeHTML($part_html, true, false, true, false, '');
+  }
+    
+  //now output the pdf
+  if ($destination) {
+    $pdf->Output($destination, "F");
+    return $destination;
+  } else {
+    $pdf->Output($download_filename, "D");
+    /**
+    * weiteren Drupal HTML Output verhindern 
+    */
+    die();
+  }
+}
+
+/**
+* Require all files needed for tcpdf
+*/
+function _erpal_print_require_tcpdf() {
+  //now make a pdf out of that HTML body!
+  //include the tcpdf with the library module
+  $tcpdf_path = libraries_get_path('tcpdf');
+
+  //now require TCPDF to render the invoice output as PDF
+  require_once $tcpdf_path."/tcpdf.php";
+  require_once($tcpdf_path.'/config/lang/ger.php');
+}
+
+/**
+* Function to split HTML at marker position to get a new page in PDF
+*/
+function _erpal_print_split_pages($html){
+  $parts = explode(PDF_PAGE_BREAK, $html);
+  
+  return $parts;
+}
+
+/**
+* Function returns the path to the logo for the invoice
+*/
+function erpal_print_logo_path() {
+  //@TODO make this dynamically!
+  $doc_root = $_SERVER['DOCUMENT_ROOT'];  
+  return "/sites/default/files/logo.jpg";
+}

@@ -6,13 +6,13 @@
 * Return all customers that can be refernces to a billable
 */
 function _billable_get_customers() {
-  //@TODO get customers from user selection view (or node type)
   $customers = array();
 
+  $type = _billable_customer_type();
   $query = db_select('node', 'n');
   $query
     ->fields('n', array('nid', 'title'))
-    ->condition('n.type', 'erpal_contact')
+    ->condition('n.type', $type)
     ->condition('n.status', '1')
     ->orderBy('n.title', 'DESC')
     ->addTag('node_access');
@@ -25,4 +25,11 @@ function _billable_get_customers() {
   }
   
   return $customers;
+}
+
+/**
+* Returns the current selected node type for customers
+*/
+function _billable_customer_type() {
+  return variable_get('billable_customer_type', false);
 }

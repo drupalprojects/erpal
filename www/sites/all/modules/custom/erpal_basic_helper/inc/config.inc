@@ -41,13 +41,77 @@ function erpal_basic_helper_config_form($form, &$form_state){
   $form = array();
   
   $new_contact_link = _erpal_basic_helper_create_contact_link(false, array(), t('create a new contact'));
+  
+  $submitted_company = $form_state['values']['my_company'];
+  if ($submitted_company)
+    $company_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($submitted_company);
+  else
+    $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+    
+  $company_node = node_load($company_nid);
+  
+  $form['erpal_debug'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Run ERPAL in debug mode'),
+    '#default_value' => erpal_debug(),
+  );
+  
+  $show_edit_string = '';
+  if ($company_nid)
+    $show_edit_string = l(t('show'), 'node/'.$company_node->nid)." | ".l(t('edit'), 'node/'.$company_node->nid."/edit");
   $form['my_company'] = array(
     '#title' => t('My Company'),
     '#type' => 'textfield',
     '#autocomplete_path' => 'crm/contacts/autocomplete',
-    '#default_value' => _erpal_basic_helper_get_own_company_nid(true),
-    '#description' => t('Select your own company from your contacts or !add_new_contact_link', array('!add_new_contact_link' => $new_contact_link)),
+    '#default_value' => _erpal_basic_helper_get_own_company_nid(true), //get it in autocomplete format
+    '#description' => $show_edit_string." ".t('Select your own company from your contacts or !add_new_contact_link', array('!add_new_contact_link' => $new_contact_link)),
+    '#ajax' => array(
+      'callback' => '_erpal_basic_helper_ajax_company_preselect_addresses_config',
+      'wrapper' => 'basic_address_wrapper',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
   );
+  
+  if ($company_nid) {
+
+    //select the main address that is relevant for all kind of sender information etc.
+    $my_address_entity = _erpal_basic_helper_get_my_address_entity();
+
+    $form['ajax_wrapper'] = array(
+      '#prefix' => '<div id="basic_address_wrapper">',
+      '#suffix' => '</div>',
+    );
+    
+    $form['ajax_wrapper']['my_address'] = array(
+      '#type' => 'select',
+      '#title' => t('Main address for correspondence'),
+      '#options' => _erpal_basic_helper_get_contact_adresses($company_node, true),
+      '#default_value' => $my_address_entity ? $my_address_entity->item_id : 0,
+      '#description' => t('This address will be printed on invoices and other official documents'),
+    );
+    
+    //select the main phone number
+    $my_email_entity = _erpal_basic_helper_get_my_email_entity();
+    $form['ajax_wrapper']['my_email'] = array(
+      '#type' => 'select',
+      '#title' => t('Main email address'),
+      '#options' => _erpal_basic_helper_get_contact_emails($company_node, true),
+      '#default_value' => $my_email_entity,
+      '#description' => t('This email address will be printed on invoices and other official documents'),
+    );
+    
+    //select the main emailadress
+    $my_phone_entity = _erpal_basic_helper_get_my_phone_entity();
+
+    $form['ajax_wrapper']['my_phone'] = array(
+      '#type' => 'select',
+      '#title' => t('Main phone number'),
+      '#options' => _erpal_basic_helper_get_contact_phones($company_node, true),
+      '#default_value' => $my_phone_entity ? $my_phone_entity->item_id : 0,
+      '#description' => t('This phone number will be printed on invoices and other official documents'),
+    );
+  }
   
   $form['submit'] = array(
     '#value' => t('save'),
@@ -58,6 +122,14 @@ function erpal_basic_helper_config_form($form, &$form_state){
 }
 
 /**
+* Callback for AJAX request to update contact data like address, phone etc in basic config
+*/
+function _erpal_basic_helper_ajax_company_preselect_addresses_config($form, $form_state) {
+  
+  return $form['ajax_wrapper'];  //form has already been processed, so just return the elements
+}
+
+/**
 * submit handler of erpal basic config form
 */
 function erpal_basic_helper_config_form_submit($form, $form_state){
@@ -65,8 +137,16 @@ function erpal_basic_helper_config_form_submit($form, $form_state){
   $values = $form_state['values'];
   $my_company_string = $values['my_company'];
   
-  $nid = _erpal_basic_helper_get_nid_from_autocomplete_string($my_company_string);
-  variable_set('erpal_config_my_company_nid', $nid);  //speichern
+  $company_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($my_company_string);
+  $address_id = $values['my_address'];
+  $phone_id = $values['my_phone'];
+  $email = $values['my_email'];
+  $debug = $values['erpal_debug'];
+  variable_set('erpal_debug', $debug);  //erpal debug mode
+  variable_set('erpal_config_my_company_nid', $company_nid);  //save company
+  variable_set('my_field_addresses', $address_id);  //save address
+  variable_set('my_field_phone', $phone_id);  //save phone number
+  variable_set('my_field_email', $email);  //save email address
 }
 
 /**
@@ -111,6 +191,8 @@ function _erpal_basic_helper_autocomplete_string_from_nid($nid){
 * Overview for all the activated ERPAL Features
 */
 function _erpal_basic_helper_config(){
+  drupal_goto('admin/erpal/basic');
+  
   $erpal_config_base = 'admin/erpal';
   $sql = "
     SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*

@@ -52,10 +52,116 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['relationships']['customer_nid']['table'] = 'billable';
   $handler->display->display_options['relationships']['customer_nid']['field'] = 'customer_nid';
   $handler->display->display_options['relationships']['customer_nid']['required'] = 0;
+  /* Field: Billable: Bulk operations */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'billable';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['views_bulk_operations']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['operations'] = array(
+    'erpal_invoice_helper_invoice_from_billables_action' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'views_bulk_operations_delete_item' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'system_message_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'views_bulk_operations_script_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'views_bulk_operations_argument_selector_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'url' => '',
+      ),
+    ),
+    'system_goto_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'billable_reduce_action' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'system_send_email_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+  );
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['display_result'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['merge_single_action'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['force_single'] = 0;
   /* Field: Billable: Billable ID */
   $handler->display->display_options['fields']['billable_id']['id'] = 'billable_id';
   $handler->display->display_options['fields']['billable_id']['table'] = 'billable';
   $handler->display->display_options['fields']['billable_id']['field'] = 'billable_id';
+  $handler->display->display_options['fields']['billable_id']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['make_link'] = 1;
+  $handler->display->display_options['fields']['billable_id']['alter']['path'] = 'billable/[billable_id]/view';
+  $handler->display->display_options['fields']['billable_id']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['billable_id']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['billable_id']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['billable_id']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['billable_id']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['billable_id']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['billable_id']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['billable_id']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['billable_id']['separator'] = '';
+  $handler->display->display_options['fields']['billable_id']['format_plural'] = 0;
   /* Field: Billable: Subject */
   $handler->display->display_options['fields']['subject']['id'] = 'subject';
   $handler->display->display_options['fields']['subject']['table'] = 'billable';
@@ -353,6 +459,11 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['filters']['customer_nid']['expose']['identifier'] = 'customer_nid';
   $handler->display->display_options['filters']['customer_nid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['customer_nid']['reduce_duplicates'] = 0;
+  /* Filter criterion: Billable: Parent_billable */
+  $handler->display->display_options['filters']['parent_billable']['id'] = 'parent_billable';
+  $handler->display->display_options['filters']['parent_billable']['table'] = 'billable';
+  $handler->display->display_options['filters']['parent_billable']['field'] = 'parent_billable';
+  $handler->display->display_options['filters']['parent_billable']['value']['value'] = '0';
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -374,12 +485,13 @@ echo _erpal_invoice_helper_view_billables_header_content();
 ?>'),
     t('Customer'),
     t('Billable ID'),
+    t('billable/[billable_id]/view'),
     t('.'),
-    t(','),
     t('Subject'),
     t('Billed'),
     t('Date delivery'),
     t('Quantity'),
+    t(','),
     t('Single price'),
     t('Total excl. VAT'),
     t('Total VAT'),

@@ -19,7 +19,7 @@ function _billable_test_create_contact() {
 /**
 * Creates all data to start a reduce test
 */
-function _billable_create_reduce_test_data() {
+function _billable_create_reduce_test_data($only_unique_customers=false) {
   //test if entites are reduced correctly
     $customer1 = _billable_test_create_contact();
     $customer2 = _billable_test_create_contact();
@@ -66,7 +66,15 @@ function _billable_create_reduce_test_data() {
     $entity6->customer_nid = $customer1->nid;
     $entity6->save();  //this will not be reduced because it is the only one in a group
 
-  
+  if ($only_unique_customers) {
+    //all customers must be equal for this test condition
+    $entity4->customer_nid = $customer2->nid;
+    $entity4->save();
+    $entity5->customer_nid = $customer2->nid;
+    $entity5->save();
+    $entity6->customer_nid = $customer2->nid;
+    $entity6->save();
+  }
   
   return array(
     'b1' => $entity1,

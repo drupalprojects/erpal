@@ -174,7 +174,7 @@ Drupal.ajax = function (base, element, element_settings) {
   };
 
   // Bind the ajaxSubmit function to the element event.
-  $(ajax.element).bind(element_settings.event, function (event) {
+  $(ajax.element).bind(element_settings.event, function (event) {    
     return ajax.eventResponse(this, event);
   });
 

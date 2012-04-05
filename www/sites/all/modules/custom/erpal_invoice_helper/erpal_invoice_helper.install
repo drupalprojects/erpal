@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for all data saved in the erpal_invoice_helper module
+ */
+
+/**
+* Implements hook_enable
+*/
+function erpal_invoice_helper_enable() {
+  //set the type customer type for erpal billable module
+  variable_set('billable_customer_type', 'erpal_contact');
+}
+ 
+/**
+ * Implements hook_schema().
+ */
+function erpal_invoice_helper_schema() {
+  $schema = array();
+
+  $schema['erpal_invoice_defaults'] = array(
+    'description' => 'Store default settings for invoice for customers.',
+    'fields' => array(
+      'customer_nid' => array(
+        'description' => 'nid of the customer the defaults are saved for.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'address_id' => array(
+        'description' => 'The default address of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'credit_period' => array(
+        'description' => 'The default credit period of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'skonto_percent' => array(
+        'description' => 'The default skonto in percent for the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'skonto_period' => array(
+        'description' => 'The default skonto period of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'notes' => array(
+        'description' => 'The default notes on invoices of the customer.',
+        'type' => 'text',
+      ),
+    ),
+    'primary key' => array('customer_nid'), //only one default per customer id
+  );
+
+  return $schema;
+}
+
+function erpal_invoice_helper_update_7001() {
+  drupal_install_schema('erpal_invoice_helper');  //install schema if it is not already installed
+}

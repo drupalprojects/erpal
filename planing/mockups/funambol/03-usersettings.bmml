@@ -1,15 +1,15 @@
 <mockup version="1.0" skin="sketch" measuredW="627" measuredH="444" mockupW="529" mockupH="426">
   <controls>
-    <control controlID="1" controlTypeID="com.balsamiq.mockups::SubTitle" x="100" y="18" w="-1" h="-1" measuredW="270" measuredH="33" zOrder="0" locked="false" isInGroup="-1">
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::SubTitle" x="100" y="18" w="-1" h="-1" measuredW="285" measuredH="33" zOrder="0" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Funambol%20Admin%20Settings</text>
       </controlProperties>
     </control>
-    <control controlID="2" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="66" w="-1" h="-1" measuredW="288" measuredH="29" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="66" w="-1" h="-1" measuredW="442" measuredH="30" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
-        <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C%2C01-add_profile%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml</hrefs>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%222%2C48%2C81%2C77%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22167%2C48%2C294%2C77%22%20href%3D%2201-add_profile.bmml%22%20alt%3D%2201-add_profile%22%20id%3D%222_1%22/%3E%0A</map>
-        <text>Profile%201%2C%20Profile%202%2C%20Add%20new%20profile</text>
+        <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C%2C01-add_profile%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml%26bm%3B01-add_profile.bmml%2Ccontact-nodesettings%26bm%3Bcontact-nodesettings.bmml%26bm%3Bcontact-nodesettings.bmml%26bm%3Bcontact-nodesettings.bmml%2C</hrefs>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%222%2C48%2C81%2C78%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22164%2C48%2C287%2C78%22%20href%3D%2201-add_profile.bmml%22%20alt%3D%2201-add_profile%22%20id%3D%222_1%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22289%2C48%2C370%2C78%22%20href%3D%22contact-nodesettings.bmml%22%20alt%3D%22contact-nodesettings%22%20id%3D%222_2%22/%3E%0A</map>
+        <text>Profile%201%2C%20Profile%202%2C%20Add%20new%20profile%2C%20Contacts%2C%20Calendar</text>
       </controlProperties>
     </control>
     <control controlID="3" controlTypeID="com.balsamiq.mockups::FieldSet" x="98" y="134" w="257" h="310" measuredW="200" measuredH="170" zOrder="2" locked="false" isInGroup="-1">
@@ -17,20 +17,20 @@
         <text>User%20Accounts</text>
       </controlProperties>
     </control>
-    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="556" y="401" w="-1" h="-1" measuredW="54" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="556" y="401" w="-1" h="-1" measuredW="52" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Save</text>
       </controlProperties>
     </control>
-    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="119" y="160" w="-1" h="-1" measuredW="40" measuredH="21" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="119" y="160" w="-1" h="-1" measuredW="40" measuredH="22" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Users</text>
       </controlProperties>
     </control>
-    <control controlID="22" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="95" w="-1" h="-1" measuredW="456" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::ButtonBar" x="100" y="95" w="-1" h="-1" measuredW="469" measuredH="26" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <hrefs>02-serversettings%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%26bm%3B02-serversettings.bmml%2C03-usersettings%26bm%3B03-usersettings.bmml%26bm%3B03-usersettings.bmml%26bm%3B03-usersettings.bmml%2C04-accessrestriction%26bm%3B04-accessrestriction.bmml%26bm%3B04-accessrestriction.bmml%26bm%3B04-accessrestriction.bmml%2C05-contact%20settings%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%2C05-contact%20settings%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml%26bm%3B05-contact%20settings.bmml</hrefs>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%222%2C77%2C91%2C101%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%2222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%2293%2C77%2C175%2C101%22%20href%3D%2203-usersettings.bmml%22%20alt%3D%2203-usersettings%22%20id%3D%2222_1%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22177%2C77%2C275%2C101%22%20href%3D%2204-accessrestriction.bmml%22%20alt%3D%2204-accessrestriction%22%20id%3D%2222_2%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22277%2C77%2C367%2C101%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_3%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22369%2C77%2C466%2C101%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_4%22/%3E%0A</map>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%222%2C77%2C92%2C103%22%20href%3D%2202-serversettings.bmml%22%20alt%3D%2202-serversettings%22%20id%3D%2222_0%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%2294%2C77%2C179%2C103%22%20href%3D%2203-usersettings.bmml%22%20alt%3D%2203-usersettings%22%20id%3D%2222_1%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22181%2C77%2C283%2C103%22%20href%3D%2204-accessrestriction.bmml%22%20alt%3D%2204-accessrestriction%22%20id%3D%2222_2%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22285%2C77%2C378%2C103%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_3%22/%3E%0A%3Carea%20shape%3D%22rect%22%20coords%3D%22380%2C77%2C479%2C103%22%20href%3D%2205-contact%2520settings.bmml%22%20alt%3D%2205-contact%20settings%22%20id%3D%2222_4%22/%3E%0A</map>
         <selectedIndex>1</selectedIndex>
         <size>9</size>
         <text>Server%20Settings%2C%20User%20Accounts%2C%20Access%20Restriction%2C%20Contact%20Settings%2C%20Calendar%20Settings</text>
@@ -41,22 +41,22 @@
         <text>Account%20credentials</text>
       </controlProperties>
     </control>
-    <control controlID="27" controlTypeID="com.balsamiq.mockups::TextInput" x="388" y="217" w="220" h="-1" measuredW="89" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::TextInput" x="388" y="217" w="220" h="-1" measuredW="91" measuredH="28" zOrder="6" locked="false" isInGroup="-1">
       <controlProperties>
         <text>MrHenderson</text>
       </controlProperties>
     </control>
-    <control controlID="28" controlTypeID="com.balsamiq.mockups::Label" x="385" y="196" w="-1" h="-1" measuredW="86" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::Label" x="385" y="196" w="-1" h="-1" measuredW="90" measuredH="22" zOrder="8" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Account%20name</text>
       </controlProperties>
     </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::TextInput" x="388" y="281" w="220" h="-1" measuredW="68" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::TextInput" x="388" y="281" w="220" h="-1" measuredW="59" measuredH="28" zOrder="9" locked="false" isInGroup="-1">
       <controlProperties>
         <text>*********</text>
       </controlProperties>
     </control>
-    <control controlID="30" controlTypeID="com.balsamiq.mockups::Label" x="388" y="260" w="-1" h="-1" measuredW="60" measuredH="21" zOrder="10" locked="false" isInGroup="-1">
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::Label" x="388" y="260" w="-1" h="-1" measuredW="63" measuredH="22" zOrder="10" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Password</text>
       </controlProperties>
@@ -72,17 +72,17 @@
         <text>Filter</text>
       </controlProperties>
     </control>
-    <control controlID="33" controlTypeID="com.balsamiq.mockups::TextInput" x="119" y="400" w="159" h="-1" measuredW="28" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::TextInput" x="119" y="400" w="159" h="-1" measuredW="29" measuredH="28" zOrder="13" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Mr</text>
       </controlProperties>
     </control>
-    <control controlID="34" controlTypeID="com.balsamiq.mockups::Label" x="387" y="315" w="218" h="62" measuredW="457" measuredH="21" zOrder="14" locked="false" isInGroup="-1">
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Label" x="387" y="315" w="218" h="62" measuredW="462" measuredH="22" zOrder="14" locked="false" isInGroup="-1">
       <controlProperties>
         <text>This%20settings%20can%20be%20changed%20in%20the%20user%20profile%2C%20if%20the%20permissions%20are%20granted.</text>
       </controlProperties>
     </control>
-    <control controlID="35" controlTypeID="com.balsamiq.mockups::CheckBox" x="385" y="159" w="-1" h="-1" measuredW="216" measuredH="22" zOrder="15" locked="false" isInGroup="-1">
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::CheckBox" x="385" y="159" w="-1" h="-1" measuredW="221" measuredH="22" zOrder="15" locked="false" isInGroup="-1">
       <controlProperties>
         <state>selected</state>
         <text>Enable%20this%20user%20to%20use%20%22Profile%201%22</text>

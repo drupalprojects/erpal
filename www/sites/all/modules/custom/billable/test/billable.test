@@ -109,9 +109,6 @@ class BillableTestCase extends DrupalWebTestCase  {
     //check that already billed billable entites cannot be reduced
     //@TODO
  
-    //check that if grouped by single_price the quantity is added and single price keeps the singleprice of the
-    //billable (it is equal in each billable in its group), otherwise it is always 1 and the single prices will be added
-    //@TODO
   }
 }
 

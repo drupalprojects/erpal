@@ -31,7 +31,7 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
   function testInvoiceCalculateValues() {
     //create billables for the invoice
     $group= 'feature erpal invoice';
-    
+    module_load_include('helper', 'feature_erpal_invoice', 'test/feature_erpal_invoice.test');
     $entity1 = entity_create('billable', array());
     $entity1->quantity = 2;
     $entity1->single_price = 15;
@@ -153,7 +153,118 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
     $vat_ok = invoicefeature_test_vat_entites($invoice, $vat_needed);
     $this->assertTrue($vat_ok, 'All vat field collection entities calculated with deleted vat entity.', $group);
     
+    //now check that the notes are added!
+    //check if the invoice has notes set automatically
+    //set up vat rate notes in adminsettings:    
+    variable_set('erpal_invoice_vat_rates_string', "7#7\r\n0#0#No vat because of law!\r\n19#19");
+
+    //checkt that individual auto notes are kept alive
+    $invoice->field_auto_note[LANGUAGE_NONE][]['value'] = 'hallo';
+    $auto_notes_required = array('hallo');
+    node_save($invoice);
+    
+    $notesOK = _feature_erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+    $this->assertTrue($notesOK, 'All individual invoice note is kept on invoice save.', $group);
+    
+    //now check that if we add 0% vat the note is added
+    $entity4 = entity_create('billable', array());
+    $entity4->quantity = 1;
+    $entity4->single_price = 23;
+    $entity4->vat_rate = 0;
+    $entity4->subject = 'test2';
+    $entity4->save();
+    $invoice->field_billables_ref[LANGUAGE_NONE][1]['target_id'] = $entity4->billable_id;        
+    node_save($invoice);
+    $auto_notes_required = array('hallo', 'No vat because of law!');
+    $notesOK = _feature_erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+    
+    $this->assertTrue($notesOK, 'Single auto invoice note is added on invoice save.', $group);
+    
+    //now delete the 0% vat rate entity from invoice, the corresponding auto note should be deleted
+    unset($invoice->field_billables_ref[LANGUAGE_NONE][1]);
+    node_save($invoice);
+    $auto_notes_required = array('hallo');
+    $notesOK = _feature_erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+    
+    $this->assertTrue($notesOK, 'Auto note is removed if the entity with vat rate 0% is removed', $group);
+    
+    //now we add two, one with 19% and one with 0% vat.
+    $entity4 = entity_create('billable', array());
+    $entity4->quantity = 1;
+    $entity4->single_price = 23;
+    $entity4->vat_rate = 0;  //0% var rate
+    $entity4->subject = 'test2';
+    $entity4->save();    
+    $entity5 = entity_create('billable', array());
+    $entity5->quantity = 1;
+    $entity5->single_price = 23;
+    $entity5->vat_rate = 19;  //19% vat rate
+    $entity5->subject = 'test2';
+    $entity5->save();
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity4->billable_id;    // add 4 again     
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity5->billable_id;
+    node_save($invoice);
+    $auto_notes_required = array('hallo', 'No vat because of law!');
+    $notesOK = _feature_erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+
+    $this->assertTrue($notesOK, 'Auto Note is added if we have on 0% and one 19% vat billable', $group);
   
+  }
+  
+  /**
+  * Check creating an invoice from billable ids
+  */
+  function testCreateInvoiceFromBillables() {
+    $group = 'feature erpal invoice';
+    //create some test billables
+    module_load_include('helper', 'feature_erpal_invoice', 'test/feature_erpal_invoice.test');
+    $billable_ids = _feature_erpal_invoice_test_create_billables(true);  //true means only homegenous cutomers, we dont preset the customer
+      //to the invoice in this step but in the next one.
+    $reduced = true;  //we want the billables to be reduces, so we have only a view reduced billables referenced in our invoice
+    $params = array();
+    module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+    $params['address_id'] = 4; //we have to privide one because the user has to select on. Otherwise test will fail!
+    $result = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced, $params);
+    $invoice = $result['invoice'];
+    $status = $result['status'];
+    
+    $invoiceOK = _feature_erpal_invoice_test_check_invoice($invoice, $params) && $status;
+    $this->assertTrue($invoiceOK, 'Invoice created from billables without external params', $group);
+    
+    //create some test billables with GIVEN CUSTOMER
+    module_load_include('helper', 'feature_erpal_invoice', 'test/feature_erpal_invoice.test');
+    $billable_ids = _feature_erpal_invoice_test_create_billables();  //true means only homegenous cutomers, we dont preset the customer
+      //to the invoice in this step but in the next one.
+    $reduced = true;  //we want the billables to be reduces, so we have only a view reduced billables referenced in our invoice
+    
+    //create a new customer for this run!
+    $customer = _billable_test_create_contact();
+    $params = array('customer_nid' => $customer->nid);
+    module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+    //set skonto information and set them
+    $params['skonto']['credit_period'] = 10;
+    $params['skonto']['discount_percent'] = 5;
+    $params['currency'] = 'JPN';
+    $params['credit_period'] = 14;
+    $params['address_id'] = 4; //provide an invoice address_id because the user has to select one
+    $params['invoice_date'] = strtotime('2012-12-12 00:00:00');
+    $result = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced, $params);
+    $invoice = $result['invoice'];
+    $status = $result['status'];
+    
+    //check the invoice has been created
+    $invoiceOK = _feature_erpal_invoice_test_check_invoice($invoice, $params) && $status;
+    $this->assertTrue($invoiceOK, 'Invoice created from billables WITH external params', $group);
+    
+    //@TODO no invoice is create if there are no billables
+    
+    
+    //check if there is an error if there is no customer given and billables have different customers set.
+    
+    
+    //@TODO check that an error is thrown if there are inconsistent customers within all billables so the customer could not be
+    //determined
+    
   }
  
   /**
