@@ -34,7 +34,6 @@ function erpal_invoice_helper_token_info() {
     'description' => t("Tokens for invoice notes."),
   );
 
-  // Andy Pangus specific tokens.
   $invoice['total'] = array(
     'name' => t("Total price"),
     'description' => t("The total price of the invoice."),
