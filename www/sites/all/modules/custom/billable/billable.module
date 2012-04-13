@@ -17,17 +17,9 @@ function billable_action_info() {
   return array(
     'billable_reduce_action' => array(
       'type' => 'entity',
-      'label' => t('Reduce billables'),
-      'description' => t('Reduce billables with parent and child billables.'),
-      'configurable' => FALSE,
-      'hooks' => array(),
-      'aggregate' => TRUE,
-    ),
-    'billable_reduce_by_single_price_action' => array(
-      'type' => 'entity',
-      'label' => t('Reduce billables grouped by single price'),
-      'description' => t('Reduces billables grouping billables with the same single price as one.'),
-      'configurable' => FALSE,
+      'label' => t('Group billables'),
+      'description' => t('Groups billables with parent and child billables.'),
+      'configurable' => TRUE,
       'hooks' => array(),
       'aggregate' => TRUE,
     ),

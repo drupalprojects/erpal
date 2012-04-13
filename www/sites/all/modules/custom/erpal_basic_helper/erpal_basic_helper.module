@@ -307,3 +307,10 @@ function _erpal_basic_helper_return_my_value($field_name) {
   return $my_value_entity;
 }
 
+/**
+* Function that returns if we are in debug mode
+*/
+function erpal_debug() {
+  $debug = variable_get('erpal_debug', 0);
+  return $debug;
+}

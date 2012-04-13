@@ -125,12 +125,6 @@ echo _erpal_invoice_helper_view_billables_header_content();
       'override_label' => 0,
       'label' => '',
     ),
-    'billable_reduce_by_single_price_action' => array(
-      'selected' => 1,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
     'system_send_email_action' => array(
       'selected' => 0,
       'use_queue' => 0,

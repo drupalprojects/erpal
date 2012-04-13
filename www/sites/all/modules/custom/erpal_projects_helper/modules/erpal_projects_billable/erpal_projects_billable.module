@@ -348,9 +348,10 @@ function _erpal_billable_update_billable($node, $op) {
   
   if ($node->type == 'erpal_timetracking') {
     $timetracking_node = $node;
-    $quantity = $node->field_timetracking_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
+    $quantity = $node->field_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
     $node = node_load($node->field_timetracking_subject[LANGUAGE_NONE][0]['nid']);    
     $type = $timetracking_node->type;
+    
   } else {
     $quantity = 1; //cause it is fixed price
     $type = $node->type;
@@ -372,7 +373,7 @@ function _erpal_billable_update_billable($node, $op) {
   $date_delivery = $node->changed; //last change of the task node
   
   if ($op == 'insert') { 
-    if (_erpal_billable_is_billable($billable_information, $node, $type)) {      
+    if (_erpal_billable_is_billable($billable_information, $node, $type)) {  
       //last parameter is set false, so we create a new billable!            
       _erpal_project_billable_save_billable(
         $subject_title, 
@@ -402,9 +403,9 @@ function _erpal_billable_update_billable($node, $op) {
       //not billable any more?
       if (!$is_billable) {        
         //delete the billable, it is not allowed here, cause the task has not been completed!
+        drupal_set_message(t('Billables have been deleted because the subject is no more billable!'), 'warning');
         entity_delete('billable', $billable->billable_id);
       } else {   
-     dpm($quantity);
         //if task status is completed
         //last parameter is set false, so we create a new billable!
         _erpal_project_billable_save_billable(

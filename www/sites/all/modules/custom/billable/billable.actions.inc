@@ -10,17 +10,35 @@ function billable_reduce_action(&$billables, $context) {
   $billable_ids = array_keys($billables);
   _billable_reduce($billable_ids);
   
+  if (isset($context['single_price']) && $context['single_price']) {
+    $group_by = array('single_price');
+    _billable_reduce($billable_ids, $group_by);
+  }
+  
 }
 
 /**
-* Callback for the action billable_reduce_by_single_price_action to reduce billables
-* NO grouping by singfle price
+*  Form to configure the billable reduce action
 */
-function billable_reduce_by_single_price_action(&$billables, $context) {
+function billable_reduce_action_form($context) {
+
+  $form = array();
   
-  module_load_include('inc', 'billable', 'billable.reduce'); 
-  $billable_ids = array_keys($billables);
-  $group_by = array('single_price');
-  _billable_reduce($billable_ids, $group_by);
+  $form['single_price'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Group by single price'),
+    '#default_value' => false,
+    '#description' => t('Billables will be grouped by customer, vat rates, currency and with this option, by single price. This is usefull for payed work by time tracking to reduce the amount of invoice line items'),
+  );
   
+  return $form;
+}
+
+/**
+* Submithandler of reduce action config form
+*/
+function billable_reduce_action_submit($form, $form_state) {
+  $values = $form_state['values'];
+
+  return $values;
 }
