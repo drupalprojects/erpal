@@ -162,7 +162,7 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
     node_save($invoice);
 
   } else {
-    $download_filename = $invoice->title.".pdf";
+    $download_filename = $invoice->title.time().".pdf";
     _erpal_print_html_as_pdf($html, false, $download_filename);
   }
     
