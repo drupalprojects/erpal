@@ -1,17 +1,19 @@
-
-
-
-
 (function($) {
 $(document).ready(function() {
 
-WEB_SOCKET_SWF_LOCATION = "sites/all/modules/custom/erpal_asterisk_notify/nicokaiser-php-websocket/client/js/WebSocketMain.swf";
+  // fetching settings defined in erpal_asterisk_notify.module
+  var client_ip = Drupal.settings.erpal_asterisk_notify.client_ip;
+  var nodejs_host = Drupal.settings.erpal_asterisk_notify.nodejs_host;
+  var nodejs_http_port = Drupal.settings.erpal_asterisk_notify.nodejs_http_port;
+  var nodejs_socket_port = Drupal.settings.erpal_asterisk_notify.nodejs_socket_port;
 
-
- var socket = io.connect('http://localhost:3081');
+  var socket = io.connect('http://' + nodejs_host + ':' + nodejs_socket_port);
   socket.on('caller_data', function (data) {
-    console.log(data);
-    $("body").append("<div style='position:absolute; right:0; bottom:0;background:white;border:2px solid red;width:300px;'>" + data.caller_data + "</div>");
+    $("body").append(data.caller_data);
+    $('.erpal-asterisk-notify').css('bottom', '-' + $('.erpal-asterisk-notify').css('height'));
+    $('.erpal-asterisk-notify').animate({
+          bottom: 0
+     }, 'fast');
   });
   
   socket.on('status', function (data) {
@@ -20,76 +22,26 @@ WEB_SOCKET_SWF_LOCATION = "sites/all/modules/custom/erpal_asterisk_notify/nicoka
     }
   });
 
-
-function registerClient() {
-      $.post('http://localhost:8080/register', { ip : '127.0.0.1', phone_numbers : '[ "004961513910793" ]' } ,function(data, textStatus) {
-        console.log(data);
+  function registerClient() {
+        $.post('http://' + nodejs_host + ':' + nodejs_http_port + '/register', { ip : client_ip, phone_numbers : '[ "004961513910793" ]' }, function(data, textStatus) {
+          console.log(data);
+        });
+  }
+  
+  $(document).delegate('.erpal-asterisk-notify .status-buttons a.button', 'click', function () {
+    if($(this).hasClass('available')) {
+      socket.emit('action', { name: 'available' });
+    }
+    else if($(this).hasClass('not-available')) {
+      socket.emit('action', { name: 'not available' });
+      var notification = $(this).parentsUntil('.erpal-asterisk-notify').parent();
+      notification.animate({
+          bottom: '-' + notification.css('height')
+        }, 'fast', function() {
+          notification.remove();
       });
-}
-  /*
-  $.ajax({
-      type: 'POST',
-      url: 'http://localhost:8080/register',
-      crossDomain: true,
-      data: '{ ip : "127.0.0.1", phone_numbers : "[ \"004961513910793\" ]" }',
-      dataType: 'json',
-      success: function(responseData, textStatus, jqXHR) {
-        console.log(responseData);
-      },
-      error: function (responseData, textStatus, errorThrown) {
-        console.log('POST failed.');
-        console.log(responseData);
-        console.log(textStatus);
-      }
-  });*/
-
-/*Karsten
-    WebPush.log = function(msg){ $('body').append(msg + '<br/>') }; // function(msg){};
-
-    var server = new WebPush('ws://localhost:3081/erpal_asterisk');
-*/
-    
-    // WebPush events
-    
-/*Karsten
-    server.bind('open', function() {
-*/
-        /*$('#status').removeClass().addClass('online').html('online');
-        $('#disconnect').show();
-        $('#subscribe').show();*/
-        
-/*Karsten
-		WebPush.log('Opened.');
-    });
-
-    server.bind('connection_disconnected', function() {
-        //$('#status').removeClass().addClass('offline').html('offline');
-		WebPush.log('Disconnected.');
-    });
-
-    server.bind('close', function() {
-        //$('#status').removeClass().addClass('offline').html('offline');
-		WebPush.log('Closed.');
-    });
-
-    server.bind('connection_failed', function() {
-        //$('#status').removeClass().addClass('error').html('error');
-		WebPush.log('Connection failed.');
-    });
-
-    server.bind('message', function(data) {
-        WebPush.log('Received: ' + data);
-    });
-*/
-
-    // Click events
-
-    /*$('#send').click(function(){
-        var text = $('#message').val();
-        WebPush.log('Sent: ' + text);
-        server.send(text);
-        $('#message').val("");
-    });*/
+    }
+  });
 
 });
 })(jQuery);

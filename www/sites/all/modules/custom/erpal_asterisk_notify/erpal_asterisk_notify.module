@@ -7,19 +7,24 @@
 // Define used constants
 define("VIEWCONTENTTYPE", "erpal_contact");
 
+
 /*
 * Implements hook_init
 */
 function erpal_asterisk_notify_init() {
-	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );
-	
+	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );  
+	$js_settings = array(
+    'client_ip' => $_SERVER['REMOTE_ADDR'],
+    'nodejs_host' => variable_get('asterisk_nodejs_host'),
+    'nodejs_http_port' => variable_get('asterisk_nodejs_http_port'),
+    'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port')
+  );
+  
   //@todo externe libraries mit dem libraries modul einbinden, dürfen nicht in der Distribution mitgeliefert werden
-	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/swfobject.js', Array( 'every_page'=>TRUE ) );
-	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/FABridge.js', Array( 'every_page'=>TRUE ) );
-	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/web_socket.js', Array( 'every_page'=>TRUE ) );
-	drupal_add_js( $path . '/nicokaiser-php-websocket/client/js/webpush.js', Array( 'every_page'=>TRUE ) );
   drupal_add_js( $path . '/js/socketio/socket.io.min.js', Array( 'every_page'=>TRUE ) );
-  drupal_add_js( $path . '/js/erpal_asterisk.js', Array( 'every_page'=>TRUE ) );
+  drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting' );
+  drupal_add_js($path . '/js/erpal_asterisk.js', Array( 'every_page'=>TRUE ) );
+  drupal_add_css( $path . '/css/erpal_asterisk_notify.css', Array( 'every_page'=>TRUE ) );
 }
 
 

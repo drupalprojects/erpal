@@ -72,18 +72,11 @@ HTTPPerDrupal.prototype.handleIngoingData = function (request, response) {
     	var post = self.queryString.parse (postData);	 
 
 		self.eventHandler.invokeListeners('sendData',  post);
-    console.log(post);
 		
-    response.writeHead(200, {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin' : '*'
+		response.writeHead ('Content-Type: application/json');
+        response.write ('{"status": ok}'); // Pro forma
+        response.end ();
     });
-
-    var response_ok = { status : "ok" };
-    response.write (JSON.stringify(response_ok)); // Pro forma
-    response.end ();
-    
-   });
 	
 	return;
 };
@@ -106,17 +99,11 @@ HTTPPerDrupal.prototype.handleClientRegistering = function (request, response) {
 
     	var post = self.queryString.parse (postData);	 
 
-		self.eventHandler.invokeListeners('registerClientData', post);
-
-    response.writeHead(200, {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin' : '*'
-    });
-
-    var response_ok = { status : "ok" };
-    response.write (JSON.stringify(response_ok)); // Pro forma
-    response.end ();
-    
+		self.eventHandler.invokeListeners('registerClientData', post['phone_numbers'], post['ip']);
+		
+		response.writeHead ('Content-Type: application/json');
+        response.write ('{"status": ok}'); // Pro forma
+        response.end ();
     });
 	
 	return;

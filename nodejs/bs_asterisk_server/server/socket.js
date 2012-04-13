@@ -1,7 +1,7 @@
 /**
  * HTTP server module.
  * 
- * @author 		Marc Sven Kleinböhl
+ * @author 		Marc Sven Kleinböhl, Karsten Planz
  * @copyright 	2012 (c) Bright Solutions GmbH
  * 				All rights reserved.
  */
@@ -10,47 +10,6 @@ function Socket () {
 	
 	var self			 = this;	
 	this.clientManager	 = require ('../data/clientmanager.js');
-	this.netSocketServer = require('net').createServer(function(connection) {
-
-		connection.on('connect', function() {
-	
-			   console.log ('Client ' + connection.remoteAddress + ' connected.');
-			
-			   self.clientManager.saveSocketClientObject (
-						connection.remoteAddress,
-						connection
-				);
-				
-				return;
-		});
-			
-		connection.on('close', function() {
-				
-				console.log ('Client ' + connection.remoteAddress + ' disconnected.');
-			
-				self.clientManager.removeClientBySocketClientObject (connection);
-				
-				return;
-		});
-			
-		connection.on('data', function(data) {
-	 
-				var event = JSON.parse(data.toString ());
-				
-				switch (event.eventID) {					
-					case 'not available':
-						self.clientManager.setStatus (connection, false);
-						break;	
-						
-					case 'available':
-						self.clientManager.setStatus (connection, true);
-						break;	
-				}
-				
-				return;
-		});
-		
-	});
 
 	return;
 }
@@ -65,12 +24,12 @@ Socket.prototype.sendData = function (postData) {
 	var socketClientObject = this.clientManager.getSocketClientByPhoneNumber(
 			postData['receiverPhoneNumber']
 	);
-	
+  
 	if (socketClientObject == null) {
 		return false;
 	}
 	
-	socketClientObject.write (postData['caller_data']);
+	socketClientObject.emit('caller_data', { caller_data: postData['caller_data'] });
 
 	return true;
 };
@@ -81,8 +40,49 @@ Socket.prototype.sendData = function (postData) {
  */
 Socket.prototype.start = function (port) {
 	
-	this.netSocketServer.listen(port);
-	
+  var self = this;  
+  // TODO: check why inserting variable port here throws error
+  var io = require('socket.io').listen(3081);
+
+  io.sockets.on('connection', function (socket) {
+    var address = socket.handshake.address.address;
+		console.log ('Client ' + address + ' connected.');
+
+    self.clientManager.saveSocketClientObject (
+      address,
+      socket
+    );
+
+    socket.emit('status', { status : 'ok' });
+  
+    socket.on('connect', function() {
+				return;
+		});
+			
+		socket.on('disconnect', function() {
+				var address = socket.handshake.address.address;
+				console.log ('Client ' + address + ' disconnected.');			
+				self.clientManager.removeClientBySocketClientObject (socket);
+				
+				return;
+		});
+			
+		socket.on('action', function(data) {
+      switch (data.name) {					
+        case 'not available':
+          self.clientManager.setStatus (socket, false);
+          break;	
+          
+        case 'available':
+          self.clientManager.setStatus (socket, true);
+          break;	
+      }
+      
+			return;
+		});
+  });
+
+  
 	return;
 };
 
@@ -91,8 +91,9 @@ Socket.prototype.start = function (port) {
  */
 Socket.prototype.stop = function () {
 	
-	this.netSocketServer.close ();
-	
+  // TODO: check if that works
+	// this.io.server.close();
+  
 	return;
 };
 
@@ -100,9 +101,9 @@ Socket.prototype.stop = function () {
  * Registers a clients phonenumbers.
  * It is just a proxy function for ClientManager.register.
  */
-Socket.prototype.registerClientData = function (phonenumbers, ip) {
-	
-	this.clientManager.register (phonenumbers, ip);
+Socket.prototype.registerClientData = function (postData) {
+	console.log(postData.phone_numbers);
+	this.clientManager.register (postData.phone_numbers, postData.ip);
 	
 	return;
 };
