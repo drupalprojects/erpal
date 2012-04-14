@@ -8,7 +8,8 @@ project = "erpal_projects_service"
 version = "7.x-1.0-dev"
 
 files[] = erpal_projects_service.module
-files[] = inc/services.inc
+files[] = inc/project.inc
+files[] = inc/task.inc
 
 dependencies[] = rest_server
 dependencies[] = feature_erpal_project_basic

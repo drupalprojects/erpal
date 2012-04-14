@@ -9,48 +9,42 @@
 *
 * @param array $task_states array of all states tasks are returned with.
 * @param array with uids $uid user ID to return only tasks a user is assigned to
-* @param changed all projects that have changed since the variable
 * @return array an array of erpal_project objects matching the filter*
 * IMPORTANT If there are no filters set, perhaps you will get big amount of data!
 */
-function _erpal_projects_helper_get_projects_with_assigned_tasks($task_states=array(), $uids=array(), $changed=0) {
+function _erpal_projects_helper_get_projects_with_assigned_tasks($task_states=array(), $uids=array(), $task_changed=0, $project_changed=0) {
   global $user;
 
-  /*
-  if (count($uids) <= 0)
-    $uids = array($user->uid);
-  */
+  module_load_include('inc', 'erpal_projects_helper', 'inc/tasks.inc');
   
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
-  ->entityCondition('bundle', 'erpal_task')
-  ->propertyCondition('status', 1);
+  $task_nodes = _erpal_projects_helper_get_tasks_by_assigned_user($task_states, $uids, $task_changed);  
 
-  if (count($uids) > 0) {
-    $query->fieldCondition('field_task_assigned_users', 'uid', $uids, 'IN');
-  }
-  
-  if (count($task_states) > 0) {
-    $query->fieldCondition('field_task_status', 'value', $task_states, 'IN');
-  }
-  
-  if ($changed) {
-    $query->propertyCondition('changed', $changed, '>=');  //all entites after the given changed date
-  }
-  
-  $result = $query->execute();
-
-  if (isset($result['node'])) {
-    $task_nids = array_keys($result['node']);
-    $task_nodes = entity_load('node', $task_nids);
-  }
-  
   //now return the project nodes!
   $projects = array();
 
   foreach ($task_nodes as $task) {
     $project_node = node_load($task->field_project_ref[LANGUAGE_NONE][0]['nid']);
-    $projects[$project_node->nid] = $project_node;
+    if ($project_node->changed >= $changed || !$changed)
+      $projects[$project_node->nid] = $project_node;
+  }
+
+  //now query  projects where changed is greater than changed param. This is an or query  
+  if ($project_changed) {  //only if there is a filter, otherwise we get all projects back!
+ 
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_project')
+    ->propertyCondition('status', 1)
+    ->propertyCondition('changed', $project_changed, '>=');  //all entites after the given changed date
+    
+    $result = $query->execute();
+
+    if (isset($result['node'])) {
+      $project_nids = array_keys($result['node']);
+      $project_nodes = entity_load('node', $project_nids);
+      
+      $projects = array_merge($projects, $project_nodes);
+    }
   }
 
   return $projects;

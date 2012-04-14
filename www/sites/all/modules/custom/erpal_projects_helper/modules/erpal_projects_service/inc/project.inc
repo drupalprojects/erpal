@@ -11,7 +11,6 @@
  * @return object
  */
 function _erpal_projects_service_project_retrieve($id) {
-  //@todo implement
   $project_node = _erpal_projects_service_get_project($id);
 
   return $project_node;
@@ -33,10 +32,12 @@ function _erpal_projects_service_project_index($parameters=array()) {
     $uids = $parameters['uids'];
   if (isset($parameters['states']))
     $task_states = $parameters['states'];
-  if (isset($parameters['changed']))
-    $changed = $parameters['changed'];
+  if (isset($parameters['task_changed']))
+    $task_changed = $parameters['task_changed'];
+  if (isset($parameters['project_changed']))
+    $project_changed = $parameters['project_changed'];
    
-  $projects = _erpal_projects_helper_get_projects_with_assigned_tasks($task_states, $uids, $changed);
+  $projects = _erpal_projects_helper_get_projects_with_assigned_tasks($task_states, $uids, $task_changed, $project_changed);
   return $projects;
 }
 
