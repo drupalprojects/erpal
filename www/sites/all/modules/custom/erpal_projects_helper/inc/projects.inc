@@ -9,12 +9,13 @@
 *
 * @param array $task_states array of all states tasks are returned with.
 * @param array with uids $uid user ID to return only tasks a user is assigned to
-* @return array an array of erpal_project objects matching the filter
+* @param changed all projects that have changed since the variable
+* @return array an array of erpal_project objects matching the filter*
+* IMPORTANT If there are no filters set, perhaps you will get big amount of data!
 */
 function _erpal_projects_helper_get_projects_with_assigned_tasks($task_states=array(), $uids=array(), $changed=0) {
   global $user;
 
-die('drin');
   /*
   if (count($uids) <= 0)
     $uids = array($user->uid);
@@ -33,12 +34,24 @@ die('drin');
     $query->fieldCondition('field_task_status', 'value', $task_states, 'IN');
   }
   
+  if ($changed) {
+    $query->propertyCondition('changed', $changed, '>=');  //all entites after the given changed date
+  }
+  
   $result = $query->execute();
 
   if (isset($result['node'])) {
-    $news_items_nids = array_keys($result['node']);
-    $news_items = entity_load('node', $news_items_nids);
+    $task_nids = array_keys($result['node']);
+    $task_nodes = entity_load('node', $task_nids);
   }
   
-  return $news_items;
+  //now return the project nodes!
+  $projects = array();
+
+  foreach ($task_nodes as $task) {
+    $project_node = node_load($task->field_project_ref[LANGUAGE_NONE][0]['nid']);
+    $projects[$project_node->nid] = $project_node;
+  }
+
+  return $projects;
 }
