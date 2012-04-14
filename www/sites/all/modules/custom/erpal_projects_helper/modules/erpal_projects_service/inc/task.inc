@@ -1,7 +1,7 @@
 <?php
 
 /**
-* @file all functions neded for make tasks accessable by services
+* @file all functions needed for make tasks accessable by services
 */
 
 /**

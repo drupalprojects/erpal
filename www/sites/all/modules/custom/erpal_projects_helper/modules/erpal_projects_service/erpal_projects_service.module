@@ -115,6 +115,28 @@ function erpal_projects_service_services_resources() {
         ),
       ),
     ),
+    
+    'timetracking' => array(
+      'create' => array(
+        'help' => 'Create a new timetracking',
+        'file' => array('file' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+        'callback' => '_erpal_projects_service_timetracking_create',
+        'access callback' => '_erpal_projects_service_timetrackings_access',
+        'access callback file' => array('file' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'timetracking',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The timetracking node data to create',
+            'type' => 'array',
+          ),         
+        ),
+      ),
+      
+    ),
   );
 }
 
@@ -173,6 +195,13 @@ function erpal_projects_service_default_services_endpoint() {
         'index' => array(
           'enabled' => 1,
         ),
+      ),
+    ),
+    'timetracking' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ),        
       ),
     ),
     'task' => array(
