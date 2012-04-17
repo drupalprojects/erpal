@@ -220,6 +220,100 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_project-field_activity_ref'
+  $fields['node-erpal_project-field_activity_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_activity_ref',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_contact' => 0,
+          'erpal_crm_activity' => 'erpal_crm_activity',
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_project_spec' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
+          'page' => 0,
+          'panel' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 6,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_activity_ref',
+      'label' => 'CRM activity',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'nodereference_url',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 1,
+          'fallback' => 'select',
+          'node_link' => array(
+            'destination' => 'default',
+            'full' => 1,
+            'hover_title' => '',
+            'teaser' => 0,
+            'title' => 'Create Project',
+          ),
+        ),
+        'type' => 'nodereference_url',
+        'weight' => '5',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_project-field_customer_ref'
   $fields['node-erpal_project-field_customer_ref'] = array(
     'field_config' => array(
@@ -1720,6 +1814,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Assigned To Users');
   t('Billing Duration');
   t('Body');
+  t('CRM activity');
   t('Choose contacts that are involved in this project');
   t('Contacts');
   t('Customer');
