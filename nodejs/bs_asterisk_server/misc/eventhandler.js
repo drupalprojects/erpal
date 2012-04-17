@@ -1,7 +1,7 @@
 /**
  * Generic event handler module.
  * 
- * @author 		Marc Sven Kleinböhl
+ * @author 		Marc Sven Kleinböhl, Karsten Planz
  * @copyright 	2012 (c) Bright Solutions GmbH
  * 				All rights reserved.
  */
@@ -37,11 +37,10 @@ EventHandler.prototype.addListener = function (listenerObject, bypassedParams) {
 EventHandler.prototype.invokeListeners = function (method, eventParam) {
 	
 	for (listener in this.listeners) {
- 
  		eval (
  				'try {this.listeners[listener].listenerObject.' + 
  				method + 
- 				'(eventParam, listener.bypassedParams);}' + 
+ 				'(eventParam);}' + 
  				'catch (e){console.log("Listener has not implemented required method.");}'
  	    );
 	}

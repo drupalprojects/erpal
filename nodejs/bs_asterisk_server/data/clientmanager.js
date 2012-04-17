@@ -1,7 +1,7 @@
 /**
  * Provides a client manager.
  * 
- * @author 		Marc Sven KleinbÃ¶hl
+ * @author 		Marc Sven Kleinböhl, Karsten Planz
  * @copyright 	2012 (c) Bright Solutions GmbH
  * 				All rights reserved.
  */
@@ -14,7 +14,12 @@ function ClientManager () {
 }
 
 ClientManager.prototype.register = function (phoneNumbers, ip) {
-	
+
+  // debugging
+  console.log("register");
+  console.log(phoneNumbers + ", " + ip);
+
+  
 	this.clientEntities[ip] = {
 			'phoneNumbers': 		JSON.parse (phoneNumbers),
 			'socketClientObject': 	this.socketClients[ip],
@@ -31,8 +36,8 @@ ClientManager.prototype.register = function (phoneNumbers, ip) {
  */
 ClientManager.prototype.getSocketClientByPhoneNumber = function (phoneNumber) {
 	
+  
 	for (clientIndex in this.clientEntities) {
-		
 		for (phoneNumberIndex in this.clientEntities[clientIndex].phoneNumbers) {
 			if (phoneNumber == this.clientEntities[clientIndex].phoneNumbers[phoneNumberIndex]) {
 				return this.clientEntities[clientIndex].socketClientObject;
@@ -52,7 +57,7 @@ ClientManager.prototype.removeClientBySocketClientObject = function (socketClien
 	for (clientIndex in this.clientEntities) {
 		
 		if (socketClientObject == this.clientEntities[clientIndex].socketClientObject) {
-			this.clientEntities[clientIndex].slice(clientIndex, 1);
+			this.clientEntities.slice(clientIndex, 1);
 		}
 	}
 	
@@ -65,9 +70,7 @@ ClientManager.prototype.removeClientBySocketClientObject = function (socketClien
  * @param object socketClientObject	The socket client object whose client data you want to save.
  */
 ClientManager.prototype.saveSocketClientObject = function (ip, socketClientObject) {
-	
 	this.socketClients[ip] = socketClientObject;
-	
 	return;
 };
 

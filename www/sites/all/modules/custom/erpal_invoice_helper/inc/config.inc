@@ -32,6 +32,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
 
   $form = array();
   
+  //@todo: Mehrwerteuersätze, zahlungsziele etc
   module_load_include('inc', 'erpal_basic_helper', 'inc/config');
   $company_nid = _erpal_basic_helper_get_own_company_nid(false);
   $company_string = l(t('Please select your company!'), 'admin/erpal/basic');
@@ -100,7 +101,6 @@ function erpal_invoice_helper_config_form($form, &$form_state){
       '#markup' => '<p>' . t('Enable the <a href="@drupal-token">Token module</a> to view the available token browser.', array('@drupal-token' => 'http://drupal.org/project/token')) . '</p>',
     );
   }
-  
   
   
   

@@ -47,7 +47,7 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
   $total_excl_vat = 0;
   $total_incl_vat = 0;
 
-  //@todo prüfen ob hier evtl rechenfehler z.B. durch Rundung entstehen und in tests aufnehmen
+  //@todo prÃ¼fen ob hier evtl rechenfehler z.B. durch Rundung entstehen und in tests aufnehmen
   foreach ($line_items as $line_item) {
     if (!$line_item['target_id'])
       continue;

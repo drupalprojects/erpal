@@ -1,0 +1,23 @@
+.erpal-asterisk-notify {
+  position:fixed;
+  right:0;
+  bottom:0;
+  background:#eeef99;
+  border:2px solid white;
+  width:400px;
+  padding:0 20px;
+}
+
+.erpal-asterisk-notify .status-buttons {
+  margin:15px;
+}
+
+.erpal-asterisk-notify .status-buttons a.button.available {
+  color:green;
+  font-weight:bold;
+}
+
+.erpal-asterisk-notify .status-buttons a.button.not-available {
+  color:red;
+  font-weight:bold;
+}
