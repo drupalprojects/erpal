@@ -395,8 +395,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   //prepare all Data in an array
   //get the address field collection of the company
   
- // hier weiter aber dafür brauchen wir noch ein Feld an der invoice, nämlich "company" und "company_address" welches
- // festhällt wer die Rechnung geschrieben hat (also die "eigene" company).
+ // hier weiter aber dafÃ¼r brauchen wir noch ein Feld an der invoice, nÃ¤mlich "company" und "company_address" welches
+ // festhÃ¤llt wer die Rechnung geschrieben hat (also die "eigene" company).
 
   $address_entity = _erpal_basic_helper_get_my_address_entity($company);
   
