@@ -32,9 +32,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
 
   $form = array();
   
-<<<<<<< HEAD
   //@todo: Mehrwerteuersätze, zahlungsziele etc
-=======
   module_load_include('inc', 'erpal_basic_helper', 'inc/config');
   $company_nid = _erpal_basic_helper_get_own_company_nid(false);
   $company_string = l(t('Please select your company!'), 'admin/erpal/basic');
@@ -105,8 +103,6 @@ function erpal_invoice_helper_config_form($form, &$form_state){
   }
   
   
-  
->>>>>>> c4ee519b37952bec474ed1951c3a504eb6a2593f
   
   $form['submit'] = array(
     '#value' => t('save'),
