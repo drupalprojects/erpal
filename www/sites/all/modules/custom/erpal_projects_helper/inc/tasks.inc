@@ -45,3 +45,18 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
  
   return $task_nodes;
 }
+
+/**
+* returns the activity which is related to a task over its related project
+*/
+function _erpal_projects_helper_get_activity_by_task($task_node) {
+  $activity_node = false;
+  if (isset($task_node->field_project_ref[LANGUAGE_NONE][0])) {
+    $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['nid'];
+    $project_node = node_load($project_nid);
+  }
+  
+  $activity_node = _erpal_projects_helper_get_activity_by_project($project_node);
+  
+  return $activity_node;
+}

@@ -348,11 +348,16 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //create the invoice with the  billables      
   $invoice = new stdClass();
   $invoice->type = 'erpal_invoice';
+  $invoice->is_new = true;
   node_object_prepare($invoice);
   
   $invoice->language = LANGUAGE_NONE;
   //set some other invoice specific fields
 
+  //set order numbers
+  $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'] = isset($params['order_numbers_intern']) ? $params['order_numbers_intern'] : '';
+  $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'] = isset($params['order_numbers_extern']) ? $params['order_numbers_extern'] : '';
+  
   //set date and credit information
   $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'] = isset($params['invoice_date']) ? $params['invoice_date'] : time();  //the current date
   $invoice->field_credit_period[LANGUAGE_NONE][0]['value'] = isset($params['credit_period']) ? $params['credit_period'] : 14;
@@ -385,7 +390,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   foreach ($billable_ids as $billable_id) {
     $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $billable_id;
   }
- 
+ dpm($invoice);
   node_save($invoice);
   
   $status['invoice'] = $invoice;

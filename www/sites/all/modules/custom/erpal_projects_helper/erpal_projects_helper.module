@@ -94,3 +94,14 @@ function _erpal_projects_helper_create_project_link($q_arg = false, $query_arr =
     )
   );
 }
+
+/**
+* returns the activity to a given node if the node is a erpal_task or erpal_project
+*/
+function _erpal_projects_helper_get_activity($node) {
+  if ($node->type == 'erpal_task')
+    return _erpal_projects_helper_get_activity_by_task($node);
+  if ($node->type == 'erpal_project')
+    return _erpal_projects_helper_get_activity_by_project($node);
+  
+}

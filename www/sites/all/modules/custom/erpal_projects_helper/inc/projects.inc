@@ -49,3 +49,17 @@ function _erpal_projects_helper_get_projects_with_assigned_tasks($task_states=ar
 
   return $projects;
 }
+
+/**
+* Returns the activity referenced by the project
+*/
+function _erpal_projects_helper_get_activity_by_project($project_node) {
+  $activity_node = false;
+  if (isset($project_node->field_activity_ref[LANGUAGE_NONE][0])) {
+    $activity_nid = $project_node->field_activity_ref[LANGUAGE_NONE][0]['nid'];
+    $activity_node = node_load($activity_nid);
+  }
+  
+  return $activity_node;
+  
+}

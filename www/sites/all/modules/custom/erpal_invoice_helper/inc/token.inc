@@ -9,6 +9,11 @@ function erpal_invoice_helper_token_info() {
     'name' => t("Erpal invoice token"),
     'description' => t("Tokens for invoice notes."),
   );
+  
+  $types['erpal_invoice_referenced_data'] = array(
+    'name' => t("Erpal invoice CRM data"),
+    'description' => t("Tokens for invoice from crm activities."),
+  );
 
   $invoice['total'] = array(
     'name' => t("Total price"),
@@ -31,10 +36,23 @@ function erpal_invoice_helper_token_info() {
     'description' => t("The currency of the invoice."),
   );
   
+  //if module erpal project basic is active, add tokens for 
+  if (module_exists('feature_erpal_project_basic')) {
+    $referenced_data['order_numbers_intern'] = array(
+      'name' => t("Internal order numbers"),
+      'description' => t("Your internal numbers of orders related to the invoice items"),
+    );
+    $referenced_data['order_numbers_extern'] = array(
+      'name' => t("External order numbers"),
+      'description' => t("Your external numbers of orders related to the invoice items"),
+    );
+  }
+  
   return array(
     'types' => $types,
     'tokens' => array(
       'erpal_invoice' => $invoice,
+      'erpal_invoice_referenced_data' => $referenced_data,
     ),
   );
 }
@@ -66,6 +84,21 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
         case 'currency':
           $replacements[$original] = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
         break;
+        
+      }
+    }
+  } elseif ($type == 'erpal_invoice_referenced_data') {
+    $invoice = $data['erpal_invoice_referenced_data'];
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'order_numbers_intern':
+          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);                                  
+          $replacements[$original] = implode(',', $order_numbers['intern']);
+          break;
+        case 'order_numbers_extern':
+          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);          
+          $replacements[$original] = implode(',', $order_numbers['extern']);        
+          break;
       }
     }
   }
