@@ -33,40 +33,40 @@ function erpal_print_theme() {
 function erpal_print_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_basic_helper_config_form') {
     _erpal_print_inject_basic_config_form($form);
-  }    dpm($form);
+  }    
 }
 
 function _erpal_print_inject_basic_config_form(&$form) {
   //company logo
+  $form['#attributes']['enctype'] = 'multipart/form-data';
+  $form['#submit'][] = '_erpal_print_inject_basic_config_form_submit';
   
+  $allowed_extensions = _erpal_print_logo_valid_extensions();
+
+  $document_fid = variable_get('my_document_logo', false);
+  $file = false;
+  if ($document_fid) {
+    $file = file_load($document_fid);
+  } 
   $form['company_logo_document'] = array(
     '#type' => 'managed_file',
     '#weight' => -10,  //at the top of the page
     '#title' => t('Company logo for documents'),
-    '#description' => t('Upload your logo that will be used in documents'),
-    '#upload_validators' => array('file_validate_extensions' => array('jpg', 'jpeg', 'gif')),
+    '#description' => t('Upload your logo that will be used in documents. Allowed file extensions: !extensions', array('!extensions' => implode(',', $allowed_extensions))),
+    '#upload_validators' => array('file_validate_extensions' => array(implode(' ', $allowed_extensions))),
     '#upload_location' => _erpal_print_logo_documents_upload_dir(),
-  );
-  
+    '#default_value' => $file ? $file->fid : false,
+  ); 
  
 }
 
 /**
-* Validate the element to upload a file for documents
+* Submit handler for document logo file injection
 */
-function _erpal_print_company_logo_document_validate($arg1, $arg2) {
-  dpm($arg1);  //@todo das klappt aber die Datei ist nicht zu sehen in den values
-  dpm($arg2);
-  dpm($_FILES);
-}
-
-/**
-* Submit handler for uploading a file for documents
-*/
-function _erpal_print_company_logo_document_submit($element, $form_state) {
-  dpm($element);
-  dpm($format_state);
-  dpm($_FILES);
+function _erpal_print_inject_basic_config_form_submit($form, $form_state)  {
+  $values = $form_state['values'];
+  $document_fid = $values['company_logo_document'];
+  variable_set('my_document_logo', $document_fid);  //save phone number
 }
  
 /**
@@ -161,7 +161,9 @@ function erpal_print_logo_path() {
   //@TODO make this dynamically!
   $doc_root = $_SERVER['DOCUMENT_ROOT'];  
 
-  return "/sites/default/files/logo.jpg";
+  $logo_fid = variable_get('my_document_logo', false);
+  $file = file_load($logo_fid);
+  return file_create_url($file->uri);
 }
 
 /**
@@ -175,5 +177,5 @@ function _erpal_print_logo_documents_upload_dir() {
 * returns the valid file extensions to upload a logo
 */
 function _erpal_print_logo_valid_extensions() {
-  return array('jpg', 'png', 'jpeg');
+  return array('png', 'jpg', 'jpeg');
 }
