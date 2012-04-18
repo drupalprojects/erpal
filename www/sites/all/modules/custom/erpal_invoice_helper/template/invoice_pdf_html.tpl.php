@@ -19,14 +19,14 @@
 //Just an example of the notes, because there wasn't any
 /*
 $notes = "
-  Bitte überweisen Sie den Gesamtbetrag bis zum dd.mm.yyyy auf unser Konto.
+  Bitte Ã¼berweisen Sie den Gesamtbetrag bis zum dd.mm.yyyy auf unser Konto.
 
 Der Gesamtbetrag setzt sich wie folgt zusammen:
-€ x.xxx,xx MwsT zu x% auf € yx.xxx,xx netto.
+â‚¬ x.xxx,xx MwsT zu x% auf â‚¬ yx.xxx,xx netto.
 
 
 
-Vielen Dank für Ihren Auftrag.
+Vielen Dank fÃ¼r Ihren Auftrag.
 
 Max Mustermann
   ";
@@ -73,18 +73,26 @@ $notes = nl2br($notes);*/
     text-align:right;
   }
 </style>
-
+<!--
+"Ihre Bestellnummer: echo $order_numbers_extern"
+"Unsere Auftragsnummer: echo $order_numbers_intern"
+-->
 <table>
   <tr><td style="height:1.0cm;">&nbsp;</td></tr>
 </table>
-<table id="anschrifttabelle">
+<table id="anschrifttabelle" style="width:21cm">
   <tr>
-    <td>
+    <td style="width:10cm">
       <div id="absender"><?php print implode(" - ", $customer); ?></div>
       <div id="anschrift">
 <?php print implode("<br />", $customer); ?>
       </div>
-    </td>      
+    </td>  
+    <td style="width:6cm"></td>
+    <td style="width:5cm">
+      <div id="order_numbers_extern">Ihre Bestellnummer: <?php print $order_numbers_extern;?></div>
+      <div id="order_numbers_intern">Ihre Auftragsnummer: <?php print $order_numbers_intern;?></div>
+    </td>
   </tr>
 </table>
 <table>
