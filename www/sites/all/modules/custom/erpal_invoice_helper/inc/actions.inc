@@ -93,6 +93,8 @@ function erpal_invoice_helper_invoice_from_billables_action_submit($form, &$form
     'notes' => isset($values['notes']) ? $values['notes'] : '',
     'skonto_percent' => isset($values['skonto_percent']) ? $values['skonto_percent'] : 0,
     'skonto_period' => isset($values['skonto_period']) ? $values['skonto_period'] : 0,
+    'order_numbers_intern' => isset($values['order_numbers_intern']) ? $values['order_numbers_intern'] : '',
+    'order_numbers_extern' => isset($values['order_numbers_extern']) ? $values['order_numbers_extern'] : '',
   );
   $customer_nid = $values['customer_nid'];
   
@@ -126,6 +128,10 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
     $params['skonto']['discount_percent'] = $context['skonto_percent']; 
   if (isset($context['address_id']))
     $params['address_id'] = $context['address_id'];
+  if (isset($context['order_numbers_intern']))
+    $params['order_numbers_intern'] = $context['order_numbers_intern'];
+  if (isset($context['order_numbers_extern']))
+    $params['order_numbers_extern'] = $context['order_numbers_extern'];
 
  $status = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduce, $params);  
  if (!$status['status']) {
@@ -183,6 +189,42 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
     '#required' => TRUE,
   );
   
+  //add fields for order numbers for intern and extern
+  $form['order_numbers'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Order numbers'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#tree' => false,
+  );
+  
+  $form['order_numbers']['order_numbers_extern'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Order numbers extern'),
+    '#default_value' => '[erpal_invoice_referenced_data:order_numbers_extern]',
+    '#description' => t('Comma separated list of all external order numbers.'),
+  );
+  
+  $form['order_numbers']['order_numbers_intern'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Order numbers intern'),
+    '#default_value' => '[erpal_invoice_referenced_data:order_numbers_intern]',
+    '#description' => t('Comma separated list of all internal order numbers.'),
+  );  
+  
+  //add available tokens to the form
+  //show available Tokens  
+  if (module_exists('token')) {    
+    $form['order_numbers']['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice_referenced_data'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  
+  //credit period
   $form['credit_period'] = array(
     '#type' => 'select',
     '#options' => $allowed_credit_periods,
@@ -191,6 +233,7 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
     '#required' => TRUE,
   );
   
+  //sconto
   $form['skonto'] = array(
     '#type' => 'fieldset',
     '#title' => t('Skonto'),
@@ -221,7 +264,19 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
     '#default_value' => $default_notes,
   );
   
-  //@TODO preview billables (non reduced with hint that they will b reduced) and princing (total, netto, vat rates)
+  //add available tokens to the form
+  //show available Tokens  
+  if (module_exists('token')) {    
+    $form['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  
+  //@TODO preview billables (non reduced with hint that they will be reduced) and princing (total, netto, vat rates)
   
   $form['save_defaults'] = array(
     '#type' => 'checkbox',

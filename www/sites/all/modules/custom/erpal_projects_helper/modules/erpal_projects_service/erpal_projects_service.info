@@ -1,0 +1,16 @@
+core = "7.x"
+description = "ERPAL projects service integrates projects functionallity with services for apps"
+
+name = "erpal_projects_service"
+package = "ERPAL Services"
+php = "5.2.4"
+project = "erpal_projects_service"
+version = "7.x-1.0-dev"
+
+files[] = erpal_projects_service.module
+files[] = inc/project.inc
+files[] = inc/task.inc
+files[] = inc/timetracking.inc
+
+dependencies[] = rest_server
+dependencies[] = feature_erpal_project_basic

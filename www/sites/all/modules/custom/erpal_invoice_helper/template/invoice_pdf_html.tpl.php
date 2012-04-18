@@ -19,14 +19,14 @@
 //Just an example of the notes, because there wasn't any
 /*
 $notes = "
-  Bitte Ã¼berweisen Sie den Gesamtbetrag bis zum dd.mm.yyyy auf unser Konto.
+  Bitte überweisen Sie den Gesamtbetrag bis zum dd.mm.yyyy auf unser Konto.
 
 Der Gesamtbetrag setzt sich wie folgt zusammen:
-â‚¬ x.xxx,xx MwsT zu x% auf â‚¬ yx.xxx,xx netto.
+€ x.xxx,xx MwsT zu x% auf € yx.xxx,xx netto.
 
 
 
-Vielen Dank fÃ¼r Ihren Auftrag.
+Vielen Dank für Ihren Auftrag.
 
 Max Mustermann
   ";
