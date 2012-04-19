@@ -1003,6 +1003,9 @@ function field_collection_field_widget_form(&$form, &$form_state, $field, $insta
         $field_collection_item = $field_state['entity'][$delta];
       }
       else {
+        if(!isset($form_state[$instance['entity_type']])) {
+          unset($items[$delta]);
+        }
         $field_collection_item = field_collection_field_get_entity($items[$delta], $field_name);
 
         // Put our entity in the form state, so FAPI callbacks can access it.
