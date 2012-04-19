@@ -1,0 +1,21 @@
+{
+  "author": "AJ ONeal <coolaj86@gmail.com> (http://coolaj86.info)",
+  "name": "process",
+  "description": "aliases `window` as `global` and adds `process`",
+  "keywords": ["ender", "global", "process"],
+  "version": "0.4.9",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/coolaj86/nodejs-libs-4-browser.git"
+  },
+  "main": "./process.js",
+  "directories": {
+    "lib": "."
+  },
+  "engines": {
+    "node": ">= 0.2.0",
+    "ender": ">= 0.5.0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

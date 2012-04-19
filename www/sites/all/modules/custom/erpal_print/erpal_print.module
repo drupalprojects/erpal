@@ -26,6 +26,48 @@ function erpal_print_theme() {
     ),
   );
 }
+
+/**
+* Implements hook_form_alter to inject options into the basic settings form
+*/
+function erpal_print_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_basic_helper_config_form') {
+    _erpal_print_inject_basic_config_form($form);
+  }    
+}
+
+function _erpal_print_inject_basic_config_form(&$form) {
+  //company logo
+  $form['#attributes']['enctype'] = 'multipart/form-data';
+  $form['#submit'][] = '_erpal_print_inject_basic_config_form_submit';
+  
+  $allowed_extensions = _erpal_print_logo_valid_extensions();
+
+  $document_fid = variable_get('my_document_logo', false);
+  $file = false;
+  if ($document_fid) {
+    $file = file_load($document_fid);
+  } 
+  $form['company_logo_document'] = array(
+    '#type' => 'managed_file',
+    '#weight' => -10,  //at the top of the page
+    '#title' => t('Company logo for documents'),
+    '#description' => t('Upload your logo that will be used in documents. Allowed file extensions: !extensions', array('!extensions' => implode(',', $allowed_extensions))),
+    '#upload_validators' => array('file_validate_extensions' => array(implode(' ', $allowed_extensions))),
+    '#upload_location' => _erpal_print_logo_documents_upload_dir(),
+    '#default_value' => $file ? $file->fid : false,
+  ); 
+ 
+}
+
+/**
+* Submit handler for document logo file injection
+*/
+function _erpal_print_inject_basic_config_form_submit($form, $form_state)  {
+  $values = $form_state['values'];
+  $document_fid = $values['company_logo_document'];
+  variable_set('my_document_logo', $document_fid);  //save phone number
+}
  
 /**
 * Function to render the given html string as PDF
@@ -118,5 +160,22 @@ function _erpal_print_split_pages($html){
 function erpal_print_logo_path() {
   //@TODO make this dynamically!
   $doc_root = $_SERVER['DOCUMENT_ROOT'];  
-  return "/sites/default/files/logo.jpg";
+
+  $logo_fid = variable_get('my_document_logo', false);
+  $file = file_load($logo_fid);
+  return file_create_url($file->uri);
+}
+
+/**
+* Returns the path relative to the files directory where the documents logo will be uploaded
+*/
+function _erpal_print_logo_documents_upload_dir() {
+  return "public://erpal_res";
+}
+
+/**
+* returns the valid file extensions to upload a logo
+*/
+function _erpal_print_logo_valid_extensions() {
+  return array('png', 'jpg', 'jpeg');
 }

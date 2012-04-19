@@ -8,6 +8,7 @@ module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
 
 /**
  * Implements hook_action_info().
@@ -23,79 +24,6 @@ function erpal_invoice_helper_action_info() {
       'aggregate' => TRUE,
     ),
   ); 
-}
-
-/**
- * Implements hook_token_info().
- */
-function erpal_invoice_helper_token_info() {
-  $types['erpal_invoice'] = array(
-    'name' => t("Erpal invoice token"),
-    'description' => t("Tokens for invoice notes."),
-  );
-
-  // Andy Pangus specific tokens.
-  $invoice['total'] = array(
-    'name' => t("Total price"),
-    'description' => t("The total price of the invoice."),
-  );
-  $invoice['credit_period'] = array(
-    'name' => t("Credit period"),
-    'description' => t("The credit period in days for the invoice."),
-  );
-  $invoice['invoice_date'] = array(
-    'name' => t("The invoice date"),
-    'description' => t("The date of the invoice."),
-  );
-  $invoice['payment_date'] = array(
-    'name' => t("The payment date"),
-    'description' => t("The date of the invoice whenit has to be payed."),
-  );
-  $invoice['currency'] = array(
-    'name' => t("The currency"),
-    'description' => t("The currency of the invoice."),
-  );
-  
-  return array(
-    'types' => $types,
-    'tokens' => array(
-      'erpal_invoice' => $invoice,
-    ),
-  );
-}
-
-/**
- * Implements hook_tokens().
- */
-function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), array $options = array()) {
-  global $user;  
-  
-  $replacements = array();
-  
-  if ($type == 'erpal_invoice') {
-    $invoice = $data['erpal_invoice'];
-    foreach ($tokens as $name => $original) {
-      switch ($name) {
-        case 'credit_period':
-          $replacements[$original] = $invoice->field_credit_period[LANGUAGE_NONE][0]['value'];
-        break;
-        case 'total':
-          $replacements[$original] = $invoice->field_invoice_total[LANGUAGE_NONE][0]['value'];
-        break;
-        case 'invoice_date':
-          $replacements[$original] = date('Y-m-d', $invoice->field_invoice_date[LANGUAGE_NONE][0]['value']); //@todo use drupal date_format with a date format without time!
-        break;
-        case 'payment_date':
-          $replacements[$original] = date('Y-m-d', $invoice->field_payment_date[LANGUAGE_NONE][0]['value']); //@todo use drupal date_format with a date format without time!
-        break;
-        case 'currency':
-          $replacements[$original] = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
-        break;
-      }
-    }
-  }
-
-  return $replacements;
 }
 
 /**
@@ -177,10 +105,10 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
     
     //hide automatically calculated fields
-    $form['field_price_no_vat']['#type'] = 'hidden';
-    $form['field_invoice_vat']['#type'] = 'hidden';
-    $form['field_invoice_total']['#type'] = 'hidden';
-    $form['field_payment_date']['#type'] = 'hidden';
+    $form['field_price_no_vat']['#type'] = 'value';
+    $form['field_invoice_vat']['#type'] = 'value';
+    $form['field_invoice_total']['#type'] = 'value';
+    $form['field_payment_date']['#type'] = 'value'; 
     
     //if has no nid copy notes from defaults in admin settings if erpal_invoice
     if (!$form['nid']['#value']) {
@@ -205,9 +133,24 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
         '#markup' => '<p>' . t('Enable the <a href="@drupal-token">Token module</a> to view the available token browser.', array('@drupal-token' => 'http://drupal.org/project/token')) . '</p>',
       );
     }
+    
+    //add token information for order numbers
+    if (module_exists('token')) {
+      $form['order_numbers_token_tree'] = array(
+        '#theme' => 'token_tree',   
+        '#token_types' => array('erpal_invoice_referenced_data'),
+        '#global_types' => FALSE,
+        '#click_insert' => TRUE,
+        '#recursion_limit' => 1,
+        '#weight' => 10,
+      );
+      
+      $form['#group_children']['order_numbers_token_tree'] = 'group_order_numbers';
+    }
   }
   
 }
+
 
 /**
 * Submit handler after the confirm delete of invoice dialog is 
@@ -307,11 +250,13 @@ function _erpal_invoice_helper_caclulate_invoice($invoice) {
 * Implements hook_node_update
 */
 function erpal_invoice_helper_node_update($node) {
-  //it must be an invoice node
+ 
+ //it must be an invoice node
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice')
     _erpal_invoice_helper_caclulate_invoice($node);
+
 }
 
 /**
@@ -320,9 +265,13 @@ function erpal_invoice_helper_node_update($node) {
 function erpal_invoice_helper_node_presave($node) {
   //it must be an invoice node
   $type = node_type_get_type($node);
-
+  
   if ($type->type == 'erpal_invoice') {
-    _erpal_invoice_helper_set_notes($node);
+    if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throus an exception on node save if node is new!
+      _erpal_invoice_helper_set_notes($node);
+      _erpal_invoice_helper_caclulate_invoice($node);
+      _erpal_invoice_helper_replace_order_number_tokens($node);
+    }
   }
 } 
 
@@ -332,10 +281,12 @@ function erpal_invoice_helper_node_presave($node) {
 */
 function erpal_invoice_helper_node_insert($node) {
   //it must be an invoice node
+  
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice')
     _erpal_invoice_helper_caclulate_invoice($node);
+  
 }
 
 /**
@@ -457,6 +408,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $total_excl_vat = $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'];
   $payment_date = $invoice->field_payment_date[LANGUAGE_NONE][0]['value'];
   $currency = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
+  $order_numbers_intern = $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'];
+  $order_numbers_extern = $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'];
   
   $notes = '';
   if (isset($invoice->field_note[LANGUAGE_NONE]))
@@ -496,6 +449,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['billables'] = $billables;
   $variables['total'] = $total;
   $variables['currency'] = $currency;
+  $variables['order_numbers_intern'] = $order_numbers_intern;
+  $variables['order_numbers_extern'] = $order_numbers_extern;
   $variables['total_excl_vat'] = $total_excl_vat;
   $variables['total_vat'] = $total_vats;
   $variables['payment_date'] = format_date($payment_date, 'short');
@@ -568,4 +523,65 @@ function _erpal_invoice_helper_replace_all_tokens($invoice, $op) {
       }
     }
   }
+}
+
+/**
+* Return all Order Numbers to an invoice. Ordernumbers are fetched by following reference chain
+* billable->subject(task)->project->crm_activity->field_order_number_intern/extern
+*/
+function _erpal_invoice_helper_get_order_numbers($invoice_node) {
+  $numbers = array(
+    'intern' => array(),
+    'extern' => array(),
+  );
+
+  if (module_exists('feature_erpal_project_basic')) {
+    $line_items = $invoice_node->field_billables_ref[LANGUAGE_NONE];
+    foreach ($line_items as $line_item) {
+      if (!$line_item['target_id'])
+        continue;
+        
+      $billable = billable_load($line_item['target_id']);
+      $subject_nid = $billable->subject_nid;
+      $subject_node = node_load($subject_nid);
+      
+      if ($subject_node->type == 'erpal_task' || $subject_node->type == 'erpal_project') {
+        $activity_node = _erpal_projects_helper_get_activity($subject_node);        
+        if ($activity_node) {
+          //get the order numbers intern and extern and add it to the $numbers array
+          if (isset($activity_node->field_order_number_intern[LANGUAGE_NONE][0]['value'])) {
+            $order_number_intern = $activity_node->field_order_number_intern[LANGUAGE_NONE][0]['value'];
+            $numbers['intern'][] = $order_number_intern;
+          }
+          
+          if (isset($activity_node->field_order_number_extern[LANGUAGE_NONE][0]['value'])) {
+            $order_number_extern = $activity_node->field_order_number_extern[LANGUAGE_NONE][0]['value'];
+            $numbers['extern'][] = $order_number_extern;
+          }
+        }
+      }
+
+    }
+  }
+
+  return $numbers;
+}
+
+/**
+* Replaces order number tokens in order number fields.
+* @param object $invoice_node the node where the order number fields are replaced
+*/
+function _erpal_invoice_helper_replace_order_number_tokens($invoice_node) {
+  
+  $token_data = array('erpal_invoice_referenced_data' => $invoice_node);
+  if (isset($invoice_node->field_order_number_intern[LANGUAGE_NONE][0])) {
+    $order_numbers_intern = $invoice_node->field_order_number_intern[LANGUAGE_NONE][0]['value'];
+    $invoice_node->field_order_number_intern[LANGUAGE_NONE][0]['value'] = token_replace($order_numbers_intern, $token_data);
+  }
+  
+  if (isset($invoice_node->field_order_number_extern[LANGUAGE_NONE][0])) {
+    $order_numbers_extern = $invoice_node->field_order_number_extern[LANGUAGE_NONE][0]['value'];
+    $invoice_node->field_order_number_extern[LANGUAGE_NONE][0]['value'] = token_replace($order_numbers_extern, $token_data);
+  }
+   
 }

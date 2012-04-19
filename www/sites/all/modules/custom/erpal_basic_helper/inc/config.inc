@@ -42,7 +42,8 @@ function erpal_basic_helper_config_form($form, &$form_state){
   
   $new_contact_link = _erpal_basic_helper_create_contact_link(false, array(), t('create a new contact'));
   
-  $submitted_company = $form_state['values']['my_company'];
+  $submitted_company = 0;
+  $submitted_company = isset($form_state['values']['my_company']) ? $form_state['values']['my_company'] : 0;
   if ($submitted_company)
     $company_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($submitted_company);
   else
@@ -76,8 +77,8 @@ function erpal_basic_helper_config_form($form, &$form_state){
   if ($company_nid) {
 
     //select the main address that is relevant for all kind of sender information etc.
-    $my_address_entity = _erpal_basic_helper_get_my_address_entity();
-
+    $my_address_entity = _erpal_basic_helper_get_my_address_entity();    
+    
     $form['ajax_wrapper'] = array(
       '#prefix' => '<div id="basic_address_wrapper">',
       '#suffix' => '</div>',
@@ -219,3 +220,4 @@ function _erpal_basic_helper_config(){
   
   return "ERPAL CONFIG";
 }
+

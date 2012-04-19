@@ -3,7 +3,11 @@
  * @file
  * Code for the erpal_projects_helper module.
  */
-require_once 'inc/timetracking.inc';  //@todo should be in hook_init?
+
+//@todo should be in hook_init?
+module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
+module_load_include('inc', 'erpal_projects_helper', 'inc/tasks');
+module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
  
 /**
 * Implements hook_menu
@@ -89,4 +93,15 @@ function _erpal_projects_helper_create_project_link($q_arg = false, $query_arr =
         'query' => $query_arr,
     )
   );
+}
+
+/**
+* returns the activity to a given node if the node is a erpal_task or erpal_project
+*/
+function _erpal_projects_helper_get_activity($node) {
+  if ($node->type == 'erpal_task')
+    return _erpal_projects_helper_get_activity_by_task($node);
+  if ($node->type == 'erpal_project')
+    return _erpal_projects_helper_get_activity_by_project($node);
+  
 }

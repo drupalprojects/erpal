@@ -1,7 +1,7 @@
 /**
  * Bright Solutions asterisk server.
  * 
- * @author 		Marc Sven Kleinböhl
+ * @author 		Marc Sven Kleinböhl, Karsten Planz
  * @copyright 	2012 (c) Bright Solutions GmbH
  * 				All rights reserved.
  */

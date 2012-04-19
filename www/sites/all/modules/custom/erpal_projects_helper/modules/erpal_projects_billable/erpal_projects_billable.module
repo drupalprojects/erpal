@@ -451,12 +451,15 @@ function _erpal_billable_is_billable($billable_information, $node, $type) {
   $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
   $customer_node = $billable_information['customer'];
 
+  $status = '';
   if ($type == 'erpal_task' || $type == 'erpal_project') {
-    if ($type == 'erpal_task')
-      $status = $node->field_task_status[LANGUAGE_NONE][0]['value'];  
-    elseif ($type == 'erpal_project')
-      $status = $node->field_project_status[LANGUAGE_NONE][0]['value'];
-
+    if ($type == 'erpal_task') {
+      if (isset($node->field_task_status[LANGUAGE_NONE][0]))
+        $status = $node->field_task_status[LANGUAGE_NONE][0]['value'];  
+    } elseif ($type == 'erpal_project') {
+      if (isset($node->field_project_status[LANGUAGE_NONE][0]))
+        $status = $node->field_project_status[LANGUAGE_NONE][0]['value'];
+    }
     return $price_mode == 'fixed_price' && $price && $customer_node && $status == 'completed';
   }
   elseif ($type == 'erpal_timetracking') {

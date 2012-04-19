@@ -1,7 +1,7 @@
 /**
  * HTTPPerDrupal server module.
  * 
- * @author 		Marc Sven Kleinböhl
+ * @author 		Marc Sven Kleinböhl, Karsten Planz
  * @copyright 	2012 (c) Bright Solutions GmbH
  * 				All rights reserved.
  */
@@ -63,20 +63,23 @@ HTTPPerDrupal.prototype.handleIngoingData = function (request, response) {
 	var postData = "";
 	var self	 = this;
 	
-    request.on('data', function(chunk) {
-        postData += chunk.toString();
-    });
+  request.on('data', function(chunk) {
+    postData += chunk.toString();
+  });
+  
+  request.on('end', function(chunk) {
+    var post = self.queryString.parse (postData);	 
+    self.eventHandler.invokeListeners('sendData',  post);
     
-    request.on('end', function(chunk) {
-
-    	var post = self.queryString.parse (postData);	 
-
-		self.eventHandler.invokeListeners('sendData',  post);
-		
-		response.writeHead ('Content-Type: application/json');
-        response.write ('{"status": ok}'); // Pro forma
-        response.end ();
+    response.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin' : '*'
     });
+
+    var response_ok = { status : "ok" };
+    response.write (JSON.stringify(response_ok)); // Pro forma
+    response.end ();
+  });
 	
 	return;
 };
@@ -91,20 +94,24 @@ HTTPPerDrupal.prototype.handleClientRegistering = function (request, response) {
 	var postData = "";
 	var self	 = this;
 	
-    request.on('data', function(chunk) {
-        postData += chunk.toString();
-    });
-    
-    request.on('end', function(chunk) {
+  request.on('data', function(chunk) {
+    postData += chunk.toString();
+  });
+  
+  request.on('end', function(chunk) {
 
-    	var post = self.queryString.parse (postData);	 
+    var post = self.queryString.parse (postData);	 
+    self.eventHandler.invokeListeners('registerClientData', post);
 
-		self.eventHandler.invokeListeners('registerClientData', post['phone_numbers'], post['ip']);
-		
-		response.writeHead ('Content-Type: application/json');
-        response.write ('{"status": ok}'); // Pro forma
-        response.end ();
+    response.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin' : '*'
     });
+
+    var response_ok = { status : "ok" };
+    response.write (JSON.stringify(response_ok)); // Pro forma
+    response.end ();
+  });
 	
 	return;
 };
