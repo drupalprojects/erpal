@@ -510,14 +510,17 @@ function erpal_invoice_helper_field_invoice_address_id_allowed_values($field) {
 function _erpal_invoice_helper_replace_all_tokens($invoice, $op) {
   //replace tokens
   if ($op == 'view') {
-    if (isset($invoice->content['field_note']))
+    if (isset($invoice->content['field_note'])) {
       foreach ($invoice->content['field_note'] as $delta=>$note) {
         if (is_numeric($delta) && intval($delta)."" == $delta."")
           $invoice->content['field_note'][$delta]['#markup'] = token_replace($note['#markup'], array('erpal_invoice' => $invoice));
       }
+    }
   } elseif ($op == 'pdf') {
-    foreach ($invoice->field_note[LANGUAGE_NONE] as $delta=>$note) {
-      $invoice->field_note[LANGUAGE_NONE][$delta]['value'] = token_replace($note['value'], array('erpal_invoice' => $invoice));
+    if (isset($invoice->field_note[LANGUAGE_NONE])) {
+      foreach ($invoice->field_note[LANGUAGE_NONE] as $delta=>$note) {
+        $invoice->field_note[LANGUAGE_NONE][$delta]['value'] = token_replace($note['value'], array('erpal_invoice' => $invoice));
+      }
     }
   }
 }
