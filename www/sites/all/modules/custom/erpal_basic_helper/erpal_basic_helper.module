@@ -7,6 +7,13 @@
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
  
 /**
+* Implements hok_init
+*/ 
+function erpal_basic_helper_init() {
+  _erpal_basic_helper_warnings();
+}
+ 
+/**
 * Implements hook_menu
 */ 
 function erpal_basic_helper_menu(){
@@ -313,4 +320,14 @@ function _erpal_basic_helper_return_my_value($field_name) {
 function erpal_debug() {
   $debug = variable_get('erpal_debug', 0);
   return $debug;
+}
+
+/**
+* Shows sytem warnings on if config variables are not set
+*/
+function _erpal_basic_helper_warnings() {
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  
+  if (!$my_company_nid)
+    drupal_set_message(t('Please complete !config_link to make ERPAL work.', array('!config_link' => l(t('config settings'), 'admin/erpal/basic'))), 'warning');
 }
