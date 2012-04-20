@@ -1023,6 +1023,7 @@ function feature_erpal_basic_field_default_fields() {
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'text',
@@ -1056,7 +1057,7 @@ function feature_erpal_basic_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_company_name',
       'label' => 'Company Name',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
