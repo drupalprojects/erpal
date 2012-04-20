@@ -126,6 +126,12 @@ function billable_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'contractor_nid' => array(
+        'description' => 'Reference to an entity for the contractor.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'data' => array(
         'type' => 'blob',
         'not null' => FALSE,
@@ -149,5 +155,12 @@ function billable_schema() {
 * Implements hook_update to add customer field to billable table
 */
 function billable_update_7001(&$sandbox) {
-    db_add_field('billable', 'customer_nid', array('type' => 'int', 'not null' => TRUE, 'description' => 'Reference to an entity for the customer.'));
+  //db_add_field('billable', 'customer_nid', array('type' => 'int', 'not null' => TRUE, 'description' => 'Reference to an entity for the customer.'));
+}
+
+/**
+* Implements hook_update to add contractor field to billable table
+*/
+function billable_update_7002(&$sandbox) {
+  db_add_field('billable', 'contractor_nid', array('type' => 'int', 'not null' => TRUE, 'description' => 'Reference to an entity for the contractor.'));
 }

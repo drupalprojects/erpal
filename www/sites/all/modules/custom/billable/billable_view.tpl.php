@@ -1,6 +1,8 @@
 <div class="billable_field" id="billable_date_delivery">Delivery date: <?php echo date(_billable_get_date_format(), $billable->date_delivery) ?></div>
+<?php $contractor = node_load($billable->contractor_nid); ?>
+<div class="billable_field" id="billable_contractor">Contractor: <a href="/node/<?php echo $contractor->nid; ?>"><?php echo $contractor->title; ?></a></div>
 <?php $customer = node_load($billable->customer_nid); ?>
-<div class="billable_field" id="billable_cutsomer">Customer: <a href="/node/<?php echo $customer->nid; ?>"><?php echo $customer->title; ?></a></div>
+<div class="billable_field" id="billable_customer">Customer: <a href="/node/<?php echo $customer->nid; ?>"><?php echo $customer->title; ?></a></div>
 <?php $currency = $billable->currency; ?> 
 <div class="billable_field" id="billable_single_price">Single Price: <?php echo $billable->single_price; ?>&nbsp;<?php echo $billable->currency; ?></div>
 <div class="billable_field" id="billable_vat_rate">VAT rate: <?php echo $billable->vat_rate; ?>%</div>
