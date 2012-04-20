@@ -115,23 +115,39 @@
 </node>
 <node CREATED="1334760824258" ID="ID_420839048" MODIFIED="1334869248338" TEXT="behandeln wie f&#xfc;r forderungen">
 <node CREATED="1334760833242" ID="ID_1647696882" MODIFIED="1334760842746" TEXT="l&#xf6;schen, anpassen etc."/>
+<node CREATED="1334904669205" ID="ID_1016518786" MODIFIED="1334904675272" TEXT="reduce funktion anpassen"/>
+<node CREATED="1334904762711" ID="ID_473461154" MODIFIED="1334904766186" TEXT="tests anpassen"/>
 </node>
-<node CREATED="1334760848073" ID="ID_1217035326" MODIFIED="1334761151459" TEXT="neues Feld contractor">
-<node CREATED="1334760862433" ID="ID_725374080" MODIFIED="1334760870504" TEXT="wie customer nur f&#xfc;r lieferant"/>
-<node CREATED="1334761140357" ID="ID_1339650622" MODIFIED="1334761146627" TEXT="referenziert erpal_contact"/>
+<node CREATED="1334760848073" FOLDED="true" ID="ID_1217035326" MODIFIED="1334907304401" TEXT="neues Feld contractor">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1334760862433" ID="ID_725374080" MODIFIED="1334907302716" TEXT="wie customer nur f&#xfc;r lieferant">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1334761140357" ID="ID_1339650622" MODIFIED="1334907300015" TEXT="referenziert erpal_contact">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1334905816290" ID="ID_1508433282" MODIFIED="1334907288609" TEXT="wenn leer, eigene Firma einf&#xfc;gen">
+<icon BUILTIN="button_ok"/>
+</node>
 </node>
 </node>
 <node CREATED="1334758880113" ID="ID_1639483521" MODIFIED="1334758886083" POSITION="right" TEXT="invoice">
-<node CREATED="1334761126275" ID="ID_192387088" MODIFIED="1334761151459" TEXT="field contractor">
+<node CREATED="1334761126275" FOLDED="true" ID="ID_192387088" MODIFIED="1334907306957" TEXT="field contractor">
 <arrowlink DESTINATION="ID_1217035326" ENDARROW="Default" ENDINCLINATION="53;0;" ID="Arrow_ID_517463090" STARTARROW="None" STARTINCLINATION="53;0;"/>
-<node CREATED="1334869316856" ID="ID_1619581643" MODIFIED="1334869326177" TEXT="wenn leer, eigene Firma einf&#xfc;gen"/>
+<icon BUILTIN="button_ok"/>
+<node CREATED="1334869316856" ID="ID_1619581643" MODIFIED="1334907294797" TEXT="wenn leer, eigene Firma einf&#xfc;gen">
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1334761157982" FOLDED="true" ID="ID_57765662" MODIFIED="1334869293386" TEXT="gescannte Rechnung hintelegen">
+<node CREATED="1334904230255" ID="ID_1480705721" MODIFIED="1334904238341" TEXT="feld einf&#xfc;gen + in feature">
+<icon BUILTIN="button_ok"/>
+</node>
+</node>
+<node CREATED="1334761157982" FOLDED="true" ID="ID_57765662" MODIFIED="1334903889473" TEXT="gescannte Rechnung hintelegen">
 <node CREATED="1334761192090" ID="ID_589448888" MODIFIED="1334761207448" TEXT="pdf generieren nicht m&#xf6;glich, wenn contractor != eigene Firma"/>
 <node CREATED="1334761215939" ID="ID_1895080158" MODIFIED="1334761227541" TEXT="wenn gel&#xf6;scht, billables unbiled setzen wie bei Forderungen"/>
 </node>
 <node CREATED="1334869294197" ID="ID_1635968424" MODIFIED="1334869301212" TEXT="Validierung">
-<node CREATED="1334869301213" ID="ID_767185977" MODIFIED="1334869311130" TEXT="zus&#xe4;tzlich muss contractor gleich sein"/>
+<node CREATED="1334869301213" ID="ID_767185977" MODIFIED="1334903882620" TEXT="zus&#xe4;tzlich muss contractor gleich sein f&#xfc;r rechnungssgtellung von billables"/>
 </node>
 </node>
 <node CREATED="1334759265682" ID="ID_898064015" MODIFIED="1334760812360" POSITION="right" TEXT="F&#xe4;lle">
@@ -153,7 +169,9 @@
 </node>
 </node>
 <node CREATED="1334869425974" ID="ID_568999453" MODIFIED="1334869440229" TEXT="ben&#xf6;tigt von">
-<node CREATED="1334869440231" ID="ID_990534256" MODIFIED="1334869445656" TEXT="erpal_projects"/>
+<node CREATED="1334869440231" ID="ID_990534256" MODIFIED="1334903843626" TEXT="erpal_projects">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1334869445871" ID="ID_867507004" MODIFIED="1334869450057" TEXT="mitarbeiterverwaltung"/>
 </node>
 </node>
