@@ -1,6 +1,7 @@
 <?php
 /**
  * @file
+ * Code for the feature_erpal_profile feature.
  */
 
-// Drupal needs this blank file.
+include_once('feature_erpal_profile.features.inc');
