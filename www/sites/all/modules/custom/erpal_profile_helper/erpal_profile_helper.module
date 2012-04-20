@@ -35,6 +35,7 @@ function _erpal_profile_helper_contract_validate_all_set($profile_values) {
     $entity = $contract['entity']; 
     if (is_object($entity)) {
       //if valid since is set, member type must be set, too
+      $price_needed = false;
       if (isset($entity->field_valid_since[LANGUAGE_NONE][0])) {
         $member_type = false;
         if (isset($entity->field_member_type[LANGUAGE_NONE][0])) {
@@ -44,6 +45,27 @@ function _erpal_profile_helper_contract_validate_all_set($profile_values) {
           form_set_error('field_member_type]['.LANGUAGE_NONE.'][0][value', t('Please enter member type field if field valid since has a value'));
         
       } 
+      
+      //if member type is set, valid since be set, too
+      if (isset($entity->field_member_type[LANGUAGE_NONE][0])) {
+        $valid_since = false;
+        $price_needed = true;  //if member type is set, we need a price, too
+        if (isset($entity->field_valid_since[LANGUAGE_NONE][0])) {
+          $valid_since = $entity->field_valid_since[LANGUAGE_NONE][0]['value'];
+        }
+        if (!$valid_since)
+          form_set_error('field_valid_since]['.LANGUAGE_NONE.'][0][value', t('Please enter valid since field if field member type has a value'));
+        
+      } 
+      
+      if ($price_needed) {
+        $price = false;
+        if (isset($entity->field_price[LANGUAGE_NONE][0]))
+          $price = $entity->field_price[LANGUAGE_NONE][0]['value'];
+          
+        if (!$price) 
+            form_set_error('field_price]['.LANGUAGE_NONE.'][0][value', t('Please enter price fielde'));
+      }
     }
   }
 }
