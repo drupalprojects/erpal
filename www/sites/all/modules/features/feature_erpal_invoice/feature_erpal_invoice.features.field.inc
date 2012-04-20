@@ -40,6 +40,7 @@ function feature_erpal_invoice_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(),
         'allowed_values_function' => 'erpal_billable_field_vat_rate_allowed_values',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
@@ -310,7 +311,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '19',
+        'weight' => '18',
       ),
     ),
   );
@@ -392,6 +393,98 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_invoice-field_contractor_ref'
+  $fields['node-erpal_invoice-field_contractor_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_contractor_ref',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_contact' => 'erpal_contact',
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_project_spec' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
+          'page' => 0,
+          'panel' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_invoice',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Select a contact that has created the invoice. Leave blank, if your company is the contractor',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 19,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_contractor_ref',
+      'label' => 'Contractor',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
         'weight' => '3',
       ),
     ),
@@ -453,7 +546,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '13',
+        'weight' => '12',
       ),
     ),
   );
@@ -488,6 +581,7 @@ function feature_erpal_invoice_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(),
         'allowed_values_function' => 'erpal_billable_field_currency_allowed_values',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_text',
@@ -524,7 +618,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -552,6 +646,7 @@ function feature_erpal_invoice_field_default_fields() {
       ),
       'module' => 'node_reference',
       'settings' => array(
+        'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
           'erpal_contact' => 'erpal_contact',
@@ -564,6 +659,7 @@ function feature_erpal_invoice_field_default_fields() {
           'erpal_timetracking' => 0,
           'features_test' => 0,
           'page' => 0,
+          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
@@ -578,7 +674,7 @@ function feature_erpal_invoice_field_default_fields() {
       'bundle' => 'erpal_invoice',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Select a customer contact who receives the invoice',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -753,7 +849,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '9',
+        'weight' => '8',
       ),
     ),
   );
@@ -804,7 +900,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'serial',
         'settings' => array(),
         'type' => 'serial',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -869,7 +965,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '11',
+        'weight' => '10',
       ),
     ),
   );
@@ -929,7 +1025,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '12',
+        'weight' => '11',
       ),
     ),
   );
@@ -995,7 +1091,7 @@ function feature_erpal_invoice_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '18',
+        'weight' => '17',
       ),
     ),
   );
@@ -1196,7 +1292,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '15',
+        'weight' => '14',
       ),
     ),
   );
@@ -1276,7 +1372,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '16',
+        'weight' => '15',
       ),
     ),
   );
@@ -1348,7 +1444,7 @@ function feature_erpal_invoice_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '17',
+        'weight' => '16',
       ),
     ),
   );
@@ -1413,7 +1509,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '10',
+        'weight' => '9',
       ),
     ),
   );
@@ -1473,7 +1569,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '14',
+        'weight' => '13',
       ),
     ),
   );
@@ -1483,6 +1579,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Add some hintes for your invoice. There will be added some automated notes, too');
   t('All order numbers the invoice is related to');
   t('Automated Notes');
+  t('Contractor');
   t('Credit Period');
   t('Credit period');
   t('Currency');
@@ -1500,6 +1597,8 @@ function feature_erpal_invoice_field_default_fields() {
   t('PDF export');
   t('Payed');
   t('Payment date');
+  t('Select a contact that has created the invoice. Leave blank, if your company is the contractor');
+  t('Select a customer contact who receives the invoice');
   t('Skonto');
   t('The address of the customer the invoice will be related to');
   t('The currency of the invoice');

@@ -284,11 +284,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'field_contract_data',
-      'default_value' => array(
-        0 => array(
-          'value' => 'full',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -303,7 +299,7 @@ function feature_erpal_profile_field_default_fields() {
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_member_type',
       'label' => 'Member type',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -359,7 +355,7 @@ function feature_erpal_profile_field_default_fields() {
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_price',
       'label' => 'Price per h',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'max' => '',
         'min' => '',
@@ -429,9 +425,9 @@ function feature_erpal_profile_field_default_fields() {
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_valid_since',
       'label' => 'Valid since',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
+        'default_value' => 'blank',
         'default_value2' => 'same',
         'default_value_code' => '',
         'default_value_code2' => '',
@@ -449,7 +445,7 @@ function feature_erpal_profile_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '0',
+        'weight' => 0,
       ),
     ),
   );

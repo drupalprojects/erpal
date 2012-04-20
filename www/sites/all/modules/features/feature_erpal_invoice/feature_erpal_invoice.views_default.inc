@@ -569,7 +569,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Contacts */
+  /* Field: Field: Contact */
   $handler->display->display_options['fields']['field_contact_ref']['id'] = 'field_contact_ref';
   $handler->display->display_options['fields']['field_contact_ref']['table'] = 'field_data_field_contact_ref';
   $handler->display->display_options['fields']['field_contact_ref']['field'] = 'field_contact_ref';
@@ -784,7 +784,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Contacts (field_contact_ref) */
+  /* Filter criterion: Field: Contact (field_contact_ref) */
   $handler->display->display_options['filters']['field_contact_ref_nid']['id'] = 'field_contact_ref_nid';
   $handler->display->display_options['filters']['field_contact_ref_nid']['table'] = 'field_data_field_contact_ref';
   $handler->display->display_options['filters']['field_contact_ref_nid']['field'] = 'field_contact_ref_nid';
@@ -850,7 +850,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
     t('<?php
 echo _erpal_invoice_helper_view_invoices_header_content();
 ?>'),
-    t('Contacts'),
+    t('Contact'),
     t('Invoice Date'),
     t('Invoice Number'),
     t('Payed'),

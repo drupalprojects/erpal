@@ -21,7 +21,7 @@ function feature_erpal_invoice_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Order numbers',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_order_number_extern',
       1 => 'field_order_number_intern',
