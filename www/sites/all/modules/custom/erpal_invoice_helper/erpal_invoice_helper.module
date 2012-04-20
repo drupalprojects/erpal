@@ -147,8 +147,33 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
       
       $form['#group_children']['order_numbers_token_tree'] = 'group_order_numbers';
     }
+    
+    //set contractor to "own company" if field is empty
+    $contractor_nid = false;    
+    if (isset($form['field_contractor_ref'][LANGUAGE_NONE][0])) {
+      $contractor_nid = $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
+    }
+
+    if (!$contractor_nid) {
+      $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+      $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $company_nid;
+    }
+    
   }
   
+  //set default value for contractor in billable node edit form
+  if ($form_id == 'billable_edit_form') {
+    //set contractor to "own company" if field is empty
+    $contractor_nid = false;    
+    if (isset($form['contractor_nid'])) {
+      $contractor_nid = $form['contractor_nid']['#default_value'];
+    }
+
+    if (!$contractor_nid) {
+      $company_nid = _erpal_basic_helper_get_own_company_nid(false);     
+      $form['contractor_nid']['#default_value'] = $company_nid;
+    }
+  }
 }
 
 
