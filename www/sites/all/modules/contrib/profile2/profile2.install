@@ -204,3 +204,11 @@ function profile2_update_7102() {
     'not null' => FALSE,
   ));
 }
+
+function profile2_update_7103() {
+  // Get the cache table schema.
+  $schema = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['description'] = "Cache table used to store profile2 entity records.";
+
+  db_create_table('cache_entity_profile2', $schema);
+}
