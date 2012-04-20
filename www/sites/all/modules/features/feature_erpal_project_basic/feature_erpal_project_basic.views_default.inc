@@ -100,7 +100,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['fields']['field_project_status']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_project_status']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_project_status']['field_api_classes'] = 0;
-  /* Field: Field: Customer */
+  /* Field: Content: Customer */
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
@@ -134,7 +134,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Field: Customer (field_customer_ref) */
+  /* Filter criterion: Content: Customer (field_customer_ref) */
   $handler->display->display_options['filters']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
   $handler->display->display_options['filters']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['filters']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';

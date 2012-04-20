@@ -24,6 +24,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'settings' => array(
         'decimal_separator' => '.',
         'precision' => '10',
+        'profile2_private' => FALSE,
         'scale' => '2',
       ),
       'translatable' => '0',
@@ -1405,6 +1406,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'settings' => array(
         'decimal_separator' => '.',
         'precision' => '10',
+        'profile2_private' => FALSE,
         'scale' => '2',
       ),
       'translatable' => '0',
