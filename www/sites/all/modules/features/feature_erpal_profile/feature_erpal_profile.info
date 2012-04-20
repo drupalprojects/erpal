@@ -1,7 +1,7 @@
 name = "feature_erpal_profile"
 description = "Profile functionality for users"
 core = "7.x"
-package = "Features"
+package = "ERPAL Features"
 php = "5.2.4"
 version = "7.x-1.0-dev"
 project = "feature_erpal_profile"

@@ -1,7 +1,7 @@
 name = "feature_erpal_crm"
 description = "ERPAL CRM Feature"
 core = "7.x"
-package = "Features"
+package = "ERPAL Features"
 php = "5.2.4"
 version = "7.x-1.3-dev"
 project = "feature_erpal_crm"

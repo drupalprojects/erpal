@@ -1,7 +1,7 @@
 name = "feature_erpal_invoice"
 description = "Funktions to create invoices"
 core = "7.x"
-package = "Features"
+package = "ERPAL Features"
 php = "5.2.4"
 version = "7.x-1.1-dev"
 project = "feature_erpal_invoice"

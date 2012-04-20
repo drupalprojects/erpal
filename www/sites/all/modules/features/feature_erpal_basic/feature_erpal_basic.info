@@ -1,7 +1,7 @@
 name = "feature_erpal_basic"
 description = "ERPAL BASIC Feature"
 core = "7.x"
-package = "Features"
+package = "ERPAL Features"
 php = "5.2.4"
 version = "7.x-1.13-dev"
 project = "feature_erpal_basic"
