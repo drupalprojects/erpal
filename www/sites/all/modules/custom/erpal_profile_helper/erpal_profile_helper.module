@@ -1,0 +1,49 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_profile_helper module.
+ */
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_profile_helper_form_alter(&$form, $form_state, $form_id) {
+  
+  if ($form_id == 'user_profile_form') {
+    $form['#validate'][] = '_erpal_profile_helper_profile_form_validate';
+  }
+}
+
+/**
+* Validate the profile form
+*/
+function _erpal_profile_helper_profile_form_validate($form, $form_state) {
+  $values = $form_state['values'];
+  
+  if (isset($values['profile_main'])) {
+    _erpal_profile_helper_contract_validate_all_set($values['profile_main']);
+  }
+}
+
+/**
+* Validates if all necessary fields are filled
+*/
+function _erpal_profile_helper_contract_validate_all_set($profile_values) {
+  $contract_data = $profile_values['field_contract_data'][LANGUAGE_NONE];
+  foreach ($contract_data as $delta=>$contract) {
+    //now go through all fields and validate
+    $entity = $contract['entity']; 
+    if (is_object($entity)) {
+      //if valid since is set, member type must be set, too
+      if (isset($entity->field_valid_since[LANGUAGE_NONE][0])) {
+        $member_type = false;
+        if (isset($entity->field_member_type[LANGUAGE_NONE][0])) {
+          $member_type = $entity->field_member_type[LANGUAGE_NONE][0]['value'];
+        }
+        if (!$member_type)
+          form_set_error('field_member_type]['.LANGUAGE_NONE.'][0][value', t('Please enter member type field if field valid since has a value'));
+        
+      } 
+    }
+  }
+}
