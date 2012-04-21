@@ -338,6 +338,7 @@ function feature_erpal_project_basic_field_default_fields() {
       ),
       'module' => 'node_reference',
       'settings' => array(
+        'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
           'erpal_contact' => 'erpal_contact',
@@ -350,6 +351,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'erpal_timetracking' => 0,
           'features_test' => 0,
           'page' => 0,
+          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
