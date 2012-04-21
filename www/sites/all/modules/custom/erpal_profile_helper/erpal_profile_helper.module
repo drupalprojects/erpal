@@ -176,7 +176,10 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
   $a_user = user_load($uid);
   $profile = profile2_load_by_user($a_user);
   
-  $contract = $profile['contract'];
+  if (isset($profile['contract']))
+    $contract = $profile['contract'];
+  else
+    return array();
   
   $contract_datas = array();
   $contract_datas_date = array();
