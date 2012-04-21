@@ -91,7 +91,7 @@ echo _erpal_crm_helper_view_activities_header_content();
   $handler->display->display_options['fields']['field_activity_status']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_activity_status']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_activity_status']['field_api_classes'] = 0;
-  /* Field: Field: Customer */
+  /* Field: Content: Customer */
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
@@ -147,7 +147,7 @@ echo _erpal_crm_helper_view_activities_header_content();
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Field: Customer (field_customer_ref) */
+  /* Contextual filter: Content: Customer (field_customer_ref) */
   $handler->display->display_options['arguments']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
   $handler->display->display_options['arguments']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['arguments']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
@@ -206,25 +206,6 @@ echo _erpal_crm_helper_view_activities_header_content();
   $handler->display->display_options['menu']['title'] = 'CRM activities';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-erpal-menu';
-
-  /* Display: Activities as Customer */
-  $handler = $view->new_display('entity_view', 'Activities as Customer', 'activities_as_customer');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Activities as Customer';
-  $handler->display->display_options['display_description'] = 'All activities as customer are attached to a contact node by this view';
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = FALSE;
-  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['header']['area']['tokenize'] = 0;
-  $handler->display->display_options['entity_type'] = 'node';
-  $handler->display->display_options['bundles'] = array(
-    0 => 'erpal_contact',
-  );
-  $handler->display->display_options['show_title'] = 1;
   $translatables['crm_activities'] = array(
     t('Master'),
     t('Activities as Customer'),
@@ -248,7 +229,6 @@ echo _erpal_crm_helper_view_activities_header_content();
     t('Title'),
     t('Page'),
     t('CRM activities'),
-    t('All activities as customer are attached to a contact node by this view'),
   );
   $export['crm_activities'] = $view;
 
