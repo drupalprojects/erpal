@@ -47,9 +47,7 @@ function erpal_basic_helper_config_form($form, &$form_state){
   if ($submitted_company)
     $company_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($submitted_company);
   else
-    $company_nid = _erpal_basic_helper_get_own_company_nid(false);
-    
-  $company_node = node_load($company_nid);
+    $company_nid = _erpal_basic_helper_get_own_company_nid(false);  
   
   $form['erpal_debug'] = array(
     '#type' => 'checkbox',
@@ -58,8 +56,10 @@ function erpal_basic_helper_config_form($form, &$form_state){
   );
   
   $show_edit_string = '';
-  if ($company_nid)
+  if ($company_nid) {
+    $company_node = node_load($company_nid);
     $show_edit_string = l(t('show'), 'node/'.$company_node->nid)." | ".l(t('edit'), 'node/'.$company_node->nid."/edit");
+  }
   $form['my_company'] = array(
     '#title' => t('My Company'),
     '#type' => 'textfield',
