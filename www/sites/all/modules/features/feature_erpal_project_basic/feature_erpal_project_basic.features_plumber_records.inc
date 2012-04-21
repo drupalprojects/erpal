@@ -13,6 +13,42 @@ function feature_erpal_project_basic_features_plumber_defaults() {
   $features_plumber_record = new stdClass();
   $features_plumber_record->disabled = FALSE; /* Edit this to true to make a default features_plumber_record disabled initially */
   $features_plumber_record->api_version = 1;
+  $features_plumber_record->name = 'feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_currency';
+  $features_plumber_record->feature = 'feature_erpal_project_basic';
+  $features_plumber_record->component = 'field';
+  $features_plumber_record->component_val = 'field_collection_item-field_pricing-field_buy_currency';
+  $export['feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_currency'] = $features_plumber_record;
+
+  $features_plumber_record = new stdClass();
+  $features_plumber_record->disabled = FALSE; /* Edit this to true to make a default features_plumber_record disabled initially */
+  $features_plumber_record->api_version = 1;
+  $features_plumber_record->name = 'feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_price';
+  $features_plumber_record->feature = 'feature_erpal_project_basic';
+  $features_plumber_record->component = 'field';
+  $features_plumber_record->component_val = 'field_collection_item-field_pricing-field_buy_price';
+  $export['feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_price'] = $features_plumber_record;
+
+  $features_plumber_record = new stdClass();
+  $features_plumber_record->disabled = FALSE; /* Edit this to true to make a default features_plumber_record disabled initially */
+  $features_plumber_record->api_version = 1;
+  $features_plumber_record->name = 'feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_vat_rate';
+  $features_plumber_record->feature = 'feature_erpal_project_basic';
+  $features_plumber_record->component = 'field';
+  $features_plumber_record->component_val = 'field_collection_item-field_pricing-field_buy_vat_rate';
+  $export['feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_vat_rate'] = $features_plumber_record;
+
+  $features_plumber_record = new stdClass();
+  $features_plumber_record->disabled = FALSE; /* Edit this to true to make a default features_plumber_record disabled initially */
+  $features_plumber_record->api_version = 1;
+  $features_plumber_record->name = 'feature_erpal_project_basic__field__field_collection_item-field_pricing-field_contractor_ref';
+  $features_plumber_record->feature = 'feature_erpal_project_basic';
+  $features_plumber_record->component = 'field';
+  $features_plumber_record->component_val = 'field_collection_item-field_pricing-field_contractor_ref';
+  $export['feature_erpal_project_basic__field__field_collection_item-field_pricing-field_contractor_ref'] = $features_plumber_record;
+
+  $features_plumber_record = new stdClass();
+  $features_plumber_record->disabled = FALSE; /* Edit this to true to make a default features_plumber_record disabled initially */
+  $features_plumber_record->api_version = 1;
   $features_plumber_record->name = 'feature_erpal_project_basic__field__field_collection_item-field_pricing-field_currency';
   $features_plumber_record->feature = 'feature_erpal_project_basic';
   $features_plumber_record->component = 'field';

@@ -818,7 +818,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
-  /* Field: Content: Contractor */
+  /* Field: Field: Contractor */
   $handler->display->display_options['fields']['field_contractor_ref']['id'] = 'field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['table'] = 'field_data_field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['field'] = 'field_contractor_ref';
@@ -845,7 +845,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Contractor (field_contractor_ref) */
+  /* Filter criterion: Field: Contractor (field_contractor_ref) */
   $handler->display->display_options['filters']['field_contractor_ref_nid']['id'] = 'field_contractor_ref_nid';
   $handler->display->display_options['filters']['field_contractor_ref_nid']['table'] = 'field_data_field_contractor_ref';
   $handler->display->display_options['filters']['field_contractor_ref_nid']['field'] = 'field_contractor_ref_nid';
