@@ -58,6 +58,7 @@ function erpal_projects_billable_element_info_alter(&$type) {
 function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
 
   if ($form_id == 'erpal_task_node_form') {
+    //alter task node pricing according to referenced project pricing
     $nid = $form['nid']['#value'];
     if (!$nid) { //only alter the form fields if the node will be created, not at update
       if (count($form_state['input']) <= 0 || isset($form_state['triggering_element'])) {
@@ -70,6 +71,7 @@ function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
     
     _erpal_projects_billable_prepare_ajax_pricing_preselect($form, $form_state);
   }  
+  
 }
 
 /**
@@ -326,16 +328,30 @@ function _erpal_projects_billable_billbales_by_subject_nid($subject_nid, $loaded
 }
 
 /**
-* Callback function for returnin all available VAT
+* Callback function for returning all available VAT
 */
 function erpal_billable_field_vat_rate_allowed_values() {
   return _billable_vat_rates();
 }
 
 /**
-* Callback function for returnin all available currencies
+* Callback function for returning all available currencies
 */
 function erpal_billable_field_currency_allowed_values() {
+  return _billable_get_currencies();
+}
+
+/**
+* Callback function for returning all available VAT
+*/
+function erpal_billable_field_buy_vat_rate_allowed_values() {
+  return _billable_vat_rates();
+}
+
+/**
+* Callback function for returning all available currencies
+*/
+function erpal_billable_field_buy_currency_allowed_values() {
   return _billable_get_currencies();
 }
 
