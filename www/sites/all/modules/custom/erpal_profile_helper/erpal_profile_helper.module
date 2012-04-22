@@ -8,8 +8,7 @@
 * Implementes hook_field_attach_validate() 
 */
 function erpal_profile_helper_field_attach_validate($entity_type, $entity, &$errors) {
- // DEBUG
- dpm(_erpal_profile_helper_get_contract(125, -1, array(1), false));
+
   if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_contract_data') {
     $new_errors = _erpal_profile_helper_profile_contract_entity_validate($entity);
     $errors = array_merge($errors, $new_errors);
@@ -175,12 +174,19 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
     
   $a_user = user_load($uid);
   $profile = profile2_load_by_user($a_user);
-  
+
   if (isset($profile['contract']))
     $contract = $profile['contract'];
   else
     return array();
   
+  //get the contractor
+  $contractor_nid = 0;
+  if (isset($profile['main'])) {
+    $main = $profile['main'];
+    $contractor_nid = isset($main->field_contact_ref[LANGUAGE_NONE]) ? $main->field_contact_ref[LANGUAGE_NONE][0]['nid'] : 0;
+  }
+ 
   $contract_datas = array();
   $contract_datas_date = array();
   foreach ($contract->field_contract_data[LANGUAGE_NONE] as $delta=>$contract_id) {
@@ -216,6 +222,10 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
     
     if ($contract_id) {
       $contract_datas_date[$contract_date_since] = $contract_id;
+      
+      //add the contractor nid, it is always usefull with the contractor. Add the uid, too
+      $contract_data_entity->uid = $uid;
+      $contract_data_entity->contractor_nid = $contractor_nid;
       $contract_datas[$contract_id] = $contract_data_entity;
     }
   }
@@ -233,4 +243,59 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
   
   //otherwise return all contracts as an array
   return array_values($contract_datas);
+}
+
+/**
+* Returns the current active contract. If there are multiple, only the newes will be returned
+*/
+function _erpal_profile_helper_get_current_contract($uid, $project_tag_tids=array(), $flat_array=true) {
+  $contract_arr = _erpal_profile_helper_get_contract($uid, time(), $project_tag_tids);
+  
+  foreach ($contract_arr as $nid=>$contract) {
+    if ($flat_array) {
+      //return the contract as a flat array
+      $valid_since = isset($contract->field_valid_since[LANGUAGE_NONE]) ? $contract->field_valid_since[LANGUAGE_NONE][0]['value'] : '';
+      $member_type = isset($contract->field_member_type[LANGUAGE_NONE]) ? $contract->field_member_type[LANGUAGE_NONE][0]['value'] : '';
+      $hours = isset($contract->field_hours[LANGUAGE_NONE]) ? $contract->field_hours[LANGUAGE_NONE][0]['value'] : '';
+      $holiday_per_year = isset($contract->field_holiday_per_year[LANGUAGE_NONE]) ? $contract->field_holiday_per_year[LANGUAGE_NONE][0]['value'] : '';
+      $vat_rate = isset($contract->field_vat_rate[LANGUAGE_NONE]) ? $contract->field_vat_rate[LANGUAGE_NONE][0]['value'] : '';
+      $currency = isset($contract->field_currency[LANGUAGE_NONE]) ? $contract->field_currency[LANGUAGE_NONE][0]['value'] : '';
+      $billing_duration = isset($contract->field_billing_duration[LANGUAGE_NONE]) ? $contract->field_billing_duration[LANGUAGE_NONE][0]['value'] : '';
+      $price = isset($contract->field_price[LANGUAGE_NONE]) ? $contract->field_price[LANGUAGE_NONE][0]['value'] : '';
+      $project_tags = _erpal_profile_helper_project_tag_ids($contract);
+      $contractor_nid = $contract->contractor_nid;
+      return array(
+        'valid_since' => $valid_since,
+        'member_type' => $member_type,
+        'hours' => $hours,
+        'holiday_per_year' => $holiday_per_year,
+        'vat_rate' => $vat_rate,
+        'currency' => $currency,
+        'billing_duration' => $billing_duration,
+        'price' => $price,
+        'project_tags' => $project_tags,
+        'contractor_nid' => $contractor_nid,
+      );
+    }
+    return $contract;
+  }
+    
+  return false;
+}
+
+/**
+* Returns an array of project tags if field exists at the given entity
+*/
+function _erpal_profile_helper_project_tag_ids($entity) {
+  $tags = array();
+  if (property_exists($entity, 'field_project_tags')) {
+    if (isset($entity->field_project_tags[LANGUAGE_NONE])) {
+      foreach ($entity->field_project_tags[LANGUAGE_NONE] as $delta=>$tid) {
+        $tid = $tid['tid'];
+        $tags[] = $tid;
+      }
+    }
+  }
+  
+  return $tags;
 }

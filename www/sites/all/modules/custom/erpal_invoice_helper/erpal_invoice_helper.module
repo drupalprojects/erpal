@@ -570,6 +570,14 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
       $subject_nid = $billable->subject_nid;
       $subject_node = node_load($subject_nid);
       
+      if ($subject_node->type == 'erpal_timetracking') {
+        //get the subject of the timetracking
+        $subject_nid = $subject_node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
+        $subject_node = node_load($subject_nid);
+        
+        //then proceed as if we have a task or a project...
+      }
+      
       if ($subject_node->type == 'erpal_task' || $subject_node->type == 'erpal_project') {
         $activity_node = _erpal_projects_helper_get_activity($subject_node);        
         if ($activity_node) {

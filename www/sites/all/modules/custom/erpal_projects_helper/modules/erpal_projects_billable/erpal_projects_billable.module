@@ -45,6 +45,18 @@ function erpal_projects_billable_node_update($node) {
 }
 
 /**
+* Implements hook_node_delete
+*/
+function erpal_projects_billable_node_delete($node) {
+  //get all billables to this node and delete them!
+  $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
+  foreach ($billables as $billable) {
+    if (!$billable->billed)  //only those that have not been billed
+      $billable->delete();
+  }
+}
+
+/**
 * Implements hook_element_info_alter
 */
 function erpal_projects_billable_element_info_alter(&$type) {
@@ -139,7 +151,7 @@ function _erpal_projects_billable_get_task_preselects($project_nid) {
 * Creates a new bilable entity
 * @param $billabel if set, this billable will be updated, otherwise a new billable will be created
 */
-function _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, $billable=false) {
+function _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, $billable=false, $contractor_nid=false) {
 
   //@todo sollte das besser mit billable_create aus dem modul billable in billable.entity.inc getan werden?
   if (!$billable)
@@ -147,7 +159,12 @@ function _erpal_project_billable_save_billable($subject_title, $customer_nid, $s
   else
     if ($billable->billed)
       return false; //this is already billed so it could not be changed!
-    
+   
+  if (!$contractor_nid) {
+    //contractor is the own company
+    $contractor_nid = _erpal_basic_helper_get_own_company_nid(false);
+  }
+   
   $billable->subject = $subject_title;
   $billable->type = 'billable';
   $billable->currency = $currency;
@@ -160,6 +177,7 @@ function _erpal_project_billable_save_billable($subject_title, $customer_nid, $s
   $billable->created = time();
   $billable->changed = time();
   $billable->customer_nid = $customer_nid;
+  $billable->contractor_nid = $contractor_nid;
   entity_save('billable', $billable);
   
   return true;
@@ -175,9 +193,9 @@ function _erpal_projects_billable_subject_billabel_information_subject($node) {
 
   $type = $node->type;  
   switch ($type) {
-    case 'erpal_task': return _erpal_projects_billable_subject_billabel_information_task_subject($node);    
-    case 'erpal_project': return _erpal_projects_billable_subject_billabel_information_project_subject($node); 
-    case 'erpal_timetracking': return _erpal_projects_billable_subject_billabel_information_timetracking_subject($node);  
+    case 'erpal_task': return _erpal_projects_billable_subject_billable_information_task_subject($node);    
+    case 'erpal_project': return _erpal_projects_billable_subject_billable_information_project_subject($node); 
+    case 'erpal_timetracking': return _erpal_projects_billable_subject_billable_information_timetracking_subject($node);  
   }
   
   return array();
@@ -188,7 +206,7 @@ function _erpal_projects_billable_subject_billabel_information_subject($node) {
 * @param the task node
 * @retur an array with billing information like price mode, price etc
 */
-function _erpal_projects_billable_subject_billabel_information_task_subject($node) {
+function _erpal_projects_billable_subject_billable_information_task_subject($node) {
   
   //add the customer 
   //first get the project
@@ -198,6 +216,13 @@ function _erpal_projects_billable_subject_billabel_information_task_subject($nod
   //if task has own pricing information set, return these!
   $pricing = _erpal_projects_billable_get_pricing($node);
 
+  //perhaps we have purchasing information set on the task or the project.
+  $buy_pricing = array();
+  $buy_pricing['buy_price'] = $pricing['buy_price'];
+  $buy_pricing['buy_vat_rate'] = $pricing['buy_vat_rate'];
+  $buy_pricing['buy_currency'] = $pricing['buy_currency'];
+  $buy_pricing['contractor_nid'] = $pricing['contractor_nid'];
+  
   if ($pricing['price_mode'] && $pricing['price']) {
     $info['price_mode'] = $pricing['price_mode'];
     $info['price'] = $pricing['price'];
@@ -207,11 +232,13 @@ function _erpal_projects_billable_subject_billabel_information_task_subject($nod
     $customer_nid = $project_node->field_customer_ref[LANGUAGE_NONE][0]['nid'];
     $customer_node = node_load($customer_nid);
     $info['customer'] = $customer_node;
+    $info = array_merge($info, $buy_pricing);
     return $info;
-  }
+  }  
+  
   
   $info = _erpal_projects_billable_subject_billabel_information_project_subject($project_node);
-      
+  $info = array_merge($info, $buy_pricing);    
   return $info;
 }
 
@@ -220,7 +247,7 @@ function _erpal_projects_billable_subject_billabel_information_task_subject($nod
 * @param the project node
 * @retur an array with billing information like price mode, price etc
 */
-function _erpal_projects_billable_subject_billabel_information_project_subject($node) {
+function _erpal_projects_billable_subject_billable_information_project_subject($node) {
 
   $pricing = _erpal_projects_billable_get_pricing($node);
   if (count($pricing) <= 0)
@@ -242,6 +269,12 @@ function _erpal_projects_billable_subject_billabel_information_project_subject($
   if ($customer_node->nid)
     $info['customer'] = $customer_node;  
 
+  //perhaps we have purchasing information set on the task or the project.  
+  $info['buy_price'] = $pricing['buy_price'];
+  $info['buy_vat_rate'] = $pricing['buy_vat_rate'];
+  $info['buy_currency'] = $pricing['buy_currency'];
+  $info['contractor_nid'] = $pricing['contractor_nid'];
+    
   return $info;
 }
 
@@ -249,13 +282,13 @@ function _erpal_projects_billable_subject_billabel_information_project_subject($
 * Return the billing information of the task of the timetracking!
 * @param $node the timetracking node
 */
-function _erpal_projects_billable_subject_billabel_information_timetracking_subject($node) {
+function _erpal_projects_billable_subject_billable_information_timetracking_subject($node) {
   //get the referenced node first
   
   $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
   $subject_node = node_load($subject_nid);
   
-  return _erpal_projects_billable_subject_billabel_information_task_subject($subject_node);
+  return _erpal_projects_billable_subject_billable_information_task_subject($subject_node);
 }
 
 /**
@@ -290,11 +323,32 @@ function _erpal_projects_billable_get_pricing($node) {
     if (isset($pricing_entity->field_vat_rate[LANGUAGE_NONE]))
       $vat_rate  = $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
     
+    //now set the buying pricing information
+    $contractor_nid = 0;
+    if (isset($pricing_entity->field_contractor_ref[LANGUAGE_NONE]))
+      $contractor_nid = $pricing_entity->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+    
+    $buy_price = 0;
+    if (isset($pricing_entity->field_buy_price[LANGUAGE_NONE]))
+      $buy_price = $pricing_entity->field_buy_price[LANGUAGE_NONE][0]['value'];
+      
+    $buy_vat_rate = 0;
+    if (isset($pricing_entity->field_buy_vat_rate[LANGUAGE_NONE]))
+      $buy_vat_rate = $pricing_entity->field_buy_vat_rate[LANGUAGE_NONE][0]['value'];
+      
+    $buy_currency = 0;
+    if (isset($pricing_entity->field_buy_currency[LANGUAGE_NONE]))
+      $buy_currency = $pricing_entity->field_buy_currency[LANGUAGE_NONE][0]['value'];
+      
     return array(
       'price_mode' => $price_mode,
       'price' => $price,
       'vat_rate' => $vat_rate,
       'currency' => $currency,
+      'contractor_nid' => $contractor_nid,
+      'buy_price' => $buy_price,
+      'buy_vat_rate' => $buy_vat_rate,
+      'buy_currency' => $buy_currency,
     );
   }
 }
@@ -367,13 +421,22 @@ function _erpal_billable_update_billable($node, $op) {
     $quantity = $node->field_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
     $node = node_load($node->field_timetracking_subject[LANGUAGE_NONE][0]['nid']);    
     $type = $timetracking_node->type;
-    
+    $a_uid = $timetracking_node->uid;
+    $subject_node = $timetracking_node;
   } else {
     $quantity = 1; //cause it is fixed price
     $type = $node->type;
+    $a_uid = $node->uid;
+    $subject_node = $node;
   }
   
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);  
+  
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  //handle timetracking for the user that inserts the timetracking. If it is a freelancer, create a billable for him
+  
+  $tags = _erpal_profile_helper_project_tag_ids($node);
+  $contract = _erpal_profile_helper_get_current_contract($a_uid, $tags);  //get the current contract
   
   //now we have all information to create a billable from this subject
   $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
@@ -381,16 +444,16 @@ function _erpal_billable_update_billable($node, $op) {
   
   $single_price = $price;
   $customer_nid = $customer_node->nid;
-  $subject_nid = $node->nid;  //the subject is the timetracking itself
+  $subject_nid = $subject_node->nid;  //the subject is the timetracking itself
  
   $currency = $billable_information['currency'];
   $vat_rate = $billable_information['vat_rate'];
-  $subject_title = $node->title;
-  $date_delivery = $node->changed; //last change of the task node
+  $subject_title = $subject_node->title;
+  $date_delivery = time();  //the current time
   
   if ($op == 'insert') { 
     if (_erpal_billable_is_billable($billable_information, $node, $type)) {  
-      //last parameter is set false, so we create a new billable!            
+      //last parameter is set false, so we create a new billable!
       _erpal_project_billable_save_billable(
         $subject_title, 
         $customer_nid, 
@@ -402,44 +465,108 @@ function _erpal_billable_update_billable($node, $op) {
         $date_delivery, 
         false
       );
+            
+    }    
+    
+    //we have one contract
+    //if it is a freelancer, create a billable everytime we create a timetracking, no matter if the task is per hour.
+    //this timetracking is not necessary billed to the customer!
+    if ($contract['member_type'] == 'freelancer' && $type == 'erpal_timetracking') {
+      _erpal_project_billable_save_billable(
+        $subject_title, 
+        $customer_nid, 
+        $subject_nid, 
+        $quantity, 
+        $contract['price'],
+        $contract['currency'], 
+        $contract['vat_rate'], 
+        $date_delivery, 
+        false,
+        $contract['contractor_nid']
+      );
+    }
+    
+    //and if we have a contractor set, we create a billable for the contractor, too!
+    //only if this is a task or a project      
+    if ($billable_information['contractor_nid'] && ($type == 'erpal_project' || $type == 'erpal_task')) {
+      _erpal_project_billable_save_billable(
+        $subject_title, 
+        $my_company_nid, 
+        $subject_nid, 
+        $quantity, 
+        $billable_information['buy_price'],
+        $billable_information['buy_currency'],
+        $billable_information['buy_vat_rate'],
+        $date_delivery, 
+        false,
+        $billable_information['contractor_nid']
+      );
     }
   } 
   elseif ($op == 'update') {
     //get the current billables
-    $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
+    $billables = _erpal_projects_billable_billbales_by_subject_nid($subject_node->nid, true);
     $has_billable = false;
     $is_billable = _erpal_billable_is_billable($billable_information, $node, $type);
-
+    $needs_billable_contractor = $is_billable && (
+      ($billable_information['contractor_nid'] && $billable_information['buy_price'] && 
+        ($type == 'erpal_task' || $type == 'erpal_project')
+      ) || 
+      ($contract['member_type'] == 'freelancer' && $type == 'erpal_timetracking')
+    );  //festpreis oder contract!    
+    
     foreach ($billables as $id=>$billable) {
       $has_billable = true;
       if ($billable->billed) {
         continue;  //do nothing, cause it is already billed
       }
 
-      //not billable any more?
-      if (!$is_billable) {        
+      //not billable any more? Or there was a contractor that gets payed but he isnt any more
+      if (!$is_billable || (!$needs_billable_contractor && $billable->contractor_nid != $my_company_nid)) {        
         //delete the billable, it is not allowed here, cause the task has not been completed!
         drupal_set_message(t('Billables have been deleted because the subject is no more billable!'), 'warning');
         entity_delete('billable', $billable->billable_id);
       } else {   
-        //if task status is completed
+        //if is billable, update the billable
         //last parameter is set false, so we create a new billable!
-        _erpal_project_billable_save_billable(
-          $subject_title, 
-          $customer_nid, 
-          $subject_nid, 
-          $quantity, 
-          $single_price, 
-          $currency, 
-          $vat_rate, 
-          $date_delivery, 
-          $billable  //update this one
-        );
-      }
+        $contractor_nid = $billable->contractor_nid;
+        if ($contractor_nid != $my_company_nid) {          
+          //we update a billable from anoter contractor, A FREELANCER billable or another contractor
+          //get the price, currency and vat_rate of the freelancer
+          $needs_billable_contractor = false; //we dont need a billable to create for the contractor because we already have one!
+          //if it is a timetracking, take the contract
+          if ($type == 'erpal_timetracking') {
+            $single_price = $contract['price'];
+            $currency = $contract['currency']; 
+            $vat_rate = $contract['vat_rate']; 
+          } elseif ($type == 'erpal_task' || $type == 'erpal_project') {
+            //use the purchase data at the node
+            $single_price = $billable_information['buy_price'];
+            $currency = $billable_information['buy_currency'];
+            $vat_rate = $billable_information['buy_vat_rate'];
+          }
+          
+          $customer_nid = $my_company_nid;  //this is the customer, the contractor will bill this to us, not to the
+          //customer of the project
+        }
         
-      
+        _erpal_project_billable_save_billable(
+            $subject_title, 
+            $customer_nid, 
+            $subject_nid, 
+            $quantity, 
+            $single_price, 
+            $currency, 
+            $vat_rate, 
+            $date_delivery, 
+            $billable,  //update this one
+            $contractor_nid
+          );
+      }
+              
     }
     
+    //add billables on update!
     if (!$has_billable && $is_billable) {
       //create a new billable
       //last parameter is set false, so we create a new billable!
@@ -453,6 +580,34 @@ function _erpal_billable_update_billable($node, $op) {
         $vat_rate, 
         $date_delivery, 
         false  //create a new billable
+      );
+    }
+    
+    if ($needs_billable_contractor) {
+      //create a new billable
+      //last parameter is set false, so we create a new billable!
+      $contractor_nid = $billable_information['contractor_nid'];
+      if ($type == 'erpal_timetracking') {
+        $single_price = $contract['price'];
+        $currency = $contract['currency']; 
+        $vat_rate = $contract['vat_rate']; 
+      } elseif ($type == 'erpal_task' || $type == 'erpal_project') {
+        //use the purchase data at the node
+        $single_price = $billable_information['buy_price'];
+        $currency = $billable_information['buy_currency'];
+        $vat_rate = $billable_information['buy_vat_rate'];
+      }
+      _erpal_project_billable_save_billable(
+        $subject_title, 
+        $my_company_nid, 
+        $subject_nid, 
+        $quantity, 
+        $single_price, 
+        $currency, 
+        $vat_rate, 
+        $date_delivery, 
+        false,  //create a new billable
+        $contractor_nid
       );
     }
   }

@@ -34,6 +34,7 @@ function _billable_group_for_reduce($billable_ids, $group_by=array(), $ignore_pa
     $date_delivery = isset($groups[$unity]['date_delivery']) ? $groups[$unity]['date_delivery'] : 0;
     $groups[$unity]['date_delivery'] = max($date_delivery, $billable->date_delivery);  //get the latest deliverydate of all
     $groups[$unity]['customer'] = $billable->customer_nid;
+    $groups[$unity]['contractor'] = $billable->contractor_nid;
 
     //if we group by single price, we add the quantity and keep the single price otherwise it is always one and the
     //single price is added because we don't have the same single price at each billable in a group
@@ -93,7 +94,8 @@ function _billable_reduce($billable_ids, $group_by=array(), $return_unreduced=fa
     $new_billable->date_delivery = $group_data['date_delivery'];
     $new_billable->billables = $group_data['billables'];  //not saved to database
     $new_billable->customer_nid = $group_data['customer'];  
-    //@todo the field is external attached so this module should not know itbut it must be able to set the customer here....
+    $new_billable->contractor_nid = $group_data['contractor'];  
+    
     $new_billable->save();
     
     $new_billables[$new_billable->billable_id] = $new_billable;
@@ -140,6 +142,9 @@ function _billable_ensure_minimal_group_by($group_by) {
 
   if (!in_array('currency', $group_by))
     $group_by[] = 'currency';
+    
+  if (!in_array('contractor', $group_by))
+    $group_by[] = 'contractor';
     
   return $group_by;
 }
