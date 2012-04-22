@@ -131,6 +131,7 @@ features[variable][] = node_submitted_erpal_task
 features[variable][] = node_submitted_erpal_timetracking
 features[variable][] = og_group_content_type_erpal_project
 features[variable][] = og_group_type_erpal_task
+features[variable][] = page_manager_node_view_disabled
 features[variable][] = save_continue_erpal_project
 features[variable][] = save_continue_erpal_task
 features[variable][] = unique_field_comp_erpal_project
