@@ -240,7 +240,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     $billableOK = false;
     $billable = array_shift($billable);    
     //check values of the billable
-    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);       
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $tt);       
     $this->assertTrue($billableOK, 'Billable kicked on task with price mode is per hour', $group);
     
     //change the duration of the task, the billable should change, too
@@ -251,7 +251,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     $billableOK = false;
     $billable = array_shift($billable);    
     //check values of the billable
-    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);       
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $tt);       
     $this->assertTrue($billableOK, 'Billable price changed after timetracking duration changed', $group);
 
       
