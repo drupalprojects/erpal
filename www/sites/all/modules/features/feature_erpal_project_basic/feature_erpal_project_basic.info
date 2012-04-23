@@ -78,6 +78,7 @@ features[field][] = relation-participate_in-field_projet_role_rel_tags
 features[field_group][] = group_task_time_group|node|erpal_task|form
 features[menu_links][] = menu-erpal-menu:projects/projects
 features[menu_links][] = menu-erpal-menu:projects/tasks
+features[menu_links][] = menu-erpal-menu:projects/timetrackings
 features[node][] = erpal_project
 features[node][] = erpal_task
 features[node][] = erpal_timetracking
