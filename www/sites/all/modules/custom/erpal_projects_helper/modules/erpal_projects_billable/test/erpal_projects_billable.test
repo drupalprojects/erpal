@@ -236,7 +236,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     $pricing['price_mode'] = 'per_hour';
     $task = _erpal_projects_billable_test_create_task($pricing, 'inserted');
     $tt = _erpal_projects_billable_test_create_timetracking($pricing['quantity'], $task);         
-    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billable = _erpal_projects_billable_test_get_billable($tt);
     $billableOK = false;
     $billable = array_shift($billable);    
     //check values of the billable
@@ -247,7 +247,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     $pricing['quantity'] = 2; //hours
     $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $pricing['quantity'];
     node_save($tt);
-    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billable = _erpal_projects_billable_test_get_billable($tt);
     $billableOK = false;
     $billable = array_shift($billable);    
     //check values of the billable
