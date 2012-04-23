@@ -1681,16 +1681,20 @@ function feature_erpal_project_basic_field_default_fields() {
       ),
       'module' => 'node_reference',
       'settings' => array(
+        'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
           'erpal_contact' => 0,
-          'erpal_crm_activity' => 'erpal_crm_activity',
+          'erpal_crm_activity' => 0,
           'erpal_file' => 0,
+          'erpal_invoice' => 0,
           'erpal_project' => 0,
           'erpal_project_spec' => 0,
           'erpal_task' => 'erpal_task',
           'erpal_timetracking' => 0,
+          'features_test' => 0,
           'page' => 0,
+          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
