@@ -448,10 +448,11 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['edit_billable']['hide_empty'] = 0;
   $handler->display->display_options['fields']['edit_billable']['empty_zero'] = 0;
   $handler->display->display_options['fields']['edit_billable']['hide_alter_empty'] = 1;
-  /* Sort criterion: Billable: Date_delivery */
-  $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
-  $handler->display->display_options['sorts']['date_delivery']['table'] = 'billable';
-  $handler->display->display_options['sorts']['date_delivery']['field'] = 'date_delivery';
+  /* Sort criterion: Billable: Billable ID */
+  $handler->display->display_options['sorts']['billable_id']['id'] = 'billable_id';
+  $handler->display->display_options['sorts']['billable_id']['table'] = 'billable';
+  $handler->display->display_options['sorts']['billable_id']['field'] = 'billable_id';
+  $handler->display->display_options['sorts']['billable_id']['order'] = 'DESC';
   /* Filter criterion: Billable: Contractor_nid */
   $handler->display->display_options['filters']['contractor_nid']['id'] = 'contractor_nid';
   $handler->display->display_options['filters']['contractor_nid']['table'] = 'billable';

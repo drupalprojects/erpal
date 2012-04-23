@@ -10,7 +10,7 @@
 function feature_erpal_invoice_user_default_roles() {
   $roles = array();
 
-  // Exported role: invoice user
+  // Exported role: invoice user.
   $roles['invoice user'] = array(
     'name' => 'invoice user',
     'weight' => '5',
