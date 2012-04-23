@@ -511,8 +511,8 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['filters']['parent_billable']['value']['value'] = '0';
   $handler->display->display_options['filters']['parent_billable']['group'] = 0;
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
+  /* Display: Billables */
+  $handler = $view->new_display('page', 'Billables', 'page');
   $handler->display->display_options['path'] = 'invoice/billables';
   $translatables['billables'] = array(
     t('Master'),
@@ -545,7 +545,6 @@ echo _erpal_invoice_helper_view_billables_header_content();
     t('Total'),
     t('Currency'),
     t('Delivery'),
-    t('Page'),
   );
   $export['billables'] = $view;
 
