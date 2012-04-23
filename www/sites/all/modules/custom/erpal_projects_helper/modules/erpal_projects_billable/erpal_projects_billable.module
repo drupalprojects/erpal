@@ -237,7 +237,7 @@ function _erpal_projects_billable_subject_billable_information_task_subject($nod
   }  
   
   
-  $info = _erpal_projects_billable_subject_billabel_information_project_subject($project_node);
+  $info = _erpal_projects_billable_subject_billable_information_project_subject($project_node);
   $info = array_merge($info, $buy_pricing);    
   return $info;
 }
