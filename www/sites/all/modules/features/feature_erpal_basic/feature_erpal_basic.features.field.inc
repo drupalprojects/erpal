@@ -844,7 +844,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -904,7 +904,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '14',
+        'weight' => '16',
       ),
     ),
   );
@@ -994,7 +994,7 @@ function feature_erpal_basic_field_default_fields() {
           'year_range' => '-100:+0',
         ),
         'type' => 'date_popup',
-        'weight' => '10',
+        'weight' => '12',
       ),
     ),
   );
@@ -1069,7 +1069,7 @@ function feature_erpal_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -1153,7 +1153,7 @@ function feature_erpal_basic_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -1281,7 +1281,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'relation_select',
         'settings' => array(),
         'type' => 'relation_select',
-        'weight' => '11',
+        'weight' => '13',
       ),
     ),
   );
@@ -1360,7 +1360,7 @@ function feature_erpal_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '13',
+        'weight' => '15',
       ),
     ),
   );
@@ -1386,13 +1386,18 @@ function feature_erpal_basic_field_default_fields() {
           'company' => 'Company / Organisation',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_text',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_contact',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'person',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -1498,7 +1503,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '12',
+        'weight' => '14',
       ),
     ),
   );
@@ -1566,7 +1571,7 @@ function feature_erpal_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '8',
+        'weight' => '10',
       ),
     ),
   );
@@ -1659,6 +1664,75 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_contact-field_fax'
+  $fields['node-erpal_contact-field_fax'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_fax',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contact',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 21,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_fax',
+      'label' => 'Fax numbers',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '9',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_contact-field_firstname'
   $fields['node-erpal_contact-field_firstname'] = array(
     'field_config' => array(
@@ -1728,7 +1802,70 @@ function feature_erpal_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_contact-field_gender'
+  $fields['node-erpal_contact-field_gender'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_gender',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'female' => 'female',
+          'male' => 'male',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contact',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 22,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_gender',
+      'label' => 'Gender',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
       ),
     ),
   );
@@ -1802,7 +1939,7 @@ function feature_erpal_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1934,7 +2071,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -2587,7 +2724,9 @@ function feature_erpal_basic_field_default_fields() {
   t('Customer Category');
   t('Email Addresses');
   t('Facebook');
+  t('Fax numbers');
   t('Firstname');
+  t('Gender');
   t('IBAN');
   t('Image');
   t('Lastname');

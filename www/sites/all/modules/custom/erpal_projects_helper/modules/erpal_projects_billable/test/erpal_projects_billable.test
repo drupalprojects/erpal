@@ -6,7 +6,8 @@
 
 //require a file with some testfunctions
 require_once 'erpal_projects_billable.test.helper';
- 
+require_once 'erpal_projects_billable.costs.test';
+
 class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
 
   public static function getInfo() {
@@ -255,6 +256,13 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     $this->assertTrue($billableOK, 'Billable price changed after timetracking duration changed', $group);
 
       
+  }
+ 
+  /**
+  * Validate that cost billables are created correctly
+  */
+  function testCostCreateBillables() {
+    billable_test_check_costs();
   }
  
   /**
