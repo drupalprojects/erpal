@@ -211,16 +211,20 @@ function _erpal_invice_helper_field_customer_ref_alter($field) {
 function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
   //only if the node is an invoice, set the pdf link
   if ($node->type == 'erpal_invoice') {
-  
-    $links[] = array(
-      'href' => 'invoice/'.$node->nid."/pdf",
-      'title' => t('PDF'),
-      'attributes' => array('class' => 'invoice_pdf_link'),
-    );
-    $node->content['links']['erpal_invoice_helper'] = array(
-      '#links' => $links,
-      '#attributes' => array('class' => array('links', 'inline')),
-    );
+    
+    $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+    $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+    if ($my_company_nid == $contractor_nid) {  //only if this is an invoice from us to a customer
+      $links[] = array(
+        'href' => 'invoice/'.$node->nid."/pdf",
+        'title' => t('Recreate and attach PDF'),
+        'attributes' => array('class' => 'invoice_pdf_link'),
+      );
+      $node->content['links']['erpal_invoice_helper'] = array(
+        '#links' => $links,
+        '#attributes' => array('class' => array('links', 'inline')),
+      );
+    }
     
     _erpal_invoice_helper_replace_all_tokens($node, 'view');
     
@@ -268,7 +272,9 @@ function erpal_invoice_helper_permission(){
 * @param $invoice the invoice node the caclulation will be processed
 */
 function _erpal_invoice_helper_caclulate_invoice($invoice) {
+  $is_new = $invoice->is_new;
   _erpal_invoice_helper_calculate_fields($invoice);
+  $invoice->is_new = $is_new; //without this workarround there has been a warning that property is new does not exist
 }
 
 /**
@@ -340,10 +346,12 @@ function _erpal_invoice_helper_invoice_attachment_billables($invoice) {
   $billables = array();
 
   if (isset($invoice->field_billables_ref[LANGUAGE_NONE])) {
-    $billable_ids = $invoice->field_billables_ref[LANGUAGE_NONE][0];
+    $billable_ids = $invoice->field_billables_ref[LANGUAGE_NONE];
     if (is_array($billable_ids)) {
       foreach ($billable_ids as $billable_id) {
-        if ($billable_id) {
+        if (isset($billable_id['target_id']))
+          $billable_id = $billable_id['target_id'];
+        if ($billable_id) {          
           $billable = billable_load($billable_id);
           $billables[] = $billable;
         }
@@ -568,6 +576,12 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
         
       $billable = billable_load($line_item['target_id']);
       $subject_nid = $billable->subject_nid;
+      
+      //if there is no subject because the billable was entered manually,
+      //we cannot get the ordernumber
+      if (!$subject_nid <= 0 || !$subject_nid)
+        continue;
+      
       $subject_node = node_load($subject_nid);
       
       if ($subject_node->type == 'erpal_timetracking') {

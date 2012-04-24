@@ -302,8 +302,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //load all billables for the test!
   $billables = billable_load_multiple($billable_ids);
 
-  //try to get the customer, if there is no customer in params, the customer of all billables must be equal otherwise there will
-  //be an error
+  //try to get the customer and the contractor, if there is no customer in params, the customer of all billables must 
+  //be equal otherwise there will be an error same for contractors
+  //### get the customer ####
   if (isset($params['customer_nid']))
     $customer_nid = $params['customer_nid'];
   else {
@@ -328,6 +329,32 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
       return $status;
     }
   }
+  
+  //### get the contractor ####
+  if (isset($params['contractor_nid']))
+    $contractor_nid = $params['contractor_nid'];
+  else {
+    $contractor_nid = 0; //init
+    foreach ($billables as $billable) {
+      $contractor_nid_new = $billable->contractor_nid;
+      if (!$contractor_nid)
+        $contractor_nid = $customer_nid_new;
+      else
+        if ($contractor_nid <> $customer_nid_new) {
+          //BAD! There are different contractors in the billables. We cannot create an invoice with that information!       
+         $status['status'] = 0;
+          $status['errors'][] = t('There is no unique contractor for that invoice and the billable invoice lines have different contractors set.');
+          return $status;
+        }
+    }
+    
+    if (!$contractor_nid) {
+      //BAD! There is no customer detected in the billables!. We cannot create an invoice with that information!
+      $status['status'] = 0;
+      $status['errors'][] = t('There is no unique contractor for that invoice found in the billable line items.');
+      return $status;
+    }
+  }
 
   //as we tried to get a customer, we try to get a currency for that invoice. It must be equal in all billables!
   $currency = false;
@@ -347,9 +374,8 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //now create the invoice!
   //create the invoice with the  billables      
   $invoice = new stdClass();
-  $invoice->type = 'erpal_invoice';
-  $invoice->is_new = true;
-  node_object_prepare($invoice);
+  $invoice->type = 'erpal_invoice';  
+  node_object_prepare($invoice);  
   
   $invoice->language = LANGUAGE_NONE;
   //set some other invoice specific fields
@@ -365,6 +391,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   
   //add customer
   $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
+  
+  //add contractor
+  $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'] = $contractor_nid;
   
   //add address_id
   $invoice->field_invoice_address_id[LANGUAGE_NONE][0]['value'] = $params['address_id'];
@@ -390,7 +419,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   foreach ($billable_ids as $billable_id) {
     $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $billable_id;
   }
- dpm($invoice);
+
   node_save($invoice);
   
   $status['invoice'] = $invoice;

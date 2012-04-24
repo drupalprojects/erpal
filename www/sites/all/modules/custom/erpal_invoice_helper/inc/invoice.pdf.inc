@@ -91,7 +91,6 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
 
   $destination = false;
   if ($attach) {
-    //@TODO get the destination where the filefield widget would place the pdf!
     //load the field to get the destination of the files
     $fileField = 'field_pdf_file';
     $fields = field_info_fields();

@@ -162,6 +162,10 @@ function erpal_print_logo_path() {
   $doc_root = $_SERVER['DOCUMENT_ROOT'];  
 
   $logo_fid = variable_get('my_document_logo', false);
+  
+  if (!$logo_fid)
+    return ''; 
+    
   $file = file_load($logo_fid);
   return file_create_url($file->uri);
 }
