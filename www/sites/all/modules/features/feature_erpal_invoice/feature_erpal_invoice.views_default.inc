@@ -514,38 +514,245 @@ echo _erpal_invoice_helper_view_billables_header_content();
   /* Display: Billables */
   $handler = $view->new_display('page', 'Billables', 'page');
   $handler->display->display_options['path'] = 'invoice/billables';
-  $translatables['billables'] = array(
-    t('Master'),
-    t('Billables'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php
-echo _erpal_invoice_helper_view_billables_header_content();
-?>'),
-    t('Customer'),
-    t('Contractor'),
-    t('Billable ID'),
-    t('billable/[billable_id]/view'),
-    t('.'),
-    t('Subject'),
-    t('Billed'),
-    t('Date delivery'),
-    t('Quantity'),
-    t(','),
-    t('Single price'),
-    t('Total excl. VAT'),
-    t('Total VAT'),
-    t('Total'),
-    t('Currency'),
-    t('Delivery'),
+
+  /* Display: Billables by invoice pane */
+  $handler = $view->new_display('panel_pane', 'Billables by invoice pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Entity Reference: Referencing entity */
+  $handler->display->display_options['relationships']['reverse_field_billables_ref_node']['id'] = 'reverse_field_billables_ref_node';
+  $handler->display->display_options['relationships']['reverse_field_billables_ref_node']['table'] = 'billable';
+  $handler->display->display_options['relationships']['reverse_field_billables_ref_node']['field'] = 'reverse_field_billables_ref_node';
+  $handler->display->display_options['relationships']['reverse_field_billables_ref_node']['required'] = 0;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Billable: Billable ID */
+  $handler->display->display_options['fields']['billable_id']['id'] = 'billable_id';
+  $handler->display->display_options['fields']['billable_id']['table'] = 'billable';
+  $handler->display->display_options['fields']['billable_id']['field'] = 'billable_id';
+  $handler->display->display_options['fields']['billable_id']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['make_link'] = 1;
+  $handler->display->display_options['fields']['billable_id']['alter']['path'] = 'billable/[billable_id]/view';
+  $handler->display->display_options['fields']['billable_id']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['billable_id']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['billable_id']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['billable_id']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['billable_id']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['billable_id']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['billable_id']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['billable_id']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['billable_id']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['billable_id']['separator'] = '';
+  $handler->display->display_options['fields']['billable_id']['format_plural'] = 0;
+  /* Field: Billable: Date_delivery */
+  $handler->display->display_options['fields']['date_delivery']['id'] = 'date_delivery';
+  $handler->display->display_options['fields']['date_delivery']['table'] = 'billable';
+  $handler->display->display_options['fields']['date_delivery']['field'] = 'date_delivery';
+  $handler->display->display_options['fields']['date_delivery']['label'] = 'Date delivery';
+  $handler->display->display_options['fields']['date_delivery']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['date_delivery']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['date_delivery']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['date_delivery']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['date_delivery']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['date_delivery']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['date_delivery']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['date_delivery']['custom_date_format'] = 'Y-m-d';
+  /* Field: Billable: Quantity */
+  $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
+  $handler->display->display_options['fields']['quantity']['table'] = 'billable';
+  $handler->display->display_options['fields']['quantity']['field'] = 'quantity';
+  $handler->display->display_options['fields']['quantity']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['quantity']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['quantity']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['quantity']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['quantity']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['quantity']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['quantity']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['quantity']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['quantity']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['quantity']['set_precision'] = 0;
+  $handler->display->display_options['fields']['quantity']['precision'] = '0';
+  $handler->display->display_options['fields']['quantity']['format_plural'] = 0;
+  /* Field: Billable: Single_price */
+  $handler->display->display_options['fields']['single_price']['id'] = 'single_price';
+  $handler->display->display_options['fields']['single_price']['table'] = 'billable';
+  $handler->display->display_options['fields']['single_price']['field'] = 'single_price';
+  $handler->display->display_options['fields']['single_price']['label'] = 'Single price';
+  $handler->display->display_options['fields']['single_price']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['single_price']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['single_price']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['single_price']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['single_price']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['single_price']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['single_price']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['single_price']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['single_price']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['single_price']['set_precision'] = 1;
+  $handler->display->display_options['fields']['single_price']['precision'] = '2';
+  $handler->display->display_options['fields']['single_price']['format_plural'] = 0;
+  /* Field: Billable: Total_price_no_vat */
+  $handler->display->display_options['fields']['total_price_no_vat']['id'] = 'total_price_no_vat';
+  $handler->display->display_options['fields']['total_price_no_vat']['table'] = 'billable';
+  $handler->display->display_options['fields']['total_price_no_vat']['field'] = 'total_price_no_vat';
+  $handler->display->display_options['fields']['total_price_no_vat']['label'] = 'Total excl. VAT';
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['total_price_no_vat']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['total_price_no_vat']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['total_price_no_vat']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['total_price_no_vat']['set_precision'] = 1;
+  $handler->display->display_options['fields']['total_price_no_vat']['precision'] = '2';
+  $handler->display->display_options['fields']['total_price_no_vat']['format_plural'] = 0;
+  /* Field: Billable: Total_vat */
+  $handler->display->display_options['fields']['total_vat']['id'] = 'total_vat';
+  $handler->display->display_options['fields']['total_vat']['table'] = 'billable';
+  $handler->display->display_options['fields']['total_vat']['field'] = 'total_vat';
+  $handler->display->display_options['fields']['total_vat']['label'] = 'Total VAT';
+  $handler->display->display_options['fields']['total_vat']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['total_vat']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['total_vat']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['total_vat']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['total_vat']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['total_vat']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['total_vat']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['total_vat']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['total_vat']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['total_vat']['set_precision'] = 1;
+  $handler->display->display_options['fields']['total_vat']['precision'] = '2';
+  $handler->display->display_options['fields']['total_vat']['format_plural'] = 0;
+  /* Field: Billable: Total_price */
+  $handler->display->display_options['fields']['total_price']['id'] = 'total_price';
+  $handler->display->display_options['fields']['total_price']['table'] = 'billable';
+  $handler->display->display_options['fields']['total_price']['field'] = 'total_price';
+  $handler->display->display_options['fields']['total_price']['label'] = 'Total';
+  $handler->display->display_options['fields']['total_price']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['total_price']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['total_price']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['total_price']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['total_price']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['total_price']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['total_price']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['total_price']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['total_price']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['total_price']['set_precision'] = 1;
+  $handler->display->display_options['fields']['total_price']['precision'] = '2';
+  $handler->display->display_options['fields']['total_price']['format_plural'] = 0;
+  /* Field: Billable: Currency */
+  $handler->display->display_options['fields']['currency']['id'] = 'currency';
+  $handler->display->display_options['fields']['currency']['table'] = 'billable';
+  $handler->display->display_options['fields']['currency']['field'] = 'currency';
+  $handler->display->display_options['fields']['currency']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['currency']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['currency']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['currency']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['currency']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['currency']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['currency']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['currency']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['currency']['hide_alter_empty'] = 1;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Billable: Date_delivery */
+  $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
+  $handler->display->display_options['sorts']['date_delivery']['table'] = 'billable';
+  $handler->display->display_options['sorts']['date_delivery']['field'] = 'date_delivery';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'reverse_field_billables_ref_node';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['default_argument_options']['argument'] = 'No invoice line items found';
+  $handler->display->display_options['arguments']['nid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['nid']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  $handler->display->display_options['argument_input'] = array(
+    'nid' => array(
+      'type' => 'panel',
+      'context' => 'entity:comment.author',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Nid',
+    ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $export['billables'] = $view;
 
   $view = new view;
@@ -919,31 +1126,6 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   /* Display: Invoices */
   $handler = $view->new_display('page', 'Invoices', 'page');
   $handler->display->display_options['path'] = 'invoice/invoices';
-  $translatables['invoices'] = array(
-    t('Master'),
-    t('Invoices'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php
-echo _erpal_invoice_helper_view_invoices_header_content();
-?>'),
-    t('Invoice Date'),
-    t('Invoice Number'),
-    t('Payed'),
-    t('Payment date'),
-    t('Total excl. VAT'),
-    t('Total incl. VAT'),
-    t('Currency'),
-    t('Customer'),
-    t('Contractor'),
-  );
   $export['invoices'] = $view;
 
   return $export;
