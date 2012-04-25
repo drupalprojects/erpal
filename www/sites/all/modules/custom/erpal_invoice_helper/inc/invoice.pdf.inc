@@ -105,8 +105,7 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
     $dest_dir_abs = $drupal_file_path_abs."/".$destination;
     //ensure the folder exists
 
-    if (!file_exists($drupal_file_path_abs))
-      mkdir($drupal_file_path_abs);
+    file_prepare_directory($drupal_file_path_abs,  FILE_CREATE_DIRECTORY);
     
     $dest_dir_rel = $drupal_file_path_rel."/".$destination;
     $basename = "/invoice-".$invoice->field_invoice_number[LANGUAGE_NONE][0]['value'].".pdf";
