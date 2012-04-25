@@ -15,7 +15,7 @@ function date_token_info() {
     'description' => t('Tokens related to date field values.'),
     'needs-data' => 'date-field-value',
     'field-value' => TRUE,
-  ); 
+  );
   // Provide two tokens: 'date' (the date or start-date), and 'end-date'.
   $info['tokens']['date-field-value']['date'] = array(
     'name' => t('Date'),
