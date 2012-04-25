@@ -753,6 +753,42 @@ echo _erpal_invoice_helper_view_billables_header_content();
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['billables'] = array(
+    t('Master'),
+    t('Billables'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('<?php
+echo _erpal_invoice_helper_view_billables_header_content();
+?>'),
+    t('Customer'),
+    t('Contractor'),
+    t('Billable ID'),
+    t('billable/[billable_id]/view'),
+    t('.'),
+    t('Subject'),
+    t('Billed'),
+    t('Date delivery'),
+    t('Quantity'),
+    t(','),
+    t('Single price'),
+    t('Total excl. VAT'),
+    t('Total VAT'),
+    t('Total'),
+    t('Currency'),
+    t('Delivery'),
+    t('Billables by invoice pane'),
+    t('Content referencing Billable from field_billables_ref'),
+    t('All'),
+    t('View panes'),
+  );
   $export['billables'] = $view;
 
   $view = new view;
@@ -1096,6 +1132,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['filters']['field_invoice_date_value']['expose']['operator'] = 'field_invoice_date_value_op';
   $handler->display->display_options['filters']['field_invoice_date_value']['expose']['identifier'] = 'field_invoice_date_value';
   $handler->display->display_options['filters']['field_invoice_date_value']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['field_invoice_date_value']['form_type'] = 'date_popup';
   /* Filter criterion: Content: Invoice Number (field_invoice_number) */
   $handler->display->display_options['filters']['field_invoice_number_value']['id'] = 'field_invoice_number_value';
   $handler->display->display_options['filters']['field_invoice_number_value']['table'] = 'field_data_field_invoice_number';
@@ -1126,6 +1163,31 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   /* Display: Invoices */
   $handler = $view->new_display('page', 'Invoices', 'page');
   $handler->display->display_options['path'] = 'invoice/invoices';
+  $translatables['invoices'] = array(
+    t('Master'),
+    t('Invoices'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('<?php
+echo _erpal_invoice_helper_view_invoices_header_content();
+?>'),
+    t('Invoice Date'),
+    t('Invoice Number'),
+    t('Payed'),
+    t('Payment date'),
+    t('Total excl. VAT'),
+    t('Total incl. VAT'),
+    t('Currency'),
+    t('Customer'),
+    t('Contractor'),
+  );
   $export['invoices'] = $view;
 
   return $export;
