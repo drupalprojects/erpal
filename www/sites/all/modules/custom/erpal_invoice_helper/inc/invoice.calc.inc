@@ -154,7 +154,7 @@ function _erpal_invoice_helper_set_notes($invoice) {
   $notes = array();
  
   //if value is already set, skipp!
-  if (isset($invoice->field_note[LANGUAGE_NONE])) {    
+  if (isset($invoice->field_note[LANGUAGE_NONE][0]['value'])) {    
     if ($invoice->field_note[LANGUAGE_NONE][0]['value']) {
       return;
     }
