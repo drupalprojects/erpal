@@ -19,6 +19,8 @@ to
   
 in references_dialog.module
 
+@see http://drupal.org/node/1494656
+
 Applied http://drupal.org/node/1283778#comment-5809128
 
 
