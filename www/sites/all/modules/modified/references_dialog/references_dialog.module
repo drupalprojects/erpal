@@ -12,7 +12,7 @@ function references_dialog_element_info() {
   $types['references_dialog'] = array(
     '#input' => FALSE ,
     '#after_build' => array('references_dialog_build_element'),
-    '#attached' => references_dialog_attached(false),
+    '#attached' => references_dialog_attached(),
   );
   return $types;
 }
@@ -20,18 +20,12 @@ function references_dialog_element_info() {
 /**
  * Get everything that needs to be attached in order for the links to work.
  */
-function references_dialog_attached($element) {
-  if ($element) {
-    $element['#attached']['js'][] = drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js';
-    $element['#attached']['css'][] = drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css';
-    $element['#attached']['library'][] = array('system', 'ui.dialog');
-    return $element['#attached'];
-  } else
-    return array(
-      'js' => array(drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js'),
-      'css' => array(drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css'),
-      'library' => array(array('system', 'ui.dialog')),
-    );
+function references_dialog_attached() {
+  return array(
+    'js' => array(drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js'),
+    'css' => array(drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css'),
+    'library' => array(array('system', 'ui.dialog')),
+  );
 }
 
 /**
@@ -198,7 +192,7 @@ function references_dialog_references_dialog_search_attachables() {
             $attachable_type = $dialog_widget['entity_type'];
           }
           elseif (isset($dialog_widgets[$instance['widget']['type']]['type_callback'])) {
-            $attachable_type = $dialog_widget['type_callback']($instance);
+            $attachable_type = $dialog_widget['type_callback']($instance, $field);
           }
           if (isset($attachable_type)) {
             $applicable_instances[$attachable_type][$entity_type . ':' . $field_name . ':' . $bundle_name] = array(
@@ -303,7 +297,7 @@ function references_dialog_process_widget(&$element) {
   }
   $dialog_widget = references_dialog_widget_load($widget_type);
   // Attach javascript and CSS needed.
-  $element['#attached'] = references_dialog_attached($element);
+  $element['#attached'] = references_dialog_attached();
   $element['#attached']['js'][] = references_dialog_js_settings($element['#id'], array('format' => $dialog_widget['format']));
   $link_options = array('attributes' => array('class' => array('references-dialog-activate')));
   $dialog_links = array();
@@ -386,6 +380,17 @@ function references_dialog_theme() {
 }
 
 /**
+ * Process variables for references_dialog_page.
+ */
+function template_process_references_dialog_page(&$variables) {
+  // Generate messages last in order to capture as many as possible for the
+  // current page.
+  if (!isset($variables['messages'])) {
+   $variables['messages'] = $variables['page']['#show_messages'] ? theme('status_messages') : '';
+  }
+}
+
+/**
  * Implements hook_entity_insert().
  */
 function references_dialog_entity_insert($entity, $entity_type) {
@@ -425,7 +430,10 @@ function references_dialog_close_on_redirect($entity, $entity_type) {
  */
 function references_dialog_init() {
   if (references_dialog_in_dialog()) {
-    module_invoke_all('suppress');
+    if (module_exists('admin_menu')) {
+      module_invoke('admin_menu', 'suppress');
+    }
+
     drupal_add_css(drupal_get_path('module', 'references_dialog') . '/css/references-dialog-search.css');
   }
 }
@@ -496,6 +504,9 @@ function references_dialog_get_views_search_links($attachable) {
  */
 function references_dialog_page_alter(&$page) {
   if (references_dialog_in_dialog()) {
+    unset($page['page_top']);
+    unset($page['page_bottom']);
+
     $page['#theme'] = 'references_dialog_page';
   }
 }
@@ -535,7 +546,7 @@ function references_dialog_views_plugins() {
   return array(
     'display' => array(
       'references_dialog' => array(
-        'title' => t('Reference Dialog Search'),
+        'title' => t('Reference dialog Search'),
         'admin' => t('References'),
         'theme' => 'views_view',
         'help' => t('A view that can be used when referencing content.'),
@@ -567,13 +578,7 @@ function references_dialog_redirect_page($entity_id, $entity_type) {
   $entity = reset($entity);
   $entity_info = entity_get_info($entity_type);
   $entity_id = $entity->{$entity_info['entity keys']['id']};
-  // Get the entity title, by using the callback if it is defined.
-  if (isset($entity_info['label callback'])) {
-    $entity_title = $entity_info['label callback']($entity);
-  }
-  else {
-    $entity_title = $entity->{$entity_info['entity keys']['label']};
-  }
+  $entity_title = entity_label($entity_type, $entity);
   // Add appropriate javascript that will be used by the parent page to
   // fill in the required data.
   if (isset($entity_id) && references_dialog_in_dialog() && isset($_GET['references-dialog-close'])) {
