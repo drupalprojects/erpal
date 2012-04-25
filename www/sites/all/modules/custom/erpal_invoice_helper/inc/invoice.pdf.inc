@@ -101,8 +101,13 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
     $uri_schema = $field_info['settings']['uri_scheme'];
     //require file module
     $drupal_file_path_rel = variable_get('file_' . $uri_schema . '_path', conf_path() . '/files');
-    $drupal_file_path_abs = drupal_realpath(file_default_scheme() . '://');
+    $drupal_file_path_abs = drupal_realpath($uri_schema . '://');
     $dest_dir_abs = $drupal_file_path_abs."/".$destination;
+    //ensure the folder exists
+
+    if (!file_exists($drupal_file_path_abs))
+      mkdir($drupal_file_path_abs);
+    
     $dest_dir_rel = $drupal_file_path_rel."/".$destination;
     $basename = "/invoice-".$invoice->field_invoice_number[LANGUAGE_NONE][0]['value'].".pdf";
     $filename_for_uri = $destination.$basename;
