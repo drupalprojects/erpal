@@ -31,3 +31,6 @@ to
 in references_dialog.module
 
 Applied http://drupal.org/node/1283778#comment-5809128
+
+
+Applied http://drupal.org/node/1504270#comment-5788988
