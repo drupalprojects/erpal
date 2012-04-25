@@ -1,14 +1,3 @@
-changed the regular expression in line 167 to 
-if (preg_match("/.\((\d*)\)/", $element['#default_value'], $matches)) {
-
-instead of
-
-if (preg_match("/.\((\d+)\)/", $element['#default_value'], $matches)) {
-
-in references_dialog.dialog_widgets.inc
-
-#########################################################################
-
 Made references dialog more externdable for ajax functions
 so changed the 
 
