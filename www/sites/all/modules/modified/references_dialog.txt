@@ -29,3 +29,5 @@ to
   $element['#attached'] = references_dialog_attached($element);
   
 in references_dialog.module
+
+Applied http://drupal.org/node/1283778#comment-5809128

@@ -563,7 +563,8 @@ function references_dialog_redirect_access() {
  */
 function references_dialog_redirect_page($entity_id, $entity_type) {
   // Get some information about the entity we are dealing with.
-  $entity = reset(entity_load($entity_type, array($entity_id)));
+  $entity = entity_load($entity_type, array($entity_id));
+  $entity = reset($entity);
   $entity_info = entity_get_info($entity_type);
   $entity_id = $entity->{$entity_info['entity keys']['id']};
   // Get the entity title, by using the callback if it is defined.
