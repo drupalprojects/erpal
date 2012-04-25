@@ -104,14 +104,22 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#suffix'] = '</div>';
 
     $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
+
+    //if address has only one option, make this option the default value
+    $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];
+    $default_id = false;
+    if (count($options) == 2) {
+      //get the one that is not "_none" and delete it!    
+      foreach ($options as $id=>$value) {
+        if (!is_numeric($id))
+          unset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$id]);
+      }
+    }
+    if ($default_id) {
+      $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
+    }
+  
     
-    //hide automatically calculated fields
-    /*
-    $form['field_price_no_vat']['#type'] = 'value';
-    $form['field_invoice_vat']['#type'] = 'value';
-    $form['field_invoice_total']['#type'] = 'value';
-    $form['field_payment_date']['#type'] = 'value'; 
-    */
  
     //if has no nid copy notes from defaults in admin settings if erpal_invoice
     if (!$form['nid']['#value']) {
@@ -459,8 +467,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $total_excl_vat = $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'];
   $payment_date = $invoice->field_payment_date[LANGUAGE_NONE][0]['value'];
   $currency = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
-  $order_numbers_intern = $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'];
-  $order_numbers_extern = $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'];
+  $order_numbers_intern = isset($invoice->field_order_number_intern[LANGUAGE_NONE]) ? $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'] : false;
+  $order_numbers_extern = isset($invoice->field_order_number_extern[LANGUAGE_NONE]) ? $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'] : false;
   
   $notes = '';
   if (isset($invoice->field_note[LANGUAGE_NONE]))
@@ -522,11 +530,12 @@ function erpal_invoice_helper_vat_rates() {
 * assigned in feature_erpal_invoice
 */
 function _erpal_invoice_helper_ajax_invoice_preselect_addresses($form, $form_state) {  
+    
   return $form['field_invoice_address_id'][LANGUAGE_NONE];  //form has already been processed, so just return the elements
 }
 
 /**
-* Callback function for returnin all available address of a customer 
+* Callback function for returning all available addresses of a customer 
 * in field_invoice_address_id at an invoice
 */
 function erpal_invoice_helper_field_invoice_address_id_allowed_values($field) {

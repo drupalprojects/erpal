@@ -98,8 +98,9 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
     $field_instance = field_info_instance('node', $fileField, 'erpal_invoice');
     $destination = $field_instance['settings']['file_directory'];
     
+    $uri_schema = $field_info['settings']['uri_scheme'];
     //require file module
-    $drupal_file_path_rel = variable_get('file_' . file_default_scheme() . '_path', conf_path() . '/files');
+    $drupal_file_path_rel = variable_get('file_' . $uri_schema . '_path', conf_path() . '/files');
     $drupal_file_path_abs = drupal_realpath(file_default_scheme() . '://');
     $dest_dir_abs = $drupal_file_path_abs."/".$destination;
     $dest_dir_rel = $drupal_file_path_rel."/".$destination;

@@ -113,7 +113,7 @@
 </node>
 </node>
 <node CREATED="1334758873570" ID="ID_1309184907" MODIFIED="1334758879881" POSITION="right" TEXT="billable">
-<node CREATED="1334759776411" ID="ID_1808358446" MODIFIED="1334869244601" TEXT="Erstellt wenn: siehe body">
+<node CREATED="1334759776411" ID="ID_1808358446" MODIFIED="1335212284853" TEXT="Erstellt wenn: siehe body">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -130,8 +130,10 @@
     </p>
   </body>
 </html></richcontent>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1334760824258" ID="ID_420839048" MODIFIED="1334869248338" TEXT="behandeln wie f&#xfc;r forderungen">
+<node CREATED="1334760824258" ID="ID_420839048" MODIFIED="1335212296282" TEXT="behandeln wie f&#xfc;r forderungen">
+<icon BUILTIN="button_ok"/>
 <node CREATED="1334760833242" ID="ID_1647696882" MODIFIED="1334760842746" TEXT="l&#xf6;schen, anpassen etc."/>
 <node CREATED="1334904669205" ID="ID_1016518786" MODIFIED="1334904675272" TEXT="reduce funktion anpassen"/>
 <node CREATED="1334904762711" ID="ID_473461154" MODIFIED="1334904766186" TEXT="tests anpassen"/>
@@ -150,7 +152,7 @@
 </node>
 </node>
 <node CREATED="1334758880113" ID="ID_1639483521" MODIFIED="1334758886083" POSITION="right" TEXT="invoice">
-<node CREATED="1334761126275" FOLDED="true" ID="ID_192387088" MODIFIED="1334907306957" TEXT="field contractor">
+<node CREATED="1334761126275" FOLDED="true" ID="ID_192387088" MODIFIED="1335212311321" TEXT="field contractor">
 <arrowlink DESTINATION="ID_1217035326" ENDARROW="Default" ENDINCLINATION="53;0;" ID="Arrow_ID_517463090" STARTARROW="None" STARTINCLINATION="53;0;"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1334869316856" ID="ID_1619581643" MODIFIED="1334907294797" TEXT="wenn leer, eigene Firma einf&#xfc;gen">
