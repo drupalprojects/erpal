@@ -90,6 +90,13 @@ function feature_erpal_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'file_default_scheme';
+  $strongarm->value = 'private';
+  $export['file_default_scheme'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_erpal_contact';
   $strongarm->value = '0';
   $export['language_content_type_erpal_contact'] = $strongarm;

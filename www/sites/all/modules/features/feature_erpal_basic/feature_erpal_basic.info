@@ -99,6 +99,7 @@ features[variable][] = comment_erpal_contact
 features[variable][] = comment_form_location_erpal_contact
 features[variable][] = comment_preview_erpal_contact
 features[variable][] = comment_subject_field_erpal_contact
+features[variable][] = file_default_scheme
 features[variable][] = language_content_type_erpal_contact
 features[variable][] = menu_options_erpal_contact
 features[variable][] = menu_parent_erpal_contact
