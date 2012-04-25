@@ -9,6 +9,7 @@ dependencies[] = billable
 dependencies[] = ctools
 dependencies[] = date
 dependencies[] = ds
+dependencies[] = ds_forms
 dependencies[] = entity_token
 dependencies[] = entityreference
 dependencies[] = erpal_invoice_helper
