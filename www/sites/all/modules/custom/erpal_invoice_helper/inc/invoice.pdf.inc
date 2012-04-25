@@ -116,10 +116,10 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
 
     //create the pdf and save it to the destination
     $dest_filename = _erpal_print_html_as_pdf($html, $dest_filename);
-    
+
     //get the uri    
-    $final_uri = file_build_uri($filename_for_uri);
-    
+    $final_uri = $uri_schema."://".$filename_for_uri;
+
     //save the file object!    
     global $user;
     //if there is already a file attached to this invoice node, use this one
