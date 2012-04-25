@@ -213,11 +213,11 @@ function _erpal_basic_helper_get_field_values($field_name, $contact_node, $for_o
 */
 function erpal_basic_helper_entity_as_string($entity) {
   if ($entity->field_name == 'field_addresses') {
-    $street = $entity->field_street[LANGUAGE_NONE][0]['value'];
-    $zip_code = $entity->field_zip_code[LANGUAGE_NONE][0]['value'];
-    $country = $entity->field_country[LANGUAGE_NONE][0]['value'];
-    $city = $entity->field_city[LANGUAGE_NONE][0]['value'];
-    $address_type = $entity->field_address_type[LANGUAGE_NONE][0]['value'];
+    $street = isset($entity->field_street[LANGUAGE_NONE]) ? $entity->field_street[LANGUAGE_NONE][0]['value'] : '';
+    $zip_code = isset($entity->field_zip_code[LANGUAGE_NONE]) ? $entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '';
+    $country = isset($entity->field_country[LANGUAGE_NONE]) ? $entity->field_country[LANGUAGE_NONE][0]['value'] : '';
+    $city = isset($entity->field_city[LANGUAGE_NONE]) ? $entity->field_city[LANGUAGE_NONE][0]['value'] : '';
+    $address_type = isset($entity->field_address_type[LANGUAGE_NONE]) ? $entity->field_address_type[LANGUAGE_NONE][0]['value'] : '';
     $entity_string = $street." - ".$zip_code." - ".$city." (".$address_type.")";
   } elseif ($entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
