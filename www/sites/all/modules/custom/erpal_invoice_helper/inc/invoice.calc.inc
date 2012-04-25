@@ -198,10 +198,12 @@ function _erpal_invoice_helper_set_notes($invoice) {
   foreach ($ordered_notes as $weight=>$note) {
     //add it only if it does not exists
     $exists = false;
-    foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $existing_note) {
-      if ($existing_note['value'] == $note) {
-        $exists = true;
-        break;
+    if ($invoice->field_auto_note[LANGUAGE_NONE]) {
+      foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $existing_note) {
+        if ($existing_note['value'] == $note) {
+          $exists = true;
+          break;
+        }
       }
     }
     
