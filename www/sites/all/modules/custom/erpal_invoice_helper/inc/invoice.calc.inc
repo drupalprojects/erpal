@@ -48,6 +48,7 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
   $total_incl_vat = 0;
 
   //@todo prüfen ob hier evtl rechenfehler z.B. durch Rundung entstehen und in tests aufnehmen
+  $currency = false;
   foreach ($line_items as $line_item) {
     if (!$line_item['target_id'])
       continue;
@@ -64,11 +65,16 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
     $total_vat += $vat;
     $total_excl_vat += $billable->total_price_no_vat;
     $total_incl_vat += $billable->total_price;
+    
+    //in the validation we have ensured that currencies in all billables are unique. 
+    //so we can fill the variable from any billable.
+    $currency = $billable->currency;
   }
   
   //first add the single values to the invoice
   $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'] = $total_excl_vat;
   $invoice->field_invoice_total[LANGUAGE_NONE][0]['value'] = $total_incl_vat;
+  $invoice->field_currency[LANGUAGE_NONE][0]['value'] = $currency;
   
   //now we have to add an entity for vat field collection for each vat rate we have found
   //in our line items
@@ -279,7 +285,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
     $status['errors'][] = t('There are no billable items the invoice should be created from.');
     return $status;
   }
- 
+
   //perhaps there is no invoice address given, then we cannot create the invoice
   if (!(isset($params['address_id']) && intval($params['address_id']))) {
     $status['status'] = 0;
@@ -389,6 +395,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //set date and credit information
   $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'] = isset($params['invoice_date']) ? $params['invoice_date'] : time();  //the current date
   $invoice->field_credit_period[LANGUAGE_NONE][0]['value'] = isset($params['credit_period']) ? $params['credit_period'] : 14;
+
   $invoice->field_currency[LANGUAGE_NONE][0]['value'] = $currency;
   
   //add customer
