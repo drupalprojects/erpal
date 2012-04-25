@@ -18,33 +18,33 @@
 
 //Just an example of the notes, because there wasn't any
 /*
-$notes = "
+  $notes = "
   Bitte überweisen Sie den Gesamtbetrag bis zum dd.mm.yyyy auf unser Konto.
 
-Der Gesamtbetrag setzt sich wie folgt zusammen:
-€ x.xxx,xx MwsT zu x% auf € yx.xxx,xx netto.
+  Der Gesamtbetrag setzt sich wie folgt zusammen:
+  € x.xxx,xx MwsT zu x% auf € yx.xxx,xx netto.
 
 
 
-Vielen Dank für Ihren Auftrag.
+  Vielen Dank für Ihren Auftrag.
 
-Max Mustermann
-  ";
-$notes = nl2br($notes);*/
-
-
+  Max Mustermann
+  "; */
+/*
+  $order_numbers_extern = 'ex12345';
+  $order_numbers_intern = 'in67890'; */
 ?>
 <style>
   * {
     font-size:8pt;
   }
-  table#anschrifttabelle {
+  table#head_table {
     width:100%;
   }
   div#absender {
     font-size:0.7em;
   }
-  
+
   div#rechnungsdaten_top {
     height:5cm;
   }
@@ -64,8 +64,8 @@ $notes = nl2br($notes);*/
     border-top:0.5pt solid #000;
     line-height:2em;
   }
-  
-  
+
+
   .left {
     text-align:left;
   }
@@ -80,30 +80,58 @@ $notes = nl2br($notes);*/
 <table>
   <tr><td style="height:1.0cm;">&nbsp;</td></tr>
 </table>
-<table id="anschrifttabelle" style="width:21cm">
+<table id="head_table">
   <tr>
-    <td style="width:10cm">
+    <td>
       <div id="absender"><?php print implode(" - ", $customer); ?></div>
-      <div id="anschrift">
-<?php print implode("<br />", $customer); ?>
-      </div>
-    </td>  
-    <td style="width:6cm"></td>
-    <td style="width:5cm">
-      <div id="order_numbers_extern">Ihre Bestellnummer: <?php print $order_numbers_extern;?></div>
-      <div id="order_numbers_intern">Ihre Auftragsnummer: <?php print $order_numbers_intern;?></div>
+      <div id="anschrift"><?php print implode("<br />", $customer); ?></div>
+    </td>      
+  </tr>
+  <tr>
+    <td colspan="2">
+      <table>
+        <tr><td style="height:0.8cm;">&nbsp;</td></tr>
+      </table>
+      <table id="rechnungsdaten">
+        <tr>
+          <td id="rechnungsnummer" class="left">
+            <table>
+              <tr>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="height:1cm">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>Rechnung Nr. <?php print $invoice_number; ?></td>
+              </tr>
+            </table>  
+          </td>
+          <td id="rechnungsdatum" class="right">
+            <table>
+              <tr>
+                <td><?php if ($order_numbers_extern) : ?> Ihre Bestellnummer: <?php print $order_numbers_extern; ?><?php endif; ?></td>
+              </tr>
+              <tr>
+                <td><?php if ($order_numbers_intern) : ?> Ihre Auftragsnummer: <?php print $order_numbers_intern; ?><?php endif; ?></td>
+              </tr>
+              <tr>
+                <td style="height:1cm">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>Datum: <?php print $invoice_date; ?></td>
+              </tr>
+            </table>            
+          </td>      
+        </tr>    
+      </table>
     </td>
   </tr>
 </table>
-<table>
-  <tr><td style="height:1.8cm;">&nbsp;</td></tr>
-</table>
-<table id="rechnungsdaten">
-  <tr>
-    <td id="rechnungsnummer" class="left">Rechnung Nr. <?php print $invoice_number; ?></td>
-    <td id="rechnungsdatum" class="right">Datum: <?php print $invoice_date; ?></td>      
-  </tr>    
-</table>
+
 <table>
   <tr><td style="height:0.8cm;">&nbsp;</td></tr>
 </table>
@@ -160,7 +188,7 @@ if (is_array($billables)) {
           2 => array('data' => t("Sum excl. VAT"), 'class' => 'right', 'colspan' => 2),
           3 => array('data' => $total_excl_vat . $curr, 'class' => 'right'),
       ),
-      'class' => array('sumrow', 'bordertop'),      
+      'class' => array('sumrow', 'bordertop'),
   );
 
   // VAT
@@ -203,12 +231,12 @@ if (is_array($billables)) {
 }
 ?>
 <div id="rechnungshinweis">
-<?php
-if (is_array($auto_notes)) {
-  print implode("<br />", $auto_notes);
-}
-print $notes;
-?>
+  <?php
+  if (is_array($auto_notes)) {
+    print implode("<br />", $auto_notes);
+  }
+  print nl2br($notes);
+  ?>
 </div>
 <?php return; ?>
 
@@ -310,7 +338,7 @@ print $notes;
     <td colspan="2">
       <div id="absender"><?php print implode(" - ", $customer); ?></div>
       <div id="anschrift">
-<?php print implode("<br />", $customer); ?>
+        <?php print implode("<br />", $customer); ?>
       </div>
     </td>      
   </tr>
@@ -417,11 +445,11 @@ if (is_array($billables)) {
 
 
 <div id="rechnungshinweis">
-<?php
-if (is_array($auto_notes))
-  print implode("<br />", $auto_notes);
-print $notes;
-?>
+  <?php
+  if (is_array($auto_notes))
+    print implode("<br />", $auto_notes);
+  print $notes;
+  ?>
 </div>
 
 
