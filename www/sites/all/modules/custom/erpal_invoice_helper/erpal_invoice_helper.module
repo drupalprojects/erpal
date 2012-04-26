@@ -9,6 +9,7 @@ module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/billables.elements');
 
 /**
  * Implements hook_action_info().
@@ -118,8 +119,6 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     if ($default_id) {
       $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
     }
-  
-    
  
     //if has no nid copy notes from defaults in admin settings if erpal_invoice
     if (!$form['nid']['#value']) {
