@@ -88,7 +88,7 @@
     </td>      
   </tr>
   <tr>
-    <td colspan="2">
+    <td>      
       <table>
         <tr><td style="height:0.8cm;">&nbsp;</td></tr>
       </table>
@@ -126,7 +126,7 @@
               </tr>
             </table>            
           </td>      
-        </tr>    
+        </tr>   
       </table>
     </td>
   </tr>
