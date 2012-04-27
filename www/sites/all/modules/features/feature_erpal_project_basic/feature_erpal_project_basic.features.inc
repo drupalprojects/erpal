@@ -9,11 +9,19 @@
  */
 function feature_erpal_project_basic_ctools_plugin_api() {
   list($module, $api) = func_get_args();
+  if ($module == "ds" && $api == "ds") {
+    return array("version" => "1");
+  }
+  list($module, $api) = func_get_args();
   if ($module == "features_plumber" && $api == "features_plumber_records") {
     return array("version" => "1");
   }
   list($module, $api) = func_get_args();
   if ($module == "field_group" && $api == "field_group") {
+    return array("version" => "1");
+  }
+  list($module, $api) = func_get_args();
+  if ($module == "page_manager" && $api == "pages_default") {
     return array("version" => "1");
   }
   list($module, $api) = func_get_args();
@@ -30,10 +38,7 @@ function feature_erpal_project_basic_ctools_plugin_api() {
  * Implements hook_views_api().
  */
 function feature_erpal_project_basic_views_api() {
-  list($module, $api) = func_get_args();
-  if ($module == "views" && $api == "views_default") {
-    return array("version" => "3.0");
-  }
+  return array("version" => "3.0");
 }
 
 /**

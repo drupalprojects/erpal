@@ -151,7 +151,8 @@ function billable_access($op, $billable = NULL, $account = NULL) {
   if (user_access('administer billables', $account)) {
     return TRUE;
   }
-  if (isset($billable) && $type_name = $billable->type) {
+
+  if (isset($billable) && is_object($billable) && $type_name = $billable->type) {
     $op = ($op == 'view') ? 'view' : 'edit';
     if (user_access("$op any billable", $account)) {
       return TRUE;

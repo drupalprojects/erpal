@@ -10,7 +10,7 @@
 function feature_erpal_project_basic_user_default_roles() {
   $roles = array();
 
-  // Exported role: project user
+  // Exported role: project user.
   $roles['project user'] = array(
     'name' => 'project user',
     'weight' => '4',

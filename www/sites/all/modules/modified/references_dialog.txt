@@ -1,14 +1,3 @@
-changed the regular expression in line 167 to 
-if (preg_match("/.\((\d*)\)/", $element['#default_value'], $matches)) {
-
-instead of
-
-if (preg_match("/.\((\d+)\)/", $element['#default_value'], $matches)) {
-
-in references_dialog.dialog_widgets.inc
-
-#########################################################################
-
 Made references dialog more externdable for ajax functions
 so changed the 
 
@@ -29,3 +18,10 @@ to
   $element['#attached'] = references_dialog_attached($element);
   
 in references_dialog.module
+
+@see http://drupal.org/node/1494656
+
+Applied http://drupal.org/node/1283778#comment-5809128
+
+
+Applied http://drupal.org/node/1504270#comment-5788988

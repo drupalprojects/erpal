@@ -35,3 +35,23 @@ function _erpal_invoice_helper_get_billable_customers($billable_id_arr) {
   
   return $customers;
 }
+
+/**
+* Returns all contractor nids to a given amount of billable ids
+*/
+function _erpal_invoice_helper_get_billable_contractors($billable_id_arr) {
+  if (count($billable_id_arr) <= 0)
+    return array();
+  
+  $result = db_select('billable', 'b')
+    ->fields('b', array('contractor_nid'))
+    ->condition('billable_id', $billable_id_arr,'IN')
+    ->execute();
+
+  $contractors = array();
+  while($record = $result->fetchAssoc()) {
+      $contractors[$record['contractor_nid']] = $record['contractor_nid'];
+  }
+  
+  return $contractors;
+}

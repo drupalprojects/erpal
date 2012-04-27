@@ -156,13 +156,21 @@ function billable_edit_form($form, &$form_state, $billable) {
     '#required' => TRUE,
   );
 
+  $form['contractor_nid'] = array(
+    '#type' => 'select',
+    '#options' => _billable_get_customers(),
+    '#title' => t('Contractor'),
+    '#default_value' => isset($billable->contractor_nid) ? $billable->contractor_nid : '',
+    '#required' => TRUE,
+  );
+  
   $form['customer_nid'] = array(
     '#type' => 'select',
     '#options' => _billable_get_customers(),
     '#title' => t('Customer'),
     '#default_value' => isset($billable->customer_nid) ? $billable->customer_nid : '',
     '#required' => TRUE,
-  );
+  );  
  
   $form['quantity'] = array(
     '#type' => 'textfield',

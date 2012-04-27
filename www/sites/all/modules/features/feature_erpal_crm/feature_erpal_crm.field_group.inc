@@ -21,7 +21,7 @@ function feature_erpal_crm_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Files',
-    'weight' => '14',
+    'weight' => '11',
     'children' => array(
       0 => 'field_asset_files',
       1 => 'field_local_files',

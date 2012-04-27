@@ -6,7 +6,8 @@
 
 //require a file with some testfunctions
 require_once 'erpal_projects_billable.test.helper';
- 
+require_once 'erpal_projects_billable.costs.test';
+
 class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
 
   public static function getInfo() {
@@ -236,25 +237,32 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
     $pricing['price_mode'] = 'per_hour';
     $task = _erpal_projects_billable_test_create_task($pricing, 'inserted');
     $tt = _erpal_projects_billable_test_create_timetracking($pricing['quantity'], $task);         
-    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billable = _erpal_projects_billable_test_get_billable($tt);
     $billableOK = false;
     $billable = array_shift($billable);    
     //check values of the billable
-    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);       
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $tt);       
     $this->assertTrue($billableOK, 'Billable kicked on task with price mode is per hour', $group);
     
     //change the duration of the task, the billable should change, too
     $pricing['quantity'] = 2; //hours
     $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $pricing['quantity'];
     node_save($tt);
-    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billable = _erpal_projects_billable_test_get_billable($tt);
     $billableOK = false;
     $billable = array_shift($billable);    
     //check values of the billable
-    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);       
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $tt);       
     $this->assertTrue($billableOK, 'Billable price changed after timetracking duration changed', $group);
 
       
+  }
+ 
+  /**
+  * Validate that cost billables are created correctly
+  */
+  function testCostCreateBillables() {
+    billable_test_check_costs();
   }
  
   /**

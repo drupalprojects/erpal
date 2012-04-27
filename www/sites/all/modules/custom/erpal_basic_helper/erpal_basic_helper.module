@@ -7,6 +7,13 @@
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
  
 /**
+* Implements hok_init
+*/ 
+function erpal_basic_helper_init() {
+  _erpal_basic_helper_warnings();
+}
+ 
+/**
 * Implements hook_menu
 */ 
 function erpal_basic_helper_menu(){
@@ -206,11 +213,11 @@ function _erpal_basic_helper_get_field_values($field_name, $contact_node, $for_o
 */
 function erpal_basic_helper_entity_as_string($entity) {
   if ($entity->field_name == 'field_addresses') {
-    $street = $entity->field_street[LANGUAGE_NONE][0]['value'];
-    $zip_code = $entity->field_zip_code[LANGUAGE_NONE][0]['value'];
-    $country = $entity->field_country[LANGUAGE_NONE][0]['value'];
-    $city = $entity->field_city[LANGUAGE_NONE][0]['value'];
-    $address_type = $entity->field_address_type[LANGUAGE_NONE][0]['value'];
+    $street = isset($entity->field_street[LANGUAGE_NONE]) ? $entity->field_street[LANGUAGE_NONE][0]['value'] : '';
+    $zip_code = isset($entity->field_zip_code[LANGUAGE_NONE]) ? $entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '';
+    $country = isset($entity->field_country[LANGUAGE_NONE]) ? $entity->field_country[LANGUAGE_NONE][0]['value'] : '';
+    $city = isset($entity->field_city[LANGUAGE_NONE]) ? $entity->field_city[LANGUAGE_NONE][0]['value'] : '';
+    $address_type = isset($entity->field_address_type[LANGUAGE_NONE]) ? $entity->field_address_type[LANGUAGE_NONE][0]['value'] : '';
     $entity_string = $street." - ".$zip_code." - ".$city." (".$address_type.")";
   } elseif ($entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
@@ -313,4 +320,14 @@ function _erpal_basic_helper_return_my_value($field_name) {
 function erpal_debug() {
   $debug = variable_get('erpal_debug', 0);
   return $debug;
+}
+
+/**
+* Shows sytem warnings on if config variables are not set
+*/
+function _erpal_basic_helper_warnings() {
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  
+  if (!$my_company_nid)
+    drupal_set_message(t('Please complete !config_link to make ERPAL work.', array('!config_link' => l(t('config settings'), 'admin/erpal/basic'))), 'warning');
 }

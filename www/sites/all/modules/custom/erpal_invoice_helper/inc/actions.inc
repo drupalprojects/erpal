@@ -30,9 +30,17 @@ function erpal_invoice_helper_invoice_from_billables_action_form($context) {
   $billable_ids = $context['selection'];
   $customer_id_arr = _erpal_invoice_helper_get_billable_customers($billable_ids);
 
+  $contractor_id_arr = _erpal_invoice_helper_get_billable_contractors($billable_ids);
+  
   //if user has more than one customers select redirect back, actually creating more than once invoice is not supported
   if (count($customer_id_arr) > 1) {
     drupal_set_message(t('Sorry, please select only billables with a unique customer using the view filter "Customer"'), 'error');
+    drupal_goto($_GET['q']);
+  }
+  
+  //if user has more than one contractor select redirect back, actually creating more than once invoice is not supported
+  if (count($contractor_id_arr) > 1) {
+    drupal_set_message(t('Sorry, please select only billables with a unique contractor using the view filter "Contractor"'), 'error');
     drupal_goto($_GET['q']);
   }
   
@@ -42,10 +50,25 @@ function erpal_invoice_helper_invoice_from_billables_action_form($context) {
     drupal_goto($_GET['q']);
   }
   
+  //get the contractor node
+  $contractor_id_arr = array_values($contractor_id_arr);
+  $contractor_nid = $contractor_id_arr[0];
+  $contractor_node = node_load($contractor_nid);
+  $form['contractor_title'] = array(
+    '#type' => 'item',
+    '#title' => t('Contractor'),
+    '#markup' => l($contractor_node->title, "node/".$contractor_node->nid),
+  );
+  
+  $form['contractor_nid'] = array(
+    '#type' => 'value',
+    '#value' => $contractor_node->nid,
+  );
+  
   //now get invoce address etc of customer, we are sure, we only have one customer here, but we prepare for the future already
   foreach ($customer_id_arr as $customer_id) {
     $customer_node = node_load($customer_id);
-    $customer_defaults_form = _erpal_invoice_helper_customer_defaults_form($customer_node);
+    $customer_defaults_form = _erpal_invoice_helper_customer_defaults_form($customer_node, $contractor_node);
   }
   
   $form = array_merge($form, $customer_defaults_form);
@@ -93,6 +116,8 @@ function erpal_invoice_helper_invoice_from_billables_action_submit($form, &$form
     'notes' => isset($values['notes']) ? $values['notes'] : '',
     'skonto_percent' => isset($values['skonto_percent']) ? $values['skonto_percent'] : 0,
     'skonto_period' => isset($values['skonto_period']) ? $values['skonto_period'] : 0,
+    'order_numbers_intern' => isset($values['order_numbers_intern']) ? $values['order_numbers_intern'] : '',
+    'order_numbers_extern' => isset($values['order_numbers_extern']) ? $values['order_numbers_extern'] : '',
   );
   $customer_nid = $values['customer_nid'];
   
@@ -116,6 +141,8 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
 
   if ($group_by_single_price)
     $params['group_by'] = array('single_price');
+  if (isset($context['contractor_nid']))
+    $params['contractor_nid'] = $context['contractor_nid'];
   if (isset($context['credit_period']))
     $params['credit_period'] = $context['credit_period']; 
   if (isset($context['invoice_date']))
@@ -126,6 +153,10 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
     $params['skonto']['discount_percent'] = $context['skonto_percent']; 
   if (isset($context['address_id']))
     $params['address_id'] = $context['address_id'];
+  if (isset($context['order_numbers_intern']))
+    $params['order_numbers_intern'] = $context['order_numbers_intern'];
+  if (isset($context['order_numbers_extern']))
+    $params['order_numbers_extern'] = $context['order_numbers_extern'];
 
  $status = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduce, $params);  
  if (!$status['status']) {
@@ -141,7 +172,7 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
 /**
 * returns a form with defaults of a customer if available
 */
-function _erpal_invoice_helper_customer_defaults_form($customer_node) {
+function _erpal_invoice_helper_customer_defaults_form($customer_node, $contractor_node) {
   $allowed_addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);
   $allowed_credit_periods = _erpal_invoice_helper_get_credit_periods_arr();
   
@@ -151,8 +182,16 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
   $default_address = $defaults['address_id'];
   $default_credit_period = $defaults['credit_period'];
   $default_notes = $defaults['notes'];
+  
+  //no default nodes if customer is not the own company
+  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+  $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  $is_contractor_invoice = $company_nid != $contractor_node->nid;
+  if ($is_contractor_invoice)
+    $default_notes = ''; //no default nodes if we enter a contractor invoice
+  
   $default_skonto_period = $defaults['skonto_period'];
-  $default_skonto_percent = $defaults['skonto_percent'];
+  $default_skonto_percent = $defaults['skonto_percent'];  
  
   $form['customer_title'] = array(
     '#type' => 'item',
@@ -183,6 +222,42 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
     '#required' => TRUE,
   );
   
+  //add fields for order numbers for intern and extern
+  $form['order_numbers'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Order numbers'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#tree' => false,
+  );
+  
+  $form['order_numbers']['order_numbers_extern'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Order numbers extern'),
+    '#default_value' => '[erpal_invoice_referenced_data:order_numbers_extern]',
+    '#description' => t('Comma separated list of all external order numbers.'),
+  );
+  
+  $form['order_numbers']['order_numbers_intern'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Order numbers intern'),
+    '#default_value' => '[erpal_invoice_referenced_data:order_numbers_intern]',
+    '#description' => t('Comma separated list of all internal order numbers.'),
+  );  
+  
+  //add available tokens to the form
+  //show available Tokens  
+  if (module_exists('token')) {    
+    $form['order_numbers']['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice_referenced_data'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  
+  //credit period
   $form['credit_period'] = array(
     '#type' => 'select',
     '#options' => $allowed_credit_periods,
@@ -191,6 +266,7 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
     '#required' => TRUE,
   );
   
+  //sconto
   $form['skonto'] = array(
     '#type' => 'fieldset',
     '#title' => t('Skonto'),
@@ -213,15 +289,27 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node) {
     '#title' => t('Credit in percent for skonto'),
     '#default_value' => $default_skonto_percent,
   );
-  
-  
+    
   $form['notes'] = array(
     '#type' => 'textarea',
     '#title' => t('Notes'),
     '#default_value' => $default_notes,
   );
   
-  //@TODO preview billables (non reduced with hint that they will b reduced) and princing (total, netto, vat rates)
+  //add available tokens to the form
+  //show available Tokens  
+  
+  if (module_exists('token') && !$is_contractor_invoice) {    
+    $form['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  
+  //@TODO preview billables (non reduced with hint that they will be reduced) and princing (total, netto, vat rates)
   
   $form['save_defaults'] = array(
     '#type' => 'checkbox',

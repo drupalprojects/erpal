@@ -43,16 +43,37 @@ function billable_views_data_alter(&$data) {
   
   $data['billable']['customer_nid']['filter']['handler'] = 'views_handler_filter_many_to_one';
   $data['billable']['customer_nid']['filter']['options callback'] = '_billable_get_customers';
-  //$data['billable']['customer_nid']['filter']['options arguments'] = array('customer_nid');
-  
-  /*
-  $data['billable']['table']['join']['billable'] = array(
-    'left_field' => 'customer_nid',
-    'table' => 'node',
-    'field' => 'nid',
-  );
-  */
 
+
+  //nodereference handler for contractor_nid
+  // Relationship.
+  $data['billable']['contractor_nid']['relationship'] = array(
+    'handler' => 'references_handler_relationship',
+    'base' => 'node',
+    'base field' => 'nid',
+    'field' => 'contractor_nid',
+    'label' => t('Contractor'),
+    'field_name' => 'contractor_nid',
+    'help' => t('The contractor nid of a billable'),
+    'title' => t('Contractor'),
+  );
+  
+  $data['billable']['contractor_nid']['filter']['handler'] = 'views_handler_filter_many_to_one';
+  $data['billable']['contractor_nid']['filter']['options callback'] = '_billable_get_customers';
+
+  //nodereference handler for subject_nid
+  // Relationship.
+  $data['billable']['subject_nid']['relationship'] = array(
+    'handler' => 'references_handler_relationship',
+    'base' => 'node',
+    'base field' => 'nid',
+    'field' => 'subject_nid',
+    'label' => t('Task'),
+    'field_name' => 'subject_nid',
+    'help' => t('The task nid of a billable'),
+    'title' => t('Task'),
+  );
+  
   //add fields for the links
   $data['billable']['link_billable'] = array(
     'field' => array(

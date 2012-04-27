@@ -49,7 +49,7 @@ function theme_token_tree($variables) {
     ),
   );
   if ($cached_output = token_render_cache_get($element)) {
-    //return $cached_output;
+    return $cached_output;
   }
 
   $options = array(
@@ -65,7 +65,7 @@ function theme_token_tree($variables) {
       continue;
     }
 
-    if ($multiple_token_types) {      
+    if ($multiple_token_types) {
       $row = _token_token_tree_format_row($type, $type_info, TRUE);
       unset($row['data']['value']);
       $rows[] = $row;
@@ -253,7 +253,7 @@ function token_autocomplete_type($string = '') {
   foreach ($types as $type => $info) {
     if (!$string || strpos($type, $string) === 0) {
       $type_key = "[{$type}:";
-       $matches[$type_key] = levenshtein($type, $string);
+      $matches[$type_key] = levenshtein($type, $string);
     }
   }
 

@@ -10,7 +10,7 @@
 function feature_erpal_crm_user_default_roles() {
   $roles = array();
 
-  // Exported role: crm user
+  // Exported role: crm user.
   $roles['crm user'] = array(
     'name' => 'crm user',
     'weight' => '3',

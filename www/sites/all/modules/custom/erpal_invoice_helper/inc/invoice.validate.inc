@@ -71,7 +71,7 @@ function _erpal_invoice_helper_invoice_validate_billables($invoice) {
   
   if (count($currencies) > 1) {
     $currency_string = implode(',', $currencies);
-    form_set_error('field_billables_ref', t('Your invoice items have multiple currencies: %currencies - Please make shure there is only one currency within all invoice items.', array('%currencies' => $currency_string)));
+    form_set_error('field_billables_ref', t('Your invoice items have multiple currencies: %currencies - Please make sure there is only one currency within all invoice items.', array('%currencies' => $currency_string)));
   } else {
     //the currency of the invoice must be empty or if not, it must be the same as the currency in the invoice line items
     $invoice_currency = $invoice->field_currency[LANGUAGE_NONE][0]['value'];

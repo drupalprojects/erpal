@@ -91,7 +91,6 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
 
   $destination = false;
   if ($attach) {
-    //@TODO get the destination where the filefield widget would place the pdf!
     //load the field to get the destination of the files
     $fileField = 'field_pdf_file';
     $fields = field_info_fields();
@@ -99,10 +98,15 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
     $field_instance = field_info_instance('node', $fileField, 'erpal_invoice');
     $destination = $field_instance['settings']['file_directory'];
     
+    $uri_schema = $field_info['settings']['uri_scheme'];
     //require file module
-    $drupal_file_path_rel = variable_get('file_' . file_default_scheme() . '_path', conf_path() . '/files');
-    $drupal_file_path_abs = drupal_realpath(file_default_scheme() . '://');
+    $drupal_file_path_rel = variable_get('file_' . $uri_schema . '_path', conf_path() . '/files');
+    $drupal_file_path_abs = drupal_realpath($uri_schema . '://');
     $dest_dir_abs = $drupal_file_path_abs."/".$destination;
+    //ensure the folder exists
+
+    file_prepare_directory($drupal_file_path_abs,  FILE_CREATE_DIRECTORY);
+    
     $dest_dir_rel = $drupal_file_path_rel."/".$destination;
     $basename = "/invoice-".$invoice->field_invoice_number[LANGUAGE_NONE][0]['value'].".pdf";
     $filename_for_uri = $destination.$basename;

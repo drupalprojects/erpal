@@ -48,6 +48,7 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
   $total_incl_vat = 0;
 
   //@todo prüfen ob hier evtl rechenfehler z.B. durch Rundung entstehen und in tests aufnehmen
+  $currency = false;
   foreach ($line_items as $line_item) {
     if (!$line_item['target_id'])
       continue;
@@ -64,11 +65,16 @@ function _erpal_invoice_helper_calculate_prices($invoice) {
     $total_vat += $vat;
     $total_excl_vat += $billable->total_price_no_vat;
     $total_incl_vat += $billable->total_price;
+    
+    //in the validation we have ensured that currencies in all billables are unique. 
+    //so we can fill the variable from any billable.
+    $currency = $billable->currency;
   }
   
   //first add the single values to the invoice
   $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'] = $total_excl_vat;
   $invoice->field_invoice_total[LANGUAGE_NONE][0]['value'] = $total_incl_vat;
+  $invoice->field_currency[LANGUAGE_NONE][0]['value'] = $currency;
   
   //now we have to add an entity for vat field collection for each vat rate we have found
   //in our line items
@@ -154,7 +160,7 @@ function _erpal_invoice_helper_set_notes($invoice) {
   $notes = array();
  
   //if value is already set, skipp!
-  if (isset($invoice->field_note[LANGUAGE_NONE])) {    
+  if (isset($invoice->field_note[LANGUAGE_NONE][0]['value'])) {    
     if ($invoice->field_note[LANGUAGE_NONE][0]['value']) {
       return;
     }
@@ -198,10 +204,12 @@ function _erpal_invoice_helper_set_notes($invoice) {
   foreach ($ordered_notes as $weight=>$note) {
     //add it only if it does not exists
     $exists = false;
-    foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $existing_note) {
-      if ($existing_note['value'] == $note) {
-        $exists = true;
-        break;
+    if ($invoice->field_auto_note[LANGUAGE_NONE]) {
+      foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $existing_note) {
+        if ($existing_note['value'] == $note) {
+          $exists = true;
+          break;
+        }
       }
     }
     
@@ -277,7 +285,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
     $status['errors'][] = t('There are no billable items the invoice should be created from.');
     return $status;
   }
- 
+
   //perhaps there is no invoice address given, then we cannot create the invoice
   if (!(isset($params['address_id']) && intval($params['address_id']))) {
     $status['status'] = 0;
@@ -302,8 +310,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //load all billables for the test!
   $billables = billable_load_multiple($billable_ids);
 
-  //try to get the customer, if there is no customer in params, the customer of all billables must be equal otherwise there will
-  //be an error
+  //try to get the customer and the contractor, if there is no customer in params, the customer of all billables must 
+  //be equal otherwise there will be an error same for contractors
+  //### get the customer ####
   if (isset($params['customer_nid']))
     $customer_nid = $params['customer_nid'];
   else {
@@ -328,6 +337,32 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
       return $status;
     }
   }
+  
+  //### get the contractor ####
+  if (isset($params['contractor_nid']))
+    $contractor_nid = $params['contractor_nid'];
+  else {
+    $contractor_nid = 0; //init
+    foreach ($billables as $billable) {
+      $contractor_nid_new = $billable->contractor_nid;
+      if (!$contractor_nid)
+        $contractor_nid = $customer_nid_new;
+      else
+        if ($contractor_nid <> $customer_nid_new) {
+          //BAD! There are different contractors in the billables. We cannot create an invoice with that information!       
+         $status['status'] = 0;
+          $status['errors'][] = t('There is no unique contractor for that invoice and the billable invoice lines have different contractors set.');
+          return $status;
+        }
+    }
+    
+    if (!$contractor_nid) {
+      //BAD! There is no customer detected in the billables!. We cannot create an invoice with that information!
+      $status['status'] = 0;
+      $status['errors'][] = t('There is no unique contractor for that invoice found in the billable line items.');
+      return $status;
+    }
+  }
 
   //as we tried to get a customer, we try to get a currency for that invoice. It must be equal in all billables!
   $currency = false;
@@ -347,19 +382,27 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //now create the invoice!
   //create the invoice with the  billables      
   $invoice = new stdClass();
-  $invoice->type = 'erpal_invoice';
-  node_object_prepare($invoice);
+  $invoice->type = 'erpal_invoice';  
+  node_object_prepare($invoice);  
   
   $invoice->language = LANGUAGE_NONE;
   //set some other invoice specific fields
 
+  //set order numbers
+  $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'] = isset($params['order_numbers_intern']) ? $params['order_numbers_intern'] : '';
+  $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'] = isset($params['order_numbers_extern']) ? $params['order_numbers_extern'] : '';
+  
   //set date and credit information
   $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'] = isset($params['invoice_date']) ? $params['invoice_date'] : time();  //the current date
   $invoice->field_credit_period[LANGUAGE_NONE][0]['value'] = isset($params['credit_period']) ? $params['credit_period'] : 14;
+
   $invoice->field_currency[LANGUAGE_NONE][0]['value'] = $currency;
   
   //add customer
   $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
+  
+  //add contractor
+  $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'] = $contractor_nid;
   
   //add address_id
   $invoice->field_invoice_address_id[LANGUAGE_NONE][0]['value'] = $params['address_id'];
@@ -385,7 +428,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   foreach ($billable_ids as $billable_id) {
     $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $billable_id;
   }
- 
+
   node_save($invoice);
   
   $status['invoice'] = $invoice;
