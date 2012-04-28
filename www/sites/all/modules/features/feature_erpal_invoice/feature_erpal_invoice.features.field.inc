@@ -582,7 +582,7 @@ function feature_erpal_invoice_field_default_fields() {
         'handler_settings' => array(
           'sort' => array(
             'direction' => 'ASC',
-            'field' => 'none',
+            'field' => '',
             'property' => 'billable_id',
             'type' => 'none',
           ),
@@ -591,6 +591,7 @@ function feature_erpal_invoice_field_default_fields() {
           ),
         ),
         'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
         'target_type' => 'billable',
       ),
       'translatable' => '0',
@@ -600,16 +601,16 @@ function feature_erpal_invoice_field_default_fields() {
       'bundle' => 'erpal_invoice',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'This lines will be added to the invoice as line items',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
           'module' => 'entityreference',
           'settings' => array(
-            'link' => 1,
+            'link' => FALSE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '0',
+          'weight' => 26,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -620,24 +621,16 @@ function feature_erpal_invoice_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_billables_ref',
-      'label' => 'Invoice lines',
-      'required' => 1,
+      'label' => 'Invoice items',
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
-        'module' => 'entityreference',
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'path' => '',
-          'references_dialog_add' => 1,
-          'references_dialog_edit' => 1,
-          'references_dialog_search' => 1,
-          'references_dialog_search_view' => '',
-          'size' => '60',
-        ),
-        'type' => 'entityreference_autocomplete',
+        'active' => 0,
+        'module' => 'erpal_invoice_helper',
+        'settings' => array(),
+        'type' => 'field_billable_inline',
         'weight' => '9',
       ),
     ),
@@ -826,7 +819,11 @@ function feature_erpal_invoice_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_invoice',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'EUR',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'The currency of the invoice',
       'display' => array(
@@ -846,7 +843,7 @@ function feature_erpal_invoice_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_currency',
       'label' => 'Currency',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -855,7 +852,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '34',
+        'weight' => '12',
       ),
     ),
   );
@@ -1267,7 +1264,9 @@ function feature_erpal_invoice_field_default_fields() {
         ),
       ),
       'module' => 'text',
-      'settings' => array(),
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
       'type' => 'text_long',
     ),
@@ -1305,7 +1304,7 @@ function feature_erpal_invoice_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '12',
+        'weight' => '11',
       ),
     ),
   );
@@ -1651,7 +1650,7 @@ function feature_erpal_invoice_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '11',
+        'weight' => '13',
       ),
     ),
   );
@@ -1784,7 +1783,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Invoice Address');
   t('Invoice Date');
   t('Invoice Number');
-  t('Invoice lines');
+  t('Invoice items');
   t('Note');
   t('Order numbers extern');
   t('Order numbers intern');
@@ -1799,7 +1798,6 @@ function feature_erpal_invoice_field_default_fields() {
   t('The contractor for the purchase');
   t('The currency of the invoice');
   t('The fixed price for the purchase');
-  t('This lines will be added to the invoice as line items');
   t('Till this date you should receive the payment');
   t('Total excl. VAT');
   t('Total incl. VAT');

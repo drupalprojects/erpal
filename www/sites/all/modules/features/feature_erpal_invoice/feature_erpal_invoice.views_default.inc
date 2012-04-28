@@ -650,6 +650,29 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['total_price_no_vat']['set_precision'] = 1;
   $handler->display->display_options['fields']['total_price_no_vat']['precision'] = '2';
   $handler->display->display_options['fields']['total_price_no_vat']['format_plural'] = 0;
+  /* Field: Billable: Vat_rate */
+  $handler->display->display_options['fields']['vat_rate']['id'] = 'vat_rate';
+  $handler->display->display_options['fields']['vat_rate']['table'] = 'billable';
+  $handler->display->display_options['fields']['vat_rate']['field'] = 'vat_rate';
+  $handler->display->display_options['fields']['vat_rate']['label'] = 'VAT rate';
+  $handler->display->display_options['fields']['vat_rate']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['vat_rate']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['vat_rate']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['vat_rate']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['vat_rate']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['vat_rate']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['vat_rate']['format_plural'] = 0;
   /* Field: Billable: Total_vat */
   $handler->display->display_options['fields']['total_vat']['id'] = 'total_vat';
   $handler->display->display_options['fields']['total_vat']['table'] = 'billable';
@@ -786,6 +809,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
     t('Delivery'),
     t('Billables by invoice pane'),
     t('Content referencing Billable from field_billables_ref'),
+    t('VAT rate'),
     t('All'),
     t('View panes'),
   );
