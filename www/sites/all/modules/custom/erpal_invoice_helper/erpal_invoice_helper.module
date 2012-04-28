@@ -106,6 +106,8 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
 
     $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
 
+    $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);
+    
     //if address has only one option, make this option the default value
     $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];
     $default_id = false;
@@ -186,6 +188,64 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
+/**
+* submit handler for invoice node form
+*/
+function _erpal_invoice_helper_invoice_form_submit($form, &$form_state) {
+  _erpal_invoice_helper_calculate_billables_ref_from_form($form, $form_state);
+  
+}
+
+/**
+* creates billables from form widget values
+*/
+function _erpal_invoice_helper_calculate_billables_ref_from_form($form, &$form_state) {  
+  
+  $values = $form_state['values'];
+  $billables_ref = isset($values['field_billables_ref'][LANGUAGE_NONE]) ? $values['field_billables_ref'][LANGUAGE_NONE] : array();
+  $billables_values = isset($values['field_billables_ref_values'][LANGUAGE_NONE]) ? $values['field_billables_ref_values'][LANGUAGE_NONE] : array() ;
+
+  //get some invoice values
+  $currency = $values['field_currency'][LANGUAGE_NONE][0]['value'];
+  $customer_nid = $values['field_customer_ref'][LANGUAGE_NONE][0]['nid'];
+  $contractor_nid = $values['field_contractor_ref'][LANGUAGE_NONE][0]['nid'];
+  
+  //iterate through the values and check if we have to update or insert a billable.
+  if (isset($billables_values)) {
+    foreach ($billables_values as $delta => $value) {
+      //get the billable ID if we need to update
+      $billable_id = $billables_ref[$delta]['target_id'];
+      if ($billable_id) {
+        $billable =  billable_load($billable_id);
+        //update this billable        
+        
+      } else {
+        //create new billable
+        $billable_values = array('type' => 'billable');
+        $billable = billable_create($billable_values);
+      }
+
+      //set the values
+      $billable->subject = $billables_values[$delta]['widget_values']['subject'];
+      $billable->quantity = $billables_values[$delta]['widget_values']['quantity'];
+      $billable->single_price = $billables_values[$delta]['widget_values']['single_price'];
+      $billable->date_delivery = $billables_values[$delta]['widget_values']['date_delivery'];
+      $billable->vat_rate = $billables_values[$delta]['widget_values']['vat_rate'];
+      
+      //if billable has no subject is has been created manually. So we always change the customer and the contractor
+      //in save. @TODO: good or not? Perhaps leave it like it is?
+      $billable->currency = $currency;
+      $billable->customer_nid = $customer_nid;
+      $billable->contractor_nid = $contractor_nid;
+      
+      $billable->save();
+      
+      //and now set the value in the form field
+      $new_element = array('#parents' => array('field_billables_ref', LANGUAGE_NONE, $delta, 'target_id'));
+      form_set_value($new_element, $billable->billable_id, $form_state);
+    }
+  }
+}
 
 /**
 * Submit handler after the confirm delete of invoice dialog is 
@@ -321,9 +381,9 @@ function erpal_invoice_helper_node_update($node) {
 function erpal_invoice_helper_node_presave($node) {
   //it must be an invoice node
   $type = node_type_get_type($node);
-  
+
   if ($type->type == 'erpal_invoice') {
-    if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throus an exception on node save if node is new!
+    if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
       _erpal_invoice_helper_set_notes($node);
       _erpal_invoice_helper_caclulate_invoice($node);
       _erpal_invoice_helper_replace_order_number_tokens($node);
