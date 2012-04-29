@@ -556,7 +556,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '41',
+        'weight' => '42',
       ),
     ),
   );
@@ -1184,7 +1184,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '36',
+        'weight' => '37',
       ),
     ),
   );
@@ -1237,7 +1237,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '40',
+        'weight' => '41',
       ),
     ),
   );
@@ -1709,7 +1709,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '42',
+        'weight' => '43',
       ),
     ),
   );
