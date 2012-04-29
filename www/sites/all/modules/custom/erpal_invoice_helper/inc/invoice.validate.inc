@@ -12,6 +12,61 @@ function _erpal_invoice_helper_invoice_validate($invoice) {
   $billable_errors = _erpal_invoice_helper_invoice_validate_billables($invoice);
   $errors = array_merge($errors, $billable_errors);
   
+  $invoice_number_errors = _erpal_invoice_helper_invoice_validate_number($invoice);
+  $errors = array_merge($errors, $invoice_number_errors);
+  
+  $contractor_errors = _erpal_invoice_helper_invoice_validate_customer_contractor($invoice);
+  $errors = array_merge($errors, $contractor_errors);
+  
+  return $errors;
+}
+
+/**
+* validates that cusotmer and contractor are not the same
+*/
+function _erpal_invoice_helper_invoice_validate_customer_contractor($invoice) {
+  $customer_nid = 0;
+  $contractor_nid = 0;
+  $errors = array();
+  
+  if (isset($invoice->field_customer_ref[LANGUAGE_NONE][0]['nid']))
+    $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+    
+  if (isset($invoice->field_customer_ref[LANGUAGE_NONE][0]['nid']))
+    $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+    
+  if ($contractor_nid && $customer_nid)
+    if ($contractor_nid == $customer_nid)
+  
+  $errors['field_customer_ref]['.LANGUAGE_NONE.'][0][nid'][] = t('Customer and contractor must not be the same');
+  
+  return $errors;  
+}
+
+/**
+* Validates the invoice number
+*/
+function _erpal_invoice_helper_invoice_validate_number($invoice) {
+
+  $errors = array();
+  $number = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
+  
+  if (!$number)
+    return $errors;
+  
+  $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  //if no contractor is set, it is the own company!
+  if (isset($invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid']))  
+    $contractor = node_load($invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid']);
+  else
+    $contractor = node_load($company_nid);
+  
+  //if contractor is own company, we only accept int values for invoice number,
+  //alpha numeric prefix could be entered in config.  
+  if ($contractor->nid == $company_nid) {
+    if (!is_numeric($number))
+      $errors['field_invoice_number]['.LANGUAGE_NONE.'][0][value'][] = t('Your invoice number must be numeric to be incremented in next invoice');
+  }
   
   return $errors;
 }

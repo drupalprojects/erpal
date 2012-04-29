@@ -9,8 +9,7 @@
 * @param $invoice the invoice node the fields are calculated at
 */
 function _erpal_invoice_helper_calculate_fields($invoice) {
-
-  //first of alle all fields that are directly attached to the 
+  //then all fields that are directly attached to the 
   //invoice node (no field collection and other entity refernces)  
   _erpal_invoice_helper_calculate_payment_date($invoice);
   
