@@ -46,38 +46,6 @@ function erpal_invoice_helper_field_widget_form(&$form, &$form_state, $field, $i
   return $element;
 }
 
-function _erpal_invoice_helper_relace_billabel_ref_widget(&$form) {
-
-  foreach ($form['field_billables_ref'][LANGUAGE_NONE] as $delta => $widget) {
-    if (!is_numeric($delta)) 
-      continue;
-    
-    //get the currenct billable and extract default values from it
-    $billable_id = false;
-    if (isset($form['field_billables_ref'][LANGUAGE_NONE][$delta]['target_id']['#default_value']))
-      $billable_id = $form['field_billables_ref'][LANGUAGE_NONE][$delta]['target_id']['#default_value'];
-    
-    if (is_numeric($billable_id) && $billable_id) {
-      $billable = billable_load($billable_id);
-      $subject = $billable->subject;
-      $date_delivery = $billable->date_delivery;
-      $quantity = $billable->quantity;
-      $single_price = $billable->single_price;
-      $vat_rate = $billable->vat_rate;
-    }
-    
-    $form['field_billables_ref'][LANGUAGE_NONE][$delta]['target_id']['#type'] = 'billable_element';
-    $form['field_billables_ref'][LANGUAGE_NONE][$delta]['target_id']['#default_value'] = array(
-      'billable_id' => $billable_id,
-      'subject' => isset($subject) ? $subject : '',
-      'date_delivery' => isset($date_delivery) ? $date_delivery : 0,
-      'quantity' => isset($quantity) ? $quantity : 0,
-      'single_price' => isset($single_price) ? $single_price : 0,
-      'vat_rate' => isset($vat_rate) ? $vat_rate : 0,
-    );
-  }
-  
-}
 
 /**
 * Implements hook_element_info

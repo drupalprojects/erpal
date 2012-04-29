@@ -170,7 +170,13 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
       $company_nid = _erpal_basic_helper_get_own_company_nid(false);
       $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $company_nid;
     }
-    
+
+    //prefill invoice number field with next possible value if no invoice number is already set
+    if (isset($form['field_invoice_number'][LANGUAGE_NONE][0]['value'])) {   
+      if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {
+        $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = _erpal_invoice_helper_get_next_invoice_number();
+      }
+    }
   }
   
   //set default value for contractor in billable node edit form
@@ -370,8 +376,10 @@ function erpal_invoice_helper_node_update($node) {
  //it must be an invoice node
   $type = node_type_get_type($node);
 
-  if ($type->type == 'erpal_invoice')
+  if ($type->type == 'erpal_invoice') {
     _erpal_invoice_helper_caclulate_invoice($node);
+    _erpal_invoice_helper_set_last_invoice_number($node);
+  }
 
 }
 
@@ -381,7 +389,7 @@ function erpal_invoice_helper_node_update($node) {
 function erpal_invoice_helper_node_presave($node) {
   //it must be an invoice node
   $type = node_type_get_type($node);
-
+  
   if ($type->type == 'erpal_invoice') {
     if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
       _erpal_invoice_helper_set_notes($node);
@@ -397,13 +405,14 @@ function erpal_invoice_helper_node_presave($node) {
 */
 function erpal_invoice_helper_node_insert($node) {
   //it must be an invoice node
-  
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice')
     _erpal_invoice_helper_caclulate_invoice($node);
-  
+    _erpal_invoice_helper_set_last_invoice_number($node);
+
 }
+
 
 /**
 * Node gets validated
@@ -699,6 +708,35 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
 
   return $numbers;
 }
+
+
+/**
+* Saves the given invoice number as last invoice number
+*/
+function _erpal_invoice_helper_set_last_invoice_number($invoice) {
+  //save only if it is numeric, this will be validated in validation function
+  //save only for contractor = own company
+  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+  $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  if (isset($invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid']))
+    $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+  else
+    $contractor_nid = $company_nid;
+    
+  $invoice_numer = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
+  if ($contractor_nid == $company_nid)
+    if (is_numeric($invoice_numer)) 
+      variable_set('erpal_last_invoice_number', $invoice_numer);
+}
+
+/**
+* Returns the next possible invoice number
+*/
+function _erpal_invoice_helper_get_next_invoice_number() {
+  $last_invoice_number = variable_get('erpal_last_invoice_number', 0);
+  $last_invoice_number++;
+  return $last_invoice_number;
+} 
 
 /**
 * Replaces order number tokens in order number fields.
