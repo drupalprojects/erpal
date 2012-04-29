@@ -1087,12 +1087,26 @@ function feature_erpal_invoice_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_invoice_number',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'serial',
-      'settings' => array(),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
-      'type' => 'serial',
+      'type' => 'text',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_invoice',
@@ -1102,10 +1116,10 @@ function feature_erpal_invoice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'serial',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'serial_formatter_default',
-          'weight' => '1',
+          'type' => 'text_default',
+          'weight' => 27,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1117,15 +1131,19 @@ function feature_erpal_invoice_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_invoice_number',
       'label' => 'Invoice Number',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'module' => 'serial',
-        'settings' => array(),
-        'type' => 'serial',
-        'weight' => '3',
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '30',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '4',
       ),
     ),
   );
