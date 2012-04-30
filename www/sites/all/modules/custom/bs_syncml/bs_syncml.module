@@ -4,8 +4,6 @@
  * 
  */
 
-module_load_include("inc", "bs_syncml", "includes/BsSyncMlProfile.inc");
-
 function bs_syncml_init() {
   
 }
@@ -17,12 +15,13 @@ function bs_syncml_init() {
 function bs_syncml_menu() {
   
   /* The administration page */
-  $items['admin/config/bs_syncml'] = array(
+  $items['admin/config/system/bs_syncml'] = array(
     'title' => 'BS Sync ML Administration',
     'description' =>  'Administer Synchronization Settings.',
     'page callback' => 'bs_syncml_administration_page',
     'access arguments' => array('administer bs_syncml'),
     'file' => 'includes/bs_syncml.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
   );
   
   return $items;
