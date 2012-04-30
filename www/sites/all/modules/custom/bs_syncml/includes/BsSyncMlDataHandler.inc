@@ -15,7 +15,7 @@ class BsSyncMlDataHandler {
 
   static private $tablename = 'bs_syncml_items';
   static private $tablealias = 'bssi';
-  static private $where_in_limit = 75; //determine how many items should be in a 'WHERE xyz IN()'-Clause
+  static private $where_in_limit = 100; //determine how many items should be in a 'WHERE xyz IN()'-Clause
 
   /**
    *  Wrapper for db_insert
@@ -89,6 +89,7 @@ class BsSyncMlDataHandler {
     if($key != 'nid' && $key != 'sid') return FALSE;
     //Chunk the Array, walk throug the chunks, and get the results of each chunk.
     $sid_chunks = array_chunk($ids, self::$where_in_limit);    
+    $return = array();
     foreach ($sid_chunks as $sid_chunk) {
 
       $result = db_select(self::$tablename, self::$tablealias)
@@ -103,6 +104,33 @@ class BsSyncMlDataHandler {
 
     return $return;
   }
+  
+  /**
+   * Returns an array of changed items 
+   * 
+   * @params array $nids The nids to look for beeing changed  
+   */
+  static function get_changed_items($nids = array()) {
+    
+    
+    $nid_chunks = array_chunk($nids,self::$where_in_limit);
+    $return = array();
+    foreach ($nid_chunks as $nid_chunk) {
+      $result = db_select(self::$tablename, self::$tablealias)
+              ->fields(self::$tablealias)
+              ->condition('changed', 1, '=')
+              ->condition('nid', $nid_chunk, 'IN')
+              ->execute();
+
+      while ($record = $result->fetchAssoc()) {
+        $return[] = $record;
+      }
+    }
+    
+    return $return;
+  }
+  
+  
   /**
    * END OF GETTERS 
    */
@@ -138,11 +166,11 @@ class BsSyncMlDataHandler {
   /**
    *  Set data of an item
    * @param type $sid The sid of the item
-   * @param type $data The data to set
+   * @param type $data The data to set   
    */
   static function set_data($sid,$data) {
      $query = db_update(self::$tablename)
-                ->fields(array('data'=>$data))
+                ->fields(array('data'=>$data,'timestamp'=>time()))
                 ->condition('sid',$sid,'=');
      
      return $query->execute();
@@ -153,7 +181,7 @@ class BsSyncMlDataHandler {
    * @param type $sid The sid of the item
    * @param type $timestamp The timestamp so set, default is current time.
    * @return type 
-   */
+   */  
   static function set_timestamp($sid,$timestamp=NULL) {
       if($timestamp === NULL) {
         $timestamp = time();
