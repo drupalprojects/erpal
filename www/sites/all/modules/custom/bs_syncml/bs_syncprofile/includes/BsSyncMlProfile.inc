@@ -10,7 +10,7 @@ Class BsSyncMlProfile {
 
   private $pid = null;
   private $name = null;
-  public $data = array();
+  public  $data = array();
 
   public function __construct($name=null, $data=null) {
 
@@ -108,8 +108,8 @@ Class BsSyncMlProfile {
               ->condition("name", $profile, "=")
               ->execute()
               ->fetchAssoc();
-      if (is_array($profiles))
-        $result = array_shift($profiles);
+      if (isset($profiles['pid']))
+        $result = $profiles;
     }
 
     if ($result) {
@@ -117,7 +117,11 @@ Class BsSyncMlProfile {
       $this->name = $result['name'];
       if (isset($result['data']))
         $this->data = unserialize($result['data']);
+      
+      return true;
     }
+    
+    return false;
   }
 
   public function getData() {
@@ -130,20 +134,3 @@ Class BsSyncMlProfile {
 
 }
 
-/*
- * Retrieve all Sync Profiles
- * 
- * @param $full: Load the complete profile object or just return machinename and id
- * @return Array of Sync Profiles 
- */
-
-function bs_syncml_profile_getall($full=false) {
-
-  $request = db_select('bs_syncml_profiles', 'p')
-          ->fields('p')
-          ->execute();
-  
-  while($prof = $request->fetchAssoc()) $profiles[] = $prof;
-
-  return $profiles;
-}
