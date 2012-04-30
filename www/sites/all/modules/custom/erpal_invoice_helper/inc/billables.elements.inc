@@ -122,7 +122,7 @@ function _billable_element_process($element, &$form_state, $complete_form) {
     '#title' => t('vat rate'),
     '#type' => 'select', 
     '#options' => _erpal_invoice_helper_vat_rates_arr(),  
-    '#default_value' => isset($billable) ? $billable->vat_rate : '',
+    '#default_value' => isset($billable) ? $billable->vat_rate : _erpal_invoice_helper_get_default_vat_rate(),
   );
   
   return $element;

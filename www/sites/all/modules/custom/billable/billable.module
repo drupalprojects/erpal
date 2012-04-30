@@ -176,10 +176,9 @@ function billable_theme() {
 * @todo we have to let the user choose his available currencies
 */
 function _billable_get_currencies() {
-  return array(
-    'EUR' => 'EUR', 
-    'USD' => 'USD',
-  );
+  
+  //ask other modules for currencies
+  return module_invoke_all('billable_currencies');
 }
 
 /**

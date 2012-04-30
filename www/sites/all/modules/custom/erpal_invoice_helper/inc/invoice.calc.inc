@@ -203,11 +203,13 @@ function _erpal_invoice_helper_set_notes($invoice) {
   foreach ($ordered_notes as $weight=>$note) {
     //add it only if it does not exists
     $exists = false;
-    if ($invoice->field_auto_note[LANGUAGE_NONE]) {
-      foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $existing_note) {
-        if ($existing_note['value'] == $note) {
-          $exists = true;
-          break;
+    if (isset($invoice->field_auto_note[LANGUAGE_NONE])) {
+      if ($invoice->field_auto_note[LANGUAGE_NONE]) {
+        foreach ($invoice->field_auto_note[LANGUAGE_NONE] as $existing_note) {
+          if ($existing_note['value'] == $note) {
+            $exists = true;
+            break;
+          }
         }
       }
     }
@@ -405,6 +407,10 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   
   //add address_id
   $invoice->field_invoice_address_id[LANGUAGE_NONE][0]['value'] = $params['address_id'];
+  
+  if (isset($params['invoice_number'])) {
+    $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'] = $params['invoice_number'];
+  }
   
   //add skonto information from params if set!
   if (isset($params['skonto'])) {
