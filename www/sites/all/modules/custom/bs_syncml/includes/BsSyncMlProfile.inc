@@ -2,6 +2,8 @@
 
 /*
  * @author Sebastian Kauschke, Bright Solutions GmbH
+ * 
+ * This class describes a SyncMl Profile and has methods to Create, Load and Update it.
  */
 
 Class BsSyncMlProfile {
