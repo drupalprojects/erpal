@@ -10,7 +10,7 @@ Class BsSyncMlProfile {
 
   private $pid = null;
   private $name = null;
-  public $data = array();
+  public  $data = array();
 
   public function __construct($name=null, $data=null) {
 
@@ -108,7 +108,7 @@ Class BsSyncMlProfile {
               ->condition("name", $profile, "=")
               ->execute()
               ->fetchAssoc();
-      if (is_array($profiles))
+      if (isset($profiles['pid']))
         $result = $profiles;
     }
 

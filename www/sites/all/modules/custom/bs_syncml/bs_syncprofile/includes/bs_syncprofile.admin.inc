@@ -1,5 +1,10 @@
 <?php
-
+/* ################################################################################
+ * 
+ *      New Profile Form
+ * 
+ * ###############################################################################
+ */
 
 /*
  * Returns the Profile Add Form.
@@ -57,8 +62,7 @@ function bs_syncprofile_addprofile_form_validate($form, &$form_state) {
   // Url validieren
   if(!valid_url($values['serverurl'], true)) {
     form_set_error("serverurl", t("Please enter a valid URL (with http://)."));
-  }
-  
+  }  
   
   // Check if Profile with machinename already exists:
   $profile = new BsSyncMlProfile();  
@@ -84,5 +88,9 @@ function bs_syncprofile_addprofile_form_submit($form, &$form_state) {
   $profile->setData($data);
   $profile->save();
   
-}
+  // Rebuild the MENU CACHE (because a new item will be generated
+  cache_clear_all(NULL, 'cache_menu');
   
+  drupal_set_message(t("A new profile was saved."));
+  drupal_goto("admin/config/system/bs_syncml");
+}  
