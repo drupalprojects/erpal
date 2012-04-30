@@ -1,0 +1,52 @@
+<?php
+
+module_load_include("inc", "bs_syncprofile", "includes/BsSyncMlProfile");
+
+/*
+ * Implements hook_menu()
+ */
+function bs_syncprofile_menu() {
+  
+   /* The administration page */
+  $items['admin/config/system/bs_syncml/addprofile'] = array(
+    'title' => 'Add new profile',
+    'description' =>  'Add a new profile.',
+    'page callback' => 'bs_syncprofile_addprofile_page',
+    'access arguments' => array('administer bs_syncml'),
+    'file' => 'includes/bs_syncprofile.admin.inc',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  
+  //$profiles = bs_syncprofile_getAllProfiles();
+  /*
+  
+  $items['admin/config/system/bs_syncml/profile1'] = array(
+    'title' => 'Profile 1',
+    'description' =>  'Administer Profiles.',
+    'page callback' => 'bs_syncprofile_profile_page',
+    'page arguments' => 1,
+    'access arguments' => array('administer bs_syncml'),
+    'file' => 'includes/bs_syncprofile.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+  */
+  return $items;
+}
+
+/*
+ * Retrieve all Sync Profiles
+ * 
+ * @param $full: Load the complete profile object or just return machinename and id
+ * @return Array of Sync Profiles 
+ */
+
+function bs_syncprofile_getall($full=false) {
+
+  $request = db_select('bs_syncml_profiles', 'p')
+          ->fields('p')
+          ->execute();
+  
+  while($prof = $request->fetchAssoc()) $profiles[] = $prof;
+
+  return $profiles;
+}
