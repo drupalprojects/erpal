@@ -4,7 +4,7 @@
  * 
  */
 
-module_load_include("inc", "bs_syncml", "includes/bs_syncml.profile");
+module_load_include("inc", "bs_syncml", "includes/BsSyncMlProfile.php");
 
 function bs_syncml_init() {
   
