@@ -1,0 +1,24 @@
+<?php
+/**
+ * 
+ *
+ * @author serkan
+ */
+class BsSyncMlDataHandlerTestCase extends DrupalUnitTestCase {
+  
+  public static function getInfo() {
+        return array(
+      'name' => 'BsSyncMlDataHandler Test',
+      'description' => 'Test the CRUD-Methods of the DataHandler.',
+      'group' => 'BS Sync',
+    );
+  }
+  
+  public function testDataHandlerCreate() {
+    for($i=0;$i<=100;$i++) {
+      #BsSyncMlDataHandler::create(array('sid'=>,'nid'=>23,'timestamp'=>time(),'changed'=>0,'data'=>'TEST'));    
+    }
+  }
+}
+
+
