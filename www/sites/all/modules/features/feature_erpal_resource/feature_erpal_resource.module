@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the feature_erpal_resource feature.
+ */
+
+include_once 'feature_erpal_resource.features.inc';
