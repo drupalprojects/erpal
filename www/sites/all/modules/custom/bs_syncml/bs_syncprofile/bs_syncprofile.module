@@ -1,0 +1,138 @@
+<?php
+
+module_load_include("inc", "bs_syncprofile", "includes/BsSyncMlProfile");
+
+/*
+ * Implements hook_menu()
+ */
+
+function bs_syncprofile_menu() {
+
+  /* The administration page */
+  $items['admin/config/system/bs_syncml/addprofile'] = array(
+      'title' => 'Add new profile',
+      'description' => 'Add a new profile.',
+      'page callback' => 'bs_syncprofile_addprofile_page',
+      'access arguments' => array('administer bs_syncml'),
+      'file' => 'includes/bs_syncprofile.admin.inc',
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 100,
+  );
+
+  $profiles = bs_syncprofile_getAllProfiles(true);
+
+  // This creates menu Tabs and Subtabs for every profile:
+  if (is_array($profiles))
+    foreach ($profiles as $profile) {
+
+      $name = $profile['name'];
+      $data = $profile['data'];
+
+      $items["admin/config/system/bs_syncml/profile/$name"] = array(
+          'title' => isset($profile['data']['profilename']) ? $profile['data']['profilename'] : $name,
+          'description' => 'Administer Profile',
+          'page callback' => 'bs_syncprofile_profile_page',
+          'page arguments' => array($name),
+          'access arguments' => array('administer bs_syncml'),
+          'file' => 'includes/bs_syncprofile.settings.inc',
+          'type' => MENU_LOCAL_TASK,
+      );
+
+      // Serversetting Tab
+      $items["admin/config/system/bs_syncml/profile/$name/serversettings"] = array(
+          'title' => "Server Settings",
+          'description' => 'Administer Profile',
+          'page callback' => 'bs_syncprofile_profile_page',
+          'page arguments' => array($name, "serversettings"),
+          'access arguments' => array('administer bs_syncml'),
+          'file' => 'includes/bs_syncprofile.settings.inc',
+          'type' => MENU_LOCAL_TASK,
+          'weight' => -100,
+      );
+
+      // Useraccount Tab
+      $items["admin/config/system/bs_syncml/profile/$name/useraccounts"] = array(
+          'title' => "User Accounts",
+          'description' => 'Administer Profile',
+          'page callback' => 'bs_syncprofile_profile_page',
+          'page arguments' => array($name, "useraccounts"),
+          'access arguments' => array('administer bs_syncml'),
+          'file' => 'includes/bs_syncprofile.settings.inc',
+          'type' => MENU_LOCAL_TASK,
+          'weight' => -99,
+      );
+
+      // Access restriction Tab
+      $items["admin/config/system/bs_syncml/profile/$name/access"] = array(
+          'title' => "Access",
+          'description' => 'Administer Profile',
+          'page callback' => 'bs_syncprofile_profile_page',
+          'page arguments' => array($name, "access"),
+          'access arguments' => array('administer bs_syncml'),
+          'file' => 'includes/bs_syncprofile.settings.inc',
+          'type' => MENU_LOCAL_TASK,
+          'weight' => -98,
+      );
+    }
+
+  return $items;
+}
+
+/*
+ * Implements hook_permission
+ * 
+ * Provides Permissions for the profiles. The permissions only apply if the setting
+ * of the profile is set to utilize them.
+ */
+function bs_syncprofile_permission() {
+  
+  $profiles = bs_syncprofile_getAllProfiles();
+  
+  $item = null;
+
+  // This creates menu Tabs and Subtabs for every profile:
+  if (is_array($profiles))
+    foreach ($profiles as $profile) {
+
+      $name = $profile['name'];
+
+      $item["access $name synchronization"] = array(
+          'title' => "Access $name synchronization",
+      );
+    }
+
+  return $item;
+}
+
+/*
+ * Retrieve all Sync Profiles
+ * 
+ * @param $full: Load the complete profile object or just return machinename and id
+ * @return Array of Sync Profiles 
+ */
+
+function bs_syncprofile_getAllProfiles($full=false) {
+
+  if (!$full) {
+    $request = db_select('bs_syncml_profiles', 'p')
+            ->fields('p', array('pid', 'name'))
+            ->execute();
+
+    while ($prof = $request->fetchAssoc())
+      $profiles[] = $prof;
+  } else {
+    $request = db_select('bs_syncml_profiles', 'p')
+            ->fields('p')
+            ->execute();
+
+    while ($prof = $request->fetchAssoc()) {
+      $tmp = $prof;
+      if (isset($tmp['data'])) {
+        $tmp['data'] = unserialize($tmp['data']);
+      }
+      $profiles[] = $tmp;
+    }
+  }
+
+  return $profiles;
+}

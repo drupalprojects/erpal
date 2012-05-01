@@ -1,0 +1,12 @@
+name = feature_erpal_resource
+description = ERPAL Resource Feature
+core = 7.x
+package = ERPAL Features
+version = 7.x-1.0-dev
+project = feature_erpal_resource
+dependencies[] = calendar
+dependencies[] = erpal_resource_helper
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = erpal_resource_content_types
