@@ -114,6 +114,33 @@ function erpal_basic_helper_config_form($form, &$form_state){
     );
   }
   
+  $form['date_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Date settings'),
+    '#collapsible' => true,
+    '#collapsed' => false,
+  );
+  
+  $date_formats = _erpal_basic_helper_get_date_formats();
+  $form['date_settings']['format_date_only'] = array(
+    '#type' => 'select',
+    '#options' => $date_formats,
+    '#default_value' => _erpal_basic_helper_date_format_date_only(),
+    '#title' => t('Date only format'),
+  );
+  
+  $form['date_settings']['format_date_time'] = array(
+    '#type' => 'select',
+    '#options' => $date_formats,
+    '#default_value' => _erpal_basic_helper_date_format_date_time(),
+    '#title' => t('Date and time format'),
+  );
+  
+  $form['date_settings']['hint'] = array(
+    '#type' => 'item',
+    '#markup' => t('You can add more date types in !config_link', array('!config_link' => l(t('date time configuration'), 'admin/config/regional/date-time'))),
+  );
+  
   $form['submit'] = array(
     '#value' => t('save'),
     '#type' => 'submit',
@@ -143,11 +170,16 @@ function erpal_basic_helper_config_form_submit($form, $form_state){
   $phone_id = $values['my_phone'];
   $email = $values['my_email'];
   $debug = $values['erpal_debug'];
+  $format_date_only = $values['format_date_only'];
+  $format_date_time = $values['format_date_time'];
   variable_set('erpal_debug', $debug);  //erpal debug mode
   variable_set('erpal_config_my_company_nid', $company_nid);  //save company
   variable_set('my_field_addresses', $address_id);  //save address
   variable_set('my_field_phone', $phone_id);  //save phone number
   variable_set('my_field_email', $email);  //save email address
+  variable_set('erpal_date_format_date_only', $format_date_only);  //save phone number
+  variable_set('erpal_date_format_date_time', $format_date_time);  //save email address
+  
 }
 
 /**

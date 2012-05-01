@@ -146,28 +146,23 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   if ($default_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
   }
-
+  
   //if has no nid copy notes from defaults in admin settings if erpal_invoice
   if (!$form['nid']['#value']) {
     $manual_notes = _erpal_invoice_helper_get_manuall_notes();
     //add these manual notes to the text area
     $form['field_note'][LANGUAGE_NONE][0]['value']['#default_value'] = $manual_notes;
   }
-  
+
   //add available tokens to the form
   //show available Tokens  
   if (module_exists('token')) {
-    $form['field_note']['token_tree'] = array(
+    $form['token_tree'] = array(
       '#theme' => 'token_tree',   
       '#token_types' => array('erpal_invoice'),
       '#global_types' => FALSE,
       '#click_insert' => TRUE,
       '#recursion_limit' => 1,
-    );
-  }
-  else {
-    $form['field_note']['token_tree'] = array(
-      '#markup' => '<p>' . t('Enable the <a href="@drupal-token">Token module</a> to view the available token browser.', array('@drupal-token' => 'http://drupal.org/project/token')) . '</p>',
     );
   }
   
@@ -535,13 +530,15 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   //get the billables in an array
   $billable_entity_ids = $invoice->field_billables_ref[LANGUAGE_NONE];
   $billables = array();
+  $date_form_date = _erpal_basic_helper_date_format_date_only();
+
   foreach ($billable_entity_ids as $billable_id) {
     $billable_id = $billable_id['target_id'];
     $billable = billable_load($billable_id);
 
     $billables[$billable_id] = array(
       'subject' => $billable->subject,
-      'date_delivery' => format_date($billable->date_delivery, 'short'),
+      'date_delivery' => date($date_form_date, $billable->date_delivery),
       'subject_nid' => $billable->subject_nid,
       'quantity' => $billable->quantity,
       'single_price' => $billable->single_price,
@@ -594,7 +591,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['company_node'] = $company;
   $variables['customer'] = $customer_arr;
   $variables['invoice_number'] = _erpal_invoice_helper_get_invoice_number_prefix().$invoice_number;
-  $variables['invoice_date'] = format_date($invoice_date, 'short');
+  $variables['invoice_date'] = date($date_form_date, $invoice_date);
   $variables['billables'] = $billables;
   $variables['total'] = $total;
   $variables['currency'] = $currency;
@@ -602,9 +599,10 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['order_numbers_extern'] = $order_numbers_extern;
   $variables['total_excl_vat'] = $total_excl_vat;
   $variables['total_vat'] = $total_vats;
-  $variables['payment_date'] = format_date($payment_date, 'short');
+  $variables['payment_date'] = date($date_form_date, $payment_date);
   $variables['notes'] = $invoice->field_note[LANGUAGE_NONE][0]['value'];
   $variables['auto_notes'] = $flat_auto_notes;
+
 }
 
 /**

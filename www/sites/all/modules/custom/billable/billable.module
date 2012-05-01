@@ -184,8 +184,18 @@ function _billable_get_currencies() {
 /**
 * So we can make the user change the date format by changing this variable 
 */
-function _billable_get_date_format(){
-  return variable_get('date_format_short_date_only', 'Y/m/d');
+function _billable_get_date_format($time = true){
+  if (module_exists('erpal_invoice_helper')) {
+    if (!$time)
+      return _erpal_basic_helper_date_format_date_only();
+    else
+      return _erpal_basic_helper_date_format_date_time();
+  } else {  
+    if (!$time)
+      return variable_get('date_format_short_date_only', 'Y/m/d');
+    else
+      return variable_get('date_format_short_date_time', 'Y/m/d H:i');
+  }
 }
 
 /**
@@ -217,6 +227,8 @@ function template_preprocess_billable_view(&$variables) {
     $billable_ids = array_keys($reduced_billables);
     $reduced_billables = billable_load_multiple($billable_ids);
  
+    $format_date_only = _erpal_basic_helper_date_format_date_only();
+    
     foreach ($reduced_billables as $billable) {
       $subject_nid = $billable->subject_nid;
       $subject_node = node_load($billable->subject_nid);
@@ -224,7 +236,7 @@ function template_preprocess_billable_view(&$variables) {
         l($billable->billable_id, 'billable/'.$billable->billable_id.'/view'),
         is_object($subject_node) ? l($subject_node->title, 'node/'.$subject_nid) : '',
         $billable->billed,
-        date(format_date($billable->date_delivery, 'small')),
+        date(format_date($billable->date_delivery, $format_date_only)),
         $billable->quantity,
         $billable->single_price,
         $billable->total_price_no_vat,
