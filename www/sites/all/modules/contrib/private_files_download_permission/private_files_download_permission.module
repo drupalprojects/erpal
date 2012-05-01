@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Handles both module settings and its behaviour.
+ *
+ * Copyright (c) 2011-2012 by Marco Zanon (http://www.marcozanon.com)
+ * Released under GPLv2 license
+ * Idea and code inspired by http://www.beacon9.ca/labs/drupal-7-private-files-module
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function private_files_download_permission_permission() {
+  return array(
+    'download private files' => array(
+      'title' => t('Download private files'),
+      'description' => t('Download files that are in private folders.'),
+    ),
+    'administer private files download permission' => array(
+      'title' => t('Administer Private files download permission'),
+      'description' => t('Access module configuration.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function private_files_download_permission_menu() {
+  $items = array();
+  $items['admin/config/media/private-files-download-permission'] = array(
+    'title' => 'Private files download permission',
+    'description' => 'Choose which subfolder within the private file system should be unprotected (which allows to combine both "public" and private downloads).',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('private_files_download_permission_settings'),
+    'access arguments' => array('administer private files download permission'),
+  );
+  return $items;
+}
+
+/**
+ * Form callback (configuration).
+ */
+function private_files_download_permission_settings($form, &$form_state) {
+  if ('public' == file_default_scheme()) {
+    drupal_set_message(t('You need to enable the private file system before you setup this module.'), 'error');
+  }
+  $form['private_files_download_permission_unprotected_subfolder'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Unprotected subfolder'),
+    '#default_value' => variable_get('private_files_download_permission_unprotected_subfolder'),
+    '#size' => '60',
+    '#description' => t('Use a relative path and don\'t add leading or trailing slashes. Caution: private downloads filters will be bypassed for the above subfolder (making it "public")!'),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Form callback (validation).
+ */
+function private_files_download_permission_settings_validate($form, &$form_state) {
+  // Make sure the unprotected subfolder variable does not use leading or trailing slashes.
+  $unprotected_subfolder = $form_state['values']['private_files_download_permission_unprotected_subfolder'];
+  if (0 < drupal_strlen($unprotected_subfolder)) {
+    $first_char = drupal_substr($unprotected_subfolder, 0, 1);
+    $last_char = drupal_substr($unprotected_subfolder, -1, 1);
+    if (('/' == $first_char) || ('\\' == $first_char)) {
+      form_set_error('private_files_download_permission_unprotected_subfolder', t('You cannot use leading slashes.'));
+    }
+    if (('/' == $last_char) || ('\\' == $last_char)) {
+      form_set_error('private_files_download_permission_unprotected_subfolder', t('You cannot use trailing slashes.'));
+    }
+  }
+}
+
+/**
+ * Implements hook_file_download().
+ */
+function private_files_download_permission_file_download($uri) {
+  $path = explode('/', $uri);
+  if (($path[2] === variable_get('private_files_download_permission_unprotected_subfolder')) || (user_access('download private files'))) {
+    return array('Content-Type' => file_get_mimetype($uri));
+  }
+  return -1;
+}

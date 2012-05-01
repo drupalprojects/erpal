@@ -177,6 +177,8 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
     $params['order_numbers_extern'] = $context['order_numbers_extern'];
   if (isset($context['invoice_number']))
     $params['invoice_number'] = $context['invoice_number'];
+  if (isset($context['notes']))
+    $params['notes'] = $context['notes'];
 
  $status = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduce, $params);  
  if (!$status['status']) {
@@ -186,6 +188,10 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
       drupal_set_message($message, 'error');
     }
  
+ } else {
+  $invoice = $status['invoice'];
+  $invoice_link = l($invoice->title, 'node/'.$invoice->nid);
+  drupal_set_message(t('The invoice !invoice_link has been created', array('!invoice_link' => $invoice_link)));
  }
 }
 
@@ -199,7 +205,8 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
 
   $defaults = _erpal_invoice_helper_get_customer_defaults($customer_node->nid);
   $default_address = $defaults['address_id'];
-  $default_credit_period = $defaults['credit_period'];
+  //if we have a default credit period by this customer, use it, otherwise use the system default
+  $default_credit_period = $defaults['credit_period'] ? $defaults['credit_period'] : _erpal_invoice_helper_get_default_credit_period();
   $default_notes = $defaults['notes'];
   
   //no default nodes if customer is not the own company
