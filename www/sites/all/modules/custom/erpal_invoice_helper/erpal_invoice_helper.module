@@ -149,8 +149,10 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     }
     
     //set the default vat rate and the default currency
-    $form['currency']['#default_value'] = _erpal_invoice_helper_get_default_currency();
-    $form['vat_rate']['#default_value'] = _erpal_invoice_helper_get_default_vat_rate();
+    if (!$form['billable_id']) {
+      $form['currency']['#default_value'] = _erpal_invoice_helper_get_default_currency();
+      $form['vat_rate']['#default_value'] = _erpal_invoice_helper_get_default_vat_rate();
+    }
   }
 }
 
@@ -447,7 +449,9 @@ function erpal_invoice_helper_node_update($node) {
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice') {
-    _erpal_invoice_helper_caclulate_invoice($node);
+    if (!isset($node->nid) || (isset($node->nid) && !$node->nid))
+      _erpal_invoice_helper_caclulate_invoice($node);
+    
     _erpal_invoice_helper_set_last_invoice_number($node);
   }
 
@@ -461,11 +465,16 @@ function erpal_invoice_helper_node_presave($node) {
   $type = node_type_get_type($node);
   
   if ($type->type == 'erpal_invoice') {
-    //if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
+    
     _erpal_invoice_helper_set_notes($node);
-    _erpal_invoice_helper_caclulate_invoice($node);
+    
+    if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
+    //that is because the vat entity will be saved to a node that does not exist!
+      _erpal_invoice_helper_caclulate_invoice($node);
+    }
+    
     _erpal_invoice_helper_replace_order_number_tokens($node);
-    //}
+    
   }
 } 
 
@@ -479,6 +488,7 @@ function erpal_invoice_helper_node_insert($node) {
 
   if ($type->type == 'erpal_invoice') {
     _erpal_invoice_helper_caclulate_invoice($node);
+    
     _erpal_invoice_helper_set_last_invoice_number($node);
   }
 }

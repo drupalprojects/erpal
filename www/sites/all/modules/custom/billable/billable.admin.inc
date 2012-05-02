@@ -148,6 +148,11 @@ function billable_delete_form_wrapper($billable) {
  */
 function billable_edit_form($form, &$form_state, $billable) {
   // Add the default field elements.
+  $form['billable_id'] = array(
+    '#type' => 'value',
+    '#value' => isset($billable->billable_id) ? $billable->billable_id : 0,
+  );
+
   $form['subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
