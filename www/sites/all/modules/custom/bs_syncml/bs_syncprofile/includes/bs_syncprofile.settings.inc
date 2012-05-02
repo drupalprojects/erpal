@@ -39,9 +39,16 @@ function bs_syncprofile_profile_page($profilename, $tab=null) {
 
 function bs_syncprofile_serversettings_form($form, $form_state, $profile, $profilename) {
   
-  dpm($profile);
-  
   $form = array();
+  
+   $form['profilename'] = array(
+      '#type'         => 'textfield',
+      '#title'        => t('Profile Name'),
+      '#required'     => true,
+      '#default_value' =>   isset($profile['profilename']) ? $profile['profilename'] : "",
+      '#description'  => t("Choose a human readable name for this profile.")
+  );
+  
   $form['serverurl'] = array(
       '#type'         => 'textfield',
       '#title'        => t("Server URL"),
@@ -122,8 +129,6 @@ function bs_syncprofile_useraccounts_form($form, $form_state, $profile, $profile
 }
 
 function bs_syncprofile_access_form($form, $form_state, $profile, $profilename) {
-  
-  dpm($profile);
   
   $form['accessrestriction'] = array(
       '#type'         => 'radios',
