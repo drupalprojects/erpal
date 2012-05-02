@@ -100,6 +100,24 @@ function erpal_invoice_helper_invoice_from_billables_action_validate($form, &$fo
     form_set_error('skonto_period', t('Please enter only full numeric values for skonto period.'));
   if ($skonto_percent && (!is_numeric($skonto_percent) || strpos($skonto_percent, '.') > 0))
     form_set_error('skonto_percent', t('Please enter only full numeric values for skonto percent.'));
+    
+  //if contractor is own company, ensure we enter only a numeric invoice number, because prefix will be set in defaults of
+  //this module
+  $contractor_nid = $values['contractor_nid'];
+  if (isset($values['invoice_number']))
+    $invoice_number = $values['invoice_number'];
+  $own_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  if ($contractor_nid == $own_company_nid) {
+    if (!is_numeric($invoice_number))
+      form_set_error('invoice_number', t('Please enter only numeric values for invoice number'));
+  }
+  
+  //credit period must be numeric
+  $credit_period = 0;
+  if (isset($values['credit_period']))
+    $credit_period = $values['credit_period'];
+  if ($credit_period && !is_numeric($credit_period))
+    form_set_error('credit_period', t('Please enter only full numeric values for credit period.'));
 }
 
 /**
@@ -157,6 +175,10 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
     $params['order_numbers_intern'] = $context['order_numbers_intern'];
   if (isset($context['order_numbers_extern']))
     $params['order_numbers_extern'] = $context['order_numbers_extern'];
+  if (isset($context['invoice_number']))
+    $params['invoice_number'] = $context['invoice_number'];
+  if (isset($context['notes']))
+    $params['notes'] = $context['notes'];
 
  $status = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduce, $params);  
  if (!$status['status']) {
@@ -166,6 +188,10 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
       drupal_set_message($message, 'error');
     }
  
+ } else {
+  $invoice = $status['invoice'];
+  $invoice_link = l($invoice->title, 'node/'.$invoice->nid);
+  drupal_set_message(t('The invoice !invoice_link has been created', array('!invoice_link' => $invoice_link)));
  }
 }
 
@@ -174,13 +200,13 @@ function erpal_invoice_helper_invoice_from_billables_action(&$billables, $contex
 */
 function _erpal_invoice_helper_customer_defaults_form($customer_node, $contractor_node) {
   $allowed_addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);
-  $allowed_credit_periods = _erpal_invoice_helper_get_credit_periods_arr();
   
   $form = array();
 
   $defaults = _erpal_invoice_helper_get_customer_defaults($customer_node->nid);
   $default_address = $defaults['address_id'];
-  $default_credit_period = $defaults['credit_period'];
+  //if we have a default credit period by this customer, use it, otherwise use the system default
+  $default_credit_period = $defaults['credit_period'] ? $defaults['credit_period'] : _erpal_invoice_helper_get_default_credit_period();
   $default_notes = $defaults['notes'];
   
   //no default nodes if customer is not the own company
@@ -222,6 +248,32 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
     '#required' => TRUE,
   );
   
+    //credit period
+  $form['credit_period'] = array(
+    '#type' => 'textfield',
+    '#size' => 10,
+    '#title' => t('Credit period'),
+    '#default_value' => $default_credit_period,
+    '#required' => TRUE,
+  );
+  
+  
+  $own_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  if ($contractor_node->nid == $own_company_nid) {
+    $next_invoice_number = _erpal_invoice_helper_get_next_invoice_number();
+    $invoice_number_required = true;
+  } else {
+    $next_invoice_number = '';
+    $invoice_number_required = false;
+  }
+  
+  $form['invoice_number'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Invoice number'),
+    '#default_value' => $next_invoice_number,
+    '#required' => $invoice_number_required,
+  );
+  
   //add fields for order numbers for intern and extern
   $form['order_numbers'] = array(
     '#type' => 'fieldset',
@@ -256,15 +308,6 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
       '#recursion_limit' => 1,
     );
   }
-  
-  //credit period
-  $form['credit_period'] = array(
-    '#type' => 'select',
-    '#options' => $allowed_credit_periods,
-    '#title' => t('Credit period'),
-    '#default_value' => $default_credit_period,
-    '#required' => TRUE,
-  );
   
   //sconto
   $form['skonto'] = array(

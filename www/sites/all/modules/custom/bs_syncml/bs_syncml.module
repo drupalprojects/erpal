@@ -4,8 +4,10 @@
  * 
  */
 
+module_load_include("inc", "bs_syncml", "includes/BsSyncMlProfile");
+module_load_include("inc", "bs_syncml", "includes/BsSyncMlDataHandler");
 function bs_syncml_init() {
-  
+
 }
 
 

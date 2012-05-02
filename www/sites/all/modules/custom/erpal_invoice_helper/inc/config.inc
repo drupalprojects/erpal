@@ -65,11 +65,32 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#description' => t('This prefix will be added as prefix to every invoice number'),
   );
   
+  $form['erpal_invoice_currencies'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Currencies'),
+    '#default_value' => _erpal_invoice_helper_get_currencies_string(),    
+    '#description' => t('Syntax is currency_short#currency_label each line one currency'),
+  );
+  
+  $form['erpal_invoice_default_currency'] = array(
+    '#type' => 'select',
+    '#title' => t('Default currency'),
+    '#options' => _erpal_invoice_helper_currencies_arr(),
+    '#default_value' => _erpal_invoice_helper_get_default_currency(),
+  );  
+  
   $form['erpal_invoice_vat_rates'] = array(
     '#type' => 'textarea',
     '#title' => t('VAT rates'),
     '#default_value' => _erpal_invoice_helper_get_vat_rates_string(),    
     '#description' => t('Syntax is vat_value#vat_display_label#additional invoice note each line'),
+  );
+  
+  $form['erpal_invoice_default_vat_rate'] = array(
+    '#type' => 'select',
+    '#title' => t('Default VAT rate'),
+    '#options' => _erpal_invoice_helper_vat_rates_arr(),
+    '#default_value' => _erpal_invoice_helper_get_default_vat_rate(),
   );
   
   $form['erpal_invoice_credit_periods'] = array(
@@ -78,6 +99,14 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#default_value' => _erpal_invoice_helper_get_credit_periods_string(),    
     '#description' => t('Enter credit period in days each in a separate line'),
   );
+  
+  $form['erpal_invoice_default_credit_period'] = array(
+    '#type' => 'select',
+    '#title' => t('Default credit period'),
+    '#options' => _erpal_invoice_helper_get_credit_periods_arr(),
+    '#default_value' => _erpal_invoice_helper_get_default_credit_period(),
+  );
+  
   
   $form['erpal_invoice_manuall_notes'] = array(
     '#type' => 'textarea',
@@ -121,9 +150,12 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
 
   variable_set('erpal_invoice_number_prefix', $values['erpal_invoice_number_prefix']);
   variable_set('erpal_invoice_vat_rates_string', $values['erpal_invoice_vat_rates']);
+  variable_set('erpal_invoice_default_vat_rate', $values['erpal_invoice_default_vat_rate']);
   variable_set('erpal_invoice_credit_periods_string', $values['erpal_invoice_credit_periods']);
   variable_set('erpal_invoice_manuall_notes', $values['erpal_invoice_manuall_notes']);
-  
+  variable_set('erpal_invoice_currencies_string', $values['erpal_invoice_currencies']);
+  variable_set('erpal_invoice_default_currency', $values['erpal_invoice_default_currency']);
+  variable_set('erpal_invoice_default_credit_period', $values['erpal_invoice_default_credit_period']);
 }
 
 /**
@@ -171,6 +203,55 @@ function _erpal_invoice_helper_get_vat_rates_string() {
   return variable_get('erpal_invoice_vat_rates_string', '7#7');
 }
 
+/**
+* Return string that definies all available currencies
+*/
+function _erpal_invoice_helper_get_currencies_string() {
+  return variable_get('erpal_invoice_currencies_string', 'EUR#Euro');
+}
+
+/**
+* Returns the default VAT rate
+*/
+function _erpal_invoice_helper_get_default_vat_rate() {
+  return variable_get('erpal_invoice_default_vat_rate', 19);
+}
+
+/**
+* Returns default currency
+*/
+function _erpal_invoice_helper_get_default_currency() {
+  return variable_get('erpal_invoice_default_currency', 'EUR');
+}
+
+/**
+* Returns default credit period
+*/
+function _erpal_invoice_helper_get_default_credit_period() {
+  return variable_get('erpal_invoice_default_credit_period', 'EUR');
+}
+
+/**
+* Returns all available currencies as array
+*/
+function _erpal_invoice_helper_currencies_arr() {
+  $currency_string = _erpal_invoice_helper_get_currencies_string();
+  $currency_strings = explode("\r\n", $currency_string);
+  
+  $currencies = array();
+  foreach ($currency_strings as $a_currency_string) {
+    $currency_row = explode('#', $a_currency_string);
+    $key = $currency_row[0];
+    if (isset($currency_row[1]))
+      $value = $currency_row[1];
+    else
+      $value = $key;
+      
+    $currencies[$key] = $value;
+  }
+  
+  return $currencies;
+}
 
 /**
 * returns vat rates as array

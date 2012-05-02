@@ -44,6 +44,38 @@ function erpal_invoice_helper_theme() {
 }
 
 /**
+* Implements hook_field_formatter_info
+*/
+function erpal_invoice_helper_field_formatter_info() {
+
+  $formatters = array();
+
+  $formatters['note_invoice_token_replace'] = array(
+    'label' => t('Note invoice token replace'),
+    'field types' => array('text', 'text_long'), //create an own formattes so the note field in an invoice can render tokens
+    //ONLY if a node is viewed, but the real text is not changed. If tokens would stable support fields, this would not be neccessary
+  );
+
+  return $formatters;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function erpal_invoice_helper_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array(); 
+  if ($entity->type == 'erpal_invoice') {
+    _erpal_invoice_helper_replace_all_tokens($entity, 'view');   
+    foreach ($items as $delta => $item) {    
+      $element[$delta] = array(
+        '#markup' => $entity->field_note[$langcode][$delta]['value'],
+      );
+    }
+  }
+  return $element;
+}
+
+/**
 * implements hook_init
 */
 function erpal_invoice_helper_init() {
@@ -99,84 +131,8 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   
-  if ($form_id == 'erpal_invoice_node_form') {
-    
-    $form['field_invoice_address_id'][LANGUAGE_NONE]['#prefix'] = '<div id="invoice_address_wrapper">';
-    $form['field_invoice_address_id'][LANGUAGE_NONE]['#suffix'] = '</div>';
-
-    $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
-
-    $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);
-    
-    //if address has only one option, make this option the default value
-    $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];
-    $default_id = false;
-    if (count($options) == 2) {
-      //get the one that is not "_none" and delete it!    
-      foreach ($options as $id=>$value) {
-        if (!is_numeric($id))
-          unset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$id]);
-      }
-    }
-    if ($default_id) {
-      $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
-    }
- 
-    //if has no nid copy notes from defaults in admin settings if erpal_invoice
-    if (!$form['nid']['#value']) {
-      $manual_notes = _erpal_invoice_helper_get_manuall_notes();
-      //add these manual notes to the text area
-      $form['field_note'][LANGUAGE_NONE][0]['value']['#default_value'] = $manual_notes;
-    }
-    
-    //add available tokens to the form
-    //show available Tokens  
-    if (module_exists('token')) {
-      $form['field_note']['token_tree'] = array(
-        '#theme' => 'token_tree',   
-        '#token_types' => array('erpal_invoice'),
-        '#global_types' => FALSE,
-        '#click_insert' => TRUE,
-        '#recursion_limit' => 1,
-      );
-    }
-    else {
-      $form['field_note']['token_tree'] = array(
-        '#markup' => '<p>' . t('Enable the <a href="@drupal-token">Token module</a> to view the available token browser.', array('@drupal-token' => 'http://drupal.org/project/token')) . '</p>',
-      );
-    }
-    
-    //add token information for order numbers
-    if (module_exists('token')) {
-      $form['order_numbers_token_tree'] = array(
-        '#theme' => 'token_tree',   
-        '#token_types' => array('erpal_invoice_referenced_data'),
-        '#global_types' => FALSE,
-        '#click_insert' => TRUE,
-        '#recursion_limit' => 1,
-        '#weight' => 10,
-      );
-      
-      $form['#group_children']['order_numbers_token_tree'] = 'group_order_numbers';
-    }
-    
-    //set contractor to "own company" if field is empty
-    $contractor_nid = false;    
-    if (isset($form['field_contractor_ref'][LANGUAGE_NONE][0])) {
-      $contractor_nid = $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
-    }
-
-    if (!$contractor_nid) {
-      $company_nid = _erpal_basic_helper_get_own_company_nid(false);
-      $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $company_nid;
-    }
-
-    //prefill invoice number field with next possible value if no invoice number is already set
-    if (isset($form['field_invoice_number'][LANGUAGE_NONE][0]['value'])) {   
-      if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {
-        $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = _erpal_invoice_helper_get_next_invoice_number();
-      }
-    }
+  if ($form_id == 'erpal_invoice_node_form') {    
+    _erpal_invoice_helper_invoice_node_form_alter($form, $form_state); 
   }
   
   //set default value for contractor in billable node edit form
@@ -191,7 +147,112 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
       $company_nid = _erpal_basic_helper_get_own_company_nid(false);     
       $form['contractor_nid']['#default_value'] = $company_nid;
     }
+    
+    //set the default vat rate and the default currency
+    $form['currency']['#default_value'] = _erpal_invoice_helper_get_default_currency();
+    $form['vat_rate']['#default_value'] = _erpal_invoice_helper_get_default_vat_rate();
   }
+}
+
+/**
+* Function altering the erpal_invoice node form
+*/
+function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
+  $form['field_invoice_address_id'][LANGUAGE_NONE]['#prefix'] = '<div id="invoice_address_wrapper">';
+  $form['field_invoice_address_id'][LANGUAGE_NONE]['#suffix'] = '</div>';
+
+  $form['field_customer_ref'] = _erpal_invice_helper_field_customer_ref_alter($form['field_customer_ref']);
+  
+  $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);
+  
+  //if address has only one option, make this option the default value
+  $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];
+  $default_id = false;
+  if (count($options) == 2) {
+    //get the one that is not "_none" and delete it!    
+    foreach ($options as $id=>$value) {
+      if (!is_numeric($id))
+        unset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$id]);
+    }
+  }
+  if ($default_id) {
+    $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
+  }
+  
+  //if has no nid copy notes from defaults in admin settings if erpal_invoice
+  if (!$form['nid']['#value']) {
+    $manual_notes = _erpal_invoice_helper_get_manuall_notes();
+    //add these manual notes to the text area
+    $form['field_note'][LANGUAGE_NONE][0]['value']['#default_value'] = $manual_notes;
+  }
+
+  //add available tokens to the form
+  //show available Tokens  
+  if (module_exists('token')) {
+    $form['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  
+  //add token information for order numbers
+  if (module_exists('token')) {
+    $form['order_numbers_token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice_referenced_data'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+      '#weight' => 10,
+    );
+    
+    $form['#group_children']['order_numbers_token_tree'] = 'group_order_numbers';
+  }
+  
+  //set contractor to "own company" if field is empty
+  $contractor_nid = false;    
+  if (isset($form['field_contractor_ref'][LANGUAGE_NONE][0])) {
+    $contractor_nid = $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
+  }
+
+  if (!$contractor_nid) {
+    $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+    $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $company_nid;
+  }
+
+  //prefill invoice number field with next possible value if no invoice number is already set
+  if (isset($form['field_invoice_number'][LANGUAGE_NONE][0]['value'])) {   
+    if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {
+      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = _erpal_invoice_helper_get_next_invoice_number();
+    }
+  }
+  
+  //set default currency if node is not already created
+  if (!$form['nid']['#value']) {
+    $default_currency = _erpal_invoice_helper_get_default_currency();
+    $form['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
+  }
+  
+  //if node will be new created, set default credit period
+  if (!$form['nid']['#value']) {
+    $default_credit_period = _erpal_invoice_helper_get_default_credit_period();
+    $form['field_credit_period'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_credit_period;
+  }
+
+  $form['field_payment_date'][LANGUAGE_NONE][0]['#type'] = 'value'; //this field is hidden by display suite forms, too, but there 
+  //is an error if we dont set the field to 'value'. @see http://drupal.org/node/1547236 
+}
+
+
+/**  
+* Implements hook_billable_currencies provided by billable module
+*/
+function erpal_invoice_helper_billable_currencies() {
+  module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
+  return _erpal_invoice_helper_currencies_arr();
 }
 
 /**
@@ -307,21 +368,6 @@ function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
   }
 }
 
-/**
-* Implements hook_node_load
-*/
-function erpal_invoice_helper_node_load($node) {
-  if (arg(2) == 'edit')
-    return; //on edit form, we dont want tokens to be replaced
-//@TODO: Replaces Tokens even on node save.....
-  //the node is in an array, extract it and put it back into the array
-  $my_node_arr = array();
-  foreach ($node as $nid=>$a_node) {
-    //_erpal_invoice_helper_replace_all_tokens($a_node, 'view'); //if we dont do that, tokens are not reolace when invoice is displayed in Pane
-    //$node[$nid] = $a_node;
-  }
- 
-}
 
 /**
 * Implements hook_menu
@@ -334,7 +380,8 @@ function erpal_invoice_helper_menu(){
     'title' => 'Create PDF of invoice',
     'page callback' => '_erpal_invoice_helper_invoice_pdf_menu_callback',    
     'page arguments' => array(1),
-    'access arguments' => array('create erpal_invoice content'),
+    'access callback' => '_erpal_invoice_helper_invoice_pdf_menu_access',
+    'access arguments' => array(1),
     'file' => 'inc/invoice.pdf.inc',
     'type' => MENU_CALLBACK,
   );
@@ -345,6 +392,29 @@ function erpal_invoice_helper_menu(){
   $items = array_merge($items, $config_items);
   return $items;
 } 
+
+/**
+* Checks access for creating a pdf
+*/
+function _erpal_invoice_helper_invoice_pdf_menu_access($invoice_nid) {
+  if (!user_access('create erpal_invoice content'))
+    return false;
+    
+  //not allowed if contractor is not the own company
+  $invoice_node = node_load($invoice_nid);
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  $contractor_nid = $invoice_node->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+  
+  if ($contractor_nid != $my_company_nid)  //creating invoices is only allowed for our own company
+    return false;
+
+  $private_path = _erpal_basic_helper_private_file_path();
+  if (!$private_path) {
+    return false;
+  }
+  
+  return true;
+}
 
 /**
 * Implements hook_permission
@@ -391,11 +461,11 @@ function erpal_invoice_helper_node_presave($node) {
   $type = node_type_get_type($node);
   
   if ($type->type == 'erpal_invoice') {
-    if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
-      _erpal_invoice_helper_set_notes($node);
-      _erpal_invoice_helper_caclulate_invoice($node);
-      _erpal_invoice_helper_replace_order_number_tokens($node);
-    }
+    //if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
+    _erpal_invoice_helper_set_notes($node);
+    _erpal_invoice_helper_caclulate_invoice($node);
+    _erpal_invoice_helper_replace_order_number_tokens($node);
+    //}
   }
 } 
 
@@ -407,10 +477,10 @@ function erpal_invoice_helper_node_insert($node) {
   //it must be an invoice node
   $type = node_type_get_type($node);
 
-  if ($type->type == 'erpal_invoice')
+  if ($type->type == 'erpal_invoice') {
     _erpal_invoice_helper_caclulate_invoice($node);
     _erpal_invoice_helper_set_last_invoice_number($node);
-
+  }
 }
 
 
@@ -513,13 +583,15 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   //get the billables in an array
   $billable_entity_ids = $invoice->field_billables_ref[LANGUAGE_NONE];
   $billables = array();
+  $date_form_date = _erpal_basic_helper_date_format_date_only();
+
   foreach ($billable_entity_ids as $billable_id) {
     $billable_id = $billable_id['target_id'];
     $billable = billable_load($billable_id);
 
     $billables[$billable_id] = array(
       'subject' => $billable->subject,
-      'date_delivery' => format_date($billable->date_delivery, 'short'),
+      'date_delivery' => date($date_form_date, $billable->date_delivery),
       'subject_nid' => $billable->subject_nid,
       'quantity' => $billable->quantity,
       'single_price' => $billable->single_price,
@@ -572,7 +644,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['company_node'] = $company;
   $variables['customer'] = $customer_arr;
   $variables['invoice_number'] = _erpal_invoice_helper_get_invoice_number_prefix().$invoice_number;
-  $variables['invoice_date'] = format_date($invoice_date, 'short');
+  $variables['invoice_date'] = date($date_form_date, $invoice_date);
   $variables['billables'] = $billables;
   $variables['total'] = $total;
   $variables['currency'] = $currency;
@@ -580,9 +652,10 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['order_numbers_extern'] = $order_numbers_extern;
   $variables['total_excl_vat'] = $total_excl_vat;
   $variables['total_vat'] = $total_vats;
-  $variables['payment_date'] = format_date($payment_date, 'short');
+  $variables['payment_date'] = date($date_form_date, $payment_date);
   $variables['notes'] = $invoice->field_note[LANGUAGE_NONE][0]['value'];
   $variables['auto_notes'] = $flat_auto_notes;
+
 }
 
 /**
@@ -723,9 +796,13 @@ function _erpal_invoice_helper_set_last_invoice_number($invoice) {
   else
     $contractor_nid = $company_nid;
     
+  if (!isset($invoice->field_invoice_number[LANGUAGE_NONE][0]['value']))  
+    return; 
+    
   $invoice_numer = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
+  $is_higher = variable_get('erpal_last_invoice_number', 0) < $invoice_numer;   //update only, if invoice number is higher, otherwise invoice numbr will be set back if we update an older invoice node
   if ($contractor_nid == $company_nid)
-    if (is_numeric($invoice_numer)) 
+    if (is_numeric($invoice_numer) && $is_higher) 
       variable_set('erpal_last_invoice_number', $invoice_numer);
 }
 

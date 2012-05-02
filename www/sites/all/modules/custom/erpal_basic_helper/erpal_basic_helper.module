@@ -330,4 +330,55 @@ function _erpal_basic_helper_warnings() {
   
   if (!$my_company_nid)
     drupal_set_message(t('Please complete !config_link to make ERPAL work.', array('!config_link' => l(t('config settings'), 'admin/erpal/basic'))), 'warning');
+    
+  //check if private directory is set.
+  $private_path = _erpal_basic_helper_private_file_path();
+  _erpal_basic_helper_private_file_path();
+  if (!$private_path) {
+    drupal_set_message(t('To make ERPAL work with files please set your private files directory in !files_link', array('!files_link' => l(t('File system settings'), 'admin/config/media/file-system'))), 'warning');
+  }
+}
+
+/**
+* Returns the private file path
+*/
+function _erpal_basic_helper_private_file_path() {
+  return variable_get('file_private_path', false);
+}
+
+/**
+* returns the date format for displaying date only
+*/
+function _erpal_basic_helper_date_format_date_only() {
+  return variable_get('erpal_date_format_date_only', 'short');
+}
+
+/**
+* returns the date format for displaying date only
+*/
+function _erpal_basic_helper_date_format_date_time() {
+  return variable_get('erpal_date_format_date_time', 'short');
+}
+
+/**
+* Returns all available date formats
+*/
+function  _erpal_basic_helper_get_date_formats() {
+  // Get list of all available date formats.  (Mostly copied from system.admin.inc
+  $formats = array();
+  drupal_static_reset('system_get_date_formats');
+  $date_formats = system_get_date_formats(); // Call this to rebuild the list, and to have default list.
+  foreach ($date_formats as $type => $format_info) {
+    $formats = array_merge($formats, $format_info);
+  }
+  $custom_formats = system_get_date_formats('custom');
+  if (!empty($custom_formats)) {
+    $formats = array_merge($formats, $custom_formats);
+  }
+  $choices = array();
+  foreach ($formats as $f => $format) {
+    $choices[$f] = format_date(REQUEST_TIME, 'custom', $f);
+  }
+  
+  return $choices;
 }

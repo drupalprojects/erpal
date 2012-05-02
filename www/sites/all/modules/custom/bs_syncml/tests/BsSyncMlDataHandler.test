@@ -1,0 +1,219 @@
+<?php
+
+/**
+ * 
+ *
+ * @author serkan
+ */
+class BsSyncMlDataHandlerTestCase extends DrupalWebTestCase {
+
+  static private $tablename = 'bs_syncml_items';
+  static private $tablealias = 'bssi';
+
+  public static function getInfo() {
+    return array(
+        'name' => 'BsSyncMlDataHandler Test',
+        'description' => 'Test the CRUD-Methods of the DataHandler.',
+        'group' => 'BS Sync',
+    );
+  }
+
+  function setUp() {
+    parent::setUp('bs_syncml');
+  }
+
+  public function testDataHandlerCreate() {
+    $nid = 1;
+    $data = 'TEST';
+    //Insert it
+    BsSyncMlDataHandler::create($nid, $data);
+
+    //Now read it
+
+    $res = db_select(self::$tablename, self::$tablealias)
+            ->fields(self::$tablealias, array('sid', 'nid'))
+            ->condition('nid', 1, '=')
+            ->execute()
+            ->rowCount();
+
+    $this->verbose($res);
+    $this->assertEqual($res, 1, 'Inserting an item');
+
+    #db_delete(self::$tablename)->condition('nid',1,'=');
+    db_truncate(self::$tablename);
+  }
+
+  public function testDataHandlerGets() {
+    //Create some TestItems
+    for ($i = 0; $i <= 500; $i++) {
+      $fields = array(
+          'nid' => $i + 550,
+          'timestamp' => time(),
+          'changed' => 1,
+          'data' => chr(($i % 94) + 32),
+      );
+      $result = db_insert(self::$tablename)->fields($fields);
+      $result->execute();
+    }
+
+    //Get Single item
+    //By NID
+    $tmp = BsSyncMlDataHandler::get_items_by_nids(600);
+    $res = db_select(self::$tablename, self::$tablealias)
+            ->fields(self::$tablealias, array('data'))
+            ->condition('nid', 600, '=')
+            ->execute()
+            ->fetchAssoc();
+
+    $this->assertEqual($tmp['data'], $res['data'], 'Get a single item by nid');
+
+
+    //By SID
+    $tmp = BsSyncMlDataHandler::get_items_by_sids(30);
+    $res = db_select(self::$tablename, self::$tablealias)
+            ->fields(self::$tablealias, array('data'))
+            ->condition('sid', 30, '=')
+            ->execute()
+            ->fetchAssoc();
+
+
+    $this->assertEqual($tmp['data'], $res['data'], 'Get a single item by sid');
+
+
+
+    //Get bunch of items
+    //By NID
+    $nids = array();
+    for ($i = 200; $i <= 450; $i++, $i++)
+      $nids[] = $i;
+    $tmp = BsSyncMlDataHandler::get_items_by_nids($nids);
+    $res = db_select(self::$tablename, self::$tablealias)
+            ->fields(self::$tablealias, array('nid', 'data'))
+            ->condition('nid', $nids, 'IN')
+            ->execute()
+            ->fetchAllAssoc('nid');
+
+
+    $failed = FALSE;
+    foreach ($tmp as $record) {
+      if ($record['data'] != $res[$record['nid']]) {
+        $this->assert('fail', 'Failed reading bunch of items by nid!');
+        $failed = TRUE;
+        break;
+      }
+    }
+
+    if (!$failed) {
+      $this->assert('pass', 'Passed reading bunch of items by nid');
+    }
+    //By SID
+    $sids = array();
+    for ($i = 200; $i <= 450; $i++, $i++)
+      $sids[] = $i;
+    $tmp = BsSyncMlDataHandler::get_items_by_sids($sids);
+    $res = db_select(self::$tablename, self::$tablealias)
+            ->fields(self::$tablealias, array('sid', 'nid'))
+            ->condition('sid', $sids, 'IN')
+            ->execute()
+            ->fetchAllAssoc('sid');
+
+    $failed = FALSE;
+    foreach ($tmp as $record) {
+      if ($record['nid'] != $res[$record['sid']]->nid) {
+        $this->assert('fail', 'Failed reading bunch of items by sid!');
+        $failed = TRUE;
+        break;
+      }
+    }
+
+    if (!$failed) {
+      $this->assert('pass', 'Passed reading bunch of items by sid');
+    }
+
+    //Generate some random changes
+    db_update(self::$tablename)
+            ->fields(array('changed' => mt_rand(0, 1)))
+            ->execute();
+
+    //Get changed items 
+    //with an array
+    $nids = array();
+    for ($i = 50; $i <= 400; $i++)
+      $nids[] = $i;
+    $tmp = BsSyncMlDataHandler::get_changed_items($nids);
+
+    $res = db_select(self::$tablename, self::$tablealias)
+            ->fields(self::$tablealias)
+            ->condition('changed', 1, '=')
+            ->condition('nid', $nids, 'IN')
+            ->execute()
+            ->fetchAllAssoc('sid');
+
+    $failed = FALSE;
+    foreach ($tmp as $record) {
+      if ($record['nid'] != $res[$record['sid']]->nid) {
+        $this->assert('fail', 'Failed reading bunch of changed items with nid-array');
+        $failed = TRUE;
+        break;
+      }
+    }
+
+    if (!$failed) {
+      $this->assert('pass', 'Passed reading bunch of changed items with nid-array');
+    }
+
+    db_truncate(self::$tablename);
+  }
+/**
+ *@todo ! 
+ *
+  public function testDataHandlerSets() {
+    
+    //Create some TestItems    
+      $fields = array(
+          'nid' => 1,
+          'timestamp' => time(),
+          'changed' => 1,
+          'data' => TEST,
+      );
+      $result = db_insert(self::$tablename)->fields($fields);
+      $result->execute();          
+       function _get_changed_state($sid=1) {     
+         /**
+          * @todo This should also work with self:: or something!
+          *
+        return  db_select('bs_syncml_items','bssi')
+                  ->fields('bssi',array('changed'))
+                  ->condition('sid',$sid,'=')
+                  ->execute()
+                  ->fetchAllAssoc('nid');
+      }      
+      
+      
+      
+      $possibles = array('curr'=>array(0,1),'new'=>array(0,1));
+      $permus = $this->generatePermutations($possibles);
+      foreach($permus as $perm) {
+        //SetUp
+        db_update(self::$tablename)
+          ->fields(array('changed'=>$perm['curr']))
+          ->condition('sid', 1, '=')
+          ->execute();
+        
+        BsSyncMlDataHandler::set_changed(1,$perm['new']);
+        
+        $this->assertEqual($perm['new'], _get_changed_state(),'Setting the \'Changed\' from '.$perm['curr'].' to '.$perm['new']);
+        
+      }
+      
+    
+    
+    
+    
+    
+    
+    db_truncate(self::$tablename);
+  }
+*/
+}
+

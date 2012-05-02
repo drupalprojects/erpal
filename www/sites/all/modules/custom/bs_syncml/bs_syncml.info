@@ -12,4 +12,6 @@ core = 7.x
 files[] = bs_syncml.module
 files[] = bs_syncml.install
 
+files[] = tests/BsSyncMlDataHandler.test
+
 configure = admin/configuration/bs_syncml
