@@ -1,0 +1,13 @@
+core        = "7.x"
+description = "ERPAL mail to action handling for CRM."
+name        = "erpal_crm_mailaction"
+package     = "ERPAL CRM"
+php         = "5.3.x"
+project     = "erpal_crm_mailaction"
+version     = "7.x-1.00-dev"
+
+files[] = "erpal_mailaction.module"
+files[] = "inc/ImapFetcher/ImapFetcher.inc"
+files[] = "inc/ImapFetcher/ImapMailReader.inc"
+files[] = "inc/ImapFetcher/ImapConnection.inc"
+files[] = "inc/config.inc"

@@ -1,0 +1,123 @@
+<?php
+/*
+ * @author 		Marc Sven Kleinboehl
+ * @created 	01/14/2012
+ * @copyright	2012 © Bright Solutions GmbH 
+ */
+ 
+
+// The group string of the configuration.
+define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX', 'mailbox');
+define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS', 'mailbox_settings');
+
+// The UID of the site admin.
+define ('ERPAL_CRM_MAILACTION_ADMIN_UID', 1);
+
+// The destination content type for mail imports.
+define ('ERPAL_CRM_MAILACTION_DESTIONATION_CONTENT_TYPE', 'erpal_crm_activity');
+
+
+
+/**
+* Implements hook_menu.
+*/ 
+function erpal_crm_mailaction_menu(){
+
+  $items = array();
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_crm_mailaction_config_menu();
+
+  return array_merge($items, $config_items);
+} 
+
+/**
+* Implements hook_permission.
+*/
+function erpal_crm_mailaction_permission(){
+  
+  return array(
+    'config erpal crm mailaction' => array(
+      'title'       => t('Administer ERPAL mail action handler'), 
+      'description' => t('Perform administration tasks for ERPAL crm mail action module.'),
+    ),
+    'reply mails erpal crm mailaction' => array(
+      'title'       => t('Mail reply from node'), 
+      'description' => t('Shows a mailto reply link for the specific user..'),
+    ),
+  );
+} 
+
+/*
+ * Implements hook_cron.
+ */
+function erpal_crm_mailaction_cron () {
+  
+  module_load_include ('inc', 'erpal_crm_mailaction', 'inc/CronProcessor/CronProcessor.class');
+  erpal_crm_mailaction\CronProcessor::run ();
+  
+  return;
+}
+
+/*
+ * Implements hook_erpal_crm_mailaction_incoming. 
+ */
+function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body) {
+
+  module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/Import.class');  
+  erpal_crm_mailaction\Import::import ($to, $from, $subject, $body);
+  
+  return;
+}
+
+/*
+ * Implements hook_theme.
+ */
+function erpal_crm_mailaction_theme () {
+  
+  return array (
+    'erpal_crm_mailaction_comment' => array (
+      'template'  => 'templates/erpal_crm_mailaction_comment',
+      'variables'	=> array ('to'=>'', 'body'=>'')
+    )
+  );
+}
+ 
+/*
+ * Implements hook_node_view_alter.
+ * Used to add "Reply per mail" links to an activity node and the comments of such a node.
+ */
+function erpal_crm_mailaction_node_view_alter(&$build) {
+
+  if ($build['#bundle'] != ERPAL_CRM_MAILACTION_DESTIONATION_CONTENT_TYPE) {
+    return;
+  }
+
+  
+  if (! user_access ('erpal_crm_mailaction reply')) {
+    return;
+  }
+  
+  if (isset ($build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node'])) {
+    $build ['links']['node']['#links']['test']  =array ( 
+      'title'=> t('Reply per mail'),
+      'href' => 'mailto: ' . $build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'] . '?subject=Re:' . $build['#node']->title . ' [ticket:' . $build['#node']->nid . ']',
+      'html' => TRUE
+    );
+  }
+  
+  $comments = isset ($build['comments']['comments']) ? $build['comments']['comments'] : array ();
+  
+  foreach ($comments as $id=>&$comment) {
+    if (intval ($id) > 0) {
+      
+      $build['comments']['comments'][$id]['links']['comment']['#links']['test']  =array ( 
+      'title'=> t('Reply per mail'),
+      'href' => 'mailto: ' . $comment['#comment']->mail . '?subject=Re:' . $comment['#comment']->subject . ' [ticket:' . $comment['#comment']->nid . ']',
+      'html' => TRUE
+      );
+    }
+  }
+  
+  return;
+}
