@@ -38,14 +38,6 @@ function _erpal_crm_mailaction_config_basic(){
 */
 function _erpal_crm_mailaction_config_form($form, &$form_state){
 
-
-  // test
-  erpal_crm_mailaction_cron ();
-  
-  // Test cron
-  //erpal_crm_mailaction_cron ();
-
-
   $form = array();
 
  

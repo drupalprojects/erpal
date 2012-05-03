@@ -50,6 +50,7 @@ class ActivityNodeModel {
         LANGUAGE_NONE => array(
             0 => array (
                 'value' => theme ('erpal_crm_mailaction_comment', array (
+                  'from'	=> $from->mailbox . '@' . $from->host,
                 	'to'    => $to->mailbox . '@' . $to->host,
                   'body'	=> $body
               )
@@ -90,8 +91,9 @@ class ActivityNodeModel {
     
     $node->status                             = TRUE;
     $node->has_body                           = TRUE;
-    $node->body[LANGUAGE_NONE][]['value']     = $body;
-    $node->title                              = $subject;
+    $node->body[LANGUAGE_NONE][0]['value']    = $body;
+    $node->body[LANGUAGE_NONE][0]['format']   = 'filtered_html';
+    $node->title                              = check_plain ($subject);
  
     $node->field_activity_status[LANGUAGE_NONE][]['value']   = 1; // REQUEST
     $node->field_contact_ref[LANGUAGE_NONE][]['nid']         = $contact;
