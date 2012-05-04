@@ -1,0 +1,7 @@
+core = "7.x"
+description = "Drupal wrapper for libphonenumber-for-PHP (https://github.com/davideme/libphonenumber-for-PHP)"
+name = "libphonenumber"
+version = "7.x-1.0-dev"
+
+files[] = lib/PhoneNumber.php
+files[] = lib/PhoneNumberUtil.php
