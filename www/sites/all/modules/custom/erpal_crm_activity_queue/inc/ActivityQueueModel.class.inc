@@ -103,26 +103,39 @@ class ActivityQueueModel {
   public function load () {
     
     $results = array ();
+    $unprocessedResults = array ();
     
     $result = $this->nodeQuery->execute ();
-    
     foreach ($result as $row) {
-      $results[$row->nid . 'nid'] = self::prepareNodeRow ($row);
+      $unprocessedResults[$row->created] = $row;
     }
-    
     
     $result = $this->commentQuery->execute ();
-    
     foreach ($result as $row) {
-
-      $results[$row->cid . 'cid'] = self::prepareCommentRow ($row);
+      $unprocessedResults[$row->created] = $row;
     }
+       
+    krsort ($unprocessedResults);
     
     if ($this->pagerSize !== FALSE) {
-      $page     = pager_default_initialize(count($results) , $this->pagerSize);
-      $results  = array_slice ($results, $page, $this->pagerSize);
+      $page     = pager_default_initialize(count($unprocessedResults) , $this->pagerSize);
     }
     
+    $index = 0; // Pagination index.
+    
+    foreach ($unprocessedResults as $row) {
+      
+      if ($this->pagerSize === FALSE || ($index >= ($page *  $this->pagerSize) && $index < ($page *  $this->pagerSize) + $this->pagerSize)) {
+        if (! isset ($row->cid)) {
+          $results[$row->nid . '-nid'] = self::prepareNodeRow ($row);
+        }else{
+          $results[$row->cid . '-cid'] = self::prepareCommentRow ($row);
+        }
+      }
+      
+      $index++;
+    }
+
     return $results;
   }
   
