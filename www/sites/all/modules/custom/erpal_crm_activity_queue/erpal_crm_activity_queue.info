@@ -7,4 +7,7 @@ project     = "erpal_crm_activity_queue"
 version     = "7.x-1.00-dev"
 
 files[] = "erpal_crm_activity_queue.module"
+files[] = "inc/activity_view.inc"
+files[] = "inc/ActivityQueueModel.class.inc"
+
 
