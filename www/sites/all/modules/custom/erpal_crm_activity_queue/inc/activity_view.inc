@@ -123,7 +123,7 @@ function _erpal_crm_activity_queue_view_results () {
   return $model->dateRange (
     _erpal_crm_activity_queue_view_create_timestamp ($_SESSION['range_from']), 
     _erpal_crm_activity_queue_view_create_timestamp ($_SESSION['range_to'])
-  )->status (TRUE)->
+  )->status (FALSE)->
   load ();
 }
 
