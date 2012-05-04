@@ -78,8 +78,9 @@ class ContactModel {
     
     $node->field_contact_type[LANGUAGE_NONE][]['value']  = 'person';
     $node->field_email[LANGUAGE_NONE][]['value']         = $sender->mailbox . '@' . $sender->host;
-    $node->field_lastname[LANGUAGE_NONE][]['value']      = t('Unknown. Known by email conversation.');
+    $node->field_lastname[LANGUAGE_NONE][]['value']      = t('New contact. Known by email conversation.');
     $node->title                                         = $node->field_lastname[LANGUAGE_NONE][0]['value'];
+    $node->auto_nodetitle_applied                        = TRUE;
     
     node_save ($node);
     
