@@ -1,0 +1,11 @@
+name = Private files download permission
+description = A simple permission to allow downloading of private files by role, plus the ability to combine both public and private downloads.
+core = 7.x
+package = Access control
+
+; Information added by drupal.org packaging script on 2012-01-02
+version = "7.x-1.2"
+core = "7.x"
+project = "private_files_download_permission"
+datestamp = "1325538344"
+

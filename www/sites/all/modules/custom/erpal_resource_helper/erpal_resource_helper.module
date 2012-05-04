@@ -1,0 +1,33 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_resource_helper module.
+ */
+module_load_include('inc', 'erpal_resource_helper', 'includes/erpal_resource_helper.admin');
+
+/**
+ * Implements hook_menu
+ */ 
+function erpal_resource_helper_menu(){
+
+	$items = array();
+  
+  require_once 'includes/erpal_resource_helper.admin.inc';
+  $config_items = _erpal_resource_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+
+/**
+ * Implements hook_permission
+ */
+function erpal_resource_helper_permission(){
+  return array(
+    'config erpal resource' => array(
+      'title' => t('Administer ERPAL resource'), 
+      'description' => t('Perform administration tasks for ERPAL resource module.'),
+    ),
+  );
+	
+}

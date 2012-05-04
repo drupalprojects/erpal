@@ -1,0 +1,41 @@
+<?php
+/*
+ * @author 		Marc Sven Kleinboehl
+ * @created 	05/04/2012
+ * @copyright	2012 © Bright Solutions GmbH 
+ * 
+ * This module provides a custom view of an unapproved activities.
+ * It was neccessary to develop this module instead of making a views-view, because an activity is potentially a collection of nodes an comments.
+ * Each comment in an activity could be a part of an approval process.
+ */
+
+/*
+* Implements hook_permission.
+*/
+function erpal_crm_activity_queue_permission(){
+  
+  return array(
+    'approve erpal crm activities' => array(
+      'title'       => t('Approve ERPAL CRM activities'), 
+      'description' => t('Can approve unpublished activity elements.'),
+    )
+  );
+} 
+
+
+/*
+ * Implements hook_menu.
+ */
+function erpal_crm_activity_queue_menu () {
+  
+  return array (
+    'crm/activity-queue' => array (
+      'type'              => MENU_CALLBACK,
+      'page callback'     => 'drupal_get_form',
+      'page arguments'	  => array ('_erpal_crm_activity_queue_view'),
+      'access arguments'	=> array ('approve erpal crm activities'),
+      'file'							=> 'inc/activity_view.inc'
+    )
+  );
+}
+
