@@ -48,7 +48,7 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
   
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX] = array (
     '#type'   => 'fieldset',
-    '#title'  => t('Mailbox'),
+    '#title'  => t(ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX),
     '#tree'	  => TRUE
   );
  
@@ -56,7 +56,7 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
     '#required'			  => TRUE,
     '#type'     	    => 'textfield',
     '#title'	        => t('Host'),
-    '#default_value'	=> _erpal_crm_mailaction_get_settings ('mailbox', 'host', 'localhost'),
+    '#default_value'	=> _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'host', 'localhost'),
     '#size'				    => 20
   );
   
@@ -64,14 +64,14 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
     '#type'         	=> 'textfield',
     '#required'			  => TRUE,
     '#title'	        => t('Port'),
-    '#default_value'	=> _erpal_crm_mailaction_get_settings ('mailbox', 'port', '143'),
+    '#default_value'	=> _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'port', '143'),
     '#size'				    => 5
   );
   
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['inbox'] = array (
     '#type'           => 'textfield',
     '#title'	        => t('Inbox folder name'),
-    '#default_value'  => _erpal_crm_mailaction_get_settings ('mailbox', 'name', 'INBOX'),
+    '#default_value'  => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'name', 'INBOX'),
     '#size'			      => 20
   );
   
@@ -90,7 +90,7 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
       '/tls'   => t('TLS'),
       '/notls' => t('No TLS'),
     ),
-    '#default_value' => _erpal_crm_mailaction_get_settings ('mailbox_settings', 'tls', '/notls'),
+    '#default_value' => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'tls', '/notls'),
   );
   
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS]['protocol'] = array (
@@ -100,7 +100,7 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
       '/imap' => t('IMAP'),
       '/pop3' => t('POP3'),
     ),
-    '#default_value' => _erpal_crm_mailaction_get_settings ('mailbox_settings', 'protocol', '/imap'),
+    '#default_value' => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'protocol', '/imap'),
   );
   
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS]['ssl'] = array (
@@ -110,7 +110,7 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
       ''     => t('No SSL'),
       '/ssl' => t('SSL'),
     ),
-    '#default_value'	=> _erpal_crm_mailaction_get_settings ('mailbox_settings', 'ssl', ''),
+    '#default_value'	=> _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'ssl', ''),
   );
   
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS]['certificate'] = array (
@@ -120,14 +120,14 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
       '/novalidate-cert' => t('Don\'t validate certificate'),
       '/validate-cert'   => t('Validate certificate'),
     ),
-    '#default_value'	=> _erpal_crm_mailaction_get_settings ('mailbox_settings', 'certificate', '/novalidate-cert'),
+    '#default_value'	=> _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'certificate', '/novalidate-cert'),
   );
   
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['username'] = array (
     '#required'		  => TRUE,
     '#type'         => 'textfield',
     '#title'	      => t('Username'),
-    '#default_value'  => _erpal_crm_mailaction_get_settings ('mailbox', 'username', ''),
+    '#default_value'  => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'username', ''),
     '#size'	          => 20
   );
 
@@ -136,6 +136,20 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
     '#size'	         => 20,
     '#description'	 => t('Leave blank if you want to use the old passwort setting.')
   );
+  
+  $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS] = array (
+    '#type'            => 'fieldset',
+    '#title'	         => t('Import settings'),
+    '#tree'            => TRUE,
+    '#collapsible'     => TRUE,
+    '#collapsed'       => TRUE
+  );
+  
+  $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS]['publish_imports'] = array (
+    '#type'            => 'checkbox',
+    '#title'	         => t('Publish imported content'),
+    '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'publish_imports', FALSE),
+  ); 
   
   $form['submit'] = array(
     '#type'   => 'submit',
@@ -177,8 +191,8 @@ function _erpal_crm_mailaction_config_form_submit($form, &$form_state) {
   $values   = $form_state['values']['erpal_crm_mailaction'];
 
   // If password wasn't set, use old password settings.
-  if (empty ($values['mailbox']['password'])) {
-    $values['mailbox']['password'] = $settings['mailbox']['password'];
+  if (empty ($values[ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['password'])) {
+    $values[ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['password'] = $settings[ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['password'];
   }  
   
   variable_set ('erpal_crm_mailaction', $values);
@@ -188,18 +202,3 @@ function _erpal_crm_mailaction_config_form_submit($form, &$form_state) {
   return;
 }
 
-/*
- * A settings getter.
- * @param 	string	The name of the settings group.
- * @param		string	The key of the settings value.
- * @return	mixed 	The settings value on success. Otherwise NULL.
- */
-function _erpal_crm_mailaction_get_settings ($group, $key, $default_value = NULL) {
-  
-  $settings = variable_get ('erpal_crm_mailaction', array ());
-
-  return isset ($settings[$group][$key]) ?
-  $settings[$group][$key] :
-  $default_value;
-}
- 

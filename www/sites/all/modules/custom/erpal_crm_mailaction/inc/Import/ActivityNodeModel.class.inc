@@ -43,7 +43,7 @@ class ActivityNodeModel {
       'mail' => $from->mailbox . '@' . $from->host,
       'is_anonymous' => TRUE,
       'homepage' => '',
-      'status' => COMMENT_PUBLISHED,
+      'status' => (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_imports', FALSE),
       'subject' => $subject,
       'language' => LANGUAGE_NONE,
       'comment_body' => array(
@@ -68,7 +68,7 @@ class ActivityNodeModel {
   }
   
   /* 
-   * Adds a new activity for the mail.
+   * Adds a new unpublished activity for the mail.
    * @param		object	$to				The mail participants-object of the receiver.
    * @param		object	$from			The mail participants-object of the sender.
    * @param		string	$subject	The subject of the mail.
@@ -89,7 +89,7 @@ class ActivityNodeModel {
 
     node_object_prepare($node);
     
-    $node->status                             = TRUE;
+    $node->status                             = (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_imports', FALSE);
     $node->has_body                           = TRUE;
     $node->body[LANGUAGE_NONE][0]['value']    = $body;
     $node->body[LANGUAGE_NONE][0]['format']   = 'filtered_html';
@@ -98,9 +98,8 @@ class ActivityNodeModel {
     $node->field_activity_status[LANGUAGE_NONE][]['value']   = 1; // REQUEST
     $node->field_contact_ref[LANGUAGE_NONE][]['nid']         = $contact;
     
-    
     node_save ($node);
     
     return TRUE;
   }
-} 
+}

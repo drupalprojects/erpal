@@ -9,6 +9,7 @@
 // The group string of the configuration.
 define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX', 'mailbox');
 define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS', 'mailbox_settings');
+define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS', 'import');
 
 // The UID of the site admin.
 define ('ERPAL_CRM_MAILACTION_ADMIN_UID', 1);
@@ -81,5 +82,20 @@ function erpal_crm_mailaction_theme () {
       'variables'	=> array ('from'=>'', 'to'=>'', 'body'=>'')
     )
   );
+}
+
+/*
+ * A settings getter.
+ * @param 	string	The name of the settings group.
+ * @param		string	The key of the settings value.
+ * @return	mixed 	The settings value on success. Otherwise NULL.
+ */
+function _erpal_crm_mailaction_get_settings ($group, $key, $default_value = NULL) {
+  
+  $settings = variable_get ('erpal_crm_mailaction', array ());
+
+  return isset ($settings[$group][$key]) ?
+  $settings[$group][$key] :
+  $default_value;
 }
  

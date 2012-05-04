@@ -6,7 +6,7 @@ php         = "5.3.x"
 project     = "erpal_crm_mailaction"
 version     = "7.x-1.00-dev"
 
-files[] = "erpal_mailaction.module"
+files[] = "erpal_crm_mailaction.module"
 files[] = "inc/ImapFetcher/ImapFetcher.inc"
 files[] = "inc/ImapFetcher/ImapMailReader.inc"
 files[] = "inc/ImapFetcher/ImapConnection.inc"

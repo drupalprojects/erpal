@@ -1,0 +1,10 @@
+core        = "7.x"
+description = "ERPAL activity queue for approving activities which was created by mail traffic."
+name        = "erpal_crm_activity_queue"
+package     = "ERPAL CRM"
+php         = "5.3.x"
+project     = "erpal_crm_activity_queue"
+version     = "7.x-1.00-dev"
+
+files[] = "erpal_crm_activity_queue.module"
+
