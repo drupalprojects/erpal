@@ -158,16 +158,18 @@ function _erpal_invoice_helper_set_billables_billed($invoice) {
 function _erpal_invoice_helper_set_notes($invoice) {
   $notes = array();
  
-  //if value is already set, skipp!
+  //if value is already set and not equal to default note, skipp!
+  $skip_manuell_notes = false;
+  $default_note = _erpal_invoice_helper_get_manuall_notes();
   if (isset($invoice->field_note[LANGUAGE_NONE][0]['value'])) {    
     if ($invoice->field_note[LANGUAGE_NONE][0]['value']) {
-      return;
+      $skip_manuell_notes = true;
     }
   }
-
-  $manual_notes = _erpal_invoice_helper_get_manuall_notes();
-  //add these manual notes to the text area
-  $invoice->field_note[LANGUAGE_NONE][0]['value'] = $manual_notes;
+  if (!$skip_manuell_notes) {
+    //add these manual notes to the text area
+    $invoice->field_note[LANGUAGE_NONE][0]['value'] = $default_note;
+  }
   
   //now make them alterable by other modules and add these values to the auto notes
   $notes = module_invoke_all('invoice_notes_alter', $invoice);
@@ -405,6 +407,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //add contractor
   $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'] = $contractor_nid;
   
+  //if there are notes, set the notes
+  $invoice->field_note[LANGUAGE_NONE][0]['value'] = isset($params['notes']) ? $params['notes'] : '';
+
   //add address_id
   $invoice->field_invoice_address_id[LANGUAGE_NONE][0]['value'] = $params['address_id'];
   

@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Installs, updates and uninstalls module variables and settings.
+ *
+ * Copyright (c) 2011-2012 by Marco Zanon (http://www.marcozanon.com)
+ * Released under GPLv2 license
+ * Idea and code inspired by http://www.beacon9.ca/labs/drupal-7-private-files-module
+ */
+
+/**
+ * Implements hook_disable().
+ */
+function private_files_download_permission_disable() {
+  foreach (user_roles() as $rid) {
+    user_role_revoke_permissions($rid, array(
+      'download private files',
+      'administer private files download permission'
+    ));
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function private_files_download_permission_uninstall() {
+  variable_del('private_files_download_permission_unprotected_subfolder');
+}

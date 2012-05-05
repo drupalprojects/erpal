@@ -100,6 +100,14 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#description' => t('Enter credit period in days each in a separate line'),
   );
   
+  $form['erpal_invoice_default_credit_period'] = array(
+    '#type' => 'select',
+    '#title' => t('Default credit period'),
+    '#options' => _erpal_invoice_helper_get_credit_periods_arr(),
+    '#default_value' => _erpal_invoice_helper_get_default_credit_period(),
+  );
+  
+  
   $form['erpal_invoice_manuall_notes'] = array(
     '#type' => 'textarea',
     '#title' => t('Manuall invoice notes'),
@@ -147,7 +155,7 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
   variable_set('erpal_invoice_manuall_notes', $values['erpal_invoice_manuall_notes']);
   variable_set('erpal_invoice_currencies_string', $values['erpal_invoice_currencies']);
   variable_set('erpal_invoice_default_currency', $values['erpal_invoice_default_currency']);
-  
+  variable_set('erpal_invoice_default_credit_period', $values['erpal_invoice_default_credit_period']);
 }
 
 /**
@@ -214,6 +222,13 @@ function _erpal_invoice_helper_get_default_vat_rate() {
 */
 function _erpal_invoice_helper_get_default_currency() {
   return variable_get('erpal_invoice_default_currency', 'EUR');
+}
+
+/**
+* Returns default credit period
+*/
+function _erpal_invoice_helper_get_default_credit_period() {
+  return variable_get('erpal_invoice_default_credit_period', 'EUR');
 }
 
 /**
