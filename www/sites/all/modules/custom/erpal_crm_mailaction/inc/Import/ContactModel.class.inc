@@ -9,7 +9,7 @@
 
 namespace erpal_crm_mailaction;
 
-class AuthentificationModel {
+class ContactModel {
   
   /*
    * Checks whether one of the contact participants exists in the database.
@@ -63,5 +63,27 @@ class AuthentificationModel {
     return $last_result[$emailAddress];
   }
   
-  
+  /*
+   * Creates a new unknown contact.
+   * @param 	object $sender	The IMAP 'to' object of the new unknown contact.
+   * @return 	boolean					TRUE on success.
+   */
+  public function createUnknownContact ($sender) {
+    
+    $node = new \stdClass ();
+    
+    $node->type = 'erpal_contact';
+
+    node_object_prepare($node);
+    
+    $node->field_contact_type[LANGUAGE_NONE][]['value']  = 'person';
+    $node->field_email[LANGUAGE_NONE][]['value']         = $sender->mailbox . '@' . $sender->host;
+    $node->field_lastname[LANGUAGE_NONE][]['value']      = t('New contact. Known by email conversation.');
+    $node->title                                         = $node->field_lastname[LANGUAGE_NONE][0]['value'];
+    $node->auto_nodetitle_applied                        = TRUE;
+    
+    node_save ($node);
+    
+    return isset ($node->nid);
+  }
 }

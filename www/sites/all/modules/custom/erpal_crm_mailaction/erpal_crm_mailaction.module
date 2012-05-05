@@ -9,6 +9,7 @@
 // The group string of the configuration.
 define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX', 'mailbox');
 define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS', 'mailbox_settings');
+define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS', 'import');
 
 // The UID of the site admin.
 define ('ERPAL_CRM_MAILACTION_ADMIN_UID', 1);
@@ -78,46 +79,23 @@ function erpal_crm_mailaction_theme () {
   return array (
     'erpal_crm_mailaction_comment' => array (
       'template'  => 'templates/erpal_crm_mailaction_comment',
-      'variables'	=> array ('to'=>'', 'body'=>'')
+      'variables'	=> array ('from'=>'', 'to'=>'', 'body'=>'')
     )
   );
 }
- 
+
 /*
- * Implements hook_node_view_alter.
- * Used to add "Reply per mail" links to an activity node and the comments of such a node.
+ * A settings getter.
+ * @param 	string	The name of the settings group.
+ * @param		string	The key of the settings value.
+ * @return	mixed 	The settings value on success. Otherwise NULL.
  */
-function erpal_crm_mailaction_node_view_alter(&$build) {
+function _erpal_crm_mailaction_get_settings ($group, $key, $default_value = NULL) {
+  
+  $settings = variable_get ('erpal_crm_mailaction', array ());
 
-  if ($build['#bundle'] != ERPAL_CRM_MAILACTION_DESTIONATION_CONTENT_TYPE) {
-    return;
-  }
-
-  
-  if (! user_access ('erpal_crm_mailaction reply')) {
-    return;
-  }
-  
-  if (isset ($build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node'])) {
-    $build ['links']['node']['#links']['test']  =array ( 
-      'title'=> t('Reply per mail'),
-      'href' => 'mailto: ' . $build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'] . '?subject=Re:' . $build['#node']->title . ' [ticket:' . $build['#node']->nid . ']',
-      'html' => TRUE
-    );
-  }
-  
-  $comments = isset ($build['comments']['comments']) ? $build['comments']['comments'] : array ();
-  
-  foreach ($comments as $id=>&$comment) {
-    if (intval ($id) > 0) {
-      
-      $build['comments']['comments'][$id]['links']['comment']['#links']['test']  =array ( 
-      'title'=> t('Reply per mail'),
-      'href' => 'mailto: ' . $comment['#comment']->mail . '?subject=Re:' . $comment['#comment']->subject . ' [ticket:' . $comment['#comment']->nid . ']',
-      'html' => TRUE
-      );
-    }
-  }
-  
-  return;
+  return isset ($settings[$group][$key]) ?
+  $settings[$group][$key] :
+  $default_value;
 }
+ 
