@@ -246,6 +246,7 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
 
   $form['field_payment_date'][LANGUAGE_NONE][0]['#type'] = 'value'; //this field is hidden by display suite forms, too, but there 
   //is an error if we dont set the field to 'value'. @see http://drupal.org/node/1547236 
+  
 }
 
 

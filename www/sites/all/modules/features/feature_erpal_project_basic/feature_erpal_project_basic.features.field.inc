@@ -619,31 +619,31 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_project_contacts',
       'foreign keys' => array(),
       'indexes' => array(),
-      'module' => 'relation_select',
-      'settings' => array(),
+      'module' => 'relation_dummy_field',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
       'type' => 'relation',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_project',
-      'default_value' => array(
-        0 => '',
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'Choose contacts that are involved in this project',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'relation_select',
+          'module' => 'relation_dummy_field',
           'settings' => array(),
-          'type' => 'relation_select',
+          'type' => 'relation_default',
           'weight' => '4',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'relation_select',
+          'module' => 'relation_dummy_field',
           'settings' => array(),
-          'type' => 'relation_select',
+          'type' => 'relation_default',
           'weight' => '4',
         ),
         'teaser' => array(
@@ -658,15 +658,16 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Contacts',
       'required' => 0,
       'settings' => array(
-        'relation_type' => 'participate_in',
-        'relation_view' => 'contacts:page_1',
+        'relation_type' => array(
+          'participate_in' => 'participate_in',
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 0,
-        'module' => 'relation_select',
+        'module' => 'relation_dummy_field',
         'settings' => array(),
-        'type' => 'relation_select',
+        'type' => 'relation_default',
         'weight' => '2',
       ),
     ),

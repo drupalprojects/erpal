@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * ctools import and export for Relation module.
+ */
+
+/**
  * Page callback for ctools exports.
  */
 function relation_export_relation_type($form, &$form_state, $type) {
