@@ -95,7 +95,7 @@ class ImapMailReader extends ImapMessageParts {
  
     $parts = self::getParts ($this->resouceHandle, $this->messageNumber, $this->structure);
  
-    $this->properties['body']  = $parts->message;
+    $this->properties['body']  = self::decode ($parts->message);
     $this->properties['files'] = $parts->attachments;
  
     return; 

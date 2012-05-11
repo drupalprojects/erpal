@@ -79,7 +79,6 @@ class CronModel {
     foreach ($messageIDs as $messageID) {
 
       $mail = ImapMailReader::getReader($connection->getResourceHandle(), $messageID);
-         dpm ($mail->body);
          
       if ($mail->hasAttachments()) {
         $mail->saveAttachments ();
