@@ -14,8 +14,7 @@ define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS', 'import');
 // The UID of the site admin.
 define ('ERPAL_CRM_MAILACTION_ADMIN_UID', 1);
 
-// The destination content type for mail imports.
-define ('ERPAL_CRM_MAILACTION_DESTIONATION_CONTENT_TYPE', 'erpal_crm_activity');
+ 
 
 
 
