@@ -94,7 +94,7 @@ class ActivityNodeModel {
     $contact  = $auth->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
         
     $node           = new \stdClass ();
-    $node->type     = ERPAL_CRM_MAILACTION_DESTIONATION_CONTENT_TYPE;
+    $node->type     = 'erpal_crm_activity';
 
     node_object_prepare($node);
     

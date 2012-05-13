@@ -79,9 +79,11 @@ class CronModel {
     foreach ($messageIDs as $messageID) {
 
       $mail = ImapMailReader::getReader($connection->getResourceHandle(), $messageID);
-      
-      $mail->hasAttachments();
-      
+         
+      if ($mail->hasAttachments()) {
+        $mail->saveAttachments ();
+      }
+   
       module_invoke_all ('erpal_crm_mailaction_incoming', $mail->to, $mail->from, $mail->subject, $mail->body);
     }
 
