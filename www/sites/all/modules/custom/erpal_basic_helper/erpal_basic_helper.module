@@ -5,6 +5,7 @@
  */
 
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
  
 /**
 * Implements hok_init
