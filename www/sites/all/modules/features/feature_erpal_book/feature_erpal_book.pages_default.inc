@@ -521,6 +521,31 @@ function feature_erpal_book_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-15'] = $pane;
     $display->panels['right'][0] = 'new-15';
+    $pane = new stdClass();
+    $pane->pid = 'new-16';
+    $pane->panel = 'right';
+    $pane->type = 'node_links';
+    $pane->subtype = 'node_links';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+      'build_mode' => 'full',
+      'identifier' => '',
+      'link' => 1,
+      'context' => 'argument_entity_id:node_1',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-16'] = $pane;
+    $display->panels['right'][1] = 'new-16';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-15';
   $handler->conf['display'] = $display;
