@@ -36,8 +36,10 @@ class Import {
    * @param $subject
    * @param $body
    */
-  public static function import ($to, $from, $subject, $body) {
+  public static function import ($to, $from, $subject, $body, array $attachments) {
 
+    // TODO: ATTACHMENTS TO NODE
+    
     $import = new Import ();
 
     module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/MailParser.class');

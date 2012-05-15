@@ -148,6 +148,8 @@ class ImapMailReader extends ImapMessageParts {
     	if ($file === FALSE) {
     		return FALSE;
     	} 
+    	
+    	$this->properties['attachments'][] = 'public://' . $filename;
   	}
   	
   	return TRUE;
