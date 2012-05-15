@@ -8,6 +8,7 @@ project = feature_erpal_book
 dependencies[] = ctools
 dependencies[] = entityreference
 dependencies[] = feature_erpal_basic
+dependencies[] = feature_erpal_docs
 dependencies[] = features
 dependencies[] = list
 dependencies[] = nodereference_url
