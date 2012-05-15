@@ -8,7 +8,10 @@
 <node CREATED="1337069651039" ID="ID_848030547" MODIFIED="1337069663661" TEXT="Multiples Ref Feld in Projekt f&#xfc;r books">
 <node CREATED="1337070039553" ID="ID_1065474909" MODIFIED="1337070052189" TEXT="zum Erg&#xe4;nzen von Nachtrag-Auftr&#xe4;gen"/>
 </node>
-<node CREATED="1337069681038" ID="ID_1994620308" MODIFIED="1337069755008" TEXT="Gleiches Feld f&#xfc;r Parent f&#xfc;r Tasks verwenden wie f&#xfc;r parent von book_pages"/>
+<node CREATED="1337069681038" ID="ID_1994620308" MODIFIED="1337069755008" TEXT="Gleiches Feld f&#xfc;r Parent f&#xfc;r Tasks verwenden wie f&#xfc;r parent von book_pages">
+<node CREATED="1337102581314" ID="ID_1401726813" MODIFIED="1337102592140" TEXT="nur, wenn das Buch in einem Projekt refernziert ist"/>
+<node CREATED="1337102592396" ID="ID_809582134" MODIFIED="1337102600798" TEXT="jedes Buch darf nur in einem Projekt sein"/>
+</node>
 <node CREATED="1337070213374" ID="ID_1758192128" MODIFIED="1337070226278" TEXT="Reihenfolge und Parent &#xe4;ndern per Drag&amp;Drop"/>
 <node CREATED="1337070064558" ID="ID_1627211114" MODIFIED="1337070072781" TEXT="Buch Duplizieren">
 <node CREATED="1337070085906" ID="ID_51321376" MODIFIED="1337070094286" TEXT="auswahl mit Tasks?">
