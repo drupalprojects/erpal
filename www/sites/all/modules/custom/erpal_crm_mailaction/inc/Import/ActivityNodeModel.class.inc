@@ -11,6 +11,18 @@ namespace erpal_crm_mailaction;
 
 class ActivityNodeModel {
 	
+  private $published;
+  
+  /*
+   * Ctor.
+   */
+  public function __construct () {
+    
+    $this->published = TRUE;
+    
+    return;
+  }
+  
   /*
    * Checks whether an activity with a specific node ID exists.
    * @param 	integer	$nid		The database ID of a node.
@@ -41,9 +53,9 @@ class ActivityNodeModel {
       'pid' => 0,
       'uid' => 1,
       'mail' => $from->mailbox . '@' . $from->host,
-      'is_anonymous' => TRUE,
+      'is_anonymous' => FALSE,
       'homepage' => '',
-      'status' => (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_imports', FALSE),
+      'status' => $this->published,
       'subject' => $subject,
       'language' => LANGUAGE_NONE,
       'comment_body' => array(
@@ -76,30 +88,41 @@ class ActivityNodeModel {
    */
   public function insertCustomerActivity ($to, $from, $subject, $body) {
     
-    module_load_include ('inc', 'erpal_crm_mailaction', 'includes/AuthentificationModel.class');
-    $auth = new AuthentificationModel ();
-    $contact = $auth->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
- 
-    if ($contact === FALSE) {
-      return FALSE;
-    }
+    module_load_include ('inc', 'erpal_crm_mailaction', 'includes/ContactModel.class');
+    
+    $auth     = new ContactModel ();
+    $contact  = $auth->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
         
     $node           = new \stdClass ();
-    $node->type     = ERPAL_CRM_MAILACTION_DESTIONATION_CONTENT_TYPE;
+    $node->type     = 'erpal_crm_activity';
 
     node_object_prepare($node);
     
-    $node->status                             = (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_imports', FALSE);
+    $node->status                             = $this->published;
     $node->has_body                           = TRUE;
     $node->body[LANGUAGE_NONE][0]['value']    = $body;
     $node->body[LANGUAGE_NONE][0]['format']   = 'filtered_html';
     $node->title                              = check_plain ($subject);
  
-    $node->field_activity_status[LANGUAGE_NONE][]['value']   = 1; // REQUEST
-    $node->field_contact_ref[LANGUAGE_NONE][]['nid']         = $contact;
+    $node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
+    
+    if ($contact !== FALSE) {
+      $node->field_contact_ref[LANGUAGE_NONE][]['nid'] = $contact;
+    }
     
     node_save ($node);
     
     return TRUE;
   }
+  
+  /*
+   * Set the published status of a new entry.
+   * @param boolean $status	TRUE if the new entry has to be published. Otherwise FALSE.
+   */
+  public function published ($status) {
+    
+    $this->published = $status;
+    
+    return;
+  } 
 }

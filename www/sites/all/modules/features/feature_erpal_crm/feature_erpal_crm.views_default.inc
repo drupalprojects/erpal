@@ -192,18 +192,23 @@ function feature_erpal_crm_views_default_views() {
   $handler = $view->new_display('page', 'CRM Activities', 'page');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'CRM activities';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Activity status (field_activity_status) */
   $handler->display->display_options['filters']['field_activity_status_value']['id'] = 'field_activity_status_value';
   $handler->display->display_options['filters']['field_activity_status_value']['table'] = 'field_data_field_activity_status';
   $handler->display->display_options['filters']['field_activity_status_value']['field'] = 'field_activity_status_value';
+  $handler->display->display_options['filters']['field_activity_status_value']['group'] = 1;
   $handler->display->display_options['filters']['field_activity_status_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_value']['expose']['operator_id'] = 'field_activity_status_value_op';
   $handler->display->display_options['filters']['field_activity_status_value']['expose']['label'] = 'Activity status';
@@ -216,6 +221,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['title']['table'] = 'node';
   $handler->display->display_options['filters']['title']['field'] = 'title';
   $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
@@ -231,10 +237,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Content: Customer (field_customer_ref) */
   $handler->display->display_options['filters']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
   $handler->display->display_options['filters']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['filters']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
+  $handler->display->display_options['filters']['field_customer_ref_nid']['group'] = 1;
   $handler->display->display_options['filters']['field_customer_ref_nid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator_id'] = 'field_customer_ref_nid_op';
   $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['label'] = 'Customer';

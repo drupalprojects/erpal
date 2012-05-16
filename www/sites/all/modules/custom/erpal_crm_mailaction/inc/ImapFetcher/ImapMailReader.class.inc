@@ -5,10 +5,11 @@
  * @copyright	2012 © Bright Solutions GmbH 
  */
  
-
 namespace erpal_crm_mailaction;
 
-class ImapMailReader {
+require_once 'ImapMessageParts.class.inc';
+
+class ImapMailReader extends ImapMessageParts {
   
   private $messageNumber;  
   private $resourceHandle;
@@ -17,7 +18,8 @@ class ImapMailReader {
   private function __construct () {
     
     $this->properties = array (
-      'body' => ''
+      'body'  => '',
+      'files' => ''
     );
     
     return;
@@ -39,7 +41,7 @@ class ImapMailReader {
     
     // TODO: WHY THIS DOESN'T WORK?
     imap_setflag_full($resourceHandle, (string)$messageNumber, '\\Seen');
-    
+ 
     return $imapMailReader;
   }
   
@@ -91,9 +93,11 @@ class ImapMailReader {
    */
   private function fetchBody() {
  
-    $this->properties['body'] = imap_fetchbody($this->resouceHandle, $this->messageNumber, 1);
-    $this->properties['body'] = self::decode ($this->properties['body']);
-
+    $parts = self::getParts ($this->resouceHandle, $this->messageNumber, $this->structure);
+ 
+    $this->properties['body']  = self::decode ($parts->message);
+    $this->properties['files'] = $parts->attachments;
+ 
     return; 
   }
   
@@ -103,37 +107,12 @@ class ImapMailReader {
    * @return mixed			FALSE if the property not exists. Otherwise the value of the property.
    */
   public function __get ($key) {
-    
+
     if (! isset ($this->properties[$key])) {
       return FALSE;
     }
-    
+ 
     return $this->properties[$key];
-  }
-
-  /*
-   * Checks whether the mail has one ore more attachements.
-  * @return boolean TRUE on success.
-  */
-  private function getAttachments ($structure) {
-
-  	// TODO: There is a bug with recursion. I don't know more about it, at this time.
-  	// TODO: Need property "part" in the data structure.
-  	RETURN FALSE; // TODO: 
-  	if (isset($structure->parts))	{
-  		foreach ($structure->parts as $partOfPart) {
-  			$this->hasAttachments($partOfPart);
-  		}
-  	}	else {
-  		if (isset($structure->disposition))	{
-  			if ($structure->disposition == 'attachment') {
-
-  				return $structure->dparameters[0]->value;
-  			}
-  		}
-  	}
-  	
-  	return FALSE;
   }
   
   /*
@@ -142,7 +121,7 @@ class ImapMailReader {
   */
   public function hasAttachments () {
 
-  	return $this->getAttachments ($this->structure) !== FALSE;
+  	return $this->files !== FALSE;
   }
   
   /*
@@ -150,24 +129,29 @@ class ImapMailReader {
    * @return boolean TRUE on success.
    */
   public function saveAttachments () {
-  	
-  	$attachment = $this->getAttachments ($this->structure);
-  	if ($attachment === FALSE) {
+
+  	if ($this->hasAttachments () == FALSE) {
+
   		return FALSE;
   	}
   	
-  	$file = file_save_data(
-  		imap_fetchbody($this->resouceHandle, $this->messageNumber, '1.' . $attachment->part),
-  		'public://' . $attachment->value,
-  		FILE_EXISTS_RENAME
-  	);
-  	
-  	if ($file === FALSE) {
-  		return FALSE;
+  	$file = null;
+ 
+  	foreach ($this->files as $filename=>$fileData) {
+ 
+    	$file = file_unmanaged_save_data(
+    	  $fileData,
+    		'public://' . $filename,
+    		FILE_EXISTS_RENAME
+    	);
+
+    	if ($file === FALSE) {
+    		return FALSE;
+    	} 
+    	
+    	$this->properties['attachments'][] = 'public://' . $filename;
   	}
-  	
   	
   	return TRUE;
   }
-}
-
+} 

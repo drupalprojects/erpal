@@ -11,9 +11,12 @@
 function relation_type_list() {
   $relation = relation_entity_info();
   $field_ui = module_exists('field_ui');
+  $ctools = module_exists('ctools');
+  $ops_count = 2 + 2 * $field_ui + $ctools;
+
   $headers = array(
     array('data' => t('Name'), 'width' => '40%'),
-    array('data' => t('Operations'), 'colspan' => $field_ui ? 5 : 3));
+    array('data' => t('Operations'), 'colspan' => $ops_count));
   $rows = array();
   foreach ($relation['relation']['bundles'] as $type => $relation_type) {
     $url = 'admin/structure/relation/manage/' . $type;
@@ -23,7 +26,9 @@ function relation_type_list() {
       $row[] =  l(t('manage fields'), $url . '/fields');
       $row[] =  l(t('display fields'), $url . '/display');
     }
-    $row[] =  l(t('export'), $url . '/export');
+    if ($ctools) {
+      $row[] =  l(t('export'), $url . '/export');
+    }
     $row[] =  l(t('delete'), $url . '/delete');
     $rows[] = $row;
   }
@@ -31,7 +36,7 @@ function relation_type_list() {
     '#theme' => 'table',
     '#header' => $headers,
     '#rows' => $rows,
-    '#empty' => t('No relationship types available. <a href="@link">Add relationship type</a>.', array('@link' => url('admin/structure/relation/add'))),
+    '#empty' => t('No relationship types available.', array('@link' => l(t('Add relationship type'), url('admin/structure/relation/add')))),
   );
   return $output;
 }
@@ -124,7 +129,7 @@ function relation_type_form($form, &$form_state, $relation_type = array(), $op =
   );
   $form['advanced']['transitive'] = array(
     '#type'           => 'checkbox',
-    '#title'          => 'Transitive',
+    '#title'          => t('Transitive'),
     '#description'   => t('A transitive relation implies that the relation passes through intermediate entities (ie. A=>B and B=>C implies that A=>C). For example "Ancestor" is transitive: your ancestor\'s ancestor is also your ancestor. But a "Parent" relation is non-transitive: your parent\'s parent is not your parent, but your grand-parent.'),
     '#default_value'  => $relation_type->transitive,
   );
@@ -135,7 +140,7 @@ function relation_type_form($form, &$form_state, $relation_type = array(), $op =
     '#default_value'  => $relation_type->r_unique,
   );
   // these should probably be changed to numerical (validated) textfields.
-  $options = array('2' => '2', '3' => '3', '4' => '4', '5' => '5', '8' => '8');
+  $options = array('2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8');
   $form['advanced']['min_arity'] = array(
     '#type' => 'select',
     '#title' => t('Minimum Arity'),
@@ -149,7 +154,7 @@ function relation_type_form($form, &$form_state, $relation_type = array(), $op =
     ),
   );
 
-  $options = array('2' => '2', '3' => '3', '4' => '4', '5' => '5', '8' => '8', '0' => t('Infinite'));
+  $options = array('2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '0' => t('Infinite'));
   $form['advanced']['max_arity'] = array(
     '#type' => 'select',
     '#title' => t('Maximum Arity'),
@@ -182,7 +187,7 @@ function relation_type_form($form, &$form_state, $relation_type = array(), $op =
   );
   $form['endpoints']['source_bundles'] = array(
     '#type'          => 'select',
-    '#title'         => 'Available source bundles',
+    '#title'         => t('Available source bundles'),
     '#options'       => $bundles,
     '#size'          => max(12, $counter),
     '#default_value' => $relation_type->source_bundles,
@@ -191,7 +196,7 @@ function relation_type_form($form, &$form_state, $relation_type = array(), $op =
   );
   $form['endpoints']['target_bundles'] = array(
     '#type'          => 'select',
-    '#title'         => 'Available target bundles',
+    '#title'         => t('Available target bundles'),
     '#options'       => $bundles,
     '#size'          => max(12, $counter),
     '#default_value' => $relation_type->target_bundles,
@@ -272,7 +277,7 @@ function relation_type_delete_confirm_submit($form, &$form_state) {
   drupal_set_message(t('The %label relation type has been deleted.', $t_args));
   watchdog('relation', 'Deleted the %label relation type.', $t_args, WATCHDOG_NOTICE);
 
-  // TODO: relation_types_rebuild() ?;
+  // @TODO: relation_types_rebuild() ?;
   menu_rebuild();
 
   $form_state['redirect'] = 'admin/structure/relation';
@@ -413,7 +418,7 @@ function theme_relation_admin_content($variables) {
     }
   }
 
-  return theme('table', array('header' => $header, 'rows' => $rows)).theme('pager');
+  return theme('table', array('header' => $header, 'rows' => $rows)) . theme('pager');
 }
 
 /**
@@ -423,7 +428,7 @@ function relation_type_import($form) {
   $form['name'] = array(
     '#type' => 'textfield',
     '#title' => t('Relation type name'),
-    '#description' => t('Enter the machine name to use for this relation type if it is different from the relation type to be imported. Leave blank to use the name of the relaiton type below.'),
+    '#description' => t('Enter the machine name to use for this relation type if it is different from the relation type to be imported. Leave blank to use the name of the relation type below.'),
   );
   $form['relation_type'] = array(
     '#type' => 'textarea',
@@ -437,8 +442,8 @@ function relation_type_import($form) {
 }
 
 function relation_type_import_validate($form, &$form_state) {
-  if (substr($form_state['values']['relation_type'], 0, 5) == '<?php') {
-    $form_state['values']['relation_type'] = substr($form_state['values']['relation_type'], 5);
+  if (drupal_substr($form_state['values']['relation_type'], 0, 5) == '<?php') {
+    $form_state['values']['relation_type'] = drupal_substr($form_state['values']['relation_type'], 5);
   }
   ob_start();
   eval($form_state['values']['relation_type']);

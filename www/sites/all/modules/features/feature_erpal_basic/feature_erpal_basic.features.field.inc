@@ -1138,6 +1138,7 @@ function feature_erpal_basic_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
@@ -1169,82 +1170,16 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_contact_relations',
       'foreign keys' => array(),
       'indexes' => array(),
-      'module' => 'relation_select',
-      'settings' => array(),
+      'module' => 'relation_dummy_field',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
       'type' => 'relation',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_contact',
-      'default_value' => array(
-        0 => array(
-          'exposed_filters' => array(
-            'bundle' => 'erpal_contact',
-            'element_id' => 'edit-field-contact-relations-und-0',
-            'form_build_id' => 'form-HYfIpKJJPb6SVnYfqk7q5gt3nvLCXqWBb5Vg1vPmFfI',
-            'form_id' => 'relation_select_views_exposed_form',
-            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
-            'label' => '',
-            'view_display_id' => 'default',
-            'view_name' => 'relation_select_node',
-          ),
-        ),
-        1 => array(
-          'exposed_filters' => array(
-            'element_id' => 'edit-field-contact-relations-und-1',
-            'form_build_id' => 'form-WW8BCo9gWos5qbGiZrzv84lXjt_WYFzZdGV5jTjgdAs',
-            'form_id' => 'relation_select_views_exposed_form',
-            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
-            'title' => '',
-            'view_display_id' => 'entityreference_view_widget_1',
-            'view_name' => 'contacts',
-          ),
-        ),
-        2 => array(
-          'exposed_filters' => array(
-            'element_id' => 'edit-field-contact-relations-und-2',
-            'form_build_id' => 'form-7tdOXP0mqMKtgcmvIVPQyvZ-OzsXZOBi84JYWCEHasU',
-            'form_id' => 'relation_select_views_exposed_form',
-            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
-            'title' => '',
-            'view_display_id' => 'entityreference_view_widget_1',
-            'view_name' => 'contacts',
-          ),
-        ),
-        3 => array(
-          'exposed_filters' => array(
-            'element_id' => 'edit-field-contact-relations-und-3',
-            'form_build_id' => 'form-GEdlR67cZzGY5nPC91IfFGug0M2CrQHvDBpzW6zJkN0',
-            'form_id' => 'relation_select_views_exposed_form',
-            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
-            'title' => '',
-            'view_display_id' => 'entityreference_view_widget_1',
-            'view_name' => 'contacts',
-          ),
-        ),
-        4 => array(
-          'exposed_filters' => array(
-            'element_id' => 'edit-field-contact-relations-und-4',
-            'form_build_id' => 'form-P_QdVyXNKh7cxcDOHuKWDQ3HaI-1AWhTyy9jyfUmYNU',
-            'form_id' => 'relation_select_views_exposed_form',
-            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
-            'title' => '',
-            'view_display_id' => 'entityreference_view_widget_1',
-            'view_name' => 'contacts',
-          ),
-        ),
-        5 => array(
-          'exposed_filters' => array(
-            'element_id' => 'edit-field-contact-relations-und-5',
-            'form_build_id' => 'form-W9ZOiqcFNMPJmrP68gLBueo9PlrPsBj69rkH_DTCjiw',
-            'form_id' => 'relation_select_views_exposed_form',
-            'form_token' => 'fxuNhAshZ6RQkymBLIKptsc-Q--0jWF2dFWQC8JSG9s',
-            'title' => '',
-            'view_display_id' => 'entityreference_view_widget_1',
-            'view_name' => 'contacts',
-          ),
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'Choose another contact that belongs to this contact (e.g works at this company)',
       'display' => array(
@@ -1273,15 +1208,16 @@ function feature_erpal_basic_field_default_fields() {
       'label' => 'Contact Relations',
       'required' => 0,
       'settings' => array(
-        'relation_type' => 'works_at',
-        'relation_view' => 'contacts:page_1',
+        'relation_type' => array(
+          'works_at' => 'works_at',
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 0,
-        'module' => 'relation_select',
+        'module' => 'relation_dummy_field',
         'settings' => array(),
-        'type' => 'relation_select',
+        'type' => 'relation_default',
         'weight' => '13',
       ),
     ),

@@ -15,10 +15,10 @@ function feature_erpal_project_basic_relation_default_relation_types() {
   $relation_type->api_version = 1;
   $relation_type->relation_type = 'participate_in';
   $relation_type->label = 'has as stakeholder';
-  $relation_type->reverse_label = 'participate in';
+  $relation_type->reverse_label = 'is project member';
   $relation_type->directional = 1;
   $relation_type->transitive = 0;
-  $relation_type->r_unique = 0;
+  $relation_type->r_unique = 1;
   $relation_type->min_arity = 2;
   $relation_type->max_arity = 2;
   $relation_type->source_bundles = array(

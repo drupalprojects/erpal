@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Relation Add block.
+ */
+
+/**
  * Implements hook_menu().
  */
 function relation_add_menu() {
@@ -28,7 +33,7 @@ function relation_add_block_info() {
  * Implements hook_block_view().
  */
 function relation_add_block_view() {
-  if(!(user_access('create relations') || user_access('create relations'))) {
+  if (!(user_access('create relations') || user_access('create relations'))) {
     return NULL;
   };
   $block['subject'] = t('Relation Add');
@@ -83,7 +88,7 @@ function relation_add_block_form($form, &$form_state) {
         Once you\'ve done that, visit any page displays an entity, and use this block to add  a new relation from that entity.',
         array(
           '!bundle' => $entity_type . ':' . $bundle,
-          '!link' => l('relation types', 'admin/structure/relation'),
+          '!link' => l(t('relation types'), 'admin/structure/relation'),
         )
       );
       return $form;
@@ -187,7 +192,7 @@ function relation_add_ajax($form, $form_state) {
  * Validate form submission for the relation add block form.
  */
 //function relation_add_validate($form, &$form_state) {
-//  TODO
+//  @TODO
 //  $type =
 //  $entity_keys =
 //  relation_create($type, $entity_keys);
@@ -214,8 +219,8 @@ function relation_add_save($form, &$form_state) {
   }
   // Add the current entity to the endpoints array.
   if ($form_state['relation_reverse']) {
-     // For reverse relations, add the "current entity" to the end of the array, else to the start.
-     array_push($entity_strings, $form_state['relation_add']);
+    // For reverse relations, add the "current entity" to the end of the array, else to the start.
+    array_push($entity_strings, $form_state['relation_add']);
   }
   else {
     array_unshift($entity_strings, $form_state['relation_add']);
@@ -235,7 +240,7 @@ function relation_add_save($form, &$form_state) {
       );
     }
   }
-  // TODO: IF count(entity_keys) != count (entity_strings), FAIL.
+  // @TODO: IF count(entity_keys) != count (entity_strings), FAIL.
   $relation = relation_create($type, $entity_keys);
   entity_form_submit_build_entity('relation', $relation, $form['relation_options'], $form_state);
   $rid = relation_save($relation);
@@ -252,10 +257,9 @@ function relation_add_save($form, &$form_state) {
     drupal_set_message($message);
   }
   else {
-    drupal_set_message('Relation not created.', 'error');
+    drupal_set_message(t('Relation not created.'), 'error');
   }
 }
-
 
 /**
  * Autocomplete page for listing entities appropriate for a giver relation type.
