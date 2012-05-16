@@ -27,19 +27,26 @@ class ImapMessageParts {
     $foundParts[self::PART_MESSAGE]     = '';
     $foundParts[self::PART_ATTACHMENTS] = array ();
     
+      
+    if ($structure->subtype != 'MIXED') {
+      $foundParts[self::PART_MESSAGE] = imap_fetchbody($connection, $messageNumber, 1);
+      return (object)$foundParts;
+    }
+    
     foreach($flattenedParts as $partNumber => $part) {
   
     	switch($part->type) {
     		
     		case 0:
     			// the HTML or plain text part of the email
+
     			$foundParts[self::PART_MESSAGE] .= self::getPart($connection, $messageNumber, $partNumber, $part->encoding);
-    			// now do something with the message, e.g. render it
+ 
     		break;
     	
     		case 1:
     			// multi-part headers, can ignore
-    	
+
     		break;
     		case 2:
     			// attached message headers, can ignore
@@ -90,9 +97,10 @@ class ImapMessageParts {
   private static function getPart($connection, $messageNumber, $partNumber, $encoding) {
   	
   	$data = imap_fetchbody($connection, $messageNumber, $partNumber);
+
   	switch($encoding) {
-  		case 0: return $data; // 7BIT
-  		case 1: return $data; // 8BIT
+  		case 0: return $data; // QUOTED_PRINTABLE
+  		case 1: return quoted_printable_decode($data); // 8BIT
   		case 2: return $data; // BINARY
   		case 3: return base64_decode($data); // BASE64
   		case 4: return quoted_printable_decode($data); // QUOTED_PRINTABLE

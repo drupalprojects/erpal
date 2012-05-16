@@ -92,7 +92,7 @@ class ImapMailReader extends ImapMessageParts {
    * Fetches a mail from mailbox.
    */
   private function fetchBody() {
- 
+
     $parts = self::getParts ($this->resouceHandle, $this->messageNumber, $this->structure);
  
     $this->properties['body']  = self::decode ($parts->message);
@@ -139,7 +139,7 @@ class ImapMailReader extends ImapMessageParts {
  
   	foreach ($this->files as $filename=>$fileData) {
  
-    	$file = file_unmanaged_save_data(
+    	$file = file_save_data(
     	  $fileData,
     		'public://' . $filename,
     		FILE_EXISTS_RENAME
@@ -148,8 +148,8 @@ class ImapMailReader extends ImapMessageParts {
     	if ($file === FALSE) {
     		return FALSE;
     	} 
-    	
-    	$this->properties['attachments'][] = 'public://' . $filename;
+ 
+    	$this->properties['attachments'][] = $file;
   	}
   	
   	return TRUE;
