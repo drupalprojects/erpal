@@ -34,6 +34,9 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['style_options']['wrapper_class'] = 'item-lis';
+  $handler->display->display_options['style_options']['id_field'] = 'nid';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
