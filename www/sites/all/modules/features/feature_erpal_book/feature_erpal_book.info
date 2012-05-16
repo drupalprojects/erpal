@@ -1,5 +1,5 @@
 name = feature_erpal_book
-description = Feature for creating books for e.g.documents and proposals
+description = Feature for creating books e.g. for documents and proposals
 core = 7.x
 package = ERPAL Features
 php = 5.2.4
@@ -20,6 +20,7 @@ dependencies[] = rel
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = views
+dependencies[] = views_jstree
 features[ctools][] = page_manager:pages_default:1
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0

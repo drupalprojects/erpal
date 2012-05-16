@@ -33,23 +33,8 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
-  );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
-  $handler->display->display_options['style_options']['override'] = 1;
-  $handler->display->display_options['style_options']['sticky'] = 0;
-  $handler->display->display_options['style_options']['empty_table'] = 0;
+  $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['row_plugin'] = 'fields';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -88,6 +73,54 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['hide_empty'] = 0;
   $handler->display->display_options['fields']['edit_node']['empty_zero'] = 0;
   $handler->display->display_options['fields']['edit_node']['hide_alter_empty'] = 1;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nid']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['nid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
+  /* Field: Content: Parent */
+  $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_parent']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_parent']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_parent']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_parent']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_parent']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_parent']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_parent']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_parent']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_parent']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_parent']['field_api_classes'] = 0;
   /* Sort criterion: Content: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
@@ -179,25 +212,6 @@ function feature_erpal_book_views_default_views() {
       'fixed' => '',
       'label' => 'Content: Parent (field_parent)',
     ),
-  );
-  $translatables['book_children'] = array(
-    t('Master'),
-    t('All child pages'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('Edit'),
-    t('All'),
-    t('Pages of book'),
-    t('View panes'),
-    t('Child nodes'),
-    t('Dispalys all nodes that have parent nid set to contextual filter'),
   );
   $export['book_children'] = $view;
 
@@ -361,24 +375,6 @@ function feature_erpal_book_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['path'] = 'books/templates';
-  $translatables['books'] = array(
-    t('Master'),
-    t('Books'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php return _erpal_book_helper_view_contacts_header_content(); ?>'),
-    t('Post date'),
-    t('Title'),
-    t('Tags'),
-    t('Book templates'),
-  );
   $export['books'] = $view;
 
   return $export;
