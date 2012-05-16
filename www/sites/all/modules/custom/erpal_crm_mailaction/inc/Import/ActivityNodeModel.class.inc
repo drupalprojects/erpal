@@ -43,7 +43,7 @@ class ActivityNodeModel {
    * @param		string	$subject	The subject of the mail.
    * @param		string	$body			The body of the mail.
    */
-  public function addToCustomerActivity ($nid, $to, $from, $subject, $body) {
+  public function addToCustomerActivity ($nid, $to, $from, $subject, $body, $attachments) {
     
     drupal_load ('module', 'comment');
     
@@ -76,6 +76,14 @@ class ActivityNodeModel {
     comment_submit($comment);
     comment_save($comment);
     
+    if (! empty ($attachments)) {
+      
+      foreach ($attachments as $attachment) {
+        $this->addFile ($nid, $attachment, $subject);
+      }
+    }
+    
+    
     return;
   }
   
@@ -86,7 +94,7 @@ class ActivityNodeModel {
    * @param		string	$subject	The subject of the mail.
    * @param		string	$body			The body of the mail.
    */
-  public function insertCustomerActivity ($to, $from, $subject, $body) {
+  public function insertCustomerActivity ($to, $from, $subject, $body, $attachments) {
     
     module_load_include ('inc', 'erpal_crm_mailaction', 'includes/ContactModel.class');
     
@@ -111,6 +119,13 @@ class ActivityNodeModel {
     }
     
     node_save ($node);
+
+    if (! empty ($attachments)) {
+      
+      foreach ($attachments as $attachment) {
+        $this->addFile ($node->nid, $attachment, $subject);
+      }
+    }
     
     return TRUE;
   }
@@ -125,4 +140,47 @@ class ActivityNodeModel {
     
     return;
   } 
+  
+  /*
+   * Creates a single file node and creates a reference from a specific node to the new file node.
+   * @param		integer		The database ID of the parent node.
+   * @param		object		The file object.
+   * @param		string		The source description.
+   * @return	boolean		TRUE on success.
+   */
+  private function addFile ($nid, $file, $sourceDescription) {
+    
+    $parentNode = node_load ($nid);
+    if ($parentNode === FALSE) {
+      return FALSE;
+    }
+    
+    $node           = new \stdClass ();
+    $node->type     = 'erpal_file';
+    
+    node_object_prepare($node);
+    
+    $node->status                             = (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_attachments', FALSE);
+    $node->has_body                           = TRUE;
+    $node->title                              = check_plain ($file->filename);    
+    $node->body[LANGUAGE_NONE][0]['value']    = check_plain ($sourceDescription);
+    $node->body[LANGUAGE_NONE][0]['format']   = 'filtered_html';
+    
+    $node->field_docs_file[LANGUAGE_NONE][]   = array(
+      'fid'				  => $file->fid,
+      'display'     => 1,
+      'description'	=> $sourceDescription
+    );
+    
+    node_save ($node);
+    
+    if (! isset ($node->nid)) {
+      return FALSE;
+    }
+ 
+    $parentNode->field_asset_files[LANGUAGE_NONE][]['nid'] = $node->nid;
+    node_save ($parentNode);
+    
+    return TRUE;
+  }
 }

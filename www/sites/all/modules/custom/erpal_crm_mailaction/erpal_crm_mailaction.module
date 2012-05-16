@@ -14,9 +14,6 @@ define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS', 'import');
 // The UID of the site admin.
 define ('ERPAL_CRM_MAILACTION_ADMIN_UID', 1);
 
- 
-
-
 
 /**
 * Implements hook_menu.
@@ -53,6 +50,8 @@ function erpal_crm_mailaction_permission(){
  */
 function erpal_crm_mailaction_cron () {
   
+  if (lock_acquire($name))
+  
   module_load_include ('inc', 'erpal_crm_mailaction', 'inc/CronProcessor/CronProcessor.class');
   erpal_crm_mailaction\CronProcessor::run ();
   
@@ -62,7 +61,7 @@ function erpal_crm_mailaction_cron () {
 /*
  * Implements hook_erpal_crm_mailaction_incoming. 
  */
-function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body, array $attachments) {
+function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body, $attachments) {
 
   module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/Import.class');  
   erpal_crm_mailaction\Import::import ($to, $from, $subject, $body, $attachments);

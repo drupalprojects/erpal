@@ -38,7 +38,7 @@ function _erpal_crm_mailaction_config_basic(){
 */
 function _erpal_crm_mailaction_config_form($form, &$form_state){
 
-  erpal_crm_mailaction_cron ();
+  // FOR TESTING erpal_crm_mailaction_cron ();
   
   $form = array();
 
@@ -136,7 +136,7 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['password'] = array (
     '#type'          => 'password_confirm',
     '#size'	         => 20,
-    '#description'	 => t('Leave blank if you want to use the old passwort setting.')
+    '#description'	 => t('Leave blank if you want to use the old passwort setting.'),
   );
   
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS] = array (
@@ -150,9 +150,15 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
   $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS]['publish_imports'] = array (
     '#type'            => 'checkbox',
     '#title'	         => t('Publish imported content'),
-    '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'publish_imports', FALSE),
+    '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_imports', FALSE),
   ); 
   
+  $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS]['publish_attachments'] = array (
+    '#type'            => 'checkbox',
+    '#title'	         => t('Publish imported attachments'),
+    '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_attachments', FALSE),
+  ); 
+ 
   $form['submit'] = array(
     '#type'   => 'submit',
     '#value'  => t('Save')
@@ -196,11 +202,10 @@ function _erpal_crm_mailaction_config_form_submit($form, &$form_state) {
   if (empty ($values[ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['password'])) {
     $values[ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['password'] = $settings[ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX]['password'];
   }  
-  
+
   variable_set ('erpal_crm_mailaction', $values);
   
   drupal_set_message (t('Settings successfuly saved.'));
   
   return;
 }
-
