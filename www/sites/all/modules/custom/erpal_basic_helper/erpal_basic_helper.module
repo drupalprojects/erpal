@@ -5,6 +5,7 @@
  */
 
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
  
 /**
 * Implements hok_init
@@ -33,6 +34,14 @@ function erpal_basic_helper_menu(){
   $items = array_merge($items, $config_items);
   return $items;
 } 
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'relation_add_block_form')
+    _erpal_invoice_helper_relation_add_block_form_alter($form, $form_state);
+}
 
 /**
 * Implements hook_permission

@@ -591,7 +591,6 @@ function ajax_process_form($element, &$form_state) {
   if (!empty($element['#ajax_processed'])) {
     $form_state['cache'] = TRUE;
   }
-
   return $element;
 }
 
@@ -618,7 +617,6 @@ function ajax_process_form($element, &$form_state) {
  */
 function ajax_pre_render_element($element) {
   // Skip already processed elements.
-  
   if (isset($element['#ajax_processed'])) {
     return $element;
   }
@@ -681,7 +679,6 @@ function ajax_pre_render_element($element) {
 
   // Attach JavaScript settings to the element.
   if (isset($element['#ajax']['event'])) {
-  
     $element['#attached']['library'][] = array('system', 'jquery.form');
     $element['#attached']['library'][] = array('system', 'drupal.ajax');
 

@@ -131,6 +131,7 @@ function feature_erpal_basic_conditional_fields_default_fields() {
         ),
       ),
       'values' => array(),
+      'grouping' => 'AND',
     ),
   );
 
@@ -242,6 +243,7 @@ function feature_erpal_basic_conditional_fields_default_fields() {
           'value' => 'company',
         ),
       ),
+      'grouping' => 'AND',
       'values' => array(),
     ),
   );
@@ -319,6 +321,7 @@ function feature_erpal_basic_conditional_fields_default_fields() {
         ),
       ),
       'values' => array(),
+      'grouping' => 'AND',
     ),
   );
 
@@ -395,6 +398,7 @@ function feature_erpal_basic_conditional_fields_default_fields() {
         ),
       ),
       'values' => array(),
+      'grouping' => 'AND',
     ),
   );
 
@@ -506,6 +510,7 @@ function feature_erpal_basic_conditional_fields_default_fields() {
           'value' => 'person',
         ),
       ),
+      'grouping' => 'AND',
       'values' => array(),
     ),
   );

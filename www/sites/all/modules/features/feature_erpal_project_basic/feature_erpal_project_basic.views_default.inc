@@ -37,7 +37,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
   );
@@ -258,7 +257,6 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
   );
@@ -515,18 +513,23 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['arguments']['field_project_ref_nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_project_ref_nid']['break_phrase'] = 1;
   $handler->display->display_options['arguments']['field_project_ref_nid']['not'] = 0;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Assigned To Users (field_task_assigned_users) */
   $handler->display->display_options['filters']['field_task_assigned_users_uid']['id'] = 'field_task_assigned_users_uid';
   $handler->display->display_options['filters']['field_task_assigned_users_uid']['table'] = 'field_data_field_task_assigned_users';
   $handler->display->display_options['filters']['field_task_assigned_users_uid']['field'] = 'field_task_assigned_users_uid';
+  $handler->display->display_options['filters']['field_task_assigned_users_uid']['group'] = 1;
   $handler->display->display_options['filters']['field_task_assigned_users_uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_task_assigned_users_uid']['expose']['operator_id'] = 'field_task_assigned_users_uid_op';
   $handler->display->display_options['filters']['field_task_assigned_users_uid']['expose']['label'] = 'Users';
@@ -537,6 +540,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_task_status_value']['id'] = 'field_task_status_value';
   $handler->display->display_options['filters']['field_task_status_value']['table'] = 'field_data_field_task_status';
   $handler->display->display_options['filters']['field_task_status_value']['field'] = 'field_task_status_value';
+  $handler->display->display_options['filters']['field_task_status_value']['group'] = 1;
   $handler->display->display_options['filters']['field_task_status_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_task_status_value']['expose']['operator_id'] = 'field_task_status_value_op';
   $handler->display->display_options['filters']['field_task_status_value']['expose']['label'] = 'Status';
@@ -548,6 +552,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_task_type_value']['id'] = 'field_task_type_value';
   $handler->display->display_options['filters']['field_task_type_value']['table'] = 'field_data_field_task_type';
   $handler->display->display_options['filters']['field_task_type_value']['field'] = 'field_task_type_value';
+  $handler->display->display_options['filters']['field_task_type_value']['group'] = 1;
   $handler->display->display_options['filters']['field_task_type_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_task_type_value']['expose']['operator_id'] = 'field_task_type_value_op';
   $handler->display->display_options['filters']['field_task_type_value']['expose']['label'] = 'Type';
@@ -562,11 +567,13 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_task' => 'erpal_task',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Date: Date (node) */
   $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['table'] = 'node';
   $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['operator'] = 'between';
+  $handler->display->display_options['filters']['date_filter']['group'] = 1;
   $handler->display->display_options['filters']['date_filter']['exposed'] = TRUE;
   $handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
   $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Date';
@@ -641,7 +648,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
+  $handler->display->display_options['style_options']['grouping'] = '';
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
   );
@@ -902,11 +909,13 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_timetracking' => 'erpal_timetracking',
   );
+  $handler->display->display_options['filters']['type']['group'] = '0';
   /* Filter criterion: Content: Author uid */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'node';
   $handler->display->display_options['filters']['uid']['field'] = 'uid';
   $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = '0';
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['label'] = 'User';
@@ -919,6 +928,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_project_ref_nid']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['filters']['field_project_ref_nid']['field'] = 'field_project_ref_nid';
   $handler->display->display_options['filters']['field_project_ref_nid']['relationship'] = 'field_timetracking_subject_nid';
+  $handler->display->display_options['filters']['field_project_ref_nid']['group'] = '0';
   $handler->display->display_options['filters']['field_project_ref_nid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_project_ref_nid']['expose']['operator_id'] = 'field_project_ref_nid_op';
   $handler->display->display_options['filters']['field_project_ref_nid']['expose']['label'] = 'Project';
@@ -930,6 +940,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
   $handler->display->display_options['filters']['field_date_time_value']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_date_time_value']['group'] = '0';
   $handler->display->display_options['filters']['field_date_time_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_date_time_value']['expose']['operator_id'] = 'field_date_time_value_op';
   $handler->display->display_options['filters']['field_date_time_value']['expose']['label'] = 'Date';
@@ -973,13 +984,17 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['arguments']['field_timetracking_subject_nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_timetracking_subject_nid']['break_phrase'] = 1;
   $handler->display->display_options['arguments']['field_timetracking_subject_nid']['not'] = 0;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -988,11 +1003,13 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_timetracking' => 'erpal_timetracking',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Content: Author uid */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'node';
   $handler->display->display_options['filters']['uid']['field'] = 'uid';
   $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['label'] = 'User';
@@ -1005,6 +1022,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
   $handler->display->display_options['filters']['field_date_time_value']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_date_time_value']['group'] = 1;
   $handler->display->display_options['filters']['field_date_time_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_date_time_value']['expose']['operator_id'] = 'field_date_time_value_op';
   $handler->display->display_options['filters']['field_date_time_value']['expose']['label'] = 'Date';
@@ -1040,13 +1058,17 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['arguments']['field_project_ref_nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_project_ref_nid']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['field_project_ref_nid']['not'] = 0;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -1055,11 +1077,13 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_timetracking' => 'erpal_timetracking',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Content: Author uid */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'node';
   $handler->display->display_options['filters']['uid']['field'] = 'uid';
   $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['label'] = 'User';
@@ -1072,6 +1096,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
   $handler->display->display_options['filters']['field_date_time_value']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_date_time_value']['group'] = 1;
   $handler->display->display_options['filters']['field_date_time_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_date_time_value']['expose']['operator_id'] = 'field_date_time_value_op';
   $handler->display->display_options['filters']['field_date_time_value']['expose']['label'] = 'Date';

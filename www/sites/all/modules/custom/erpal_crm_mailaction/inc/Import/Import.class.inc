@@ -36,8 +36,10 @@ class Import {
    * @param $subject
    * @param $body
    */
-  public static function import ($to, $from, $subject, $body) {
+  public static function import ($to, $from, $subject, $body, $attachments) {
 
+    // TODO: ATTACHMENTS TO NODE
+    
     $import = new Import ();
 
     module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/MailParser.class');
@@ -56,11 +58,11 @@ class Import {
     }
     
     $import->activityNodeModel->published ($published);
-    
+ 
     if ($import->activityNodeModel->isCustomerActivityAvailable ($import->mailParser->ticketID)) {
-      $import->activityNodeModel->addToCustomerActivity ($import->mailParser->ticketID, $to, $from, $subject, $body);
+      $import->activityNodeModel->addToCustomerActivity ($import->mailParser->ticketID, $to, $from, $subject, $body, $attachments);
     }else{
-      $import->activityNodeModel->insertCustomerActivity ($to, $from, $subject, $body);
+      $import->activityNodeModel->insertCustomerActivity ($to, $from, $subject, $body, $attachments);
     }
     
     return;

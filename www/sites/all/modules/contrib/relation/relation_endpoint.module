@@ -277,6 +277,7 @@ function relation_endpoint_field_formatter_view($entity_type, $entity, $field, $
         $build[$delta] = $function($entity, $view_mode);
       }
   }
+  
   return $build;
 }
 
