@@ -71,6 +71,12 @@ class ImapMessageParts {
     return (object)$foundParts;
   } 
   
+  /*
+   * Retrieves a flatten array of all available parts.
+   * @param array	$messageParts		An array of imap structure parts.
+   * The other parameters are for recursive use.
+   * @return array	An array of parts.
+   */
   private static function flattenParts($messageParts, $flattenedParts = array(), $prefix = '', $index = 1, $fullPrefix = true) {
   
   	foreach($messageParts as $part) {
@@ -94,6 +100,14 @@ class ImapMessageParts {
   			
   }
   
+  /*
+   * Retrieves the data of a specific imap part.
+   * @param		resource	$connection			The imap connection resource.
+   * @param		integer		$messageNumber	The number of the message.
+   * @param		integer		$partNumber			The number of the part.
+   * @param		integer		$encoding				The ID of the encoding.
+   * @return	string										A decoded message.
+   */
   private static function getPart($connection, $messageNumber, $partNumber, $encoding) {
   	
   	$data = imap_fetchbody($connection, $messageNumber, $partNumber);
@@ -110,6 +124,11 @@ class ImapMessageParts {
   	
   }
   
+  /*
+   * Retrieves the filename of an attachment part.
+   * @param  object		$part		An imap part object.
+   * @return string 					The filename.
+   */
   private static function getFilenameFromPart($part) {
   
   	$filename = '';
