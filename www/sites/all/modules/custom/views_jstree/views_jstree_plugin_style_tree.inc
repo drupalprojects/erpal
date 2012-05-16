@@ -41,7 +41,7 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
         $fields[$field] = $handler->ui_name();
       }
     }
-dpm($form);
+
     $form['id_field'] = array(
       '#type' => 'select',
       '#title' => t('ID field'),
