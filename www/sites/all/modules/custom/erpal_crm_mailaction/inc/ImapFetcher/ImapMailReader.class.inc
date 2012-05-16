@@ -92,7 +92,7 @@ class ImapMailReader extends ImapMessageParts {
    * Fetches a mail from mailbox.
    */
   private function fetchBody() {
- 
+
     $parts = self::getParts ($this->resouceHandle, $this->messageNumber, $this->structure);
  
     $this->properties['body']  = self::decode ($parts->message);

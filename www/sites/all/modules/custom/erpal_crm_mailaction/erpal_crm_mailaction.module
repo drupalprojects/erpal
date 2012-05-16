@@ -50,10 +50,15 @@ function erpal_crm_mailaction_permission(){
  */
 function erpal_crm_mailaction_cron () {
   
-  if (lock_acquire($name))
+  if (! lock_acquire('erpal_crm_mailaction')) {
+    watchdog ('erpal_crm_mailaction', t('Can not run mail action cron. Because, of a concurrent cron process.'));
+    return;
+  }
   
   module_load_include ('inc', 'erpal_crm_mailaction', 'inc/CronProcessor/CronProcessor.class');
   erpal_crm_mailaction\CronProcessor::run ();
+  
+  lock_release('erpal_crm_mailaction');
   
   return;
 }
