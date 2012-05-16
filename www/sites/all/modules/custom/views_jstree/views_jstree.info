@@ -1,0 +1,8 @@
+name = Views JSTree
+description = A Views style plugin to display a JStree.
+package = Views
+core = 7.x
+dependencies[] = views
+files[] = views_jstree_plugin_style_tree.inc
+files[] = views_jstree.views.inc
+
