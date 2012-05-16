@@ -10,6 +10,24 @@ function views_jstree_views_api() {
   );
 }
 
+function views_jstree_init() {
+  views_jstree_require_jstree();
+}
+
+function views_jstree_require_jstree() {
+  //include the jstree with the library module
+  $jstree_path = libraries_get_path('jstree');
+
+  //if not exists, warn the user!
+  $jstree_download = l('latest jstree', 'http://www.jstree.com');
+  $jstree_root = $jstree_path;
+  if (!file_exists($jstree_path."/jquery.jstree.js")) {
+    drupal_set_message(t('Please download !jstree_download and place files from package in !jstree_root', array('!jstree_download' => $jstree_download, '!jstree_root' => $jstree_root)), 'warning');
+  }
+  //now add js tree
+  //TODO TODO 
+}
+
 /**
  * Implements of hook_theme().
  */
@@ -58,8 +76,8 @@ function theme_views_jstree($variables) {
 
   $parents = array();
 
-  if (! $fields[$options['main_field']] instanceof views_handler_field) {
-    drupal_set_message(t('Main field is invalid: %field', array('%field' => $options['main_field'])), 'error');
+  if (! $fields[$options['id_field']] instanceof views_handler_field) {
+    drupal_set_message(t('ID field is invalid: %field', array('%field' => $options['id_field'])), 'error');
     return '';
   }
 
@@ -78,7 +96,7 @@ function theme_views_jstree($variables) {
   // Finally, we build up a list of all main keys in the result set so that
   // we can normalize top-level records below.
   foreach ($result as $i => $record) {
-    $result[$i]->views_jstree_main = views_jstree_normalize_key($fields[$options['main_field']]->get_value($record), $fields[$options['main_field']]);
+    $result[$i]->views_jstree_main = views_jstree_normalize_key($fields[$options['id_field']]->get_value($record), $fields[$options['id_field']]);
     $result[$i]->views_jstree_parent = views_jstree_normalize_key($fields[$options['parent_field']]->get_value($record), $fields[$options['parent_field']]);
 
     $parents[] = $record->views_jstree_main;
