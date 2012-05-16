@@ -238,6 +238,14 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['style_options']['override'] = 1;
   $handler->display->display_options['style_options']['sticky'] = 0;
   $handler->display->display_options['style_options']['empty_table'] = 0;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<?php return _erpal_book_helper_view_contacts_header_content(); ?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -365,6 +373,7 @@ function feature_erpal_book_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('<?php return _erpal_book_helper_view_contacts_header_content(); ?>'),
     t('Post date'),
     t('Title'),
     t('Tags'),
