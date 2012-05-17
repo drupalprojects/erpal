@@ -10,8 +10,19 @@ function views_jstree_views_api() {
   );
 }
 
-function views_jstree_init() {
-  views_jstree_require_jstree();
+/**
+* Implements hook_menu
+*/
+function views_jstree_menu() {
+  $items = array();
+  $items['jstree/load/%/%'] = array(
+    'page callback' => 'views_jstree_load_children',
+    'page arguments' => array(2,3), //2=view, 3=parent_id
+    'access callback' => 'views_jstree_load_children_access',
+    'access arguments' => array(2,3),
+  );
+
+  return $items;
 }
 
 function views_jstree_require_jstree() {
@@ -24,8 +35,15 @@ function views_jstree_require_jstree() {
   if (!file_exists($jstree_path."/jquery.jstree.js")) {
     drupal_set_message(t('Please download !jstree_download and place files from package in !jstree_root', array('!jstree_download' => $jstree_download, '!jstree_root' => $jstree_root)), 'warning');
   }
-  //now add js tree
-  //TODO TODO 
+  
+  //add jstree Javascript and all its components
+  drupal_add_js($jstree_path."/_lib/jquery.cookie.js");
+  drupal_add_js($jstree_path."/_lib/jquery.hotkeys.js");
+  drupal_add_js($jstree_path."/jquery.jstree.js");
+  //drupal_add_js($jstree_path."/_docs/syntax/!style.css");
+  //drupal_add_js($jstree_path."/_docs/!style.css");
+  //drupal_add_js($jstree_path."/_docs/syntax/!script.js");
+  
 }
 
 /**
@@ -66,6 +84,9 @@ function views_jstree_theme($existing, $type, $theme, $path) {
  * @link http://drupal.org/node/355919
  */
 function theme_views_jstree($variables) {
+  
+  views_jstree_require_jstree();
+  //dpm($variables);
   $view = $variables['view'];
   $options = $variables['options'];
   $rows = $variables['rows'];
@@ -85,43 +106,27 @@ function theme_views_jstree($variables) {
     drupal_set_message(t('Parent field is invalid: %field', array('%field' => $options['parent_field'])), 'error');
     return '';
   }
+  
+  //now we show the first nodes at top level here, other nodes are reloaded by ajax in the tree  
+  $nid = $view->args[0];
+  $id = 'views_jstree_'.$nid;
+  $view_name = $view->name;
+  //add javascript variables
+  $ajax_url = url("jstree/load/$view_name");
 
-  // The field structure of Field API fields in a views result object is...
-  // ridiculous.  To avoid having to deal with it, we'll first iterate over all
-  // records and normalize out the main and parent IDs to new properties. That
-  // vastly simplifies the code that follows.  This particular magic
-  // incantation extracts the value from each record for the appropriate field
-  // specified by the user.  It then normalizes that value down to just an int,
-  // even though in some cases it is an array.  See views_jstree_normalize_key().
-  // Finally, we build up a list of all main keys in the result set so that
-  // we can normalize top-level records below.
-  foreach ($result as $i => $record) {
-    $result[$i]->views_jstree_main = views_jstree_normalize_key($fields[$options['id_field']]->get_value($record), $fields[$options['id_field']]);
-    $result[$i]->views_jstree_parent = views_jstree_normalize_key($fields[$options['parent_field']]->get_value($record), $fields[$options['parent_field']]);
-
-    $parents[] = $record->views_jstree_main;
-  }
-
-  // Normalize the top level of records to all point to 0 as their parent
-  // We only have to do this once, so we do it here in the wrapping function.
-  foreach ($result as $i => $record) {
-    if (! in_array($record->views_jstree_parent, $parents)) {
-      $result[$i]->views_jstree_parent = 0;
-    }
-  }
-
-  // Recursively render each item.
-  $tree = theme('views_jstree_inner', array(
-    'view' => $view,
-    'options' => $options,
-    'rows' => $rows,
-    'title' => $title,
-    'result' => $result,
-    'parent' => 0,
-    )
-  );
-
-  return $title . $tree;
+  $jstree_options = array();
+  $jstree_options[$id] = array('parent_nid' => $nid, 'ajax_url' => $ajax_url);
+  drupal_add_js(array('jstree_options' => $jstree_options), 'setting');
+  
+  $mod_path = drupal_get_path('module', 'views_jstree');
+  drupal_add_js($mod_path."/js/views_jstree.js");
+  
+  //@TODO in eigene Templatefunktion!
+  //@TODO größe so viel wie Platz ist! (100%)
+  $width = 900;  
+  $height = 600;
+  return '<div id="'.$id.'" class="jstree" style="height:'.$height.'px; width:'.$width.'px !important;">test</div>';
+ 
 }
 
 /**
@@ -156,6 +161,72 @@ function theme_views_jstree_inner($variables) {
 }
 
 /**
+* Access callback for ajax loading of view_data
+*/
+function views_jstree_load_children_access() {
+  return true; //@TODO implement access validation, maybe use permissions set on view!
+}
+
+/**
+* AJAX Callback functions for loading tree children
+*/
+function views_jstree_load_children($view_name, $parent_id) {
+
+  $view = views_get_view($view_name);
+  if (!is_object($view))
+    return array();
+    
+  $children_display = _views_jstree_get_children_display($view);
+  //execute it and return data as json
+  $args = array($parent_id);
+  $view->preview($children_display->id, $args);
+  
+  $result = $view->result;
+  
+  //output result as json to display in jstree
+  $output = array();
+  $status = 'TODO';  //@todo set status if needed, todo abstract for tasks and all other types!, should be done in row plugin!
+  foreach($result as $delta=>$row) {        
+    //Execute next view to see if it hase some children!
+    
+    $subargs = array($row->nid);
+    $subview = views_get_view($view_name);
+    $subview->preview($children_display->id, $subargs);
+    $hasChildren = $subview->total_rows > 0;
+    //@TODO Views row style plugin? No hard coded row style format!
+    $output[] = array(
+      "attr" => array("id" => "node_".$row->nid, "rel" => 'task-'.$status, "type" => $row->node_type), 
+      "data" => $row->node_title,
+      "state" => $hasChildren ? "closed" : '', //or '' if no Children!
+    );
+  }
+  
+  die(json_encode($output));
+}
+
+/**
+* Return the view displaying the children using the ajax allback related to the given view
+* @param a view which contains the display to get children
+*/
+function _views_jstree_get_children_display($view) {
+  //@TODO make dynamic options in view to select the child view displaying ajax children
+  $display = false;
+  foreach($view->display as $display_id=>$display) {
+    $display_options = $display->display_options;
+    if (isset($display_options['style_options']['ajax_child_view']))
+      if ($display_options['style_options']['ajax_child_view']) {
+        //that ist the display!
+        return $display;
+      }
+    
+  }
+  
+  return $display;
+}
+
+/**
+ * Code mostly taken from views_tree module, THANKS!
+ *
  * Normalize a value out of the record to an int.
  *
  * If the field in question comes from Field API, then it will be an array, not

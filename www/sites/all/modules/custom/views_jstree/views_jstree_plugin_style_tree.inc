@@ -22,7 +22,7 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
     $options['wrapper_class'] = array('default' => 'item-list');
     $options['id_field'] = array('default' => '');
     $options['parent_field'] = array('default' => '');
-    
+    $options['ajax_child_view'] = array('default' => false);
     return $options;
   }
 
@@ -58,6 +58,13 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
       '#options' => $fields,
       '#default_value' => $this->options['parent_field'],
       '#description' => t('Select the field that contains the unique identifier of the record\'s parent.'),
+    );
+    
+    $form['ajax_child_view'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('AJAX child view'),
+      '#default_value' => $this->options['ajax_child_view'],
+      '#description' => t('Check, if this is the display for loading the children using ajax'),
     );
   }
 }

@@ -27,8 +27,12 @@ function _erpal_book_helper_connect_page_to_book($node) {
   //get the book of the parent if there is a parent, otherwise the book
   //should be already prepoulated.
   $book_nid = 0;
-  if (isset($parent_node->field_book_ref[LANGUAGE_NONE][0]['nid']))
+  if ($parent_node->type == 'erpal_book') {
+    $book_nid = $parent_node->nid;
+  }
+  elseif (isset($parent_node->field_book_ref[LANGUAGE_NONE][0]['nid'])) {
     $book_nid = $parent_node->field_book_ref[LANGUAGE_NONE][0]['nid'];
+  }
     
   if ($book_nid)
     $node->field_book_ref[LANGUAGE_NONE][0]['nid'] = $book_nid;
@@ -49,10 +53,10 @@ function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
 function _erpal_book_helper_form_redirect_orphan_book_page($form) {
   //check book page must have a book reference or a parent refernce, otherwise redirect
   //to destination or if not set to books view
-  $book_nid = $form['field_book_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
+  //$book_nid = $form['field_book_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
   $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'];
   
-  if (!$book_nid && !$parent_nid) {
+  if (!$parent_nid) {
     //redirect
     $destination = drupal_get_destination();
     $destination = $destination['destination'];
