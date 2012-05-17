@@ -37,7 +37,7 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['style_options']['wrapper_class'] = 'item-lis';
   $handler->display->display_options['style_options']['id_field'] = 'nid';
   $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
-  $handler->display->display_options['style_options']['ajax_child_view'] = 1;
+  $handler->display->display_options['style_options']['ajax_child_view'] = 0;
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -221,6 +221,16 @@ function feature_erpal_book_views_default_views() {
   /* Display: Child nodes AJAX */
   $handler = $view->new_display('panel_pane', 'Child nodes AJAX', 'panel_pane_3');
   $handler->display->display_options['display_description'] = 'Load all nodes that have parent nid set to contextual filter';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['style_options']['wrapper_class'] = 'item-lis';
+  $handler->display->display_options['style_options']['id_field'] = 'nid';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
+  $handler->display->display_options['style_options']['ajax_child_view'] = 1;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Parent (field_parent) */
   $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
