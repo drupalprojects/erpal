@@ -5,4 +5,5 @@ core = 7.x
 dependencies[] = views
 files[] = views_jstree_plugin_style_tree.inc
 files[] = views_jstree.views.inc
+files[] = views_jstree.token.inc
 

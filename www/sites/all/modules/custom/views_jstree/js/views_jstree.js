@@ -1,4 +1,5 @@
 (function ($) {
+  menus_by_id = new Array();  //GLOBAL cache for saving a context menu for each id of a node
   $(document).ready(function() {
     var options = Drupal.settings.jstree_options;    
     
@@ -7,8 +8,8 @@
       
       //get all variables
       var ajax_url = option_arr.ajax_url;
-      var parent_nid = option_arr.parent_nid;
-      
+      var ajax_url_move = option_arr.ajax_url_move;
+      var parent_nid = option_arr.parent_nid;      
       //END get variables
       
       $("#"+jstree_id)      
@@ -16,26 +17,38 @@
         $("#alog").append(data.func + "<br />");
       }) 
       
+      .bind("dblclick.jstree", function (event) {
+         var n = $(event.target).closest("li");         
+         // Do my action
+         var url = n.attr("uri"); 
+         if (typeof url !== "undefined") 
+          window.location.href = url;
+      })
+      
       .jstree({ 
-        "crrm" : { 
-          "move" : {
-            "check_move" : function (m) { 
-              var p = this._get_parent(m.o);
-              if(!p) return false;
-              p = p == -1 ? this.get_container() : p;
-              if(p === m.np) return true;
-              if(p[0] && m.np[0] && p[0] === m.np[0]) return true;
+        
+        "dnd" : {
+          "drop_finish" : function () { 
+            alert("DROP"); 
+          },
+          "drag_check" : function (data) {
+            alert('drin');
+            if(data.r.attr("id") == "phtml_1") {
               return false;
             }
+            return { 
+              after : false, 
+              before : false, 
+              inside : true 
+            };
+          },
+          "drag_finish" : function (data) { 
+            alert("DRAG OK"); 
           }
-        },
-        "dnd" : {
-          "drop_target" : false,
-          "drag_target" : false
         },
         // List of active plugins    
         "plugins" : [ 
-          "themes","json_data","ui","crrm","cookies","dnd","search","types","hotkeys","contextmenu"
+          "themes","json_data","ui","crrm","cookies","dnd","search","hotkeys","contextmenu"
         ],
 
         // I usually configure the plugin that handles the data first
@@ -59,13 +72,36 @@
               return { 
                 "operation" : "get_children", 
               }; 
-            }
-          }
+            },
+            "success" : function(data, textStatus, jqXHR) {
+              //add the context menu for the node
+              $.each(data, function(index, data_obj) {
+                
+                var context_menu_items = data_obj.context_menu;
+                var entity_id = data_obj.attr.entity_id;
+
+                $.each(context_menu_items, function(item_id, item) {
+                  var title = item.title;
+                  var url = item.url;
+                  var key = entity_id;
+                  
+                  if (typeof menus_by_id[key] === 'undefined')
+                    menus_by_id[key] = new Array();  //new array
+                  if (typeof menus_by_id[key][item_id] === 'undefined')  
+                    menus_by_id[key][item_id] = new Array();  //new array
+                  
+                  menus_by_id[key][item_id]["title"] = title;
+                  menus_by_id[key][item_id]["url"] = url;                  
+                });
+              });
+              
+            },
+          },
         },
         //configure the Context Menu
         "contextmenu": {
             "items": function(node){
-              return customMenu(node);
+              return customMenu(node, parent_nid);
             }
           },
         // Configuring the search plugin
@@ -83,120 +119,7 @@
             }
           }
         },
-        // Using types - most of the time this is an overkill
-        // read the docs carefully to decide whether you need types
-        "types" : {
-          // I set both options to -2, as I do not need depth and children count checking
-          // Those two checks may slow jstree a lot, so use only when needed
-          //"max_depth" : -2,
-          //"max_children" : -2,
-          // I want only `drive` nodes to be root nodes 
-          // This will prevent moving or creating any other type as a root node
-          "valid_children" : [ "anforderungok", "anforderungnotok" ],
-          "types" : {
-            // The default type
-            /*"default" : {
-              // I want this type to have no children (so only leaf nodes)
-              // In my case - those are files
-              "valid_children" : "none",
-              // If we specify an icon for the default type it WILL OVERRIDE the theme icons
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/file.png"
-              }
-            },*/
-            // The `folder` type
-            /*"folder" : {
-              // can have files and other folders inside of it, but NOT `drive` nodes
-              "valid_children" : [ "default", "folder" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/folder.png"
-              }
-            },*/
-            
-            //CUSTOM FOR ANFORDERUNG UND LEISTUNG
-            "anforderungok" : {
-
-              "valid_children" : [ "leistungok", "leistungnotok" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/anforderungok.gif"
-              }
-            },
-            "anforderungnotok" : {
-              "valid_children" : [ "leistungok", "leistungnotok" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/anforderungnotok.gif"
-              }
-            },
-            "leistungok" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/leistungok.gif"
-              }
-            },
-            "leistungnotok" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/leistungnotok.gif"
-              }
-            },        
-            
-            //END CUTSOM TYPES
-            
-            //CUSTOM TYPES FOR STATE!
-            "task-buggy" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/task-buggy.png"
-              }
-            },
-            "task-tested" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/task-tested.gif"
-              }
-            },
-            "task-inserted" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/task-inserted.png"
-              }
-            },
-            "task-in-progress" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/task-in-progress.png"
-              }
-            },
-            "task-on-hold" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/task-on-hold.png"
-              }
-            },
-            "task-completed" : {
-              "valid_children" : [ "task-buggy", "task-tested", "task-inserted", "task-in-progress", "task-on-hold", "task-completed" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/task-completed.png"
-              }
-            },
-            //END CUSTOM TYPES FOR STATE!
-            
-            // The `drive` nodes 
-            "drive" : {
-              // can have files and folders inside, but NOT other `drive` nodes
-              "valid_children" : [ "default", "folder" ],
-              "icon" : {
-                "image" : "/sites/all/modules/bsintranet/bsrequirements/img/root.png"
-              },
-              // those prevent the functions with the same name to be used on `drive` nodes
-              // internally the `before` event is used
-              "start_drag" : false,
-              "move_node" : false,
-              "delete_node" : false,
-              "remove" : false
-            }
-          }
-        },
+        
         // UI & core - the nodes to initially select and open will be overwritten by the cookie plugin
 
         // the UI plugin - it handles selecting/deselecting/hovering nodes
@@ -218,7 +141,7 @@
             "id" : data.rslt.parent.attr("id").replace("node_",""), 
             "position" : data.rslt.position,
             "title" : data.rslt.name,
-            "type" : data.rslt.obj.attr("rel")
+            //"type" : data.rslt.obj.attr("rel") //we dont need to use types
           }, 
           function (r) {        
             if(r.status) {
@@ -265,20 +188,21 @@
       })
       .bind("move_node.jstree", function (e, data) {
         data.rslt.o.each(function (i) {
+          var moving_nid = $(this).attr("entity_id");
           $.ajax({
             async : false,
             type: 'POST',
-            url: ajax_url,
+            url: ajax_url_move + "/" + moving_nid,
             data : { 
               "operation" : "move_node", 
-              "id" : $(this).attr("id").replace("node_",""), 
-              "ref" : data.rslt.cr === -1 ? 1 : data.rslt.np.attr("id").replace("node_",""), 
+              "id" : moving_nid, 
+              "new_parent_nid" : data.rslt.cr === -1 ? 1 : data.rslt.np.attr("entity_id"), 
               "position" : data.rslt.cp + i,
               "title" : data.rslt.name,
+              "root" : parent_nid,
               "copy" : data.rslt.cy ? 1 : 0
             },
-            success : function (r) {          
-              console.log(r);
+            success : function (r) {                                      
               /*if(!r.status) {
                 $.jstree.rollback(data.rlbk);
               }
@@ -298,4 +222,36 @@
 
     
   });
+  
+  //parent_nid is the top most parent, aka root
+  function customMenu(node, parent_nid) {
+    // The default set of all items
+    
+    var entity_id = node.attr("entity_id");
+
+    var type = node.attr("type");
+    var rootNode = parent_nid;
+    var menu = menus_by_id[entity_id];
+    var menu_items = ({});
+    
+    for (key in menu) {
+      var item_key = key;
+      var item = menu[key];
+      var url = item["url"];
+      var title = item["title"];
+      
+      console.log(item_key);
+      menu_items[item_key] = {          
+        label: title,
+        action: function (clicked_node) {          
+          var link = url;
+          console.log(link);
+        }
+        
+      }
+    }
+    
+    return menu_items;
+  }
 })(jQuery);
+

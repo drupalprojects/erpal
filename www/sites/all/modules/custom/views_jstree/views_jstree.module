@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('inc', 'views_jstree', 'views_jstree.token');
+
 /**
  * Implements of hook_views_api().
  */
@@ -20,6 +22,12 @@ function views_jstree_menu() {
     'page arguments' => array(2,3), //2=view, 3=parent_id
     'access callback' => 'views_jstree_load_children_access',
     'access arguments' => array(2,3),
+  );
+  
+  $items['jstree/move/%/%'] = array(
+    'page callback' => 'views_jstree_move_child',
+    'page arguments' => array(2, 3), //2=view name, 3=the nid that is moved
+    'access callback' => true,  //@TODO: user can alway move? Cannot? Shouldnot?
   );
 
   return $items;
@@ -75,6 +83,29 @@ function views_jstree_theme($existing, $type, $theme, $path) {
 }
 
 /**
+* Returns fields of a display. If fields are not overriden, we take the fields of the default view.
+*/
+function views_jstree_get_fields_of_view($view, $display) {
+  $fields = $display->display_options['fields'];
+
+  if (!$fields) { //if not overriden, take from view
+    $fields = $view->display['default']->display_options['fields'];
+  }
+  
+  return $fields;
+}
+
+function views_jstree_get_options_of_view($view, $display) {
+  $options = $display->display_options['style_options'];
+
+  if (!$options) { //if not overriden, take from view
+    $options = $view->display['default']->display_options['style_options'];
+  }
+  
+  return $options;
+}
+
+/**
  * Theme function for the jstree style plugin.
  *
  * We need to do some weirdness that makes more sense as a theme function
@@ -84,7 +115,10 @@ function views_jstree_theme($existing, $type, $theme, $path) {
  * @link http://drupal.org/node/355919
  */
 function theme_views_jstree($variables) {
-  
+  //only if this is not a view path....oh man thats dirty :-(
+  if (strpos($_GET['q'], 'jstree') === false)
+    $_SESSION['view_jstree']['current_tree_url'] = $_GET['q'];  //so other modules know which url ist actually viewd (@see erpal_book_helper, erpal_book_helper_jstree_context_menu)
+    
   views_jstree_require_jstree();
   //dpm($variables);
   $view = $variables['view'];
@@ -113,9 +147,10 @@ function theme_views_jstree($variables) {
   $view_name = $view->name;
   //add javascript variables
   $ajax_url = url("jstree/load/$view_name");
-
+  $ajax_url_move = url("jstree/move/$view_name");
+  
   $jstree_options = array();
-  $jstree_options[$id] = array('parent_nid' => $nid, 'ajax_url' => $ajax_url);
+  $jstree_options[$id] = array('parent_nid' => $nid, 'ajax_url' => $ajax_url, 'ajax_url_move' => $ajax_url_move);
   drupal_add_js(array('jstree_options' => $jstree_options), 'setting');
   
   $mod_path = drupal_get_path('module', 'views_jstree');
@@ -168,7 +203,47 @@ function views_jstree_load_children_access() {
 }
 
 /**
-* AJAX Callback functions for loading tree children
+* AJAX Callback function for moving the node in jstree
+* @param $nid the nid of the node that is moved
+*/
+function views_jstree_move_child($view_name, $nid) {
+  $data = $_REQUEST;
+  
+  $op = $data['operation'];
+  $new_parent_nid = $data['new_parent_nid'];
+  $position = $data['position'];
+  $root = $data['root'];
+
+  $view = views_get_view($view_name);
+  if (!is_object($view))
+    return array();
+    
+  $children_display = _views_jstree_get_children_display($view);  //the view that displays the children
+  
+  if ($op != 'move_node')
+    return false;
+   
+  $node = node_load($nid);
+  //check what ist the parent field
+  $fields = views_jstree_get_fields_of_view($view, $children_display);
+  $options = views_jstree_get_options_of_view($view, $children_display);
+  
+  $parent_field = $fields[$options['parent_field']];
+  $weight_field = $fields[$options['weight_field']];
+  
+  if ($new_parent_nid == 1){  //@TODO: is this really alway 1 if we drag at top level under the root??
+    //set parent to argument, because this is the root.
+    $new_parent_nid = $root;
+  }
+  
+  $node->{$parent_field['id']}[$node->language][0][$parent_field['group_column']] = $new_parent_nid;
+  $node->{$weight_field['id']}[$node->language][0][$weight_field['group_column']] = $position;
+  
+  node_save($node);
+}
+
+/**
+* AJAX Callback function for loading tree children
 */
 function views_jstree_load_children($view_name, $parent_id) {
 
@@ -185,23 +260,66 @@ function views_jstree_load_children($view_name, $parent_id) {
   
   //output result as json to display in jstree
   $output = array();
-  $status = 'TODO';  //@todo set status if needed, todo abstract for tasks and all other types!, should be done in row plugin!
+  
   foreach($result as $delta=>$row) {        
     //Execute next view to see if it hase some children!
     
     $subargs = array($row->nid);
     $subview = views_get_view($view_name);
     $subview->preview($children_display->id, $subargs);
-    $hasChildren = $subview->total_rows > 0;
+    $hasChildren = $subview->total_rows > 0;   
+    
+    $node_uri = url('node/'.$row->nid);
     //@TODO Views row style plugin? No hard coded row style format!
+    //@TODO ensure in views UI that for this style plugin node_type is set as field as well as nid!
     $output[] = array(
-      "attr" => array("id" => "node_".$row->nid, "rel" => 'task-'.$status, "type" => $row->node_type), 
+      "attr" => array("id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, 'entity_id' => $row->nid), 
       "data" => $row->node_title,
       "state" => $hasChildren ? "closed" : '', //or '' if no Children!
+      'context_menu' => _views_jstree_get_context_menu($view, $children_display, $row->node_type, $row->nid, $row, $parent_id),
     );
   }
   
   die(json_encode($output));
+}
+
+/**
+* returns context_menu data for a given node
+*/
+function _views_jstree_get_context_menu($view, $display, $node_type, $nid, $row, $root_id) {
+  //get the options first!
+  $context_menu_options = $display->display_options['style_options']['context_menu'];
+  if (!$context_menu_options) {
+    //get options from default view
+    $context_menu_options = $view->display['default']->display_options['style_options']['context_menu'];
+  }
+  
+  //now get the menu either from textarea or from implemented hooks
+  if ($context_menu_options['use_context_menu_hook']) {
+    //from hooks!
+    $menu = module_invoke_all('jstree_context_menu', 'node', $node_type, $nid, $root_id);
+    return $menu;
+  } else {
+    $type_prefix = 'views_jstree';
+    $type = $type_prefix."_".$view->name."_".$display->id;
+
+    $custom_context_menu = $context_menu_options['custom_context_menu'];
+    $custom_context_menu = token_replace($custom_context_menu, array($type => array('view' => $view, 'display' => $display, 'row' => $row)));
+   
+$br = "
+";    //a linebreak that always works
+    $menu = array();
+    $items = explode($br, $custom_context_menu);
+    foreach ($items as $item) {
+      $elements = explode('|', $item);
+      $title = $elements[0];
+      $url = $elements[1];
+      $menu[] = array('title' => $title, 'url' => $url);
+    }
+    
+    return $menu;
+  }
+ 
 }
 
 /**
