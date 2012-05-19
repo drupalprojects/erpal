@@ -4,10 +4,31 @@
  * Code for the erpal_docs_helper module.
  */
 
+module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
+ 
+/**
+* Implements hook_form_alter
+*/
+function showroom_helper_form_alter(&$form, $form_state, $form_id) {
+
+  $field_types = _filefield_paths_get_field_types();
+  if (isset($form['#field']) && in_array($form['#field']['type'], array_keys($field_types))) {
+    // Replacement patterns for field.
+    $form['instance']['settings']['filefield_paths']['token_tree_showroom'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Replacement patterns showroom'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#description' => theme('token_tree', array('global_types' => FALSE, 'token_types' => array('showroom'))),
+      '#weight' => 10,
+    );
+  }
+} 
+ 
 /**
 * This function is called in header area of documents view
 */
-function _erpal_crm_helper_view_documents_header_content()
+function _erpal_docs_helper_view_documents_header_content()
 {
   $q = current_path();
   $add_erpal_activity =  _erpal_docs_helper_create_document_link();

@@ -541,7 +541,7 @@ function feature_erpal_book_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'nodereference_url',
+        'module' => 'options',
         'settings' => array(
           'autocomplete_match' => 'contains',
           'edit_fallback' => 0,
@@ -554,7 +554,7 @@ function feature_erpal_book_field_default_fields() {
             'title' => 'Add sub page',
           ),
         ),
-        'type' => 'nodereference_url',
+        'type' => 'options_select',
         'weight' => '5',
       ),
     ),
@@ -858,19 +858,16 @@ function feature_erpal_book_field_default_fields() {
         'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
-          'erpal_book' => 0,
+          'erpal_book' => 'erpal_book',
           'erpal_book_page' => 'erpal_book_page',
           'erpal_contact' => 0,
           'erpal_crm_activity' => 0,
           'erpal_file' => 0,
           'erpal_invoice' => 0,
           'erpal_project' => 0,
-          'erpal_project_spec' => 0,
           'erpal_task' => 0,
           'erpal_timetracking' => 0,
-          'features_test' => 0,
           'page' => 0,
-          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),

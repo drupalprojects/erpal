@@ -37,7 +37,13 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['style_options']['wrapper_class'] = 'item-lis';
   $handler->display->display_options['style_options']['id_field'] = 'nid';
   $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
+  $handler->display->display_options['style_options']['ajax_child_view'] = 0;
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -124,6 +130,59 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_parent']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_parent']['field_api_classes'] = 0;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['type']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['type']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['type']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['type']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['type']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['type']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['type']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['type']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['type']['link_to_node'] = 0;
+  $handler->display->display_options['fields']['type']['machine_name'] = 0;
+  /* Field: Content: Weight */
+  $handler->display->display_options['fields']['field_weight']['id'] = 'field_weight';
+  $handler->display->display_options['fields']['field_weight']['table'] = 'field_data_field_weight';
+  $handler->display->display_options['fields']['field_weight']['field'] = 'field_weight';
+  $handler->display->display_options['fields']['field_weight']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_weight']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_weight']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_weight']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_weight']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_weight']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_weight']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_weight']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_weight']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_weight']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_weight']['settings'] = array(
+    'thousand_separator' => ' ',
+    'prefix_suffix' => 1,
+  );
+  $handler->display->display_options['fields']['field_weight']['field_api_classes'] = 0;
   /* Sort criterion: Content: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
@@ -161,19 +220,6 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['filters']['field_parent_nid']['field'] = 'field_parent_nid';
   $handler->display->display_options['filters']['field_parent_nid']['operator'] = 'empty';
 
-  /* Display: Pages of book */
-  $handler = $view->new_display('panel_pane', 'Pages of book', 'panel_pane_1');
-  $handler->display->display_options['argument_input'] = array(
-    'field_book_ref_nid' => array(
-      'type' => 'panel',
-      'context' => 'entity:billable.billable-id',
-      'context_optional' => 0,
-      'panel' => '0',
-      'fixed' => '',
-      'label' => 'Content: Book (field_book_ref)',
-    ),
-  );
-
   /* Display: Child nodes */
   $handler = $view->new_display('panel_pane', 'Child nodes', 'panel_pane_2');
   $handler->display->display_options['display_description'] = 'Dispalys all nodes that have parent nid set to contextual filter';
@@ -209,6 +255,64 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['argument_input'] = array(
     'field_parent_nid' => array(
       'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Parent (field_parent)',
+    ),
+  );
+
+  /* Display: Child nodes AJAX */
+  $handler = $view->new_display('panel_pane', 'Child nodes AJAX', 'panel_pane_3');
+  $handler->display->display_options['display_description'] = 'Load all nodes that have parent nid set to contextual filter';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['style_options']['wrapper_class'] = 'item-lis';
+  $handler->display->display_options['style_options']['id_field'] = 'nid';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
+  $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
+  $handler->display->display_options['style_options']['ajax_child_view'] = 1;
+  $handler->display->display_options['style_options']['context_menu'] = array(
+    'use_context_menu_hook' => 1,
+    'custom_context_menu' => 'Show IT|/node/[views_jstree_book_children_panel_pane_3:nid]
+Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Parent (field_parent) */
+  $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
+  $handler->display->display_options['arguments']['field_parent_nid']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['arguments']['field_parent_nid']['field'] = 'field_parent_nid';
+  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_options']['argument'] = 'No pages available';
+  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_parent_nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_parent_nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_parent_nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_parent_nid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_parent_nid']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_book_page' => 'erpal_book_page',
+  );
+  $handler->display->display_options['argument_input'] = array(
+    'field_parent_nid' => array(
+      'type' => 'none',
       'context' => 'entity:billable.billable-id',
       'context_optional' => 0,
       'panel' => '0',
