@@ -275,8 +275,8 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['style_options']['ajax_child_view'] = 1;
   $handler->display->display_options['style_options']['context_menu'] = array(
     'use_context_menu_hook' => 1,
-    'custom_context_menu' => 'Show IT|node/[views_jstree_book_children_panel_pane_3:nid]
-Edit IT|node/[views_jstree_book_children_panel_pane_3:nid]/edit',
+    'custom_context_menu' => 'Show IT|/node/[views_jstree_book_children_panel_pane_3:nid]
+Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;

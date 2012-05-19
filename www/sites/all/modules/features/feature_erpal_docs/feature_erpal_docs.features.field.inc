@@ -102,7 +102,8 @@ function feature_erpal_docs_field_default_fields() {
       'settings' => array(
         'display_default' => 0,
         'display_field' => 0,
-        'uri_scheme' => 'public',
+        'profile2_private' => FALSE,
+        'uri_scheme' => 'private',
       ),
       'translatable' => '0',
       'type' => 'file',
@@ -135,7 +136,7 @@ function feature_erpal_docs_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_docs_file',
       'label' => 'File',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'description_field' => 0,
         'file_directory' => '',

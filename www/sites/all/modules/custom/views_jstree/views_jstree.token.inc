@@ -37,7 +37,7 @@ function views_jstree_token_info() {
       $fields = views_jstree_get_fields_of_view($view, $display);
         
       foreach ($fields as $fieldname=>$field) {        
-        $field_label = $field['label'] ? $field['label'] : $field['field'];
+        $field_label = isset($field['label']) && $field['label'] ? $field['label'] : $field['field'];
         $tokens[$type][$field['id']] = array(
           'name' => $field_label,
           'description' => t('Token for field "!field_label"', array('!field_label' => $field_label)),
@@ -62,7 +62,9 @@ function views_jstree_tokens($type, $tokens, array $data = array(), array $optio
   global $user;  
   
   $replacements = array();
-
+  if (!isset($data[$type]['view']))
+    return $replacements;
+    
   $view = $data[$type]['view'];
   $display = $data[$type]['display'];
   $row = $data[$type]['row'];
