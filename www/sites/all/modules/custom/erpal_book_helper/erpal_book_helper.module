@@ -26,7 +26,7 @@ function erpal_book_helper_field_attach_view_alter (&$output, $context) {
 /**
 * implements hook_init
 */
-function erpal_invoice_helper_init() {
+function erpal_book_helper_init() {
   //@TODO that is really bad, but we have no other chance right now. The problem is:
   //if the customer changes in an book, we change the allowed values using #ajax at the contact
   //form element. This ajax function sumbits the whole form. While rebuilding the form again, the function

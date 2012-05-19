@@ -55,7 +55,7 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
   
   $replacements = array();
   if ($type == 'erpal_contact') {
-    $book_node = $data['erpal_book'];
+    $book_node = $data['erpal_book'];    
     
     //get the contact and the selected address of the contact
     if (!isset($book_node->field_contact_ref[LANGUAGE_NONE][0]['nid']))
@@ -101,11 +101,35 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
             $country = $address_entity->field_country[LANGUAGE_NONE][0]['value'];
           $replacements[$original] = $country;
         break;
-        
       }
     }
   }
 
+  if ($type == 'node') {
+    //little hack to make tokens work on contact node title even if some fields are disabled because of conditional fields
+    //otherwise the tokens will not be replaced...don't know why
+    /*$contact_node = $data['node'];
+    foreach ($tokens as $name => $original) {
+      dpm($original);
+      switch ($name) {
+        case 'field_company_name':
+          $company_name = '';
+          if (!isset($contact_node->field_company_name[LANGUAGE_NONE][0]['value']))
+            $replacements[$original] = $company_name;
+        break;
+        case 'field_firstname':
+          $firstname = '';
+          if (!isset($contact_node->field_firstname[LANGUAGE_NONE][0]['value']))
+            $replacements[$original] = $company_name;
+        break;
+        case 'field_lastname':
+          $lastname = '';
+          if (!isset($contact_node->field_lastname[LANGUAGE_NONE][0]['value']))
+            $replacements[$original] = $lastname;
+        break;
+      }
+    }*/
+  }
   
   return $replacements;
 }
