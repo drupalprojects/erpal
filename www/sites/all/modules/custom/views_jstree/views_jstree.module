@@ -86,7 +86,9 @@ function views_jstree_theme($existing, $type, $theme, $path) {
 * Returns fields of a display. If fields are not overriden, we take the fields of the default view.
 */
 function views_jstree_get_fields_of_view($view, $display) {
-  $fields = $display->display_options['fields'];
+  $fields = false;
+  if (isset($display->display_options['fields']))
+    $fields = $display->display_options['fields'];
 
   if (!$fields) { //if not overriden, take from view
     $fields = $view->display['default']->display_options['fields'];
@@ -160,7 +162,7 @@ function theme_views_jstree($variables) {
   //@TODO größe so viel wie Platz ist! (100%)
   $width = 900;  
   $height = 600;
-  return '<div id="'.$id.'" class="jstree" style="height:'.$height.'px; width:'.$width.'px !important;">test</div>';
+  return '<div id="'.$id.'" class="jstree" style="height:'.$height.'px; width:'.$width.'px !important;"></div>';
  
 }
 
@@ -216,12 +218,12 @@ function views_jstree_move_child($view_name, $nid) {
 
   $view = views_get_view($view_name);
   if (!is_object($view))
-    return array();
+    die(json_encode(array('result' => false)));
     
   $children_display = _views_jstree_get_children_display($view);  //the view that displays the children
   
   if ($op != 'move_node')
-    return false;
+    die(json_encode(array('result' => false)));
    
   $node = node_load($nid);
   //check what ist the parent field
@@ -240,6 +242,8 @@ function views_jstree_move_child($view_name, $nid) {
   $node->{$weight_field['id']}[$node->language][0][$weight_field['group_column']] = $position;
   
   node_save($node);
+  
+  die(json_encode(array('result' => true)));
 }
 
 /**

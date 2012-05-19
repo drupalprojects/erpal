@@ -232,26 +232,30 @@
     var type = node.attr("type");
     var rootNode = parent_nid;
     var menu = menus_by_id[entity_id];
-    var menu_items = ({});
+    var menu_items = {};
     
     for (key in menu) {
       var item_key = key;
       var item = menu[key];
       var url = item["url"];
       var title = item["title"];
-      
-      console.log(item_key);
-      menu_items[item_key] = {          
-        label: title,
-        action: function (clicked_node) {          
-          var link = url;
-          console.log(link);
-        }
-        
-      }
+      console.log(title+'--'+url);
+      menu_items[item_key] = customMenuNode(title, url);
     }
     
     return menu_items;
+  }
+  
+  function customMenuNode(title, url) {
+    var menu_object = {          
+      label: title,
+      action: function (clicked_node) {          
+        var link = url;
+        window.location.href = link;
+      }      
+    }
+      
+    return menu_object;
   }
 })(jQuery);
 
