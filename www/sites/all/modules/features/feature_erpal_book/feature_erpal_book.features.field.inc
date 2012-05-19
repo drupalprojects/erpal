@@ -77,7 +77,67 @@ function feature_erpal_book_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '-4',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_book-field_address_id'
+  $fields['node-erpal_book-field_address_id'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_address_id',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(),
+        'allowed_values_function' => 'erpal_book_helper_field_address_id_allowed_values',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_book',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Select an address to use address tokens in your document',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 6,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_address_id',
+      'label' => 'Address',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '6',
       ),
     ),
   );
@@ -160,7 +220,7 @@ function feature_erpal_book_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '-3',
+        'weight' => '3',
       ),
     ),
   );
@@ -234,7 +294,98 @@ function feature_erpal_book_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '-1',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_book-field_contact_ref'
+  $fields['node-erpal_book-field_contact_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_contact_ref',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
+          'erpal_contact' => 'erpal_contact',
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'page' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_book',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Choosing a contact will make it possible to personalise the document',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 5,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_contact_ref',
+      'label' => 'Contact',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '1',
       ),
     ),
   );
@@ -303,7 +454,7 @@ function feature_erpal_book_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '1',
+        'weight' => '5',
       ),
     ),
   );
@@ -991,15 +1142,19 @@ function feature_erpal_book_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Address');
   t('Body');
   t('Book');
   t('Book Tags');
+  t('Choosing a contact will make it possible to personalise the document');
+  t('Contact');
   t('Estimated duration');
   t('Exclude from');
   t('Is template');
   t('Is this a template book or chapter');
   t('Origin template');
   t('Parent');
+  t('Select an address to use address tokens in your document');
   t('Weight');
 
   return $fields;
