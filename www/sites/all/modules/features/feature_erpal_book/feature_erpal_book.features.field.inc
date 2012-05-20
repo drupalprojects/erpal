@@ -618,7 +618,7 @@ function feature_erpal_book_field_default_fields() {
   $fields['node-erpal_book_page-field_book_ref'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_book_ref',
@@ -647,12 +647,9 @@ function feature_erpal_book_field_default_fields() {
           'erpal_file' => 0,
           'erpal_invoice' => 0,
           'erpal_project' => 0,
-          'erpal_project_spec' => 0,
           'erpal_task' => 0,
           'erpal_timetracking' => 0,
-          'features_test' => 0,
           'page' => 0,
-          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
@@ -1015,8 +1012,8 @@ function feature_erpal_book_field_default_fields() {
           'erpal_crm_activity' => 0,
           'erpal_file' => 0,
           'erpal_invoice' => 0,
-          'erpal_project' => 0,
-          'erpal_task' => 0,
+          'erpal_project' => 'erpal_project',
+          'erpal_task' => 'erpal_task',
           'erpal_timetracking' => 0,
           'page' => 0,
         ),
@@ -1064,7 +1061,7 @@ function feature_erpal_book_field_default_fields() {
           'edit_fallback' => 0,
           'fallback' => 'autocomplete',
           'node_link' => array(
-            'destination' => 'default',
+            'destination' => 'node',
             'full' => 1,
             'hover_title' => '',
             'teaser' => 0,

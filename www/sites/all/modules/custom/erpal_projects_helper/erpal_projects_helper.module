@@ -8,6 +8,7 @@
 module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
 module_load_include('inc', 'erpal_projects_helper', 'inc/tasks');
 module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
+module_load_include('inc', 'erpal_projects_helper', 'inc/book');
  
 /**
 * Implements hook_menu
@@ -21,6 +22,34 @@ function erpal_projects_helper_menu(){
   
   $items = array_merge($items, $config_items);
   return $items;
+}
+
+/**
+* Implements hook_node_validate
+*/
+function erpal_projects_helper_node_validate($node) {
+  dpm($node);
+  if ($node->type == 'erpal_project') {
+    if (isset($node->field_book_ref[LANGUAGE_NONE])) {
+      foreach ($node->field_book_ref[LANGUAGE_NONE] as $delta => $nid) {
+        
+        if (!is_numeric($delta))
+          continue;
+        
+        $book_nid = $nid['nid'];        
+        if (!$book_nid)
+          continue;
+        
+        $projects = _erpal_projects_helper_book_multiple_referenced_by_project_validate($book_nid, array($node->nid));
+        if (count($projects) > 0) {
+          $project_nid = $projects[0];
+          $project_node = node_load($project_nid);
+          $project_link = l($project_node->title, 'node/'.$project_node->nid);
+          form_set_error('field_book_ref]['.LANGUAGE_NONE.']['.$delta.'][nid', t('The book can only be included into one project and is already included in "!project_link"', array('!project_link' => $project_link)));
+        }
+      }
+    }
+  }
 }
   
 /**
@@ -54,41 +83,32 @@ function erpal_projects_helper_node_view($node) {
 }
 
 /**
-* Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
+* Implements hook_form_alter
 */
-function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {
-  
-  $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
-  $query_back = array('destination' => $current_viewed_url);
-  
-  $parent_node = node_load($id);
-
-  $has_project = _erpal_projects_helper_has_project($parent_node);
-  
-  if ($type == 'erpal_task') {
-    
-    $menu = array(
-      array('title' => t('View'), 'url' => url('node/'.$id)),
-      array('title' => t('Edit'), 'url' => url('node/'.$id.'/edit', array('query' => $query_back))),
-      array('title' => t('Delete'), 'url' => url('node/'.$id.'/delete', array('query' => $query_back))),            
-    );
-    
-    if ($has_project) {
-      $menu[] = array('title' => t('Add sub task'), 'url' => url('node/add/erpal-task/'.$id, array('query' => $query_back)));
-      $menu[] = array('title' => t('Add timetracking'), 'url' => url('node/add/erpal-timetracking/'.$id, array('query' => $query_back)));
+function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_task_node_form') {
+    dpm($form);
+    //only if node will be new created
+    $nid = $form['nid']['#value'];
+    if (!$nid) {
+      //if parent is already set, hide the project field
+      if (isset($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']))
+        if ($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']) {
+          $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+          $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc
+        }
+      //if project is already set, hide the parent field
+      if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']))
+        if ($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']) {
+          $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+          $form['field_parent'][LANGUAGE_NONE][0]['nid']['#required'] = false;
+        }
+    } else {
+      //hide parent and project ref anyway!
+      $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+      $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
     }
     
-    return $menu;
-  }
-  
-  if ($type == 'erpal_book_page') {            
-    if ($has_project) {
-      $menu = array(
-        array('title' => t('Add task'), 'url' => url('node/add/erpal-task/'.$id, array('query' => $query_back))),
-      );
-      
-      return $menu;
-    }    
   }
 }
 
@@ -124,6 +144,41 @@ function _erpal_projects_helper_has_project($node) {
   }
   
   return false;
+}
+
+/**
+* Validates that the given book node is only referenced by one project
+* @param $ignore_nids are project nids that are ignored, even if they reference the given book
+*/
+function _erpal_projects_helper_book_multiple_referenced_by_project_validate($book_nid, $ignore_nids=array()) {
+  $project_nids = _erpal_project_helper_get_referencing_projects_by_book($book_nid);
+  
+  $nids = array();
+  
+  foreach ($project_nids as $nid) {
+    if (!in_array($nid, $ignore_nids))
+      $nids[] = $nid;
+  }
+  
+  return $nids;
+}
+
+/**
+* returns the project nids that reference the given book
+*/
+function _erpal_project_helper_get_referencing_projects_by_book($book_nid) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_project')
+  ->fieldCondition('field_book_ref', 'nid', $book_nid, '=')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $project_nids = array_keys($result['node']);
+    return $project_nids;
+  }
 }
 
 /**
@@ -182,6 +237,10 @@ function erpal_projects_helper_node_presave($node) {
  
   if ($type == 'erpal_timetracking') {
     erpal_projects_helper_node_presave_timetracking($node);
+  }
+  
+  if ($type == 'erpal_task') {
+    erpal_projects_helper_node_presave_task($node);
   }
 }
 
