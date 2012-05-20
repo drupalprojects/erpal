@@ -183,7 +183,6 @@ function _erpal_book_helper_show_patterns_at_body(&$form, $form_state) {
 function _erpal_book_helper_form_redirect_orphan_book_page($form) {
   //check book page must have a book reference or a parent refernce, otherwise redirect
   //to destination or if not set to books view
-  //$book_nid = $form['field_book_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
   $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'];
   
   if (!$parent_nid) {
@@ -227,16 +226,20 @@ function _erpal_book_helper_view_contacts_header_content() {
 * Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
 */
 function erpal_book_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {
-  if ($type == 'erpal_book_page') {    
-    $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
-    $query_back = array('destination' => $current_viewed_url);
+  
+  $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
+  $query_back = array('destination' => $current_viewed_url);
+  
+  if ($type == 'erpal_book_page') {        
 
-    return array(
+    $menu = array(
       array('title' => t('View'), 'url' => url('node/'.$id)),
       array('title' => t('Edit'), 'url' => url('node/'.$id.'/edit', array('query' => $query_back))),
       array('title' => t('Delete'), 'url' => url('node/'.$id.'/delete', array('query' => $query_back))),
       array('title' => t('Add sub page'), 'url' => url('node/add/erpal-book-page/'.$id, array('query' => $query_back))),
     );
+     
+    return $menu;
   }
 }
 

@@ -49,8 +49,103 @@ function erpal_projects_helper_node_view($node) {
       '#links' => $links,
       '#attributes' => array('class' => array('links', 'inline')),
     );
+   
   }
 }
+
+/**
+* Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
+*/
+function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {
+  
+  $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
+  $query_back = array('destination' => $current_viewed_url);
+  
+  $parent_node = node_load($id);
+
+  $has_project = _erpal_projects_helper_has_project($parent_node);
+  
+  if ($type == 'erpal_task') {
+    
+    $menu = array(
+      array('title' => t('View'), 'url' => url('node/'.$id)),
+      array('title' => t('Edit'), 'url' => url('node/'.$id.'/edit', array('query' => $query_back))),
+      array('title' => t('Delete'), 'url' => url('node/'.$id.'/delete', array('query' => $query_back))),            
+    );
+    
+    if ($has_project) {
+      $menu[] = array('title' => t('Add sub task'), 'url' => url('node/add/erpal-task/'.$id, array('query' => $query_back)));
+      $menu[] = array('title' => t('Add timetracking'), 'url' => url('node/add/erpal-timetracking/'.$id, array('query' => $query_back)));
+    }
+    
+    return $menu;
+  }
+  
+  if ($type == 'erpal_book_page') {            
+    if ($has_project) {
+      $menu = array(
+        array('title' => t('Add task'), 'url' => url('node/add/erpal-task/'.$id, array('query' => $query_back))),
+      );
+      
+      return $menu;
+    }    
+  }
+}
+
+/**
+* Decides if project links like add timetracking and tasks should be shown in a book. 
+* This is only true if we have project referencing te book
+* @return false if there is noch project, otherwise ONE nid of a project
+*/
+function _erpal_projects_helper_has_project($node) {
+  
+  if ($node->type == 'erpal_task') {
+    return $node->nid; //tasks allways have a project
+  }
+  
+  if ($node->type == 'erpal_book') {
+    $book_nid = $node->nid;
+  }
+  
+  if ($node->type == 'erpal_book_page') {
+    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['nid'];    
+  }
+
+  //now check if there is a project referencing this node
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_project')
+  ->fieldCondition('field_book_ref', 'nid', $book_nid, '=');
+
+  $result = $query->execute();
+  if (isset($result['node']) && count($result['node']) > 0) {
+    $nids = array_keys($result['node']);
+    return $nids[0];
+  }
+  
+  return false;
+}
+
+/**
+* Implements hook_node_view_post provided by post_hooks module
+*/
+function erpal_projects_helper_node_view_post($node) {
+  if (is_object($node)) {    
+    if ($node->type == 'erpal_project') {
+      unset($node->content['links']['nodereference_url']['#links']['erpal_book_page_field_parent']);
+      unset($node->content['links']['nodereference_url']['#links']['erpal_task_field_parent']);
+    }
+    
+    if ($node->type == 'erpal_task') {
+      unset($node->content['links']['nodereference_url']['#links']['erpal_book_page_field_parent']);
+    }
+    
+    if ($node->type == 'erpal_book') {
+      unset($node->content['links']['nodereference_url']['#links']['erpal_task_field_parent']);
+    }
+  }
+}
+
 
 /**
 * This function is called by the projects view to add a link for new project node
