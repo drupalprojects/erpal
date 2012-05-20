@@ -274,7 +274,7 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
   $handler->display->display_options['style_options']['ajax_child_view'] = 1;
   $handler->display->display_options['style_options']['context_menu'] = array(
-    'use_context_menu_hook' => 1,
+    'use_context_menu_hook' => 0,
     'custom_context_menu' => 'Show IT|/node/[views_jstree_book_children_panel_pane_3:nid]
 Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   );
