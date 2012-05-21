@@ -508,13 +508,14 @@ function _erpal_billable_update_billable($node, $op) {
     $billables = _erpal_projects_billable_billbales_by_subject_nid($subject_node->nid, true);
     $has_billable = false;
     $is_billable = _erpal_billable_is_billable($billable_information, $node, $type);
-    $needs_billable_contractor = $is_billable && (
+    $is_billable_contractor = _erpal_billable_is_billable($billable_information, $node, $type, false); 
+    $needs_billable_contractor = $is_billable_contractor && (
       ($billable_information['contractor_nid'] && $billable_information['buy_price'] && 
         ($type == 'erpal_task' || $type == 'erpal_project')
       ) || 
       ($contract['member_type'] == 'freelancer' && $type == 'erpal_timetracking')
     );  //festpreis oder contract!    
-    
+   
     foreach ($billables as $id=>$billable) {
       $has_billable = true;
       if ($billable->billed) {
@@ -522,7 +523,8 @@ function _erpal_billable_update_billable($node, $op) {
       }
 
       //not billable any more? Or there was a contractor that gets payed but he isnt any more
-      if (!$is_billable || (!$needs_billable_contractor && $billable->contractor_nid != $my_company_nid)) {        
+      if ((!$is_billable && $billable->contractor_nid == $my_company_nid) || 
+          (!$needs_billable_contractor && $billable->contractor_nid != $my_company_nid)) {        
         //delete the billable, it is not allowed here, cause the task has not been completed!
         drupal_set_message(t('Billables have been deleted because the subject is no more billable!'), 'warning');
         entity_delete('billable', $billable->billable_id);
@@ -616,7 +618,7 @@ function _erpal_billable_update_billable($node, $op) {
 /**
 * Checks dependend on the subject if this is billable
 */
-function _erpal_billable_is_billable($billable_information, $node, $type) {
+function _erpal_billable_is_billable($billable_information, $node, $type, $fix_price_needed_for_billable=true) {
   
   $price_mode = isset($billable_information['price_mode']) ? $billable_information['price_mode'] : 0;
   $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
@@ -631,7 +633,7 @@ function _erpal_billable_is_billable($billable_information, $node, $type) {
       if (isset($node->field_project_status[LANGUAGE_NONE][0]))
         $status = $node->field_project_status[LANGUAGE_NONE][0]['value'];
     }
-    return $price_mode == 'fixed_price' && $price && $customer_node && $status == 'completed';
+    return ($price_mode == 'fixed_price' || !$fix_price_needed_for_billable) && $price && $customer_node && $status == 'completed';
   }
   elseif ($type == 'erpal_timetracking') {
     return $price_mode == 'per_hour' && $price && $customer_node;
