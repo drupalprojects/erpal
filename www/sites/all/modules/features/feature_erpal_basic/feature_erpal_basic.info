@@ -12,7 +12,6 @@ dependencies[] = date
 dependencies[] = date_popup
 dependencies[] = entity
 dependencies[] = entity_token
-dependencies[] = entitycache
 dependencies[] = erpal_basic_helper
 dependencies[] = fe_block
 dependencies[] = feature_erpal_docs
