@@ -10,7 +10,7 @@
 /**
 * Callback for configurable bulk operation for creating an invoice
 */
-function erpal_invoice_helper_invoice_from_billables_action_form($context) {
+function erpal_invoice_helper_invoice_from_billables_action_form($context, $form_state) {
   $form = array();
   
   $form['reduce_billables'] = array(
@@ -27,7 +27,8 @@ function erpal_invoice_helper_invoice_from_billables_action_form($context) {
   );
 
   //get the Customer and the addresses, credit period, ADDITIONAL note
-  $billable_ids = $context['selection'];
+  
+  $billable_ids = $form_state['selection'];
   $customer_id_arr = _erpal_invoice_helper_get_billable_customers($billable_ids);
 
   $contractor_id_arr = _erpal_invoice_helper_get_billable_contractors($billable_ids);
@@ -46,7 +47,7 @@ function erpal_invoice_helper_invoice_from_billables_action_form($context) {
   
   //if there is no customer, we cannot create an invoice...
   if (count($customer_id_arr) <= 0) {
-    drupal_set_message(t('Sorry, but we cannot determine a cusotmer for your invoice. Please ensure that all billables have a customer set.'), 'error');
+    drupal_set_message(t('Sorry, but we cannot determine a customer for your invoice. Please ensure that all billables have a customer set.'), 'error');
     drupal_goto($_GET['q']);
   }
   
