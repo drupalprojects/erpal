@@ -111,7 +111,7 @@ function feature_erpal_crm_default_page_manager_handlers() {
     $pane->pid = 'new-3';
     $pane->panel = 'left';
     $pane->type = 'views_panes';
-    $pane->subtype = 'relations-panel_pane_1';
+    $pane->subtype = 'relations_view-panel_pane_1';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
