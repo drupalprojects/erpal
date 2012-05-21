@@ -67,6 +67,7 @@ features[field][] = node-erpal_project-field_project_contacts
 features[field][] = node-erpal_task-body
 features[field][] = node-erpal_task-field_date
 features[field][] = node-erpal_task-field_estimated_time
+features[field][] = node-erpal_task-field_parent
 features[field][] = node-erpal_task-field_pricing
 features[field][] = node-erpal_task-field_progress_percent
 features[field][] = node-erpal_task-field_project_ref
