@@ -26,12 +26,14 @@ class ActivityNodeModel {
   /*
    * Checks whether an activity with a specific node ID exists.
    * @param 	integer	$nid		The database ID of a node.
+   * @param		string	$title	The title of the node.
    * @return	boolean					TRUE on success.
    */
-  public function isCustomerActivityAvailable ($nid) {
+  public function isCustomerActivityAvailable ($nid, $title) {
  
-    return db_query ('SELECT nid FROM {node} WHERE nid=:nid', array (
-      ':nid' => $nid
+    return db_query ('SELECT nid FROM {node} WHERE nid=:nid OR title=:title', array (
+      ':nid'   => $nid,
+      ':title' => $title
     ))->fetchObject() !== FALSE;
   }
   
