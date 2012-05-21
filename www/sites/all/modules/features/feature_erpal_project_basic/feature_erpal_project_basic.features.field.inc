@@ -388,6 +388,12 @@ function feature_erpal_project_basic_field_default_fields() {
           'type' => 'node_reference_default',
           'weight' => 7,
         ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
