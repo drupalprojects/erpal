@@ -2,12 +2,14 @@
 /**
  * @file
  * Code for the erpal_docs_helper module.
- */
+*/
 
+module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
+ 
 /**
 * This function is called in header area of documents view
 */
-function _erpal_crm_helper_view_documents_header_content()
+function _erpal_docs_helper_view_documents_header_content()
 {
   $q = current_path();
   $add_erpal_activity =  _erpal_docs_helper_create_document_link();

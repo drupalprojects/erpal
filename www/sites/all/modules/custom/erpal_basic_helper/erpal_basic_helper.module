@@ -6,6 +6,7 @@
 
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
 module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
+module_load_include('inc', 'erpal_basic_helper', 'inc/token');
  
 /**
 * Implements hok_init
@@ -14,6 +15,7 @@ function erpal_basic_helper_init() {
   _erpal_basic_helper_warnings();
 }
  
+
 /**
 * Implements hook_menu
 */ 
@@ -41,6 +43,41 @@ function erpal_basic_helper_menu(){
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'relation_add_block_form')
     _erpal_invoice_helper_relation_add_block_form_alter($form, $form_state);
+  if ($form_id == 'erpal_contact_node_form') {
+    $form['#submit'][] = '_erpal_basic_helper_contact_form_submit';
+  }
+
+}
+
+/**
+*
+*/
+function _erpal_basic_helper_contact_form_submit($form, &$form_state) {
+  _erpal_basic_helper_postprocess_conditional_fields($form, $form_state);
+}
+
+
+/**
+* Function to manipulate fields firstname, lastname and company name because if hidden by conditional fields they are not emptied!
+* May be this will be a feature, action "emptied" in conditional fields doesn't work in combination with other hidden fields
+*/
+function _erpal_basic_helper_postprocess_conditional_fields($form, &$form_state) {
+  $values = $form_state['values'];
+  if (!isset($values['field_company_name'])) {
+    //empty field company name
+    $element = array('#parents' => array('field_company_name', LANGUAGE_NONE, 0, 'value'));
+    form_set_value($element, '', $form_state);    
+  }
+  if (!isset($values['field_firstname'])) {
+    //empty field firstname
+    $element = array('#parents' => array('field_firstname', LANGUAGE_NONE, 0, 'value'));
+    form_set_value($element, '', $form_state);    
+  }
+  if (!isset($values['field_lastname'])) {
+    //empty field lastname
+    $element = array('#parents' => array('field_lastname', LANGUAGE_NONE, 0, 'value'));
+    form_set_value($element, '', $form_state);    
+  }
 }
 
 /**

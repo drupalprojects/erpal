@@ -270,31 +270,6 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['attach'] = array(
     0 => 'node:field_customer_ref:erpal_project',
   );
-  $translatables['contacts'] = array(
-    t('Master'),
-    t('Contacts'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php
-echo _erpal_basic_helper_view_contacts_header_content();
-?>'),
-    t('There are no contacts available'),
-    t('Name'),
-    t('Contact Type'),
-    t('Type'),
-    t('List of all contacts'),
-    t('Contact Reference Project'),
-    t('Contact Dialog Search Project'),
-    t('Choose a contact'),
-    t('Search a customer for a project'),
-  );
   $export['contacts'] = $view;
 
   return $export;

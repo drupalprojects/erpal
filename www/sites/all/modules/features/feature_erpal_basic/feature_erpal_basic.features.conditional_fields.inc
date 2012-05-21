@@ -243,8 +243,8 @@ function feature_erpal_basic_conditional_fields_default_fields() {
           'value' => 'company',
         ),
       ),
-      'grouping' => 'AND',
       'values' => array(),
+      'grouping' => 'AND',
     ),
   );
 
@@ -510,8 +510,8 @@ function feature_erpal_basic_conditional_fields_default_fields() {
           'value' => 'person',
         ),
       ),
-      'grouping' => 'AND',
       'values' => array(),
+      'grouping' => 'AND',
     ),
   );
 
