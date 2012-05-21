@@ -1942,57 +1942,6 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'relation-participate_in-endpoints'
-  $fields['relation-participate_in-endpoints'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'endpoints',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'relation' => array(
-          0 => 'entity_type',
-          1 => 'entity_id',
-          2 => 'r_index',
-        ),
-      ),
-      'module' => 'relation_endpoint',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'relation_endpoint',
-    ),
-    'field_instance' => array(
-      'bundle' => 'participate_in',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'relation_endpoint',
-          'settings' => array(),
-          'type' => 'relation_endpoint',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'relation',
-      'field_name' => 'endpoints',
-      'label' => 'endpoints',
-      'required' => FALSE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'module' => 'relation_endpoint',
-        'settings' => array(),
-        'type' => 'relation_endpoint',
-        'weight' => '0',
-      ),
-    ),
-  );
-
   // Exported field: 'relation-participate_in-field_projet_role_rel_tags'
   $fields['relation-participate_in-field_projet_role_rel_tags'] = array(
     'field_config' => array(
@@ -2093,7 +2042,6 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Time estimated for this task');
   t('When will the project be developed? Only for planing purpose.');
   t('Work progress of field');
-  t('endpoints');
 
   return $fields;
 }
