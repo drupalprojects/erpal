@@ -91,7 +91,8 @@ function views_jstree_get_fields_of_view($view, $display) {
     $fields = $display->display_options['fields'];
 
   if (!$fields) { //if not overriden, take from view
-    $fields = $view->display['default']->display_options['fields'];
+    if (isset($view->display['default']->display_options['fields']))
+      $fields = $view->display['default']->display_options['fields'];
   }
   
   return $fields;

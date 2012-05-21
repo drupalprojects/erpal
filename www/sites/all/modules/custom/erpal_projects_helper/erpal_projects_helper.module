@@ -28,7 +28,7 @@ function erpal_projects_helper_menu(){
 * Implements hook_node_validate
 */
 function erpal_projects_helper_node_validate($node) {
-  dpm($node);
+
   if ($node->type == 'erpal_project') {
     if (isset($node->field_book_ref[LANGUAGE_NONE])) {
       foreach ($node->field_book_ref[LANGUAGE_NONE] as $delta => $nid) {
@@ -155,9 +155,11 @@ function _erpal_projects_helper_book_multiple_referenced_by_project_validate($bo
   
   $nids = array();
   
-  foreach ($project_nids as $nid) {
-    if (!in_array($nid, $ignore_nids))
-      $nids[] = $nid;
+  if (is_array($project_nids)) {
+    foreach ($project_nids as $nid) {
+      if (!in_array($nid, $ignore_nids))
+        $nids[] = $nid;
+    }
   }
   
   return $nids;
