@@ -62,9 +62,15 @@ function views_jstree_tokens($type, $tokens, array $data = array(), array $optio
   global $user;  
   
   $replacements = array();
+  
+  $type_prefix = 'views_jstree';
+  
+  if (strpos($type, $type_prefix) === false)
+    return $replacements;
+  
   if (!isset($data[$type]['view']))
     return $replacements;
-    
+
   $view = $data[$type]['view'];
   $display = $data[$type]['display'];
   $row = $data[$type]['row'];

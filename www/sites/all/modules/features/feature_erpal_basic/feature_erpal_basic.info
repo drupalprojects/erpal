@@ -30,6 +30,7 @@ dependencies[] = node_reference
 dependencies[] = number
 dependencies[] = options
 dependencies[] = php
+dependencies[] = post_hooks
 dependencies[] = relation
 dependencies[] = relation_add
 dependencies[] = relation_dummy_field

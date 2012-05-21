@@ -187,7 +187,7 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
   $handler->display->display_options['sorts']['field_weight_value']['field'] = 'field_weight_value';
-  /* Contextual filter: Content: Book (field_book_ref) */
+  /* Contextual filter: Content: Specification (field_book_ref) */
   $handler->display->display_options['arguments']['field_book_ref_nid']['id'] = 'field_book_ref_nid';
   $handler->display->display_options['arguments']['field_book_ref_nid']['table'] = 'field_data_field_book_ref';
   $handler->display->display_options['arguments']['field_book_ref_nid']['field'] = 'field_book_ref_nid';
@@ -251,6 +251,7 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_book_page' => 'erpal_book_page',
+    'erpal_task' => 'erpal_task',
   );
   $handler->display->display_options['argument_input'] = array(
     'field_parent_nid' => array(
@@ -266,6 +267,8 @@ function feature_erpal_book_views_default_views() {
   /* Display: Child nodes AJAX */
   $handler = $view->new_display('panel_pane', 'Child nodes AJAX', 'panel_pane_3');
   $handler->display->display_options['display_description'] = 'Load all nodes that have parent nid set to contextual filter';
+  $handler->display->display_options['defaults']['cache'] = FALSE;
+  $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'jstree';
   $handler->display->display_options['style_options']['wrapper_class'] = 'item-lis';
@@ -309,6 +312,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_book_page' => 'erpal_book_page',
+    'erpal_task' => 'erpal_task',
   );
   $handler->display->display_options['argument_input'] = array(
     'field_parent_nid' => array(

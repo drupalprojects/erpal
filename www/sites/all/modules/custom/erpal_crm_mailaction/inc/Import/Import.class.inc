@@ -59,10 +59,16 @@ class Import {
     
     $import->activityNodeModel->published ($published);
  
-    if ($import->activityNodeModel->isCustomerActivityAvailable ($import->mailParser->ticketID)) {
+    if ($import->activityNodeModel->isCustomerActivityAvailable ($import->mailParser->ticketID, $subject)) {
+
       $import->activityNodeModel->addToCustomerActivity ($import->mailParser->ticketID, $to, $from, $subject, $body, $attachments);
     }else{
-      $import->activityNodeModel->insertCustomerActivity ($to, $from, $subject, $body, $attachments);
+      
+      if (empty ($import->mailParser->ticketID)) {
+        $import->activityNodeModel->insertCustomerActivity ($to, $from, $subject, $body, $attachments);
+      }else{
+        $import->activityNodeModel->addToCustomerActivity ($import->mailParser->ticketID, $to, $from, $subject, $body, $attachments);
+      }
     }
     
     return;

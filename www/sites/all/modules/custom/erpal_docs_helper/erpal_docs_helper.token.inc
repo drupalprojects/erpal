@@ -35,12 +35,12 @@ function erpal_docs_helper_tokens($type, $tokens, array $data = array(), array $
   global $user;  
   
   $replacements = array();
- 
+
   if ($type == 'erpal_files') {
     $node = $data['node']; //erpal_file node
     foreach ($tokens as $name => $original) {
       switch ($name) {
-        case 'filename':
+        case 'filename':          
           if (isset($node->field_docs_file[LANGUAGE_NONE][0]['fid'])) {
             $file = file_load($node->field_docs_file[LANGUAGE_NONE][0]['fid']);
             $replacements[$original] = $file->filename;
@@ -49,6 +49,6 @@ function erpal_docs_helper_tokens($type, $tokens, array $data = array(), array $
       }
     }
   }
-  
+
   return $replacements;
 }

@@ -47,6 +47,30 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
 }
 
 /**
+* Presave function for tasks
+*/
+function erpal_projects_helper_node_presave_task($task_node) {
+  _erpal_projects_helper_task_set_project($task_node);
+}
+
+/**
+* Set the project according to the parents project
+*/
+function _erpal_projects_helper_task_set_project($task_node) {
+  
+  if (!isset($task_node->field_parent[LANGUAGE_NONE][0]['nid']))
+    return;
+    
+  $parent_nid = $task_node->field_parent[LANGUAGE_NONE][0]['nid'];
+  $parent_node = node_load($parent_nid);
+  $project_nid = _erpal_projects_helper_has_project($parent_node);
+  
+  if ($project_nid) {
+    $task_node->field_project_ref[LANGUAGE_NONE][0]['nid'] = $project_nid;
+  }
+}
+
+/**
 * returns the activity which is related to a task over its related project
 */
 function _erpal_projects_helper_get_activity_by_task($task_node) {

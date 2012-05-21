@@ -8,3 +8,4 @@ version = "7.x-1.0-dev"
 
 files[] = erpal_basic_helper.module
 files[] = inc/config.inc
+files[] = inc/token.inc

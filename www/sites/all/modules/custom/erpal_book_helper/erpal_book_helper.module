@@ -3,12 +3,79 @@
  * @file
  * Module to provide helper functions for book feature
  */
-
+ 
  /**
  * Implements hook_node_presave
  */
 function erpal_book_helper_node_presave($node) {
   _erpal_book_helper_connect_page_to_book($node);
+}
+
+function erpal_book_helper_field_attach_view_alter (&$output, $context) {
+
+  
+  if ($context['entity_type'] == 'node') {
+    if ($context['entity']->type == 'erpal_book' || $context['entity']->type == 'erpal_book_page') {
+      if (isset($output['body'])) {        
+        $output['body'][0]['#markup'] = token_replace($output['body'][0]['#markup'], array('erpal_book' => $context['entity']));
+      }
+    }
+  }
+}
+
+/**
+* implements hook_init
+*/
+function erpal_book_helper_init() {
+  //@TODO that is really bad, but we have no other chance right now. The problem is:
+  //if the customer changes in an book, we change the allowed values using #ajax at the contact
+  //form element. This ajax function sumbits the whole form. While rebuilding the form again, the function
+  //to get the allowed values of the field is called bevore hook_form_alter. But we need the value of the selected contact
+  //to decide which are the allowed values. So we need a oportunity to get the value of the contact field BEVORE 
+  //the function for allowed values is called. This is what we do here.
+  //@see same dirty thing in erpal_invoice_helper.module with customer selection of an invoice.
+  
+  if (isset($_POST['field_contact_ref']))
+    if (isset($_POST['field_contact_ref'][LANGUAGE_NONE]))
+      if (isset($_POST['field_contact_ref'][LANGUAGE_NONE][0]))
+        if (isset($_POST['field_contact_ref'][LANGUAGE_NONE][0]['nid'])) {
+          $contact_nid = $_POST['field_contact_ref'][LANGUAGE_NONE][0]['nid'];
+          $contact_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($contact_nid);
+          _erpal_book_helper_cache('erpal_ajax_adresses', $contact_nid);
+        }
+}
+
+/**
+* Value callback for address id field if book node
+*/
+function erpal_book_helper_field_address_id_allowed_values($field) {
+  if ($field['field_name'] != 'field_address_id') {    
+    return array();
+  } else {
+    //@TODO getting the current node from url args is kind of dirty, but I actually
+    //dont know how to do it better and we need the current node to get information
+    //if it is edit and we have already a customer set to get its available addresses        
+    $book_nid = arg(1);
+  }
+
+  $cached_contact_nid = _erpal_book_helper_cache('erpal_ajax_adresses', false);  //get cached customer and clear cache
+  if ($cached_contact_nid) {
+    $contact_node = node_load($cached_contact_nid);
+  }
+  elseif ($book_nid && intval($book_nid)."" == $book_nid.""){ //ensure it is an integer and not "add"
+    $book_node = node_load($book_nid);  
+    
+    if (!isset($book_node->field_contact_ref[LANGUAGE_NONE][0]['nid']))
+      return array();
+      
+    $contact_nid = $book_node->field_contact_ref[LANGUAGE_NONE][0]['nid'];
+    $contact_node = node_load($contact_nid);    
+  } else
+    return array();
+
+  $allowed_values = _erpal_basic_helper_get_contact_adresses($contact_node, true);
+
+  return $allowed_values;
 }
 
 /**
@@ -44,16 +111,78 @@ function _erpal_book_helper_connect_page_to_book($node) {
 function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_book_page_node_form') {
     _erpal_book_helper_form_redirect_orphan_book_page($form);
+    _erpal_book_helper_show_patterns_at_body($form, $form_state);
+  }
+  
+  if ($form_id == 'erpal_book_node_form') {
+    _erpal_book_helper_show_patterns_at_body($form, $form_state);
+    _erpal_book_helper_prepare_address_ajax_reload($form, $form_state);
   }
 }
 
+/**
+* Prepare book node form to reload address field using AJAX, according to slected contact
+*/
+function _erpal_book_helper_prepare_address_ajax_reload(&$form, $form_state) {
+  $form['field_address_id'][LANGUAGE_NONE]['#prefix'] = '<div id="address_wrapper">';
+  $form['field_address_id'][LANGUAGE_NONE]['#suffix'] = '</div>';
+
+  $form['field_contact_ref'] = _erpal_book_helper_field_customer_ref_alter($form['field_contact_ref']);
+  
+  //if address has only one option, make this option the default value
+  $options = $form['field_address_id'][LANGUAGE_NONE]['#options'];
+  $default_id = false;
+  if (count($options) == 2) {
+    //get the one that is not "_none" and delete it!    
+    foreach ($options as $id=>$value) {
+      if (!is_numeric($id))
+        unset($form['field_address_id'][LANGUAGE_NONE]['#options'][$id]);
+    }
+  }
+  if ($default_id) {
+    $form['field_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
+  }
+}
+
+/**
+* Alters the field contact ref to have an ajax callback to change the addresses after changing the contact of a book
+*/
+function _erpal_book_helper_field_customer_ref_alter($field) {
+
+  $field[LANGUAGE_NONE][0]['nid']['#ajax'] = array(
+    'callback' => '_erpal_book_helper_ajax_book_preselect_addresses',
+    'wrapper' => 'address_wrapper',
+    'method' => 'replace',
+    'effect' => 'fade',
+  );
+  
+  return $field;
+}
+
+/**
+* Callback after contact_ref field on book form has changed with ajax callback
+*/
+function _erpal_book_helper_ajax_book_preselect_addresses($form, $form_state) {  
+    
+  return $form['field_address_id'][LANGUAGE_NONE];  //form has already been processed, so just return the elements
+}
+
+
+/**
+* Show patterns for contact and address at book page or book nodes
+*/
+function _erpal_book_helper_show_patterns_at_body(&$form, $form_state) {
+  $tokens = theme('token_tree', array('global_types' => FALSE, 'token_types' => array('erpal_contact')));
+  $form['body'][LANGUAGE_NONE]['#suffix'] .= $tokens;
+}
+
+  
 /**
 * Redirects from a form to books view if the user doesnt add a book-page over a book but using node/add/book_page
 */
 function _erpal_book_helper_form_redirect_orphan_book_page($form) {
   //check book page must have a book reference or a parent refernce, otherwise redirect
   //to destination or if not set to books view
-  //$book_nid = $form['field_book_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
   $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'];
   
   if (!$parent_nid) {
@@ -97,16 +226,20 @@ function _erpal_book_helper_view_contacts_header_content() {
 * Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
 */
 function erpal_book_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {
-  if ($type == 'erpal_book_page') {    
-    $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
-    $query_back = array('destination' => $current_viewed_url);
+  
+  $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
+  $query_back = array('destination' => $current_viewed_url);
+  
+  if ($type == 'erpal_book_page') {        
 
-    return array(
+    $menu = array(
       array('title' => t('View'), 'url' => url('node/'.$id)),
       array('title' => t('Edit'), 'url' => url('node/'.$id.'/edit', array('query' => $query_back))),
       array('title' => t('Delete'), 'url' => url('node/'.$id.'/delete', array('query' => $query_back))),
       array('title' => t('Add sub page'), 'url' => url('node/add/erpal-book-page/'.$id, array('query' => $query_back))),
     );
+     
+    return $menu;
   }
 }
 
@@ -130,4 +263,20 @@ function _erpal_book_helper_create_book_link($q_arg = false, $query_arr = array(
         'query' => $query_arr,
     )
   );
+}
+
+/**
+* Runtime cache for saving values during script processing
+*/
+function _erpal_book_helper_cache($key, $value=false) {
+  static $cache = array();
+
+  $ret = false;
+  if (isset($cache[$key]))
+    $ret = $cache[$key];
+    
+  if ($value)
+    $cache[$key] = $value;
+    
+  return $ret;
 }
