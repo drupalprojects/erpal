@@ -223,6 +223,16 @@ function _erpal_book_helper_view_contacts_header_content() {
 }
 
 /**
+* Checks if projects module is enabled and if it is, call a function that shows at which projects the given book is referenced
+*/
+function _erpal_book_helper_render_projects_referencing_books($book_nid) {
+  if (module_exists('erpal_projects_helper'))
+    return _erpal_projects_helper_render_projects_referencing_books($book_nid);
+    
+  return '';
+}
+
+/**
 * Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
 */
 function erpal_book_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {

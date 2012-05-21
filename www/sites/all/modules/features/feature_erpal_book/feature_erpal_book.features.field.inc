@@ -1013,9 +1013,12 @@ function feature_erpal_book_field_default_fields() {
           'erpal_file' => 0,
           'erpal_invoice' => 0,
           'erpal_project' => 'erpal_project',
+          'erpal_project_spec' => 0,
           'erpal_task' => 'erpal_task',
           'erpal_timetracking' => 0,
+          'features_test' => 0,
           'page' => 0,
+          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),

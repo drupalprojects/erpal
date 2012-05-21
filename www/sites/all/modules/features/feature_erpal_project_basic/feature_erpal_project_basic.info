@@ -45,6 +45,7 @@ features[ctools][] = page_manager:pages_default:1
 features[ctools][] = relation:relation_type_default:1
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
+features[ds_field_settings][] = node|erpal_task|default
 features[features_api][] = api:1
 features[features_plumber][] = feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_currency
 features[features_plumber][] = feature_erpal_project_basic__field__field_collection_item-field_pricing-field_buy_price

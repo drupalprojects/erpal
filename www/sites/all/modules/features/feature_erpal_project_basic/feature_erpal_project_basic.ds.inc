@@ -5,44 +5,55 @@
  */
 
 /**
- * Implements hook_ds_layout_settings_info().
+ * Implements hook_ds_field_settings_info().
  */
-function feature_erpal_project_basic_ds_layout_settings_info() {
+function feature_erpal_project_basic_ds_field_settings_info() {
   $export = array();
 
-  $ds_layout = new stdClass();
-  $ds_layout->api_version = 1;
-  $ds_layout->id = 'node|erpal_project|default';
-  $ds_layout->entity_type = 'node';
-  $ds_layout->bundle = 'erpal_project';
-  $ds_layout->view_mode = 'default';
-  $ds_layout->layout = 'twocol_stacked';
-  $ds_layout->settings = array(
-    'css_id' => '',
-    'class' => '',
-    'sticky' => 0,
-    'layout' => 'twocol_stacked',
-    'hide_sidebars' => 1,
-    'pipeline' => 'standard',
-    'hide_empty_regions' => FALSE,
-    'ds_panels' => TRUE,
-    'did' => '2',
-    'theme' => 'panels_twocol_stacked',
+  $ds_fieldsetting = new stdClass();
+  $ds_fieldsetting->api_version = 1;
+  $ds_fieldsetting->id = 'node|erpal_task|default';
+  $ds_fieldsetting->entity_type = 'node';
+  $ds_fieldsetting->bundle = 'erpal_task';
+  $ds_fieldsetting->view_mode = 'default';
+  $ds_fieldsetting->settings = array(
+    'title' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
+    'links' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
+    'comments' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
+    'node_link' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
+    'author' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'author',
+    ),
+    'post_date' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'ds_post_date_long',
+    ),
+    'ds_user_picture' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'ds_picture_features_test',
+    ),
   );
-  $export['node|erpal_project|default'] = $ds_layout;
-
-  $ds_layout = new stdClass();
-  $ds_layout->api_version = 1;
-  $ds_layout->id = 'node|erpal_task|default';
-  $ds_layout->entity_type = 'node';
-  $ds_layout->bundle = 'erpal_task';
-  $ds_layout->view_mode = 'default';
-  $ds_layout->layout = 'panels-twocol_stacked';
-  $ds_layout->settings = array(
-    'hide_empty_regions' => 0,
-    'hide_sidebars' => 0,
-  );
-  $export['node|erpal_task|default'] = $ds_layout;
+  $export['node|erpal_task|default'] = $ds_fieldsetting;
 
   return $export;
 }
