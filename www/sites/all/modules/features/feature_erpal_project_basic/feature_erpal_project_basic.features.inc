@@ -73,29 +73,3 @@ function feature_erpal_project_basic_node_info() {
   );
   return $items;
 }
-
-/**
- * Implements hook_default_profile2_type().
- */
-function feature_erpal_project_basic_default_profile2_type() {
-  $items = array();
-  $items['contract'] = entity_import('profile2_type', '{
-    "userCategory" : true,
-    "userView" : true,
-    "type" : "contract",
-    "label" : "Contract",
-    "weight" : "0",
-    "data" : { "registration" : 0, "use_page" : 0 },
-    "rdf_mapping" : []
-  }');
-  $items['main'] = entity_import('profile2_type', '{
-    "userCategory" : true,
-    "userView" : true,
-    "type" : "main",
-    "label" : "Main profile",
-    "weight" : "0",
-    "data" : { "registration" : 1, "use_page" : 0 },
-    "rdf_mapping" : []
-  }');
-  return $items;
-}
