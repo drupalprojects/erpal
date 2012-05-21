@@ -98,9 +98,9 @@ class ActivityNodeModel {
    */
   public function insertCustomerActivity ($to, $from, $subject, $body, $attachments) {
     
-    module_load_include ('inc', 'erpal_crm_mailaction', 'includes/ContactModel.class');
+    module_load_include ('inc', 'erpal_crm_mailaction', 'includes/ContactNodeModel.class');
     
-    $auth     = new ContactModel ();
+    $auth     = new ContactNodeModel ();
     $contact  = $auth->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
         
     $node           = new \stdClass ();

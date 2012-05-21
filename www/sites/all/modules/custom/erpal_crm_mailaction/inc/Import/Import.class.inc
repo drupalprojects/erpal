@@ -13,7 +13,7 @@ class Import {
   
   private $mailParser;
   private $activityNodeModel;    
-  private $contactModel;
+  private $contactNodeModel;
   
   /*
    * Ctor.
@@ -21,10 +21,11 @@ class Import {
   private function __construct () {
     
     module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/ActivityNodeModel.class');
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/ContactModel.class');
+    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/ContactNodeModel.class');
+    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/MailParser.class');
     
     $this->activityNodeModel = new ActivityNodeModel ();
-    $this->contactModel      = new ContactModel ();
+    $this->contactNodeModel  = new ContactNodeModel ();
     
     return;
   }
@@ -41,8 +42,6 @@ class Import {
     // TODO: ATTACHMENTS TO NODE
     
     $import = new Import ();
-
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/MailParser.class');
     
     $import->mailParser  = new MailParser ($subject, $body);
     $body                = $import->mailParser->body;
@@ -50,7 +49,7 @@ class Import {
     
     $published = (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_imports', FALSE);
  
-    if (! $import->contactModel->oneOftheParticipantsExists (array (
+    if (! $import->contactNodeModel->oneOftheParticipantsExists (array (
       	$to, $from
       ))) {
       $published = FALSE;
@@ -85,9 +84,7 @@ class Import {
       return;
     }
     
-    module_load_include ('', 'erpal_crm_mailaction', 'includes/Import/ContactModel.class');
-    
-    $import->contactModel->createUnknownContact($imapContactObject);
+    $import->contactNodeModel->createUnknownContact($imapContactObject);
     
     return;
   }
