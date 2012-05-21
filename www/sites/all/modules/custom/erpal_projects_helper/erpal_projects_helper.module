@@ -87,7 +87,6 @@ function erpal_projects_helper_node_view($node) {
 */
 function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_task_node_form') {
-    dpm($form);
     //only if node will be new created
     $nid = $form['nid']['#value'];
     if (!$nid) {
