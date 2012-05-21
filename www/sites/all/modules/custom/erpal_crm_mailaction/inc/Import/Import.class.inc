@@ -54,7 +54,8 @@ class Import {
       	$to, $from
       ))) {
       $published = FALSE;
-      $import->contactModel->createUnknownContact($from);
+      
+      $this->tryCreateUnknownContactIfRequired ($imapContactObject);
     }
     
     $import->activityNodeModel->published ($published);
@@ -70,6 +71,23 @@ class Import {
         $import->activityNodeModel->addToCustomerActivity ($import->mailParser->ticketID, $to, $from, $subject, $body, $attachments);
       }
     }
+    
+    return;
+  }
+  
+  /*
+   * Tries to create a contact for unknown correspondency contact, if it was previously configured.
+   * @param object	$imapContactObject	An IMAP header contact object.
+   */
+  private function tryCreateUnknownContactIfRequired ($imapContactObject) {
+    
+    if (! _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'create_contact_for_unknown_user', FALSE)) {
+      return;
+    }
+    
+    module_load_include ('', 'erpal_crm_mailaction', 'includes/Import/ContactModel.class');
+    
+    $import->contactModel->createUnknownContact($imapContactObject);
     
     return;
   }

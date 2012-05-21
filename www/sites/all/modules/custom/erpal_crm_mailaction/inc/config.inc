@@ -158,6 +158,12 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
     '#title'	         => t('Publish imported attachments'),
     '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_attachments', FALSE),
   ); 
+  
+  $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS]['create_contact_for_unknown_user'] = array (
+    '#type'            => 'checkbox',
+    '#title'	         => t('Create contacts for unknown users. (NOT SECURE!)'),
+    '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'create_contact_for_unknown_user', FALSE),
+  ); 
  
   $form['submit'] = array(
     '#type'   => 'submit',
