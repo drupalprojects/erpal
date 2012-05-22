@@ -1,0 +1,54 @@
+#content #gantt {
+	position:relative;
+	width:900px;
+	height:610px;
+}
+
+.jstree li[type="erpal_task"].inserted > a > .jstree-icon {
+  background-image: url(image/task-inserted.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+
+.jstree li[type="erpal_task"].buggy > a > .jstree-icon {  
+  background-image: url(image/task-buggy.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+.jstree li[type="erpal_task"].completed > a > .jstree-icon {  
+  background-image: url(image/task-completed.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+.jstree li[type="erpal_task"].in_progress > a > .jstree-icon {
+  background-image: url(image/task-in-progress.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+.jstree li[type="erpal_task"].on_hold > a > .jstree-icon {
+  background-image: url(image/task-on-hold.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+.jstree li[type="erpal_task"].testing > a > .jstree-icon { 
+  background-image: url(image/flag_blue.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+.jstree li[type="erpal_task"].test_ok > a > .jstree-icon {
+  background-image: url(image/flag_green.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+.jstree li[type="erpal_task"].question > a > .jstree-icon { 
+  background-image: url(image/lightbulb.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}

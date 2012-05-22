@@ -35,13 +35,15 @@ function views_jstree_token_info() {
       
       //now add the tokens for this type      
       $fields = views_jstree_get_fields_of_view($view, $display);
-        
-      foreach ($fields as $fieldname=>$field) {        
-        $field_label = isset($field['label']) && $field['label'] ? $field['label'] : $field['field'];
-        $tokens[$type][$field['id']] = array(
-          'name' => $field_label,
-          'description' => t('Token for field "!field_label"', array('!field_label' => $field_label)),
-        );
+      if ($fields && is_array($fields))  
+      {
+        foreach ($fields as $fieldname=>$field) {        
+          $field_label = isset($field['label']) && $field['label'] ? $field['label'] : $field['field'];
+          $tokens[$type][$field['id']] = array(
+            'name' => $field_label,
+            'description' => t('Token for field "!field_label"', array('!field_label' => $field_label)),
+          );
+        }
       }
       
     }

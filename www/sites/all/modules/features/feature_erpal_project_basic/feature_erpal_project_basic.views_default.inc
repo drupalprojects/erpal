@@ -169,6 +169,25 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler = $view->new_display('page', 'Projects', 'page');
   $handler->display->display_options['display_description'] = 'List of all projects';
   $handler->display->display_options['path'] = 'projects/projects';
+  $translatables['projects'] = array(
+    t('Master'),
+    t('Projects'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('<?php
+echo _erpal_projects_helper_view_projects_header_content();
+?>'),
+    t('Status'),
+    t('Customer'),
+    t('List of all projects'),
+  );
   $export['projects'] = $view;
 
   $view = new view;
@@ -494,6 +513,10 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['arguments']['field_project_ref_nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_project_ref_nid']['break_phrase'] = 1;
   $handler->display->display_options['arguments']['field_project_ref_nid']['not'] = 0;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -573,6 +596,32 @@ echo _erpal_projects_helper_view_projects_header_content();
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['tasks'] = array(
+    t('Master'),
+    t('Project tasks'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('Project'),
+    t('Status'),
+    t('Type'),
+    t('Time'),
+    t('[field_estimated_time] h'),
+    t('Edit'),
+    t('Users'),
+    t('Date'),
+    t('Tasks'),
+    t('A simple List with Tasks and task filters'),
+    t('Task by project pane'),
+    t('All'),
+    t('View panes'),
+  );
   $export['tasks'] = $view;
 
   $view = new view;
@@ -935,6 +984,10 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['arguments']['field_timetracking_subject_nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_timetracking_subject_nid']['break_phrase'] = 1;
   $handler->display->display_options['arguments']['field_timetracking_subject_nid']['not'] = 0;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -1005,6 +1058,10 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['arguments']['field_project_ref_nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_project_ref_nid']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['field_project_ref_nid']['not'] = 0;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -1048,6 +1105,32 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_date_time_value']['expose']['multiple'] = FALSE;
   $handler->display->display_options['filters']['field_date_time_value']['form_type'] = 'date_popup';
   $handler->display->display_options['path'] = 'projects/timetrackings/%';
+  $translatables['timetrackings'] = array(
+    t('Master'),
+    t('Timetrackings'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('field_timetracking_subject'),
+    t('field_project_ref'),
+    t('author'),
+    t('Date'),
+    t('Duration'),
+    t('Billing Duration'),
+    t('Task'),
+    t('Project'),
+    t('User'),
+    t('All'),
+    t('Timetrackings by task'),
+    t('View panes'),
+    t('Timetrackings by project'),
+  );
   $export['timetrackings'] = $view;
 
   return $export;

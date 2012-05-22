@@ -407,8 +407,8 @@ function feature_erpal_book_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'no',
+          1 => 'yes',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -451,7 +451,7 @@ function feature_erpal_book_field_default_fields() {
         'active' => 1,
         'module' => 'options',
         'settings' => array(
-          'display_label' => 1,
+          'display_label' => 0,
         ),
         'type' => 'options_onoff',
         'weight' => '6',
@@ -865,8 +865,8 @@ function feature_erpal_book_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'no',
+          1 => 'yes',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -909,7 +909,7 @@ function feature_erpal_book_field_default_fields() {
         'active' => 1,
         'module' => 'options',
         'settings' => array(
-          'display_label' => 1,
+          'display_label' => 0,
         ),
         'type' => 'options_onoff',
         'weight' => '-1',
@@ -1013,9 +1013,12 @@ function feature_erpal_book_field_default_fields() {
           'erpal_file' => 0,
           'erpal_invoice' => 0,
           'erpal_project' => 'erpal_project',
+          'erpal_project_spec' => 0,
           'erpal_task' => 'erpal_task',
           'erpal_timetracking' => 0,
+          'features_test' => 0,
           'page' => 0,
+          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),

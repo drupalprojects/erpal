@@ -38,11 +38,6 @@ function _erpal_projects_billable_update_task($node) {
     
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);
   
-  //now we have all information to create a billable from this timetracking
-  $price_mode = isset($billable_information['price_mode']) ? $billable_information['price_mode'] : 0;
-  $price = isset($billable_information['price']) ? $billable_information['price'] : 0;  
-  $customer_node = $billable_information['customer'];
-  
   _erpal_billable_update_billable($node, 'update');
     
 }

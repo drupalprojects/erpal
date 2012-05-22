@@ -504,20 +504,19 @@ function feature_erpal_crm_field_default_fields() {
       ),
       'module' => 'node_reference',
       'settings' => array(
-        'profile2_private' => 0,
+        'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
           'erpal_contact' => 'erpal_contact',
           'erpal_crm_activity' => 0,
           'erpal_file' => 0,
           'erpal_invoice' => 0,
           'erpal_project' => 0,
-          'erpal_project_spec' => 0,
           'erpal_task' => 0,
           'erpal_timetracking' => 0,
-          'features_test' => 0,
           'page' => 0,
-          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
@@ -567,6 +566,84 @@ function feature_erpal_crm_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_crm_activity-field_local_files'
+  $fields['node-erpal_crm_activity-field_local_files'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_local_files',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'deleted' => '0',
+      'description' => 'Files uploaded here will not added to the document management system',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 9,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_local_files',
+      'label' => 'Local files',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => 'crm-activity/files',
+        'file_extensions' => 'txt pdf doc docx xls csv bmp jpg',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '13',
       ),
     ),
   );
@@ -874,7 +951,9 @@ function feature_erpal_crm_field_default_fields() {
   t('Chance');
   t('Comment');
   t('Contacts');
+  t('Files uploaded here will not added to the document management system');
   t('Global documents');
+  t('Local files');
   t('Next Contact');
   t('Order number extern');
   t('Order number intern');

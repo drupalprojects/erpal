@@ -388,6 +388,12 @@ function feature_erpal_project_basic_field_default_fields() {
           'type' => 'node_reference_default',
           'weight' => 7,
         ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -998,6 +1004,97 @@ function feature_erpal_project_basic_field_default_fields() {
         'settings' => array(),
         'type' => 'number',
         'weight' => '-1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_task-field_parent'
+  $fields['node-erpal_task-field_parent'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_parent',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_book' => 'erpal_book',
+          'erpal_book_page' => 'erpal_book_page',
+          'erpal_contact' => 0,
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 'erpal_project',
+          'erpal_project_spec' => 0,
+          'erpal_task' => 'erpal_task',
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
+          'page' => 0,
+          'panel' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 15,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_parent',
+      'label' => 'Parent',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'nodereference_url',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 0,
+          'fallback' => 'select',
+          'node_link' => array(
+            'destination' => 'default',
+            'full' => 1,
+            'hover_title' => '',
+            'teaser' => 0,
+            'title' => 'Add task',
+          ),
+        ),
+        'type' => 'nodereference_url',
+        'weight' => '13',
       ),
     ),
   );
@@ -1845,57 +1942,6 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'relation-participate_in-endpoints'
-  $fields['relation-participate_in-endpoints'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'endpoints',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'relation' => array(
-          0 => 'entity_type',
-          1 => 'entity_id',
-          2 => 'r_index',
-        ),
-      ),
-      'module' => 'relation_endpoint',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'relation_endpoint',
-    ),
-    'field_instance' => array(
-      'bundle' => 'participate_in',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'relation_endpoint',
-          'settings' => array(),
-          'type' => 'relation_endpoint',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'relation',
-      'field_name' => 'endpoints',
-      'label' => 'endpoints',
-      'required' => FALSE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'module' => 'relation_endpoint',
-        'settings' => array(),
-        'type' => 'relation_endpoint',
-        'weight' => '0',
-      ),
-    ),
-  );
-
   // Exported field: 'relation-participate_in-field_projet_role_rel_tags'
   $fields['relation-participate_in-field_projet_role_rel_tags'] = array(
     'field_config' => array(
@@ -1978,6 +2024,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Duration');
   t('Estimated time');
   t('How long did you work?');
+  t('Parent');
   t('Planed realisation date');
   t('Price');
   t('Price mode');
@@ -1995,7 +2042,6 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Time estimated for this task');
   t('When will the project be developed? Only for planing purpose.');
   t('Work progress of field');
-  t('endpoints');
 
   return $fields;
 }

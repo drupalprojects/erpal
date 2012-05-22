@@ -47,11 +47,7 @@ function views_jstree_require_jstree() {
   //add jstree Javascript and all its components
   drupal_add_js($jstree_path."/_lib/jquery.cookie.js");
   drupal_add_js($jstree_path."/_lib/jquery.hotkeys.js");
-  drupal_add_js($jstree_path."/jquery.jstree.js");
-  //drupal_add_js($jstree_path."/_docs/syntax/!style.css");
-  //drupal_add_js($jstree_path."/_docs/!style.css");
-  //drupal_add_js($jstree_path."/_docs/syntax/!script.js");
-  
+  drupal_add_js($jstree_path."/jquery.jstree.js"); 
 }
 
 /**
@@ -68,17 +64,6 @@ function views_jstree_theme($existing, $type, $theme, $path) {
         'title' => NULL,
       ),
     ),
-    //the inner tree node style
-    'views_jstree_inner' => array(
-      'variables' => array(
-        'view' => NULL,
-        'options' => array(),
-        'rows' => array(),
-        'title' => NULL,
-        'result' => array(),
-        'parent' => NULL,
-      ),
-    ),
   );
 }
 
@@ -91,7 +76,8 @@ function views_jstree_get_fields_of_view($view, $display) {
     $fields = $display->display_options['fields'];
 
   if (!$fields) { //if not overriden, take from view
-    $fields = $view->display['default']->display_options['fields'];
+    if (isset($view->display['default']->display_options['fields']))
+      $fields = $view->display['default']->display_options['fields'];
   }
   
   return $fields;
@@ -152,7 +138,13 @@ function theme_views_jstree($variables) {
   $ajax_url_move = url("jstree/move/$view_name");
   
   $jstree_options = array();
-  $jstree_options[$id] = array('parent_nid' => $nid, 'ajax_url' => $ajax_url, 'ajax_url_move' => $ajax_url_move);
+  $jstree_options['trees'][$id] = array('parent_nid' => $nid, 'ajax_url' => $ajax_url, 'ajax_url_move' => $ajax_url_move);
+  
+  //get all parent possible parent child node type relations. 
+  $allowed_parent_child_types = module_invoke_all('jstree_allowed_child_types');
+  if (!$allowed_parent_child_types)
+    $allowed_parent_child_types = array();
+  $jstree_options['allowed_parent_child_types'] = $allowed_parent_child_types;
   drupal_add_js(array('jstree_options' => $jstree_options), 'setting');
   
   $mod_path = drupal_get_path('module', 'views_jstree');
@@ -164,37 +156,6 @@ function theme_views_jstree($variables) {
   $height = 600;
   return '<div id="'.$id.'" class="jstree" style="height:'.$height.'px; width:'.$width.'px !important;"></div>';
  
-}
-
-/**
- * Inner recursive theme function for views tree theming.
- *
- * @ingroup themeable
- * @param $view
- * @param $options
- * @param $row
- * @param $title
- * @param $result
- *   An array representing the raw data returned from the query.
- * @param $parent
- *   The id of the parent entry in the call stack.
- */
-function theme_views_jstree_inner($variables) {
-  $view = $variables['view'];
-  $options = $variables['options'];
-  $rows = $variables['rows'];
-  $title = $variables['title'];
-  $result = $variables['result'];
-  $parent = $variables['parent'];
-
-  $items = array();
-  foreach ($result as $i => $record) {
-    if ($record->views_jstree_parent == $parent) {
-      $variables['parent'] = $record->views_jstree_main;
-      $items[] = $rows[$i] . call_user_func(__FUNCTION__, $variables);
-    }
-  }
-  return count($items) ? theme('item_list', array('items' => $items, 'type' => $options['type'])) : '';
 }
 
 /**
@@ -232,17 +193,17 @@ function views_jstree_move_child($view_name, $nid) {
   
   $parent_field = $fields[$options['parent_field']];
   $weight_field = $fields[$options['weight_field']];
-  
+
   if ($new_parent_nid == 1){  //@TODO: is this really alway 1 if we drag at top level under the root??
     //set parent to argument, because this is the root.
     $new_parent_nid = $root;
   }
   
-  $node->{$parent_field['id']}[$node->language][0][$parent_field['group_column']] = $new_parent_nid;
-  $node->{$weight_field['id']}[$node->language][0][$weight_field['group_column']] = $position;
+  $node->{$parent_field['id']}[LANGUAGE_NONE][0]['nid'] = $new_parent_nid; //@TODO instead of using 'nid' load the field and get the column by this definition
+  $node->{$weight_field['id']}[LANGUAGE_NONE][0]['value'] = $position;
   
   node_save($node);
-  
+
   die(json_encode(array('result' => true)));
 }
 
@@ -276,8 +237,13 @@ function views_jstree_load_children($view_name, $parent_id) {
     $node_uri = url('node/'.$row->nid);
     //@TODO Views row style plugin? No hard coded row style format!
     //@TODO ensure in views UI that for this style plugin node_type is set as field as well as nid!
+
+    $status = '';
+    if (isset($row->field_field_task_status[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
+      $status = " ".$row->field_field_task_status[0]['raw']['value'];
+      
     $output[] = array(
-      "attr" => array("id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, 'entity_id' => $row->nid), 
+      "attr" => array("id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, 'entity_id' => $row->nid, 'class' => $row->node_type.$status), 
       "data" => $row->node_title,
       "state" => $hasChildren ? "closed" : '', //or '' if no Children!
       'context_menu' => _views_jstree_get_context_menu($view, $children_display, $row->node_type, $row->nid, $row, $parent_id),

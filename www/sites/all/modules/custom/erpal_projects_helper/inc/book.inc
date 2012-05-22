@@ -39,3 +39,14 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
     }    
   }
 }
+
+/**
+* Definie which node types are allowed as children of a parent in jstree
+* structure is 'parent_type' => array with possible child types
+* @see views_jstree.module function theme_views_jstree
+*/
+function erpal_projects_helper_jstree_allowed_child_types() {
+  return array(
+    'erpal_task' => array('erpal_task'),
+  );
+}
