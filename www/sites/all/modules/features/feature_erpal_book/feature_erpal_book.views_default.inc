@@ -183,6 +183,29 @@ function feature_erpal_book_views_default_views() {
     'prefix_suffix' => 1,
   );
   $handler->display->display_options['fields']['field_weight']['field_api_classes'] = 0;
+  /* Field: Content: Task status */
+  $handler->display->display_options['fields']['field_task_status']['id'] = 'field_task_status';
+  $handler->display->display_options['fields']['field_task_status']['table'] = 'field_data_field_task_status';
+  $handler->display->display_options['fields']['field_task_status']['field'] = 'field_task_status';
+  $handler->display->display_options['fields']['field_task_status']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_task_status']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_task_status']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_task_status']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_task_status']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_task_status']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_task_status']['field_api_classes'] = 0;
   /* Sort criterion: Content: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
@@ -341,6 +364,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
     t('Parent'),
     t('Type'),
     t('Weight'),
+    t('Task status'),
     t('All'),
     t('Child nodes'),
     t('Dispalys all nodes that have parent nid set to contextual filter'),
