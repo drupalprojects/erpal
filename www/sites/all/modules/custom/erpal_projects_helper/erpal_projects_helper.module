@@ -11,6 +11,15 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
 module_load_include('inc', 'erpal_projects_helper', 'inc/book');
  
 /**
+* Implements hook_init
+*/
+function erpal_projects_helper_init() {
+  $mod_path = drupal_get_path('module', 'erpal_projects_helper');
+  $css_path = $mod_path.'/erpal_projects_helper.css';
+  drupal_add_css($css_path);
+}
+ 
+/**
 * Implements hook_menu
 */ 
 function erpal_projects_helper_menu(){

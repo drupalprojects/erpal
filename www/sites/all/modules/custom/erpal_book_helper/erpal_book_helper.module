@@ -233,6 +233,18 @@ function _erpal_book_helper_render_projects_referencing_books($book_nid) {
 }
 
 /**
+* Definie which node types are allowed as children of a parent in jstree
+* structure is 'parent_type' => array with possible child types
+* @see views_jstree.module function theme_views_jstree
+*/
+function erpal_book_helper_jstree_allowed_child_types() {
+  return array(
+    'erpal_book' => array('erpal_task'),
+    'erpal_book_page' => array('erpal_book_page', 'erpal_task'),
+  );
+}
+
+/**
 * Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
 */
 function erpal_book_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {

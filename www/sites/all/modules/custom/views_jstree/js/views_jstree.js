@@ -1,7 +1,8 @@
 (function ($) {
   menus_by_id = new Array();  //GLOBAL cache for saving a context menu for each id of a node
   $(document).ready(function() {
-    var options = Drupal.settings.jstree_options;    
+    var options = Drupal.settings.jstree_options.trees;    
+    allowed_parent_child_types = Drupal.settings.jstree_options.allowed_parent_child_types; //definies, which types (type attribute in node) can have which child types, see crrm check_move   
     
     //process several trees
     $.each(options, function(jstree_id, option_arr) { 
@@ -26,25 +27,19 @@
       })
       
       .jstree({ 
-        
-        "dnd" : {
-          "drop_finish" : function () { 
-            alert("DROP"); 
-          },
-          "drag_check" : function (data) {
-            alert('drin');
-            if(data.r.attr("id") == "phtml_1") {
-              return false;
+        "crrm" : {
+            "move" : {
+                "default_position" : "first",
+                "check_move" : function (m) { 
+                  var parent_type = $('#'+m.r[0].id).attr("type");
+                  var child_type = $('#'+m.o[0].id).attr("type");
+                  
+                  //var allowed_child_types = allowed_parent_child_types
+                  //get the type of the node an check if parent child relation is ok if parent child relation is set!
+                  var allowed = checkAllowedChild(parent_type, child_type, allowed_parent_child_types);
+                  return allowed;
+                }
             }
-            return { 
-              after : false, 
-              before : false, 
-              inside : true 
-            };
-          },
-          "drag_finish" : function (data) { 
-            alert("DRAG OK"); 
-          }
         },
         // List of active plugins    
         "plugins" : [ 
@@ -153,39 +148,6 @@
           }
         );
       })
-      .bind("remove.jstree", function (e, data) {
-        data.rslt.obj.each(function () {
-          $.ajax({
-            async : false,
-            type: 'POST',
-            url: ajax_url,
-            data : { 
-              "operation" : "remove_node", 
-              "id" : this.id.replace("node_","")
-            }, 
-            success : function (r) {
-              if(!r.status) {
-                data.inst.refresh();
-              }
-            }
-          });
-        });
-      })
-      .bind("rename.jstree", function (e, data) {
-        $.post(
-          ajax_url, 
-          { 
-            "operation" : "rename_node", 
-            "id" : data.rslt.obj.attr("id").replace("node_",""),
-            "title" : data.rslt.new_name
-          }, 
-          function (r) {
-            if(!r.status) {
-              $.jstree.rollback(data.rlbk);
-            }
-          }
-        );
-      })
       .bind("move_node.jstree", function (e, data) {
         data.rslt.o.each(function (i) {
           var moving_nid = $(this).attr("entity_id");
@@ -256,6 +218,24 @@
     }
       
     return menu_object;
+  }
+  
+  /**
+  * Checks if the child is allowed to be a child of parent
+  */
+  function checkAllowedChild(parent_type, child_type, allowed) {
+    if (!allowed)
+      return true; //if no parent child specification is given, allways allow
+    
+    allowed_children = allowed[parent_type];
+    var is_allowed = false;
+    $.each(allowed_children, function (key, value) {
+      console.log(value+'--'+child_type);
+      if (value+"" == child_type+"")
+        is_allowed = true
+    });
+    
+    return is_allowed;
   }
 })(jQuery);
 
