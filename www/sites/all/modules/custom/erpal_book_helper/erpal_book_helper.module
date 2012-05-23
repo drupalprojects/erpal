@@ -11,13 +11,117 @@ function erpal_book_helper_node_presave($node) {
   _erpal_book_helper_connect_page_to_book($node);
 }
 
-function erpal_book_helper_field_attach_view_alter (&$output, $context) {
+/**
+* Implements hook_menu
+*/ 
+function erpal_book_helper_menu(){
 
+  $items = array();
+  
+  $items['books/%node/pdf'] = array(
+    'title' => 'Create PDF of book',
+    'page callback' => '_erpal_books_helper_book_pdf_menu_callback',    
+    'page arguments' => array(1),
+    'access callback' => '_erpal_book_helper_book_pdf_menu_access',
+    'access arguments' => array(1),
+    'file' => 'inc/book.pdf.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+} 
+
+/**
+* Implements hook_theme
+*/
+function erpal_book_helper_theme() {
+  return array(
+    'erpal_books_book_pdf_html' => array(
+      'variables' => array('node'),
+      'template' => 'template/book_pdf_html',
+    ),
+    'erpal_books_children_html' => array(
+      'variables' => array('html', 'parent_node'),
+      'template' => 'template/children_html',
+    ),
+  );
+}
+
+/**
+* Access Callback for url to create a pdf from a book
+*/
+function _erpal_book_helper_book_pdf_menu_access($node) {
+  if ($node->type == 'erpal_book')
+    if (!user_access('create erpal_book content'))
+      return false;
+      
+  if ($node->type == 'erpal_book_page')
+    if (!user_access('create erpal_book_page content'))
+      return false;
+   
+  //validate that given node is of type book or book_page
+  $type_ok = $node->type == 'erpal_book' || $node->type == 'erpal_book_page';
+  
+  return $type_ok;
+   
+  return true;
+}
+
+/**
+* Implements hook_node_view
+*/
+function erpal_book_helper_node_view($node) {
+  
+  if ($node->type == 'erpal_book' || $node->type == 'erpal_book_page') {
+    
+    $links[] = array(
+      'href' => 'books/'.$node->nid.'/pdf',
+      'title' => t('Create PDF'),
+      'attributes' => array('class' => 'book_pdf_link'),
+    );
+    
+    $node->content['links']['erpal_book_pdf'] = array(
+      '#links' => $links,
+      '#attributes' => array('class' => array('links', 'inline')),
+    );
+  }
+  
+}
+
+function erpal_book_helper_field_attach_view_alter (&$output, $context) {
   
   if ($context['entity_type'] == 'node') {
     if ($context['entity']->type == 'erpal_book' || $context['entity']->type == 'erpal_book_page') {
-      if (isset($output['body'])) {        
-        $output['body'][0]['#markup'] = token_replace($output['body'][0]['#markup'], array('erpal_book' => $context['entity']));
+      if (isset($output['body'])) {                
+        
+        //get the contact and the address enttiy 
+        $data = array();
+        $book_node = $context['entity'];
+        
+        if ($book_node->type == 'erpal_book_page') {
+          //get the parent book at top most level because contact information are stored there
+          $book_nid = $book_node->field_book_ref[LANGUAGE_NONE][0]['nid'];
+          $book_node = node_load($book_nid);
+        }
+        
+        //get the contact and the selected address of the contact
+        if (!isset($book_node->field_contact_ref[LANGUAGE_NONE][0]['nid']))
+          return;
+          
+        $contact_nid = $book_node->field_contact_ref[LANGUAGE_NONE][0]['nid'];
+        $contact_node = node_load($contact_nid);
+        
+        $address_id = false;
+        $address_entity = false;
+        if (isset($book_node->field_address_id[LANGUAGE_NONE][0]['value'])) {
+          $address_id = $book_node->field_address_id[LANGUAGE_NONE][0]['value'];
+          $address_entity = entity_load('field_collection_item', array($address_id));
+          $address_entity = $address_entity[$address_id];
+        }
+        
+        $data['contact_node'] = $contact_node;
+        $data['address_entity'] = $address_entity;
+        $output['body'][0]['#markup'] = token_replace($output['body'][0]['#markup'], $data);        
       }
     }
   }
@@ -44,7 +148,7 @@ function erpal_book_helper_init() {
           _erpal_book_helper_cache('erpal_ajax_adresses', $contact_nid);
         }
 }
-
+ 
 /**
 * Value callback for address id field if book node
 */
@@ -285,6 +389,80 @@ function _erpal_book_helper_create_book_link($q_arg = false, $query_arr = array(
         'query' => $query_arr,
     )
   );
+}
+
+/**
+* Returns all direct children of a given book node
+* we are keeping the correct order sorting by weight
+*/
+function _erpal_book_helper_get_children($book_node, $parent_node, $options) {
+  
+  //first get all book pages
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_book_page')
+  ->propertyCondition('status', 1)
+  ->fieldCondition('field_parent', 'nid', $parent_node->nid, '=')
+  ->fieldCondition('field_book_ref', 'nid', $book_node->nid, '=')
+  ->fieldOrderBy('field_weight', 'value', 'ASC');
+
+  if (!$options['ignore_exclude']['pdf']) {
+    //exclude some node from export
+    $exclude = array('pdf');
+    
+    //normally we would do it lik
+    //$query->fieldCondition('field_page_exclude_from', 'value', 'pdf', '!=');
+    //but that doenst work if field has no value, not even NULL at all. So we get all excluded nids and
+    //exclude them in the query.
+    $field['field'] = 'field_page_exclude_from';
+    $field['column'] = 'value';
+    $excluded = _erpal_book_helper_get_excluded_nodes_by_parent($parent_node, 'pdf', $field);
+    
+    if (count($excluded) > 0)
+      $query->propertyCondition('nid', $excluded, 'NOT IN');
+  }
+  
+  $result = $query->execute();
+  $child_book_page_nodes = array();
+  if (isset($result['node'])) {
+    $child_nids = array_keys($result['node']);
+    $child_book_page_nodes = entity_load('node', $child_nids);
+  }
+  
+  //ask other modules for children  
+  $other_child_nodes = module_invoke_all('book_child_nodes', $parent_node, $book_node, $options);
+  
+  $children = array_merge($child_book_page_nodes, $other_child_nodes);
+  
+  return $children;
+}
+
+/**
+* Returns all excluded nids of type erpal_book linked to a given book
+*/ 
+function _erpal_book_helper_get_excluded_nodes_by_parent($parent_node, $exclude, $excluded_field) {
+ 
+  if (!$exclude)
+    return array();
+    
+  if ($exclude && !is_array($exclude))
+    $exclude = array($exclude);
+
+  //first get all book pages
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->propertyCondition('status', 1)
+  ->fieldCondition('field_parent', 'nid', $parent_node->nid, '=');
+
+  $query->fieldCondition($excluded_field['field'], $excluded_field['column'], $exclude, 'IN');
+  
+  $result = $query->execute();
+  $excluded_nids = array();
+  if (isset($result['node'])) {
+    $excluded_nids = array_keys($result['node']);
+  }
+  
+  return $excluded_nids;
 }
 
 /**

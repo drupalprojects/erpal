@@ -203,7 +203,7 @@ function views_jstree_move_child($view_name, $nid) {
   $node->{$weight_field['id']}[LANGUAGE_NONE][0]['value'] = $position;
   
   node_save($node);
-
+dpm($node);
   die(json_encode(array('result' => true)));
 }
 

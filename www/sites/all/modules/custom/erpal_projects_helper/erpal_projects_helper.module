@@ -128,6 +128,10 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
     }
     
   }
+  
+  if ($form_id == 'erpal_books_helper_pdf_form') {
+    _erpal_projects_helper_book_pdf_form_alter($form, $form_state);
+  }
 }
 
 /**
