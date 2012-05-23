@@ -220,7 +220,7 @@ function feature_erpal_book_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '4',
+        'weight' => '7',
       ),
     ),
   );
@@ -407,8 +407,8 @@ function feature_erpal_book_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => 'no',
-          1 => 'yes',
+          0 => 'Is NOT a template',
+          1 => 'Is a template',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -526,7 +526,7 @@ function feature_erpal_book_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '-4',
+        'weight' => '1',
       ),
     ),
   );
@@ -609,7 +609,7 @@ function feature_erpal_book_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '-2',
+        'weight' => '9',
       ),
     ),
   );
@@ -703,7 +703,7 @@ function feature_erpal_book_field_default_fields() {
           ),
         ),
         'type' => 'options_select',
-        'weight' => '5',
+        'weight' => '7',
       ),
     ),
   );
@@ -777,7 +777,7 @@ function feature_erpal_book_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '1',
+        'weight' => '4',
       ),
     ),
   );
@@ -843,7 +843,7 @@ function feature_erpal_book_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -865,8 +865,8 @@ function feature_erpal_book_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => 'no',
-          1 => 'yes',
+          0 => 'Is NOT a template',
+          1 => 'Is a template',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -912,7 +912,7 @@ function feature_erpal_book_field_default_fields() {
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
-        'weight' => '-1',
+        'weight' => '5',
       ),
     ),
   );
@@ -975,7 +975,7 @@ function feature_erpal_book_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '6',
+        'weight' => '8',
       ),
     ),
   );
@@ -1072,7 +1072,7 @@ function feature_erpal_book_field_default_fields() {
           ),
         ),
         'type' => 'nodereference_url',
-        'weight' => '4',
+        'weight' => '2',
       ),
     ),
   );
@@ -1139,7 +1139,7 @@ function feature_erpal_book_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '3',
+        'weight' => '6',
       ),
     ),
   );
