@@ -15,15 +15,13 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
   }
   
   function setUp() {    
-    try {
-      parent::setUp('feature_erpal_project_basic');
-    } catch (Exception $e) {
-      //may be there are some field excepptions that could be ignored.
-    }
+
+    parent::setUp('feature_erpal_project_basic');
+
 
     // Run a features rebuild to ensure our feature is fully installed.
     features_rebuild();
-    
+   
     // Clear all caches so everything from the feature is recognized now that it is fully loaded.
     cache_clear_all();
   }
@@ -32,7 +30,8 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
   /**
   * Test for caclulating values when a invoice is saved
   */
-  function testInvoiceCalculateValues() {    
+  function testInvoiceCalculateValues() { 
+    die('drin');
     //create billables for the invoice
     $group= 'feature erpal invoice';
     module_load_include('helper', 'feature_erpal_invoice', 'test/feature_erpal_invoice.test');
@@ -219,7 +218,7 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
   * Check creating an invoice from billable ids
   */
   function testCreateInvoiceFromBillables() {
-
+die('drin');
     $group = 'feature erpal invoice';
     //create some test billables
     module_load_include('helper', 'feature_erpal_invoice', 'test/feature_erpal_invoice.test');
