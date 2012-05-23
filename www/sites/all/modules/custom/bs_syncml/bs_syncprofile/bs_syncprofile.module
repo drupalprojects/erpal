@@ -112,7 +112,7 @@ function bs_syncprofile_permission() {
  */
 
 function bs_syncprofile_getAllProfiles($full=false) {
-
+  $profiles = array();
   if (!$full) {
     $request = db_select('bs_syncml_profiles', 'p')
             ->fields('p', array('pid', 'name'))
