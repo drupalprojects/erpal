@@ -1413,6 +1413,62 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_task-field_task_exclude_from'
+  $fields['node-erpal_task-field_task_exclude_from'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_task_exclude_from',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'pdf' => 'PDF',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 17,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_task_exclude_from',
+      'label' => 'Exclude from',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '16',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_task-field_task_status'
   $fields['node-erpal_task-field_task_status'] = array(
     'field_config' => array(
@@ -2084,6 +2140,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Description');
   t('Duration');
   t('Estimated time');
+  t('Exclude from');
   t('How long did you work?');
   t('Parent');
   t('Planed realisation date');
