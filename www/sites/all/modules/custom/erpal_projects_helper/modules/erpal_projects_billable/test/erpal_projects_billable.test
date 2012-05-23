@@ -19,7 +19,7 @@ class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
   }
   
   function setUp() {    
-    parent::setUp('feature_erpal_project_basic', 'feature_erpal_invoice', 'simpletest_fixture'); //these features will enables and use this module
+    parent::setUp('feature_erpal_project_basic', 'feature_erpal_invoice'); //these features will be enabled and use this module
     
     // Run a features rebuild to ensure our feature is fully installed.
     features_rebuild();

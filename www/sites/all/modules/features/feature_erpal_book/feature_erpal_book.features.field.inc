@@ -1096,7 +1096,11 @@ function feature_erpal_book_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_book_page',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '1',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(

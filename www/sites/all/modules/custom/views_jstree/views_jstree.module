@@ -176,7 +176,7 @@ function views_jstree_move_child($view_name, $nid) {
   $new_parent_nid = $data['new_parent_nid'];
   $position = $data['position'];
   $root = $data['root'];
-
+  
   $view = views_get_view($view_name);
   if (!is_object($view))
     die(json_encode(array('result' => false)));
@@ -187,14 +187,14 @@ function views_jstree_move_child($view_name, $nid) {
     die(json_encode(array('result' => false)));
    
   $node = node_load($nid);
-  //check what ist the parent field
+  //check what is the parent field
   $fields = views_jstree_get_fields_of_view($view, $children_display);
   $options = views_jstree_get_options_of_view($view, $children_display);
   
   $parent_field = $fields[$options['parent_field']];
   $weight_field = $fields[$options['weight_field']];
 
-  if ($new_parent_nid == 1){  //@TODO: is this really alway 1 if we drag at top level under the root??
+  if ($new_parent_nid == 1){  //@TODO: is this really allways 1 if we drag at top level under the root??
     //set parent to argument, because this is the root.
     $new_parent_nid = $root;
   }
