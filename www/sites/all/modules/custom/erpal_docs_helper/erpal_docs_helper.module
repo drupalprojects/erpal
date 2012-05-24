@@ -84,8 +84,9 @@ function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_
     );
   }
  
+  //allways create a new revision for versioning
+  $file_node->revision = true;
   node_save($file_node);
-  dpm($file_node);
   
   //chek if this node is already referenced, if not reference the new node
   $is_referenced = false;
@@ -134,36 +135,6 @@ function _erpal_docs_helper_file_node_create() {
   return $file_node;
 }
 
-
-/**
-* Creates a new file object which wraps the given file by filename, saves the file to the
-* field_docs_file specific location
-* @param $source_file the source file object of a file. This file will be copied to a new destination
-* @param $node if set a folder to store the file could be determined by the node -> NOT IMPLEMENTED YET
-*/
-function _erpal_docs_create_doc_file($source_file, $delete_file=false, $node=false) {
-  global $user;
-  
-  $current_full_path = drupal_realpath($source_file->uri);
-  $basename = basename($current_full_path);
-  
-  $folder_uri = _erpal_docs_folder_uri();
-  
-  //create URI
-  $final_uri = $folder_uri.$basename;  
-
-  $file = file_save_upload($source_file->uri, array(), $final_uri, FILE_EXISTS_RENAME);
-  //set status permanent!
-  $file->status = 1;
-  file_save($file);
-  
-  if ($delete_file)
-    file_delete($source_file);
-  
-  return $file;
-  
-}
-
 /**
 * Returns the filed instance which is responsible for storing the file (field_docs_file)
 * @return an array with key info (describing the field information) and instance (describing the field instance)
@@ -207,7 +178,7 @@ function _erpal_docs_folder_uri() {
   
   $final_uri = $uri_schema."://".$destination;
   $drupal_file_path_abs = drupal_realpath($final_uri);
-  file_prepare_directory($drupal_file_path_abs,  FILE_CREATE_DIRECTORY);
+  file_prepare_directory($final_uri,  FILE_CREATE_DIRECTORY & FILE_MODIFY_PERMISSIONS);
   
   return $final_uri;
   

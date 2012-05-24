@@ -96,7 +96,6 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
     //otherwise the tokens will not be replaced...don't know why
     /*$contact_node = $data['node'];
     foreach ($tokens as $name => $original) {
-      dpm($original);
       switch ($name) {
         case 'field_company_name':
           $company_name = '';

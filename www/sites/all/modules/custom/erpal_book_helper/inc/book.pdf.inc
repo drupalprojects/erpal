@@ -75,7 +75,13 @@ function erpal_books_helper_pdf_form_submit($form, $form_state) {
     $book_node = node_load($book_nid);
   }
   
-  _erpal_book_helper_create_pdf($book_node, $root_node, $options);
+  $file_node = _erpal_book_helper_create_pdf($book_node, $root_node, $options);
+  
+  if (is_object($file_node)) {
+    drupal_set_message(t('Your pdf has been created successfully!'));
+    drupal_goto('node/'.$file_node->nid);
+  }else
+    drupal_set_message(t('Sorry, but there was an error while creating your pdf.'), 'error');
   
   drupal_goto('node/'.$root_node->nid);
 }
@@ -93,22 +99,21 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   );
   
   $pdf_object = erpal_print_prepare_tcpdf($params);
-  $html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options);
-  
-  _erpal_print_create_toc($pdf_object);
+  $html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options);  
 
   //now put HTML content to PDF rendering
   
   $pdf_method = $options['pdf_create_method'];
 
   if ($pdf_method == 'attach') {    
-    $doc_uri = _erpal_docs_folder_uri();
-    $basename = _erpal_docs_make_filename($root_node->title, 'pdf');
+    $doc_uri = _erpal_docs_folder_uri();    
   } elseif ($pdf_method == 'download') {
-    $tmp_uri = false;
+    $doc_uri = false;
   }
   
-  $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params, $pdf_object);
+  $basename = _erpal_docs_make_filename($root_node->title, 'pdf');
+  
+  $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params, $pdf_object, true);
  
   //now attach the file to the book_node
   $file_node = false;
@@ -118,6 +123,8 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   }
 
   _erpal_docs_attach_file($book_node, $doc_file, $file_node, false, true);
+  
+  return $file_node;
 }
 
 /**
@@ -130,6 +137,7 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
   $child_nodes = _erpal_book_helper_get_children($book_node, $root_node, $options);
   
   $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object));
+
   //recursion anchor
   if (count($child_nodes) == 0) {
     return $this_html;
