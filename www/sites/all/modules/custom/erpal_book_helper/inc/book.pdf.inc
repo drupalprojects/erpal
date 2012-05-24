@@ -39,7 +39,7 @@ function erpal_books_helper_pdf_form($form, $form_state, $node) {
       'attach' => t('Attach created PDF to book node'),
       'download' => t('Send the created PDF as download only'),
     ),
-    '#default_value' => array('attach'),
+    '#default_value' => 'attach',
   );
   
   $form['submit'] = array(
@@ -86,23 +86,50 @@ function erpal_books_helper_pdf_form_submit($form, $form_state) {
 * collection the global HTML in context variable of batch
 */
 function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
-  $html = _erpal_book_helper_get_child_html($book_node, $root_node, $options);
+  global $user;
+  $params = array(
+    'title' => $root_node->title,
+    'author' => _erpal_print_get_author($root_node),
+  );
   
-  dpm($html);
+  $pdf_object = erpal_print_prepare_tcpdf($params);
+  $html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options);
   
+  _erpal_print_create_toc($pdf_object);
+
   //now put HTML content to PDF rendering
+  
+  $pdf_method = $options['pdf_create_method'];
+
+  if ($pdf_method == 'attach') {    
+    $doc_uri = _erpal_docs_folder_uri();
+    $basename = _erpal_docs_make_filename($root_node->title, 'pdf');
+  } elseif ($pdf_method == 'download') {
+    $tmp_uri = false;
+  }
+  
+  $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params, $pdf_object);
+ 
+  //now attach the file to the book_node
+  $file_node = false;
+  if (isset($book_node->field_asset_files[LANGUAGE_NONE][0]['nid'])) {
+    $file_nid = $book_node->field_asset_files[LANGUAGE_NONE][0]['nid'];  //if exists, this node will be updated with its file
+    $file_node = node_load($file_nid);
+  }
+
+  _erpal_docs_attach_file($book_node, $doc_file, $file_node, false, true);
 }
 
 /**
 * Recursive function to get HTML of all Child nodes
 */
-function _erpal_book_helper_get_child_html($book_node, $root_node, $options) {
+function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options) {
   
   //prepare fields so they can be included in entitiy field query easily
   
   $child_nodes = _erpal_book_helper_get_children($book_node, $root_node, $options);
   
-  $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node));
+  $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object));
   //recursion anchor
   if (count($child_nodes) == 0) {
     return $this_html;
@@ -113,7 +140,7 @@ function _erpal_book_helper_get_child_html($book_node, $root_node, $options) {
 
   foreach ($child_nodes as $child_node) {
     //get recusive HTML of children
-    $child_html = _erpal_book_helper_get_child_html($book_node, $child_node, $options);
+    $child_html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $child_node, $options);
     $html .= $child_html;
   }
 

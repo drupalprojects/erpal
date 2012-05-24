@@ -37,7 +37,7 @@ function erpal_book_helper_menu(){
 function erpal_book_helper_theme() {
   return array(
     'erpal_books_book_pdf_html' => array(
-      'variables' => array('node'),
+      'variables' => array('node', 'pdf_object'),
       'template' => 'template/book_pdf_html',
     ),
     'erpal_books_children_html' => array(
@@ -430,6 +430,7 @@ function _erpal_book_helper_get_children($book_node, $parent_node, $options) {
   }
   
   //ask other modules for children  
+
   $other_child_nodes = module_invoke_all('book_child_nodes', $parent_node, $book_node, $options);
   
   $children = array_merge($child_book_page_nodes, $other_child_nodes);

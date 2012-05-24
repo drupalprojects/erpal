@@ -276,6 +276,7 @@ function erpal_invoice_helper_invoice_notes_alter($invoice) {
 * @return an status array with key 'status'=1 if everything is ok, if it is 0, errors are placed in the key 'errors', 'invoice' holds the invoice node
 */
 function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=false, $params=array()) {
+  global $user;
  
   $status = array(
     'status' => 1, //that means everything is ok
@@ -387,7 +388,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   $invoice = new stdClass();
   $invoice->type = 'erpal_invoice';  
   node_object_prepare($invoice);  
-  
+  $invoice->uid = $user->uid;
   $invoice->language = LANGUAGE_NONE;
   //set some other invoice specific fields
 

@@ -20,9 +20,13 @@ function erpal_print_theme() {
       'variables' => array(),
       'template' => 'template/doc_footer',
     ),
-    'pdf_pagebreak' => array(
-      'variables' => array(),
-      'template' => 'template/pdf_pagebreak',
+    'erpal_print_toc' => array(
+      'variables' => array('pdf_object' => NULL),
+      'template' => 'template/toc',
+    ),
+    'erpal_print_prepare_pdf' => array(
+      'variables' => array('pdf_object' => NULL),
+      'template' => 'template/prepare_pdf',
     ),
   );
 }
@@ -72,64 +76,90 @@ function _erpal_print_inject_basic_config_form_submit($form, $form_state)  {
 /**
 * Function to render the given html string as PDF
 * @param $html the html that should be rendered into pdf
-* @param $destination if set, PDF will be saved to the given destionation, otherwise
-*   it will directly by given as download to the users
+* @param $destination_uri if set, PDF will be saved to the given destination folder (ONLY FOLDER!), otherwise
+*   it will directly be given as download to the users
 * @param $download_filename the filename if the document is put as download
+* @param $params set author and title of the document
+* @return a file object representing the temporaray file.
 */ 
-function _erpal_print_html_as_pdf($html, $destination=false, $download_filename=false) {
+function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false, $params=false, $pdf_object=false) {
+  global $user;
   
+  if (!$pdf_object)    
+    $pdf_object = erpal_print_prepare_tcpdf();
+  
+  $parts = _erpal_print_split_pages($html);
+  foreach ($parts as $part_html) {
+    $pdf_object->AddPage();
+    $pdf_object->writeHTML($part_html, true, false, true, false, '');
+  }
+    
+  //now output the pdf
+  if ($destination_uri) {
+    $destination_path = drupal_realpath($destination_uri."/".$basename);
+
+    //perhaps file must be renamed
+    $destination_path = file_destination($destination_path, FILE_EXISTS_RENAME);
+    $new_basename = basename($destination_path);
+    $destination_uri = $destination_uri.'/'.$new_basename;
+    $pdf_object->Output($destination_path, "F");
+    
+    // Begin building file object.
+    $file = new stdClass();
+    $file->uid      = $user->uid;
+    $file->status   = 1; //final!
+    $file->filename = $basename;
+    $file->uri      = $destination_uri;
+    $file->filemime = file_get_mimetype($destination_path);
+    $file->filesize = filesize($destination_path);
+    
+    file_save($file);
+    dpm($file);
+    return $file;
+  } else {
+    $pdf_object->Output($basename, "D");
+    /**
+    * prevent from further drupal output 
+    */
+    die();
+  }
+}
+
+/**
+* returns the author of the invoice
+*/
+function _erpal_print_get_author($node) {
+  $a_user = user_load($node->uid);
+  return $a_user->name;
+}
+
+/**
+* Creates table of contents using a theme function
+*/
+function _erpal_print_create_toc($pdf_object) {
+  //create table of contents
+  theme('erpal_print_toc', array('pdf_object' => $pdf_object));
+}
+
+/**
+* Prepares and returns a TCPDF Object
+*/
+function erpal_print_prepare_tcpdf($params=false) {
   _erpal_print_require_tcpdf();
 
   require_once 'classes/ci_document.php';
   
   $pdf = new CI_document();
   
-  $pdf->header_html = theme('doc_header');
-
-  $pdf->footer_html = theme('doc_footer');
-
-  $pdf->SetCreator(PDF_CREATOR);
-  $pdf->SetAuthor('BrightSolutions GmbH'); //@todo set dynamically
-  $pdf->SetTitle(t('Invoice'));
-
-  // set header and footer fonts
-  $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-  $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-  // set default monospaced font
-  $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-  //set margins
-  $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-  //$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-  $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-  //set auto page breaks
-  $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-  //set image scale factor
-  $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-  // ---------------------------------------------------------
-  $pdf->setPrintFooter(true);
+  theme('erpal_print_prepare_pdf', array('pdf_object' => $pdf));
   
-  $parts = _erpal_print_split_pages($html);
-  foreach ($parts as $part_html) {
-    $pdf->AddPage();
-    $pdf->writeHTML($part_html, true, false, true, false, '');
-  }
-    
-  //now output the pdf
-  if ($destination) {
-    $pdf->Output($destination, "F");
-    return $destination;
-  } else {
-    $pdf->Output($download_filename, "D");
-    /**
-    * weiteren Drupal HTML Output verhindern 
-    */
-    die();
-  }
+  if (isset($params['author']) && $params['author'])
+    $pdf->SetAuthor($params['author']);
+  
+  if (isset($params['title']) && $params['title'])
+    $pdf->SetTitle($params['title']);
+  
+  return $pdf;
 }
 
 /**
