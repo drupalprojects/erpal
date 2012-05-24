@@ -113,4 +113,5 @@ features[variable][] = node_preview_erpal_contact
 features[variable][] = node_submitted_erpal_contact
 features[variable][] = save_continue_erpal_contact
 features[views_view][] = contacts
+features[views_view][] = node_revisions
 features[views_view][] = relations_view
