@@ -86,8 +86,9 @@ function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_
  
   //allways create a new revision for versioning
   $file_node->revision = true;
+
   node_save($file_node);
-  
+
   //chek if this node is already referenced, if not reference the new node
   $is_referenced = false;
   if (isset($node->field_asset_files[LANGUAGE_NONE])) {
@@ -102,7 +103,10 @@ function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_
     $node->field_asset_files[LANGUAGE_NONE][] = array('nid' => $file_node->nid);
   
   if (!$skip_save_parent) {
+    dpm($node);
+    $node = node_load($node->nid);
     node_save($node);
+    //node_save($node);
   }
 
   return $file_node;

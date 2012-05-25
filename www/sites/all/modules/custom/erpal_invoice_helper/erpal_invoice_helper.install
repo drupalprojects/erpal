@@ -71,3 +71,25 @@ function erpal_invoice_helper_schema() {
 function erpal_invoice_helper_update_7001() {
   drupal_install_schema('erpal_invoice_helper');  //install schema if it is not already installed
 }
+
+/**
+* Update to delete field_pdf_file field and instances
+*/
+function erpal_invoice_helper_update_7002() {
+  //get the field
+  $field = field_info_field('field_pdf_file');
+  
+  if (!isset($field['id']))
+    return; //everything is already ok
+  
+  module_invoke($field['storage']['module'], 'field_storage_delete_field', $field);
+  $instances = field_read_instances(array('field_id' => $field['id']), array('include_inactive' => TRUE));
+  foreach ($instances as $instance) {
+    field_delete_instance($instance, FALSE);
+  }
+  try
+    field_delete_field($field['field_name']);
+  catch (Exception $e) {
+    //do nothing may be the field is already deleted.
+  }
+}

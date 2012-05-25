@@ -83,7 +83,7 @@ function erpal_invoice_helper_invoice_pdf_form_submit($form, $form_state) {
 function _erpal_invoice_helper_invoice_file_node($invoice_node) {
   if (!isset($invoice_node->field_asset_files[LANGUAGE_NONE][0]['nid']))
     return false;
-    
+
   //we have always only one erpal_file attached to an invoice
   $file_nid = $invoice_node->field_asset_files[LANGUAGE_NONE][0]['nid'];
   $file_node = node_load($file_nid);
