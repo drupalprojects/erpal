@@ -87,9 +87,9 @@ function erpal_invoice_helper_update_7002() {
   foreach ($instances as $instance) {
     field_delete_instance($instance, FALSE);
   }
-  try
+  try {
     field_delete_field($field['field_name']);
-  catch (Exception $e) {
+  } catch (Exception $e) {
     //do nothing may be the field is already deleted.
   }
 }
