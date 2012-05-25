@@ -345,14 +345,6 @@ function feature_erpal_invoice_rel_build_info() {
       'weight' => '14',
       'element_type' => 'container',
     ),
-    'field_pdf_file' => array(
-      'owner' => 'drupal',
-      'label' => 'Field pdf file',
-      'parent' => '',
-      'group_info' => FALSE,
-      'weight' => '16',
-      'element_type' => 'container',
-    ),
     'field_skonto' => array(
       'owner' => 'drupal',
       'label' => 'Field skonto',
