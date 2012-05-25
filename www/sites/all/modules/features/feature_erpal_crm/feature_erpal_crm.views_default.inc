@@ -192,10 +192,19 @@ function feature_erpal_crm_views_default_views() {
   $handler = $view->new_display('page', 'CRM Activities', 'page');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'CRM activities';
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'AND',
-  );
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<?php
+return _erpal_basic_helper_view_contacts_header_content();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -265,29 +274,6 @@ function feature_erpal_crm_views_default_views() {
       'fixed' => '',
       'label' => 'Content: Customer (field_customer_ref)',
     ),
-  );
-  $translatables['crm_activities'] = array(
-    t('Master'),
-    t('Activities as Customer'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('This contact has no customer activities'),
-    t('Activity status'),
-    t('Customer'),
-    t('Next Contact'),
-    t('All'),
-    t('Title'),
-    t('CRM Activities'),
-    t('CRM activities'),
-    t('Activities by contact'),
-    t('View panes'),
   );
   $export['crm_activities'] = $view;
 

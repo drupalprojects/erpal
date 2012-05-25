@@ -343,12 +343,22 @@ function feature_erpal_crm_field_default_fields() {
       ),
       'module' => 'node_reference',
       'settings' => array(
+        'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
           'erpal_contact' => 0,
           'erpal_crm_activity' => 0,
           'erpal_file' => 'erpal_file',
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_project_spec' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
           'page' => 0,
+          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
@@ -405,7 +415,7 @@ function feature_erpal_crm_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '12',
+        'weight' => '11',
       ),
     ),
   );
