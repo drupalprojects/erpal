@@ -580,84 +580,6 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_local_files'
-  $fields['node-erpal_crm_activity-field_local_files'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_local_files',
-      'foreign keys' => array(
-        'fid' => array(
-          'columns' => array(
-            'fid' => 'fid',
-          ),
-          'table' => 'file_managed',
-        ),
-      ),
-      'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
-        ),
-      ),
-      'module' => 'file',
-      'settings' => array(
-        'display_default' => 0,
-        'display_field' => 0,
-        'uri_scheme' => 'public',
-      ),
-      'translatable' => '0',
-      'type' => 'file',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_crm_activity',
-      'deleted' => '0',
-      'description' => 'Files uploaded here will not added to the document management system',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'file',
-          'settings' => array(),
-          'type' => 'file_default',
-          'weight' => 9,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_local_files',
-      'label' => 'Local files',
-      'required' => 0,
-      'settings' => array(
-        'description_field' => 0,
-        'file_directory' => 'crm-activity/files',
-        'file_extensions' => 'txt pdf doc docx xls csv bmp jpg',
-        'max_filesize' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'file',
-        'settings' => array(
-          'progress_indicator' => 'throbber',
-        ),
-        'type' => 'file_generic',
-        'weight' => '13',
-      ),
-    ),
-  );
-
   // Exported field: 'node-erpal_crm_activity-field_next_contact'
   $fields['node-erpal_crm_activity-field_next_contact'] = array(
     'field_config' => array(
@@ -961,9 +883,7 @@ function feature_erpal_crm_field_default_fields() {
   t('Chance');
   t('Comment');
   t('Contacts');
-  t('Files uploaded here will not added to the document management system');
   t('Global documents');
-  t('Local files');
   t('Next Contact');
   t('Order number extern');
   t('Order number intern');
