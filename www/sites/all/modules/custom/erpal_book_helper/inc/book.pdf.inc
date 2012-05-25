@@ -99,6 +99,10 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   );
   
   $pdf_object = erpal_print_prepare_tcpdf($params);
+  
+  if (!$pdf_object)
+    return false;
+  
   $html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options);  
 
   //now put HTML content to PDF rendering
@@ -114,6 +118,11 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   $basename = _erpal_docs_make_filename($root_node->title, 'pdf');
   
   $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params, $pdf_object, true);
+  
+  if (!$doc_file) {
+    drupal_set_message(t('There has been an error while creating you pdf. PDF not created.'), 'error');
+    drupal_goto('node/'.$root_node);
+  }
  
   //now attach the file to the book_node
   $file_node = false;

@@ -776,43 +776,6 @@ echo _erpal_invoice_helper_view_billables_header_content();
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['billables'] = array(
-    t('Master'),
-    t('Billables'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php
-echo _erpal_invoice_helper_view_billables_header_content();
-?>'),
-    t('Customer'),
-    t('Contractor'),
-    t('Billable ID'),
-    t('billable/[billable_id]/view'),
-    t('.'),
-    t('Subject'),
-    t('Billed'),
-    t('Date delivery'),
-    t('Quantity'),
-    t(','),
-    t('Single price'),
-    t('Total excl. VAT'),
-    t('Total VAT'),
-    t('Total'),
-    t('Currency'),
-    t('Delivery'),
-    t('Billables by invoice pane'),
-    t('Content referencing Billable from field_billables_ref'),
-    t('VAT rate'),
-    t('All'),
-    t('View panes'),
-  );
   $export['billables'] = $view;
 
   $view = new view;
@@ -1062,28 +1025,6 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_currency']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_currency']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_currency']['field_api_classes'] = 0;
-  /* Field: Content: Customer */
-  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
   /* Field: Field: Contractor */
   $handler->display->display_options['fields']['field_contractor_ref']['id'] = 'field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['table'] = 'field_data_field_contractor_ref';
@@ -1106,6 +1047,28 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_contractor_ref']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_contractor_ref']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_contractor_ref']['field_api_classes'] = 0;
+  /* Field: Content: Customer */
+  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -1186,31 +1149,6 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   /* Display: Invoices */
   $handler = $view->new_display('page', 'Invoices', 'page');
   $handler->display->display_options['path'] = 'invoice/invoices';
-  $translatables['invoices'] = array(
-    t('Master'),
-    t('Invoices'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php
-echo _erpal_invoice_helper_view_invoices_header_content();
-?>'),
-    t('Invoice Date'),
-    t('Invoice Number'),
-    t('Payed'),
-    t('Payment date'),
-    t('Total excl. VAT'),
-    t('Total incl. VAT'),
-    t('Currency'),
-    t('Customer'),
-    t('Contractor'),
-  );
   $export['invoices'] = $view;
 
   return $export;

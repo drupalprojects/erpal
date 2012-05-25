@@ -347,31 +347,6 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
       'label' => 'Content: Parent (field_parent)',
     ),
   );
-  $translatables['book_children'] = array(
-    t('Master'),
-    t('All child pages'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('Edit'),
-    t('Nid'),
-    t('Parent'),
-    t('Type'),
-    t('Weight'),
-    t('Task status'),
-    t('All'),
-    t('Child nodes'),
-    t('Dispalys all nodes that have parent nid set to contextual filter'),
-    t('View panes'),
-    t('Child nodes AJAX'),
-    t('Load all nodes that have parent nid set to contextual filter'),
-  );
   $export['book_children'] = $view;
 
   $view = new view;
@@ -534,24 +509,6 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
     1 => '1',
   );
   $handler->display->display_options['path'] = 'books/templates';
-  $translatables['books'] = array(
-    t('Master'),
-    t('Books'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php return _erpal_book_helper_view_contacts_header_content(); ?>'),
-    t('Post date'),
-    t('Title'),
-    t('Tags'),
-    t('Book templates'),
-  );
   $export['books'] = $view;
 
   return $export;

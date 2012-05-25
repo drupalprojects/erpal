@@ -582,6 +582,100 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_crm_activity-field_customer_ref'
+  $fields['node-erpal_crm_activity-field_customer_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_customer_ref',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
+          'erpal_contact' => 'erpal_contact',
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'page' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 13,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_customer_ref',
+      'label' => 'Customer',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'nodereference_url',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 0,
+          'fallback' => 'autocomplete',
+          'node_link' => array(
+            'destination' => 'default',
+            'full' => 1,
+            'hover_title' => '',
+            'teaser' => 0,
+            'title' => 'Add activity',
+          ),
+        ),
+        'type' => 'nodereference_url',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_crm_activity-field_next_contact'
   $fields['node-erpal_crm_activity-field_next_contact'] = array(
     'field_config' => array(
@@ -884,6 +978,7 @@ function feature_erpal_crm_field_default_fields() {
   t('Chance');
   t('Comment');
   t('Contacts');
+  t('Customer');
   t('Global documents');
   t('Next Contact');
   t('Order number extern');

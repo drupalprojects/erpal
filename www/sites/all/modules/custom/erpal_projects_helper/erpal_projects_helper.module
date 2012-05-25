@@ -97,41 +97,75 @@ function erpal_projects_helper_node_view($node) {
 function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   
   if ($form_id == 'erpal_task_node_form') {
-    //only if node will be new created
-    $nid = $form['nid']['#value'];
-    if (!$nid) {
-      //if parent is already set, hide the project field, but preset it so pricing information can be reloaded!
-      if (isset($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']))
-        if ($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']) {
-          $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'];
-          $parent_node = node_load($parent_nid);
-          $project_nid = _erpal_projects_helper_has_project($parent_node);          
-          
-          $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
-          $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $project_nid;
-          $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
-          
-          //alter pricing information!
-          _erpal_projects_billable_preselect_task_create_form($form, $form_state);
-          
-        }
-      //if project is already set, hide the parent field
-      if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']))
-        if ($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']) {
-          $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
-          $form['field_parent'][LANGUAGE_NONE][0]['nid']['#required'] = false;
-        }
-    } else {
-      //hide parent and project ref anyway!
-      $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
-      $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
-    }
-    
+    _erpal_projects_helper_task_node_form_alter($form, $form_state);
   }
   
   if ($form_id == 'erpal_books_helper_pdf_form') {
     _erpal_projects_helper_book_pdf_form_alter($form, $form_state);
   }
+  
+  if ($form_id == 'erpal_project_node_form') {
+    _erpal_projects_helper_project_node_form_alter($form, $form_state);
+  }
+}
+
+/**
+* Alters the project node form
+*/
+function _erpal_projects_helper_project_node_form_alter(&$form, &$form_state) {
+  //if form is filled by reference url widget, the crm activity is already prefilled.
+  //with the activity we can preselect the customer, because it may be the same as in activity and project
+  //in most cases
+  $activity_nid = arg(3);
+  if (!empty($activity_nid) && is_numeric($activity_nid)) {
+    $activity_node = node_load($activity_nid);
+    $customer_nid = false;
+
+    if (isset($activity_node->field_customer_ref[LANGUAGE_NONE][0]['nid'])) {
+      $customer_nid = $activity_node->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+    }
+    
+    if ($customer_nid) {
+      $form['field_customer_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $customer_nid;
+    }
+  }
+}
+
+
+/**
+* Alters the tasks form
+*/
+function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
+  //only if node will be new created
+  $nid = $form['nid']['#value'];
+  if (!$nid) {
+    //if parent is already set, hide the project field, but preset it so pricing information can be reloaded!
+    if (isset($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']))
+      if ($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']) {
+        $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'];
+        $parent_node = node_load($parent_nid);
+        $project_nid = _erpal_projects_helper_has_project($parent_node);          
+        
+        $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+        $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $project_nid;
+        $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
+        
+        //alter pricing information!
+        _erpal_projects_billable_preselect_task_create_form($form, $form_state);
+        
+      }
+    //if project is already set, hide the parent field
+    if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']))
+      if ($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']) {
+        $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+        $form['field_parent'][LANGUAGE_NONE][0]['nid']['#required'] = false;
+      }
+  } else {
+    //hide parent and project ref anyway!
+    $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+    $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+  }
+  
 }
 
 /**

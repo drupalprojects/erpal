@@ -216,12 +216,21 @@ function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_book_page_node_form') {
     _erpal_book_helper_form_redirect_orphan_book_page($form);
     _erpal_book_helper_show_patterns_at_body($form, $form_state);
+    _erpal_book_helper_alter_form_fields($form, $form_state);
   }
   
   if ($form_id == 'erpal_book_node_form') {
     _erpal_book_helper_show_patterns_at_body($form, $form_state);
     _erpal_book_helper_prepare_address_ajax_reload($form, $form_state);
   }
+}
+
+/**
+* Alter e.g. hide some form fields
+*/
+function _erpal_book_helper_alter_form_fields(&$form, $form_state) {
+  $form['field_book_ref'][LANGUAGE_NONE]['#type'] = 'value';
+  //value will be set in node_presave @see _erpal_book_helper_alter_form_fields
 }
 
 /**
