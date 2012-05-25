@@ -466,7 +466,7 @@ function erpal_invoice_helper_node_presave($node) {
   $type = node_type_get_type($node);
   
   if ($type->type == 'erpal_invoice') {
-    
+
     _erpal_invoice_helper_set_notes($node);
     
     if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!

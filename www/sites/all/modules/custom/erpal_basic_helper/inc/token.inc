@@ -55,22 +55,8 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
   
   $replacements = array();
   if ($type == 'erpal_contact') {
-    $book_node = $data['erpal_book'];    
-    
-    //get the contact and the selected address of the contact
-    if (!isset($book_node->field_contact_ref[LANGUAGE_NONE][0]['nid']))
-      return $replacements;
-      
-    $contact_nid = $book_node->field_contact_ref[LANGUAGE_NONE][0]['nid'];
-    $contact_node = node_load($contact_nid);
-    
-    $address_id = false;
-    $address_entity = false;
-    if (isset($book_node->field_address_id[LANGUAGE_NONE][0]['value'])) {
-      $address_id = $book_node->field_address_id[LANGUAGE_NONE][0]['value'];
-      $address_entity = entity_load('field_collection_item', array($address_id));
-      $address_entity = $address_entity[$address_id];
-    }
+    $contact_node = $data['contact_node'];    
+    $address_entity = $data['address_entity'];
 
     foreach ($tokens as $name => $original) {
       switch ($name) {
@@ -110,7 +96,6 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
     //otherwise the tokens will not be replaced...don't know why
     /*$contact_node = $data['node'];
     foreach ($tokens as $name => $original) {
-      dpm($original);
       switch ($name) {
         case 'field_company_name':
           $company_name = '';

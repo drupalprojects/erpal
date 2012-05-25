@@ -316,7 +316,7 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['fields']['type']['link_to_node'] = 0;
   $handler->display->display_options['fields']['type']['machine_name'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Global documents (field_asset_files) */
+  /* Contextual filter: Content: PDF exports (field_asset_files) */
   $handler->display->display_options['arguments']['field_asset_files_nid']['id'] = 'field_asset_files_nid';
   $handler->display->display_options['arguments']['field_asset_files_nid']['table'] = 'field_data_field_asset_files';
   $handler->display->display_options['arguments']['field_asset_files_nid']['field'] = 'field_asset_files_nid';
@@ -345,6 +345,32 @@ echo _erpal_docs_helper_view_documents_header_content();
       'fixed' => '',
       'label' => 'Content: Global documents (field_asset_files)',
     ),
+  );
+  $translatables['documents'] = array(
+    t('Master'),
+    t('Documents'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('Updated date'),
+    t('Tags'),
+    t('<?php
+echo _erpal_docs_helper_view_documents_header_content();
+?>'),
+    t('Reference Dialog Search'),
+    t('Broken handler field_data_field_file.field_file'),
+    t('File usage pane'),
+    t('This file is used at'),
+    t('Pane showing nodes referencing the file'),
+    t('Type'),
+    t('All'),
+    t('View panes'),
   );
   $export['documents'] = $view;
 

@@ -70,6 +70,7 @@ features[field][] = node-erpal_task-field_pricing
 features[field][] = node-erpal_task-field_progress_percent
 features[field][] = node-erpal_task-field_project_ref
 features[field][] = node-erpal_task-field_task_assigned_users
+features[field][] = node-erpal_task-field_task_exclude_from
 features[field][] = node-erpal_task-field_task_status
 features[field][] = node-erpal_task-field_task_type
 features[field][] = node-erpal_task-field_weight
