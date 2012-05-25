@@ -270,31 +270,6 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['attach'] = array(
     0 => 'node:field_customer_ref:erpal_project',
   );
-  $translatables['contacts'] = array(
-    t('Master'),
-    t('Contacts'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php
-echo _erpal_basic_helper_view_contacts_header_content();
-?>'),
-    t('There are no contacts available'),
-    t('Name'),
-    t('Contact Type'),
-    t('Type'),
-    t('List of all contacts'),
-    t('Contact Reference Project'),
-    t('Contact Dialog Search Project'),
-    t('Choose a contact'),
-    t('Search a customer for a project'),
-  );
   $export['contacts'] = $view;
 
   $view = new view;
@@ -445,25 +420,6 @@ echo _erpal_basic_helper_view_contacts_header_content();
       'fixed' => '',
       'label' => 'Content: Nid',
     ),
-  );
-  $translatables['node_revisions'] = array(
-    t('Master'),
-    t('Revisions'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('revision user'),
-    t('Updated date'),
-    t('User'),
-    t('All'),
-    t('Pane node revisions'),
-    t('View panes'),
   );
   $export['node_revisions'] = $view;
 
@@ -766,29 +722,6 @@ echo _erpal_basic_helper_view_contacts_header_content();
       'fixed' => '',
       'label' => 'Relation: endpoints (endpoints:entity_id)',
     ),
-  );
-  $translatables['relations_view'] = array(
-    t('Master'),
-    t('Relations by node'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('Rendered Relation'),
-    t('All'),
-    t('Page'),
-    t('Period'),
-    t('Changed'),
-    t('Created'),
-    t('Tags'),
-    t('Relation type'),
-    t('Role in project'),
-    t('View panes'),
   );
   $export['relations_view'] = $view;
 

@@ -1227,7 +1227,7 @@ function feature_erpal_basic_field_default_fields() {
   $fields['node-erpal_contact-field_contact_tags'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_contact_tags',
@@ -1252,6 +1252,7 @@ function feature_erpal_basic_field_default_fields() {
             'parent' => '0',
           ),
         ),
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
