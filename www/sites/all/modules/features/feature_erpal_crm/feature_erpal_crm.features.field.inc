@@ -491,14 +491,14 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_contact_ref'
-  $fields['node-erpal_crm_activity-field_contact_ref'] = array(
+  // Exported field: 'node-erpal_crm_activity-field_contacts_ref'
+  $fields['node-erpal_crm_activity-field_contacts_ref'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_contact_ref',
+      'field_name' => 'field_contacts_ref',
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -541,20 +541,14 @@ function feature_erpal_crm_field_default_fields() {
       'bundle' => 'erpal_crm_activity',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Any other contacts that are related to this activity',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 1,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'weight' => 14,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -564,7 +558,7 @@ function feature_erpal_crm_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_contact_ref',
+      'field_name' => 'field_contacts_ref',
       'label' => 'Contacts',
       'required' => 0,
       'settings' => array(
@@ -572,9 +566,17 @@ function feature_erpal_crm_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
         'weight' => '2',
       ),
     ),
@@ -878,7 +880,6 @@ function feature_erpal_crm_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Account Manager');
   t('Activity status');
-  t('Any other contacts that are related to this activity');
   t('Body');
   t('Chance');
   t('Comment');
