@@ -102,8 +102,8 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
     $pdf_object->writeHTML($part_html, true, false, false, false, '');
   }
   
-  $pdf_object->writeHTML($html, true, false, false, false, '');
-  _erpal_print_create_toc($pdf_object);
+  if ($print_toc)
+    _erpal_print_create_toc($pdf_object);
     
   //now output the pdf
   if ($destination_uri) {
