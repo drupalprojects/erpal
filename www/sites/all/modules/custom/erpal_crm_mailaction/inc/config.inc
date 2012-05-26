@@ -205,7 +205,7 @@ function _erpal_crm_mailaction_config_form_validate($form, &$form_state) {
   $values   = (object)$form_state['values']['erpal_crm_mailaction'];
   $mailBox  = (object)$values->mailbox;
   
-  if (intval ($mailBox->port) == 0) {
+  if (intval ($mailBox->port) <= 0) {
     form_set_error ('mailbox[port]', t('Please specify a valid port number (>0).'));
   }   
   
