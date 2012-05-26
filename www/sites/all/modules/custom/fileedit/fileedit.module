@@ -4,6 +4,7 @@
  * Code for the fileedit module.
  */
 
+ 
 /**
 * Implements hook_menu
 */ 
@@ -44,7 +45,7 @@ function fileedit_menu(){
   
   return $items;
 }
-
+  
 /**
 * Implements hook_permission
 */
@@ -73,12 +74,10 @@ function fileedit_theme() {
 * Access Callback URL for downloading URL
 */
 function fileedit_download_access($fid, $sid) {
-  // TODO fixen!
-  return true;
 
   //user must have a valid session ID
   $auser = _fileedit_user_by_sid($sid);
-  
+ 
   if (!is_object($auser))
     return false;
 
@@ -89,7 +88,6 @@ function fileedit_download_access($fid, $sid) {
 * Access Callback for Edit Request
 */
 function fileedit_edit_access($fid) {
-  return true;
   $general_access = user_access('use file edit');
   
   if (!$general_access)
@@ -107,12 +105,8 @@ function fileedit_edit($fid) {
   header("Content-type: application/x-java-jnlp-file");
   header("Last-Modified: " . time());
   
-  global $user;
-  $sess_id = 0;
-  if (!$user->uid)
-    $sess_id = arg(3);
-
-  $xml = _fileedit_get_edit_xml($fid, $sess_id);
+  //and then return the xml file
+  $xml = _fileedit_get_edit_xml($fid);
   die($xml);
 }
 
@@ -145,17 +139,31 @@ function fileedit_download($fid) {
 * Callback URL for uploading URL
 */
 function fileedit_upload($fid) {
-  //@todo
+  //@todo handle revisions if revisions should be created at this entity bundle
   print_r($_FILES);
-  die('upload');
+  $tmp_name = $_FILES['userfile']['tmp_name'];
+  
+  //load the file
+  $file = file_load(array($fid));
+  $uri = $file->uri;
+  //save the new file back to its uri
+  drupal_move_uploaded_file($tmp_name, $uri);
+  
+  print_r($file);
+  die();
+  echo $fid."--".$tmp_name;
+  die();
+
+  //@todo do something if the file was not uploaded successfully
+  
+  
+  //file_save_upload($tmp_name, );
 }
 
 /**
 * Access Callback URL for uploading URL
 */
 function fileedit_upload_access($fid, $sid) {
-  // TODO fixen!
-  return true;
   
   //user must have a valid session ID
   $auser = _fileedit_user_by_sid($sid);
@@ -217,7 +225,7 @@ function fileedit_file_link_preprocess(&$variables) {
   $variables['edit_url'] = $edit_url;
 }
 
-function _fileedit_get_edit_xml($file, $sess_id = false) {
+function _fileedit_get_edit_xml($file) {
   
   global $user;
   $module_path = drupal_get_path('module', 'fileedit');
@@ -228,16 +236,11 @@ function _fileedit_get_edit_xml($file, $sess_id = false) {
     $file = file_load($file);
   
   $args = _fileedit_get_jar_urls();
-  $sess_id_to_use = $user->sid ? $user->sid : $sess_id; 
-  $args['arguments']['download'] = _fileedit_download_url($file)."/".$sess_id_to_use;
-  $args['arguments']['upload'] = _fileedit_upload_url($file)."/".$sess_id_to_use;
-  $args['arguments']['session'] = $sess_id_to_use;
+  $args['arguments']['download'] = _fileedit_download_url($file)."/".$user->sid;
+  $args['arguments']['upload'] = _fileedit_upload_url($file)."/".$user->sid;
+  $args['arguments']['session'] = $user->sid;
   $args['arguments']['fid'] = $file->fid;
   $args['arguments']['filename'] = $file->filename;
-  $edit_url = _fileedit_edit_url($file);
-  if ($sess_id_to_use)
-    $edit_url .= '/'.$sess_id_to_use;
-  $args['arguments']['edit_url'] = $edit_url;
   $xml = theme('fileedit_xml', array('file' => $file, 'args' => $args));
   $xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;  //wen wir das mit in die tpl Datei packen, gibt das ein Fehler
   
@@ -281,15 +284,6 @@ function _fileedit_get_jar_urls() {
     'httpmime_jar_url' => url('fileedit/getjarfile/httpmime/4.1.2', array('absolute' => true)),
   );
   
-  /*
-  return array(
-    'commons_logging_jar_url' => url($module_path.'/jar/commons-logging-1.1.1.jar', array('absolute' => true)),
-    'httpclient_jar_url' => url($module_path.'/jar/httpclient-4.1.2.jar', array('absolute' => true)),
-    'httpcore_jar_url' => url($module_path.'/jar/httpcore-4.1.2.jar', array('absolute' => true)),
-    'filehandler_jar_url' => url($module_path.'/jar/FileHandler.jar', array('absolute' => true)),
-    'httpmime_jar_url' => url($module_path.'/jar/httpmime-4.1.2.jar', array('absolute' => true)),
-  );
-  */
 }
 
 /**
@@ -341,7 +335,7 @@ function _fileedit_user_by_sid($sid) {
   else {
     $user = db_query("SELECT u.*, s.* FROM {users} u INNER JOIN {sessions} s ON u.uid = s.uid WHERE s.sid = :sid", array(':sid' => $sid))->fetchObject();
   }
-  
+
   return $user;
 }
 

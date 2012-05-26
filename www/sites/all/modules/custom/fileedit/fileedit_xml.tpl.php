@@ -1,6 +1,4 @@
-<jnlp spec="1.0+" href="<?php echo $args['arguments']['edit_url']; ?>">
-    <!--  href="<?php echo $args['arguments']['fid']; ?>.jnlp"
-    href="<?php echo $args['arguments']['edit_url']; ?>"-->
+<jnlp spec="1.0+" href="<?php  echo $args['arguments']['fid']; ?>.jnlp">
     <information>
         <title>File Handler</title>
         <vendor>Bright Solutions GmbH</vendor>
