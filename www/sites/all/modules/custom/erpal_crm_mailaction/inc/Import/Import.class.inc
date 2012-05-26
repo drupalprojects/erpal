@@ -41,8 +41,7 @@ class Import {
 
     // TODO: ATTACHMENTS TO NODE
     
-    $import = new Import ();
-    
+    $import              = new Import ();    
     $import->mailParser  = new MailParser ($subject, $body);
     $body                = $import->mailParser->body;
     $subject             = $import->mailParser->subject;
@@ -54,21 +53,16 @@ class Import {
       ))) {
       $published = FALSE;
       
-      $this->tryCreateUnknownContactIfRequired ($imapContactObject);
+      $import->tryCreateUnknownContactIfRequired ($from);
     }
     
     $import->activityNodeModel->published ($published);
- 
+
     if ($import->activityNodeModel->isCustomerActivityAvailable ($import->mailParser->ticketID, $subject)) {
 
       $import->activityNodeModel->addToCustomerActivity ($import->mailParser->ticketID, $to, $from, $subject, $body, $attachments);
     }else{
-      
-      if (empty ($import->mailParser->ticketID)) {
-        $import->activityNodeModel->insertCustomerActivity ($to, $from, $subject, $body, $attachments);
-      }else{
-        $import->activityNodeModel->addToCustomerActivity ($import->mailParser->ticketID, $to, $from, $subject, $body, $attachments);
-      }
+      $import->activityNodeModel->insertCustomerActivity ($to, $from, $subject, $body, $attachments);
     }
     
     return;
@@ -84,7 +78,7 @@ class Import {
       return;
     }
     
-    $import->contactNodeModel->createUnknownContact($imapContactObject);
+    $this->contactNodeModel->createUnknownContact($imapContactObject);
     
     return;
   }

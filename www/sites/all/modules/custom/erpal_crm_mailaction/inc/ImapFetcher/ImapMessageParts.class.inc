@@ -115,13 +115,29 @@ class ImapMessageParts {
   	switch($encoding) {
   		case 0: return $data; // QUOTED_PRINTABLE
   		case 1: return quoted_printable_decode($data); // 8BIT
-  		case 2: return $data; // BINARY
+  		case 2: return self::decodeBinary ($data); // BINARY
   		case 3: return base64_decode($data); // BASE64
   		case 4: return quoted_printable_decode($data); // QUOTED_PRINTABLE
   		case 5: return $data; // OTHER
   	}
   	
   	
+  }
+  
+  /*
+   * EXPERIMENTAL
+   * Decodes a binary encodes string.
+   */
+  private static function decodeBinary ($input) {
+    
+    $content = '';    
+    $chunks  = explode ("\n", $input);
+    
+    foreach ($chunks as $chunk) {
+      $content .= base64_decode (trim ($chunk));
+    }
+    
+    return $content;
   }
   
   /*

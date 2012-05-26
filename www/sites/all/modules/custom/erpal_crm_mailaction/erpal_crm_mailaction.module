@@ -64,6 +64,25 @@ function erpal_crm_mailaction_cron () {
 }
 
 /*
+ * A simple page wrapper for the cron function.
+ */
+function _erpal_crm_mailaction_cron_page_wrapper () {
+  
+  if (! user_access ('config erpal crm mailaction')) {
+    drupal_access_denied();
+    return;
+  }
+  
+  erpal_crm_mailaction_cron ();
+  
+  drupal_set_message (t('Mails were imported.'));
+  
+  drupal_goto ('admin/erpal/crm-mailaction');
+  
+  return ' ';
+}
+
+/*
  * Implements hook_erpal_crm_mailaction_incoming. 
  */
 function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body, $attachments) {
@@ -101,4 +120,4 @@ function _erpal_crm_mailaction_get_settings ($group, $key, $default_value = NULL
   $settings[$group][$key] :
   $default_value;
 }
- 
+

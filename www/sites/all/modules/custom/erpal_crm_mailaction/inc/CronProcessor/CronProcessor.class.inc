@@ -136,7 +136,8 @@ class CronProcessor {
     }
       
     // Realize protocol settings.
-    switch (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'protocol', FALSE)) {
+    switch (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 
+    'protocol', FALSE)) {
       case '/imap':
         $imap_connection->imap ();
         break;
@@ -147,12 +148,14 @@ class CronProcessor {
     }
     
     // Realize protocol settings.
-    if (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'ssl', FALSE) == '/ssl') {
+    if (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 
+    'ssl', FALSE) == '/ssl') {
       $imap_connection->imap ();
     }
     
     // Realize certificate settings.
-    switch (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'certificate', FALSE)) {
+    switch (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 
+    'certificate', FALSE)) {
       case '/novalidate-cert':
         $imap_connection->doNotValidateCertificates ();
         break;
@@ -161,9 +164,13 @@ class CronProcessor {
         $imap_connection->validateCertificates ();
         break;
     }
-    
-    $imap_connection->port ((integer)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'port', '143'));
-    $imap_connection->host (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'host', 'localhost'));
+     
+    $imap_connection->port ((integer)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 
+    	'port', '143'
+    ));
+    $imap_connection->host (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'host', 
+    	'localhost'
+    ));
     $imap_connection->connect ();
     
     return;

@@ -108,11 +108,11 @@ function erpal_crm_helper_node_view_alter(&$build) {
   
   if (isset ($build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node'])) {
     
-    $build ['links']['node']['#links']['test']  =array ( 
-      'title'=> t('Reply per mail'),
-      'href' => 'mailto: ' . $build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'] . '?subject=Re:' . $build['#node']->title . ' [ticket:' . $build['#node']->nid . ']',
-      'html' => TRUE
-    );
+    $build ['links']['node']['#links']['reply_link']  = _erpal_crm_helper_create_reply_link (
+      $build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'], 
+      $build['#node']->title, 
+      $build['#node']->nid
+    ); 
   }
   
   $comments = isset ($build['comments']['comments']) ? $build['comments']['comments'] : array ();
@@ -121,13 +121,38 @@ function erpal_crm_helper_node_view_alter(&$build) {
     
     if (intval ($id) > 0) {
       
-      $build['comments']['comments'][$id]['links']['comment']['#links']['test']  =array ( 
-      'title'=> t('Reply per mail'),
-      'href' => 'mailto: ' . $comment['#comment']->mail . '?subject=Re:' . $comment['#comment']->subject . ' [ticket:' . $comment['#comment']->nid . ']',
-      'html' => TRUE
-      );
+      $build['comments']['comments'][$id]['links']['comment']['#links']['reply_link'] = _erpal_crm_helper_create_reply_link (
+        $comment['#comment']->mail, 
+        $comment['#comment']->subject, 
+        $comment['#comment']->nid
+      ); 
     }
   }
   
   return;
+}
+
+/*
+ * This function creates the config array for a reply link.
+ * @param 	string $receiver	The email of the receiver.
+ * @param 	string $subject		The subject of the mail.
+ * @param 	string $ticket		The ticket number.
+ * @return	array							A config array for a theme link function.
+ */
+function _erpal_crm_helper_create_reply_link ($receiver, $subject, $ticket) {
+  
+  if (drupal_load ('module', 'erpal_crm_mailaction')) {
+    $cc = _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'cc_box');
+  }
+  
+  return array ( 
+  'title'=> t('Reply per mail'),
+  'href' => 'mailto: ' . 
+    $receiver . 
+    '?subject=Re:' . 
+    $subject . 
+    ' [ticket:' . $ticket . ']' .
+    (isset ($cc) ? '&cc=' . $cc : ''),
+  'html' => TRUE
+  );
 }

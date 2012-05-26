@@ -126,7 +126,7 @@ class ImapFetcher {
 	 */
 	public function readUnseen () {
 		
-		return $this->read ('ALL UNDELETED');
+		return $this->read ('UNSEEN');
 	}
 }
 
