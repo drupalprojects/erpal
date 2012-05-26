@@ -4,6 +4,7 @@
  * Code for the fileedit module.
  */
 
+ 
 /**
 * Implements hook_menu
 */ 
@@ -44,7 +45,7 @@ function fileedit_menu(){
   
   return $items;
 }
-
+  
 /**
 * Implements hook_permission
 */
@@ -73,12 +74,10 @@ function fileedit_theme() {
 * Access Callback URL for downloading URL
 */
 function fileedit_download_access($fid, $sid) {
-  // TODO fixen!
-  return true;
 
   //user must have a valid session ID
   $auser = _fileedit_user_by_sid($sid);
-  
+ 
   if (!is_object($auser))
     return false;
 
@@ -89,7 +88,7 @@ function fileedit_download_access($fid, $sid) {
 * Access Callback for Edit Request
 */
 function fileedit_edit_access($fid) {
-  return true;
+  return true; // FIXME
   $general_access = user_access('use file edit');
   
   if (!$general_access)
@@ -112,6 +111,7 @@ function fileedit_edit($fid) {
   if (!$user->uid)
     $sess_id = arg(3);
 
+  //and then return the xml file
   $xml = _fileedit_get_edit_xml($fid, $sess_id);
   die($xml);
 }
@@ -170,8 +170,6 @@ function fileedit_upload($fid) {
 * Access Callback URL for uploading URL
 */
 function fileedit_upload_access($fid, $sid) {
-  // TODO fixen!
-  return true;
   
   //user must have a valid session ID
   $auser = _fileedit_user_by_sid($sid);
@@ -212,6 +210,7 @@ function _fileedit_file_edit_allowed($fid, $auser=false) {
 * Implements hook_theme_registry_alter
 */
 function fileedit_theme_registry_alter(&$registry) {
+  
   $registry['file_link']['preprocess functions'][] = 'fileedit_file_link_preprocess';
   $registry['file_link']['function'] = 'theme_file_link_fileedit';
 }
@@ -296,15 +295,6 @@ function _fileedit_get_jar_urls() {
     'httpmime_jar_url' => url('fileedit/getjarfile/httpmime/4.1.2', array('absolute' => true)),
   );
   
-  /*
-  return array(
-    'commons_logging_jar_url' => url($module_path.'/jar/commons-logging-1.1.1.jar', array('absolute' => true)),
-    'httpclient_jar_url' => url($module_path.'/jar/httpclient-4.1.2.jar', array('absolute' => true)),
-    'httpcore_jar_url' => url($module_path.'/jar/httpcore-4.1.2.jar', array('absolute' => true)),
-    'filehandler_jar_url' => url($module_path.'/jar/FileHandler.jar', array('absolute' => true)),
-    'httpmime_jar_url' => url($module_path.'/jar/httpmime-4.1.2.jar', array('absolute' => true)),
-  );
-  */
 }
 
 /**
@@ -356,7 +346,7 @@ function _fileedit_user_by_sid($sid) {
   else {
     $user = db_query("SELECT u.*, s.* FROM {users} u INNER JOIN {sessions} s ON u.uid = s.uid WHERE s.sid = :sid", array(':sid' => $sid))->fetchObject();
   }
-  
+
   return $user;
 }
 
