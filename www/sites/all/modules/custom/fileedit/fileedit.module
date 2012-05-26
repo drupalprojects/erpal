@@ -145,9 +145,25 @@ function fileedit_download($fid) {
 * Callback URL for uploading URL
 */
 function fileedit_upload($fid) {
-  //@todo
+  //@todo handle revisions if revisions should be created at this entity bundle
   print_r($_FILES);
-  die('upload');
+  $tmp_name = $_FILES['userfile']['tmp_name'];
+  
+  //load the file
+  $file = file_load(array($fid));
+  $uri = $file->uri;
+  //save the new file back to its uri
+  drupal_move_uploaded_file($tmp_name, $uri);
+  
+  print_r($file);
+  die();
+  echo $fid."--".$tmp_name;
+  die();
+
+  //@todo do something if the file was not uploaded successfully
+  
+  
+  //file_save_upload($tmp_name, );
 }
 
 /**
@@ -196,7 +212,6 @@ function _fileedit_file_edit_allowed($fid, $auser=false) {
 * Implements hook_theme_registry_alter
 */
 function fileedit_theme_registry_alter(&$registry) {
-  
   $registry['file_link']['preprocess functions'][] = 'fileedit_file_link_preprocess';
   $registry['file_link']['function'] = 'theme_file_link_fileedit';
 }
