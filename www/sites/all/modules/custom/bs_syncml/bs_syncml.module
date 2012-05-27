@@ -20,11 +20,11 @@ function bs_syncml_init() {
 //  
 //  $job->removeSyncJob($jid);
   
-  $syncd = new BsSyncMlDataHandler();
-  
-  $data = "aasdf".time();
-  
-  dpm(BsSyncMlDataHandler::create($data));
+//  $syncd = new BsSyncMlDataHandler();
+//  
+//  $data = "aasdf".time();
+//  
+//  dpm(BsSyncMlDataHandler::create($data));
   
 }
 
