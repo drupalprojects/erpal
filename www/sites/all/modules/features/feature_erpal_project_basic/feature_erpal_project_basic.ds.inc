@@ -71,6 +71,110 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
 
   $ds_layout = new stdClass();
   $ds_layout->api_version = 1;
+  $ds_layout->id = 'node|erpal_project|form';
+  $ds_layout->entity_type = 'node';
+  $ds_layout->bundle = 'erpal_project';
+  $ds_layout->view_mode = 'form';
+  $ds_layout->layout = 'ds_form';
+  $ds_layout->settings = array(
+    'hide_empty_regions' => 1,
+    'hide_sidebars' => FALSE,
+    'regions' => array(
+      'header' => array(
+        0 => 'title',
+        1 => 'body',
+      ),
+      'left' => array(
+        0 => 'field_date',
+        1 => 'field_project_status',
+        2 => 'field_project_contacts',
+        3 => 'field_customer_ref',
+        4 => 'field_activity_ref',
+        5 => 'field_book_ref',
+      ),
+      'right' => array(
+        0 => 'field_pricing',
+        1 => 'field_project_tags',
+      ),
+      'footer' => array(
+        0 => 'status',
+        1 => 'submit',
+        2 => 'delete',
+      ),
+      'hidden' => array(
+        0 => 'menu',
+        1 => 'name',
+        2 => 'enabled',
+        3 => 'comment',
+        4 => 'date',
+        5 => 'alias',
+        6 => 'revision',
+        7 => 'link_title',
+        8 => 'log',
+        9 => 'promote',
+        10 => 'description',
+        11 => 'link',
+        12 => 'parent',
+        13 => 'sticky',
+        14 => 'weight',
+        15 => 'preview',
+        16 => 'preview_changes',
+        17 => 'revision_information',
+        18 => 'path',
+        19 => 'comment_settings',
+        20 => 'author',
+        21 => 'options',
+        22 => 'additional_settings',
+        23 => 'actions',
+        24 => '_add_existing_field',
+      ),
+    ),
+    'fields' => array(
+      'title' => 'header',
+      'body' => 'header',
+      'field_date' => 'left',
+      'field_project_status' => 'left',
+      'field_project_contacts' => 'left',
+      'field_customer_ref' => 'left',
+      'field_activity_ref' => 'left',
+      'field_book_ref' => 'left',
+      'field_pricing' => 'right',
+      'field_project_tags' => 'right',
+      'status' => 'footer',
+      'submit' => 'footer',
+      'delete' => 'footer',
+      'menu' => 'hidden',
+      'name' => 'hidden',
+      'enabled' => 'hidden',
+      'comment' => 'hidden',
+      'date' => 'hidden',
+      'alias' => 'hidden',
+      'revision' => 'hidden',
+      'link_title' => 'hidden',
+      'log' => 'hidden',
+      'promote' => 'hidden',
+      'description' => 'hidden',
+      'link' => 'hidden',
+      'parent' => 'hidden',
+      'sticky' => 'hidden',
+      'weight' => 'hidden',
+      'preview' => 'hidden',
+      'preview_changes' => 'hidden',
+      'revision_information' => 'hidden',
+      'path' => 'hidden',
+      'comment_settings' => 'hidden',
+      'author' => 'hidden',
+      'options' => 'hidden',
+      'additional_settings' => 'hidden',
+      'actions' => 'hidden',
+      '_add_existing_field' => 'hidden',
+    ),
+    'classes' => array(),
+  );
+  $export['node|erpal_project|form'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
   $ds_layout->id = 'node|erpal_project|full';
   $ds_layout->entity_type = 'node';
   $ds_layout->bundle = 'erpal_project';
@@ -114,6 +218,120 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
     'classes' => array(),
   );
   $export['node|erpal_project|full'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
+  $ds_layout->id = 'node|erpal_task|form';
+  $ds_layout->entity_type = 'node';
+  $ds_layout->bundle = 'erpal_task';
+  $ds_layout->view_mode = 'form';
+  $ds_layout->layout = 'ds_form';
+  $ds_layout->settings = array(
+    'hide_empty_regions' => 1,
+    'hide_sidebars' => FALSE,
+    'regions' => array(
+      'left' => array(
+        0 => 'field_date',
+        1 => 'field_estimated_time',
+        2 => 'field_task_type',
+        3 => 'group_task_time_group',
+        4 => 'field_parent',
+        5 => 'field_progress_percent',
+        6 => 'field_task_status',
+      ),
+      'header' => array(
+        0 => 'title',
+        1 => 'field_project_ref',
+        2 => 'body',
+      ),
+      'right' => array(
+        0 => 'field_pricing',
+        1 => 'field_task_assigned_users',
+      ),
+      'footer' => array(
+        0 => 'field_project_tags',
+        1 => 'field_task_exclude_from',
+        2 => 'status',
+        3 => 'submit',
+        4 => 'delete',
+        5 => 'comment_settings',
+      ),
+      'hidden' => array(
+        0 => 'description',
+        1 => 'parent',
+        2 => 'revision',
+        3 => 'comment',
+        4 => 'weight',
+        5 => 'menu',
+        6 => 'name',
+        7 => 'link_title',
+        8 => 'enabled',
+        9 => 'alias',
+        10 => 'date',
+        11 => 'link',
+        12 => 'promote',
+        13 => 'log',
+        14 => 'sticky',
+        15 => 'preview',
+        16 => 'preview_changes',
+        17 => 'field_weight',
+        18 => 'revision_information',
+        19 => 'path',
+        20 => 'author',
+        21 => 'options',
+        22 => 'additional_settings',
+        23 => 'actions',
+        24 => '_add_existing_field',
+      ),
+    ),
+    'fields' => array(
+      'field_date' => 'left',
+      'field_estimated_time' => 'left',
+      'title' => 'header',
+      'field_project_ref' => 'header',
+      'body' => 'header',
+      'field_task_type' => 'left',
+      'group_task_time_group' => 'left',
+      'field_parent' => 'left',
+      'field_progress_percent' => 'left',
+      'field_task_status' => 'left',
+      'field_pricing' => 'right',
+      'field_project_tags' => 'footer',
+      'field_task_assigned_users' => 'right',
+      'field_task_exclude_from' => 'footer',
+      'status' => 'footer',
+      'submit' => 'footer',
+      'delete' => 'footer',
+      'comment_settings' => 'footer',
+      'description' => 'hidden',
+      'parent' => 'hidden',
+      'revision' => 'hidden',
+      'comment' => 'hidden',
+      'weight' => 'hidden',
+      'menu' => 'hidden',
+      'name' => 'hidden',
+      'link_title' => 'hidden',
+      'enabled' => 'hidden',
+      'alias' => 'hidden',
+      'date' => 'hidden',
+      'link' => 'hidden',
+      'promote' => 'hidden',
+      'log' => 'hidden',
+      'sticky' => 'hidden',
+      'preview' => 'hidden',
+      'preview_changes' => 'hidden',
+      'field_weight' => 'hidden',
+      'revision_information' => 'hidden',
+      'path' => 'hidden',
+      'author' => 'hidden',
+      'options' => 'hidden',
+      'additional_settings' => 'hidden',
+      'actions' => 'hidden',
+      '_add_existing_field' => 'hidden',
+    ),
+    'classes' => array(),
+  );
+  $export['node|erpal_task|form'] = $ds_layout;
 
   $ds_layout = new stdClass();
   $ds_layout->api_version = 1;

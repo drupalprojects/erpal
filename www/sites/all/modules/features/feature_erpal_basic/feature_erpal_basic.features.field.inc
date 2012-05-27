@@ -901,16 +901,11 @@ function feature_erpal_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection_table',
+          'module' => 'field_collection',
           'settings' => array(
-            'add' => 'Add',
-            'delete' => 'Delete',
-            'description' => TRUE,
-            'edit' => 'Edit',
-            'empty' => TRUE,
             'view_mode' => 'full',
           ),
-          'type' => 'field_collection_table_view',
+          'type' => 'field_collection_fields',
           'weight' => '18',
         ),
         'teaser' => array(
@@ -2123,16 +2118,11 @@ function feature_erpal_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection_table',
+          'module' => 'field_collection',
           'settings' => array(
-            'add' => 'Add',
-            'delete' => 'Delete',
-            'description' => TRUE,
-            'edit' => 'Edit',
-            'empty' => TRUE,
             'view_mode' => 'full',
           ),
-          'type' => 'field_collection_table_view',
+          'type' => 'field_collection_fields',
           'weight' => '13',
         ),
         'teaser' => array(
@@ -2603,7 +2593,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '3',
       ),
     ),
   );

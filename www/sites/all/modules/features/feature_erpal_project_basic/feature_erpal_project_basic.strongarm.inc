@@ -230,7 +230,88 @@ function feature_erpal_project_basic_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
+        ),
+        'additional_settings' => array(
+          'weight' => '35',
+        ),
+        'revision_information' => array(
+          'weight' => '30',
+        ),
+        'revision' => array(
+          'weight' => '19',
+        ),
+        'log' => array(
+          'weight' => '21',
+        ),
+        'author' => array(
+          'weight' => '33',
+        ),
+        'name' => array(
+          'weight' => '14',
+        ),
+        'date' => array(
+          'weight' => '17',
+        ),
+        'options' => array(
+          'weight' => '34',
+        ),
+        'status' => array(
+          'weight' => '10',
+        ),
+        'promote' => array(
+          'weight' => '22',
+        ),
+        'sticky' => array(
+          'weight' => '26',
+        ),
+        'actions' => array(
+          'weight' => '36',
+        ),
+        'submit' => array(
+          'weight' => '11',
+        ),
+        'preview' => array(
+          'weight' => '28',
+        ),
+        'delete' => array(
+          'weight' => '12',
+        ),
+        'preview_changes' => array(
+          'weight' => '29',
+        ),
+        'comment_settings' => array(
+          'weight' => '32',
+        ),
+        'comment' => array(
+          'weight' => '16',
+        ),
+        'menu' => array(
+          'weight' => '13',
+        ),
+        'enabled' => array(
+          'weight' => '15',
+        ),
+        'link' => array(
+          'weight' => '24',
+        ),
+        'link_title' => array(
+          'weight' => '20',
+        ),
+        'description' => array(
+          'weight' => '23',
+        ),
+        'parent' => array(
+          'weight' => '25',
+        ),
+        'weight' => array(
+          'weight' => '27',
+        ),
+        'path' => array(
+          'weight' => '31',
+        ),
+        'alias' => array(
+          'weight' => '18',
         ),
       ),
       'display' => array(),
@@ -266,7 +347,88 @@ function feature_erpal_project_basic_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
+        ),
+        'additional_settings' => array(
+          'weight' => '38',
+        ),
+        'revision_information' => array(
+          'weight' => '34',
+        ),
+        'revision' => array(
+          'weight' => '18',
+        ),
+        'log' => array(
+          'weight' => '29',
+        ),
+        'author' => array(
+          'weight' => '36',
+        ),
+        'name' => array(
+          'weight' => '22',
+        ),
+        'date' => array(
+          'weight' => '26',
+        ),
+        'options' => array(
+          'weight' => '37',
+        ),
+        'status' => array(
+          'weight' => '12',
+        ),
+        'promote' => array(
+          'weight' => '28',
+        ),
+        'sticky' => array(
+          'weight' => '30',
+        ),
+        'actions' => array(
+          'weight' => '39',
+        ),
+        'submit' => array(
+          'weight' => '13',
+        ),
+        'preview' => array(
+          'weight' => '31',
+        ),
+        'delete' => array(
+          'weight' => '14',
+        ),
+        'preview_changes' => array(
+          'weight' => '32',
+        ),
+        'comment_settings' => array(
+          'weight' => '15',
+        ),
+        'comment' => array(
+          'weight' => '19',
+        ),
+        'menu' => array(
+          'weight' => '21',
+        ),
+        'enabled' => array(
+          'weight' => '24',
+        ),
+        'link' => array(
+          'weight' => '27',
+        ),
+        'link_title' => array(
+          'weight' => '23',
+        ),
+        'description' => array(
+          'weight' => '16',
+        ),
+        'parent' => array(
+          'weight' => '17',
+        ),
+        'weight' => array(
+          'weight' => '20',
+        ),
+        'path' => array(
+          'weight' => '35',
+        ),
+        'alias' => array(
+          'weight' => '25',
         ),
       ),
       'display' => array(),
