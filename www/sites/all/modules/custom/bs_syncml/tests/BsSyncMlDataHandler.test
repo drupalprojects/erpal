@@ -26,7 +26,7 @@ class BsSyncMlDataHandlerTestCase extends DrupalWebTestCase {
     $nid = 1;
     $data = 'TEST';
     //Insert it
-    BsSyncMlDataHandler::create($nid, $data);
+    BsSyncMlDataHandler::create($data, $nid);
 
     //Now read it
 

@@ -6,9 +6,8 @@
  * 
  */
 
-
 function bs_syncml_schema() {
-  
+
   $schema['bs_syncml_items'] = array(
       'description' => 'Stores all synced items.',
       'fields' => array(
@@ -41,12 +40,12 @@ function bs_syncml_schema() {
           ),
       ),
       'primary key' => array('sid', 'nid'),
-      'indexes'   => array (
+      'indexes' => array(
           'i_nid_sid' => array('nid', 'sid')
       )
   );
-  
-  
+
+
   $schema['bs_syncml_jobs'] = array(
       'description' => 'Stores all synced items.',
       'fields' => array(
@@ -80,36 +79,8 @@ function bs_syncml_schema() {
       ),
       'primary key' => array('jid'),
   );
-  
-  
-  $schema['bs_syncml_profiles'] = array(
-      'description' => 'Stores all BS SyncML Profiles.',
-      'fields' => array(
-          'pid' => array(
-              'type' => 'serial',
-              'not null' => TRUE,
-              'description' => 'The Profile ID.',
-          ),
-          'name' => array(
-             'type' => 'varchar',
-              'length' => '64',
-              'not null' => TRUE,
-              'description' => 'The Profile machine name',
-          ),
-          'data' => array(
-              'type' => 'blob',
-              'size' => 'big',
-              'not null' => TRUE,
-              'serialize' => TRUE,
-              'description' => 'Serialized data containing the node-ids.',
-          ),
-      ),
-      'primary key' => array('pid'),
-      'indexes' =>  array(
-          'i_name'=>array('name')
-          )
-  );
-  
+
+
   $schema['bs_syncml_contentrelation'] = array(
       'description' => 'Stores the relation: Contenttype->Plugin.',
       'fields' => array(
@@ -119,7 +90,7 @@ function bs_syncml_schema() {
               'description' => 'ID.',
           ),
           'contenttype' => array(
-             'type' => 'varchar',
+              'type' => 'varchar',
               'length' => '64',
               'not null' => TRUE,
               'description' => 'The machine name of the content-type',
@@ -133,11 +104,11 @@ function bs_syncml_schema() {
           ),
       ),
       'primary key' => array('id'),
-      'indexes' =>  array(
-          'i_contenttype'=>array('contenttype')
-          )
+      'indexes' => array(
+          'i_contenttype' => array('contenttype')
+      )
   );
-  
-  
+
+
   return $schema;
 }

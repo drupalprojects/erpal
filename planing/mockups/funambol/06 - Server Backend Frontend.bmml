@@ -1,4 +1,4 @@
-<mockup version="1.0" skin="sketch" measuredW="2403" measuredH="946" mockupW="2321" mockupH="935">
+<mockup version="1.0" skin="sketch" measuredW="2403" measuredH="869" mockupW="2321" mockupH="858">
   <controls>
     <control controlID="0" controlTypeID="com.balsamiq.mockups::Canvas" x="82" y="11" w="528" h="70" measuredW="100" measuredH="70" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
@@ -223,11 +223,6 @@
     <control controlID="50" controlTypeID="com.balsamiq.mockups::SubTitle" x="843" y="116" w="-1" h="-1" measuredW="396" measuredH="33" zOrder="43" locked="false" isInGroup="-1">
       <controlProperties>
         <text>SyncDataHandler%20%28Statische%20Klasse%29</text>
-      </controlProperties>
-    </control>
-    <control controlID="51" controlTypeID="com.balsamiq.mockups::Title" x="116" y="893" w="1848" h="-1" measuredW="1235" measuredH="53" zOrder="44" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Extrem%20Grobe%20Aufwandsch%E4tzung%3A%205%20+%2016%20+%206%20+%2016%20+%2016%20+%2040%28%3F%29%20%3D%2099%20+X</text>
       </controlProperties>
     </control>
   </controls>

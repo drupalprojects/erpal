@@ -1,16 +1,15 @@
 <?php
 
-/*
+/**
  * @author Sebastian Kauschke, Bright Solutions GmbH
  * 
  * This class describes a SyncMl Profile and has methods to Create, Load and Update it.
  */
-
 Class BsSyncMlProfile {
 
   private $pid = null;
   private $name = null;
-  public  $data = array();
+  public $data = array();
 
   public function __construct($name=null, $data=null) {
 
@@ -22,74 +21,88 @@ Class BsSyncMlProfile {
     }
   }
 
-  /*
+  /**
+   * 
+   * @return int Profile ID
+   */
+  public function getPid() {
+
+    return $this->pid;
+  }
+
+  /**
+   * @return string The Machine name
+   */
+  public function getName() {
+
+    return $this->name;
+  }
+
+  /**
    * Saves the object into the database
    */
-
   public function save() {
 
     if ($this->pid) {
-      $res = $this->updateDb();      
+      $res = $this->updateDb();
     } elseif (!$this->pid) {
-      $res = $this->insertIntoDb();      
+      $res = $this->insertIntoDb();
     }
     else
       return false;
-    
+
     return $res;
   }
 
-  /*
+  /**
    * Updates the object in the database
    */
-
   private function updateDb() {
-    
-    if(!$this->checkNameExists($this->name)) {
+
+    if ($this->checkNameExists($this->name)) {
       db_update("bs_syncml_profiles")
-            ->fields(array(
-                'name' => $this->name,
-                'data' => serialize($this->data),
-            ))
-            ->condition('pid', $this->pid)
-            ->execute();
+              ->fields(array(
+                  'name' => $this->name,
+                  'data' => serialize($this->data),
+              ))
+              ->condition('pid', $this->pid)
+              ->execute();
       return true;
     }
     return false;
   }
 
-  /*
+  /**
    * Inserts a new Line in the Database
    */
-
   private function insertIntoDb() {
-    
-     if(!$this->checkNameExists($this->name)) {
-    $pid = db_insert("bs_syncml_profiles")
-                    ->fields(array(
-                        'name' => $this->name,
-                        'data' => serialize($this->data),
-                    ))->execute();
-    $this->pid = $pid['pid'];
-    return $this->pid;
-     }
-     return false;
-  }
-  
-  private function checkNameExists($name) {
-    $profiles = db_select('bs_syncml_profiles', 'p')
-              ->fields('p')
-              ->condition("name", $name, "=")            
-              ->execute()
-              ->fetchAssoc();
-    if($profiles['pid']) return true;
+
+    if (!$this->checkNameExists($this->name)) {
+      $pid = db_insert("bs_syncml_profiles")
+                      ->fields(array(
+                          'name' => $this->name,
+                          'data' => serialize($this->data),
+                      ))->execute();
+      $this->pid = $pid['pid'];
+      return $this->pid;
+    }
     return false;
   }
 
-  /*
+  private function checkNameExists($name) {
+    $profiles = db_select('bs_syncml_profiles', 'p')
+            ->fields('p')
+            ->condition("name", $name, "=")
+            ->execute()
+            ->fetchAssoc();
+    if ($profiles['pid'])
+      return true;
+    return false;
+  }
+
+  /**
    * Loads a profile from Database via the pid or machine name
    */
-
   public function load($profile) {
 
     $result = null;
@@ -117,17 +130,25 @@ Class BsSyncMlProfile {
       $this->name = $result['name'];
       if (isset($result['data']))
         $this->data = unserialize($result['data']);
-      
+
       return true;
     }
-    
+
     return false;
   }
 
+  /**
+   *
+   * @return array The Profile Data array
+   */
   public function getData() {
     return $this->data;
   }
 
+  /**
+   *
+   * @param array $data The Profile Data array 
+   */
   public function setData($data) {
     $this->data = $data;
   }

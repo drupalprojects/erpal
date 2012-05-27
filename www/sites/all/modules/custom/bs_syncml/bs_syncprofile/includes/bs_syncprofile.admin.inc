@@ -39,6 +39,15 @@ function bs_syncprofile_addprofile_form($form, &$form_state) {
       '#required'     => true,
       '#description'  => t("Choose a machine readable name for this profile. Avoid whitespace and special characters.")
   );
+  
+  $form['plugin'] = array(
+      '#type'         => 'select',
+      '#title'        => t("Content Plugin"),
+      '#required'     => true,
+      '#options'      => bs_syncprofile_getPluginSelection(),
+      '#description'  => t("Choose a Content Plugin.")
+  );
+  
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t("Create Profile")
@@ -84,6 +93,7 @@ function bs_syncprofile_addprofile_form_submit($form, &$form_state) {
   $data = array();
   $data['profilename']  = $values['profilename'];
   $data['serverurl']    = $values['serverurl'];
+  $data['plugin']       = $values['plugin'];
   
   $profile->setData($data);
   $profile->save();

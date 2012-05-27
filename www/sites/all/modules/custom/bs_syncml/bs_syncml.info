@@ -14,4 +14,7 @@ files[] = bs_syncml.install
 
 files[] = tests/BsSyncMlDataHandler.test
 
+files[] = includes/BsSyncMlDataHandler.inc
+files[] = includes/BsSyncJobHandler.inc
+
 configure = admin/configuration/bs_syncml
