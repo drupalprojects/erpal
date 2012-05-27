@@ -19,19 +19,19 @@ class BsSyncMlDataHandler {
 
   /**
    *  Wrapper for db_insert
-   * @param array $params
+   * @param String $data
+   * @param int $nid
    * @return type 
    */
-
-  static function create($nid,$data) {
+  static function create($data, $nid = null) {
     $fields = array(
-        'nid' => $nid,
+        'nid' => isset($nid) ? $nid : 0,
         'timestamp' => time(),
         'changed' => 1,
         'data' => $data,
     );
-    $result = db_insert(self::$tablename)->fields($fields);
-    $result->execute();
+    $query = db_insert(self::$tablename)->fields($fields);
+    $result = $query->execute();
     return $result;
   }
 
