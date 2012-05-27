@@ -71,6 +71,7 @@ features[variable][] = comment_preview_erpal_book
 features[variable][] = comment_preview_erpal_book_page
 features[variable][] = comment_subject_field_erpal_book
 features[variable][] = comment_subject_field_erpal_book_page
+features[variable][] = field_bundle_settings_node__erpal_book_page
 features[variable][] = language_content_type_erpal_book
 features[variable][] = language_content_type_erpal_book_page
 features[variable][] = menu_options_erpal_book

@@ -27,11 +27,6 @@ function feature_erpal_basic_ds_field_settings_info() {
       'label' => 'hidden',
       'format' => 'default',
     ),
-    'comments' => array(
-      'weight' => '19',
-      'label' => 'hidden',
-      'format' => 'default',
-    ),
     'author' => array(
       'weight' => '4',
       'label' => 'hidden',
@@ -92,9 +87,6 @@ function feature_erpal_basic_ds_layout_settings_info() {
         8 => 'field_email',
         9 => 'field_fax',
       ),
-      'footer' => array(
-        0 => 'comments',
-      ),
     ),
     'fields' => array(
       'links' => 'header',
@@ -106,6 +98,8 @@ function feature_erpal_basic_ds_layout_settings_info() {
       'field_birthday' => 'left',
       'field_contact_tags' => 'left',
       'field_gender' => 'left',
+      'field_customer_category' => 'left',
+      'field_legal_other' => 'left',
       'field_addresses' => 'right',
       'field_website' => 'right',
       'field_phone' => 'right',
@@ -116,9 +110,6 @@ function feature_erpal_basic_ds_layout_settings_info() {
       'field_bank_accounts' => 'right',
       'field_email' => 'right',
       'field_fax' => 'right',
-      'comments' => 'footer',
-      'field_customer_category' => 'left',
-      'field_legal_other' => 'left',
     ),
     'classes' => array(),
   );

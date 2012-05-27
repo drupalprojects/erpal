@@ -41,6 +41,13 @@ function feature_erpal_invoice_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'billable_customer_type';
+  $strongarm->value = 'erpal_contact';
+  $export['billable_customer_type'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'comment_anonymous_erpal_invoice';
   $strongarm->value = 0;
   $export['comment_anonymous_erpal_invoice'] = $strongarm;

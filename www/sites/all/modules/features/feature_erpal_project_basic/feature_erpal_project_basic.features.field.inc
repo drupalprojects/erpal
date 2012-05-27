@@ -714,13 +714,9 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'module' => 'field_collection',
           'settings' => array(
-            'add' => 'Add',
-            'delete' => 'Delete',
-            'description' => TRUE,
-            'edit' => 'Edit',
             'view_mode' => 'full',
           ),
-          'type' => 'field_collection_view',
+          'type' => 'field_collection_fields',
           'weight' => '6',
         ),
         'teaser' => array(
@@ -870,13 +866,20 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '0',
+          'weight' => '3',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -954,13 +957,26 @@ function feature_erpal_project_basic_field_default_fields() {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => '1',
+          'weight' => '5',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+          ),
+          'type' => 'date_default',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1033,13 +1049,25 @@ function feature_erpal_project_basic_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '2',
+          'weight' => '4',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1129,7 +1157,14 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 15,
+          'weight' => '8',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1199,13 +1234,22 @@ function feature_erpal_project_basic_field_default_fields() {
             'edit' => 'Edit',
           ),
           'type' => 'field_collection_list',
-          'weight' => '5',
+          'weight' => '11',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'field_collection',
+          'settings' => array(
+            'view_mode' => 'full',
+          ),
+          'type' => 'field_collection_fields',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1276,10 +1320,16 @@ function feature_erpal_project_basic_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '19',
+        ),
+        'full' => array(
+          'label' => 'above',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '12',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1358,13 +1408,20 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '7',
+          'weight' => '12',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1454,7 +1511,14 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'user_reference',
           'settings' => array(),
           'type' => 'user_reference_default',
-          'weight' => '10',
+          'weight' => '7',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1516,7 +1580,14 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 17,
+          'weight' => '9',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1588,13 +1659,20 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '9',
+          'weight' => '10',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1661,13 +1739,20 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '8',
+          'weight' => '6',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1722,15 +1807,15 @@ function feature_erpal_project_basic_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_integer',
-          'weight' => 16,
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '20',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',

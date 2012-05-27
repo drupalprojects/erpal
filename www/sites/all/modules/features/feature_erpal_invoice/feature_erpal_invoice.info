@@ -76,6 +76,7 @@ features[variable][] = additional_settings__active_tab_erpal_invoice
 features[variable][] = ant_erpal_invoice
 features[variable][] = ant_pattern_erpal_invoice
 features[variable][] = ant_php_erpal_invoice
+features[variable][] = billable_customer_type
 features[variable][] = comment_anonymous_erpal_invoice
 features[variable][] = comment_default_mode_erpal_invoice
 features[variable][] = comment_default_per_page_erpal_invoice

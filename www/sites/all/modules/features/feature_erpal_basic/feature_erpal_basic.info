@@ -109,6 +109,7 @@ features[variable][] = date_format_german_date_only
 features[variable][] = date_format_german_date_time
 features[variable][] = date_format_int_date_only
 features[variable][] = date_format_int_date_time
+features[variable][] = field_bundle_settings_node__erpal_contact
 features[variable][] = language_content_type_erpal_contact
 features[variable][] = menu_options_erpal_contact
 features[variable][] = menu_parent_erpal_contact
