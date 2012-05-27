@@ -56,6 +56,6 @@ function _erpal_basic_helper_relation_endpoint_field_create_html_table($endpoint
 /**
 * Alter the relation add block,to replace "Endpoint 2" label with something concrete!
 */
-function _erpal_invoice_helper_relation_add_block_form_alter(&$form, &$form_state) {
+function _erpal_basic_helper_relation_add_block_form_alter(&$form, &$form_state) {
   $form['relation_options']['targets']['target_2']['#title'] = t('In relation with');
 }
