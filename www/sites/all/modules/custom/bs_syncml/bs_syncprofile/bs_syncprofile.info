@@ -12,6 +12,10 @@ core = 7.x
 files[] = bs_syncprofile.module
 files[] = bs_syncprofile.install
 
+files[] = tests/bs_syncprofile.test
+
+files[] = css/syncprofile.css
+
 configure = admin/configuration/bs_syncml/profile
 
 dependencies[] = bs_syncml

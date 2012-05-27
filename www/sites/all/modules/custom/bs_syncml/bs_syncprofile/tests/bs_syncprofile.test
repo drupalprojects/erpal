@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * 
+ *
+ * @author Sebastian Kauschke
+ */
+class BsSyncProfileUserAccountCRUDTest extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+        'name' => 'BsSyncProfileUserAccountCRUD Test',
+        'description' => 'Test the CRUD-Methods of the User Account Handler.',
+        'group' => 'BS Sync',
+    );
+  }
+
+  function setUp() {
+    parent::setUp('bs_syncprofile');
+  }
+
+  public function testUserAccountHandler() {
+
+    // First step: Create four accounts with three users and two different profiles
+    BsSyncProfileUserAccounts::write(1, 'testprofile', 1, 'user1testname', 'user1testpass');
+    BsSyncProfileUserAccounts::write(1, 'testprofile2', 1, 'user1testname', 'user1testpass');
+    BsSyncProfileUserAccounts::write(2, 'testprofile', 1, 'user2testname', 'user2testpass');
+    BsSyncProfileUserAccounts::write(3, 'testprofile', 1, 'user3testname', 'user3testpass');
+
+    // Read the profiles via the profilename
+    $res = BsSyncProfileUserAccounts::get_accounts_via_profile("testprofile");    
+    $this->assertEqual(count($res), 3, 'Getting Items via the profilename');
+    
+    // Read the profiles via the profilename
+    $res = BsSyncProfileUserAccounts::get_accounts_via_profile("testprofile2");    
+    $this->assertEqual(count($res), 1, 'Getting Items via the profilename');
+    
+    // Read the profiles via the profilename
+    $res = BsSyncProfileUserAccounts::get_accounts_via_uid(1);    
+    $this->assertEqual(count($res), 2, 'Getting Items via the user id');
+    
+    // Read a single profile
+    $profile = BsSyncProfileUserAccounts::read(1, "testprofile");
+    $this->assertEqual($profile['enabled'], 1, "Check Profile loading 'enabled'");
+    $this->assertEqual($profile['account'], 'user1testname', "Check Profile loading 'account'");
+    $this->assertEqual($profile['pass'], 'user1testpass', "Check Profile loading 'password'");
+    
+    
+    // Update a single profile and read it again
+    BsSyncProfileUserAccounts::write(1, "testprofile", 0, 'user1testnameupdated', 'user1testpassupdated');
+    $profile = BsSyncProfileUserAccounts::read(1, "testprofile");
+    $this->assertEqual($profile['enabled'], 0, "Check Profile update 'enabled'");
+    $this->assertEqual($profile['account'], 'user1testnameupdated', "Check Profile update 'account'");
+    $this->assertEqual($profile['pass'], 'user1testpassupdated', "Check Profile update 'account'");
+  }
+
+}
+
