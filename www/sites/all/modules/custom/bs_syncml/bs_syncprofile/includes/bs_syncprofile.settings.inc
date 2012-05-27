@@ -16,7 +16,6 @@ function bs_syncprofile_profile_page($profilename, $tab=null) {
   if ($profile->load($profilename)) {
 
     $profiledata = $profile->getData();
-    dpm($profiledata);
 
     if ($tab) {
 
@@ -29,6 +28,11 @@ function bs_syncprofile_profile_page($profilename, $tab=null) {
           break;
         case 'access':
           return drupal_get_form("bs_syncprofile_access_form", $profile->getData(), $profilename);
+          break;
+        case 'content':
+          // Find the config form for the currently set Plugin to this profile.
+          $plugins = bs_syncprofile_getAllPlugins();
+          return drupal_get_form($plugins[$profiledata['plugin']]['form'], $profile->getData(), $profilename);
           break;
       }
     } else {
@@ -84,6 +88,15 @@ function bs_syncprofile_serversettings_form($form, $form_state, $profile, $profi
       '#required' => true,
       '#default_value' => isset($profile['serverurl']) ? $profile['serverurl'] : "",
       '#description' => t("e.g. <em>http://my.funambol.com:8888/ds</em>")
+  );
+  
+  $form['plugin'] = array(
+      '#type'         => 'select',
+      '#title'        => t("Content Plugin"),
+      '#required'     => true,
+      '#options'      => bs_syncprofile_getPluginSelection(),
+      '#default_value' => isset($profile['plugin']) ? $profile['plugin'] : null,
+      '#description'  => t("Choose a Content Plugin.")
   );
 
   $form['accountsettings'] = array(
@@ -172,9 +185,12 @@ function bs_syncprofile_serversettings_form_submit($form, $form_state) {
     $data['globalaccount']    = $values['globalaccount'];
     $data['globalpassword']   = $values['globalpassword'];
     $data['profilename']      = $values['profilename'];
+    $data['plugin']           = $values['plugin'];
     
     $profile->setData($data);
     $profile->save();
+    
+    drupal_set_message(t('The settings have been saved.'));
   }
 }
 
@@ -338,6 +354,8 @@ function bs_syncprofile_useraccounts_form_submit($form, $form_state) {
 
       // Write/update the data:
       BsSyncProfileUserAccounts::write($values['user'], $values['profilename'], $values['accountenabled'], $values['accountname'], $values['accountpassword']);
+      
+       drupal_set_message(t('The user settings have been saved.'));
     }
   }
 }
@@ -386,6 +404,11 @@ function _bs_syncprofile_useraccounts_setFormSession($value) {
  */
 
 function bs_syncprofile_access_form($form, $form_state, $profile, $profilename) {
+  
+  $form['profilemachinename'] = array(
+      '#type' => 'hidden',
+      '#value' => $profilename,
+  );
 
   $form['accessrestriction'] = array(
       '#type' => 'radios',
@@ -416,6 +439,26 @@ function bs_syncprofile_access_form($form, $form_state, $profile, $profilename) 
   );
   return $form;
 }
+
+function bs_syncprofile_access_form_submit($form, $form_state) {
+  
+  $values = $form_state['values'];
+  
+  // Check if Profile with machinename already exists:
+  $profile = new BsSyncMlProfile();
+  if ($profile->load($values['profilemachinename'])) {
+    
+    $data = $profile->getData();
+    $data['accessrestriction']  = $values['accessrestriction'];
+    $data['accesspermission']   = $values['accesspermission'];
+    
+    $profile->setData($data);
+    $profile->save();
+    
+    drupal_set_message(t('The settings have been saved.'));
+  }
+}
+
 
 /* ################################################### */
 
