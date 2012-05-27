@@ -255,9 +255,8 @@ function _erpal_book_helper_preprocess_erpal_books_book_pdf_html(&$variables) {
     $body = $node->body[LANGUAGE_NONE][0]['value'];   
   
   $estimations = $variables['options']['estimations'];
-
-  $duration = _erpal_book_helper_get_estimation($node, $estimations);
   
+  $duration = _erpal_book_helper_get_estimation($node, $estimations);
   
   $variables['body'] = $body;
   $variables['title'] = $title;

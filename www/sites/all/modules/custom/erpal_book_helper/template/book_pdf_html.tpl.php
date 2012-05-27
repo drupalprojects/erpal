@@ -1,12 +1,19 @@
 <?php 
-$params = $pdf_object->serializeTCPDFtagParameters(array($node->title,1,0,'','',array(128,128,0)));  //needed later for table of contentes 
+$params = $pdf_object->serializeTCPDFtagParameters(array($title,1,0,'','',array(128,128,0)));  //needed later for table of contentes 
 
 echo '<tcpdf method="Bookmark" params="'.$params.'" />';
-//$pdf_object->Bookmark($node->title, 0, 0, '', 'B', array(0,64,128));
-
-//output the node in a pdf style
-
-echo "<h1>".$node->title."</h1>";
-if (isset($node->body[LANGUAGE_NONE][0]['value']))
-  echo $node->body[LANGUAGE_NONE][0]['value'];  //@TODO this should be handeled with view modes
 ?>
+
+<h1><?php echo $title; ?></h1>
+<p>
+<?php echo $body; ?>
+<div>
+<?php 
+  if ($duration) echo 'Duration: '.$duration;
+?></div>
+<div>
+<?php
+  if ($nid) echo 'ID: '.$nid;
+?>
+</div>
+</p>
