@@ -793,7 +793,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['title'] = 'Invoices';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
-    7 => '7',
+    5 => '5',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -828,6 +828,14 @@ echo _erpal_invoice_helper_view_invoices_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'No invoices available';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -1149,6 +1157,83 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   /* Display: Invoices */
   $handler = $view->new_display('page', 'Invoices', 'page');
   $handler->display->display_options['path'] = 'invoice/invoices';
+
+  /* Display: Invoices to contact pane */
+  $handler = $view->new_display('panel_pane', 'Invoices to contact pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Customer (field_customer_ref) */
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_customer_ref_nid']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Payed (field_payed) */
+  $handler->display->display_options['filters']['field_payed_value']['id'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['table'] = 'field_data_field_payed';
+  $handler->display->display_options['filters']['field_payed_value']['field'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['group'] = 0;
+  $handler->display->display_options['filters']['field_payed_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_payed_value']['expose']['operator_id'] = 'field_payed_value_op';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['label'] = 'Payed';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['operator'] = 'field_payed_value_op';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['identifier'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Invoice Date (field_invoice_date) */
+  $handler->display->display_options['filters']['field_invoice_date_value']['id'] = 'field_invoice_date_value';
+  $handler->display->display_options['filters']['field_invoice_date_value']['table'] = 'field_data_field_invoice_date';
+  $handler->display->display_options['filters']['field_invoice_date_value']['field'] = 'field_invoice_date_value';
+  $handler->display->display_options['filters']['field_invoice_date_value']['group'] = 0;
+  $handler->display->display_options['filters']['field_invoice_date_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['operator_id'] = 'field_invoice_date_value_op';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['label'] = 'Invoice Date';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['operator'] = 'field_invoice_date_value_op';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['identifier'] = 'field_invoice_date_value';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['field_invoice_date_value']['form_type'] = 'date_popup';
+  /* Filter criterion: Content: Invoice Number (field_invoice_number) */
+  $handler->display->display_options['filters']['field_invoice_number_value']['id'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['table'] = 'field_data_field_invoice_number';
+  $handler->display->display_options['filters']['field_invoice_number_value']['field'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['group'] = 0;
+  $handler->display->display_options['filters']['field_invoice_number_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['operator_id'] = 'field_invoice_number_value_op';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['label'] = 'Invoice Number';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['operator'] = 'field_invoice_number_value_op';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['identifier'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['multiple'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_invoice' => 'erpal_invoice',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 0;
+  $handler->display->display_options['argument_input'] = array(
+    'field_customer_ref_nid' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Customer (field_customer_ref)',
+    ),
+  );
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $export['invoices'] = $view;
 
   return $export;

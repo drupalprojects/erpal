@@ -20,7 +20,7 @@ function feature_erpal_book_default_page_manager_handlers() {
   $handler->weight = 4;
   $handler->conf = array(
     'title' => 'Book Node Panel',
-    'no_blocks' => 1,
+    'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
     'body_classes_to_add' => '',
@@ -314,7 +314,7 @@ return _erpal_book_helper_render_projects_referencing_books(%node:nid);
   $handler->weight = 5;
   $handler->conf = array(
     'title' => 'Book-page Node Panel',
-    'no_blocks' => 1,
+    'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
     'body_classes_to_add' => '',

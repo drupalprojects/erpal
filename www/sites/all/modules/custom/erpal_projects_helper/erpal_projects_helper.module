@@ -74,24 +74,6 @@ function erpal_projects_helper_permission(){
 }
 
 /**
-* Implements hook_node_view
-*/
-function erpal_projects_helper_node_view($node) {
-  if ($node->type == 'erpal_project') {
-    $links[] = array(
-      'href' => 'projects/timetrackings/'.$node->nid,
-      'title' => t('Timetrackings'),
-      'attributes' => array('class' => 'project_timetracking_links'),
-    );
-    $node->content['links']['erpal_projects_helper'] = array(
-      '#links' => $links,
-      '#attributes' => array('class' => array('links', 'inline')),
-    );
-   
-  }
-}
-
-/**
 * Implements hook_form_alter
 */
 function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
