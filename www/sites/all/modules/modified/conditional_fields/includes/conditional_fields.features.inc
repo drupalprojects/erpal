@@ -34,14 +34,14 @@ function conditional_fields_features_export($data, &$export, $module_name = '') 
 }
 
 /**
- * Implments hook_features_export_render()
+ * Implements hook_features_export_render().
  */
 function conditional_fields_features_export_render($module_name, $data, $export = NULL) {
   $dependencies = conditional_fields_load_dependencies();
   if (empty($dependencies)) {
     return array();
   }
-  
+
   $code = array();
   foreach ($data as $option) {
     $tokens = explode(':', $option);
@@ -56,7 +56,6 @@ function conditional_fields_features_export_render($module_name, $data, $export 
           $code[] = '  $items[] = array(';
           $code[] = "    'entity' => '" . $entity . "',";
           $code[] = "    'bundle' => '" . $bundle . "',";
-          
           $code[] = "    'dependent' => '" . $dependent_field_name . "',";
           $code[] = "    'dependee' => '" . $dependee['dependee'] . "',";
 
@@ -65,8 +64,6 @@ function conditional_fields_features_export_render($module_name, $data, $export 
         }
       }
     }
-
-
   }
   if (empty($code)) {
     return array();
@@ -75,7 +72,6 @@ function conditional_fields_features_export_render($module_name, $data, $export 
   array_unshift($code, '  $items = array();');
   $code[] = '';
   $code[] = '  return $items;';
-
   $output = implode("\n", $code);
 
   return array('conditional_fields_default_fields' => $output);
@@ -97,7 +93,7 @@ function conditional_fields_features_rebuild($module) {
         foreach ($dependencies[$field['entity']][$field['bundle']] as $dependancy_type => $field_dep_settings) {
           if ($dependancy_type == 'dependees' && !empty($field_dep_settings)) {
             foreach ($field_dep_settings as $dep_setting) {
-              foreach($dep_setting as $id => $dep_settings){
+              foreach ($dep_setting as $id => $dep_settings) {
                 $deps_to_remove[$id] = $id;
               }
             }

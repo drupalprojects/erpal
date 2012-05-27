@@ -494,6 +494,100 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_invoice-field_asset_files'
+  $fields['node-erpal_invoice-field_asset_files'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_asset_files',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
+          'erpal_contact' => 0,
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 'erpal_file',
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_project_spec' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
+          'page' => 0,
+          'panel' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_invoice',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 28,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_asset_files',
+      'label' => 'Invoice PDF',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '47',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_invoice-field_auto_note'
   $fields['node-erpal_invoice-field_auto_note'] = array(
     'field_config' => array(
@@ -883,17 +977,16 @@ function feature_erpal_invoice_field_default_fields() {
         'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
           'erpal_contact' => 'erpal_contact',
           'erpal_crm_activity' => 0,
           'erpal_file' => 0,
           'erpal_invoice' => 0,
           'erpal_project' => 0,
-          'erpal_project_spec' => 0,
           'erpal_task' => 0,
           'erpal_timetracking' => 0,
-          'features_test' => 0,
           'page' => 0,
-          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
@@ -1601,78 +1694,6 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_pdf_file'
-  $fields['node-erpal_invoice-field_pdf_file'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_pdf_file',
-      'foreign keys' => array(
-        'fid' => array(
-          'columns' => array(
-            'fid' => 'fid',
-          ),
-          'table' => 'file_managed',
-        ),
-      ),
-      'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
-        ),
-      ),
-      'module' => 'file',
-      'settings' => array(
-        'display_default' => 1,
-        'display_field' => 0,
-        'profile2_private' => FALSE,
-        'uri_scheme' => 'private',
-      ),
-      'translatable' => '0',
-      'type' => 'file',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_invoice',
-      'deleted' => '0',
-      'description' => 'If you export an invoice, the exported PDF file will beattached here.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '20',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_pdf_file',
-      'label' => 'PDF export',
-      'required' => 0,
-      'settings' => array(
-        'description_field' => 0,
-        'file_directory' => 'invoices',
-        'file_extensions' => 'pdf',
-        'max_filesize' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'file',
-        'settings' => array(
-          'progress_indicator' => 'throbber',
-        ),
-        'type' => 'file_generic',
-        'weight' => '13',
-      ),
-    ),
-  );
-
   // Exported field: 'node-erpal_invoice-field_price_no_vat'
   $fields['node-erpal_invoice-field_price_no_vat'] = array(
     'field_config' => array(
@@ -1796,16 +1817,15 @@ function feature_erpal_invoice_field_default_fields() {
   t('Currency');
   t('Customer');
   t('Discount percent');
-  t('If you export an invoice, the exported PDF file will beattached here.');
   t('In how many days the customer has to pay the invoice');
   t('Invoice Address');
   t('Invoice Date');
   t('Invoice Number');
+  t('Invoice PDF');
   t('Invoice items');
   t('Note');
   t('Order numbers extern');
   t('Order numbers intern');
-  t('PDF export');
   t('Payed');
   t('Payment date');
   t('Price');

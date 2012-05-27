@@ -94,6 +94,7 @@ function feature_erpal_crm_conditional_fields_default_fields() {
         1 => '3',
       ),
       'value' => array(),
+      'grouping' => 'AND',
     ),
   );
 
@@ -181,6 +182,7 @@ function feature_erpal_crm_conditional_fields_default_fields() {
         1 => '3',
       ),
       'value' => array(),
+      'grouping' => 'AND',
     ),
   );
 

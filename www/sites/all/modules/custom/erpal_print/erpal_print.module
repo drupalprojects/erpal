@@ -20,9 +20,13 @@ function erpal_print_theme() {
       'variables' => array(),
       'template' => 'template/doc_footer',
     ),
-    'pdf_pagebreak' => array(
-      'variables' => array(),
-      'template' => 'template/pdf_pagebreak',
+    'erpal_print_toc' => array(
+      'variables' => array('pdf_object' => NULL, 'title' => false),
+      'template' => 'template/toc',
+    ),
+    'erpal_print_prepare_pdf' => array(
+      'variables' => array('pdf_object' => NULL),
+      'template' => 'template/prepare_pdf',
     ),
   );
 }
@@ -45,10 +49,20 @@ function _erpal_print_inject_basic_config_form(&$form) {
 
   $document_fid = variable_get('my_document_logo', false);
   $file = false;
+  
   if ($document_fid) {
     $file = file_load($document_fid);
   } 
-  $form['company_logo_document'] = array(
+  
+  $form['document_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Document settings'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#weight' => -1,
+  );
+  
+  $form['document_settings']['company_logo_document'] = array(
     '#type' => 'managed_file',
     '#weight' => -10,  //at the top of the page
     '#title' => t('Company logo for documents'),
@@ -57,7 +71,21 @@ function _erpal_print_inject_basic_config_form(&$form) {
     '#upload_location' => _erpal_print_logo_documents_upload_dir(),
     '#default_value' => $file ? $file->fid : false,
   ); 
+  
+  $form['document_settings']['document_footer'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Documents footer'),
+    '#description' => t('This HTML text will be the footer of your documents'),
+    '#default_value' => _erpal_print_get_document_footer(),
+  );
  
+}
+
+/**
+* Returns the document footer
+*/
+function _erpal_print_get_document_footer() {
+  return variable_get('erpal_print_document_footer', '');
 }
 
 /**
@@ -67,69 +95,114 @@ function _erpal_print_inject_basic_config_form_submit($form, $form_state)  {
   $values = $form_state['values'];
   $document_fid = $values['company_logo_document'];
   variable_set('my_document_logo', $document_fid);  //save phone number
+  if (!$document_fid)
+    return;
+  
+  //finalise the file!
+  $file = file_load($document_fid);
+  $file->status = FILE_STATUS_PERMANENT;
+  file_save($file);
+  file_usage_add($file, 'erpal_print', 'config', $file->fid); 
+
+  //save document footer  
+  $document_footer = $values['document_footer'];
+  variable_set('erpal_print_document_footer', $document_footer);
 }
  
 /**
 * Function to render the given html string as PDF
 * @param $html the html that should be rendered into pdf
-* @param $destination if set, PDF will be saved to the given destionation, otherwise
-*   it will directly by given as download to the users
+* @param $destination_uri if set, PDF will be saved to the given destination folder (ONLY FOLDER!), otherwise
+*   it will directly be given as download to the users
 * @param $download_filename the filename if the document is put as download
+* @param $params set author and title of the document
+* @return a file object representing the temporaray file.
 */ 
-function _erpal_print_html_as_pdf($html, $destination=false, $download_filename=false) {
+function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false, $params=false, $pdf_object=false, $print_toc=false) {
+  global $user;
   
-  _erpal_print_require_tcpdf();
+  if (!$pdf_object)    
+    $pdf_object = erpal_print_prepare_tcpdf();
+  
+  if (!$pdf_object)
+    return false;
+  
+  $parts = _erpal_print_split_pages($html);
+  foreach ($parts as $part_html) {
+    $pdf_object->AddPage();
+    $pdf_object->writeHTML($part_html, true, false, false, false, '');
+  }
+  
+  if ($print_toc)
+    _erpal_print_create_toc($pdf_object);
+    
+  //now output the pdf
+  if ($destination_uri) {
+    $destination_path = drupal_realpath($destination_uri."/".$basename);
+
+    //perhaps file must be renamed
+    $destination_path = file_destination($destination_path, FILE_EXISTS_RENAME);
+    $new_basename = basename($destination_path);
+    $destination_uri = $destination_uri.'/'.$new_basename;
+    $pdf_object->Output($destination_path, "F");
+    
+    // Begin building file object.
+    $file = new stdClass();
+    $file->uid      = $user->uid;
+    $file->status   = 1; //final!
+    $file->filename = $basename;
+    $file->uri      = $destination_uri;
+    $file->filemime = file_get_mimetype($destination_path);
+    $file->filesize = filesize($destination_path);
+    
+    file_save($file);
+
+    return $file;
+  } else {
+    $pdf_object->Output($basename, "D");
+    /**
+    * prevent from further drupal output 
+    */
+    die();
+  }
+}
+
+/**
+* returns the author of the invoice
+*/
+function _erpal_print_get_author($node) {
+  $a_user = user_load($node->uid);
+  return $a_user->name;
+}
+
+/**
+* Creates table of contents using a theme function
+*/
+function _erpal_print_create_toc($pdf_object) {    
+  //create table of contents
+  theme('erpal_print_toc', array('pdf_object' => $pdf_object, 'title' => t('Table of contents')));
+}
+
+/**
+* Prepares and returns a TCPDF Object
+*/
+function erpal_print_prepare_tcpdf($params=false) {
+  if (!_erpal_print_require_tcpdf())
+    return false;
 
   require_once 'classes/ci_document.php';
   
   $pdf = new CI_document();
   
-  $pdf->header_html = theme('doc_header');
-
-  $pdf->footer_html = theme('doc_footer');
-
-  $pdf->SetCreator(PDF_CREATOR);
-  $pdf->SetAuthor('BrightSolutions GmbH'); //@todo set dynamically
-  $pdf->SetTitle(t('Invoice'));
-
-  // set header and footer fonts
-  $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-  $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-  // set default monospaced font
-  $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-  //set margins
-  $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-  //$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-  $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-  //set auto page breaks
-  $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-  //set image scale factor
-  $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-  // ---------------------------------------------------------
-  $pdf->setPrintFooter(true);
+  theme('erpal_print_prepare_pdf', array('pdf_object' => $pdf));
   
-  $parts = _erpal_print_split_pages($html);
-  foreach ($parts as $part_html) {
-    $pdf->AddPage();
-    $pdf->writeHTML($part_html, true, false, true, false, '');
-  }
-    
-  //now output the pdf
-  if ($destination) {
-    $pdf->Output($destination, "F");
-    return $destination;
-  } else {
-    $pdf->Output($download_filename, "D");
-    /**
-    * weiteren Drupal HTML Output verhindern 
-    */
-    die();
-  }
+  if (isset($params['author']) && $params['author'])
+    $pdf->SetAuthor($params['author']);
+  
+  if (isset($params['title']) && $params['title'])
+    $pdf->SetTitle($params['title']);
+  
+  return $pdf;
 }
 
 /**
@@ -140,9 +213,18 @@ function _erpal_print_require_tcpdf() {
   //include the tcpdf with the library module
   $tcpdf_path = libraries_get_path('tcpdf');
 
+  if (!file_exists($tcpdf_path)) {
+    $tcpdf_link = l('TCPDF library', 'http://sourceforge.net/projects/tcpdf/files/');
+    $tcpdf_path = libraries_get_path('tcpdf');
+    drupal_set_message(t('Please download !link and place the contents of the folder tcpdf of the zip file in !tcpdf_lib to create a PDF.', array('!link' => $tcpdf_link, '!tcpdf_lib' => $tcpdf_path)), 'warning');    
+    return false;
+  }
+  
   //now require TCPDF to render the invoice output as PDF
   require_once $tcpdf_path."/tcpdf.php";
   require_once($tcpdf_path.'/config/lang/ger.php');
+  
+  return true;
 }
 
 /**
@@ -157,7 +239,7 @@ function _erpal_print_split_pages($html){
 /**
 * Function returns the path to the logo for the invoice
 */
-function erpal_print_logo_path() {
+function erpal_print_logo_path($relative = false) {
   $doc_root = $_SERVER['DOCUMENT_ROOT'];  
 
   $logo_fid = variable_get('my_document_logo', false);
@@ -168,7 +250,17 @@ function erpal_print_logo_path() {
   $file = file_load($logo_fid);
   if (!isset($file->uri))
     return '';
+   
+  if ($relative) {
+    //@TODO we need a relative path. Is there no other way to get it e.g. with a uri function or a stream wrapper?
+    $full_url = file_create_url($file->uri);
+    $base_url = $GLOBALS['base_url'];
     
+    //now cut the prefix to get the path
+    $rel_path = substr($full_url, strlen($base_url), strlen($full_url));
+    return $rel_path;
+  }
+   
   return file_create_url($file->uri);
 }
 
@@ -176,7 +268,12 @@ function erpal_print_logo_path() {
 * Returns the path relative to the files directory where the documents logo will be uploaded
 */
 function _erpal_print_logo_documents_upload_dir() {
-  return "public://erpal_res";
+  
+  $uri = "public://erpal_res";
+  
+  //prepare the folder
+  file_prepare_directory($uri,  FILE_CREATE_DIRECTORY);
+  return $uri;
 }
 
 /**

@@ -74,15 +74,15 @@ function erpal_basic_helper_config_form($form, &$form_state){
     ),
   );
   
+  $form['ajax_wrapper'] = array(
+    '#prefix' => '<div id="basic_address_wrapper">',
+    '#suffix' => '</div>',
+  );
+  
   if ($company_nid) {
 
     //select the main address that is relevant for all kind of sender information etc.
-    $my_address_entity = _erpal_basic_helper_get_my_address_entity();    
-    
-    $form['ajax_wrapper'] = array(
-      '#prefix' => '<div id="basic_address_wrapper">',
-      '#suffix' => '</div>',
-    );
+    $my_address_entity = _erpal_basic_helper_get_my_address_entity();        
     
     $form['ajax_wrapper']['my_address'] = array(
       '#type' => 'select',
@@ -145,7 +145,7 @@ function erpal_basic_helper_config_form($form, &$form_state){
     '#value' => t('save'),
     '#type' => 'submit',
   );
-  
+
   return $form;
 }
 
@@ -153,8 +153,11 @@ function erpal_basic_helper_config_form($form, &$form_state){
 * Callback for AJAX request to update contact data like address, phone etc in basic config
 */
 function _erpal_basic_helper_ajax_company_preselect_addresses_config($form, $form_state) {
-  
-  return $form['ajax_wrapper'];  //form has already been processed, so just return the elements
+
+  if (isset($form['ajax_wrapper']))
+    return $form['ajax_wrapper'];  //form has already been processed, so just return the elements
+    
+  return array();
 }
 
 /**
@@ -166,7 +169,11 @@ function erpal_basic_helper_config_form_submit($form, $form_state){
   $my_company_string = $values['my_company'];
   
   $company_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($my_company_string);
-  $address_id = $values['my_address'];
+  $address_id = false;
+  if (isset($values['my_address']))
+    $address_id = $values['my_address'];
+  $phone_id = false;
+  if (isset($values['my_phone']))
   $phone_id = $values['my_phone'];
   $email = $values['my_email'];
   $debug = $values['erpal_debug'];

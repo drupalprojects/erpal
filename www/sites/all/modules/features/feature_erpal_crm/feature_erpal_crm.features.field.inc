@@ -178,6 +178,7 @@ function feature_erpal_crm_field_default_fields() {
       ),
       'module' => 'user_reference',
       'settings' => array(
+        'profile2_private' => FALSE,
         'referenceable_roles' => array(
           2 => 0,
           3 => 0,
@@ -227,7 +228,7 @@ function feature_erpal_crm_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_account_manager',
       'label' => 'Account Manager',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -319,6 +320,106 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_crm_activity-field_asset_files'
+  $fields['node-erpal_crm_activity-field_asset_files'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_asset_files',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
+          'erpal_contact' => 0,
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 'erpal_file',
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_project_spec' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'features_test' => 0,
+          'page' => 0,
+          'panel' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Select or add files from / to the document management system',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 8,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_asset_files',
+      'label' => 'Global documents',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '11',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_crm_activity-field_chance'
   $fields['node-erpal_crm_activity-field_chance'] = array(
     'field_config' => array(
@@ -390,14 +491,14 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_contact_ref'
-  $fields['node-erpal_crm_activity-field_contact_ref'] = array(
+  // Exported field: 'node-erpal_crm_activity-field_contacts_ref'
+  $fields['node-erpal_crm_activity-field_contacts_ref'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_contact_ref',
+      'field_name' => 'field_contacts_ref',
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -413,20 +514,19 @@ function feature_erpal_crm_field_default_fields() {
       ),
       'module' => 'node_reference',
       'settings' => array(
-        'profile2_private' => 0,
+        'profile2_private' => FALSE,
         'referenceable_types' => array(
           'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
           'erpal_contact' => 'erpal_contact',
           'erpal_crm_activity' => 0,
           'erpal_file' => 0,
           'erpal_invoice' => 0,
           'erpal_project' => 0,
-          'erpal_project_spec' => 0,
           'erpal_task' => 0,
           'erpal_timetracking' => 0,
-          'features_test' => 0,
           'page' => 0,
-          'panel' => 0,
         ),
         'view' => array(
           'args' => array(),
@@ -441,20 +541,14 @@ function feature_erpal_crm_field_default_fields() {
       'bundle' => 'erpal_crm_activity',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Any other contacts that are related to this activity',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 1,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'weight' => 14,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -464,7 +558,7 @@ function feature_erpal_crm_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_contact_ref',
+      'field_name' => 'field_contacts_ref',
       'label' => 'Contacts',
       'required' => 0,
       'settings' => array(
@@ -472,61 +566,80 @@ function feature_erpal_crm_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
         'weight' => '2',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_local_files'
-  $fields['node-erpal_crm_activity-field_local_files'] = array(
+  // Exported field: 'node-erpal_crm_activity-field_customer_ref'
+  $fields['node-erpal_crm_activity-field_customer_ref'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_local_files',
+      'field_name' => 'field_customer_ref',
       'foreign keys' => array(
-        'fid' => array(
+        'nid' => array(
           'columns' => array(
-            'fid' => 'fid',
+            'nid' => 'nid',
           ),
-          'table' => 'file_managed',
+          'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
+        'nid' => array(
+          0 => 'nid',
         ),
       ),
-      'module' => 'file',
+      'module' => 'node_reference',
       'settings' => array(
-        'display_default' => 0,
-        'display_field' => 0,
-        'uri_scheme' => 'public',
+        'profile2_private' => FALSE,
+        'referenceable_types' => array(
+          'article' => 0,
+          'erpal_book' => 0,
+          'erpal_book_page' => 0,
+          'erpal_contact' => 'erpal_contact',
+          'erpal_crm_activity' => 0,
+          'erpal_file' => 0,
+          'erpal_invoice' => 0,
+          'erpal_project' => 0,
+          'erpal_task' => 0,
+          'erpal_timetracking' => 0,
+          'page' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
       ),
       'translatable' => '0',
-      'type' => 'file',
+      'type' => 'node_reference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Files uploaded here will not added to the document management system',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'file',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'file_default',
-          'weight' => 9,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'node_reference_default',
+          'weight' => 13,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -536,24 +649,29 @@ function feature_erpal_crm_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_local_files',
-      'label' => 'Local files',
+      'field_name' => 'field_customer_ref',
+      'label' => 'Customer',
       'required' => 0,
       'settings' => array(
-        'description_field' => 0,
-        'file_directory' => 'crm-activity/files',
-        'file_extensions' => 'txt pdf doc docx xls csv bmp jpg',
-        'max_filesize' => '',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'file',
+        'module' => 'nodereference_url',
         'settings' => array(
-          'progress_indicator' => 'throbber',
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 0,
+          'fallback' => 'autocomplete',
+          'node_link' => array(
+            'destination' => 'default',
+            'full' => 1,
+            'hover_title' => '',
+            'teaser' => 0,
+            'title' => 'Add activity',
+          ),
         ),
-        'type' => 'file_generic',
-        'weight' => '13',
+        'type' => 'nodereference_url',
+        'weight' => '1',
       ),
     ),
   );
@@ -856,16 +974,16 @@ function feature_erpal_crm_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Account Manager');
   t('Activity status');
-  t('Any other contacts that are related to this activity');
   t('Body');
   t('Chance');
   t('Comment');
   t('Contacts');
-  t('Files uploaded here will not added to the document management system');
-  t('Local files');
+  t('Customer');
+  t('Global documents');
   t('Next Contact');
   t('Order number extern');
   t('Order number intern');
+  t('Select or add files from / to the document management system');
   t('The chance, you guess, the proposal will be contracted');
   t('The number that identifies this order at your customer');
   t('The volume for the activities proposal or the budget for the request');

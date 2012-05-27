@@ -95,6 +95,7 @@ function feature_erpal_project_basic_conditional_fields_default_fields() {
         ),
       ),
       'values' => array(),
+      'grouping' => 'AND',
     ),
   );
 

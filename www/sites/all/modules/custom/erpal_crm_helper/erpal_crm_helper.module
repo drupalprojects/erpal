@@ -28,6 +28,10 @@ function erpal_crm_helper_permission(){
       'title' => t('Administer ERPAL CRM'), 
       'description' => t('Perform administration tasks for ERPAL CRM module.'),
     ),
+    'reply mails erpal crm activity' => array(
+      'title'       => t('Mail reply from activity node'), 
+      'description' => t('Shows a mailto reply link for the specific user on activity nodes and the commtents of such nodes.'),
+    ),
   );
 }
  
@@ -84,4 +88,45 @@ function _erpal_crm_helper_create_activity_link($q_arg = false, $query_arr = arr
         'query' => $query_arr,
     )
   );
+}
+
+/*
+ * Implements hook_node_view_alter.
+ * Used to add "Reply per mail" links to an activity node and the comments of such a node.
+ */
+function erpal_crm_helper_node_view_alter(&$build) {
+
+  if ($build['#bundle'] != 'erpal_crm_activity') {
+    
+    return;
+  }
+  
+  if (! user_access ('reply mails erpal activity')) {
+    
+    return;
+  }
+ 
+  if (isset ($build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'])) {
+    $build ['links']['node']['#links']['test']  =array ( 
+      'title'=> t('Reply per mail'),
+      'href' => 'mailto: ' . $build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'] . '?subject=Re:' . $build['#node']->title . ' [ticket:' . $build['#node']->nid . ']',
+      'html' => TRUE
+    );
+  }
+  
+  $comments = isset ($build['comments']['comments']) ? $build['comments']['comments'] : array ();
+  
+  foreach ($comments as $id=>&$comment) {
+    
+    if (intval ($id) > 0) {
+      
+      $build['comments']['comments'][$id]['links']['comment']['#links']['test']  =array ( 
+      'title'=> t('Reply per mail'),
+      'href' => 'mailto: ' . $comment['#comment']->mail . '?subject=Re:' . $comment['#comment']->subject . ' [ticket:' . $comment['#comment']->nid . ']',
+      'html' => TRUE
+      );
+    }
+  }
+  
+  return;
 }

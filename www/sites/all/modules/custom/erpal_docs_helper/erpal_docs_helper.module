@@ -2,12 +2,14 @@
 /**
  * @file
  * Code for the erpal_docs_helper module.
- */
+*/
 
+module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
+ 
 /**
 * This function is called in header area of documents view
 */
-function _erpal_crm_helper_view_documents_header_content()
+function _erpal_docs_helper_view_documents_header_content()
 {
   $q = current_path();
   $add_erpal_activity =  _erpal_docs_helper_create_document_link();
@@ -47,4 +49,151 @@ function _erpal_docs_helper_create_document_link($q_arg = false, $query_arr = ar
         'query' => $query_arr,
     )
   );
+}
+
+/**
+* Feature erpal_docs provides the field_asset_files which references a node which has a file field to wrap the file.
+* This function adds a given file (given by path) to a given node. It will create a new erpal_file node or updates it
+* the given erpal_file node if one is set
+* @param $node the nodeto which we try to attach an file_node using the field_asset_files. 
+* @param $doc_file it is a object, this fid will be used to attach the file object to the file_node
+* @param $file_node if false a new file_node will be created. The file object will be attached to the
+    file_node and thei erpal_file_node itself will be referenced by the field_asset_files of the node param. 
+    if there is no field_asset_files nothing will be done
+* @param $delete_source if true, $file will be deleted
+* @return true if success otherwise false
+*/
+function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_parent=false, $delete_source=false) {
+  if (!$file_node) {
+    $file_node = _erpal_docs_helper_file_node_create();  //create new file node
+  }
+  
+  $file_attached = false;
+  if (isset($file_node->field_docs_file[LANGUAGE_NONE]) && is_array($file_node->field_docs_file[LANGUAGE_NONE])) {
+    foreach($file_node->field_docs_file[LANGUAGE_NONE] as $delta => $fid) {
+      $fid = $fid['fid'];
+      if ($fid == $doc_file->fid)
+        $file_attached = true;
+    }
+  }
+  
+  if (!$file_attached) {
+    $file_node->field_docs_file[LANGUAGE_NONE][0] = array(
+      'fid' => $doc_file->fid,
+      'display' => 1,
+    );
+  }
+ 
+  //allways create a new revision for versioning
+  $file_node->revision = true;
+
+  node_save($file_node);
+
+  //chek if this node is already referenced, if not reference the new node
+  $is_referenced = false;
+  if (isset($node->field_asset_files[LANGUAGE_NONE])) {
+    foreach ($node->field_asset_files[LANGUAGE_NONE] as $delta=>$nid) {
+      $nid = $nid['nid'];
+      if ($nid == $file_node->nid)
+        $is_referenced = true;
+    }
+  }
+  
+  if (!$is_referenced)
+    $node->field_asset_files[LANGUAGE_NONE][] = array('nid' => $file_node->nid);
+  
+  if (!$skip_save_parent) {
+    node_save($node);
+  }
+
+  return $file_node;
+}
+
+/**
+* Returns a random URI in temporaray file schema
+*/ 
+function _erpal_docs_random_tmp_uri() {
+  $basename = substr(md5(uniqid()), 1, 8).".tmp";
+  $uri = 'temporary://'.$basename;
+  
+  return $uri;
+}
+
+/**
+* Simply creates a new erpal_file node
+* @param $save if true the node will be saved to the database
+*/
+function _erpal_docs_helper_file_node_create() {
+  global $user;
+  
+  $file_node = new stdClass();
+  $file_node->type = 'erpal_file';  
+  node_object_prepare($file_node);  
+  $file_node->uid = $user->uid;
+  $file_node->language = LANGUAGE_NONE;
+  $file_node->status = 1; //published
+  
+  return $file_node;
+}
+
+/**
+* Returns the filed instance which is responsible for storing the file (field_docs_file)
+* @return an array with key info (describing the field information) and instance (describing the field instance)
+*/
+function _erpal_docs_file_field_instance() {
+  //load the field to get the destination of the files
+  $fileField = 'field_docs_file';
+  $fields = field_info_fields();
+  $field_info = field_info_field($fileField);    
+  $field_instance = field_info_instance('node', $fileField, 'erpal_file');
+  
+  return array('info' => $field_info, 'instance' => $field_instance);
+}
+
+
+/**
+* Return the URI Schema of the field_docs_file attached to erpal_file content type
+* @param $no_destination_folder if true only the uri schema is returned, otherwise the whole uri with the destination folder
+*/
+function _erpal_docs_uri_schema($no_destination_folder=false) {
+  //load the field to get the destination of the files
+  $field_instance = _erpal_docs_file_field_instance();
+  $field_info = $field_instance['info'];
+  $field_instance = $field_instance['instance'];
+  
+  $uri_schema = $field_info['settings']['uri_scheme'];
+  
+  return $uri_schema;
+}
+
+/**
+* Function returns the URI for a folder for all documents wrapped by a erpal_file
+*/
+function _erpal_docs_folder_uri() {
+  $uri_schema = _erpal_docs_uri_schema();
+
+  $field_instance = _erpal_docs_file_field_instance();
+  $field_info = $field_instance['info'];
+  $field_instance = $field_instance['instance'];
+  $destination = $field_instance['settings']['file_directory'];  
+  
+  $final_uri = $uri_schema."://".$destination;
+  $drupal_file_path_abs = drupal_realpath($final_uri);
+  file_prepare_directory($final_uri,  FILE_CREATE_DIRECTORY & FILE_MODIFY_PERMISSIONS);
+  
+  return $final_uri;
+  
+}
+
+/**
+* Creates a file base name after convention.
+* @param $title the title of a filename which will be ambedded in the pattern for filenames
+* @param $stype the filetype added to title to build the filename
+*/
+function _erpal_docs_make_filename($title, $type) {
+  //@TODO - kill all special chars
+  
+  $title = str_replace(' ', '_', $title);
+  
+  return $title.".".$type;
 }
