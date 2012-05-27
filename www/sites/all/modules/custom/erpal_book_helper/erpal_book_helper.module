@@ -4,6 +4,8 @@
  * Module to provide helper functions for book feature
  */
  
+module_load_include('inc', 'erpal_book_helper', 'inc/book.token'); 
+ 
  /**
  * Implements hook_node_presave
  */
@@ -98,26 +100,9 @@ function erpal_book_helper_field_attach_view_alter (&$output, $context) {
         $data = array();
         $book_node = $context['entity'];
         
-        if ($book_node->type == 'erpal_book_page') {
-          //get the parent book at top most level because contact information are stored there
-          $book_nid = $book_node->field_book_ref[LANGUAGE_NONE][0]['nid'];
-          $book_node = node_load($book_nid);
-        }
-        
-        //get the contact and the selected address of the contact
-        if (!isset($book_node->field_contact_ref[LANGUAGE_NONE][0]['nid']))
-          return;
-          
-        $contact_nid = $book_node->field_contact_ref[LANGUAGE_NONE][0]['nid'];
-        $contact_node = node_load($contact_nid);
-        
-        $address_id = false;
-        $address_entity = false;
-        if (isset($book_node->field_address_id[LANGUAGE_NONE][0]['value'])) {
-          $address_id = $book_node->field_address_id[LANGUAGE_NONE][0]['value'];
-          $address_entity = entity_load('field_collection_item', array($address_id));
-          $address_entity = $address_entity[$address_id];
-        }
+        $contact = _erpal_book_helper_get_contact($book_node);
+        $contact_node = $contact['contact_node'];
+        $address_entity = $contact['address_entity'];
         
         $data['contact_node'] = $contact_node;
         $data['address_entity'] = $address_entity;
@@ -125,6 +110,38 @@ function erpal_book_helper_field_attach_view_alter (&$output, $context) {
       }
     }
   }
+}
+
+/**
+* returns the address entity and the contact node to a book node or a book_page node
+* @param $node a book node or a bok_page node
+*/
+function _erpal_book_helper_get_contact($node) {
+  if ($node->type == 'erpal_book_page') {
+    //get the parent book at top most level because contact information are stored there
+    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['nid'];
+    $node = node_load($book_nid);
+  }
+  
+  //get the contact and the selected address of the contact
+  if (!isset($node->field_contact_ref[LANGUAGE_NONE][0]['nid']))
+    return array();
+    
+  $contact_nid = $node->field_contact_ref[LANGUAGE_NONE][0]['nid'];
+  $contact_node = node_load($contact_nid);
+  
+  $address_id = false;
+  $address_entity = false;
+  if (isset($node->field_address_id[LANGUAGE_NONE][0]['value'])) {
+    $address_id = $node->field_address_id[LANGUAGE_NONE][0]['value'];
+    $address_entity = entity_load('field_collection_item', array($address_id));
+    $address_entity = $address_entity[$address_id];
+  }
+  
+  return array(
+    'contact_node' => $contact_node,
+    'address_entity' => $address_entity,
+  );
 }
 
 /**
@@ -215,12 +232,12 @@ function _erpal_book_helper_connect_page_to_book($node) {
 function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_book_page_node_form') {
     _erpal_book_helper_form_redirect_orphan_book_page($form);
-    _erpal_book_helper_show_patterns_at_body($form, $form_state);
+    _erpal_book_helper_show_tokens_at_body($form, $form_state);
     _erpal_book_helper_alter_form_fields($form, $form_state);
   }
   
   if ($form_id == 'erpal_book_node_form') {
-    _erpal_book_helper_show_patterns_at_body($form, $form_state);
+    _erpal_book_helper_show_tokens_at_body($form, $form_state);
     _erpal_book_helper_prepare_address_ajax_reload($form, $form_state);
   }
 }
@@ -284,8 +301,10 @@ function _erpal_book_helper_ajax_book_preselect_addresses($form, $form_state) {
 /**
 * Show patterns for contact and address at book page or book nodes
 */
-function _erpal_book_helper_show_patterns_at_body(&$form, $form_state) {
-  $tokens = theme('token_tree', array('global_types' => FALSE, 'token_types' => array('erpal_contact')));
+function _erpal_book_helper_show_tokens_at_body(&$form, $form_state) {
+  //contact tokens and estimation tokens
+  $types = array('erpal_contact', 'erpal_book_pdf');
+  $tokens = theme('token_tree', array('global_types' => FALSE, 'token_types' => $types));
   $form['body'][LANGUAGE_NONE]['#suffix'] .= $tokens;
 }
 
@@ -489,4 +508,38 @@ function _erpal_book_helper_cache($key, $value=false) {
     $cache[$key] = $value;
     
   return $ret;
+}
+
+/**
+* Replace all book tokens!
+* @param $node a book node or a book_page node
+*/
+function _erpal_book_helper_replace_tokens(&$node) {
+  //replace contact tokens if a contact is referenced to a book
+  $contact = _erpal_book_helper_get_contact($node);
+  
+  $contact_node = isset($contact['contact_node']) ? $contact['contact_node'] : false;
+  if (!$contact_node)
+    return;
+  
+  $address_entity = $contact['address_entity'];
+  $data = array(
+    'contact_node' => $contact_node,
+    'address_entity' => $address_entity,
+  );
+  
+  if (isset($node->body[LANGUAGE_NONE][0])) {
+    $body = $node->body[LANGUAGE_NONE][0]['value'];
+    $body = token_replace($body, $data);
+    $node->body[LANGUAGE_NONE][0]['value'] = $body;
+   // $node->body[LANGUAGE_NONE][0]['safe_value'] = $body;
+  }
+}
+
+/**
+* Preprocess output variables for viewin a book in a pdf
+*/
+function template_preprocess_erpal_books_book_pdf_html(&$variables) {
+
+  _erpal_book_helper_preprocess_erpal_books_book_pdf_html($variables);
 }

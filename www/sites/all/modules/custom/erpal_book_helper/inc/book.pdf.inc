@@ -31,6 +31,30 @@ function erpal_books_helper_pdf_form($form, $form_state, $node) {
     '#title' => t('Ignore exclude flags'),
     '#options' =>  $options,
   );
+
+  //Put all the time options in a fieldset
+  $form['estimations'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Estimations'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  
+  $estimation_options = array('page' => t('From pages'), 'task' => t('From tasks'));
+  $form['estimations']['export_estimations'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Include detailed time estimations'),
+    '#options' =>  $estimation_options,
+  );
+  
+  $total_options = array('page' => t('From pages'), 'task' => t('From tasks'));
+  $form['estimations']['total_estimation'] = array(
+    '#type' => 'radios',
+    '#default_value' => 'page',
+    '#title' => t('Include total estimations'),
+    '#options' =>  $total_options,
+    '#description' => t('You can use tokens in you pages to replace the calculated total estimation.'),
+  );
   
   $form['pdf_create_method'] = array(
     '#type' => 'radios',
@@ -103,7 +127,14 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   if (!$pdf_object)
     return false;
   
-  $html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options);  
+  $html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options); 
+
+  $total_estimation = $html['total_estimation'];
+  $html = $html['html'];
+  
+  //now replace the estimation token in the html
+  $data = array('total_estimation' => $total_estimation);
+  $html = token_replace($html, $data);
 
   //now put HTML content to PDF rendering
   
@@ -144,22 +175,92 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
   //prepare fields so they can be included in entitiy field query easily
   
   $child_nodes = _erpal_book_helper_get_children($book_node, $root_node, $options);
+  $theme_options = array(
+    'estimations' => array(
+      'task' => $options['export_estimations']['task'],
+      'page' => $options['export_estimations']['page'],
+      'total' => $options['total_estimation'],
+    )
+  );
   
-  $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object));
-
-  //recursion anchor
-  if (count($child_nodes) == 0) {
-    return $this_html;
+  //save the body, if we dont do that, the content token will be replaced in the real node body....dont know why...??!
+  $body = '';
+  if (isset($root_node->body[LANGUAGE_NONE][0]['value'])) {
+    $body = $root_node->body[LANGUAGE_NONE][0]['value'];
+    _erpal_book_helper_replace_tokens($root_node); //replace all tokens
   }
   
-  //next step recusrion
-  $html = '';
+  $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options));
 
+  $root_node->body[LANGUAGE_NONE][0]['value'] = $body; // set the body back again!
+  
+  $total_options[$theme_options['estimations']['total']] = 1;
+  $estimation = _erpal_book_helper_get_estimation($root_node, $total_options);
+  
+  //recursion anchor, no more children!
+  if (count($child_nodes) == 0) {    
+    return array(
+      'html' => $this_html,
+      'total_estimation' => $estimation,
+    );
+  }
+  
+  //next step recursion
+  $html = '';
   foreach ($child_nodes as $child_node) {
     //get recusive HTML of children
     $child_html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $child_node, $options);
+
+    $estimation += $child_html['total_estimation'];
+    $child_html = $child_html['html'];
     $html .= $child_html;
   }
 
-  return $this_html . theme('erpal_books_children_html', array('parent_node' => $root_node, 'html' => $html));
+  $html = $this_html . theme('erpal_books_children_html', array('parent_node' => $root_node, 'html' => $html));
+  
+  return array(
+    'html' => $html,
+    'total_estimation' => $estimation,
+  );
+}
+
+/**
+* Returns the estimation from a book_page node or a task node
+*/
+function _erpal_book_helper_get_estimation($node, $options=false) {
+
+  $duration = 0;
+  if ($node->type == 'erpal_task') {
+    if ($options && isset($options['task']) && $options['task'])
+      if (isset($node->field_estimated_time[LANGUAGE_NONE][0]['value']))
+        $duration = $node->field_estimated_time[LANGUAGE_NONE][0]['value'];
+  } elseif ($node->type == 'erpal_book_page') {
+    if ($options && isset($options['page']) && $options['page'])
+      if (isset($node->field_estimated_duration[LANGUAGE_NONE][0]['value']))
+        $duration = $node->field_estimated_duration[LANGUAGE_NONE][0]['value'];
+  }
+
+  return $duration;
+}
+
+/**
+* Preprocessing Variables for rendering a node as a page in pdf
+*/
+function _erpal_book_helper_preprocess_erpal_books_book_pdf_html(&$variables) {
+  $node = $variables['node'];
+  $title = $node->title;
+  
+  $body  = '';
+  if (isset($node->body[LANGUAGE_NONE][0]['value']))
+    $body = $node->body[LANGUAGE_NONE][0]['value'];   
+  
+  $estimations = $variables['options']['estimations'];
+
+  $duration = _erpal_book_helper_get_estimation($node, $estimations);
+  
+  
+  $variables['body'] = $body;
+  $variables['title'] = $title;
+  $variables['duration'] = $duration;
+  $variables['nid'] = $node->nid;
 }
