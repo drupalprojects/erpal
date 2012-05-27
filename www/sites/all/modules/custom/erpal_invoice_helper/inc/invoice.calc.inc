@@ -317,10 +317,11 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //try to get the customer and the contractor, if there is no customer in params, the customer of all billables must 
   //be equal otherwise there will be an error same for contractors
   //### get the customer ####
+  $customer_nid_new = 0;
   if (isset($params['customer_nid']))
     $customer_nid = $params['customer_nid'];
   else {
-    $customer_nid = 0; //init
+    $customer_nid = 0; //init    
     foreach ($billables as $billable) {
       $customer_nid_new = $billable->customer_nid;
       if (!$customer_nid)
@@ -350,9 +351,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
     foreach ($billables as $billable) {
       $contractor_nid_new = $billable->contractor_nid;
       if (!$contractor_nid)
-        $contractor_nid = $customer_nid_new;
+        $contractor_nid = $contractor_nid_new;
       else
-        if ($contractor_nid <> $customer_nid_new) {
+        if ($contractor_nid <> $contractor_nid_new) {
           //BAD! There are different contractors in the billables. We cannot create an invoice with that information!       
          $status['status'] = 0;
           $status['errors'][] = t('There is no unique contractor for that invoice and the billable invoice lines have different contractors set.');
