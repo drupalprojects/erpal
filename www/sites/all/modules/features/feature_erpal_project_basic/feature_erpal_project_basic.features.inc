@@ -51,7 +51,7 @@ function feature_erpal_project_basic_views_api() {
 function feature_erpal_project_basic_node_info() {
   $items = array(
     'erpal_project' => array(
-      'name' => t('erpal_project'),
+      'name' => t('Project'),
       'base' => 'node_content',
       'description' => t('A Project in ERPAL'),
       'has_title' => '1',
@@ -59,7 +59,7 @@ function feature_erpal_project_basic_node_info() {
       'help' => '',
     ),
     'erpal_task' => array(
-      'name' => t('erpal_task'),
+      'name' => t('Task'),
       'base' => 'node_content',
       'description' => t('Basic content type for tasks'),
       'has_title' => '1',
@@ -67,7 +67,7 @@ function feature_erpal_project_basic_node_info() {
       'help' => '',
     ),
     'erpal_timetracking' => array(
-      'name' => t('erpal_timetracking'),
+      'name' => t('Timetracking'),
       'base' => 'node_content',
       'description' => t('Content type to create timetracking to nodes'),
       'has_title' => '1',

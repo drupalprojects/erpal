@@ -14,14 +14,14 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_erpal_project';
-  $strongarm->value = 'edit-group';
+  $strongarm->value = 'edit-auto-nodetitle';
   $export['additional_settings__active_tab_erpal_project'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_erpal_task';
-  $strongarm->value = 'edit-group';
+  $strongarm->value = 'edit-auto-nodetitle';
   $export['additional_settings__active_tab_erpal_task'] = $strongarm;
 
   $strongarm = new stdClass();

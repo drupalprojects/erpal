@@ -39,13 +39,13 @@ function erpal_projects_helper_menu(){
 function erpal_projects_helper_node_validate($node) {
 
   if ($node->type == 'erpal_project') {
-    if (isset($node->field_book_ref[LANGUAGE_NONE])) {
-      foreach ($node->field_book_ref[LANGUAGE_NONE] as $delta => $nid) {
+    if (isset($node->field_books_ref[LANGUAGE_NONE])) {
+      foreach ($node->field_books_ref[LANGUAGE_NONE] as $delta => $nid) {
         
         if (!is_numeric($delta))
           continue;
         
-        $book_nid = $nid['nid'];        
+        $book_nid = $nid['target_id'];        
         if (!$book_nid)
           continue;
         
@@ -54,7 +54,7 @@ function erpal_projects_helper_node_validate($node) {
           $project_nid = $projects[0];
           $project_node = node_load($project_nid);
           $project_link = l($project_node->title, 'node/'.$project_node->nid);
-          form_set_error('field_book_ref]['.LANGUAGE_NONE.']['.$delta.'][nid', t('The book can only be included into one project and is already included in "!project_link"', array('!project_link' => $project_link)));
+          form_set_error('field_books_ref]['.LANGUAGE_NONE.']['.$delta.'][target_id', t('The book can only be included into one project and is already included in "!project_link"', array('!project_link' => $project_link)));
         }
       }
     }
@@ -95,20 +95,29 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
 * Alters the project node form
 */
 function _erpal_projects_helper_project_node_form_alter(&$form, &$form_state) {
-  //if form is filled by reference url widget, the crm activity is already prefilled.
+  //if form is filled by entityreference prepopulate, the crm activity is already prefilled.
   //with the activity we can preselect the customer, because it may be the same as in activity and project
   //in most cases
-  $activity_nid = arg(3);
+  $nid = $form['nid']['#value'];
+  
+  //if node already exists, do nothing here
+  if ($nid)
+    return;
+  
+  $activity_nid = $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+  $activity_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($activity_nid);
+
   if (!empty($activity_nid) && is_numeric($activity_nid)) {
     $activity_node = node_load($activity_nid);
     $customer_nid = false;
 
-    if (isset($activity_node->field_customer_ref[LANGUAGE_NONE][0]['nid'])) {
-      $customer_nid = $activity_node->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+    if (isset($activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $customer_nid = $activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
     }
-    
+
     if ($customer_nid) {
-      $form['field_customer_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $customer_nid;
+      $customer_node = node_load($customer_nid);
+      $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_node->title." (".$customer_nid.")";
     }
   }
 }
@@ -122,30 +131,31 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
   $nid = $form['nid']['#value'];
   if (!$nid) {
     //if parent is already set, hide the project field, but preset it so pricing information can be reloaded!
-    if (isset($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']))
-      if ($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value']) {
-        $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'];
+    if (isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']))
+      if ($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
+        $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+        $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
         $parent_node = node_load($parent_nid);
         $project_nid = _erpal_projects_helper_has_project($parent_node);          
         
-        $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
-        $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $project_nid;
-        $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
+        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $project_nid;
+        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
         
         //alter pricing information!
         _erpal_projects_billable_preselect_task_create_form($form, $form_state);
         
       }
     //if project is already set, hide the parent field
-    if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']))
-      if ($form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value']) {
-        $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
-        $form['field_parent'][LANGUAGE_NONE][0]['nid']['#required'] = false;
+    if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']))
+      if ($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
+        $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+        $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#required'] = false;
       }
   } else {
     //hide parent and project ref anyway!
-    $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
-    $form['field_parent'][LANGUAGE_NONE][0]['nid']['#type'] = 'value';
+    $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+    $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
   }
   
 }
@@ -159,7 +169,7 @@ function _erpal_projects_helper_has_project($node) {
   
   if ($node->type == 'erpal_task') {
     //get the project of the task, because a task alsways has a project assigned
-    $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['nid'];
+    $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
     return $project_nid; //tasks allways have a project
   }
   
@@ -168,14 +178,14 @@ function _erpal_projects_helper_has_project($node) {
   }
   
   if ($node->type == 'erpal_book_page') {
-    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['nid'];    
+    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['target_id'];    
   }
 
   //now check if there is a project referencing this node
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_project')
-  ->fieldCondition('field_book_ref', 'nid', $book_nid, '=');
+  ->fieldCondition('field_books_ref', 'target_id', $book_nid, '=');
 
   $result = $query->execute();
   if (isset($result['node']) && count($result['node']) > 0) {
@@ -212,7 +222,7 @@ function _erpal_project_helper_get_referencing_projects_by_book($book_nid) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_project')
-  ->fieldCondition('field_book_ref', 'nid', $book_nid, '=')
+  ->fieldCondition('field_books_ref', 'target_id', $book_nid, '=')
   ->addMetaData('account', user_load(1)); // run the query as user 1
 
   $result = $query->execute();

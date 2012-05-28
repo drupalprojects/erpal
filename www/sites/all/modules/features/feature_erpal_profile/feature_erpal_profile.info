@@ -8,6 +8,7 @@ project = feature_erpal_profile
 dependencies[] = date
 dependencies[] = date_popup
 dependencies[] = entity
+dependencies[] = entityreference
 dependencies[] = erpal_profile_helper
 dependencies[] = feature_erpal_basic
 dependencies[] = features

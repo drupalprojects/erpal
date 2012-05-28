@@ -133,11 +133,25 @@ function hook_ctools_plugin_post_alter(&$plugin, &$info) {
   }
 }
 
+/**
+ * Alter the list of modules/themes which implement a certain api.
+ *
+ * The hook named here is just an example, as the real existing hooks are named
+ * for example 'hook_views_api_alter'.
+ *
+ * @param array $list
+ *   An array of informations about the implementors of a certain api.
+ *   The key of this array are the module names/theme names.
+ */
+function hook_ctools_api_hook_alter(&$list) {
+  // Alter the path of the node implementation.
+  $list['node']['path'] = drupal_get_path('module', 'node');
+}
 
 /**
  * Alter the available functions to be used in ctools math expression api.
  *
- * One usecase would be to create your own function in your module and 
+ * One usecase would be to create your own function in your module and
  * allow to use it in the math expression api.
  *
  * @param $functions
@@ -172,6 +186,20 @@ function hook_ctools_render_alter(&$info, &$page, &$context) {
   if ($context['handler']->name == 'my_handler') {
     ctools_add_css('my_module.theme', 'my_module');
   }
+}
+
+/**
+ * Alter a content plugin subtype.
+ *
+ * While content types can be altered via hook_ctools_plugin_pre_alter() or
+ * hook_ctools_plugin_post_alter(), the subtypes that content types rely on
+ * are special and require their own hook.
+ *
+ * This hook can be used to add things like 'render last' or change icons
+ * or categories or to rename content on specific sites.
+ */
+function hook_ctools_content_subtype_alter($subtype, $plugin) {
+  $subtype['render last'] = TRUE;
 }
 
 /**

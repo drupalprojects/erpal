@@ -331,17 +331,17 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['fields']['type']['machine_name'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: PDF exports (field_asset_files) */
-  $handler->display->display_options['arguments']['field_asset_files_nid']['id'] = 'field_asset_files_nid';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['table'] = 'field_data_field_asset_files';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['field'] = 'field_asset_files_nid';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['default_action'] = 'not found';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['field_asset_files_nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['field_asset_files_nid']['not'] = 0;
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['id'] = 'field_asset_files_target_id';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['table'] = 'field_data_field_asset_files';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['field'] = 'field_asset_files_target_id';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['not'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -351,13 +351,13 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   $handler->display->display_options['argument_input'] = array(
-    'field_asset_files_nid' => array(
+    'field_asset_files_target_id' => array(
       'type' => 'panel',
       'context' => 'entity:billable.billable-id',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
-      'label' => 'Content: Global documents (field_asset_files)',
+      'label' => 'Content: Invoice PDF (field_asset_files:target_id)',
     ),
   );
   $export['documents'] = $view;

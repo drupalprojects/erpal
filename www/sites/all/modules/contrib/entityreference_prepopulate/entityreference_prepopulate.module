@@ -102,23 +102,26 @@ function entityreference_prepopulate_field_attach_form($entity_type, $entity, &$
         continue;
       }
 
-      if (!in_array($settings['fallback'], array('form_error', 'redirect')) && $settings['action'] != 'disable') {
-        continue;
-      }
       $field = $value['field'];
       if (entityreference_prepopulate_get_values_from_url($field, $instance)) {
         if ($settings['action'] == 'disable') {
           $form[$field_name][$lang]['#disabled'] = TRUE;
         }
-        continue;
+        elseif ($settings['action'] == 'hide') {
+          // We don't hide the field via hook_field_access(), as the
+          // default value won't be set.
+          $form[$field_name]['#access'] = FALSE;
+        }
       }
-      $message = t('Field @label must be populated via URL', array('@label' => $instance['label']));
-      if ($settings['fallback'] == 'form_error') {
-        form_error($form, $message);
-      }
-      elseif ($settings['fallback'] == 'redirect') {
-        drupal_set_message($message, 'notice');
-        drupal_goto();
+      elseif (in_array($settings['fallback'], array('form_error', 'redirect'))) {
+        $message = t('Field @label must be populated via URL', array('@label' => $instance['label']));
+        if ($settings['fallback'] == 'form_error') {
+          form_error($form, $message);
+        }
+        elseif ($settings['fallback'] == 'redirect') {
+          drupal_set_message($message, 'notice');
+          drupal_goto();
+        }
       }
     }
   }
@@ -155,10 +158,7 @@ function entityreference_prepopulate_field_access($op, $field, $entity_type, $en
   }
   $items = entityreference_prepopulate_get_values_from_url($field, $instance);
 
-  if (!empty($items) && $settings['action'] == 'hide') {
-    return FALSE;
-  }
-  elseif (empty($items) && $settings['fallback'] == 'hide') {
+  if (empty($items) && $settings['fallback'] == 'hide') {
     return FALSE;
   }
 }

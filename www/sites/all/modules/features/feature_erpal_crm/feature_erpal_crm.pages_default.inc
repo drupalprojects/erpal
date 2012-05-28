@@ -160,17 +160,19 @@ function feature_erpal_crm_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-5';
     $pane->panel = 'top';
-    $pane->type = 'node_links';
-    $pane->subtype = 'node_links';
+    $pane->type = 'node_prepopulate';
+    $pane->subtype = 'node_prepopulate';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
+      'types' => array(
+        'erpal_crm_activity' => 'erpal_crm_activity',
+        'erpal_invoice' => 'erpal_invoice',
+      ),
+      'field_name' => 'field_customer_ref',
+      'context' => 'argument_entity_id:node_1',
       'override_title' => 0,
       'override_title_text' => '',
-      'build_mode' => 'full',
-      'identifier' => '',
-      'link' => 1,
-      'context' => 'argument_entity_id:node_1',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -302,6 +304,32 @@ function feature_erpal_crm_default_page_manager_pages() {
     $pane = new stdClass();
     $pane->pid = 'new-6';
     $pane->panel = 'middle';
+    $pane->type = 'node_prepopulate';
+    $pane->subtype = 'node_prepopulate';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'types' => array(
+        'erpal_crm_activity' => 'erpal_crm_activity',
+      ),
+      'field_name' => 'field_customer_ref',
+      'context' => 'argument_entity_id:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-6'] = $pane;
+    $display->panels['middle'][0] = 'new-6';
+    $pane = new stdClass();
+    $pane->pid = 'new-7';
+    $pane->panel = 'middle';
     $pane->type = 'node_links';
     $pane->subtype = 'node_links';
     $pane->shown = TRUE;
@@ -320,12 +348,12 @@ function feature_erpal_crm_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['middle'][0] = 'new-6';
+    $display->content['new-7'] = $pane;
+    $display->panels['middle'][1] = 'new-7';
     $pane = new stdClass();
-    $pane->pid = 'new-7';
+    $pane->pid = 'new-8';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'crm_activities-panel_pane_1';
@@ -338,12 +366,12 @@ function feature_erpal_crm_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['middle'][1] = 'new-7';
+    $display->content['new-8'] = $pane;
+    $display->panels['middle'][2] = 'new-8';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-7';
+  $display->title_pane = 'new-8';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['contact_activities'] = $page;

@@ -10,6 +10,7 @@ class EntityReferencePrepopulateInstanceBehavior extends EntityReference_Behavio
       '#type' => 'select',
       '#title' => t('Action'),
       '#options' => array(
+        'none' => t('Do nothing'),
         'hide' => t('Hide field'),
         'disable' => t('Disable field'),
       ),
@@ -29,12 +30,13 @@ class EntityReferencePrepopulateInstanceBehavior extends EntityReference_Behavio
 
     // Get list of permissions.
     $perms = array();
+    $perms[0] = t('- None -');
     foreach (module_list(FALSE, FALSE, TRUE) as $module) {
       // By keeping them keyed by module we can use optgroups with the
       // 'select' type.
       if ($permissions = module_invoke($module, 'permission')) {
         foreach ($permissions as $id => $permission) {
-          $perms[$module][$id] = $permission['title'];
+          $perms[$module][$id] = strip_tags($permission['title']);
         }
       }
     }

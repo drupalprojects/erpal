@@ -73,7 +73,7 @@ function _feature_erpal_invoice_test_check_invoice($invoice, $params) {
   if (!$invoice->nid)
     $invoiceOK = false;  //no nid no invoice
     
-  if ($invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] != $customer_nid)
+  if ($invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'] != $customer_nid)
     $invoiceOK = false; //wrong customer
     
   if ($invoice->field_currency[LANGUAGE_NONE][0]['value'] != $currency)

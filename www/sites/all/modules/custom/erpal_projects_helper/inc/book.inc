@@ -13,7 +13,7 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_task')
   ->propertyCondition('status', 1)
-  ->fieldCondition('field_parent', 'nid', $parent_node->nid, '=')
+  ->fieldCondition('field_parent', 'target_id', $parent_node->nid, '=')
   ->fieldOrderBy('field_weight', 'value', 'ASC');
 
   if (!$options['ignore_exclude']['pdf']) {
@@ -43,34 +43,6 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
   return $child_task_nodes;
 }
 
-/**
-* Return all nids of thats that are excluded for a given aggregation of tasks
-*/
-function _erpal_projects_helper_get_excluded_task_nids($project_node, $exclude) {
-  
-  if (!$exclude)
-    return array();
-    
-  if ($exclude && !is_array($exclude))
-    $exclude = array($exclude);
-  
-  //first get all book pages
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
-  ->entityCondition('bundle', 'erpal_task')
-  ->propertyCondition('status', 1)
-  ->fieldCondition('field_book_ref', 'nid', $book_node->nid, '=')
-  ->fieldCondition('field_project_ref', 'nid', $project_node->nid, '=')
-  ->fieldCondition('field_task_exclude_from', 'value', $exclude, 'IN');
-  
-  $result = $query->execute();
-  $excluded_nids = array();
-  if (isset($result['node'])) {
-    $excluded_nids = array_keys($result['node']);
-  }
-  
-  return $excluded_nids;
-}
 
 /**
 * alter pdf create form provided by erpal_book_helper module
@@ -86,7 +58,13 @@ function _erpal_projects_helper_book_pdf_form_alter(&$form, &$form_state) {
       '#default_value' => false,
       '#weight' => -1,
     );
+  } else {
+    $form['export_tasks'] = array(
+      '#type' => 'value',
+      '#default_value' => false,
+    );
   }
+    
 }
 
 /**
@@ -96,6 +74,8 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
   
   $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
   $query_back = array('destination' => $current_viewed_url);
+  $query_add = $query_back;
+  $query_add['field_parent'] = $id;
   
   $parent_node = node_load($id);
 
@@ -110,8 +90,8 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
     );
     
     if ($has_project) {
-      $menu[] = array('title' => t('Add sub task'), 'url' => url('node/add/erpal-task/'.$id, array('query' => $query_back)));
-      $menu[] = array('title' => t('Add timetracking'), 'url' => url('node/add/erpal-timetracking/'.$id, array('query' => $query_back)));
+      $menu[] = array('title' => t('Add sub task'), 'url' => url('node/add/erpal-task', array('query' => $query_add)));
+      $menu[] = array('title' => t('Add timetracking'), 'url' => url('node/add/erpal-timetracking', array('query' => $query_add)));
     }
     
     return $menu;
@@ -120,7 +100,7 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
   if ($type == 'erpal_book_page') {            
     if ($has_project) {
       $menu = array(
-        array('title' => t('Add task'), 'url' => url('node/add/erpal-task/'.$id, array('query' => $query_back))),
+        array('title' => t('Add task'), 'url' => url('node/add/erpal-task', array('query' => $query_add))),
       );
       
       return $menu;

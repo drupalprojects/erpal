@@ -85,12 +85,12 @@ function erpal_invoice_helper_init() {
   //to get the allowed values of the field is called bevore hook_form_alter. But we need the value of the selected customer
   //to decide which are the allowed values. So we need a oportunity to get the value of the customer field BEVORE 
   //the function for allowed values is called. This is what we do here.
-  
+
   if (isset($_POST['field_customer_ref']))
     if (isset($_POST['field_customer_ref'][LANGUAGE_NONE]))
       if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]))
-        if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['nid'])) {
-          $customer_nid = $_POST['field_customer_ref'][LANGUAGE_NONE][0]['nid'];
+        if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'])) {
+          $customer_nid = $_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'];
           $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);
           _erpal_invoice_helper_cache('erpal_ajax_adresses', $customer_nid);
         }
@@ -217,12 +217,13 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   //set contractor to "own company" if field is empty
   $contractor_nid = false;    
   if (isset($form['field_contractor_ref'][LANGUAGE_NONE][0])) {
-    $contractor_nid = $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
+    $contractor_nid = $form['field_contractor_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
   }
 
   if (!$contractor_nid) {
     $company_nid = _erpal_basic_helper_get_own_company_nid(false);
-    $form['field_contractor_ref'][LANGUAGE_NONE][0]['nid']['#default_value'] = $company_nid;
+    $company_node = node_load($company_nid);
+    $form['field_contractor_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $company_node->title.'('.$company_nid.')';
   }
 
   //prefill invoice number field with next possible value if no invoice number is already set
@@ -277,9 +278,9 @@ function _erpal_invoice_helper_calculate_billables_ref_from_form($form, &$form_s
 
   //get some invoice values
   $currency = $values['field_currency'][LANGUAGE_NONE][0]['value'];
-  $customer_nid = $values['field_customer_ref'][LANGUAGE_NONE][0]['nid'];
-  $contractor_nid = $values['field_contractor_ref'][LANGUAGE_NONE][0]['nid'];
-  
+  $customer_nid = $values['field_customer_ref'][LANGUAGE_NONE][0]['target_id'];
+  $contractor_nid = $values['field_contractor_ref'][LANGUAGE_NONE][0]['target_id'];
+
   //iterate through the values and check if we have to update or insert a billable.
   if (isset($billables_values)) {
     foreach ($billables_values as $delta => $value) {
@@ -335,7 +336,7 @@ function _erpal_invoice_helper_confirm_delete_invoice_submit($form, $form_state)
 */
 function _erpal_invoice_helper_field_customer_ref_alter($field) {
 
-  $field[LANGUAGE_NONE][0]['nid']['#ajax'] = array(
+  $field[LANGUAGE_NONE][0]['target_id']['#ajax'] = array(
     'callback' => '_erpal_invoice_helper_ajax_invoice_preselect_addresses',
     'wrapper' => 'invoice_address_wrapper',
     'method' => 'replace',
@@ -353,7 +354,7 @@ function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'erpal_invoice') {
     
     $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
-    $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+    $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
     if ($my_company_nid == $contractor_nid) {  //only if this is an invoice from us to a customer
       $links[] = array(
         'href' => 'invoice/'.$node->nid."/pdf",
@@ -406,7 +407,7 @@ function _erpal_invoice_helper_invoice_pdf_menu_access($invoice_nid) {
   //not allowed if contractor is not the own company
   $invoice_node = node_load($invoice_nid);
   $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
-  $contractor_nid = $invoice_node->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+  $contractor_nid = $invoice_node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
   
   if ($contractor_nid != $my_company_nid)  //creating invoices is only allowed for our own company
     return false;
@@ -569,7 +570,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   );
   
   //get the customer
-  $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+  $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
   $customer_node = node_load($customer_nid);
   if (isset($customer_node->field_vat_number[LANGUAGE_NONE]) && isset($customer_node->field_vat_number[LANGUAGE_NONE][0]))
     $vat_number = $customer_node->field_vat_number[LANGUAGE_NONE][0]['value'];
@@ -717,7 +718,7 @@ function erpal_invoice_helper_field_invoice_address_id_allowed_values($field) {
   }
   elseif ($invoice_nid && intval($invoice_nid)."" == $invoice_nid.""){ //ensure it is an integer and not "add"
     $invoice_node = node_load($invoice_nid);  
-    $customer_nid = $invoice_node->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+    $customer_nid = $invoice_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
     $customer_node = node_load($customer_nid);    
   } else
     return array();
@@ -787,7 +788,7 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
       
       if ($subject_node->type == 'erpal_timetracking') {
         //get the subject of the timetracking
-        $subject_nid = $subject_node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
+        $subject_nid = $subject_node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
         $subject_node = node_load($subject_nid);
         
         //then proceed as if we have a task or a project...
@@ -824,8 +825,8 @@ function _erpal_invoice_helper_set_last_invoice_number($invoice) {
   //save only for contractor = own company
   module_load_include('inc', 'erpal_basic_helper', 'inc/config');
   $company_nid = _erpal_basic_helper_get_own_company_nid(false);
-  if (isset($invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid']))
-    $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+  if (isset($invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id']))
+    $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
   else
     $contractor_nid = $company_nid;
     

@@ -43,6 +43,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['empty']['area']['content'] = 'This contact has no activities';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['empty']['area']['tokenize'] = 0;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['relationships']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['relationships']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['relationships']['field_customer_ref_target_id']['label'] = 'customer';
+  $handler->display->display_options['relationships']['field_customer_ref_target_id']['required'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -59,6 +65,32 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Field: Content: Customer */
+  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
+    'link' => 1,
+  );
+  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
   /* Field: Content: Activity status */
   $handler->display->display_options['fields']['field_activity_status']['id'] = 'field_activity_status';
   $handler->display->display_options['fields']['field_activity_status']['table'] = 'field_data_field_activity_status';
@@ -81,28 +113,6 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_activity_status']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_activity_status']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_activity_status']['field_api_classes'] = 0;
-  /* Field: Content: Customer */
-  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
   /* Field: Content: Next Contact */
   $handler->display->display_options['fields']['field_next_contact']['id'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
@@ -138,17 +148,17 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   /* Contextual filter: Content: Customer (field_customer_ref) */
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['default_argument_type'] = 'node';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['field_customer_ref_nid']['not'] = 0;
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['not'] = 0;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -248,16 +258,15 @@ return _erpal_basic_helper_view_contacts_header_content();
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Content: Customer (field_customer_ref) */
-  $handler->display->display_options['filters']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['group'] = 1;
-  $handler->display->display_options['filters']['field_customer_ref_nid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator_id'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['label'] = 'Customer';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['identifier'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['reduce'] = 0;
   $handler->display->display_options['path'] = 'crm/activities';
   $handler->display->display_options['menu']['title'] = 'CRM activities';
   $handler->display->display_options['menu']['weight'] = '0';

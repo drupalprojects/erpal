@@ -244,74 +244,88 @@ function feature_erpal_project_basic_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_activity_ref',
       'foreign keys' => array(
-        'nid' => array(
+        'node' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'target_id' => 'nid',
           ),
           'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_contact' => 0,
-          'erpal_crm_activity' => 'erpal_crm_activity',
-          'erpal_file' => 0,
-          'erpal_invoice' => 0,
-          'erpal_project' => 0,
-          'erpal_project_spec' => 0,
-          'erpal_task' => 0,
-          'erpal_timetracking' => 0,
-          'features_test' => 0,
-          'page' => 0,
-          'panel' => 0,
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_crm_activity' => 'erpal_crm_activity',
+          ),
         ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_project',
       'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '6',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
         'test' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '6',
         ),
       ),
@@ -320,94 +334,102 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'CRM activity',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'nodereference_url',
+        'module' => 'entityreference',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'edit_fallback' => 1,
-          'fallback' => 'select',
-          'node_link' => array(
-            'destination' => 'default',
-            'full' => 1,
-            'hover_title' => '',
-            'teaser' => 0,
-            'title' => 'Create Project',
-          ),
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
         ),
-        'type' => 'nodereference_url',
+        'type' => 'entityreference_autocomplete',
         'weight' => '6',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_book_ref'
-  $fields['node-erpal_project-field_book_ref'] = array(
+  // Exported field: 'node-erpal_project-field_books_ref'
+  $fields['node-erpal_project-field_books_ref'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_book_ref',
+      'field_name' => 'field_books_ref',
       'foreign keys' => array(
-        'nid' => array(
+        'node' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'target_id' => 'nid',
           ),
           'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_book' => 'erpal_book',
+          ),
+        ),
+        'handler_submit' => 'Change handler',
         'profile2_private' => FALSE,
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_book' => 'erpal_book',
-          'erpal_book_page' => 0,
-          'erpal_contact' => 0,
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 0,
-          'erpal_invoice' => 0,
-          'erpal_project' => 0,
-          'erpal_task' => 0,
-          'erpal_timetracking' => 0,
-          'page' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_project',
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
-      'description' => 'Add specification dokuments to the project to make planing and project setup easier',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '7',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => 9,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '11',
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -415,35 +437,36 @@ function feature_erpal_project_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
-        'test' => array(
-          'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '7',
-        ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_book_ref',
+      'field_name' => 'field_books_ref',
       'label' => 'Specification',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'node_reference',
+        'module' => 'entityreference',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
+          'match_operator' => 'CONTAINS',
+          'path' => '',
           'references_dialog_add' => 1,
           'references_dialog_edit' => 1,
           'references_dialog_search' => 1,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '7',
+        'type' => 'entityreference_autocomplete',
+        'weight' => '9',
       ),
     ),
   );
@@ -456,81 +479,88 @@ function feature_erpal_project_basic_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_customer_ref',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
+      'foreign keys' => array(),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 1,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_contact' => 'erpal_contact',
+          ),
+        ),
+        'handler_submit' => 'Change handler',
         'profile2_private' => FALSE,
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_book' => 0,
-          'erpal_book_page' => 0,
-          'erpal_contact' => 'erpal_contact',
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 0,
-          'erpal_invoice' => 0,
-          'erpal_project' => 0,
-          'erpal_task' => 0,
-          'erpal_timetracking' => 0,
-          'page' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_project',
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
       'description' => 'Customer of the project',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '1',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
         'test' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '1',
         ),
       ),
@@ -539,21 +569,29 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Customer',
       'required' => 1,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'node_reference',
+        'module' => 'entityreference',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
+          'match_operator' => 'CONTAINS',
+          'path' => '',
           'references_dialog_add' => 1,
           'references_dialog_edit' => 1,
           'references_dialog_search' => 1,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),
-        'type' => 'node_reference_autocomplete',
+        'type' => 'entityreference_autocomplete',
         'weight' => '5',
       ),
     ),
@@ -751,7 +789,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '8',
+        'weight' => '7',
       ),
     ),
   );
@@ -1106,64 +1144,73 @@ function feature_erpal_project_basic_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_parent',
       'foreign keys' => array(
-        'nid' => array(
+        'node' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'target_id' => 'nid',
           ),
           'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_book' => 'erpal_book',
+            'erpal_book_page' => 'erpal_book_page',
+            'erpal_project' => 'erpal_project',
+            'erpal_task' => 'erpal_task',
+          ),
+        ),
+        'handler_submit' => 'Change handler',
         'profile2_private' => FALSE,
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_book' => 'erpal_book',
-          'erpal_book_page' => 'erpal_book_page',
-          'erpal_contact' => 0,
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 0,
-          'erpal_invoice' => 0,
-          'erpal_project' => 'erpal_project',
-          'erpal_project_spec' => 0,
-          'erpal_task' => 'erpal_task',
-          'erpal_timetracking' => 0,
-          'features_test' => 0,
-          'page' => 0,
-          'panel' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
       'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '8',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '8',
         ),
         'teaser' => array(
@@ -1178,24 +1225,29 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Parent',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'nodereference_url',
+        'module' => 'entityreference',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'edit_fallback' => 0,
-          'fallback' => 'select',
-          'node_link' => array(
-            'destination' => 'default',
-            'full' => 1,
-            'hover_title' => '',
-            'teaser' => 0,
-            'title' => 'Add task',
-          ),
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
         ),
-        'type' => 'nodereference_url',
+        'type' => 'entityreference_autocomplete',
         'weight' => '5',
       ),
     ),
@@ -1364,69 +1416,88 @@ function feature_erpal_project_basic_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_project_ref',
       'foreign keys' => array(
-        'nid' => array(
+        'node' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'target_id' => 'nid',
           ),
           'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_contact' => 0,
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 0,
-          'erpal_project' => 'erpal_project',
-          'erpal_project_spec' => 0,
-          'erpal_task' => 0,
-          'page' => 0,
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 1,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_project' => 'erpal_project',
+          ),
         ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
       'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '12',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
       ),
@@ -1435,24 +1506,29 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Project',
       'required' => 1,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'nodereference_url',
+        'module' => 'entityreference',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'edit_fallback' => 1,
-          'fallback' => 'select',
-          'node_link' => array(
-            'destination' => 'default',
-            'full' => 1,
-            'hover_title' => '',
-            'teaser' => 0,
-            'title' => 'Create new task',
-          ),
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
         ),
-        'type' => 'nodereference_url',
+        'type' => 'entityreference_autocomplete',
         'weight' => '1',
       ),
     ),
@@ -1467,63 +1543,77 @@ function feature_erpal_project_basic_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_task_assigned_users',
       'foreign keys' => array(
-        'uid' => array(
+        'users' => array(
           'columns' => array(
-            'uid' => 'uid',
+            'target_id' => 'uid',
           ),
           'table' => 'users',
         ),
       ),
       'indexes' => array(
-        'uid' => array(
-          0 => 'uid',
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'user_reference',
+      'module' => 'entityreference',
       'settings' => array(
-        'referenceable_roles' => array(
-          2 => 0,
-          3 => 0,
-          4 => 0,
-          5 => '5',
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 1,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => '',
+            'property' => 'uid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(),
         ),
-        'referenceable_status' => array(
-          0 => 0,
-          1 => '1',
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'user',
       ),
       'translatable' => '0',
-      'type' => 'user_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'user_reference',
-          'settings' => array(),
-          'type' => 'user_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '7',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'user_reference',
-          'settings' => array(),
-          'type' => 'user_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
       ),
@@ -1532,13 +1622,29 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Assigned To Users',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
         'weight' => '10',
       ),
     ),
@@ -2137,61 +2243,70 @@ function feature_erpal_project_basic_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_timetracking_subject',
       'foreign keys' => array(
-        'nid' => array(
+        'node' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'target_id' => 'nid',
           ),
           'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 1,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_task' => 'erpal_task',
+          ),
+        ),
+        'handler_submit' => 'Change handler',
         'profile2_private' => FALSE,
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_contact' => 0,
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 0,
-          'erpal_invoice' => 0,
-          'erpal_project' => 0,
-          'erpal_project_spec' => 0,
-          'erpal_task' => 'erpal_task',
-          'erpal_timetracking' => 0,
-          'features_test' => 0,
-          'page' => 0,
-          'panel' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_timetracking',
       'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 4,
         ),
         'teaser' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
       ),
@@ -2200,24 +2315,29 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Subject',
       'required' => 1,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'nodereference_url',
+        'module' => 'entityreference',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'edit_fallback' => 0,
-          'fallback' => 'select',
-          'node_link' => array(
-            'destination' => 'source',
-            'full' => 1,
-            'hover_title' => 'Add timetracking entry',
-            'teaser' => 1,
-            'title' => 'Track time',
-          ),
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
         ),
-        'type' => 'nodereference_url',
+        'type' => 'entityreference_autocomplete',
         'weight' => 0,
       ),
     ),
@@ -2291,7 +2411,6 @@ function feature_erpal_project_basic_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Add specification dokuments to the project to make planing and project setup easier');
   t('Assigned To Users');
   t('Billing Duration');
   t('Body');

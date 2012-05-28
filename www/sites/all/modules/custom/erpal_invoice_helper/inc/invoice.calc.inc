@@ -404,10 +404,10 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   $invoice->field_currency[LANGUAGE_NONE][0]['value'] = $currency;
   
   //add customer
-  $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
+  $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'] = $customer_nid;
   
   //add contractor
-  $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'] = $contractor_nid;
+  $invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id'] = $contractor_nid;
   
   //if there are notes, set the notes
   $invoice->field_note[LANGUAGE_NONE][0]['value'] = isset($params['notes']) ? $params['notes'] : '';

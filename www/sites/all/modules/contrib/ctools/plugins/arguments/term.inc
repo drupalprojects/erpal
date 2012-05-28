@@ -146,7 +146,7 @@ function ctools_term_ctools_argument_placeholder($conf) {
  * Inject the breadcrumb trail if necessary.
  */
 function ctools_term_breadcrumb($conf, $context) {
-  if (empty($conf['breadcrumb'])) {
+  if (empty($conf['breadcrumb']) || empty($context->data) || empty($context->data->tid)) {
     return;
   }
 

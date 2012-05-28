@@ -35,9 +35,9 @@ function feature_erpal_crm_views_api() {
 function feature_erpal_crm_node_info() {
   $items = array(
     'erpal_crm_activity' => array(
-      'name' => t('erpal_crm_activity'),
+      'name' => t('Activity'),
       'base' => 'node_content',
-      'description' => t('This is a activity with a contact, e.g a proposal, project request and other conversations.'),
+      'description' => t('This is an activity with a contact, e.g a proposal, project request and other conversations.'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',

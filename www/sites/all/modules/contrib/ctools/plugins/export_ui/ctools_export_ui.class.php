@@ -312,7 +312,9 @@ class ctools_export_ui {
 
     $form['#prefix'] = '<div class="clearfix">';
     $form['#suffix'] = '</div>';
-    $form['#attached']['js'] = array('misc/ajax.js', 'misc/progress.js', 'misc/jquery.form.js', ctools_attach_js('auto-submit'));
+    $form['#attached']['js'] = array(ctools_attach_js('auto-submit'));
+    $form['#attached']['library'][] = array('system', 'drupal.ajax');
+    $form['#attached']['library'][] = array('system', 'jquery.form');
     $form['#attributes'] = array('class' => array('ctools-auto-submit-full-form'));
   }
 

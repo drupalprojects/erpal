@@ -39,7 +39,7 @@ function feature_erpal_basic_views_api() {
 function feature_erpal_basic_node_info() {
   $items = array(
     'erpal_contact' => array(
-      'name' => t('erpal_contact'),
+      'name' => t('Contact'),
       'base' => 'node_content',
       'description' => t('This is the basic content type for contacts in ERPAL'),
       'has_title' => '1',

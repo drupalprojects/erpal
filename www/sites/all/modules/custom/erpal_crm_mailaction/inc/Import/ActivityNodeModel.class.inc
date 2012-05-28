@@ -117,7 +117,7 @@ class ActivityNodeModel {
     $node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
     
     if ($contact !== FALSE) {
-      $node->field_contact_ref[LANGUAGE_NONE][]['nid'] = $contact;
+      $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contact;
     }
     
     node_save ($node);
@@ -180,7 +180,11 @@ class ActivityNodeModel {
       return FALSE;
     }
  
-    $parentNode->field_asset_files[LANGUAGE_NONE][]['nid'] = $node->nid;
+    $target = array(
+      'target_id' => $node->nid,
+      'target_type' => 'node',
+    );
+    $parentNode->field_asset_files[LANGUAGE_NONE][] = $target;
     node_save ($parentNode);
     
     return TRUE;

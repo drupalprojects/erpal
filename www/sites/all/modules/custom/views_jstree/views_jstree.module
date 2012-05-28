@@ -199,7 +199,7 @@ function views_jstree_move_child($view_name, $nid) {
     $new_parent_nid = $root;
   }
   
-  $node->{$parent_field['id']}[LANGUAGE_NONE][0]['nid'] = $new_parent_nid; //@TODO instead of using 'nid' load the field and get the column by this definition
+  $node->{$parent_field['id']}[LANGUAGE_NONE][0]['target_id'] = $new_parent_nid;
   $node->{$weight_field['id']}[LANGUAGE_NONE][0]['value'] = $position;
   
   node_save($node);

@@ -95,7 +95,7 @@ function erpal_books_helper_pdf_form_submit($form, $form_state) {
   if ($root_node->type == 'erpal_book') {
     $book_node = $root_node;
   } elseif ($root_node->type == 'erpal_book_page') {
-    $book_nid = $root_node->field_book_ref[LANGUAGE_NONE][0]['nid'];
+    $book_nid = $root_node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
     $book_node = node_load($book_nid);
   }
   
@@ -157,8 +157,8 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
  
   //now attach the file to the book_node
   $file_node = false;
-  if (isset($book_node->field_asset_files[LANGUAGE_NONE][0]['nid'])) {
-    $file_nid = $book_node->field_asset_files[LANGUAGE_NONE][0]['nid'];  //if exists, this node will be updated with its file
+  if (isset($book_node->field_asset_files[LANGUAGE_NONE][0]['target_id'])) {
+    $file_nid = $book_node->field_asset_files[LANGUAGE_NONE][0]['target_id'];  //if exists, this node will be updated with its file
     $file_node = node_load($file_nid);
   }
 
