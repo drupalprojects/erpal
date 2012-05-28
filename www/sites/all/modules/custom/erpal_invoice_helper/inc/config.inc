@@ -131,7 +131,13 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     );
   }
   
-  
+  //text for a invoice copy marked in pdf export
+  $form['erpal_invoice_copy_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Invoice copy text'),
+    '#description' => t('Text is placed in an invoice if the invoice is a copy'),
+    '#default_value' => _erpal_invoice_helper_get_invoice_copy_text(),
+  );
   
   $form['submit'] = array(
     '#value' => t('save'),
@@ -156,6 +162,7 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
   variable_set('erpal_invoice_currencies_string', $values['erpal_invoice_currencies']);
   variable_set('erpal_invoice_default_currency', $values['erpal_invoice_default_currency']);
   variable_set('erpal_invoice_default_credit_period', $values['erpal_invoice_default_credit_period']);
+  variable_set('erpal_invoice_copy_text', $values['erpal_invoice_copy_text']);
 }
 
 /**

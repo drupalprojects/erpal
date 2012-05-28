@@ -169,11 +169,11 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
 
 /**
 * Recursive function to get HTML of all Child nodes
+* Depth is the counter to create the enumeration for each page
 */
-function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options) {
+function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options, $depth_prefix='', $depth_counter=0) {
   
   //prepare fields so they can be included in entitiy field query easily
-  
   $child_nodes = _erpal_book_helper_get_children($book_node, $root_node, $options);
   $theme_options = array(
     'estimations' => array(
@@ -184,15 +184,23 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
   );
   
   //save the body, if we dont do that, the content token will be replaced in the real node body....dont know why...??!
+  //######### Important order!###############
   $body = '';
   if (isset($root_node->body[LANGUAGE_NONE][0]['value'])) {
     $body = $root_node->body[LANGUAGE_NONE][0]['value'];
     _erpal_book_helper_replace_tokens($root_node); //replace all tokens
-  }
+  }  
   
-  $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options));
-
+  //prepare the counter for table of contents enumeration
+  $node_counter = $depth_prefix;
+  if ($node_counter) {
+    $node_counter .= '.';
+  }
+  $node_counter .= $depth_counter ? $depth_counter : 1;
+  
+  $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options, 'counter' => $node_counter));
   $root_node->body[LANGUAGE_NONE][0]['value'] = $body; // set the body back again!
+  //######## End ############################
   
   $total_options[$theme_options['estimations']['total']] = 1;
   $estimation = _erpal_book_helper_get_estimation($root_node, $total_options);
@@ -209,7 +217,9 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
   $html = '';
   foreach ($child_nodes as $child_node) {
     //get recusive HTML of children
-    $child_html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $child_node, $options);
+    $depth_prefix = $node_counter;
+    $depth_counter++;  //next recursion
+    $child_html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $child_node, $options, $depth_prefix, $depth_counter);
 
     $estimation += $child_html['total_estimation'];
     $child_html = $child_html['html'];

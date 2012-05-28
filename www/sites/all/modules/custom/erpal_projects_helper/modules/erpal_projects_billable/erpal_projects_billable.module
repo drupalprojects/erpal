@@ -106,18 +106,30 @@ function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_s
 */
 function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state) {
 
-  $project_nid = $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
+  //ref_nid id is the node we copy the pricing information from. Mayba a project or another task
+  //if parent is set and it is type erpal_task we use the parents tasks pricing
+  $ref_nid = false;  
+  if (isset($form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'])) {
+    $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['nid']['#default_value'];
+    $parent_node = node_load($parent_nid);
+    if ($parent_node->type == 'erpal_task')
+      $ref_nid = $parent_nid;
+  }
+  
+  if (!$ref_nid)
+    $ref_nid = $form['field_project_ref'][LANGUAGE_NONE][0]['nid']['#default_value'];
+  
  
   //perhaps, there is a project_nid in form_state, we can use that because it has been submitted by ajax!
   if (!empty($form_state['values']['field_project_ref']))
-    $project_nid = $form_state['values']['field_project_ref'][LANGUAGE_NONE][0]['nid'];
+    $ref_nid = $form_state['values']['field_project_ref'][LANGUAGE_NONE][0]['nid'];
 
-  if (!$project_nid)
+  if (!$ref_nid)
     return; //if we dont have a project, we dont have data to preselect the task price fields with
     
   //we prefill the price mode of the task the same as at the project. If the project has
   //price mode "per_hour" we preselect the price (this is the price per hour).
-  $preselects = _erpal_projects_billable_get_task_preselects($project_nid);
+  $preselects = _erpal_projects_billable_get_task_preselects($ref_nid);
 
   $form['field_pricing'][LANGUAGE_NONE][0]['field_price_mode'][LANGUAGE_NONE]['#value'] = $preselects['price_mode'];
   $form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#value'] = $preselects['vat_rate'];
@@ -133,12 +145,12 @@ function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state
 }
 
 /**
-* Returns pricing preset values for a task according to its referenced node
+* Returns pricing preset values for a task according to its referenced node (parent task or project)
 */
-function _erpal_projects_billable_get_task_preselects($project_nid) {
+function _erpal_projects_billable_get_task_preselects($ref_nid) {
 
-  $project_node = node_load($project_nid);
-  $preselects = _erpal_projects_billable_get_pricing($project_node);
+  $ref_node = node_load($ref_nid);
+  $preselects = _erpal_projects_billable_get_pricing($ref_node);
   
   if ($preselects['price_mode'] == 'fixed_price')  
     $preselects['price_mode'] = 'not_billable'; //in most cases if the project is a fixed price project, the task is not billable

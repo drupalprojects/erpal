@@ -33,7 +33,7 @@ function erpal_invoice_helper_action_info() {
 function erpal_invoice_helper_theme() {
   return array(
     'invoice_pdf_html' => array(
-      'variables' => array('invoice' => false),
+      'variables' => array('invoice' => false, 'params' => array()),
       'template' => 'template/invoice_pdf_html',
     ),
     'invoice_attachment_pdf_html' => array(
@@ -666,7 +666,17 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['payment_date'] = date($date_form_date, $payment_date);
   $variables['notes'] = $invoice->field_note[LANGUAGE_NONE][0]['value'];
   $variables['auto_notes'] = $flat_auto_notes;
+  
+  $copy_text = _erpal_invoice_helper_get_invoice_copy_text(); //TODO dynamisch
+  $variables['copy'] = $variables['params']['mark_copied'] ? $copy_text : false;
 
+}
+
+/**
+* Return text for invoice copy
+*/
+function _erpal_invoice_helper_get_invoice_copy_text() {
+  return variable_get('erpal_invoice_copy_text', t('COPY'));
 }
 
 /**
@@ -739,6 +749,16 @@ function _erpal_invoice_helper_replace_all_tokens($invoice, $op) {
 }
 
 /**
+* Returns true if the given invoice is a copy
+*/
+function _erpal_invoice_helper_invoice_is_exported($invoice_node) {
+  if (isset($invoice_node->field_invoice_exported[LANGUAGE_NONE][0]['value']))
+    return $invoice_node->field_invoice_exported[LANGUAGE_NONE][0]['value'];
+    
+  return false;
+}
+
+/**
 * Return all Order Numbers to an invoice. Ordernumbers are fetched by following reference chain
 * billable->subject(task)->project->crm_activity->field_order_number_intern/extern
 */
@@ -750,6 +770,7 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
 
   if (module_exists('feature_erpal_project_basic')) {
     $line_items = $invoice_node->field_billables_ref[LANGUAGE_NONE];
+
     foreach ($line_items as $line_item) {
       if (!$line_item['target_id'])
         continue;
@@ -759,7 +780,7 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
       
       //if there is no subject because the billable was entered manually,
       //we cannot get the ordernumber
-      if (!$subject_nid <= 0 || !$subject_nid)
+      if ($subject_nid <= 0 || !$subject_nid)
         continue;
       
       $subject_node = node_load($subject_nid);
@@ -771,9 +792,9 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
         
         //then proceed as if we have a task or a project...
       }
-      
+  
       if ($subject_node->type == 'erpal_task' || $subject_node->type == 'erpal_project') {
-        $activity_node = _erpal_projects_helper_get_activity($subject_node);        
+        $activity_node = _erpal_projects_helper_get_activity($subject_node);       
         if ($activity_node) {
           //get the order numbers intern and extern and add it to the $numbers array
           if (isset($activity_node->field_order_number_intern[LANGUAGE_NONE][0]['value'])) {

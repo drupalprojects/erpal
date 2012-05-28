@@ -52,6 +52,7 @@ features[field][] = node-erpal_invoice-field_currency
 features[field][] = node-erpal_invoice-field_customer_ref
 features[field][] = node-erpal_invoice-field_invoice_address_id
 features[field][] = node-erpal_invoice-field_invoice_date
+features[field][] = node-erpal_invoice-field_invoice_exported
 features[field][] = node-erpal_invoice-field_invoice_number
 features[field][] = node-erpal_invoice-field_invoice_total
 features[field][] = node-erpal_invoice-field_invoice_vat

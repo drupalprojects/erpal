@@ -583,7 +583,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '47',
+        'weight' => '42',
       ),
     ),
   );
@@ -650,7 +650,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '42',
+        'weight' => '40',
       ),
     ),
   );
@@ -946,7 +946,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '12',
+        'weight' => '11',
       ),
     ),
   );
@@ -1172,6 +1172,75 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_invoice-field_invoice_exported'
+  $fields['node-erpal_invoice-field_invoice_exported'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_invoice_exported',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'not exported',
+          1 => 'exported',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_invoice',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 29,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_invoice_exported',
+      'label' => 'Exported',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '12',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_invoice-field_invoice_number'
   $fields['node-erpal_invoice-field_invoice_number'] = array(
     'field_config' => array(
@@ -1295,7 +1364,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '37',
+        'weight' => '38',
       ),
     ),
   );
@@ -1348,7 +1417,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '41',
+        'weight' => '39',
       ),
     ),
   );
@@ -1748,7 +1817,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '43',
+        'weight' => '41',
       ),
     ),
   );
@@ -1817,6 +1886,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Currency');
   t('Customer');
   t('Discount percent');
+  t('Exported');
   t('In how many days the customer has to pay the invoice');
   t('Invoice Address');
   t('Invoice Date');

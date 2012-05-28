@@ -600,6 +600,28 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['quantity']['set_precision'] = 0;
   $handler->display->display_options['fields']['quantity']['precision'] = '0';
   $handler->display->display_options['fields']['quantity']['format_plural'] = 0;
+  /* Field: Billable: Subject */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'billable';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['subject']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['subject']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['subject']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['subject']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['subject']['hide_alter_empty'] = 1;
   /* Field: Billable: Single_price */
   $handler->display->display_options['fields']['single_price']['id'] = 'single_price';
   $handler->display->display_options['fields']['single_price']['table'] = 'billable';
@@ -1153,6 +1175,16 @@ echo _erpal_invoice_helper_view_invoices_header_content();
     'erpal_invoice' => 'erpal_invoice',
   );
   $handler->display->display_options['filters']['type']['group'] = 0;
+  /* Filter criterion: Content: Exported (field_invoice_exported) */
+  $handler->display->display_options['filters']['field_invoice_exported_value']['id'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['table'] = 'field_data_field_invoice_exported';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['field'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator_id'] = 'field_invoice_exported_value_op';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['label'] = 'Exported';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator'] = 'field_invoice_exported_value_op';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['identifier'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['reduce'] = 0;
 
   /* Display: Invoices */
   $handler = $view->new_display('page', 'Invoices', 'page');

@@ -39,7 +39,7 @@ function erpal_book_helper_menu(){
 function erpal_book_helper_theme() {
   return array(
     'erpal_books_book_pdf_html' => array(
-      'variables' => array('node' => NULL, 'pdf_object' => NULL),
+      'variables' => array('node' => NULL, 'pdf_object' => NULL, 'options' => array(), 'counter' => 0),
       'template' => 'template/book_pdf_html',
     ),
     'erpal_books_children_html' => array(
