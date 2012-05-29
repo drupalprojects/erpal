@@ -211,6 +211,13 @@ function feature_erpal_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'page_manager_node_view_disabled';
+  $strongarm->value = FALSE;
+  $export['page_manager_node_view_disabled'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'save_continue_erpal_contact';
   $strongarm->value = 'Save and add fields';
   $export['save_continue_erpal_contact'] = $strongarm;
@@ -228,14 +235,6 @@ function feature_erpal_basic_strongarm() {
   $strongarm->name = 'show_preview_changes_erpal_contact';
   $strongarm->value = 1;
   $export['show_preview_changes_erpal_contact'] = $strongarm;
-  
-  //manuell export because features didn't get it exported
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'page_manager_node_view_disabled';
-  $strongarm->value = 0;
-  $export['page_manager_node_view_disabled'] = $strongarm;
 
   return $export;
 }
