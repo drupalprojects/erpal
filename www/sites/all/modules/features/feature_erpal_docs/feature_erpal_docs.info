@@ -13,7 +13,6 @@ dependencies[] = features
 dependencies[] = field_group
 dependencies[] = file
 dependencies[] = menu
-dependencies[] = node_reference
 dependencies[] = page_manager
 dependencies[] = private_files_download_permission
 dependencies[] = references_dialog

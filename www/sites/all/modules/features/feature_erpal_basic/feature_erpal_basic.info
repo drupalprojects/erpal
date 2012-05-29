@@ -28,7 +28,6 @@ dependencies[] = libraries
 dependencies[] = link
 dependencies[] = list
 dependencies[] = menu
-dependencies[] = node_reference
 dependencies[] = number
 dependencies[] = options
 dependencies[] = php
