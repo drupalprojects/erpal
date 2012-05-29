@@ -47,16 +47,16 @@ echo _erpal_invoice_helper_view_billables_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
-  /* Relationship: Billable: Customer */
-  $handler->display->display_options['relationships']['customer_nid']['id'] = 'customer_nid';
-  $handler->display->display_options['relationships']['customer_nid']['table'] = 'billable';
-  $handler->display->display_options['relationships']['customer_nid']['field'] = 'customer_nid';
-  $handler->display->display_options['relationships']['customer_nid']['required'] = 0;
   /* Relationship: Billable: Contractor */
   $handler->display->display_options['relationships']['contractor_nid']['id'] = 'contractor_nid';
   $handler->display->display_options['relationships']['contractor_nid']['table'] = 'billable';
   $handler->display->display_options['relationships']['contractor_nid']['field'] = 'contractor_nid';
   $handler->display->display_options['relationships']['contractor_nid']['required'] = 0;
+  /* Relationship: Billable: Customer */
+  $handler->display->display_options['relationships']['customer_nid']['id'] = 'customer_nid';
+  $handler->display->display_options['relationships']['customer_nid']['table'] = 'billable';
+  $handler->display->display_options['relationships']['customer_nid']['field'] = 'customer_nid';
+  $handler->display->display_options['relationships']['customer_nid']['required'] = 0;
   /* Field: Bulk operations: Billable */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'billable';

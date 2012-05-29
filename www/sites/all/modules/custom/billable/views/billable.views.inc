@@ -31,7 +31,7 @@ function billable_views_data_alter(&$data) {
   //nodereference handler for customer_nid
   // Relationship.
   $data['billable']['customer_nid']['relationship'] = array(
-    'handler' => 'references_handler_relationship',
+    'handler' => 'views_handler_relationship',
     'base' => 'node',
     'base field' => 'nid',
     'field' => 'customer_nid',
@@ -48,7 +48,7 @@ function billable_views_data_alter(&$data) {
   //nodereference handler for contractor_nid
   // Relationship.
   $data['billable']['contractor_nid']['relationship'] = array(
-    'handler' => 'references_handler_relationship',
+    'handler' => 'views_handler_relationship',
     'base' => 'node',
     'base field' => 'nid',
     'field' => 'contractor_nid',
