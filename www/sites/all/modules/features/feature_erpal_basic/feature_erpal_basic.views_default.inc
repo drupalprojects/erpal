@@ -513,10 +513,6 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['relation_type']['expose']['identifier'] = 'relation_type';
   $handler->display->display_options['filters']['relation_type']['expose']['reduce'] = 0;
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['path'] = 'relations';
-
   /* Display: Relations by node */
   $handler = $view->new_display('panel_pane', 'Relations by node', 'panel_pane_1');
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
