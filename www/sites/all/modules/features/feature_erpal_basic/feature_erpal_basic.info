@@ -42,6 +42,7 @@ dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = token
 dependencies[] = views
+dependencies[] = views_content
 features[conditional_fields][] = node:erpal_contact
 features[ctools][] = ds:ds:1
 features[ctools][] = field_group:field_group:1
