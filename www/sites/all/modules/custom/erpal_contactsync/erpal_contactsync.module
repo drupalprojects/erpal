@@ -10,10 +10,10 @@ function erpal_contactsync_bssync_plugin() {
     'erpal_contact'  => array(
         'type'   => 'contact',
         'title'  => t('Erpal Contact Plugin'),
-        'form'   => 'erpal_contact_plugin_form',
-        'getids' => '_erpal_contact_getids',
-        'write'  => '_erpal_contact_write',
-        'get'    => '_erpal_contact_get',
+        'form'   => 'erpal_contactsync_plugin_form',
+        'getids' => '_erpal_contactsync_getids',
+        'write'  => '_erpal_contactsync_write',
+        'get'    => '_erpal_contactsync_get',
     )
   );
 }
@@ -28,10 +28,10 @@ function erpal_contactsync_plugin_form() {
   return $form;
 }
 
-function _erpal_contact_write($id) {
+function _erpal_contacsynct_write($id) {
   
 }
 
-function _erpal_contact_get($id) {
+function _erpal_contactsync_get($id) {
   
 }
