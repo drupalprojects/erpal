@@ -58,11 +58,35 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#description' => t('You can change your company in !link', array('!link' => l(t('ERPAL basic settings'), 'admin/erpal/basic'))),    
   );
   
-  $form['erpal_invoice_number_prefix'] = array(
+  $form['invoice_number'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Invoice number'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  
+  $form['invoice_number']['erpal_invoice_number_pattern'] = array(
     '#type' => 'textfield',
-    '#title' => t('Invoice number prefix'),
-    '#default_value' => _erpal_invoice_helper_get_invoice_number_prefix(),    
-    '#description' => t('This prefix will be added as prefix to every invoice number'),
+    '#title' => t('Invoice number pattern'),
+    '#default_value' => _erpal_invoice_helper_get_invoice_number_pattern(),    
+    '#description' => t('This pattern will let you design your invoice number'),
+  );
+  
+  $form['invoice_number']['erpal_invoice_number_offset'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Invoice number offset'),
+    '#default_value' => _erpal_invoice_helper_get_next_invoice_number(),    
+    '#description' => t('This offset definies the last invoice number, next increment will be this +1'),
+  );
+  
+  //Tokens for invoice pattern
+  //show available Tokens  
+  $form['invoice_number']['token_tree'] = array(
+    '#theme' => 'token_tree',   
+    //'#token_types' => array(),
+    '#global_types' => TRUE,
+    '#click_insert' => TRUE,
+    '#recursion_limit' => 1,
   );
   
   $form['erpal_invoice_currencies'] = array(
@@ -154,7 +178,7 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
 
   $values = $form_state['values'];
 
-  variable_set('erpal_invoice_number_prefix', $values['erpal_invoice_number_prefix']);
+  variable_set('erpal_invoice_number_pattern', $values['erpal_invoice_number_pattern']);
   variable_set('erpal_invoice_vat_rates_string', $values['erpal_invoice_vat_rates']);
   variable_set('erpal_invoice_default_vat_rate', $values['erpal_invoice_default_vat_rate']);
   variable_set('erpal_invoice_credit_periods_string', $values['erpal_invoice_credit_periods']);
@@ -163,13 +187,19 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
   variable_set('erpal_invoice_default_currency', $values['erpal_invoice_default_currency']);
   variable_set('erpal_invoice_default_credit_period', $values['erpal_invoice_default_credit_period']);
   variable_set('erpal_invoice_copy_text', $values['erpal_invoice_copy_text']);
+  variable_set('erpal_last_invoice_number', $values['erpal_invoice_number_offset']);
 }
 
 /**
 * Function to return the invoice number prefix
 */
-function _erpal_invoice_helper_get_invoice_number_prefix() {
-  return variable_get('erpal_invoice_number_prefix', '');
+function _erpal_invoice_helper_get_invoice_number_pattern() {
+  $pattern = variable_get('erpal_invoice_number_pattern', '');
+  
+  if (!$pattern)
+    $pattern = "[erpal_invoice:next_invoice_number]";
+    
+  return $pattern;
 }
 
 /**

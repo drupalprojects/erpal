@@ -1124,6 +1124,29 @@ echo _erpal_invoice_helper_view_invoices_header_content();
     'link' => 1,
   );
   $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
+  /* Field: Content: Exported */
+  $handler->display->display_options['fields']['field_invoice_exported']['id'] = 'field_invoice_exported';
+  $handler->display->display_options['fields']['field_invoice_exported']['table'] = 'field_data_field_invoice_exported';
+  $handler->display->display_options['fields']['field_invoice_exported']['field'] = 'field_invoice_exported';
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_invoice_exported']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_invoice_exported']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_invoice_exported']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_invoice_exported']['field_api_classes'] = 0;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -1281,6 +1304,16 @@ echo _erpal_invoice_helper_view_invoices_header_content();
     'erpal_invoice' => 'erpal_invoice',
   );
   $handler->display->display_options['filters']['type']['group'] = 0;
+  /* Filter criterion: Content: Exported (field_invoice_exported) */
+  $handler->display->display_options['filters']['field_invoice_exported_value']['id'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['table'] = 'field_data_field_invoice_exported';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['field'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator_id'] = 'field_invoice_exported_value_op';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['label'] = 'Exported';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator'] = 'field_invoice_exported_value_op';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['identifier'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['reduce'] = 0;
   $handler->display->display_options['argument_input'] = array(
     'field_customer_ref_target_id' => array(
       'type' => 'panel',

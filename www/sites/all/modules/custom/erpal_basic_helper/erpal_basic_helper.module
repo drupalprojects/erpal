@@ -327,6 +327,21 @@ function _erpal_basic_helper_get_my_phone_entity() {
 }
 
 /**
+* Checks if the given company is the own company
+* @param $contact a contact node or a contact nid
+*/
+function _erpal_basic_helper_is_own_company($contact) {
+  if (is_numeric($contact))
+    $contact_nid = $contact;
+  elseif (is_object($contact))
+    $contact_nid = $contact->nid;
+    
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);  
+
+  return $contact_nid == $my_company_nid;
+}
+
+/**
 * Function to return an entity (in most cases out of multiple field values) that has be definied as the main value
 * @param $field_name the name of the field for which a value should be returned. CAUTION: Field must be a field_collection_item!
 */

@@ -229,7 +229,15 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   //prefill invoice number field with next possible value if no invoice number is already set
   if (isset($form['field_invoice_number'][LANGUAGE_NONE][0]['value'])) {   
     if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {
-      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = _erpal_invoice_helper_get_next_invoice_number();
+      $invoice_number_pattern = _erpal_invoice_helper_get_invoice_number_pattern();
+      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = 
+        $invoice_number_pattern;
+      
+      $invoice_number_preview = token_replace($invoice_number_pattern);
+      
+      //add a preview. We do not replace the value with prefilled form because if another user opens the add new invoice 
+      //form at the same time he will get the same number which results in duplicate invoice numbers!
+      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#description'] = t('Preview: ').$invoice_number_preview;      
     }
   }
   
@@ -246,6 +254,7 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   }
 
   $form['field_payment_date'][LANGUAGE_NONE][0]['#type'] = 'value'; //this field is hidden by display suite forms, too, but there 
+  $form['field_payment_date']['#type'] = 'hidden';
   //is an error if we dont set the field to 'value'. @see http://drupal.org/node/1547236 
   
 }
@@ -453,8 +462,6 @@ function erpal_invoice_helper_node_update($node) {
   if ($type->type == 'erpal_invoice') {
     if (!isset($node->nid) || (isset($node->nid) && !$node->nid))
       _erpal_invoice_helper_caclulate_invoice($node);
-    
-    _erpal_invoice_helper_set_last_invoice_number($node);
   }
 
 }
@@ -477,6 +484,23 @@ function erpal_invoice_helper_node_presave($node) {
     
     _erpal_invoice_helper_replace_order_number_tokens($node);
     
+    //replace token for invoice pattern and save the last invoice 
+    $invoice_number_numeric = _erpal_invoice_helper_get_next_invoice_number();
+    $pattern = $node->field_invoice_number[LANGUAGE_NONE][0]['value'];
+    $invoice_number = token_replace($pattern, array('invoice_number' => $invoice_number_numeric));
+    $node->field_invoice_number[LANGUAGE_NONE][0]['value'] = $invoice_number;
+    //replace title token again because we use the invoice number for auto title which was generated here.
+
+    if (isset($node->title))
+      $node->title = _auto_nodetitle_patternprocessor($node->title, $node);
+    
+    if (!isset($node->invoice_number_incremented) || (isset($node->invoice_number_incremented) && !$node->invoice_number_incremented)) {
+      //do this only for invoice where contractor is the own company!
+      $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+      if (_erpal_basic_helper_is_own_company($contractor_nid))
+        _erpal_invoice_helper_set_last_invoice_number($node, $invoice_number_numeric);     
+    }
+    $node->invoice_number_incremented = true;
   }
 } 
 
@@ -489,9 +513,7 @@ function erpal_invoice_helper_node_insert($node) {
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice') {
-    _erpal_invoice_helper_caclulate_invoice($node);
-    
-    _erpal_invoice_helper_set_last_invoice_number($node);
+    _erpal_invoice_helper_caclulate_invoice($node);    
   }
 }
 
@@ -655,7 +677,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['company'] = $company_arr;
   $variables['company_node'] = $company;
   $variables['customer'] = $customer_arr;
-  $variables['invoice_number'] = _erpal_invoice_helper_get_invoice_number_prefix().$invoice_number;
+  $variables['invoice_number'] = $invoice_number;
   $variables['invoice_date'] = date($date_form_date, $invoice_date);
   $variables['billables'] = $billables;
   $variables['total'] = $total;
@@ -819,8 +841,10 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
 
 /**
 * Saves the given invoice number as last invoice number
+* @param $invoice the invoice that has the number added into invoicenumber prefix
+* @param $invoice_number the invoice pure numeric number that should be saved.
 */
-function _erpal_invoice_helper_set_last_invoice_number($invoice) {
+function _erpal_invoice_helper_set_last_invoice_number($invoice, $invoice_number) {
   //save only if it is numeric, this will be validated in validation function
   //save only for contractor = own company
   module_load_include('inc', 'erpal_basic_helper', 'inc/config');
@@ -830,14 +854,13 @@ function _erpal_invoice_helper_set_last_invoice_number($invoice) {
   else
     $contractor_nid = $company_nid;
     
-  if (!isset($invoice->field_invoice_number[LANGUAGE_NONE][0]['value']))  
+  if (!$invoice_number)  
     return; 
-    
-  $invoice_numer = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
-  $is_higher = variable_get('erpal_last_invoice_number', 0) < $invoice_numer;   //update only, if invoice number is higher, otherwise invoice numbr will be set back if we update an older invoice node
+
+  $is_higher = variable_get('erpal_last_invoice_number', 0) < $invoice_number;   //update only, if invoice number is higher, otherwise invoice number will be set back if we update an older invoice node
   if ($contractor_nid == $company_nid)
-    if (is_numeric($invoice_numer) && $is_higher) 
-      variable_set('erpal_last_invoice_number', $invoice_numer);
+    if (is_numeric($invoice_number) && $is_higher) 
+      variable_set('erpal_last_invoice_number', $invoice_number);
 }
 
 /**

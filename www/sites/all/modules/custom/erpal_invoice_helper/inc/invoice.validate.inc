@@ -61,13 +61,6 @@ function _erpal_invoice_helper_invoice_validate_number($invoice) {
   else
     $contractor = node_load($company_nid);
   
-  //if contractor is own company, we only accept int values for invoice number,
-  //alpha numeric prefix could be entered in config.  
-  if ($contractor->nid == $company_nid) {
-    if (!is_numeric($number))
-      $errors['field_invoice_number]['.LANGUAGE_NONE.'][0][value'][] = t('Your invoice number must be numeric to be incremented in next invoice');
-  }
-  
   return $errors;
 }
 
