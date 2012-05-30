@@ -64,14 +64,14 @@ function billable_views_data_alter(&$data) {
   //nodereference handler for subject_nid
   // Relationship.
   $data['billable']['subject_nid']['relationship'] = array(
-    'handler' => 'references_handler_relationship',
+    'handler' => 'views_handler_relationship',
     'base' => 'node',
     'base field' => 'nid',
     'field' => 'subject_nid',
-    'label' => t('Task'),
+    'label' => t('Billable subject'),
     'field_name' => 'subject_nid',
-    'help' => t('The task nid of a billable'),
-    'title' => t('Task'),
+    'help' => t('The node nid of a billable Subject'),
+    'title' => t('Billable subject'),
   );
   
   //add fields for the links
