@@ -47,16 +47,16 @@ echo _erpal_invoice_helper_view_billables_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
-  /* Relationship: Billable: Customer */
-  $handler->display->display_options['relationships']['customer_nid']['id'] = 'customer_nid';
-  $handler->display->display_options['relationships']['customer_nid']['table'] = 'billable';
-  $handler->display->display_options['relationships']['customer_nid']['field'] = 'customer_nid';
-  $handler->display->display_options['relationships']['customer_nid']['required'] = 0;
   /* Relationship: Billable: Contractor */
   $handler->display->display_options['relationships']['contractor_nid']['id'] = 'contractor_nid';
   $handler->display->display_options['relationships']['contractor_nid']['table'] = 'billable';
   $handler->display->display_options['relationships']['contractor_nid']['field'] = 'contractor_nid';
   $handler->display->display_options['relationships']['contractor_nid']['required'] = 0;
+  /* Relationship: Billable: Customer */
+  $handler->display->display_options['relationships']['customer_nid']['id'] = 'customer_nid';
+  $handler->display->display_options['relationships']['customer_nid']['table'] = 'billable';
+  $handler->display->display_options['relationships']['customer_nid']['field'] = 'customer_nid';
+  $handler->display->display_options['relationships']['customer_nid']['required'] = 0;
   /* Field: Bulk operations: Billable */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'billable';
@@ -600,6 +600,28 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['quantity']['set_precision'] = 0;
   $handler->display->display_options['fields']['quantity']['precision'] = '0';
   $handler->display->display_options['fields']['quantity']['format_plural'] = 0;
+  /* Field: Billable: Subject */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'billable';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['subject']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['subject']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['subject']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['subject']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['subject']['hide_alter_empty'] = 1;
   /* Field: Billable: Single_price */
   $handler->display->display_options['fields']['single_price']['id'] = 'single_price';
   $handler->display->display_options['fields']['single_price']['table'] = 'billable';
@@ -793,7 +815,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['title'] = 'Invoices';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
-    7 => '7',
+    5 => '5',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -828,6 +850,14 @@ echo _erpal_invoice_helper_view_invoices_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'No invoices available';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -1038,6 +1068,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_contractor_ref']['alter']['nl2br'] = 0;
   $handler->display->display_options['fields']['field_contractor_ref']['alter']['word_boundary'] = 1;
   $handler->display->display_options['fields']['field_contractor_ref']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_contractor_ref']['alter']['more_link'] = 0;
   $handler->display->display_options['fields']['field_contractor_ref']['alter']['strip_tags'] = 0;
   $handler->display->display_options['fields']['field_contractor_ref']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['field_contractor_ref']['alter']['html'] = 0;
@@ -1046,6 +1077,9 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_contractor_ref']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_contractor_ref']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_contractor_ref']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_contractor_ref']['settings'] = array(
+    'link' => 1,
+  );
   $handler->display->display_options['fields']['field_contractor_ref']['field_api_classes'] = 0;
   /* Field: Content: Customer */
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
@@ -1060,6 +1094,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
   $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
   $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['more_link'] = 0;
   $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
   $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
@@ -1068,34 +1103,118 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
+    'link' => 1,
+  );
   $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Payed (field_payed) */
+  $handler->display->display_options['filters']['field_payed_value']['id'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['table'] = 'field_data_field_payed';
+  $handler->display->display_options['filters']['field_payed_value']['field'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_payed_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_payed_value']['expose']['operator_id'] = 'field_payed_value_op';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['label'] = 'Payed';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['operator'] = 'field_payed_value_op';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['identifier'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Invoice Date (field_invoice_date) */
+  $handler->display->display_options['filters']['field_invoice_date_value']['id'] = 'field_invoice_date_value';
+  $handler->display->display_options['filters']['field_invoice_date_value']['table'] = 'field_data_field_invoice_date';
+  $handler->display->display_options['filters']['field_invoice_date_value']['field'] = 'field_invoice_date_value';
+  $handler->display->display_options['filters']['field_invoice_date_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_invoice_date_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['operator_id'] = 'field_invoice_date_value_op';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['label'] = 'Invoice Date';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['operator'] = 'field_invoice_date_value_op';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['identifier'] = 'field_invoice_date_value';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['field_invoice_date_value']['form_type'] = 'date_popup';
+  /* Filter criterion: Content: Invoice Number (field_invoice_number) */
+  $handler->display->display_options['filters']['field_invoice_number_value']['id'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['table'] = 'field_data_field_invoice_number';
+  $handler->display->display_options['filters']['field_invoice_number_value']['field'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_invoice_number_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['operator_id'] = 'field_invoice_number_value_op';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['label'] = 'Invoice Number';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['operator'] = 'field_invoice_number_value_op';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['identifier'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['multiple'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_invoice' => 'erpal_invoice',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Exported (field_invoice_exported) */
+  $handler->display->display_options['filters']['field_invoice_exported_value']['id'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['table'] = 'field_data_field_invoice_exported';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['field'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_invoice_exported_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator_id'] = 'field_invoice_exported_value_op';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['label'] = 'Exported';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator'] = 'field_invoice_exported_value_op';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['identifier'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['reduce'] = 0;
   /* Filter criterion: Field: Contractor (field_contractor_ref) */
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['id'] = 'field_contractor_ref_nid';
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['table'] = 'field_data_field_contractor_ref';
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['field'] = 'field_contractor_ref_nid';
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['group'] = 0;
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['expose']['operator_id'] = 'field_contractor_ref_nid_op';
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['expose']['label'] = 'Contractor';
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['expose']['operator'] = 'field_contractor_ref_nid_op';
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['expose']['identifier'] = 'field_contractor_ref_nid';
-  $handler->display->display_options['filters']['field_contractor_ref_nid']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['id'] = 'field_contractor_ref_target_id';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['table'] = 'field_data_field_contractor_ref';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['field'] = 'field_contractor_ref_target_id';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['group'] = 1;
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['operator_id'] = 'field_contractor_ref_target_id_op';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['label'] = 'Contractor';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['operator'] = 'field_contractor_ref_target_id_op';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['identifier'] = 'field_contractor_ref_target_id';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['reduce'] = 0;
   /* Filter criterion: Content: Customer (field_customer_ref) */
-  $handler->display->display_options['filters']['field_customer_ref_nid']['id'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['field'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['group'] = 0;
-  $handler->display->display_options['filters']['field_customer_ref_nid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator_id'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['label'] = 'Customer';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['operator'] = 'field_customer_ref_nid_op';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['identifier'] = 'field_customer_ref_nid';
-  $handler->display->display_options['filters']['field_customer_ref_nid']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['group'] = 1;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['reduce'] = 0;
+
+  /* Display: Invoices */
+  $handler = $view->new_display('page', 'Invoices', 'page');
+  $handler->display->display_options['path'] = 'invoice/invoices';
+
+  /* Display: Invoices to contact pane */
+  $handler = $view->new_display('panel_pane', 'Invoices to contact pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Customer (field_customer_ref) */
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Payed (field_payed) */
   $handler->display->display_options['filters']['field_payed_value']['id'] = 'field_payed_value';
   $handler->display->display_options['filters']['field_payed_value']['table'] = 'field_data_field_payed';
@@ -1145,10 +1264,17 @@ echo _erpal_invoice_helper_view_invoices_header_content();
     'erpal_invoice' => 'erpal_invoice',
   );
   $handler->display->display_options['filters']['type']['group'] = 0;
-
-  /* Display: Invoices */
-  $handler = $view->new_display('page', 'Invoices', 'page');
-  $handler->display->display_options['path'] = 'invoice/invoices';
+  $handler->display->display_options['argument_input'] = array(
+    'field_customer_ref_target_id' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Customer (field_customer_ref)',
+    ),
+  );
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $export['invoices'] = $view;
 
   return $export;

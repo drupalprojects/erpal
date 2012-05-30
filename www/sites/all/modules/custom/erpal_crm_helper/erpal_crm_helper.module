@@ -105,8 +105,8 @@ function erpal_crm_helper_node_view_alter(&$build) {
     
     return;
   }
- 
-  if (isset ($build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'])) {
+  //@TODO: hier umstellen auf entity referencens und berücksichtigen, dass ein Vorgang mehrere Kontakte haben kann
+  if (isset ($build['#node']->field_contact_ref['object']->field_email[LANGUAGE_NONE][0]['value'])) {
     $build ['links']['node']['#links']['test']  =array ( 
       'title'=> t('Reply per mail'),
       'href' => 'mailto: ' . $build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'] . '?subject=Re:' . $build['#node']->title . ' [ticket:' . $build['#node']->nid . ']',

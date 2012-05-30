@@ -14,15 +14,22 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_erpal_project';
-  $strongarm->value = 'edit-group';
+  $strongarm->value = 'edit-auto-nodetitle';
   $export['additional_settings__active_tab_erpal_project'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_erpal_task';
-  $strongarm->value = 'edit-group';
+  $strongarm->value = 'edit-auto-nodetitle';
   $export['additional_settings__active_tab_erpal_task'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'additional_settings__active_tab_erpal_timetracking';
+  $strongarm->value = 'edit-auto-nodetitle';
+  $export['additional_settings__active_tab_erpal_timetracking'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -41,6 +48,13 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'ant_erpal_timetracking';
+  $strongarm->value = '0';
+  $export['ant_erpal_timetracking'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'ant_pattern_erpal_project';
   $strongarm->value = '';
   $export['ant_pattern_erpal_project'] = $strongarm;
@@ -51,6 +65,34 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->name = 'ant_pattern_erpal_task';
   $strongarm->value = '';
   $export['ant_pattern_erpal_task'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_pattern_erpal_timetracking';
+  $strongarm->value = '';
+  $export['ant_pattern_erpal_timetracking'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_php_erpal_project';
+  $strongarm->value = 0;
+  $export['ant_php_erpal_project'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_php_erpal_task';
+  $strongarm->value = 0;
+  $export['ant_php_erpal_task'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_php_erpal_timetracking';
+  $strongarm->value = 0;
+  $export['ant_php_erpal_timetracking'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -202,6 +244,264 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'enable_revisions_page_erpal_project';
+  $strongarm->value = 1;
+  $export['enable_revisions_page_erpal_project'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'enable_revisions_page_erpal_task';
+  $strongarm->value = 1;
+  $export['enable_revisions_page_erpal_task'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'enable_revisions_page_erpal_timetracking';
+  $strongarm->value = 1;
+  $export['enable_revisions_page_erpal_timetracking'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__erpal_project';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'full' => array(
+        'custom_settings' => TRUE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'test' => array(
+        'custom_settings' => TRUE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(
+        'title' => array(
+          'weight' => '0',
+        ),
+        'additional_settings' => array(
+          'weight' => '35',
+        ),
+        'revision_information' => array(
+          'weight' => '30',
+        ),
+        'revision' => array(
+          'weight' => '19',
+        ),
+        'log' => array(
+          'weight' => '21',
+        ),
+        'author' => array(
+          'weight' => '33',
+        ),
+        'name' => array(
+          'weight' => '14',
+        ),
+        'date' => array(
+          'weight' => '17',
+        ),
+        'options' => array(
+          'weight' => '34',
+        ),
+        'status' => array(
+          'weight' => '10',
+        ),
+        'promote' => array(
+          'weight' => '22',
+        ),
+        'sticky' => array(
+          'weight' => '26',
+        ),
+        'actions' => array(
+          'weight' => '36',
+        ),
+        'submit' => array(
+          'weight' => '11',
+        ),
+        'preview' => array(
+          'weight' => '28',
+        ),
+        'delete' => array(
+          'weight' => '12',
+        ),
+        'preview_changes' => array(
+          'weight' => '29',
+        ),
+        'comment_settings' => array(
+          'weight' => '32',
+        ),
+        'comment' => array(
+          'weight' => '16',
+        ),
+        'menu' => array(
+          'weight' => '13',
+        ),
+        'enabled' => array(
+          'weight' => '15',
+        ),
+        'link' => array(
+          'weight' => '24',
+        ),
+        'link_title' => array(
+          'weight' => '20',
+        ),
+        'description' => array(
+          'weight' => '23',
+        ),
+        'parent' => array(
+          'weight' => '25',
+        ),
+        'weight' => array(
+          'weight' => '27',
+        ),
+        'path' => array(
+          'weight' => '31',
+        ),
+        'alias' => array(
+          'weight' => '18',
+        ),
+      ),
+      'display' => array(),
+    ),
+  );
+  $export['field_bundle_settings_node__erpal_project'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__erpal_task';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'full' => array(
+        'custom_settings' => TRUE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(
+        'title' => array(
+          'weight' => '0',
+        ),
+        'additional_settings' => array(
+          'weight' => '38',
+        ),
+        'revision_information' => array(
+          'weight' => '34',
+        ),
+        'revision' => array(
+          'weight' => '18',
+        ),
+        'log' => array(
+          'weight' => '29',
+        ),
+        'author' => array(
+          'weight' => '36',
+        ),
+        'name' => array(
+          'weight' => '22',
+        ),
+        'date' => array(
+          'weight' => '26',
+        ),
+        'options' => array(
+          'weight' => '37',
+        ),
+        'status' => array(
+          'weight' => '12',
+        ),
+        'promote' => array(
+          'weight' => '28',
+        ),
+        'sticky' => array(
+          'weight' => '30',
+        ),
+        'actions' => array(
+          'weight' => '39',
+        ),
+        'submit' => array(
+          'weight' => '13',
+        ),
+        'preview' => array(
+          'weight' => '31',
+        ),
+        'delete' => array(
+          'weight' => '14',
+        ),
+        'preview_changes' => array(
+          'weight' => '32',
+        ),
+        'comment_settings' => array(
+          'weight' => '15',
+        ),
+        'comment' => array(
+          'weight' => '19',
+        ),
+        'menu' => array(
+          'weight' => '21',
+        ),
+        'enabled' => array(
+          'weight' => '24',
+        ),
+        'link' => array(
+          'weight' => '27',
+        ),
+        'link_title' => array(
+          'weight' => '23',
+        ),
+        'description' => array(
+          'weight' => '16',
+        ),
+        'parent' => array(
+          'weight' => '17',
+        ),
+        'weight' => array(
+          'weight' => '20',
+        ),
+        'path' => array(
+          'weight' => '35',
+        ),
+        'alias' => array(
+          'weight' => '25',
+        ),
+      ),
+      'display' => array(),
+    ),
+  );
+  $export['field_bundle_settings_node__erpal_task'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_erpal_project';
   $strongarm->value = array(
     0 => 'main-menu',
@@ -336,13 +636,6 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'page_manager_node_view_disabled';
-  $strongarm->value = FALSE;
-  $export['page_manager_node_view_disabled'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'save_continue_erpal_project';
   $strongarm->value = 'Save and add fields';
   $export['save_continue_erpal_project'] = $strongarm;
@@ -357,58 +650,44 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_comp_erpal_project';
-  $strongarm->value = 'each';
-  $export['unique_field_comp_erpal_project'] = $strongarm;
+  $strongarm->name = 'show_diff_inline_erpal_project';
+  $strongarm->value = 0;
+  $export['show_diff_inline_erpal_project'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_comp_erpal_task';
-  $strongarm->value = 'each';
-  $export['unique_field_comp_erpal_task'] = $strongarm;
+  $strongarm->name = 'show_diff_inline_erpal_task';
+  $strongarm->value = 0;
+  $export['show_diff_inline_erpal_task'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_fields_erpal_project';
-  $strongarm->value = array();
-  $export['unique_field_fields_erpal_project'] = $strongarm;
+  $strongarm->name = 'show_diff_inline_erpal_timetracking';
+  $strongarm->value = 0;
+  $export['show_diff_inline_erpal_timetracking'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_fields_erpal_task';
-  $strongarm->value = array();
-  $export['unique_field_fields_erpal_task'] = $strongarm;
+  $strongarm->name = 'show_preview_changes_erpal_project';
+  $strongarm->value = 1;
+  $export['show_preview_changes_erpal_project'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_scope_erpal_project';
-  $strongarm->value = 'type';
-  $export['unique_field_scope_erpal_project'] = $strongarm;
+  $strongarm->name = 'show_preview_changes_erpal_task';
+  $strongarm->value = 1;
+  $export['show_preview_changes_erpal_task'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_scope_erpal_task';
-  $strongarm->value = 'type';
-  $export['unique_field_scope_erpal_task'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_show_matches_erpal_project';
-  $strongarm->value = array();
-  $export['unique_field_show_matches_erpal_project'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'unique_field_show_matches_erpal_task';
-  $strongarm->value = array();
-  $export['unique_field_show_matches_erpal_task'] = $strongarm;
+  $strongarm->name = 'show_preview_changes_erpal_timetracking';
+  $strongarm->value = 1;
+  $export['show_preview_changes_erpal_timetracking'] = $strongarm;
 
   return $export;
 }

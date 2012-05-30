@@ -43,7 +43,7 @@ function feature_erpal_invoice_views_api() {
 function feature_erpal_invoice_node_info() {
   $items = array(
     'erpal_invoice' => array(
-      'name' => t('erpal_invoice'),
+      'name' => t('Invoice'),
       'base' => 'node_content',
       'description' => t('Content type for creating an invoice'),
       'has_title' => '1',

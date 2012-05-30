@@ -63,6 +63,33 @@ function feature_erpal_docs_views_default_views() {
   $handler->display->display_options['fields']['title']['hide_empty'] = 0;
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Field: Content: File tags */
+  $handler->display->display_options['fields']['field_file_tags']['id'] = 'field_file_tags';
+  $handler->display->display_options['fields']['field_file_tags']['table'] = 'field_data_field_file_tags';
+  $handler->display->display_options['fields']['field_file_tags']['field'] = 'field_file_tags';
+  $handler->display->display_options['fields']['field_file_tags']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_file_tags']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_file_tags']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_file_tags']['group_rows'] = 1;
+  $handler->display->display_options['fields']['field_file_tags']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_file_tags']['delta_reversed'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['delta_first_last'] = 0;
+  $handler->display->display_options['fields']['field_file_tags']['field_api_classes'] = 0;
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -85,32 +112,6 @@ function feature_erpal_docs_views_default_views() {
   $handler->display->display_options['fields']['changed']['empty_zero'] = 0;
   $handler->display->display_options['fields']['changed']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
-  /* Field: Content: Tags */
-  $handler->display->display_options['fields']['field_tags']['id'] = 'field_tags';
-  $handler->display->display_options['fields']['field_tags']['table'] = 'field_data_field_tags';
-  $handler->display->display_options['fields']['field_tags']['field'] = 'field_tags';
-  $handler->display->display_options['fields']['field_tags']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_tags']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_tags']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_tags']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_tags']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_tags']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_tags']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_tags']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_tags']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_tags']['group_rows'] = 1;
-  $handler->display->display_options['fields']['field_tags']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_tags']['delta_reversed'] = 0;
-  $handler->display->display_options['fields']['field_tags']['delta_first_last'] = 0;
-  $handler->display->display_options['fields']['field_tags']['field_api_classes'] = 0;
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
@@ -151,6 +152,19 @@ function feature_erpal_docs_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_file' => 'erpal_file',
   );
+  /* Filter criterion: Content: File tags (field_file_tags) */
+  $handler->display->display_options['filters']['field_file_tags_tid']['id'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['table'] = 'field_data_field_file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['field'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['value'] = '';
+  $handler->display->display_options['filters']['field_file_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator_id'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['label'] = 'File tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['identifier'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['reduce_duplicates'] = 0;
+  $handler->display->display_options['filters']['field_file_tags_tid']['vocabulary'] = 'file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['error_message'] = 1;
 
   /* Display: Documents */
   $handler = $view->new_display('page', 'Documents', 'page');
@@ -317,17 +331,17 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['fields']['type']['machine_name'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: PDF exports (field_asset_files) */
-  $handler->display->display_options['arguments']['field_asset_files_nid']['id'] = 'field_asset_files_nid';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['table'] = 'field_data_field_asset_files';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['field'] = 'field_asset_files_nid';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['default_action'] = 'not found';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['field_asset_files_nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_asset_files_nid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['field_asset_files_nid']['not'] = 0;
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['id'] = 'field_asset_files_target_id';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['table'] = 'field_data_field_asset_files';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['field'] = 'field_asset_files_target_id';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_asset_files_target_id']['not'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -337,40 +351,14 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   $handler->display->display_options['argument_input'] = array(
-    'field_asset_files_nid' => array(
+    'field_asset_files_target_id' => array(
       'type' => 'panel',
       'context' => 'entity:billable.billable-id',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
-      'label' => 'Content: Global documents (field_asset_files)',
+      'label' => 'Content: Invoice PDF (field_asset_files:target_id)',
     ),
-  );
-  $translatables['documents'] = array(
-    t('Master'),
-    t('Documents'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('Updated date'),
-    t('Tags'),
-    t('<?php
-echo _erpal_docs_helper_view_documents_header_content();
-?>'),
-    t('Reference Dialog Search'),
-    t('Broken handler field_data_field_file.field_file'),
-    t('File usage pane'),
-    t('This file is used at'),
-    t('Pane showing nodes referencing the file'),
-    t('Type'),
-    t('All'),
-    t('View panes'),
   );
   $export['documents'] = $view;
 

@@ -75,6 +75,9 @@
           <td id="rechnungsdatum" class="right">
             <table>
               <tr>
+                <td><?php if ($copy) : ?><?php print $copy; ?><?php endif; ?></td>
+              </tr>
+              <tr>
                 <td><?php if ($order_numbers_extern) : ?> Ihre Bestellnummer: <?php print $order_numbers_extern; ?><?php endif; ?></td>
               </tr>
               <tr>

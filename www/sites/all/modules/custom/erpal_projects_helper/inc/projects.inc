@@ -23,7 +23,7 @@ function _erpal_projects_helper_get_projects_with_assigned_tasks($task_states=ar
   $projects = array();
 
   foreach ($task_nodes as $task) {
-    $project_node = node_load($task->field_project_ref[LANGUAGE_NONE][0]['nid']);
+    $project_node = node_load($task->field_project_ref[LANGUAGE_NONE][0]['target_id']);
     if ($project_node->changed >= $changed || !$changed)
       $projects[$project_node->nid] = $project_node;
   }
@@ -56,7 +56,7 @@ function _erpal_projects_helper_get_projects_with_assigned_tasks($task_states=ar
 function _erpal_projects_helper_get_activity_by_project($project_node) {
   $activity_node = false;
   if (isset($project_node->field_activity_ref[LANGUAGE_NONE][0])) {
-    $activity_nid = $project_node->field_activity_ref[LANGUAGE_NONE][0]['nid'];
+    $activity_nid = $project_node->field_activity_ref[LANGUAGE_NONE][0]['target_id'];
     $activity_node = node_load($activity_nid);
   }
   

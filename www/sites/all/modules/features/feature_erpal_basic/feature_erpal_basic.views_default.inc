@@ -448,6 +448,14 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'No relations available';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Relation: endpoints */
   $handler->display->display_options['fields']['endpoints']['id'] = 'endpoints';
   $handler->display->display_options['fields']['endpoints']['table'] = 'field_data_endpoints';
@@ -494,10 +502,16 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['arguments']['relation_type']['limit'] = '0';
   $handler->display->display_options['arguments']['relation_type']['transform_dash'] = 0;
   $handler->display->display_options['arguments']['relation_type']['break_phrase'] = 0;
-
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['path'] = 'relations';
+  /* Filter criterion: Relation: Relation type */
+  $handler->display->display_options['filters']['relation_type']['id'] = 'relation_type';
+  $handler->display->display_options['filters']['relation_type']['table'] = 'relation';
+  $handler->display->display_options['filters']['relation_type']['field'] = 'relation_type';
+  $handler->display->display_options['filters']['relation_type']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['relation_type']['expose']['operator_id'] = 'relation_type_op';
+  $handler->display->display_options['filters']['relation_type']['expose']['label'] = 'Relation type';
+  $handler->display->display_options['filters']['relation_type']['expose']['operator'] = 'relation_type_op';
+  $handler->display->display_options['filters']['relation_type']['expose']['identifier'] = 'relation_type';
+  $handler->display->display_options['filters']['relation_type']['expose']['reduce'] = 0;
 
   /* Display: Relations by node */
   $handler = $view->new_display('panel_pane', 'Relations by node', 'panel_pane_1');
@@ -705,7 +719,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['arguments']['endpoints_entity_id']['id'] = 'endpoints_entity_id';
   $handler->display->display_options['arguments']['endpoints_entity_id']['table'] = 'field_data_endpoints';
   $handler->display->display_options['arguments']['endpoints_entity_id']['field'] = 'endpoints_entity_id';
-  $handler->display->display_options['arguments']['endpoints_entity_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['endpoints_entity_id']['default_action'] = 'empty';
   $handler->display->display_options['arguments']['endpoints_entity_id']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['endpoints_entity_id']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['endpoints_entity_id']['summary']['number_of_records'] = '0';
@@ -723,6 +737,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
       'label' => 'Relation: endpoints (endpoints:entity_id)',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $export['relations_view'] = $view;
 
   return $export;

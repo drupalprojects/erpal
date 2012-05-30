@@ -61,7 +61,7 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'name':
-          $replacements[$original] = $contact_node->title;
+          $replacements[$original] = isset($contact_node->title) ? $contact_node->title : '';
         break;
         case 'street':
           $street = '';

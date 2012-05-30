@@ -312,7 +312,9 @@ function page_manager_list_pages_form($form, &$form_state) {
     '#attributes' => array('class' => array('use-ajax-submit')),
   );
 
-  $form['#attached']['js'] = array('misc/ajax.js', 'misc/progress.js', 'misc/jquery.form.js', ctools_attach_js('auto-submit'), ctools_attach_js('page-list', 'page_manager'));
+  $form['#attached']['js'] = array(ctools_attach_js('auto-submit'), ctools_attach_js('page-list', 'page_manager'));
+  $form['#attached']['library'][] = array('system', 'drupal.ajax');
+  $form['#attached']['library'][] = array('system', 'jquery.form');
   $form['#prefix'] = '<div class="clearfix">';
   $form['#suffix'] = '</div>';
   $form['#attributes'] = array('class' => array('ctools-auto-submit-full-form'));

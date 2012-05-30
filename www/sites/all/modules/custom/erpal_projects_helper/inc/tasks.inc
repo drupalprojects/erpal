@@ -20,7 +20,7 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
   ->propertyCondition('status', 1);
 
   if (count($uids) > 0) {
-    $query->fieldCondition('field_task_assigned_users', 'uid', $uids, 'IN');
+    $query->fieldCondition('field_task_assigned_users', 'target_id', $uids, 'IN');
   }
   
   if (count($task_states) > 0) {
@@ -32,7 +32,7 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
   }
   
   if ($project_nid) {
-    $query->fieldCondition('field_project_ref', 'nid', $project_nid);
+    $query->fieldCondition('field_project_ref', 'target_id', $project_nid);
   }
   
   $result = $query->execute();
@@ -58,15 +58,15 @@ function erpal_projects_helper_node_presave_task($task_node) {
 */
 function _erpal_projects_helper_task_set_project($task_node) {
   
-  if (!isset($task_node->field_parent[LANGUAGE_NONE][0]['nid']))
+  if (!isset($task_node->field_parent[LANGUAGE_NONE][0]['target_id']))
     return;
     
-  $parent_nid = $task_node->field_parent[LANGUAGE_NONE][0]['nid'];
+  $parent_nid = $task_node->field_parent[LANGUAGE_NONE][0]['target_id'];
   $parent_node = node_load($parent_nid);
   $project_nid = _erpal_projects_helper_has_project($parent_node);
   
   if ($project_nid) {
-    $task_node->field_project_ref[LANGUAGE_NONE][0]['nid'] = $project_nid;
+    $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'] = $project_nid;
   }
 }
 
@@ -76,7 +76,7 @@ function _erpal_projects_helper_task_set_project($task_node) {
 function _erpal_projects_helper_get_activity_by_task($task_node) {
   $activity_node = false;
   if (isset($task_node->field_project_ref[LANGUAGE_NONE][0])) {
-    $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['nid'];
+    $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
     $project_node = node_load($project_nid);
   }
   

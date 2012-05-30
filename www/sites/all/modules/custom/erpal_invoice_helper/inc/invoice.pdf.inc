@@ -13,6 +13,8 @@ function _erpal_invoice_helper_invoice_pdf_menu_callback($invoice_nid) {
 function erpal_invoice_helper_invoice_pdf_form($form, $form_state, $invoice_nid) {
   $form = array();
   
+  $invoice_node = node_load($invoice_nid);
+  
   $documents = array(
     'invoice' => t('Invoice'),
     'attachment' => t('Detailed attachment'),
@@ -30,6 +32,14 @@ function erpal_invoice_helper_invoice_pdf_form($form, $form_state, $invoice_nid)
     '#title' => t('Attach export to invoice'),
     '#default_value' => true,
     '#description' => t('If selected, the PDF export will be attached to the invoice.'),
+  );
+  
+  $is_exported = _erpal_invoice_helper_invoice_is_exported($invoice_node);
+  $form['mark_copied'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Mark as copy'),
+    '#default_value' => $is_exported,
+    '#description' => t('If selected, the invoice will be marked as a copy in the pdf.'),
   );
   
   $form['invoice_nid'] = array(
@@ -71,8 +81,8 @@ function erpal_invoice_helper_invoice_pdf_form_submit($form, $form_state) {
   $documents = $values['documents'];
   $invoice_nid = $values['invoice_nid'];
   $attach = $values['attach'];
-
-  _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach);
+  $mark_copied = $values['mark_copied'];
+  _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach, $mark_copied);
   
 }
 
@@ -81,11 +91,11 @@ function erpal_invoice_helper_invoice_pdf_form_submit($form, $form_state) {
 * @param $invoice_node the invoice node where to search the file at
 */
 function _erpal_invoice_helper_invoice_file_node($invoice_node) {
-  if (!isset($invoice_node->field_asset_files[LANGUAGE_NONE][0]['nid']))
+  if (!isset($invoice_node->field_asset_files[LANGUAGE_NONE][0]['target_id']))
     return false;
 
   //we have always only one erpal_file attached to an invoice
-  $file_nid = $invoice_node->field_asset_files[LANGUAGE_NONE][0]['nid'];
+  $file_nid = $invoice_node->field_asset_files[LANGUAGE_NONE][0]['target_id'];
   $file_node = node_load($file_nid);
   
   return $file_node;
@@ -94,7 +104,7 @@ function _erpal_invoice_helper_invoice_file_node($invoice_node) {
 /**
 * creates a pdf from an invoice 
 */
-function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=false) {
+function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=false, $mark_copied=false) {
      
   //check that the given invoice_nid is of type erpal_invoice
   $invoice = node_load($invoice_nid);
@@ -103,8 +113,12 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
     drupal_set_message(t('Sorry, but this is not an invoice. PLease export only invoices as PDF.'), 'error');
   }
   
-  $html = _erpal_invoice_helper_invoice_html($invoice, $documents);
+  $html = _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied);
 
+  //set invoice as exported!
+  $invoice->field_invoice_exported[LANGUAGE_NONE][0]['value'] = 1;
+  node_save($invoice);
+  
   $destination = false;
   if ($attach) {
   
@@ -155,7 +169,7 @@ function _erpal_invoice_get_file_by_path($uri) {
 /**
 * Render one invoice as HTML
 */
-function _erpal_invoice_helper_invoice_html($invoice, $documents) {
+function _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied=false) {
 
   $attachment_html = '';
   $invoice_html = '';
@@ -163,8 +177,12 @@ function _erpal_invoice_helper_invoice_html($invoice, $documents) {
  
   _erpal_invoice_helper_replace_all_tokens($invoice, 'pdf');
  
+  $params = array(
+    'mark_copied' => $mark_copied,
+  );
+ 
   if (isset($documents['invoice']) && $documents['invoice'])
-    $invoice_html = theme('invoice_pdf_html', array('invoice' => $invoice));
+    $invoice_html = theme('invoice_pdf_html', array('invoice' => $invoice, 'params' => $params));
  
   if (isset($documents['attachment']) && $documents['attachment']) {
     $billables = _erpal_invoice_helper_invoice_attachment_billables($invoice);

@@ -93,11 +93,11 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'order_numbers_intern':
-          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);                                  
+          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);   
           $replacements[$original] = implode(',', $order_numbers['intern']);
           break;
         case 'order_numbers_extern':
-          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);          
+          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);            
           $replacements[$original] = implode(',', $order_numbers['extern']);        
           break;
       }

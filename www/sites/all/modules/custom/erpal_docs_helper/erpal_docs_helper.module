@@ -93,14 +93,19 @@ function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_
   $is_referenced = false;
   if (isset($node->field_asset_files[LANGUAGE_NONE])) {
     foreach ($node->field_asset_files[LANGUAGE_NONE] as $delta=>$nid) {
-      $nid = $nid['nid'];
+      $nid = $nid['target_id'];
       if ($nid == $file_node->nid)
         $is_referenced = true;
     }
   }
   
-  if (!$is_referenced)
-    $node->field_asset_files[LANGUAGE_NONE][] = array('nid' => $file_node->nid);
+  if (!$is_referenced) {
+    $target = array(
+      'target_id' => $file_node->nid,
+      'target_type' => 'node',
+    );
+    $node->field_asset_files[LANGUAGE_NONE][] = $target;
+  }
   
   if (!$skip_save_parent) {
     node_save($node);

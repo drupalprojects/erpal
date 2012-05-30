@@ -7,6 +7,7 @@
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
 module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
 module_load_include('inc', 'erpal_basic_helper', 'inc/token');
+
  
 /**
 * Implements hok_init
@@ -42,7 +43,7 @@ function erpal_basic_helper_menu(){
 */
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'relation_add_block_form')
-    _erpal_invoice_helper_relation_add_block_form_alter($form, $form_state);
+    _erpal_basic_helper_relation_add_block_form_alter($form, $form_state);
   if ($form_id == 'erpal_contact_node_form') {
     $form['#submit'][] = '_erpal_basic_helper_contact_form_submit';
   }

@@ -156,14 +156,14 @@ function feature_erpal_docs_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_file-field_tags'
-  $fields['node-erpal_file-field_tags'] = array(
+  // Exported field: 'node-erpal_file-field_file_tags'
+  $fields['node-erpal_file-field_file_tags'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_tags',
+      'field_name' => 'field_file_tags',
       'foreign keys' => array(
         'tid' => array(
           'columns' => array(
@@ -181,10 +181,11 @@ function feature_erpal_docs_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'tags',
-            'parent' => 0,
+            'vocabulary' => 'file_tags',
+            'parent' => '0',
           ),
         ),
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
@@ -193,20 +194,14 @@ function feature_erpal_docs_field_default_fields() {
       'bundle' => 'erpal_file',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Sidwide tags for this file',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 2,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'weight' => 5,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -216,21 +211,21 @@ function feature_erpal_docs_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_tags',
-      'label' => 'Tags',
+      'field_name' => 'field_file_tags',
+      'label' => 'File tags',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
+        'active' => 0,
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '-1',
+        'weight' => '2',
       ),
     ),
   );
@@ -239,8 +234,7 @@ function feature_erpal_docs_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Comment');
   t('File');
-  t('Sidwide tags for this file');
-  t('Tags');
+  t('File tags');
 
   return $fields;
 }

@@ -29,16 +29,16 @@ function _erpal_invoice_helper_invoice_validate_customer_contractor($invoice) {
   $contractor_nid = 0;
   $errors = array();
   
-  if (isset($invoice->field_customer_ref[LANGUAGE_NONE][0]['nid']))
-    $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'];
+  if (isset($invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id']))
+    $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
     
-  if (isset($invoice->field_customer_ref[LANGUAGE_NONE][0]['nid']))
-    $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'];
+  if (isset($invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id']))
+    $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
     
   if ($contractor_nid && $customer_nid)
     if ($contractor_nid == $customer_nid)
   
-  $errors['field_customer_ref]['.LANGUAGE_NONE.'][0][nid'][] = t('Customer and contractor must not be the same');
+  $errors['field_customer_ref]['.LANGUAGE_NONE.'][0][target_id'][] = t('Customer and contractor must not be the same');
   
   return $errors;  
 }
@@ -56,8 +56,8 @@ function _erpal_invoice_helper_invoice_validate_number($invoice) {
   
   $company_nid = _erpal_basic_helper_get_own_company_nid(false);
   //if no contractor is set, it is the own company!
-  if (isset($invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid']))  
-    $contractor = node_load($invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid']);
+  if (isset($invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id']))  
+    $contractor = node_load($invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id']);
   else
     $contractor = node_load($company_nid);
   
