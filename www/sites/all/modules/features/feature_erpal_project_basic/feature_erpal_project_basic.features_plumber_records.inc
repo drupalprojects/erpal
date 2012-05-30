@@ -74,7 +74,7 @@ function feature_erpal_project_basic_features_plumber_defaults() {
   $export['feature_erpal_project_basic__field__node-erpal_project-field_project_tags'] = $features_plumber_record;
 
   $features_plumber_record = new stdClass();
-  $features_plumber_record->disabled = FALSE; /* Edit this to true to make a default features_plumber_record disabled initially */
+  $features_plumber_record->disabled = TRUE; /* Edit this to true to make a default features_plumber_record disabled initially */
   $features_plumber_record->api_version = 1;
   $features_plumber_record->name = 'feature_erpal_project_basic__field__node-erpal_task-field_project_tags';
   $features_plumber_record->feature = 'feature_erpal_project_basic';
