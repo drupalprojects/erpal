@@ -11,7 +11,7 @@
  * @return object
  */
 function _erpal_projects_service_task_retrieve($id) {
-  $task_node = _erpal_projects_service_get_task($id);
+  $task_node = _erpal_projects_service_get_task($id, false);
 
   return $task_node;
 }
@@ -47,6 +47,31 @@ function _erpal_projects_service_task_index($parameters=array()) {
 function _erpal_projects_service_task_update($nid, $task) {
   module_load_include('inc', 'services', 'resources/node_resource');
   $task['type'] = 'erpal_task';
+  
+  //map values to node
+  if (isset($task['status'])) {
+    $task['field_task_status'][LANGUAGE_NONE][0] = $task['status'];
+    unset($task['status']);
+  }
+  
+  if (isset($task['date_start'])) {
+    $task['field_date'][LANGUAGE_NONE][0]['value'] = $task['date_start'];
+    unset($task['date_start']);
+  }
+  
+  if (isset($task['date_end'])) {
+    $task['field_date'][LANGUAGE_NONE][0]['value2'] = $task['date_end'];
+    unset($task['date_end']);
+  }
+  
+  $task_node = node_load($nid);
+  if (!isset($task['field_date'])) {
+    $date_to_set = false;
+    if (isset($task_node->field_date[LANGUAGE_NONE][0]))      
+      $date_to_set = $task_node->field_date[LANGUAGE_NONE][0];
+    $task['field_date'][LANGUAGE_NONE][0]['value'] = $date_to_set;
+  }
+    
   _node_resource_update($nid, $task);  //this is the routine of the services module to update a node
 }
 
@@ -65,12 +90,35 @@ function _erpal_projects_service_task_access($op, $args) {
 * Loads and returns a project with a given id
 * @param int $id the id of the project
 * @return object the node, if the node isnt a project node, false will be returned
+* @param $return_real_node if true the node will be returned, otherwise a prepared output
 */
-function _erpal_projects_service_get_task($id) {
+function _erpal_projects_service_get_task($id, $return_real_node=true) {
   $task_node = node_load($id);
 
   if ($task_node->type != 'erpal_task')
     false;
+  
+  if ($return_real_node)
+    return $task_node;
     
+  $task_node = _erpal_projects_service_task_out($task_node);
   return $task_node;
+}
+
+/**
+* Prepares a task node to an easy output
+*/
+function _erpal_projects_service_task_out($task_node) {
+
+  return array(
+    'id' => $task_node->nid,
+    'title' => $task_node->title,    
+    'date_start' => isset($task_node->field_date[LANGUAGE_NONE][0]['value']) ? $task_node->field_date[LANGUAGE_NONE][0]['value'] : 0,
+    'date_end' => isset($task_node->field_date[LANGUAGE_NONE][0]['value2']) ? $task_node->field_date[LANGUAGE_NONE][0]['value2'] : 0,
+    'estimated' => isset($task_node->field_estimated_time[LANGUAGE_NONE][0]['value']) ? $task_node->field_estimated_time[LANGUAGE_NONE][0]['value'] : 0,
+    'status' => isset($task_node->field_task_status[LANGUAGE_NONE][0]['value']) ? $task_node->field_task_status[LANGUAGE_NONE][0]['value'] : 0,
+    'project_id' => $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'],
+    'body' => isset($task_node->body[LANGUAGE_NONE][0]['value']) ? $task_node->body[LANGUAGE_NONE][0]['value'] : '',
+    'type' => isset($task_node->field_task_type[LANGUAGE_NONE][0]['value']) ? $task_node->field_task_type[LANGUAGE_NONE][0]['value'] : false,
+  );
 }

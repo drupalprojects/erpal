@@ -73,6 +73,12 @@ function erpal_projects_helper_permission(){
   );
 }
 
+//DEBUG
+function erpal_projects_helper_erpal_task_node_form_submit($form, $form_state) {
+  dpm($form_state);
+}
+//END DEBUG
+
 /**
 * Implements hook_form_alter
 */
@@ -80,6 +86,7 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   
   if ($form_id == 'erpal_task_node_form') {
     _erpal_projects_helper_task_node_form_alter($form, $form_state);
+    $form['#submit'][] = 'erpal_projects_helper_erpal_task_node_form_submit';
   }
   
   if ($form_id == 'erpal_books_helper_pdf_form') {
