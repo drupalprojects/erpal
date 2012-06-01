@@ -38,7 +38,15 @@ function _erpal_projects_service_task_index($parameters=array()) {
     $project_nid = $parameters['project'];
    
   $tasks = _erpal_projects_helper_get_tasks_by_assigned_user($task_states, $uids, $task_changed, $project_nid);
-  return $tasks;
+  
+  $tasks_out = array();
+  //prepare for output!
+  foreach ($tasks as $task) {
+    $task = _erpal_projects_service_task_out($task);
+    $tasks_out[] = $task;
+  }
+  
+  return $tasks_out;
 }
 
 /**
@@ -102,6 +110,7 @@ function _erpal_projects_service_get_task($id, $return_real_node=true) {
     return $task_node;
     
   $task_node = _erpal_projects_service_task_out($task_node);
+  
   return $task_node;
 }
 
