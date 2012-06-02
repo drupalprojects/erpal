@@ -100,7 +100,7 @@ function erpal_books_helper_pdf_form_submit($form, $form_state) {
   }
   
   $file_node = _erpal_book_helper_create_pdf($book_node, $root_node, $options);
-  
+
   if (is_object($file_node)) {
     drupal_set_message(t('Your pdf has been created successfully!'));
     drupal_goto('node/'.$file_node->nid);
@@ -159,10 +159,11 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   $file_node = false;
   if (isset($book_node->field_asset_files[LANGUAGE_NONE][0]['target_id'])) {
     $file_nid = $book_node->field_asset_files[LANGUAGE_NONE][0]['target_id'];  //if exists, this node will be updated with its file
+    
     $file_node = node_load($file_nid);
   }
 
-  _erpal_docs_attach_file($book_node, $doc_file, $file_node, false, true);
+  $file_node = _erpal_docs_attach_file($book_node, $doc_file, $file_node, false, true);
   
   return $file_node;
 }

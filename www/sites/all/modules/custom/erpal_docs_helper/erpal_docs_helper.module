@@ -61,7 +61,7 @@ function _erpal_docs_helper_create_document_link($q_arg = false, $query_arr = ar
     file_node and thei erpal_file_node itself will be referenced by the field_asset_files of the node param. 
     if there is no field_asset_files nothing will be done
 * @param $delete_source if true, $file will be deleted
-* @return true if success otherwise false
+* @return true (the created file node) if success otherwise false
 */
 function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_parent=false, $delete_source=false) {
   if (!$file_node) {
