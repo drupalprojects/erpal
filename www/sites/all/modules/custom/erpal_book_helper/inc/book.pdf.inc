@@ -200,6 +200,8 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
   $node_counter .= $depth_counter ? $depth_counter : 1;
   
   $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options, 'counter' => $node_counter));
+  //line bracks as <br>
+  $this_html = nl2br($this_html);
   $root_node->body[LANGUAGE_NONE][0]['value'] = $body; // set the body back again!
   //######## End ############################
   
