@@ -3,3 +3,4 @@ www/sites/all/modules/development
 www/sites/*/files
 www/sites/*/libraries
 www/nbproject
+*/rest_server/lib/spyc.php
