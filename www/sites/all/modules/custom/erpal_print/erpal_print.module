@@ -127,6 +127,9 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
   if (!$pdf_object)
     return false;
   
+  //line bracks as <br>
+  $html = nl2br($html);
+  
   $parts = _erpal_print_split_pages($html);
   foreach ($parts as $part_html) {
     $pdf_object->AddPage();
