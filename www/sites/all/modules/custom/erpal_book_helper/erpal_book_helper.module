@@ -5,6 +5,7 @@
  */
  
 module_load_include('inc', 'erpal_book_helper', 'inc/book.token'); 
+module_load_include('inc', 'erpal_book_helper', 'inc/book.clone'); 
  
  /**
  * Implements hook_node_presave

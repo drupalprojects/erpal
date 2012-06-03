@@ -84,3 +84,16 @@ function _erpal_projects_helper_get_activity_by_task($task_node) {
   
   return $activity_node;
 }
+
+/**
+* Implements hook_erpal_clone_node_alter to alter task node if cloned
+* @parem $node is the new cloned node
+* @param $parent_nid is the nid of the new parent_node of the cloned node
+* @param $template_node the node where $node was cloned from
+* @param $options some options given to the clone process
+*/
+function erpal_projects_helper_erpal_clone_node_alter($node, $parent_nid, $template_node, $options) {
+  if ($node->type == 'erpal_task') {
+    dpm($node);
+  }
+}
