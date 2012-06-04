@@ -14,10 +14,6 @@ define ('ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS', 'import');
 // The UID of the site admin.
 define ('ERPAL_CRM_MAILACTION_ADMIN_UID', 1);
 
-// The destination content type for mail imports.
-define ('ERPAL_CRM_MAILACTION_DESTIONATION_CONTENT_TYPE', 'erpal_crm_activity');
-
-
 
 /**
 * Implements hook_menu.
@@ -54,8 +50,15 @@ function erpal_crm_mailaction_permission(){
  */
 function erpal_crm_mailaction_cron () {
   
+  if (! lock_acquire('erpal_crm_mailaction')) {
+    watchdog ('erpal_crm_mailaction', t('Can not run mail action cron. Because, of a concurrent cron process.'));
+    return;
+  }
+  
   module_load_include ('inc', 'erpal_crm_mailaction', 'inc/CronProcessor/CronProcessor.class');
   erpal_crm_mailaction\CronProcessor::run ();
+  
+  lock_release('erpal_crm_mailaction');
   
   return;
 }
@@ -63,10 +66,10 @@ function erpal_crm_mailaction_cron () {
 /*
  * Implements hook_erpal_crm_mailaction_incoming. 
  */
-function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body) {
+function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body, $attachments) {
 
   module_load_include ('inc', 'erpal_crm_mailaction', 'inc/Import/Import.class');  
-  erpal_crm_mailaction\Import::import ($to, $from, $subject, $body);
+  erpal_crm_mailaction\Import::import ($to, $from, $subject, $body, $attachments);
   
   return;
 }

@@ -10,7 +10,7 @@
 */
 function _erpal_projects_billable_insert_timetracking($node) {
   
-  $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
+  $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
   $subject_node = node_load($subject_nid);
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($subject_node);
 
@@ -34,13 +34,13 @@ function _erpal_projects_billable_update_timetracking($node) {
   //get the billabel
   $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
 
-  $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['nid'];
+  $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
   $subject_node = node_load($subject_nid);
   $billable_information = _erpal_projects_billable_subject_billabel_information_subject($subject_node);
 
   //only process if the task is completed!
-  if ($billable_information['price_mode'] != 'per_hour')
-    return;
+  //if ($billable_information['price_mode'] != 'per_hour')
+    //return;
 
   _erpal_billable_update_billable($node, 'update');
  

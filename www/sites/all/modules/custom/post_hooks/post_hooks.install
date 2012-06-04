@@ -1,0 +1,14 @@
+<?php
+
+/**
+* Implements hook_enable
+*/
+function post_hooks_enable() {
+  //set weight such high that it will always be the last module called
+  db_update('system') // Table name no longer needs {}
+  ->fields(array(
+    'weight' => 1000,
+  ))
+  ->condition('name', 'post_hooks', '=')
+  ->execute();
+}

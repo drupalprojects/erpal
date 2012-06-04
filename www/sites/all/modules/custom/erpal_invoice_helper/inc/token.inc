@@ -35,6 +35,10 @@ function erpal_invoice_helper_token_info() {
     'name' => t("The currency"),
     'description' => t("The currency of the invoice."),
   );
+  $invoice['next_invoice_number'] = array(
+    'name' => t("Next invoice number"),
+    'description' => t("The next invoice number in the system."),
+  );
   
   //if module erpal project basic is active, add tokens for 
   if (module_exists('feature_erpal_project_basic')) {
@@ -67,7 +71,7 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
   
   $date_form_date = _erpal_basic_helper_date_format_date_only();
   if ($type == 'erpal_invoice') {
-    $invoice = $data['erpal_invoice'];
+    $invoice = isset($data['erpal_invoice']) ? $data['erpal_invoice'] : false;
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'credit_period':
@@ -85,6 +89,10 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
         case 'currency':
           $replacements[$original] = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
         break;
+        case 'next_invoice_number':
+          $invoice_number = isset($data['invoice_number']) && $data['invoice_number'] ? $data['invoice_number'] : _erpal_invoice_helper_get_next_invoice_number();
+          $replacements[$original] = $invoice_number;
+        break;
         
       }
     }
@@ -93,11 +101,11 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'order_numbers_intern':
-          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);                                  
+          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);   
           $replacements[$original] = implode(',', $order_numbers['intern']);
           break;
         case 'order_numbers_extern':
-          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);          
+          $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);            
           $replacements[$original] = implode(',', $order_numbers['extern']);        
           break;
       }

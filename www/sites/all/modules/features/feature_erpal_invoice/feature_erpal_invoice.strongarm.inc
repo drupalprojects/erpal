@@ -41,6 +41,13 @@ function feature_erpal_invoice_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'billable_customer_type';
+  $strongarm->value = 'erpal_contact';
+  $export['billable_customer_type'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'comment_anonymous_erpal_invoice';
   $strongarm->value = 0;
   $export['comment_anonymous_erpal_invoice'] = $strongarm;
@@ -90,6 +97,114 @@ function feature_erpal_invoice_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'enable_revisions_page_erpal_invoice';
+  $strongarm->value = 1;
+  $export['enable_revisions_page_erpal_invoice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__erpal_invoice';
+  $strongarm->value = array(
+    'view_modes' => array(),
+    'extra_fields' => array(
+      'form' => array(
+        'title' => array(
+          'weight' => '18',
+        ),
+        'additional_settings' => array(
+          'weight' => '46',
+        ),
+        'revision_information' => array(
+          'weight' => '37',
+        ),
+        'revision' => array(
+          'weight' => '24',
+        ),
+        'log' => array(
+          'weight' => '30',
+        ),
+        'author' => array(
+          'weight' => '44',
+        ),
+        'name' => array(
+          'weight' => '20',
+        ),
+        'date' => array(
+          'weight' => '26',
+        ),
+        'options' => array(
+          'weight' => '45',
+        ),
+        'status' => array(
+          'weight' => '15',
+        ),
+        'promote' => array(
+          'weight' => '27',
+        ),
+        'sticky' => array(
+          'weight' => '31',
+        ),
+        'actions' => array(
+          'weight' => '47',
+        ),
+        'submit' => array(
+          'weight' => '16',
+        ),
+        'preview' => array(
+          'weight' => '35',
+        ),
+        'delete' => array(
+          'weight' => '17',
+        ),
+        'token_tree' => array(
+          'weight' => '0',
+        ),
+        'comment_settings' => array(
+          'weight' => '39',
+        ),
+        'comment' => array(
+          'weight' => '23',
+        ),
+        'order_numbers_token_tree' => array(
+          'weight' => '34',
+        ),
+        'menu' => array(
+          'weight' => '19',
+        ),
+        'enabled' => array(
+          'weight' => '25',
+        ),
+        'link' => array(
+          'weight' => '28',
+        ),
+        'link_title' => array(
+          'weight' => '21',
+        ),
+        'description' => array(
+          'weight' => '29',
+        ),
+        'parent' => array(
+          'weight' => '32',
+        ),
+        'weight' => array(
+          'weight' => '33',
+        ),
+        'path' => array(
+          'weight' => '38',
+        ),
+        'alias' => array(
+          'weight' => '22',
+        ),
+      ),
+      'display' => array(),
+    ),
+  );
+  $export['field_bundle_settings_node__erpal_invoice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_erpal_invoice';
   $strongarm->value = array(
     0 => 'main-menu',
@@ -133,6 +248,13 @@ function feature_erpal_invoice_strongarm() {
   $strongarm->name = 'save_continue_erpal_invoice';
   $strongarm->value = 'Save and add fields';
   $export['save_continue_erpal_invoice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'show_preview_changes_erpal_invoice';
+  $strongarm->value = 1;
+  $export['show_preview_changes_erpal_invoice'] = $strongarm;
 
   return $export;
 }

@@ -9,14 +9,17 @@
  * Create our field.
  */
 function relation_install() {
-  module_list(TRUE);
-  field_info_cache_clear();
+  $install = &drupal_static('relation_install');
+  $install = TRUE;
   $field = array(
     'field_name' => 'endpoints',
     'cardinality' => FIELD_CARDINALITY_UNLIMITED,
     'type' => 'relation_endpoint',
   );
+  field_info_cache_clear();
   field_create_field($field);
+  $install = FALSE;
+  entity_info_cache_clear();
 }
 
 /**
@@ -127,7 +130,7 @@ function relation_schema() {
   );
   $schema['relation_type'] = array(
     'description' => 'Relation settings.',
-    // Add exportability using ctools.
+    // Add exportability when using ctools.
     'export' => array(
       'key' => 'relation_type',
       'identifier' => 'relation_type',
@@ -253,7 +256,7 @@ function relation_uninstall() {
  * Enable the new endpoint module and ctools.
  */
 function relation_update_7001() {
-  module_enable(array('relation_endpoint', 'ctools'));
+  module_enable(array('relation_endpoint'));
   db_update('field_config')
     ->fields(array('module' => 'relation_endpoint'))
     ->condition('field_name', 'endpoints')

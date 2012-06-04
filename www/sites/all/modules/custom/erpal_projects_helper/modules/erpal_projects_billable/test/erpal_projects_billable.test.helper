@@ -32,7 +32,7 @@ function _erpal_projects_billable_test_create_project($pricing=array(), $status=
   $project->language = LANGUAGE_NONE;
   $project->type = 'erpal_project';
   $project->title = 'Testprojekt';
-  $project->field_customer_ref[LANGUAGE_NONE][]['nid'] = $contact->nid;
+  $project->field_customer_ref[LANGUAGE_NONE][]['target_id'] = $contact->nid;
   $project->field_project_status[LANGUAGE_NONE][]['value'] = $status;
   
   node_object_prepare($project);
@@ -72,7 +72,7 @@ function _erpal_projects_billable_test_create_task($pricing=array(), $status='in
   $task->language = LANGUAGE_NONE;
   $task->type = 'erpal_task';
   $task->title = 'Testtask';
-  $task->field_project_ref[LANGUAGE_NONE][]['nid'] = $project->nid;
+  $task->field_project_ref[LANGUAGE_NONE][]['target_id'] = $project->nid;
   $task->field_task_status[LANGUAGE_NONE][]['value'] = $status;
   
   node_object_prepare($task);
@@ -111,7 +111,7 @@ function _erpal_projects_billable_test_create_timetracking($time_h, $task) {
   $tt->language = LANGUAGE_NONE;
   $tt->type = 'erpal_timetracking';
   $tt->title = 'Testzeiteintrag';
-  $tt->field_timetracking_subject[LANGUAGE_NONE][]['nid'] = $task->nid;
+  $tt->field_timetracking_subject[LANGUAGE_NONE][]['target_id'] = $task->nid;
   $tt->field_date_time[LANGUAGE_NONE][0]['value'] = time();
   $tt->field_date_time[LANGUAGE_NONE][0]['value2'] = time();
   $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $time_h;

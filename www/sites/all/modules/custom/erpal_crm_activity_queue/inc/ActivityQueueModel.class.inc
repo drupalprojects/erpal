@@ -39,8 +39,10 @@ class ActivityQueueModel {
     
     $this->nodeQuery = db_select ('node', 'n');
     $this->nodeQuery->addTag ('erpal_activity_queue_node');
+    $this->nodeQuery->leftJoin ('field_data_field_contact_ref', 'r', 'n.nid=r.entity_id');
     $this->nodeQuery->condition ('type', 'erpal_crm_activity', '=');
     $this->nodeQuery->fields ('n', array ('title', 'created', 'nid'));
+    $this->nodeQuery->fields ('r', array ('field_contact_ref_nid'));
     
     $this->commentQuery = db_select ('comment', 'c');
     $this->commentQuery->addTag ('erpal_activity_queue_comment');
@@ -103,26 +105,39 @@ class ActivityQueueModel {
   public function load () {
     
     $results = array ();
+    $unprocessedResults = array ();
     
     $result = $this->nodeQuery->execute ();
-    
     foreach ($result as $row) {
-      $results[$row->nid . 'nid'] = self::prepareNodeRow ($row);
+      $unprocessedResults[$row->created] = $row;
     }
-    
     
     $result = $this->commentQuery->execute ();
-    
     foreach ($result as $row) {
-
-      $results[$row->cid . 'cid'] = self::prepareCommentRow ($row);
+      $unprocessedResults[$row->created] = $row;
     }
+       
+    krsort ($unprocessedResults);
     
     if ($this->pagerSize !== FALSE) {
-      $page     = pager_default_initialize(count($results) , $this->pagerSize);
-      $results  = array_slice ($results, $page, $this->pagerSize);
+      $page     = pager_default_initialize(count($unprocessedResults) , $this->pagerSize);
     }
     
+    $index = 0; // Pagination index.
+    
+    foreach ($unprocessedResults as $row) {
+      
+      if ($this->pagerSize === FALSE || ($index >= ($page *  $this->pagerSize) && $index < ($page *  $this->pagerSize) + $this->pagerSize)) {
+        if (! isset ($row->cid)) {
+          $results[$row->nid . '-nid'] = self::prepareNodeRow ($row);
+        }else{
+          $results[$row->cid . '-cid'] = self::prepareCommentRow ($row);
+        }
+      }
+      
+      $index++;
+    }
+
     return $results;
   }
   
@@ -133,9 +148,9 @@ class ActivityQueueModel {
    */
   private static function prepareNodeRow ($row) {
  
-    $row->parent     = '-';
-    $row->operation  = l(t('View'), self::getNodeAlias ($row->nid));
-    $row->created    = format_date ($row->created);
+    $row->parent           = '-';
+    $row->operation        = l(t('View'), self::getNodeAlias ($row->nid));
+    $row->created          = format_date ($row->created);
     
     return (array)$row;
   }
@@ -146,13 +161,12 @@ class ActivityQueueModel {
    * @return 	array					The row object as array.
    */
   private static function prepareCommentRow ($row) {
-    
-    $row = (object)self::prepareNodeRow ($row);
-    
+ 
     $nodePath = self::getNodeAlias ($row->nid);
     
     $row->parent     = l($row->title, $nodePath);
     $row->operation  = l(t('View'), $nodePath, array ('fragment'=> 'comment-' . $row->cid));
+    $row->created     = format_date ($row->created);
     
     $row->title = $row->subject;
     unset ($row->subject);

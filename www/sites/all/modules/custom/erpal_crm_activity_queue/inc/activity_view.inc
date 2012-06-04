@@ -9,6 +9,8 @@
 
 function _erpal_crm_activity_queue_view ($form, &$form_state) {
   
+  drupal_set_title (t('ERPAL Activity queue'));
+  
   module_load_include ('inc', 'erpal_crm_activity_queue', 'inc/ActivityQueueModel.class');
   
   $default_date = array(
@@ -121,8 +123,8 @@ function _erpal_crm_activity_queue_view_results () {
   return $model->dateRange (
     _erpal_crm_activity_queue_view_create_timestamp ($_SESSION['range_from']), 
     _erpal_crm_activity_queue_view_create_timestamp ($_SESSION['range_to'])
-  )->status (FALSE)->
-  load ();
+  )->status (FALSE)
+  ->load ();
 }
 
 /*
@@ -130,7 +132,7 @@ function _erpal_crm_activity_queue_view_results () {
  * @return integer	A UNIX timestamp.
  */
 function _erpal_crm_activity_queue_view_create_timestamp (array $date_widget_values) {
-  
+ 
   return mktime (
     0, 0, 0,
     $date_widget_values['month'],

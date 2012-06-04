@@ -69,13 +69,16 @@ function _feature_erpal_invoice_test_check_invoice($invoice, $params) {
   $invoiceOK = true;
   if (!$invoice)
     $invoiceOK = false; //no invoice
+    
   if (!$invoice->nid)
     $invoiceOK = false;  //no nid no invoice
-  if ($invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] != $customer_nid)
+    
+  if ($invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'] != $customer_nid)
     $invoiceOK = false; //wrong customer
+    
   if ($invoice->field_currency[LANGUAGE_NONE][0]['value'] != $currency)
     $invoiceOK = false; //wrong currency
-  
+
   //check skonto
   if (isset($params['skonto'])) {
     //get the MUST values
@@ -86,7 +89,7 @@ function _feature_erpal_invoice_test_check_invoice($invoice, $params) {
     $skonto_collection_id = $invoice->field_skonto[LANGUAGE_NONE][0]['value'];
     $skonto_entity = entity_load('field_collection_item', array($skonto_collection_id));
     $skonto_entity = $skonto_entity[$skonto_collection_id];
-    
+
     if ($credit_period != $skonto_entity->field_credit_period[LANGUAGE_NONE][0]['value'] ||
       $discount_percent != $skonto_entity->field_discount_percent[LANGUAGE_NONE][0]['value'])
         $invoiceOK = false;

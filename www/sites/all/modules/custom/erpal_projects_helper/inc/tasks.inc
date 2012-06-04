@@ -20,7 +20,7 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
   ->propertyCondition('status', 1);
 
   if (count($uids) > 0) {
-    $query->fieldCondition('field_task_assigned_users', 'uid', $uids, 'IN');
+    $query->fieldCondition('field_task_assigned_users', 'target_id', $uids, 'IN');
   }
   
   if (count($task_states) > 0) {
@@ -32,7 +32,7 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
   }
   
   if ($project_nid) {
-    $query->fieldCondition('field_project_ref', 'nid', $project_nid);
+    $query->fieldCondition('field_project_ref', 'target_id', $project_nid);
   }
   
   $result = $query->execute();
@@ -47,16 +47,53 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
 }
 
 /**
+* Presave function for tasks
+*/
+function erpal_projects_helper_node_presave_task($task_node) {
+  _erpal_projects_helper_task_set_project($task_node);
+}
+
+/**
+* Set the project according to the parents project
+*/
+function _erpal_projects_helper_task_set_project($task_node) {
+  
+  if (!isset($task_node->field_parent[LANGUAGE_NONE][0]['target_id']))
+    return;
+    
+  $parent_nid = $task_node->field_parent[LANGUAGE_NONE][0]['target_id'];
+  $parent_node = node_load($parent_nid);
+  $project_nid = _erpal_projects_helper_has_project($parent_node);
+  
+  if ($project_nid) {
+    $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'] = $project_nid;
+  }
+}
+
+/**
 * returns the activity which is related to a task over its related project
 */
 function _erpal_projects_helper_get_activity_by_task($task_node) {
   $activity_node = false;
   if (isset($task_node->field_project_ref[LANGUAGE_NONE][0])) {
-    $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['nid'];
+    $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
     $project_node = node_load($project_nid);
   }
   
   $activity_node = _erpal_projects_helper_get_activity_by_project($project_node);
   
   return $activity_node;
+}
+
+/**
+* Implements hook_erpal_clone_node_alter to alter task node if cloned
+* @parem $node is the new cloned node
+* @param $parent_nid is the nid of the new parent_node of the cloned node
+* @param $template_node the node where $node was cloned from
+* @param $options some options given to the clone process
+*/
+function erpal_projects_helper_erpal_clone_node_alter($node, $parent_nid, $template_node, $options) {
+  if ($node->type == 'erpal_task') {
+    dpm($node);
+  }
 }

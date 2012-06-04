@@ -23,6 +23,7 @@ function _billable_create_reduce_test_data($only_unique_customers=false) {
   //test if entites are reduced correctly
     $customer1 = _billable_test_create_contact();
     $customer2 = _billable_test_create_contact();
+    $contractor = _billable_test_create_contact();
     
     $entity1 = entity_create('billable', array());
     $entity1->quantity = 3;
@@ -36,6 +37,7 @@ function _billable_create_reduce_test_data($only_unique_customers=false) {
     $entity2->single_price = 4.4;
     $entity2->vat_rate = 7;
     $entity2->customer_nid = $customer2->nid;
+    $entity2->contractor_nid = $contractor->nid;
     $entity2->save();
     
     $entity3 = entity_create('billable', array());
@@ -43,6 +45,7 @@ function _billable_create_reduce_test_data($only_unique_customers=false) {
     $entity3->single_price = 3.23;
     $entity3->vat_rate = 7;
     $entity3->customer_nid = $customer2->nid;
+    $entity3->contractor_nid = $contractor->nid;
     $entity3->save();
     
     $entity4 = entity_create('billable', array());
@@ -50,6 +53,7 @@ function _billable_create_reduce_test_data($only_unique_customers=false) {
     $entity4->single_price = 20;
     $entity4->vat_rate = 7;
     $entity4->customer_nid = $customer1->nid;
+    $entity4->contractor_nid = $contractor->nid;
     $entity4->save();
     
     $entity5 = entity_create('billable', array());
@@ -57,6 +61,7 @@ function _billable_create_reduce_test_data($only_unique_customers=false) {
     $entity5->single_price = 20;
     $entity5->vat_rate = 7;
     $entity5->customer_nid = $customer1->nid;
+    $entity5->contractor_nid = $contractor->nid;
     $entity5->save();
     
     $entity6 = entity_create('billable', array());
@@ -64,6 +69,7 @@ function _billable_create_reduce_test_data($only_unique_customers=false) {
     $entity6->single_price = 21;
     $entity6->vat_rate = 19;  
     $entity6->customer_nid = $customer1->nid;
+    $entity6->contractor_nid = $contractor->nid;
     $entity6->save();  //this will not be reduced because it is the only one in a group
 
   if ($only_unique_customers) {

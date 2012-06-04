@@ -20,7 +20,6 @@ function erpal_invoice_helper_field_widget_info() {
 /**
 * Implements hook_field_widget_form().
 */
-
 function erpal_invoice_helper_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   //dpm($items);
   $value = isset($items[$delta]['target_id']) ? $items[$delta]['target_id'] : '';

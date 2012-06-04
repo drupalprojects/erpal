@@ -15,11 +15,13 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
   }
   
   function setUp() {    
-    parent::setUp('feature_erpal_invoice');
-    
+
+    parent::setUp('feature_erpal_project_basic');
+
+
     // Run a features rebuild to ensure our feature is fully installed.
     features_rebuild();
-    
+   
     // Clear all caches so everything from the feature is recognized now that it is fully loaded.
     cache_clear_all();
   }
@@ -28,7 +30,7 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
   /**
   * Test for caclulating values when a invoice is saved
   */
-  function testInvoiceCalculateValues() {
+  function testInvoiceCalculateValues() { 
     //create billables for the invoice
     $group= 'feature erpal invoice';
     module_load_include('helper', 'feature_erpal_invoice', 'test/feature_erpal_invoice.test');
@@ -74,7 +76,7 @@ class FeatureInvoiceTestCase extends DrupalWebTestCase  {
     $invoice->field_credit_period[LANGUAGE_NONE][0]['value'] = 14;
     
     //add customer
-    $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $contact->nid;
+    $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'] = $contact->nid;
     
     //add billables
     $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity1->billable_id;

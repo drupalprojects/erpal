@@ -15,7 +15,7 @@ function feature_erpal_basic_relation_default_relation_types() {
   $relation_type->api_version = 1;
   $relation_type->relation_type = 'works_at';
   $relation_type->label = 'Works at';
-  $relation_type->reverse_label = 'employed';
+  $relation_type->reverse_label = 'employs';
   $relation_type->directional = 1;
   $relation_type->transitive = 0;
   $relation_type->r_unique = 1;

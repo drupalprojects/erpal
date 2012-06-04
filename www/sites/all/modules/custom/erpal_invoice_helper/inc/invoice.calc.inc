@@ -15,7 +15,26 @@ function _erpal_invoice_helper_calculate_fields($invoice) {
   
   //now the caclulations using entity references and field collections
   _erpal_invoice_helper_calculate_prices($invoice);
-  _erpal_invoice_helper_set_billables_billed($invoice);  
+  _erpal_invoice_helper_set_billables_billed($invoice); 
+
+  //if invoice contractor is not own company, set exported because it cannot be exported an so filtering is not possible
+  //e.g. for all unexported invoices
+  _erpal_invoice_helper_set_exported_if_extern($invoice);
+}
+
+/**
+* Set a invoice to exported if contractor is not the own company
+*/
+function _erpal_invoice_helper_set_exported_if_extern($invoice, $skipp_save_invoice=true) {
+  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+  $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+  
+  if ($company_nid != $contractor_nid)
+    $invoice->field_invoice_exported[LANGUAGE_NONE][0]['value'] = 1;
+    
+  if (!$skipp_save_invoice)
+    node_save($invoice);
 }
 
 /**
@@ -276,6 +295,7 @@ function erpal_invoice_helper_invoice_notes_alter($invoice) {
 * @return an status array with key 'status'=1 if everything is ok, if it is 0, errors are placed in the key 'errors', 'invoice' holds the invoice node
 */
 function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=false, $params=array()) {
+  global $user;
  
   $status = array(
     'status' => 1, //that means everything is ok
@@ -316,10 +336,11 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //try to get the customer and the contractor, if there is no customer in params, the customer of all billables must 
   //be equal otherwise there will be an error same for contractors
   //### get the customer ####
+  $customer_nid_new = 0;
   if (isset($params['customer_nid']))
     $customer_nid = $params['customer_nid'];
   else {
-    $customer_nid = 0; //init
+    $customer_nid = 0; //init    
     foreach ($billables as $billable) {
       $customer_nid_new = $billable->customer_nid;
       if (!$customer_nid)
@@ -349,9 +370,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
     foreach ($billables as $billable) {
       $contractor_nid_new = $billable->contractor_nid;
       if (!$contractor_nid)
-        $contractor_nid = $customer_nid_new;
+        $contractor_nid = $contractor_nid_new;
       else
-        if ($contractor_nid <> $customer_nid_new) {
+        if ($contractor_nid <> $contractor_nid_new) {
           //BAD! There are different contractors in the billables. We cannot create an invoice with that information!       
          $status['status'] = 0;
           $status['errors'][] = t('There is no unique contractor for that invoice and the billable invoice lines have different contractors set.');
@@ -387,7 +408,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   $invoice = new stdClass();
   $invoice->type = 'erpal_invoice';  
   node_object_prepare($invoice);  
-  
+  $invoice->uid = $user->uid;
   $invoice->language = LANGUAGE_NONE;
   //set some other invoice specific fields
 
@@ -402,10 +423,10 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   $invoice->field_currency[LANGUAGE_NONE][0]['value'] = $currency;
   
   //add customer
-  $invoice->field_customer_ref[LANGUAGE_NONE][0]['nid'] = $customer_nid;
+  $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'] = $customer_nid;
   
   //add contractor
-  $invoice->field_contractor_ref[LANGUAGE_NONE][0]['nid'] = $contractor_nid;
+  $invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id'] = $contractor_nid;
   
   //if there are notes, set the notes
   $invoice->field_note[LANGUAGE_NONE][0]['value'] = isset($params['notes']) ? $params['notes'] : '';
