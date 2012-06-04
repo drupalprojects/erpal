@@ -23,8 +23,6 @@ function erpal_asterisk_notify_init() {
   //@todo externe libraries mit dem libraries modul einbinden, dürfen nicht in der Distribution mitgeliefert werden
   drupal_add_js( $path . '/js/socketio/socket.io.min.js', Array( 'every_page'=>TRUE ) );
   drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting' );
-  drupal_add_js($path . '/js/erpal_asterisk.js', Array( 'every_page'=>TRUE ) );
-  drupal_add_css( $path . '/css/erpal_asterisk_notify.css', Array( 'every_page'=>TRUE ) );
 }
 
 
@@ -149,6 +147,7 @@ function _erpal_asterisk_notify_config(){
 
 function erpal_asterisk_notify_ingoing_call($destination, $source) {
 
+  libphonenumber_is_number_match($source, $destination);
   
   $view = _erpal_asterisk_get_view($source);
   
