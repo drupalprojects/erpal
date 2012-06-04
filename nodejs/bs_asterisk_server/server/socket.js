@@ -53,7 +53,7 @@ Socket.prototype.start = function (port) {
       socket
     );
 
-    socket.emit('status', { status : 'ok' });
+    socket.emit('status', { status : 'ok', ip : address });
   
     socket.on('connect', function() {
 				return;
