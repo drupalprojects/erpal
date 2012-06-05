@@ -6,6 +6,23 @@
  
 module_load_include('inc', 'erpal_book_helper', 'inc/book.token'); 
 module_load_include('inc', 'erpal_book_helper', 'inc/book.clone'); 
+module_load_include('inc', 'erpal_book_helper', 'inc/book.action');
+ 
+/**
+ * Implements hook_action_info().
+ */
+function erpal_book_helper_action_info() {
+  return array(
+    'erpal_book_helper_clone_to_book_action' => array(
+      'type' => 'node',
+      'label' => t('Clone book template'),
+      'description' => t('Clones a book to a book given as argument'),
+      'configurable' => TRUE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+  ); 
+} 
  
  /**
  * Implements hook_node_presave
@@ -81,6 +98,13 @@ function erpal_book_helper_node_view($node) {
       'href' => 'books/'.$node->nid.'/pdf',
       'title' => t('Create PDF'),
       'attributes' => array('class' => 'book_pdf_link'),
+    );
+    
+    //link to add supages by clone
+    $links[] = array(
+      'href' => 'books/clonetemplates/'.$node->nid,
+      'title' => t('Add page(s) cloned'),
+      'attributes' => array('class' => 'book_add_cloned_link'),
     );
     
     $node->content['links']['erpal_book_pdf'] = array(
@@ -349,6 +373,21 @@ function _erpal_book_helper_view_contacts_header_content() {
 }
 
 /**
+* Returns the book the page is refernced to, if given node is a book return this book
+*/
+function _erpal_book_helper_get_book($node) {
+  if ($node->type == 'erpal_book')
+    return $node;
+  elseif ($node->type = 'erpal_book_page') {
+    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+    $book_node = node_load($book_nid);
+    return $book_node;
+  }
+  
+  return false;
+}
+
+/**
 * Checks if projects module is enabled and if it is, call a function that shows at which projects the given book is referenced
 */
 function _erpal_book_helper_render_projects_referencing_books($book_nid) {
@@ -387,6 +426,7 @@ function erpal_book_helper_jstree_context_menu($entity_type, $type, $id, $root_i
       array('title' => t('Edit'), 'url' => url('node/'.$id.'/edit', array('query' => $query_back))),
       array('title' => t('Delete'), 'url' => url('node/'.$id.'/delete', array('query' => $query_back))),
       array('title' => t('Add sub page'), 'url' => url('node/add/erpal-book-page', array('query' => $query_add))),
+      array('title' => t('Add page(s) cloned'), 'url' => url('books/clonetemplates/'.$id, array('query' => $query_back))),
     );
      
     return $menu;

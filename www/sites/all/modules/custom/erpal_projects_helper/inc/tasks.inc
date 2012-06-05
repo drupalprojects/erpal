@@ -94,6 +94,8 @@ function _erpal_projects_helper_get_activity_by_task($task_node) {
 */
 function erpal_projects_helper_erpal_clone_node_alter($node, $parent_nid, $template_node, $options) {
   if ($node->type == 'erpal_task') {
-    dpm($node);
+    //ensure that the correct project is set to the task
+    //even this is done in presave (@see erpal_projects_helper_node_presave_task) it is important to ensure, so we do it again here after cloning
+    _erpal_projects_helper_task_set_project($node);  
   }
 }

@@ -73,9 +73,38 @@ function erpal_projects_helper_permission(){
   );
 }
 
+/**
+* Implements hook_clone_page_action_form_alter provided by clone bulk operation by erpal_book_helper module
+* @param $args['book_node'] is the book the cloned pages are referenced to
+* @param $args['parent_node'] is the parent node the cloned node will be directely referenced to.
+*/
+function erpal_projects_helper_clone_page_action_form_alter(&$form, $form_state, $args) {
+  $book_node = $args['book_node'];
+  $parent_node = $args['parent_node'];
+  //check if the given book to clone hase a project, otherwise show a message that tasks will not be cloned
+  //cause book needs a project
+  $projects = _erpal_project_helper_get_referencing_projects_by_book($book_node->nid);
+  
+  if ($projects) {
+    $form['clone_tasks'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Clone tasks'),
+      '#default_value' => false,
+      '#description' => t('If checked, all tasks of the selected templates will be cloned, too'),
+    );
+  } else {
+    $node_link = l($book_node->title, 'node/'.$book_node->nid);
+    $form['clone_tasks'] = array(
+      '#type' => 'item',
+      '#markup' => t('INFORMATION: Tasks are not cloned because !node_link is not assigned to a project', array('!node_link' => $node_link)),
+    );
+  }
+}
+
 //DEBUG
 function erpal_projects_helper_erpal_task_node_form_submit($form, $form_state) {
-  dpm($form_state);
+  //dpm($form_state);
+  
 }
 //END DEBUG
 

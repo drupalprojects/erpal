@@ -51,8 +51,12 @@ function _erpal_book_helper_clone_pages_batch_operation($page_nids, $parent_nid,
       if (!$types)
         $types = array('erpal_book_page');
 
-      $new_children = _erpal_book_helper_get_all_child_nids_deep_search($page_nid, $types);
-      
+      //clone children?
+      if ($options['clone_children'])
+        $new_children = _erpal_book_helper_get_all_child_nids_deep_search($page_nid, $types);
+      else
+        $new_children = array();
+        
       $top_node = array('parent' => $parent_nid, 'child' => $page_nid);
       $all_children[$page_nid] = array_merge(array($top_node), $new_children);
             
