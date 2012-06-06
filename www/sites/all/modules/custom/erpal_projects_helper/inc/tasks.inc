@@ -87,15 +87,48 @@ function _erpal_projects_helper_get_activity_by_task($task_node) {
 
 /**
 * Implements hook_erpal_clone_node_alter to alter task node if cloned
-* @parem $node is the new cloned node
-* @param $parent_nid is the nid of the new parent_node of the cloned node
-* @param $template_node the node where $node was cloned from
-* @param $options some options given to the clone process
+* @param $node is the new cloned node
+* @param $args[parent_nid] is the nid of the new parent_node of the cloned node
+* @param $args[options] some options given to the clone process
 */
-function erpal_projects_helper_erpal_clone_node_alter($node, $parent_nid, $template_node, $options) {
+function erpal_projects_helper_erpal_clone_node_alter($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  $options = $args['options'];
+  
   if ($node->type == 'erpal_task') {
     //ensure that the correct project is set to the task
     //even this is done in presave (@see erpal_projects_helper_node_presave_task) it is important to ensure, so we do it again here after cloning
     _erpal_projects_helper_task_set_project($node);  
+
+    //prepare other task node attributes according to option
+    if ($options['reset_task_status']) {
+      $node->field_task_status[LANGUAGE_NONE][0]['value'] = _erpal_projects_helper_insert_task_state();
+      $node->field_progress_percent[LANGUAGE_NONE][0]['value'] = 0;
+    }  
+    
+    //anyway, delete the assigned user because this will be a ressource planing issue
+    unset($node->field_task_assigned_users);
+    
+  }
+ 
+}
+
+/**
+* Implements hook_erpal_clone_node_postprocess_alter to add the new book to the given project
+*/
+function erpal_projects_helper_erpal_clone_node_postprocess_alter($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  $options = $args['options'];
+  
+  if ($node->type == 'erpal_book') {
+    //Link new book to selected project and delete all references to exported files of the new 
+    //if tasks are cloned, they will be added to this project
+  
+    if ($options['project']) {
+      $project_nid = $options['project'];
+      $project_node = node_load($project_nid);
+      $project_node->field_books_ref[LANGUAGE_NONE][]['target_id'] = $node->nid;
+      node_save($project_node);
+    }
   }
 }

@@ -47,6 +47,17 @@ function erpal_book_helper_menu(){
     'file' => 'inc/book.pdf.inc',
     'type' => MENU_CALLBACK,
   );
+  
+  $items['books/%node/clone'] = array(
+    'title' => 'Create PDF of book',
+    'page callback' => '_erpal_books_helper_book_clone_callback',    
+    'page arguments' => array(1),
+    'access callback' => '_erpal_book_helper_book_clone_menu_access',
+    'access arguments' => array(1),
+    'file' => 'inc/book.pdf.inc',
+    'type' => MENU_CALLBACK,
+  );
+
 
   return $items;
 } 
@@ -65,6 +76,30 @@ function erpal_book_helper_theme() {
       'template' => 'template/children_html',
     ),
   );
+}
+
+/**
+* Implements hook_permission
+*/
+function _erpal_book_helper_permission() {
+  $permissions = array(
+    'clone complete books' => array(
+      'title' => t('Clone complete books'),
+      'description' => t('Allows a user to clone complete books'),
+    ),
+  );
+  
+}
+
+/**
+* Access callback for clone books url
+*/
+function _erpal_book_helper_book_clone_menu_access($node) {
+  if ($node->type != 'erpal_book') {
+    return false;
+  }
+  
+  return user_access('clone complete books');
 }
 
 /**
@@ -105,6 +140,13 @@ function erpal_book_helper_node_view($node) {
       'href' => 'books/clonetemplates/'.$node->nid,
       'title' => t('Add page(s) cloned'),
       'attributes' => array('class' => 'book_add_cloned_link'),
+    );
+    
+    //link to add supages by clone
+    $links[] = array(
+      'href' => 'books/'.$node->nid."/clone",
+      'title' => t('Clone to new book'),
+      'attributes' => array('class' => 'book_clone_new_link'),
     );
     
     $node->content['links']['erpal_book_pdf'] = array(
@@ -460,7 +502,7 @@ function _erpal_book_helper_create_book_link($q_arg = false, $query_arr = array(
 * we are keeping the correct order sorting by weight
 */
 function _erpal_book_helper_get_children($book_node, $parent_node, $options) {
-  
+
   //first get all book pages
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
@@ -470,6 +512,9 @@ function _erpal_book_helper_get_children($book_node, $parent_node, $options) {
   ->fieldCondition('field_book_ref', 'target_id', $book_node->nid, '=')
   ->fieldOrderBy('field_weight', 'value', 'ASC');
 
+  if (!isset($options['ignore_exclude']['pdf']))
+    $options['ignore_exclude']['pdf'] = false;
+    
   if (!$options['ignore_exclude']['pdf']) {
     //exclude some node from export
     $exclude = array('pdf');

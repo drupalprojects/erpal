@@ -250,6 +250,11 @@ function feature_erpal_book_field_default_fields() {
       'settings' => array(
         'handler' => 'base',
         'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
           'sort' => array(
             'direction' => 'ASC',
             'field' => 'body:value',
@@ -257,6 +262,7 @@ function feature_erpal_book_field_default_fields() {
             'type' => 'none',
           ),
           'target_bundles' => array(
+            'erpal_book' => 'erpal_book',
             'erpal_book_page' => 'erpal_book_page',
           ),
         ),
@@ -270,6 +276,7 @@ function feature_erpal_book_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'erpal_book',
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -294,6 +301,14 @@ function feature_erpal_book_field_default_fields() {
       'label' => 'Origin template',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -736,6 +751,11 @@ function feature_erpal_book_field_default_fields() {
       'settings' => array(
         'handler' => 'base',
         'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
           'sort' => array(
             'direction' => 'ASC',
             'field' => 'body:value',
@@ -743,6 +763,7 @@ function feature_erpal_book_field_default_fields() {
             'type' => 'none',
           ),
           'target_bundles' => array(
+            'erpal_book' => 'erpal_book',
             'erpal_book_page' => 'erpal_book_page',
           ),
         ),

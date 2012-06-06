@@ -5,9 +5,13 @@
 */
 function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $options) {
   
+  //set default value if not set
+  if (!isset($options['export_tasks']))
+    $options['export_tasks'] = false;
+    
   if (!$options['export_tasks'])
     return array();
-  
+
   //we return all tasks that have the given parent_node as parent
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')

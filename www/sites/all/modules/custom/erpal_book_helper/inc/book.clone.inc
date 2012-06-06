@@ -5,6 +5,157 @@
 */
 
 /**
+* Callback to clone complete books
+* @param $book_node the book node to clone
+*/
+function _erpal_books_helper_book_clone_callback($book_node) {
+  //first we prepare the project and the upper book, then we start the batch operation
+  //to clone a book_page as a new subpage. 
+  $form = drupal_get_form('erpal_books_helper_book_clone_form', $book_node);
+  
+  return $form;
+}
+
+/**
+* Form to configure clone process for complete books
+*/
+function erpal_books_helper_book_clone_form($form, $form_state, $book_node) {
+  $form = array();
+  
+  //we dont ask to clone children because it doesn't make sense to clone only the top book page
+  $book_link = l($book_node->title, "node/".$book_node->nid);
+  $form['information'] = array(
+    '#type' => 'item',
+    '#markup' => "<h2>".t('Clone !book_link as new book', array('!book_link' => $book_link))."</h2>",
+    '#weight' => -20,
+  );
+  
+  $form['book_nid'] = array(
+    '#type' => 'value',
+    '#value' => $book_node->nid,
+  );
+  
+  $form['title'] = array(
+    '#title' => t('New books title'),
+    '#type' => 'textfield',
+    '#required' => true,
+    '#default_value' => t('Clone of')." ".$book_node->title,
+  );
+  
+  $form['contact'] = array(
+    '#title' => t('Contact'),
+    '#type' => 'textfield',
+    '#autocomplete_path' => 'crm/contacts/autocomplete',
+    '#ajax' => array(
+      'callback' => '_erpal_book_helper_ajax_company_preselect_addresses_config',
+      'wrapper' => 'basic_address_wrapper',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
+  
+  $form['ajax_wrapper'] = array(
+    '#prefix' => '<div id="basic_address_wrapper">',
+    '#suffix' => '</div>',
+  );
+  
+  if (isset($form_state['triggering_element']) && $form_state['triggering_element']['#name'] == 'contact') {
+    //try to get a contact nid
+    $contact_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($form_state['values']['contact']);
+    
+    if ($contact_nid) {
+      $contact_node = node_load($contact_nid);
+      $form['ajax_wrapper']['address_id'] = array(
+        '#type' => 'select',
+        '#title' => t('Address to replace tokens in book'),
+        '#options' => _erpal_basic_helper_get_contact_adresses($contact_node, true),
+      );
+    }
+  }
+  
+  //ask other modules form config form
+  $args = array('book_node' => $book_node);
+  drupal_alter('clone_book_action_form', $form, $form_state, $args);
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Clone'),
+  );
+  
+  return $form;
+}
+
+/**
+* Callback for AJAX request to update contact address
+*/
+function _erpal_book_helper_ajax_company_preselect_addresses_config($form, $form_state) {
+
+  if (isset($form['ajax_wrapper']))
+    return $form['ajax_wrapper'];  //form has already been processed, so just return the elements
+    
+  return array();
+}
+
+/**
+* Submit handler for book clone form
+*/
+function erpal_books_helper_book_clone_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+    
+  $book_nid = $values['book_nid'];
+  $book_node = node_load($book_nid);
+  
+  $values['clone_children'] = 1; //allways clone children in complete book clone, otherwise it makes no sense
+  $options = _erpal_books_helper_options_for_clone($values);
+  
+  //get child nodes that should be copied as children of the book
+  $child_nodes = _erpal_book_helper_get_children($book_node, $book_node, $options, array());
+  $child_nids = array();
+  foreach ($child_nodes as $child_node) {
+    $child_nids[] = $child_node->nid;
+  }
+  
+  //clone the parent node and call other modules to do their thing
+  //then call batch operation to clone all subpages of the book node as usual
+  $new_book_node = _erpal_book_helper_clone_node($book_node->nid, false, false, $options);
+
+  unset($new_book_node->field_asset_files);
+  
+  //now start batch operation with all children of the node  
+  unset($options['title']);  //otherwise title of all subpages will be set to this!
+  _erpal_book_helper_clone_pages_batch($child_nids, $new_book_node->nid, $options);
+  
+  drupal_set_message(t('The book has successfully been cloned'));
+  drupal_goto("node/".$new_book_node);
+}
+
+/**
+* creates clone options from clone form submit values
+* @param $form_values the form values from clone config form submit or the context from bulk operation config form submit
+*/
+function _erpal_books_helper_options_for_clone($form_values) {
+  $options = array();
+  
+  $types = array('erpal_book_page');
+  if ($form_values['clone_tasks'])
+    $types[] = 'erpal_task';
+    
+  $options = array(
+    'clone_children' => isset($form_values['clone_children']) ? $form_values['clone_children'] : 1,
+    'clone_tasks' => $form_values['clone_tasks'],
+    'types' => $types,
+    'title' => isset($form_values['title']) ? $form_values['title'] : false,
+    'contact_nid' => isset($form_values['contact']) ? _erpal_basic_helper_get_nid_from_autocomplete_string($form_values['contact']) : '',
+    'address_id' => isset($form_values['address_id']) ? $form_values['address_id'] : false,
+  );
+
+  //let other module add their options from submit values  
+  drupal_alter('options_for_clone', $options, $form_values);
+
+  return $options;
+}
+
+/**
 * Clones all page nids including all children in deep search with a batch process
 * @param $page_nids an array of nids of book_pages to clone
 * @param $top_parent_nid all new cloned book pages at top most level will be assigned to this parent
@@ -40,8 +191,7 @@ function _erpal_book_helper_clone_pages_batch($page_nids, $top_parent_nid, $opti
 * @param $page_nids an array of nids of book_pages to clone
 * @param $parent_nid all new cloned book pages will be assigned to this parent
 */
-function _erpal_book_helper_clone_pages_batch_operation($page_nids, $parent_nid, $options=array(), &$context) {
- 
+function _erpal_book_helper_clone_pages_batch_operation($page_nids, $parent_nid, $options=array(), &$context) {  
   if (!isset($context['sandbox']['progress'])) {
     //get all children to clone
     $all_children = array();
@@ -183,7 +333,7 @@ function _erpal_book_helper_clone_pages_finished($success, $results, $operations
 * Clones a simple node and saves it
 */
 function _erpal_book_helper_clone_node($nid, $parent_nid, $book_nid, $options) {
- 
+
   if (is_numeric($nid)) {
     global $user;
 
@@ -202,20 +352,41 @@ function _erpal_book_helper_clone_node($nid, $parent_nid, $book_nid, $options) {
       $node->path = NULL;
       $node->files = array();
     
-      //Set the parent
-      $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
-      //add new node to book
-      $node->field_book_ref[LANGUAGE_NONE][0]['target_nid'] = $book_nid;
+      //Set the parent if give (not given if we clone a book
+      if ($parent_nid)
+        $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
+      //add new node to book if given, not given if we clone a book
+      if ($book_nid)
+        $node->field_book_ref[LANGUAGE_NONE][0]['target_nid'] = $book_nid;
       
       // Add an extra property as a flag.
       if ($node->type == 'erpal_book_page' || $node->type == 'erpal_book') {
         $node->field_book_origin[LANGUAGE_NONE][0]['target_id'] = $original_node->nid;
       }
 
+      $title = isset($options['title']) ? $options['title'] : $original_node->title;
+      if ($title)
+        $node->title = $title;
+      
+      $original_contact_nid = isset($original_node->field_contact_ref[LANGUAGE_NONE][0]['target_id']) ? $original_node->field_contact_ref[LANGUAGE_NONE][0]['target_id'] : false;
+      $contact_nid = isset($options['contact_nid']) ? $options['contact_nid'] : $original_contact_nid;
+      
+      if ($contact_nid)
+        $node->field_contact_ref[LANGUAGE_NONE][0]['target_id'] = $contact_nid;
+      
+      $original_address_id = isset($original_node->field_address_id[LANGUAGE_NONE][0]['value']) ? $original_node->field_address_id[LANGUAGE_NONE][0]['value'] : false;
+      $address_id = isset($options['address_id']) ? $options['address_id'] : $original_address_id;
+      
+      if ($address_id)
+        $node->field_address_id[LANGUAGE_NONE][0]['value'] = $address_id;
+      
       //Hook to let other modules clone children or set some properties
-      drupal_alter('erpal_clone_node', $node, $parent_nid, $original_node, $options);
+      $args = array('parent_nid' => $parent_nid, 'original_node' => $original_node, 'options' => $options, 'original_node' => $original_node);
+      drupal_alter('erpal_clone_node', $node, $args);
 
       node_save($node);
+      
+      drupal_alter('erpal_clone_node_postprocess', $node, $args);
       return $node;
     }
   }
@@ -238,6 +409,8 @@ function _erpal_book_helper_get_all_child_nids_deep_search($nid, $types=array())
   
   return $all_children;
 }
+
+
 
 /**
 * returns an array of direct children of a node using field_parent

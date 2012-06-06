@@ -10,18 +10,12 @@
 function erpal_book_helper_clone_to_book_action(&$book_pages, &$context) {
   $page_nids = array_keys($book_pages);
   $parent_nid = $context['parent_nid'];
-  $types = array('erpal_book_page');
+  
   if (!isset($context['clone_tasks']))
     $context['clone_tasks'] = 0;
-    
-  if ($context['clone_tasks'])
-    $types[] = 'erpal_task';
-    
-  $options = array(
-    'clone_children' => $context['clone_children'],
-    'clone_tasks' => $context['clone_tasks'],
-    'types' => $types,
-  );
+
+  $options = _erpal_books_helper_options_for_clone($context); 
+
   //start cloning batch operation
   _erpal_book_helper_clone_pages_batch($page_nids, $parent_nid, $options);
 }
@@ -45,6 +39,7 @@ function erpal_book_helper_clone_to_book_action_form($context, $form_state) {
     '#type' => 'checkbox',
     '#title' => t('Clone children'),
     '#default_value' => true,
+    '#weight' => -15,
     '#description' => t('If checked, all children of the selected templates will be cloned, too'),
   );
   
@@ -57,12 +52,12 @@ function erpal_book_helper_clone_to_book_action_form($context, $form_state) {
   $form['description'] = array(
     '#type' => 'item',
     '#markup' => $description,
-    '#weight' => -10, //at the top!
+    '#weight' => -20, //at the top!
   );
   
   $args = array('book_node' => $book_node, 'parent_node' => $parent_node);
   drupal_alter('clone_page_action_form', $form, $form_state, $args);
- 
+
   //add the parent node and the book node where all cloned nodes will be assigned to
   $form['parent_nid'] = array(
     '#type' => 'value',
@@ -75,6 +70,10 @@ function erpal_book_helper_clone_to_book_action_form($context, $form_state) {
   );
   
   return $form;
+}
+
+function erpal_book_helper_clone_to_book_action_validate($form, $form_state) {
+  module_invoke_all('erpal_clone_page_validate', $form, $form_state);
 }
 
 /**
