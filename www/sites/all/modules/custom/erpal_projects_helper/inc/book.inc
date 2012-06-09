@@ -51,8 +51,7 @@ function _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $n
   } 
   
   $result = $query->execute();
-dpm($result);
-dpm($parent_node);
+
   $child_task_nodes = array();
   if (isset($result['node'])) {
     $child_nids = array_keys($result['node']);

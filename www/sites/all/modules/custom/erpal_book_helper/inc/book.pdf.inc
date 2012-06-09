@@ -155,15 +155,15 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
     drupal_goto('node/'.$root_node);
   }
  
-  //now attach the file to the book_node
+  //now attach the file to the root node (not to the book node!)
   $file_node = false;
-  if (isset($book_node->field_asset_files[LANGUAGE_NONE][0]['target_id'])) {
-    $file_nid = $book_node->field_asset_files[LANGUAGE_NONE][0]['target_id'];  //if exists, this node will be updated with its file
+  if (isset($root_node->field_asset_files[LANGUAGE_NONE][0]['target_id'])) {
+    $file_nid = $root_node->field_asset_files[LANGUAGE_NONE][0]['target_id'];  //if exists, this node will be updated with its file
     
     $file_node = node_load($file_nid);
   }
 
-  $file_node = _erpal_docs_attach_file($book_node, $doc_file, $file_node, false, true);
+  $file_node = _erpal_docs_attach_file($root_node, $doc_file, $file_node, false, true);
   
   return $file_node;
 }
