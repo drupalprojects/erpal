@@ -164,7 +164,7 @@ function _erpal_basic_helper_contacts_autocomplete($string){
   
   // add matches to $matches  
   foreach ($return as $row) {
-    $matches[check_plain($row->title)." [nid:".$row->nid."]"] = $row->title;
+    $matches[check_plain($row->title)." (".$row->nid.")"] = $row->title;
   }
   
   // return for JS
@@ -469,3 +469,162 @@ function _erpal_basic_helper_node_titles($nids) {
   
   return $nodes;
 }
+
+/**
+* Bulk operation to delete nodes
+* @param $nids array of nids to be deleted
+*/
+function _erpal_basic_helper_bulk_delete($nids, $redirect) {
+  
+  //build operation for every entity type
+  $operations = array();
+  $total_count = 0;
+  foreach ($nids as $type=>$ids) {
+    $total_count += count($ids);
+    $operations[] = array('_erpal_basic_helper_bulk_delete_operation', array($ids, $type, $total_count));
+  }
+  
+  $batch = array(
+    'operations' => $operations,
+    'title' => t('Processing Delete Batch'),
+    'init_message' => t('Delete Batch is starting.'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('Delete Batch has encountered an error.'),
+  );
+  
+   
+  batch_set($batch);
+
+  batch_process($redirect); //return to the parent
+}
+
+/**
+* Start bulk delete operation
+* @param $nids array of entity ids that will be deleted
+*/
+function _erpal_basic_helper_bulk_delete_operation($nids, $entity_type, $total_count, &$context) {
+  if (!isset($context['sandbox']['progress'])) {  
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['nids'] = $nids;
+    $context['sandbox']['last_delta'] = -1;
+    $context['sandbox']['max'] = isset($context['sandbox']['max']) ? $context['sandbox']['max'] : $total_count;
+  }
+ 
+  $nids = $context['sandbox']['nids'];
+  $delta = $context['sandbox']['last_delta'] +1;
+
+  if (isset($nids[$delta])) {
+    $nid = $nids[$delta];
+    
+    if ($entity_type == 'node')
+      node_delete($nid);
+    else
+      entity_delete($entity_type, $nid);
+         
+    $context['sandbox']['last_delta'] = $delta;
+  }
+ 
+  $context['sandbox']['progress']++;
+  $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+
+}
+
+/**
+* Function to bulk update nodes
+* @param $callback a function as string that is called on each node update to set values of the updated node.
+*/
+function _erpal_basic_helper_bulk_update($nids, $callback, $args, $redirect) {
+  $batch = array(
+    'operations' => array(
+      array('_erpal_basic_helper_bulk_update_operation', array($nids, $callback, $args)),
+    ),
+    'title' => t('Processing Update Batch'),
+    'init_message' => t('Update Batch is starting.'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('UPdate Batch has encountered an error.'),
+  );
+  batch_set($batch);
+
+  batch_process($redirect); //return to the parent
+}
+
+function _erpal_basic_helper_bulk_update_operation($nids, $callback, $args, &$context) {
+  if (!isset($context['sandbox']['progress'])) {  
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['nids'] = $nids;
+    $context['sandbox']['last_delta'] = -1;
+    $context['sandbox']['max'] = count($nids);
+  }
+ 
+  $nids = $context['sandbox']['nids'];
+  $delta = $context['sandbox']['last_delta'] +1;
+  
+  if (!$context['sandbox']['max']) {
+    $context['finished'] = true;
+    return;
+  }
+    
+  if (isset($nids[$delta])) {
+    $nid = $nids[$delta];
+    
+    $node = node_load($nid);
+   
+    if (function_exists($callback)) {
+      call_user_func($callback, $node, $args);
+    }
+    
+    node_save($node);
+    
+    $context['sandbox']['last_delta'] = $delta;
+  }
+  
+  $context['sandbox']['progress']++;
+  $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+}
+
+/**
+* returns an array of direct children of a node using field_parent
+* @param $nid the parent nid to search children for
+* @param $types only those node types are returned
+*/
+function _erpal_basic_helper_get_direct_children($nid, $types=array()) {
+  
+  $children = array();
+  if (!count($types))
+    return $children;
+ 
+  foreach ($types as $type) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', $type)
+    ->fieldCondition('field_parent', 'target_id', $nid, '=')
+    ->addMetaData('account', user_load(1)); // run the query as user 1
+
+    $result = $query->execute();
+    if (isset($result['node'])) {
+      $new_nids = array_keys($result['node']);
+      $children = array_merge($children, $new_nids);
+    }
+  }
+  
+  return $children;
+}
+
+/**
+* Gets all child nodes of a given parent by deepsearch.
+* @return a flat array with all children in deep search order, each node in an array whit key 'child' and 'parent'
+* @param $types the node types that should be returned and deep searched as children
+*/
+function _erpal_basic_helper_get_all_child_nids_deep_search($nid, $types=array()) {
+  $children = _erpal_basic_helper_get_direct_children($nid, $types);
+ 
+  $all_children = array();
+  foreach ($children as $delta=>$child_nid) {    
+    $sub_children = _erpal_basic_helper_get_all_child_nids_deep_search($child_nid, $types);
+    $all_children[] = array('parent' => $nid, 'child' => $child_nid);
+    $all_children = array_merge($all_children, $sub_children);
+  }
+  
+  return $all_children;
+}
+

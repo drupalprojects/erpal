@@ -47,6 +47,27 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
 }
 
 /**
+* Return tasks by project
+* @return array with nids of tasks referencing the given project_nid
+*/
+function _erpal_projects_helper_get_tasks_by_project($project_nid) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_task')
+  ->propertyCondition('status', 1)
+  ->fieldCondition('field_project_ref', 'target_id', $project_nid);
+    
+  $result = $query->execute();
+
+  $task_nodes = array();
+  if (isset($result['node'])) {
+    $task_nids = array_keys($result['node']);
+  }
+
+  return $task_nids;
+}
+
+/**
 * Presave function for tasks
 */
 function erpal_projects_helper_node_presave_task($task_node) {

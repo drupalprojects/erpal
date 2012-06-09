@@ -269,6 +269,29 @@ function billable_references_dialog_entity_admin_paths() {
 }
 
 /**
+* Get all billables by subject
+* @param $nids array with nids of subjects to get billables for
+*/
+function _billable_get_billables_by_subject($nids, $field_conditions=array()) {
+  $query = db_select('billable', 'b')
+    ->fields('b', array('billable_id'))
+    ->condition('subject_nid', $nids,'IN');
+    
+  //add further field conditions
+  foreach ($field_conditions as $condition) {
+    $query->condition($condition['field'], $condition['value'], $condition['operation']);
+  }
+
+  $result = $query->execute();
+  $billables = array();
+  while($record = $result->fetchAssoc()) {
+      $billables[$record['billable_id']] = $record['billable_id'];
+  }
+  
+  return $billables;
+}
+
+/**
 * get ids of reduced billables that reference the given billable as a parent
 */
 function _billable_get_reduced_billables($parent_billable) {

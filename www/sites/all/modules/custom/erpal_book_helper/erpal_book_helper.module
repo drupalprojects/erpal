@@ -28,7 +28,9 @@ function erpal_book_helper_action_info() {
  * Implements hook_node_presave
  */
 function erpal_book_helper_node_presave($node) {
-  _erpal_book_helper_connect_page_to_book($node);
+  if ($node->type == 'erpal_book_page') {
+    _erpal_book_helper_connect_page_to_book($node);
+  }
 }
 
 /**
@@ -143,11 +145,13 @@ function erpal_book_helper_node_view($node) {
     );
     
     //link to add supages by clone
-    $links[] = array(
-      'href' => 'books/'.$node->nid."/clone",
-      'title' => t('Clone to new book'),
-      'attributes' => array('class' => 'book_clone_new_link'),
-    );
+    if ($node->type == 'erpal_book') {
+      $links[] = array(
+        'href' => 'books/'.$node->nid."/clone",
+        'title' => t('Clone to new book'),
+        'attributes' => array('class' => 'book_clone_new_link'),
+      );
+    }
     
     $node->content['links']['erpal_book_pdf'] = array(
       '#links' => $links,
@@ -306,8 +310,150 @@ function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
     _erpal_book_helper_show_tokens_at_body($form, $form_state);
     _erpal_book_helper_prepare_address_ajax_reload($form, $form_state);
   }
+  
+  if ($form_id == 'node_delete_confirm') {
+    _erpal_book_helper_node_delete_confirm_alter($form, $form_state);
+  }
 }
 
+/**
+* Alter node delete form to add options on how to process children on delete operation
+*/
+function _erpal_book_helper_node_delete_confirm_alter(&$form, $form_state) {
+  $delete_nid = $form['nid']['#value'];
+  $delete_node = node_load($delete_nid);
+
+  if ($delete_node->type == 'erpal_book') {
+    //only show warning that all children will be delete
+    $form['delete_children_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Book page delete options'),
+    );
+    
+    $node_link = l($delete_node->title, "node/".$delete_node->nid);
+    $form['delete_children_fieldset']['delete_children'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('I submit that all child pages of !node_link will be deleted.', array('!node_link' => $node_link)),
+      '#default_value' => false,
+    ); 
+    
+    $form['#validate'][] = '_erpal_book_helper_book_delete_confirm_validate';
+    $form['#submit'][] = '_erpal_book_helper_book_delete_confirm_submit';
+    
+  } elseif ($delete_node->type == 'erpal_book_page') {
+  
+    $form['delete_children_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Book page delete options'),
+    );
+    
+    $node_link = l($delete_node->title, "node/".$delete_node->nid);
+    $form['delete_children_fieldset']['delete_children'] = array(
+      '#type' => 'radios',
+      '#title' => t('Handle children options'),
+      '#options' => array(
+        'delete' => t('Delete child pages'),
+        'parent' => t('Add to upper level parent page'),
+      ),
+      '#default_value' => 'parent',
+    ); 
+    
+    //add book_nid and parent_nid as hidden values bevor node will be deleted
+    $book_nid = $delete_node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+    $parent_nid = $delete_node->field_parent[LANGUAGE_NONE][0]['target_id'];
+    
+    $form['delete_node'] = array(
+      '#type' => 'value',
+      '#value' => $delete_node,
+    );
+    
+    $form['book_node'] = array(
+      '#type' => 'value',
+      '#value' => node_load($book_nid),
+    );
+    
+    $form['parent_node'] = array(
+      '#type' => 'value',
+      '#value' => node_load($parent_nid),
+    );
+    
+    $form['#submit'][] = '_erpal_book_helper_book_page_delete_confirm_submit';
+  }
+}
+
+/**
+* Submit handler of book page delete form
+*/
+function _erpal_book_helper_book_page_delete_confirm_submit($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_node = $values['delete_node']; //node that will be deleted  
+  $book_node = $values['book_node'];
+  $parent_node = $values['parent_node'];
+  $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
+
+  if ($delete_children == 'parent') {
+    //add all nodes to parent node
+    $options = array();
+    $options['export_tasks'] = true;
+    //get all nodes that reference the delete node using the field_parent
+    $child_nids = _erpal_book_helper_get_children($book_node, $delete_node, $options, true);
+    $callback_function = '_erpal_book_helper_bulk_update_callback';
+    $args['parent_nid'] = $parent_node->nid;
+    
+    _erpal_basic_helper_bulk_update($child_nids, $callback_function, $args, 'node/'.$book_node->nid);
+   
+  } elseif ($delete_children == 'delete') {
+    //delete all book children including subchildren etc. other child nodes like tasks are not deleted.
+    $types = array('erpal_book_page');
+    $child_nids = _erpal_basic_helper_get_all_child_nids_deep_search($delete_node->nid, $types);
+    
+    $child_nids = array('node' => $child_nids);
+    
+    $redirect = 'node/'.$book_node->nid;
+    _erpal_basic_helper_bulk_delete($child_nids, $redirect);
+  }
+}
+
+/**
+* Callback for bulk updating nodes. Here we set the values given in args.
+*/
+function _erpal_book_helper_bulk_update_callback($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  
+  $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
+}
+
+/**
+* Submit handler of book delete confirm form
+*/
+function _erpal_book_helper_book_delete_confirm_submit($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+
+  //get all book_pages of given book and give them to bulk delete operation.
+  $options = array();
+  $child_nids = _erpal_book_helper_get_book_pages($delete_nid, false, $options);
+
+  $child_nids = array('node' => $child_nids);
+  _erpal_basic_helper_bulk_delete($child_nids, 'books/books');
+}
+
+/**
+* Validateion handler of book node delete confirm form
+*/
+function _erpal_book_helper_book_delete_confirm_validate($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+  $delete_node = node_load($delete_nid);
+    
+  $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
+  
+  //if book will be delete checkbox must be set!
+  if ($delete_node->type == 'erpal_book') {
+    if (!$delete_children)
+      form_set_error('delete_children', t('Please submit checkbox to delete all child pages'));
+  }
+}
 
 /**
 * Prepare book node form to reload address field using AJAX, according to slected contact
@@ -500,18 +646,19 @@ function _erpal_book_helper_create_book_link($q_arg = false, $query_arr = array(
 /**
 * Returns all direct children of a given book node
 * we are keeping the correct order sorting by weight
+* @param $nids_only if true only nids are returned otherwise node objects are fully loaded
 */
-function _erpal_book_helper_get_children($book_node, $parent_node, $options) {
+function _erpal_book_helper_get_children($book_node, $parent_node, $options, $nids_only=false) {
 
   //first get all book pages
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_book_page')
   ->propertyCondition('status', 1)
-  ->fieldCondition('field_parent', 'target_id', $parent_node->nid, '=')
-  ->fieldCondition('field_book_ref', 'target_id', $book_node->nid, '=')
-  ->fieldOrderBy('field_weight', 'value', 'ASC');
-
+  ->fieldCondition('field_parent', 'target_id', $parent_node->nid, '=')  
+  ->fieldOrderBy('field_weight', 'value', 'ASC')
+  ->fieldCondition('field_book_ref', 'target_id', $book_node->nid, '=');
+  
   if (!isset($options['ignore_exclude']['pdf']))
     $options['ignore_exclude']['pdf'] = false;
     
@@ -535,16 +682,39 @@ function _erpal_book_helper_get_children($book_node, $parent_node, $options) {
   $child_book_page_nodes = array();
   if (isset($result['node'])) {
     $child_nids = array_keys($result['node']);
-    $child_book_page_nodes = entity_load('node', $child_nids);
+    
+    if (!$nids_only)
+      $child_book_page_nodes = entity_load('node', $child_nids);
+    else
+      $child_book_page_nodes = $child_nids;
   }
   
   //ask other modules for children  
+  $other_child_nodes = module_invoke_all('book_child_nodes', $parent_node, $book_node, $options, $nids_only);
 
-  $other_child_nodes = module_invoke_all('book_child_nodes', $parent_node, $book_node, $options);
-  
   $children = array_merge($child_book_page_nodes, $other_child_nodes);
-  
+
   return $children;
+}
+
+/**
+* Returns all book pages of a book
+* @param $book_nid the book nid to get all pages from
+*/
+function _erpal_book_helper_get_book_pages($book_nid) {
+  //first get all book pages
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_book_page')
+  ->fieldCondition('field_book_ref', 'target_id', $book_nid, '=');
+  
+  $result = $query->execute();
+  $child_book_page_nids = array();
+  if (isset($result['node'])) {
+    $child_book_page_nids = array_keys($result['node']);
+  }
+  
+  return $child_book_page_nids;
 }
 
 /**

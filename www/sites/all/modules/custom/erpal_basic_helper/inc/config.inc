@@ -161,6 +161,24 @@ function _erpal_basic_helper_ajax_company_preselect_addresses_config($form, $for
 }
 
 /**
+* Validate config form input
+*/
+function erpal_basic_helper_config_form_validate($form, $form_state) {
+  $values = $form_state['values'];
+  $my_company_string = $values['my_company'];
+  
+  $company_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($my_company_string);
+  
+  $company_node = node_load($company_nid);
+  $valid_contact_error = t('Please select a valid contact');
+  if (!$company_node->nid)
+    form_set_error('my_company', $valid_contact_error);
+    
+  if ($company_node->type != 'erpal_contact')
+    form_set_error('my_company', $valid_contact_error);
+}
+
+/**
 * submit handler of erpal basic config form
 */
 function erpal_basic_helper_config_form_submit($form, $form_state){
@@ -236,7 +254,7 @@ function _erpal_basic_helper_autocomplete_string_from_nid($nid){
     return '';
   $node = node_load($nid);
   
-  return $node->title . " [nid:" . $nid . "]";
+  return $node->title . " (".$nid . ")";
 }
 
 /**

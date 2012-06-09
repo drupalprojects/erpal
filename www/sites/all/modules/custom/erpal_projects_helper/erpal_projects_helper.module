@@ -141,6 +141,12 @@ function erpal_projects_helper_options_for_clone_alter(&$options, $form_values) 
 */
 function _erpal_projects_helper_clone_tasks_form_add_elements(&$form, $book_node, $clone_type) {
   
+  //if there is no project referencing that book, no options to clone taks should be displayed
+  $project_nid = _erpal_projects_helper_has_project($book_node);
+  
+  if (!$project_nid)
+    return;
+  
   $form['clone_tasks'] = array(
     '#type' => 'checkbox',
     '#title' => t('Clone tasks'),
@@ -213,8 +219,195 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
     _erpal_projects_helper_project_node_form_alter($form, $form_state);
   }
  
+  if ($form_id == 'node_delete_confirm') {
+    _erpal_projects_helper_node_delete_confirm_alter($form, $form_state);
+  }
 }
 
+/**
+* Alter delete form
+*/
+function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
+  $delete_nid = $form['nid']['#value'];
+  $delete_node = node_load($delete_nid);
+  
+  $project_nid = _erpal_projects_helper_has_project($delete_node);
+  
+  if (!$project_nid)
+    return; 
+  
+  if ($delete_node->type == 'erpal_project') {
+    //ask if task children should be delete, too
+    $form['delete_tasks_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Task delete options'),
+    );
+    
+    $node_link = l($delete_node->title, "node/".$delete_node->nid);
+    $form['delete_tasks_fieldset']['delete_children'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('I submit that all tasks of !node_link will be deleted.', array('!node_link' => $node_link)),
+      '#default_value' => false,
+    ); 
+    
+    $form['delete_tasks_fieldset']['delete_timetrackings'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Delete timetrackings of tasks, too'),
+      '#default_value' => false,
+      '#states' => array(
+        // Hide the settings when the checkbox is checked notify checkbox is disabled.
+        'visible' => array(
+          ':input[name="delete_children"]' => array('value' => 'delete'),
+        ),
+      ),
+    ); 
+    
+    $form['#validate'][] = '_erpal_projects_helper_project_delete_confirm_validate';
+    $form['#submit'][] = '_erpal_projects_helper_project_delete_confirm_submit';
+    
+  } elseif ($delete_node->type == 'erpal_task') {
+    $form['delete_tasks_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Sub task delete options'),
+    );
+    
+    //ask if sub tasks should be deleted or if they should moved under the parent of the deleted node
+    $node_link = l($delete_node->title, "node/".$delete_node->nid);
+    $form['delete_tasks_fieldset']['delete_children'] = array(
+      '#type' => 'radios',
+      '#title' => t('Handle children options'),
+      '#options' => array(
+        'delete' => t('Delete sub tasks'),
+        'parent' => t('Add to upper level parent task'),
+      ),
+      '#default_value' => 'parent',
+    ); 
+
+    $form['delete_tasks_fieldset']['delete_timetrackings'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Delete timetrackings of tasks, too'),
+      '#default_value' => false,
+      '#states' => array(
+        // Hide the settings when the checkbox is checked notify checkbox is disabled.
+        'visible' => array(
+          ':input[name="delete_children"]' => array('value' => 'delete'),
+        ),
+      ),
+    ); 
+
+    
+    //add project_nid and parent_nid as hidden values bevor node will be deleted
+    $project_nid = $delete_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+    $parent_nid = $delete_node->field_parent[LANGUAGE_NONE][0]['target_id'];
+    
+    $form['delete_node'] = array(
+      '#type' => 'value',
+      '#value' => $delete_node,
+    );
+    
+    $form['project_node'] = array(
+      '#type' => 'value',
+      '#value' => node_load($project_nid),
+    );
+    
+    $form['parent_node'] = array(
+      '#type' => 'value',
+      '#value' => node_load($parent_nid),
+    );
+    
+    $form['#submit'][] = '_erpal_projects_helper_task_delete_confirm_submit';
+  }
+}
+
+/**
+* Submit handler of task delte confirm form
+*/
+function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_node = $values['delete_node']; //node that will be deleted  
+  $project_nid = $delete_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+  $parent_node = $values['parent_node'];
+  $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
+
+  if ($delete_children == 'parent') {
+    //add all nodes to parent node
+    $options = array();
+    $options['export_tasks'] = true;
+    //get all nodes that reference the delete node using the field_parent
+    $child_nids = _erpal_projects_helper_get_tasks_child_nodes($delete_node, $options, true);
+    $callback_function = '_erpal_projects_helper_bulk_update_callback';
+    $args['parent_nid'] = $parent_node->nid;
+    
+    _erpal_basic_helper_bulk_update($child_nids, $callback_function, $args, 'node/'.$project_nid);
+   
+  } elseif ($delete_children == 'delete') {
+    //delete all sub tasks.
+    $types = array('erpal_task');
+    $child_nids = _erpal_basic_helper_get_all_child_nids_deep_search($delete_node->nid, $types);
+
+    //get timetrackings if they should be deleted
+    $delete_timetrackings = isset($values['delete_timetrackings']) ? $values['delete_timetrackings'] : false;
+   
+    $subject_nids = array($delete_node->nid);
+    $subject_nids = array_merge($subject_nids, $child_nids);
+    $nids = array();
+    if ($delete_timetrackings) {
+      //get timetrackings to all child nids
+      $timetracking_nids = _erpal_projects_helper_get_direct_timetrackings($subject_nids);
+      $child_nids = array_merge($child_nids, $timetracking_nids);   
+      $subject_nids = array_merge($subject_nids, $timetracking_nids);
+    }
+    
+    if (count($child_nids) > 0)
+      $nids['node'] = $child_nids;
+   
+    //billables will be automatically deleted if they are not billed
+    
+    $redirect = 'node/'.$project_nid;
+    _erpal_basic_helper_bulk_delete($nids, $redirect);    
+  }
+}
+
+/**
+* Callback to update a node via bulk operation
+*/
+function _erpal_projects_helper_bulk_update_callback($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  
+  $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
+}
+
+/**
+* Submit handler of project delete confir form
+*/
+function _erpal_projects_helper_project_delete_confirm_submit($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+
+  //get all book_pages of given book and give them to bulk delete operation.
+  $options = array();
+  $task_nids = _erpal_projects_helper_get_tasks_by_project($delete_nid);
+
+  $task_nids = array('node' => $task_nids);
+  _erpal_basic_helper_bulk_delete($task_nids, 'books/books');
+}
+
+/**
+* Validation handler of project delete confirm
+*/
+function _erpal_projects_helper_project_delete_confirm_validate($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+  $delete_node = node_load($delete_nid);
+
+  $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
+  
+  //if book will be delete checkbox must be set!
+  if ($delete_node->type == 'erpal_project') {
+    if (!$delete_children)
+      form_set_error('delete_children', t('Please submit checkbox to delete all tasks'));
+  }
+}
 
 /**
 * Alters the project node form
@@ -270,11 +463,12 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
         $project_nid = _erpal_projects_helper_has_project($parent_node);          
         
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
-        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $project_nid;
+        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($project_nid);
+
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
         
         //alter pricing information!
-        _erpal_projects_billable_preselect_task_create_form($form, $form_state);
+        //_erpal_projects_billable_preselect_task_create_form($form, $form_state);
         
       }
     //if project is already set, hide the parent field
@@ -297,20 +491,23 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
 * @return false if there is noch project, otherwise ONE nid of a project
 */
 function _erpal_projects_helper_has_project($node) {
-  
+
   if ($node->type == 'erpal_task') {
     //get the project of the task, because a task alsways has a project assigned
     $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
     return $project_nid; //tasks allways have a project
-  }
-  
-  if ($node->type == 'erpal_book') {
+  }  
+  elseif ($node->type == 'erpal_book') {
     $book_nid = $node->nid;
-  }
-  
-  if ($node->type == 'erpal_book_page') {
+  }  
+  elseif ($node->type == 'erpal_book_page') {
     $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['target_id'];    
+  } 
+  elseif ($node->type == 'erpal_project') {
+    return $node->nid;
   }
+  else
+    return false;
 
   //now check if there is a project referencing this node
   $query = new EntityFieldQuery();
@@ -434,9 +631,9 @@ function erpal_projects_helper_node_presave($node) {
   if ($type == 'erpal_timetracking') {
     erpal_projects_helper_node_presave_timetracking($node);
   }
-  
-  if ($type == 'erpal_task') {
-    erpal_projects_helper_node_presave_task($node);
+
+  if ($type == 'erpal_task') {    
+    erpal_projects_helper_node_presave_task($node);        
   }
 }
 

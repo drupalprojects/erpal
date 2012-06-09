@@ -167,10 +167,10 @@ function _erpal_book_helper_clone_pages_batch($page_nids, $top_parent_nid, $opti
       array('_erpal_book_helper_clone_pages_batch_operation', array($page_nids, $top_parent_nid, $options)),
       ),
     'finished' => '_erpal_book_helper_clone_pages_finished',
-    'title' => t('Processing Example Batch'),
-    'init_message' => t('Example Batch is starting.'),
+    'title' => t('Processing Clone Batch'),
+    'init_message' => t('Clone Batch is starting.'),
     'progress_message' => t('Processed @current out of @total.'),
-    'error_message' => t('Example Batch has encountered an error.'),
+    'error_message' => t('Clone Batch has encountered an error.'),
   );
   batch_set($batch);
 
@@ -203,7 +203,7 @@ function _erpal_book_helper_clone_pages_batch_operation($page_nids, $parent_nid,
 
       //clone children?
       if ($options['clone_children'])
-        $new_children = _erpal_book_helper_get_all_child_nids_deep_search($page_nid, $types);
+        $new_children = _erpal_basic_helper_get_all_child_nids_deep_search($page_nid, $types);
       else
         $new_children = array();
         
@@ -392,50 +392,3 @@ function _erpal_book_helper_clone_node($nid, $parent_nid, $book_nid, $options) {
   }
 }
 
-/**
-* Gets all child nodes of a given parent by deepsearch.
-* @return a flat array with all children in deep search order
-* @param $types the node types that should be returned and deep searched as children
-*/
-function _erpal_book_helper_get_all_child_nids_deep_search($nid, $types=array()) {
-  $children = _erpal_book_helper_get_direct_children($nid, $types);
- 
-  $all_children = array();
-  foreach ($children as $delta=>$child_nid) {    
-    $sub_children = _erpal_book_helper_get_all_child_nids_deep_search($child_nid, $types);
-    $all_children[] = array('parent' => $nid, 'child' => $child_nid);
-    $all_children = array_merge($all_children, $sub_children);
-  }
-  
-  return $all_children;
-}
-
-
-
-/**
-* returns an array of direct children of a node using field_parent
-* @param $nid the parent nid to search children for
-* @param $types only those node types are returned
-*/
-function _erpal_book_helper_get_direct_children($nid, $types=array()) {
-  
-  $children = array();
-  if (!count($types))
-    return $children;
- 
-  foreach ($types as $type) {
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', $type)
-    ->fieldCondition('field_parent', 'target_id', $nid, '=')
-    ->addMetaData('account', user_load(1)); // run the query as user 1
-
-    $result = $query->execute();
-    if (isset($result['node'])) {
-      $new_nids = array_keys($result['node']);
-      $children = array_merge($children, $new_nids);
-    }
-  }
-  
-  return $children;
-}

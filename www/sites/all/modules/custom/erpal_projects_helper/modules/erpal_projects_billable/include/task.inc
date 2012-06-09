@@ -10,8 +10,6 @@
 */
 function _erpal_projects_billable_insert_task($node) {
   
-  //$billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);
-  
   //only process if the task is completed!
   $task_status = $node->field_task_status[LANGUAGE_NONE][0]['value'];
   if ($task_status != 'completed')

@@ -2,8 +2,9 @@
 
 /**
 * Implements hook_book_child_nodes provided by erpal_book_helper module
+* @param $nids_only if true only nids are returned otherwise node objects are fully loaded
 */
-function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $options) {
+function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $options, $nids_only) {
   
   //set default value if not set
   if (!isset($options['export_tasks']))
@@ -12,6 +13,15 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
   if (!$options['export_tasks'])
     return array();
 
+  $child_task_nodes = _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $nids_only);
+
+  return $child_task_nodes;
+}
+
+/**
+* Return all Task children
+*/
+function _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $nids_only) {
   //we return all tasks that have the given parent_node as parent
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
@@ -20,11 +30,15 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
   ->fieldCondition('field_parent', 'target_id', $parent_node->nid, '=')
   ->fieldOrderBy('field_weight', 'value', 'ASC');
 
+  //set some default values
+  if (!isset($options['ignore_exclude']['pdf']))
+    $options['ignore_exclude']['pdf'] = true;
+  
   if (!$options['ignore_exclude']['pdf']) {
     //exclude some node from export
     $exclude = array('pdf');
     
-    //normally we would do it lik
+    //normally we would do it like
     //$query->fieldCondition('field_task_exclude_from', 'value', 'pdf', '!=');
     //but that doenst work if field has no value, not even NULL at all. So we get all excluded nids and
     //exclude them in the query.
@@ -37,16 +51,20 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
   } 
   
   $result = $query->execute();
-
+dpm($result);
+dpm($parent_node);
   $child_task_nodes = array();
   if (isset($result['node'])) {
     $child_nids = array_keys($result['node']);
-    $child_task_nodes = entity_load('node', $child_nids);
+    
+    if (!$nids_only)
+      $child_task_nodes = entity_load('node', $child_nids);
+    else
+      $child_task_nodes = $child_nids;
   }
-
+  
   return $child_task_nodes;
 }
-
 
 /**
 * alter pdf create form provided by erpal_book_helper module
@@ -81,6 +99,8 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
   $query_add = $query_back;
   $query_add['field_parent'] = $id;
   
+  $query_timetracking_add = $query_back;
+  $query_timetracking_add['field_timetracking_subject'] = $id;
   $parent_node = node_load($id);
 
   $has_project = _erpal_projects_helper_has_project($parent_node);
@@ -94,8 +114,9 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
     );
     
     if ($has_project) {
+      $query_add['field_project_ref'] = $has_project;
       $menu[] = array('title' => t('Add sub task'), 'url' => url('node/add/erpal-task', array('query' => $query_add)));
-      $menu[] = array('title' => t('Add timetracking'), 'url' => url('node/add/erpal-timetracking', array('query' => $query_add)));
+      $menu[] = array('title' => t('Add timetracking'), 'url' => url('node/add/erpal-timetracking', array('query' => $query_timetracking_add)));
     }
     
     return $menu;
@@ -103,6 +124,7 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
   
   if ($type == 'erpal_book_page') {            
     if ($has_project) {
+      $query_add['field_project_ref'] = $has_project;
       $menu = array(
         array('title' => t('Add task'), 'url' => url('node/add/erpal-task', array('query' => $query_add))),
       );
