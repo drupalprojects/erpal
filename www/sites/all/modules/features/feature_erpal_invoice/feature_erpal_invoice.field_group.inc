@@ -21,9 +21,10 @@ function feature_erpal_invoice_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '36',
+    'weight' => '13',
     'children' => array(
-      0 => 'token_tree',
+      0 => 'field_note',
+      1 => 'token_tree',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

@@ -11,6 +11,7 @@ function erpal_docs_helper_token_info() {
   $types['erpal_files'] = array(
     'name' => t("Erpal files token"),
     'description' => t("Tokens for file nodes."),
+    'needs-data' => 'node',
   );
   
 

@@ -635,6 +635,10 @@ function erpal_projects_helper_node_presave($node) {
   if ($type == 'erpal_task') {    
     erpal_projects_helper_node_presave_task($node);        
   }
+  
+  if ($type == 'erpal_project') {    
+    erpal_projects_helper_node_presave_project($node);        
+  }
 }
 
 

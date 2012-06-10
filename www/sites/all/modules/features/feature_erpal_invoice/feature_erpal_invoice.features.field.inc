@@ -601,7 +601,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );
@@ -1277,7 +1277,7 @@ function feature_erpal_invoice_field_default_fields() {
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
-        'weight' => '14',
+        'weight' => '15',
       ),
     ),
   );

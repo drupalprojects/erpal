@@ -134,6 +134,51 @@ function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $ro
 }
 
 /**
+* Check, if a book has been removed comparing project and old_project params
+*/
+function _erpal_projects_helper_handle_removed_book_nodes($project_node, $old_project_node) {
+  $old_books = isset($old_project_node->field_books_ref[LANGUAGE_NONE]) ? $old_project_node->field_books_ref[LANGUAGE_NONE] : array();
+  $new_books = isset($project_node->field_books_ref[LANGUAGE_NONE]) ? $project_node->field_books_ref[LANGUAGE_NONE] : array();
+
+  //is there a book in old_books that is no more in new books?
+  $no_more_linked = array();
+  foreach ($old_books as $old_delta => $old_nid) {
+    $old_nid = $old_nid['target_id'];
+    $is_linked = false;
+    foreach ($new_books as $new_delta => $new_nid) {
+      $new_nid = $new_nid['target_id'];
+      if ($old_nid == $new_nid)
+        $is_linked = true;
+    }
+    
+    if (!$is_linked)
+      $no_more_linked[] = $old_nid;
+  }
+
+  //now go throug all book nids that are no more linked, load their deep searched children but only tasks and
+  //remove the parent link of each task that links to one of these pages
+  $types = array('erpal_task', 'erpal_book_page');
+  $all_task_nids = array();
+  foreach ($no_more_linked as $book_nid) {
+    $nids = _erpal_basic_helper_get_all_child_nids_deep_search($book_nid, $types);
+    $all_task_nids = array_merge($all_task_nids, $nids);
+  }
+
+  //now update and delete the parent of these tasks if they really belong to the project given
+  foreach ($all_task_nids as $nid) {
+    $nid = $nid['child'];
+    $a_node = node_load($nid);
+    $task_project_nid = isset($a_node->field_project_ref[LANGUAGE_NONE][0]['target_id']) ? $a_node->field_project_ref[LANGUAGE_NONE][0]['target_id'] : false;
+    if ($a_node->type == 'erpal_task' && $task_project_nid == $project_node->nid) {
+      unset($a_node->field_parent[LANGUAGE_NONE]);
+      node_save($a_node);
+      dpm($a_node);
+    }
+  }
+  
+}
+
+/**
 * Definie which node types are allowed as children of a parent in jstree
 * structure is 'parent_type' => array with possible child types
 * @see views_jstree.module function theme_views_jstree

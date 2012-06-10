@@ -12,7 +12,13 @@ function erpal_basic_helper_token_info() {
   $types['erpal_contact'] = array(
     'name' => t("Erpal contact tokens"),
     'description' => t("Tokens for contact nodes."),
+    'needs-data' => 'node',
   );
+  
+  $types['erpal_basic'] = array(
+    'name' => t("Erpal basic tokens"),
+    'description' => t("Basic ERPAL tokens"),
+  );  
   
   $contact['name'] = array(
     'name' => t("Contact name"),
@@ -39,10 +45,21 @@ function erpal_basic_helper_token_info() {
     'description' => t("The country of the selected address"),
   );
   
+  $basic['date_only'] = array(
+    'name' => t("Date only date"),
+    'description' => t("The current date without time"),
+  );
+  
+  $basic['date_time'] = array(
+    'name' => t("Date time date"),
+    'description' => t("The current date with current time"),
+  );
+    
   return array(
     'types' => $types,
     'tokens' => array(
       'erpal_contact' => $contact,
+      'erpal_basic' => $basic,
     ),
   );
 }
@@ -86,12 +103,27 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
           if (isset($address_entity->field_country[LANGUAGE_NONE][0]['value']))
             $country = $address_entity->field_country[LANGUAGE_NONE][0]['value'];
           $replacements[$original] = $country;
-        break;
+        break;        
       }
     }
   }
 
-  if ($type == 'node') {
+  if ($type == 'erpal_basic') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'date_only':          
+          $date_format_date = _erpal_basic_helper_date_format_date_only();
+          $date = date($date_format_date);
+          $replacements[$original] = $date;        
+        break;
+        case 'date_time':          
+          $date_format_date = _erpal_basic_helper_date_format_date_time();
+          $date = date($date_format_date);
+          $replacements[$original] = $date;        
+        break;
+      }
+    }
+  }
     //little hack to make tokens work on contact node title even if some fields are disabled because of conditional fields
     //otherwise the tokens will not be replaced...don't know why
     /*$contact_node = $data['node'];
@@ -114,7 +146,6 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
         break;
       }
     }*/
-  }
   
   return $replacements;
 }

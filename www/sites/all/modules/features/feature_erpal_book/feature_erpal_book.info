@@ -37,6 +37,7 @@ features[field][] = node-erpal_book-field_address_id
 features[field][] = node-erpal_book-field_asset_files
 features[field][] = node-erpal_book-field_book_origin
 features[field][] = node-erpal_book-field_book_tags
+features[field][] = node-erpal_book-field_book_version
 features[field][] = node-erpal_book-field_contact_ref
 features[field][] = node-erpal_book-field_is_template
 features[field][] = node-erpal_book_page-body

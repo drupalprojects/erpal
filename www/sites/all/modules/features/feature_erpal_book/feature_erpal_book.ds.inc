@@ -77,7 +77,8 @@ function feature_erpal_book_ds_layout_settings_info() {
       ),
       'hidden' => array(
         0 => 'field_book_origin',
-        1 => '_add_existing_field',
+        1 => 'field_asset_files',
+        2 => '_add_existing_field',
       ),
     ),
     'fields' => array(
@@ -88,6 +89,7 @@ function feature_erpal_book_ds_layout_settings_info() {
       'field_book_tags' => 'header',
       'field_is_template' => 'header',
       'field_book_origin' => 'hidden',
+      'field_asset_files' => 'hidden',
       '_add_existing_field' => 'hidden',
     ),
     'classes' => array(),

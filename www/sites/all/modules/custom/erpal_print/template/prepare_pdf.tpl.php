@@ -1,8 +1,7 @@
 <?php
   $pdf_object->header_html = theme('doc_header');
 
-  $pdf_object->footer_html = theme('doc_footer');
-
+  $pdf_object->footer_html = token_replace(theme('doc_footer'));
   $pdf_object->SetCreator(PDF_CREATOR);  
 
   // set header and footer fonts

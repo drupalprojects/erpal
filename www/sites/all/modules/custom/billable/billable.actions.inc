@@ -18,6 +18,34 @@ function billable_reduce_action(&$billables, $context) {
 }
 
 /**
+* Action to set a billable billed
+*/
+function billable_billed_action(&$billables, $context) {
+  foreach ($billables as $billable) {
+    $billable->set_billed(true);
+    $billable->save();
+  }
+}
+
+/**
+* Action to set a billable unbilled
+*/
+function billable_unbilled_action(&$billables, $context) {
+  foreach ($billables as $billable) {
+    $billable->set_billed(false);
+    $billable->save();
+  }
+}
+
+/**
+* Callback for action delete billables
+*/
+function billable_delete_action(&$billables, $context) {
+  $billable_ids = array_keys($billables);
+  billable_delete_multiple($billable_ids);
+}
+
+/**
 *  Form to configure the billable reduce action
 */
 function billable_reduce_action_form($context) {

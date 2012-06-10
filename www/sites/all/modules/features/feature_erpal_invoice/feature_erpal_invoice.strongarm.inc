@@ -110,7 +110,7 @@ function feature_erpal_invoice_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '18',
+          'weight' => '19',
         ),
         'additional_settings' => array(
           'weight' => '46',
@@ -119,82 +119,82 @@ function feature_erpal_invoice_strongarm() {
           'weight' => '37',
         ),
         'revision' => array(
-          'weight' => '24',
+          'weight' => '25',
         ),
         'log' => array(
-          'weight' => '30',
+          'weight' => '31',
         ),
         'author' => array(
           'weight' => '44',
         ),
         'name' => array(
-          'weight' => '20',
+          'weight' => '21',
         ),
         'date' => array(
-          'weight' => '26',
+          'weight' => '27',
         ),
         'options' => array(
           'weight' => '45',
         ),
         'status' => array(
-          'weight' => '15',
+          'weight' => '16',
         ),
         'promote' => array(
-          'weight' => '27',
+          'weight' => '28',
         ),
         'sticky' => array(
-          'weight' => '31',
+          'weight' => '32',
         ),
         'actions' => array(
           'weight' => '47',
         ),
         'submit' => array(
-          'weight' => '16',
-        ),
-        'preview' => array(
-          'weight' => '35',
-        ),
-        'delete' => array(
           'weight' => '17',
         ),
+        'preview' => array(
+          'weight' => '36',
+        ),
+        'delete' => array(
+          'weight' => '18',
+        ),
         'token_tree' => array(
-          'weight' => '0',
+          'weight' => '13',
         ),
         'comment_settings' => array(
           'weight' => '39',
         ),
         'comment' => array(
-          'weight' => '23',
+          'weight' => '24',
         ),
         'order_numbers_token_tree' => array(
-          'weight' => '34',
+          'weight' => '35',
         ),
         'menu' => array(
-          'weight' => '19',
+          'weight' => '20',
         ),
         'enabled' => array(
-          'weight' => '25',
+          'weight' => '26',
         ),
         'link' => array(
-          'weight' => '28',
-        ),
-        'link_title' => array(
-          'weight' => '21',
-        ),
-        'description' => array(
           'weight' => '29',
         ),
+        'link_title' => array(
+          'weight' => '22',
+        ),
+        'description' => array(
+          'weight' => '30',
+        ),
         'parent' => array(
-          'weight' => '32',
+          'weight' => '33',
         ),
         'weight' => array(
-          'weight' => '33',
+          'weight' => '34',
         ),
         'path' => array(
           'weight' => '38',
         ),
         'alias' => array(
-          'weight' => '22',
+          'weight' => '23',
         ),
       ),
       'display' => array(),

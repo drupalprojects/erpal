@@ -23,6 +23,30 @@ function billable_action_info() {
       'hooks' => array(),
       'aggregate' => TRUE,
     ),
+    'billable_delete_action' => array(
+      'type' => 'entity',
+      'label' => t('Delete billables'),
+      'description' => t('Delete billables'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'billable_billed_action' => array(
+      'type' => 'entity',
+      'label' => t('Set billables billed'),
+      'description' => t('Sets billables to billed'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'billable_unbilled_action' => array(
+      'type' => 'entity',
+      'label' => t('Set billables unbilled'),
+      'description' => t('Sets billables to unbilled'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
   ); 
 }
  

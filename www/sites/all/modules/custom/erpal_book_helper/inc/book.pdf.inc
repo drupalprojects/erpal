@@ -101,6 +101,11 @@ function erpal_books_helper_pdf_form_submit($form, $form_state) {
   
   $file_node = _erpal_book_helper_create_pdf($book_node, $root_node, $options);
 
+  //update the version of the book node +1
+  $new_version = isset($book_node->field_book_version[LANGUAGE_NONE][0]['value']) ? $book_node->field_book_version[LANGUAGE_NONE][0]['value'] +1 : 2;
+  $book_node->field_book_version[LANGUAGE_NONE][0]['value'] = $new_version;
+  node_save($book_node);
+  
   if (is_object($file_node)) {
     drupal_set_message(t('Your pdf has been created successfully!'));
     drupal_goto('node/'.$file_node->nid);
@@ -146,7 +151,8 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
     $doc_uri = false;
   }
   
-  $basename = _erpal_docs_make_filename($root_node->title, 'pdf');
+  $version = $book_node->field_book_version[LANGUAGE_NONE][0]['value'] ? $book_node->field_book_version[LANGUAGE_NONE][0]['value'] : 1;
+  $basename = _erpal_docs_make_filename($root_node->title."_".$version, 'pdf');
   
   $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params, $pdf_object, true);
   

@@ -177,6 +177,7 @@ function erpal_book_helper_field_attach_view_alter (&$output, $context) {
         
         $data['contact_node'] = $contact_node;
         $data['address_entity'] = $address_entity;
+        $data['book_node'] = $book_node;
         $output['body'][0]['#markup'] = token_replace($output['body'][0]['#markup'], $data);        
       }
     }
@@ -509,7 +510,7 @@ function _erpal_book_helper_ajax_book_preselect_addresses($form, $form_state) {
 */
 function _erpal_book_helper_show_tokens_at_body(&$form, $form_state) {
   //contact tokens and estimation tokens
-  $types = array('erpal_contact', 'erpal_book_pdf');
+  $types = array('erpal_contact', 'erpal_book_pdf', 'erpal_basic');
   $tokens = theme('token_tree', array('global_types' => FALSE, 'token_types' => $types));
   $form['body'][LANGUAGE_NONE]['#suffix'] .= $tokens;
 }
@@ -777,6 +778,7 @@ function _erpal_book_helper_replace_tokens(&$node) {
   $data = array(
     'contact_node' => $contact_node,
     'address_entity' => $address_entity,
+    'book_node' => $node,
   );
   
   if (isset($node->body[LANGUAGE_NONE][0])) {
@@ -785,6 +787,24 @@ function _erpal_book_helper_replace_tokens(&$node) {
     $node->body[LANGUAGE_NONE][0]['value'] = $body;
    // $node->body[LANGUAGE_NONE][0]['safe_value'] = $body;
   }
+}
+
+/**
+* Function returning the book id (the nid of the book) of a given book or book_page
+*/
+function _erpal_book_helper_get_book_ident($node) {
+  //get book
+  if ($node->type == 'erpal_book')
+    $book_node = $node;
+    
+  if ($node->type == 'erpal_book_page') {
+    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+    $book_node = node_load($book_nid);    
+  } 
+  
+  $version = isset($book_node->field_book_version[LANGUAGE_NONE][0]['value']) ? $book_node->field_book_version[LANGUAGE_NONE][0]['value'] : 1;
+  
+  return $book_node->nid."/".$version;
 }
 
 /**

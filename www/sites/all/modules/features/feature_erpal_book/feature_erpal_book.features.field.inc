@@ -403,6 +403,73 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_book-field_book_version'
+  $fields['node-erpal_book-field_book_version'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_book_version',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_book',
+      'default_value' => array(
+        0 => array(
+          'value' => '1',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 8,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_book_version',
+      'label' => 'Version',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '10',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_book-field_contact_ref'
   $fields['node-erpal_book-field_contact_ref'] = array(
     'field_config' => array(
@@ -1396,6 +1463,7 @@ function feature_erpal_book_field_default_fields() {
   t('PDF exports');
   t('Parent');
   t('Select an address to use address tokens in your document');
+  t('Version');
   t('Weight');
 
   return $fields;
