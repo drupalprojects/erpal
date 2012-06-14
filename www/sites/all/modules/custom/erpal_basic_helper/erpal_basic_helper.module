@@ -501,7 +501,8 @@ function _erpal_basic_helper_bulk_delete($nids, $redirect) {
   $total_count = 0;
   foreach ($nids as $type=>$ids) {
     $total_count += count($ids);
-    $operations[] = array('_erpal_basic_helper_bulk_delete_operation', array($ids, $type, $total_count));
+    if ($total_count)
+      $operations[] = array('_erpal_basic_helper_bulk_delete_operation', array($ids, $type, $total_count));
   }
   
   $batch = array(
