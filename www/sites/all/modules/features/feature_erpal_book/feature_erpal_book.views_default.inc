@@ -511,6 +511,18 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['filters']['field_is_template_value']['value'] = array(
     1 => '1',
   );
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['required'] = 0;
+  $handler->display->display_options['filters']['title']['expose']['multiple'] = FALSE;
   $handler->display->display_options['path'] = 'books/templates';
 
   /* Display: Book pages to clone */
