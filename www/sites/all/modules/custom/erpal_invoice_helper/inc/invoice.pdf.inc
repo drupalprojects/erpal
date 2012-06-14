@@ -24,7 +24,7 @@ function erpal_invoice_helper_invoice_pdf_form($form, $form_state, $invoice_nid)
     '#type' => 'checkboxes',
     '#options' => $documents,
     '#title' => t('Documents to export as PDF'),
-    '#default_value' => array('invoice'),
+    '#default_value' => array('invoice', 'attachment'),
   );
   
   $form['attach'] = array(
