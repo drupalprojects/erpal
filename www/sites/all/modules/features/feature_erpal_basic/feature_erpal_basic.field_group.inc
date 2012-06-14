@@ -23,8 +23,8 @@ function feature_erpal_basic_field_group_info() {
     'label' => 'Legal information',
     'weight' => '17',
     'children' => array(
-      0 => 'field_vat_number',
-      1 => 'field_legal_other',
+      0 => 'field_legal_other',
+      1 => 'field_vat_number',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
