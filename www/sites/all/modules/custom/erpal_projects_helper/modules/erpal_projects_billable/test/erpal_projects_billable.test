@@ -8,7 +8,7 @@
 require_once 'erpal_projects_billable.test.helper';
 require_once 'erpal_projects_billable.costs.test';
 
-class FeatureProjectsBillableTestCase extends DrupalWebTestCase  {
+class FeatureProjectsBillableTestCase extends DrupalFixtureTestCase  {
 
   public static function getInfo() {
     return array(
