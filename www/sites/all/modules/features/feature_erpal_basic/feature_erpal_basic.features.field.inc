@@ -933,7 +933,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '16',
+        'weight' => '14',
       ),
     ),
   );
@@ -1036,7 +1036,7 @@ function feature_erpal_basic_field_default_fields() {
           'year_range' => '-100:+0',
         ),
         'type' => 'date_popup',
-        'weight' => '12',
+        'weight' => '10',
       ),
     ),
   );
@@ -1281,7 +1281,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'relation_dummy_field',
         'settings' => array(),
         'type' => 'relation_default',
-        'weight' => '13',
+        'weight' => '11',
       ),
     ),
   );
@@ -1368,7 +1368,7 @@ function feature_erpal_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '15',
+        'weight' => '13',
       ),
     ),
   );
@@ -1525,7 +1525,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '14',
+        'weight' => '12',
       ),
     ),
   );
@@ -1600,7 +1600,7 @@ function feature_erpal_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '10',
+        'weight' => '9',
       ),
     ),
   );
@@ -1950,6 +1950,7 @@ function feature_erpal_basic_field_default_fields() {
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'text',
@@ -1989,7 +1990,7 @@ function feature_erpal_basic_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_lastname',
       'label' => 'Lastname',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -2155,7 +2156,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
