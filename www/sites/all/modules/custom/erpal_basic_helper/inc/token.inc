@@ -12,7 +12,6 @@ function erpal_basic_helper_token_info() {
   $types['erpal_contact'] = array(
     'name' => t("Erpal contact tokens"),
     'description' => t("Tokens for contact nodes."),
-    'needs-data' => 'node',
   );
   
   $types['erpal_basic'] = array(
@@ -23,6 +22,21 @@ function erpal_basic_helper_token_info() {
   $contact['name'] = array(
     'name' => t("Contact name"),
     'description' => t("The name of the contact"),
+  );
+  
+  $contact['company_name'] = array(
+    'name' => t("Company name"),
+    'description' => t("The name of the company"),
+  );
+  
+  $contact['firstname'] = array(
+    'name' => t("Firstname"),
+    'description' => t("The firstname of the contact"),
+  );
+  
+  $contact['lastname'] = array(
+    'name' => t("Lastname"),
+    'description' => t("The lastname of the contact"),
   );
   
   $contact['street'] = array(
@@ -72,8 +86,8 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
   
   $replacements = array();
   if ($type == 'erpal_contact') {
-    $contact_node = $data['contact_node'];    
-    $address_entity = $data['address_entity'];
+    $contact_node = isset($data['contact_node']) ? $data['contact_node'] : $data['node'];    
+    $address_entity = isset($data['address_entity']) ? $data['address_entity'] : false;
 
     foreach ($tokens as $name => $original) {
       switch ($name) {
@@ -103,6 +117,24 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
           if (isset($address_entity->field_country[LANGUAGE_NONE][0]['value']))
             $country = $address_entity->field_country[LANGUAGE_NONE][0]['value'];
           $replacements[$original] = $country;
+        break;
+        case 'company_name':
+          $company_name = '';
+          if (isset($contact_node->field_company_name[LANGUAGE_NONE][0]['value']))
+            $company_name = $contact_node->field_company_name[LANGUAGE_NONE][0]['value'];
+          $replacements[$original] = $company_name;
+        break;
+        case 'firstname':
+          $firstname = '';
+          if (isset($contact_node->field_firstname[LANGUAGE_NONE][0]['value']))
+            $firstname = $contact_node->field_firstname[LANGUAGE_NONE][0]['value'];
+          $replacements[$original] = $firstname;
+        break;
+        case 'lastname':
+          $lastname = '';
+          if (isset($contact_node->field_lastname[LANGUAGE_NONE][0]['value']))
+            $lastname = $contact_node->field_lastname[LANGUAGE_NONE][0]['value'];
+          $replacements[$original] = $lastname;
         break;        
       }
     }
@@ -126,23 +158,26 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
   }
     //little hack to make tokens work on contact node title even if some fields are disabled because of conditional fields
     //otherwise the tokens will not be replaced...don't know why
-    /*$contact_node = $data['node'];
-    foreach ($tokens as $name => $original) {
+    //$contact_node = $data['contact_node'] ? ;
+    /*foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'field_company_name':
           $company_name = '';
           if (!isset($contact_node->field_company_name[LANGUAGE_NONE][0]['value']))
-            $replacements[$original] = $company_name;
+            $company_name = $contact_node->field_company_name[LANGUAGE_NONE][0]['value'];
+          $replacements[$original] = $company_name;
         break;
         case 'field_firstname':
           $firstname = '';
           if (!isset($contact_node->field_firstname[LANGUAGE_NONE][0]['value']))
-            $replacements[$original] = $company_name;
+            $firstname = $contact_node->field_firstname[LANGUAGE_NONE][0]['value'];
+          $replacements[$original] = $firstname;
         break;
         case 'field_lastname':
           $lastname = '';
           if (!isset($contact_node->field_lastname[LANGUAGE_NONE][0]['value']))
-            $replacements[$original] = $lastname;
+            $lastname = $contact_node->field_lastname[LANGUAGE_NONE][0]['value'];
+          $replacements[$original] = $lastname;
         break;
       }
     }*/
