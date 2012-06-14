@@ -7,6 +7,7 @@
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
 module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
 module_load_include('inc', 'erpal_basic_helper', 'inc/token');
+module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
 
  
 /**
@@ -45,9 +46,18 @@ function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'relation_add_block_form')
     _erpal_basic_helper_relation_add_block_form_alter($form, $form_state);
   if ($form_id == 'erpal_contact_node_form') {
-    $form['#submit'][] = '_erpal_basic_helper_contact_form_submit';
+    _erpal_basic_helper_contact_node_form_alter($form, $form_state);    
   }
 
+}
+
+/**
+* Alter contact node form
+*/
+function _erpal_basic_helper_contact_node_form_alter(&$form, &$form_state) {
+  $form['#submit'][] = '_erpal_basic_helper_contact_form_submit';
+  
+  _erpal_basic_helper_contact_node_form_field_conditions($form, $form_state);
 }
 
 /**
@@ -59,11 +69,21 @@ function _erpal_basic_helper_contact_form_submit($form, &$form_state) {
 
 
 /**
-* Function to manipulate fields firstname, lastname and company name because if hidden by conditional fields they are not emptied!
+* Function to manipulate fields firstname, lastname and company name because if hidden by conditional fields or form #states they are not emptied!
 * May be this will be a feature, action "emptied" in conditional fields doesn't work in combination with other hidden fields
 */
 function _erpal_basic_helper_postprocess_conditional_fields($form, &$form_state) {
   $values = $form_state['values'];
+  
+  $contact_type = $values['field_contact_type'][LANGUAGE_NONE][0]['value'];
+  
+  if ($contact_type == 'person') {
+    unset($values['field_company_name']);
+  } elseif ($contact_type == 'company') {
+    unset($values['field_firstname']);
+    unset($values['field_lastname']);
+  }
+  
   if (!isset($values['field_company_name'])) {
     //empty field company name
     $element = array('#parents' => array('field_company_name', LANGUAGE_NONE, 0, 'value'));

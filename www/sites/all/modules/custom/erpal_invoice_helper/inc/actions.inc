@@ -100,18 +100,7 @@ function erpal_invoice_helper_invoice_from_billables_action_validate($form, &$fo
   if ($skonto_period && (!is_numeric($skonto_period) || strpos($skonto_period, '.') > 0))
     form_set_error('skonto_period', t('Please enter only full numeric values for skonto period.'));
   if ($skonto_percent && (!is_numeric($skonto_percent) || strpos($skonto_percent, '.') > 0))
-    form_set_error('skonto_percent', t('Please enter only full numeric values for skonto percent.'));
-    
-  //if contractor is own company, ensure we enter only a numeric invoice number, because prefix will be set in defaults of
-  //this module
-  $contractor_nid = $values['contractor_nid'];
-  if (isset($values['invoice_number']))
-    $invoice_number = $values['invoice_number'];
-  $own_company_nid = _erpal_basic_helper_get_own_company_nid(false);
-  if ($contractor_nid == $own_company_nid) {
-    if (!is_numeric($invoice_number))
-      form_set_error('invoice_number', t('Please enter only numeric values for invoice number'));
-  }
+    form_set_error('skonto_percent', t('Please enter only full numeric values for skonto percent.'));    
   
   //credit period must be numeric
   $credit_period = 0;
@@ -274,6 +263,9 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
     '#default_value' => $next_invoice_number,
     '#required' => $invoice_number_required,
   );
+  
+
+  _erpal_invoice_helper_alter_invoice_number_field($form['invoice_number']['#default_value'], $form['invoice_number']['#description']);    
   
   //add fields for order numbers for intern and extern
   $form['order_numbers'] = array(

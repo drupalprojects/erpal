@@ -228,16 +228,13 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
 
   //prefill invoice number field with next possible value if no invoice number is already set
   if (isset($form['field_invoice_number'][LANGUAGE_NONE][0]['value'])) {   
-    if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {
-      $invoice_number_pattern = _erpal_invoice_helper_get_invoice_number_pattern();
-      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = 
-        $invoice_number_pattern;
+    if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {      
+      $default_value_key = $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'];
+      $description_key = $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#description'];
+      _erpal_invoice_helper_alter_invoice_number_field($default_value_key, $description_key);    
+      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#description'] = $description_key;
+      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_value_key;
       
-      $invoice_number_preview = token_replace($invoice_number_pattern);
-      
-      //add a preview. We do not replace the value with prefilled form because if another user opens the add new invoice 
-      //form at the same time he will get the same number which results in duplicate invoice numbers!
-      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#description'] = t('Preview: ').$invoice_number_preview;      
     }
   }
   
@@ -257,6 +254,19 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   $form['field_payment_date']['#type'] = 'hidden';
   //is an error if we dont set the field to 'value'. @see http://drupal.org/node/1547236 
   
+}
+
+/**
+* Alters a default_value_field with the default invoice number pattern and the description with a invoice number preview
+*/
+function _erpal_invoice_helper_alter_invoice_number_field(&$default_value_key, &$description_key) {
+  $invoice_number_pattern = _erpal_invoice_helper_get_invoice_number_pattern();
+  $default_value_key = $invoice_number_pattern;
+  $invoice_number_preview = token_replace($invoice_number_pattern);
+
+  //add a preview. We do not replace the value with prefilled form because if another user opens the add new invoice 
+  //form at the same time he will get the same number which results in duplicate invoice numbers!
+  $description_key = t('Preview: ').$invoice_number_preview; 
 }
 
 
