@@ -1,0 +1,15 @@
+name = SimpleTest Fixture
+description = "Write SimpleTests against an existing fixtures database."
+package = "Development"
+core = 7.x
+dependencies[] = simpletest
+
+files[] = simpletest_fixture_test_case.php
+
+
+; Information added by drupal.org packaging script on 2012-05-07
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "simpletest_fixture"
+datestamp = "1336351307"
+
