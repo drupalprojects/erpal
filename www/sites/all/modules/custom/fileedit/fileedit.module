@@ -95,25 +95,29 @@ function fileedit_download_access($fid, $sid) {
 * Access Callback for Edit Request
 */
 function fileedit_edit_access($fid) {
-  $general_access = user_access('use file edit');
+  /*$general_access = user_access('use file edit');
   
   if (!$general_access)
-    return false;
+    return false;*/
   
-  return _fileedit_file_edit_allowed($fid);
+  global $user;
+  $auser  = arg(3) ? _fileedit_user_by_sid( arg(3) ) : $user;
+
+  return _fileedit_file_edit_allowed($fid, $auser);
 }
 
 /**
 * Callback for Edit Request
 */
-function fileedit_edit($fid) {    
+function fileedit_edit($fid,$sid=NULL) {    
   header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
   header("Expires: Thu, 01 Jan 1970 00:00:01 GMT"); // Former times
   header("Content-type: application/x-java-jnlp-file");
   header("Last-Modified: " . time());
   
+  global $user;
   //and then return the xml file
-  $xml = _fileedit_get_edit_xml($fid);
+  $xml = _fileedit_get_edit_xml($fid, $sid?$sid:(arg(3)?arg(3):$user->sid) );
   die($xml);
 }
 
@@ -182,7 +186,7 @@ function fileedit_upload( $fid, $sid ) {
   foreach( $per_module as $module=>$per_type ) {
     foreach( $per_type as $type=>$per_type_id ) {
       foreach( $per_type_id as $id=>$count ) {
-        dpm( $id );
+        //dpm( $id );
         if( $type=='node' ) {
           $node     = node_load( $id );
           //file_put_contents( 'C:\xampp\htdocs\froebus_com_showroom\www\sites\all\modules\custom\showroom_helper\template\loading.txt', "\n".$node->type." = ".$node->nid, FILE_APPEND );
@@ -223,7 +227,7 @@ function fileedit_upload( $fid, $sid ) {
     $_FILES = array(
       'files' => array(
         'name'  => array(
-          $name   => $_FILES[$name]['name'],
+          $name   => $file_then->filename, //$_FILES[$name]['name'],
         ),
         'type' => array(
           $name   => $_FILES[$name]['type'],
@@ -291,7 +295,7 @@ function fileedit_upload( $fid, $sid ) {
   }
   
   
-  print_r($_FILES);
+  //print_r($_FILES);
   $tmp_name = $_FILES['userfile']['tmp_name'];
   
   //load the file
@@ -300,7 +304,7 @@ function fileedit_upload( $fid, $sid ) {
   //save the new file back to its uri
   drupal_move_uploaded_file($tmp_name, $uri);
   
-  print_r($file);
+  //print_r($file);
   
   //session_write_close();
   die();
@@ -396,7 +400,7 @@ function fileedit_file_link_preprocess(&$variables) {
   $variables['edit_url'] = $edit_url;
 }
 
-function _fileedit_get_edit_xml($file) {
+function _fileedit_get_edit_xml($file,$sid) {
   
   global $user;
   $module_path = drupal_get_path('module', 'fileedit');
@@ -407,11 +411,15 @@ function _fileedit_get_edit_xml($file) {
     $file = file_load($file);
   
   $args = _fileedit_get_jar_urls();
-  $args['arguments']['download'] = _fileedit_download_url($file)."/".$user->sid;
-  $args['arguments']['upload'] = _fileedit_upload_url($file)."/".$user->sid;
-  $args['arguments']['session'] = $user->sid;
+  $args['arguments']['download'] = _fileedit_download_url($file)."/".$sid;
+  $args['arguments']['upload'] = _fileedit_upload_url($file)."/".$sid;
+  $args['arguments']['session'] = $sid;
   $args['arguments']['fid'] = $file->fid;
   $args['arguments']['filename'] = $file->filename;
+  $edit_url = _fileedit_edit_url($file);
+  if ($sid)
+    $edit_url .= '/'.$sid;
+  $args['arguments']['edit_url'] = $edit_url;
   $xml = theme('fileedit_xml', array('file' => $file, 'args' => $args));
   
   return $xml;
