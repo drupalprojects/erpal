@@ -22,7 +22,7 @@ function fileedit_menu(){
   
   $items['fileedit/upload/%/%'] = array(
     'page callback' => 'fileedit_upload',
-    'page arguments' => array(2),
+    'page arguments' => array(2,3),
     'access callback' => 'fileedit_upload_access',
     'access arguments' => array(2,3),    //fid, session ID
     'type' => MENU_CALLBACK,
@@ -34,6 +34,13 @@ function fileedit_menu(){
     'access callback' => 'fileedit_download_access',
     'access arguments' => array(2,3),    //fid, session ID
     'type' => MENU_CALLBACK,
+  );
+  
+  $items['fileedit/check/%'] = array(
+    'page callback'     => 'fileedit_check_clb',
+    'page arguments'    => array(2),
+    'access callback'   => TRUE,
+    'type'              => MENU_CALLBACK,
   );
   
   $items['fileedit/getjarfile/%/%'] = array(
@@ -88,7 +95,6 @@ function fileedit_download_access($fid, $sid) {
 * Access Callback for Edit Request
 */
 function fileedit_edit_access($fid) {
-  return true; // FIXME
   $general_access = user_access('use file edit');
   
   if (!$general_access)
@@ -106,13 +112,8 @@ function fileedit_edit($fid) {
   header("Content-type: application/x-java-jnlp-file");
   header("Last-Modified: " . time());
   
-  global $user;
-  $sess_id = 0;
-  if (!$user->uid)
-    $sess_id = arg(3);
-
   //and then return the xml file
-  $xml = _fileedit_get_edit_xml($fid, $sess_id);
+  $xml = _fileedit_get_edit_xml($fid);
   die($xml);
 }
 
@@ -136,26 +137,172 @@ function fileedit_download($fid) {
     'Expires'                   => '0',
     'Accept-Ranges'             => 'bytes'
   );
-
-  file_transfer($file->uri, $headers);
-
+  
+  $uri      = $file->uri;//file_create_url( $file->uri );//drupal_realpath( $file->uri );//$file->uri;
+  /*$scheme   = file_uri_scheme( $file->uri );
+  
+  if( $scheme && file_stream_wrapper_valid_scheme($scheme) ) {
+    $wrapper  = file_stream_wrapper_get_instance_by_scheme( $scheme );
+    $path     = $wrapper->getLocalPath( $file );
+  }
+  
+  $uri      = $path;*/
+  /*$parts  = explode( '://', $file->uri );
+  //$parts  = array( $parts[0], implode( ':', array_slice( $parts, 1 ) ) );
+  $exp    = explode( '/', $parts[1] );
+  foreach( $exp as $i=>$s )
+    $exp[$i]  = urlencode( $s );
+  $uri    = $parts[0] . '://' . implode( '/', $exp );*/
+  
+  //file_put_contents( 'C:\xampp\htdocs\froebus_com_showroom\www\sites\all\modules\custom\showroom_helper\template\file.txt', print_r($file,1) );
+  //file_put_contents( 'C:\xampp\htdocs\froebus_com_showroom\www\sites\all\modules\custom\showroom_helper\template\url.txt', print_r($uri,1) );
+  
+  file_transfer( $uri, $headers );
+  
 }
 
 /**
-* Callback URL for uploading URL
-*/
-function fileedit_upload($fid) {
-  //@todo handle revisions if revisions should be created at this entity bundle
+ * Callback URL for uploading URL
+ *
+ *  @TODO evaluate whether a drupal_submit_form after readjusting the _FILES-array might be easier/less error-prone
+ */
+function fileedit_upload( $fid, $sid ) {
+  // Thiemo; Save updates, reload page
+  session_id( $sid );
+  session_start();
+  drupal_save_session( TRUE );
+  
+  $_SESSION['fileedit']['updated'][$fid]  = TRUE;
+  
+  // Thiemo; Fancy revision handling
+  $revisions    = array();
+  $file_then    = file_load( $fid );
+  $per_module   = file_usage_list( $file_then );
+  
+  foreach( $per_module as $module=>$per_type ) {
+    foreach( $per_type as $type=>$per_type_id ) {
+      foreach( $per_type_id as $id=>$count ) {
+        dpm( $id );
+        if( $type=='node' ) {
+          $node     = node_load( $id );
+          //file_put_contents( 'C:\xampp\htdocs\froebus_com_showroom\www\sites\all\modules\custom\showroom_helper\template\loading.txt', "\n".$node->type." = ".$node->nid, FILE_APPEND );
+          $options  = variable_get( 'node_options_' . $node->type, array() );
+          if( in_array( 'revision', $options ) )
+            $revisions[]    = array( $node, $node, $type );
+        }
+        elseif( $type=='field_collection_item' ) {
+          $entities     = array_values( entity_load( 'field_collection_item', array( $id ) ) );
+          $root_entity  = $entities[0];
+          $entity       = $root_entity;
+          // Yo dawg...
+          while( ($node=$entity->hostEntity()) && $entity->hostEntityType!='node' )
+            $entity = $node;
+          
+          if( $node ) {
+            $options  = variable_get( 'node_options_' . $node->type, array() );
+            if( in_array( 'revision', $options ) ) {
+              $revisions[]  = array( $node, $root_entity, $type );
+            }
+          }
+        }
+        // @TODO Someone smart would allow drop-ins here
+        // else ???
+      }
+    }
+  }
+  
+  if( count($revisions) ) {
+    
+    // Thiemo; Bad revisioning if the user isn't known...
+    global $user;
+    $user = _fileedit_user_by_sid( $sid );
+    
+    $name   = 'userfile';
+    
+    // Make it a multiple-upload form submit...
+    $_FILES = array(
+      'files' => array(
+        'name'  => array(
+          $name   => $_FILES[$name]['name'],
+        ),
+        'type' => array(
+          $name   => $_FILES[$name]['type'],
+        ),
+        'tmp_name' => array(
+          $name   => $_FILES[$name]['tmp_name'],
+        ),
+        'error' => array(
+          $name   => $_FILES[$name]['error'],
+        ),
+        'size'  => array(
+          $name   => $_FILES[$name]['size'],
+        ),
+      ),
+    );
+    
+    foreach( $revisions as $collection ) {
+      $node     = $collection[0];
+      $entity   = $collection[1];
+      $type     = $collection[2];
+      $changed  = false;
+      
+      foreach( (array)$entity as $name=>$value ) {
+        if( substr($name,0,6)=='field_' ) {
+          $info     = field_info_field( $name );
+          if( $info['type']=='file' && isset($value[LANGUAGE_NONE]) ) {
+            foreach( $value[LANGUAGE_NONE] as $delta=>$file ) {
+              if( $file['fid']==$fid ) {
+                $instance     = field_info_instance( $type, $name, $node->type );
+                $destination  = file_field_widget_uri( $info, $instance );
+                $validators   = file_field_widget_upload_validators( $info, $instance );
+                //file_put_contents( 'C:\xampp\htdocs\froebus_com_showroom\www\sites\all\modules\custom\showroom_helper\template\file-go.txt', print_r(array($_FILES,$file_then,$info,$instance,$destination,$validators),1) );
+                $file_now     = file_save_upload( /*$file_then->filename*/'userfile', $validators, $destination );
+                //file_put_contents( 'C:\xampp\htdocs\froebus_com_showroom\www\sites\all\modules\custom\showroom_helper\template\file-now.txt', print_r($file_now,1) );
+                
+                if( $file_now ) {
+                  $changed      = true;
+                  $field        = &$entity->$name;
+                  $field[LANGUAGE_NONE][$delta]['fid']  = $file_now->fid;
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      if( $changed ) {
+        $entity->revision = TRUE;
+        
+        if( $type=='node' )
+          node_save( $entity );
+        else
+          $entity->save();
+        
+        if( $node!=$entity ) {
+          $node->revision   = TRUE;
+          node_save( $node );
+        }
+      }
+    }
+    
+    //session_write_close();
+    die();
+    
+  }
+  
+  
   print_r($_FILES);
   $tmp_name = $_FILES['userfile']['tmp_name'];
   
   //load the file
-  $file = file_load(array($fid));
+  $file = file_load($fid);
   $uri = $file->uri;
   //save the new file back to its uri
   drupal_move_uploaded_file($tmp_name, $uri);
   
   print_r($file);
+  
+  //session_write_close();
   die();
   echo $fid."--".$tmp_name;
   die();
@@ -164,6 +311,23 @@ function fileedit_upload($fid) {
   
   
   //file_save_upload($tmp_name, );
+}
+
+/**
+ *  Check whether the given files were updated by the current user
+ */
+function fileedit_check_clb( $fids ) {
+  $fids = explode( ' ', $fids );
+  
+  //die( print_r( $_SESSION, 1 ) );
+  
+  foreach( $fids as $fid ) {
+    $fid  = $fid.'';
+    if( isset($_SESSION['fileedit']['updated'][$fid]) && $_SESSION['fileedit']['updated'][$fid] )
+      die( '1' );
+  }
+  
+  die( '0' );
 }
 
 /**
@@ -213,6 +377,7 @@ function fileedit_theme_registry_alter(&$registry) {
   
   $registry['file_link']['preprocess functions'][] = 'fileedit_file_link_preprocess';
   $registry['file_link']['function'] = 'theme_file_link_fileedit';
+  
 }
 
 /**
@@ -231,7 +396,7 @@ function fileedit_file_link_preprocess(&$variables) {
   $variables['edit_url'] = $edit_url;
 }
 
-function _fileedit_get_edit_xml($file, $sess_id = false) {
+function _fileedit_get_edit_xml($file) {
   
   global $user;
   $module_path = drupal_get_path('module', 'fileedit');
@@ -242,18 +407,12 @@ function _fileedit_get_edit_xml($file, $sess_id = false) {
     $file = file_load($file);
   
   $args = _fileedit_get_jar_urls();
-  $sess_id_to_use = $user->sid ? $user->sid : $sess_id; 
-  $args['arguments']['download'] = _fileedit_download_url($file)."/".$sess_id_to_use;
-  $args['arguments']['upload'] = _fileedit_upload_url($file)."/".$sess_id_to_use;
-  $args['arguments']['session'] = $sess_id_to_use;
+  $args['arguments']['download'] = _fileedit_download_url($file)."/".$user->sid;
+  $args['arguments']['upload'] = _fileedit_upload_url($file)."/".$user->sid;
+  $args['arguments']['session'] = $user->sid;
   $args['arguments']['fid'] = $file->fid;
   $args['arguments']['filename'] = $file->filename;
-  $edit_url = _fileedit_edit_url($file);
-  if ($sess_id_to_use)
-    $edit_url .= '/'.$sess_id_to_use;
-  $args['arguments']['edit_url'] = $edit_url;
   $xml = theme('fileedit_xml', array('file' => $file, 'args' => $args));
-  $xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;  //wen wir das mit in die tpl Datei packen, gibt das ein Fehler
   
   return $xml;
 }
@@ -301,16 +460,27 @@ function _fileedit_get_jar_urls() {
 * theming function top theme a file link with fileedit
 */
 function theme_file_link_fileedit(&$variables) {
-    
   
-  $edit_link = '';
-  $edit_url = '';
+  $out  = !isset($variables['hide_download_link']) ? theme_file_link($variables) . ' ' : '';
+  
+  $edit_link  = '';
+  $edit_url   = '';
   if (isset($variables['edit_url'])) {
-    $edit_url = $variables['edit_url'];  
-    $edit_link = l(t('EDIT'), $edit_url);
+    static $js_inc  = false;
+    if( !$js_inc ) {
+      $js_inc     = true;
+      drupal_add_js( drupal_get_path('module','fileedit').'/js/update-page-on-file-edit.js' );
+      drupal_add_js( array( 'fileedit'=>array( 'updateURL'=>url('fileedit/check', array('absolute' => true)).'/' ) ), 'setting' );
+    }
+    
+    $edit_url   = $variables['edit_url'];  
+    $edit_link  = l( t('Edit'), $edit_url, array('attributes'=>array('class'=>array('fileedit-link'))) );
+    
+    $out        .= $edit_link;
   }
-      
-  return theme_file_link($variables).$edit_link;
+  
+  return $out;
+  
 }
 
 /**
