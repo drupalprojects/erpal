@@ -26,7 +26,7 @@
 	<condition property="ext" value=".bat" else="">
 		<os family="windows"/>
  	</condition>
- 	<condition property="subdomain" value="local" else="dev">
+ 	<condition property="subdomain" value="local" else="jenkins">
 		<os family="windows"/>
  	</condition>
 
@@ -75,7 +75,7 @@
 
 	<target name="test" description="Run unit tests using SimpleTest">
   		<exec executable="drush${ext}" failonerror="true">
-  			<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run AdminMenuLinksTestCase" />
+		<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run AdminMenuLinksTestCase" />
         <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run BillableTestCase" />
         <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureInvoiceTestCase" />
         <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureProjectsBillableTestCase" />        
