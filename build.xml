@@ -77,7 +77,7 @@
 	  	<exec executable="drush${ext}" failonerror="true">
         	<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run BillableTestCase" />
 		</exec>
-  		<exec executable="drush${ext}" failonerror="true">
+  		<!-- <exec executable="drush${ext}" failonerror="true">
   			<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run AdminMenuLinksTestCase" />
   		</exec>
   		<exec executable="drush${ext}" failonerror="true">
@@ -85,7 +85,7 @@
 		</exec>
   		<exec executable="drush${ext}" failonerror="true">
         	<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureProjectsBillableTestCase" />       
-  		</exec>
+  		</exec> -->
  	</target>
 
 	<target name="permissions" description="Configures the directories and directory permissions.">
