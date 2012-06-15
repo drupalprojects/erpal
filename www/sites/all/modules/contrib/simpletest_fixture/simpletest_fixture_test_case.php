@@ -33,6 +33,11 @@ class DrupalFixtureTestCase extends DrupalWebTestCase {
     
     // Prepare switch to fixture database
     Database::renameConnection('default', 'simpletest_original_default');
+    foreach ($fixturedb_connection as $target => $value) {
+      $fixturedb_connection[$target]['prefix'] = array(
+        'default' => $value['prefix']['default'] . $this->databasePrefix,
+      );
+    }    
     Database::addConnectionInfo('default', 'default', $fixturedb_connection['default']);
     
     // Store necessary current values before switching to the fixture database.
@@ -77,8 +82,6 @@ class DrupalFixtureTestCase extends DrupalWebTestCase {
     $test_info['test_run_id'] = $this->databasePrefix;
     $test_info['in_child_site'] = FALSE;
 
-    $this->setUpInstall(func_get_args(), $public_files_directory, $private_files_directory, $temp_files_directory);
-
     // Rebuild caches.
     // TODO time-consuming. Do we need this?
     // drupal_static_reset();
@@ -115,10 +118,6 @@ class DrupalFixtureTestCase extends DrupalWebTestCase {
     variable_set('mail_system', array('default-system' => 'TestingMailSystem'));
 
     drupal_set_time_limit($this->timeLimit);
-  }
-  
-  protected function setUpInstall() {
-    // Do nothing
   }
   
   /**
