@@ -74,13 +74,17 @@
 	</target>
 
 	<target name="test" description="Run unit tests using SimpleTest">
+	  	<exec executable="drush${ext}" failonerror="true">
+        	<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run BillableTestCase" />
+		</exec>
   		<exec executable="drush${ext}" failonerror="true">
-		<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run BillableTestCase" />
-		
-		<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run AdminMenuLinksTestCase" />        
-        <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureInvoiceTestCase" />
-        <arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureProjectsBillableTestCase" />   
-		
+  			<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run AdminMenuLinksTestCase" />
+  		</exec>
+  		<exec executable="drush${ext}" failonerror="true">
+        	<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureInvoiceTestCase" />
+		</exec>
+  		<exec executable="drush${ext}" failonerror="true">
+        	<arg line="-r ${basedir}/www -l http://${subdomain}.${domain} test-run FeatureProjectsBillableTestCase" />       
   		</exec>
  	</target>
 
