@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for our entity
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function budget_schema() {
+  $schema = array();
+
+  $schema['budget'] = array(
+    'description' => 'The base table for budget entities.',
+    'fields' => array(
+      'budget_id' => array(
+        'description' => 'Primary Key: Identifier for a budget entity.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The {budget_type}.type of this budget entity.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'available_hours' => array(
+        'description' => 'Actually available hours at this budget',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'total_hours' => array(
+        'description' => 'Initially total hours given at this budget',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date_from' => array(
+        'description' => 'From this time the budget is available',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date_till' => array(
+        'description' => 'Till this time the budget is available',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the budget was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the budget was changed last time.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'data' => array(
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big',
+        'serialize' => TRUE,
+        'description' => 'A serialized array of additional data.',
+      ),
+    ),
+    'primary key' => array('budget_id'),
+    'indexes' => array(
+      'type' => array('type'),
+      'available' => array('date_from', 'date_till'),
+    ),
+  );
+
+  return $schema;
+}
