@@ -10,6 +10,111 @@
 function feature_erpal_project_basic_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'field_collection_item-field_pricing-field_budgets'
+  $fields['field_collection_item-field_pricing-field_budgets'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_budgets',
+      'foreign keys' => array(
+        'node' => array(
+          'columns' => array(
+            'target_id' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'target_id' => array(
+          0 => 'target_id',
+        ),
+      ),
+      'module' => 'entityreference',
+      'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'none',
+            'property' => 'budget_id',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(),
+        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'budget',
+      ),
+      'translatable' => '0',
+      'type' => 'entityreference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_pricing',
+      'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => '8',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => '8',
+        ),
+      ),
+      'ds_extras_field_template' => '',
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_budgets',
+      'label' => 'Budgets',
+      'required' => 0,
+      'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'hide',
+            'fallback' => 'redirect',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
+        'weight' => '12',
+      ),
+    ),
+  );
+
   // Exported field: 'field_collection_item-field_pricing-field_price'
   $fields['field_collection_item-field_pricing-field_price'] = array(
     'field_config' => array(
@@ -46,13 +151,25 @@ function feature_erpal_project_basic_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => 1,
+          'weight' => '1',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'field_collection_item',
@@ -117,13 +234,20 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 0,
+          'weight' => '0',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'field_collection_item',
@@ -195,7 +319,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '13',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -308,7 +432,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '12',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -429,7 +553,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -543,7 +667,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '9',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -753,12 +877,9 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection',
-          'settings' => array(
-            'view_mode' => 'full',
-          ),
-          'type' => 'field_collection_fields',
-          'weight' => '6',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -792,7 +913,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -832,7 +953,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'relation_dummy_field',
           'settings' => array(),
           'type' => 'relation_default',
-          'weight' => '10',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -944,7 +1065,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '8',
+        'weight' => '7',
       ),
     ),
   );
@@ -1192,7 +1313,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '11',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1383,12 +1504,9 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection',
-          'settings' => array(
-            'view_mode' => 'full',
-          ),
-          'type' => 'field_collection_fields',
-          'weight' => '10',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1468,7 +1586,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '14',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1576,7 +1694,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '12',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1946,7 +2064,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '13',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2089,7 +2207,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '20',
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2582,6 +2700,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Assigned To Users');
   t('Billing Duration');
   t('Body');
+  t('Budgets');
   t('CRM activity');
   t('Choose contacts that are involved in this project');
   t('Contacts');
