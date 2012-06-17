@@ -209,12 +209,14 @@ function feature_erpal_project_basic_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
+          'none' => 'No Information',
           'not_billable' => 'Not billable',
           'fixed_price' => 'Fixed price',
           'per_hour' => 'Per hour',
           'budget' => 'Budget per hour',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_text',
@@ -223,7 +225,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'bundle' => 'field_pricing',
       'default_value' => array(
         0 => array(
-          'value' => 'not_billable',
+          'value' => 'none',
         ),
       ),
       'deleted' => '0',
