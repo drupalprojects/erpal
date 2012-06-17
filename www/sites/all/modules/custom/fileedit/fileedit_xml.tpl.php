@@ -1,3 +1,7 @@
+<?php
+  // Thiemo; Stay clean
+  print '<?xml version="1.0" encoding="UTF-8"?>';
+?>
 <jnlp spec="1.0+" href="<?php echo $args['arguments']['edit_url']; ?>">
     <information>
         <title>File Handler</title>

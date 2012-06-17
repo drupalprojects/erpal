@@ -1,0 +1,26 @@
+<?php
+class SimpletestFixtureTestCase extends DrupalFixtureTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'SimpleTest Fixture speed test',
+      'description' => 'Pseudo tests demonstrating the speed of ST Fixture tests.',
+      'group' => 'SimpleTest',
+    );
+  }
+
+  function setUp() {
+    parent::setUp();
+  }
+  
+  function testSpeed1() {
+    $this->pass(t('Running tests...'));
+  }
+
+  function testSpeed2() {
+    $this->pass(t('...with SimpleTest Fixture...'));
+  }
+  
+  function testSpeed3() {
+    $this->pass(t('...is so much faster!'));
+  }
+}
