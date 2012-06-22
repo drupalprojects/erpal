@@ -482,7 +482,7 @@ function _erpal_projects_billable_subject_billable_information_timetracking_subj
 * search and us these pricing information. If price mode is none (no information) we go to the parent node and process
 * the same check and so on.
 */
-function _erpal_project_get_pricing_entity($node) {
+function _erpal_projects_get_pricing_entity($node) {
   if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value']))
       return array();
       
@@ -499,7 +499,7 @@ function _erpal_project_get_pricing_entity($node) {
       return false;
     
     //get pricing of the parent
-    return _erpal_project_get_pricing_entity($parent_node);
+    return _erpal_projects_get_pricing_entity($parent_node);
   } else
     return $pricing_entity;
 }
@@ -525,7 +525,7 @@ function _erpal_projects_billable_get_pricing($node) {
     $pricing_entity = $pricing_entity[$pricing_entity_id];*/
 
     //return the relevant pricing entity for the given node
-    $pricing_entity = _erpal_project_get_pricing_entity($node);
+    $pricing_entity = _erpal_projects_get_pricing_entity($node);
 
     if (!$pricing_entity)
       return false;
