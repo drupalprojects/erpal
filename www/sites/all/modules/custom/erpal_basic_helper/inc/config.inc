@@ -254,7 +254,10 @@ function _erpal_basic_helper_autocomplete_string_from_nid($nid){
     return '';
   $node = node_load($nid);
   
-  return $node->title . " (".$nid . ")";
+  if ($node)
+    return $node->title . " (".$nid . ")";
+    
+  return false;
 }
 
 /**

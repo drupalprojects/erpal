@@ -462,7 +462,7 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
         $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
         $parent_node = node_load($parent_nid);
         $project_nid = _erpal_projects_helper_has_project($parent_node);          
-        
+
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($project_nid);
 
@@ -695,3 +695,4 @@ function _erpal_projects_helper_get_activity($node) {
     return _erpal_projects_helper_get_activity_by_project($node);
   
 }
+

@@ -325,7 +325,10 @@ function _erpal_projects_billable_get_task_preselects($ref_nid) {
   
   if ($preselects['price_mode'] == 'fixed_price')  
     $preselects['price_mode'] = 'not_billable'; //in most cases if the project is a fixed price project, the task is not billable
-    
+   
+  if ($preselects['price_mode'] == 'budget')  
+    $preselects['price_mode'] = 'none'; //if budget price mode, we set preselect to no information so pricing information from parent will be used
+   
   return $preselects;
 }
 
@@ -474,6 +477,34 @@ function _erpal_projects_billable_subject_billable_information_timetracking_subj
 }
 
 /**
+* Returns the pricing field collection entity that is relevant for the given node (task or project).
+* First we try to get a pricing at the given node. If the given node has price mode other than not_billable we stop the
+* search and us these pricing information. If price mode is none (no information) we go to the parent node and process
+* the same check and so on.
+*/
+function _erpal_project_get_pricing_entity($node) {
+  if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value']))
+      return array();
+      
+  $pricing_entity_id = $node->field_pricing[LANGUAGE_NONE][0]['value'];
+
+  $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
+  $pricing_entity = $pricing_entity[$pricing_entity_id];
+  $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']; 
+  
+  if ($price_mode == 'none') {
+    //we have no pricing information here, so get the parent and check its pricing information
+    $parent_node = _erpal_project_task_parent($node);
+    if (!$parent_node)
+      return false;
+    
+    //get pricing of the parent
+    return _erpal_project_get_pricing_entity($parent_node);
+  } else
+    return $pricing_entity;
+}
+
+/**
 * returns the price mode to an project or task
 * @param a project or task node
 */
@@ -484,14 +515,21 @@ function _erpal_projects_billable_get_pricing($node) {
   if ($type == 'erpal_project' || $type == 'erpal_task') {
     //get the pricing field collection    
     
+    /*
     if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value']))
       return array();
       
     $pricing_entity_id = $node->field_pricing[LANGUAGE_NONE][0]['value'];
 
     $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
-    $pricing_entity = $pricing_entity[$pricing_entity_id];
+    $pricing_entity = $pricing_entity[$pricing_entity_id];*/
 
+    //return the relevant pricing entity for the given node
+    $pricing_entity = _erpal_project_get_pricing_entity($node);
+
+    if (!$pricing_entity)
+      return false;
+    
     $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']; 
     $price = 0;
     if (isset($pricing_entity->field_price[LANGUAGE_NONE]))

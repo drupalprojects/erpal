@@ -39,3 +39,27 @@ function _erpal_projects_billable_update_task($node) {
   _erpal_billable_update_billable($node, 'update');
     
 }
+
+/**
+* @return the parent node of the given task or project node. FALSE if no parent could be found
+* @param $node a erpal_task or erpal_project node to determine the parent
+*/
+function _erpal_project_task_parent($node) {
+  if ($node->type != 'erpal_task')
+    return false; //only task have a parent
+    
+  //ok, this is a task
+  //does it have a direct parent?
+  $parent_nid = false;
+  if (isset($node->field_parent[LANGUAGE_NONE][0]['target_id'])) {
+    $parent_nid = $node->field_parent[LANGUAGE_NONE][0]['target_id'];    
+  } else {
+    //if there is no direct parent, use the project as parent with its pricing information
+    $parent_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+  }
+  
+  if ($parent_nid)
+    return node_load($parent_nid);
+  
+  return $parent_nid;
+}
