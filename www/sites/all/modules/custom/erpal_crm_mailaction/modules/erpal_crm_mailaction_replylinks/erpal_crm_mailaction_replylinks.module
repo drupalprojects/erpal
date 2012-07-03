@@ -76,11 +76,9 @@ function _erpal_crm_helper_create_node_reply_links ($activity_node) {
   $links = array ();
   
   foreach ($activity_node['field_contacts_ref'] as $index=>$contact) {
-    
-    $entity = $contact['entity'];
-    
+ 
     $links['reply_' . $index] = _erpal_crm_helper_create_reply_link (
-      isset ($entity->field_email[LANGUAGE_NONE]) ? $entity->field_email[LANGUAGE_NONE][0] ['value'] : '',
+      isset ($contact['entity']->field_email[LANGUAGE_NONE]) ? $contact['entity']->field_email[LANGUAGE_NONE][0] ['value'] : '',
       $node->title, 
       $activity_node['nid']
     );
