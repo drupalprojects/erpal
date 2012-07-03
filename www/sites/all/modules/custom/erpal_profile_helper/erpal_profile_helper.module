@@ -18,8 +18,8 @@ function erpal_profile_helper_field_attach_validate($entity_type, $entity, &$err
     //validate that the referenced contact is not already referenced by another userd profile
     $contact_nid = 0;
     $new_errors = array();
-    if (isset($entity->field_contact_ref[LANGUAGE_NONE][0]['nid'])) {
-      $contact_nid = $entity->field_contact_ref[LANGUAGE_NONE][0]['nid'];
+    if (isset($entity->field_contact_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $contact_nid = $entity->field_contact_ref[LANGUAGE_NONE][0]['target_id'];
       $referencing_profiles = _erpal_profile_helper_profiles_by_contact($contact_nid);
       
       $current_uid = arg(2);  //@todo: this is not very good, there should be another way to get the uid the entity is attached to.
@@ -57,7 +57,7 @@ function _erpal_profile_helper_profiles_by_contact($contact_nid) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'profile2')
   ->entityCondition('bundle', 'main')
-  ->fieldCondition('field_contact_ref', 'nid', $contact_nid, '=')
+  ->fieldCondition('field_contact_ref', 'target_id', $contact_nid, '=')
   ->addMetaData('account', user_load(1)); // run the query as user 1
 
   $result = $query->execute();
@@ -237,7 +237,7 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
   $contractor_nid = 0;
   if (isset($profile['main'])) {
     $main = $profile['main'];
-    $contractor_nid = isset($main->field_contact_ref[LANGUAGE_NONE]) ? $main->field_contact_ref[LANGUAGE_NONE][0]['nid'] : 0;
+    $contractor_nid = isset($main->field_contact_ref[LANGUAGE_NONE]) ? $main->field_contact_ref[LANGUAGE_NONE][0]['target_id'] : 0;
   }
  
   $contract_datas = array();
@@ -291,6 +291,7 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
     //get the top most element
     $data_dates = array_values($contract_datas_date);
     $contract_id = array_shift($data_dates);
+    
     return array($contract_datas[$contract_id]);
   }
   
@@ -303,7 +304,7 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
 */
 function _erpal_profile_helper_get_current_contract($uid, $project_tag_tids=array(), $flat_array=true) {
   $contract_arr = _erpal_profile_helper_get_contract($uid, time(), $project_tag_tids);
-  
+
   foreach ($contract_arr as $nid=>$contract) {
     if ($flat_array) {
       //return the contract as a flat array

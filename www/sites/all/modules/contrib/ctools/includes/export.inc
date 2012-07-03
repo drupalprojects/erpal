@@ -389,7 +389,7 @@ function ctools_export_load_object($table, $type = 'all', $args = array()) {
   $cached_database = &drupal_static('ctools_export_load_object_all');
 
   $schema = ctools_export_get_schema($table);
-  if (empty($schema)) {
+  if (empty($schema) || !db_table_exists($table)) {
     return array();
   }
 
@@ -825,7 +825,7 @@ function _ctools_export_unpack_object($schema, $data, $object = 'stdClass') {
       if (!empty($join['load'])) {
         foreach ($join['load'] as $field) {
           $info = $join_schema['fields'][$field];
-          $object->$field = empty($info['serialize']) ? $data->$field : unserialize(db_decode_blob($data->$field));
+          $object->$field = empty($info['serialize']) ? $data->$field : unserialize($data->$field);
         }
       }
     }
@@ -1033,7 +1033,7 @@ function ctools_export_get_schema($table) {
  * Gets the schemas for all tables with ctools object metadata.
  */
 function ctools_export_get_schemas($for_export = FALSE) {
-  static $export_tables;
+  $export_tables = &drupal_static(__FUNCTION__);
   if (is_null($export_tables)) {
     $export_tables = array();
     $schemas = drupal_get_schema();

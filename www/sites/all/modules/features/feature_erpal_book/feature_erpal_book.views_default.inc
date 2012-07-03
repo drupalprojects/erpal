@@ -129,6 +129,9 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_parent']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_parent']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_parent']['settings'] = array(
+    'link' => 1,
+  );
   $handler->display->display_options['fields']['field_parent']['field_api_classes'] = 0;
   /* Field: Content: Type */
   $handler->display->display_options['fields']['type']['id'] = 'type';
@@ -210,19 +213,19 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
   $handler->display->display_options['sorts']['field_weight_value']['field'] = 'field_weight_value';
-  /* Contextual filter: Content: Specification (field_book_ref) */
-  $handler->display->display_options['arguments']['field_book_ref_nid']['id'] = 'field_book_ref_nid';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['table'] = 'field_data_field_book_ref';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['field'] = 'field_book_ref_nid';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['default_argument_options']['argument'] = 'No pages found';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['field_book_ref_nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_book_ref_nid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['field_book_ref_nid']['not'] = 0;
+  /* Contextual filter: Content: Book (field_book_ref) */
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['id'] = 'field_book_ref_target_id';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['table'] = 'field_data_field_book_ref';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['field'] = 'field_book_ref_target_id';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['default_argument_options']['argument'] = 'No pages found';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_book_ref_target_id']['not'] = 0;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -237,7 +240,7 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_book_page' => 'erpal_book_page',
   );
-  /* Filter criterion: Content: Parent (field_parent) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_parent_nid']['id'] = 'field_parent_nid';
   $handler->display->display_options['filters']['field_parent_nid']['table'] = 'field_data_field_parent';
   $handler->display->display_options['filters']['field_parent_nid']['field'] = 'field_parent_nid';
@@ -248,18 +251,17 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['display_description'] = 'Dispalys all nodes that have parent nid set to contextual filter';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Parent (field_parent) */
-  $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
-  $handler->display->display_options['arguments']['field_parent_nid']['table'] = 'field_data_field_parent';
-  $handler->display->display_options['arguments']['field_parent_nid']['field'] = 'field_parent_nid';
-  $handler->display->display_options['arguments']['field_parent_nid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_options']['argument'] = 'No pages available';
-  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['field_parent_nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_parent_nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_parent_nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_parent_nid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['field_parent_nid']['not'] = 0;
+  $handler->display->display_options['arguments']['field_parent_target_id']['id'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['arguments']['field_parent_target_id']['field'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_parent_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_parent_target_id']['not'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -310,17 +312,18 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Parent (field_parent) */
-  $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
-  $handler->display->display_options['arguments']['field_parent_nid']['table'] = 'field_data_field_parent';
-  $handler->display->display_options['arguments']['field_parent_nid']['field'] = 'field_parent_nid';
-  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_options']['argument'] = 'No pages available';
-  $handler->display->display_options['arguments']['field_parent_nid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['field_parent_nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_parent_nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_parent_nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_parent_nid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['field_parent_nid']['not'] = 0;
+  $handler->display->display_options['arguments']['field_parent_target_id']['id'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['arguments']['field_parent_target_id']['field'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_argument_options']['argument'] = 'No pages available';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_parent_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_parent_target_id']['not'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -346,31 +349,6 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
       'fixed' => '',
       'label' => 'Content: Parent (field_parent)',
     ),
-  );
-  $translatables['book_children'] = array(
-    t('Master'),
-    t('All child pages'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('Edit'),
-    t('Nid'),
-    t('Parent'),
-    t('Type'),
-    t('Weight'),
-    t('Task status'),
-    t('All'),
-    t('Child nodes'),
-    t('Dispalys all nodes that have parent nid set to contextual filter'),
-    t('View panes'),
-    t('Child nodes AJAX'),
-    t('Load all nodes that have parent nid set to contextual filter'),
   );
   $export['book_children'] = $view;
 
@@ -534,24 +512,6 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
     1 => '1',
   );
   $handler->display->display_options['path'] = 'books/templates';
-  $translatables['books'] = array(
-    t('Master'),
-    t('Books'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('<?php return _erpal_book_helper_view_contacts_header_content(); ?>'),
-    t('Post date'),
-    t('Title'),
-    t('Tags'),
-    t('Book templates'),
-  );
   $export['books'] = $view;
 
   return $export;

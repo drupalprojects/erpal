@@ -118,7 +118,7 @@ class ActivityNodeModel {
     $node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
     
     if ($contact !== FALSE) {
-      $node->field_contact_ref[LANGUAGE_NONE][]['nid'] = $contact;
+      $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contact;
     }
     
     node_save ($node);
@@ -168,7 +168,10 @@ class ActivityNodeModel {
     
     node_object_prepare($node);
     
-    $node->status                             = (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_attachments', FALSE);
+    $node->status                             = (int)_erpal_crm_mailaction_get_settings (
+                                                ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 
+                                                'publish_attachments', 
+                                                FALSE);
     $node->has_body                           = TRUE;
     $node->title                              = check_plain ($file->filename);
     $node->language                           = LANGUAGE_NONE;
@@ -187,13 +190,24 @@ class ActivityNodeModel {
       return FALSE;
     }
     
-    $parentObject->field_asset_files[LANGUAGE_NONE][]['nid'] = $node->nid;
- 
     if (! $parentIsComment) {
+    
+    	$parentObject->field_asset_files[LANGUAGE_NONE][]['nid'] = array(
+        'target_id' => $node->nid,
+        'target_type' => 'node',
+      );
+    
       node_save ($parentObject);
     }else{ 
+    
+    	$parentObject->field_asset_files[LANGUAGE_NONE][]['nid'] = array(
+        'target_id'   => $node->nid,
+        'target_type' => 'node',
+      );
+      
       comment_save($parentObject);
     }
+
     
     return TRUE;
   }

@@ -42,7 +42,7 @@ function references_dialog_element_info_alter(&$info) {
   foreach (references_dialog_widgets() as $widget) {
     // If this element type is specified as a type that a widget should be
     // attached to, go ahead and make it so.
-    if (isset($info[$widget['element_type']])) {
+    if (isset($info[$widget['element_type']]) && (!isset($info[$widget['element_type']]['#after_build']) || !in_array('references_dialog_process_widget', $info[$widget['element_type']]['#after_build']))) {
       $info[$widget['element_type']]['#after_build'][] = 'references_dialog_process_widget';
     }
   }

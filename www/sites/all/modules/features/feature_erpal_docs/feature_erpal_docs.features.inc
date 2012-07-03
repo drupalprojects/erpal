@@ -31,7 +31,7 @@ function feature_erpal_docs_views_api() {
 function feature_erpal_docs_node_info() {
   $items = array(
     'erpal_file' => array(
-      'name' => t('erpal_file'),
+      'name' => t('File'),
       'base' => 'node_content',
       'description' => t('A file from the global asset file pool'),
       'has_title' => '1',

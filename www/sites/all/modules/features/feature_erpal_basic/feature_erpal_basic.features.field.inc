@@ -825,6 +825,20 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'field_collection_table',
+          'settings' => array(
+            'add' => 'Add',
+            'delete' => 'Delete',
+            'description' => TRUE,
+            'edit' => 'Edit',
+            'empty' => TRUE,
+            'view_mode' => 'full',
+          ),
+          'type' => 'field_collection_table_view',
+          'weight' => '11',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -884,6 +898,15 @@ function feature_erpal_basic_field_default_fields() {
           ),
           'type' => 'field_collection_view',
           'weight' => 18,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'field_collection',
+          'settings' => array(
+            'view_mode' => 'full',
+          ),
+          'type' => 'field_collection_fields',
+          'weight' => '18',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -964,6 +987,19 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+          ),
+          'type' => 'date_default',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1048,6 +1084,12 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '27',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1125,6 +1167,16 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => 'medium',
+          ),
+          'type' => 'image',
+          'weight' => '2',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1196,6 +1248,12 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '28',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1227,7 +1285,7 @@ function feature_erpal_basic_field_default_fields() {
   $fields['node-erpal_contact-field_contact_tags'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_contact_tags',
@@ -1252,6 +1310,7 @@ function feature_erpal_basic_field_default_fields() {
             'parent' => '0',
           ),
         ),
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
@@ -1274,6 +1333,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1351,6 +1417,13 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '5',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1421,6 +1494,13 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '9',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1485,6 +1565,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'text_default',
           'weight' => 20,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1560,6 +1647,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'link',
+          'settings' => array(),
+          'type' => 'link_default',
+          'weight' => '16',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1643,6 +1737,13 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'text_default',
           'weight' => 21,
         ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '20',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1717,6 +1818,12 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '26',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1782,6 +1889,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'list_default',
           'weight' => 22,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1854,6 +1968,12 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '25',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1919,6 +2039,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'text_default',
           'weight' => 19,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1988,6 +2115,15 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'field_collection',
+          'settings' => array(
+            'view_mode' => 'full',
+          ),
+          'type' => 'field_collection_fields',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2060,6 +2196,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'link',
+          'settings' => array(),
+          'type' => 'link_default',
+          'weight' => '17',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2148,6 +2291,13 @@ function feature_erpal_basic_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -2222,6 +2372,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'link',
+          'settings' => array(),
+          'type' => 'link_default',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2310,6 +2467,13 @@ function feature_erpal_basic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'link',
+          'settings' => array(),
+          'type' => 'link_default',
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2402,13 +2566,20 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '3',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'test' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'node',
@@ -2422,7 +2593,64 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'relation-works_at-endpoints'
+  $fields['relation-works_at-endpoints'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'endpoints',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'relation' => array(
+          0 => 'entity_type',
+          1 => 'entity_id',
+          2 => 'r_index',
+        ),
+      ),
+      'module' => 'relation_endpoint',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'relation_endpoint',
+    ),
+    'field_instance' => array(
+      'bundle' => 'works_at',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'relation_endpoint',
+          'settings' => array(),
+          'type' => 'relation_endpoint',
+          'weight' => 0,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'endpoints',
+      'label' => 'endpoints',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'relation_endpoint',
+        'settings' => array(),
+        'type' => 'relation_endpoint',
+        'weight' => '0',
       ),
     ),
   );
@@ -2625,6 +2853,7 @@ function feature_erpal_basic_field_default_fields() {
   t('Website');
   t('XING');
   t('ZIP Code');
+  t('endpoints');
 
   return $fields;
 }

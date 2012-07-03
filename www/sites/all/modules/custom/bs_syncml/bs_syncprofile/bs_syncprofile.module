@@ -1,11 +1,11 @@
 <?php
 
 module_load_include("inc", "bs_syncprofile", "includes/BsSyncMlProfile");
+module_load_include("inc", "bs_syncprofile", "includes/BsSyncProfileUserAccounts");
 
-/*
+/**
  * Implements hook_menu()
  */
-
 function bs_syncprofile_menu() {
 
   /* The administration page */
@@ -73,12 +73,24 @@ function bs_syncprofile_menu() {
           'type' => MENU_LOCAL_TASK,
           'weight' => -98,
       );
+      
+      // Content configuration Tab
+      $items["admin/config/system/bs_syncml/profile/$name/content"] = array(
+          'title' => "Content Settings",
+          'description' => 'Administer Profile',
+          'page callback' => 'bs_syncprofile_profile_page',
+          'page arguments' => array($name, "content"),
+          'access arguments' => array('administer bs_syncml'),
+          'file' => 'includes/bs_syncprofile.settings.inc',
+          'type' => MENU_LOCAL_TASK,
+          'weight' => -98,
+      );
     }
 
   return $items;
 }
 
-/*
+/**
  * Implements hook_permission
  * 
  * Provides Permissions for the profiles. The permissions only apply if the setting
@@ -104,15 +116,15 @@ function bs_syncprofile_permission() {
   return $item;
 }
 
-/*
+/**
  * Retrieve all Sync Profiles
  * 
  * @param $full: Load the complete profile object or just return machinename and id
  * @return Array of Sync Profiles 
  */
-
 function bs_syncprofile_getAllProfiles($full=false) {
 
+  $profiles = array();
   if (!$full) {
     $request = db_select('bs_syncml_profiles', 'p')
             ->fields('p', array('pid', 'name'))
@@ -135,4 +147,100 @@ function bs_syncprofile_getAllProfiles($full=false) {
   }
 
   return $profiles;
+}
+
+/**
+ * Plugin Retrieval Hook.
+ * Invokes the hook_bssync_plugin and returns the plugins
+ * @return array Plugins 
+ */
+function bs_syncprofile_getAllPlugins() {
+  
+  $plugins = module_invoke_all('bssync_plugin');  
+  return $plugins;
+}
+
+
+function bs_syncprofile_getPluginSelection() {
+  
+  $plugins = bs_syncprofile_getAllPlugins();
+  
+  $result = array();
+  if(is_array($plugins)) foreach($plugins as $key=>$plugin) {
+    $result[$key] = $plugin['title'];    
+  }
+  
+  return $result;
+}
+
+/* ############################## A DEMO PLUGIN FOR THE bssync_plugin HOOK #######################*/
+
+/**
+ * Implements hook_bssync_plugin
+ * @return type 
+ */
+function bs_syncprofile_bssync_plugin() {
+  
+  return array(
+    'demo_plugin'  => array(
+        'type'  => 'contact',
+        'title' => t('Demo Plugin for contacts'),
+        'form'  => 'bs_syncprofile_demo_plugin_form',
+        'getids' => 'bs_syncprofile_demo_plugin_dummygetids',
+        'write' => 'bs_syncprofile_demo_plugin_dummywrite',
+        'get'   => 'bs_syncprofile_demo_plugin_dummyget',
+    )
+  );
+}
+/**
+ * Provides a demo configuration form for a plugin
+ * @return array A Form
+ */
+function bs_syncprofile_demo_plugin_form() {
+  
+  $form = array();
+  
+  $form['demo'] = array(
+      '#markup' => '<h2>This is a demo plugin form for the bs sync plugin architecture</h2>',
+  );
+  
+  $form['democontent'] = array(
+      '#type' => 'select',
+      '#title' => 'Demo select',
+      '#options' => array('a', 'b', 'c', 'd'),
+  );
+  
+  $form['demosubmit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Demosubmit',
+  );
+  
+  return $form;
+}
+
+/**
+ * Provides a demo callback
+ * @param int $id 
+ */
+function bs_syncprofile_demo_plugin_dummywrite($id) {
+  
+  drupal_set_message("Write a contact with the id: $id");
+}
+
+/**
+ * Provides a demo callback
+ * @param int $id 
+ */
+function bs_syncprofile_demo_plugin_dummyget($id) {
+  
+  drupal_set_message("Get a contact with the id: $id");
+}
+
+/**
+ * Provides a demo callback
+ * @return type 
+ */
+function bs_syncprofile_demo_plugin_dummygetids() {
+  
+  return array(1,2,3);
 }

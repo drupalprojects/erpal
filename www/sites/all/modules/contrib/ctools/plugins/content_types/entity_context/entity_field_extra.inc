@@ -37,7 +37,7 @@ function ctools_entity_field_extra_content_type_content_types() {
             'category' => t(ucfirst($entity_type)),
             'icon' => 'icon_field.png',
             'title' => $info['label'],
-            'description' => $info['description'],
+            'description' => isset($info['description']) ? $info['description'] : '',
           );
         }
         $context_types[$entity_type . ':' . $field_name]['types'][$type] = $bundle['label'];

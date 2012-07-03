@@ -34,7 +34,7 @@
   $order_numbers_extern = 'ex12345';
   $order_numbers_intern = 'in67890'; */
 ?>
-<link rel="stylesheet" type="text/css" href="<?php print drupal_get_path('module', 'erpal_invoice_helper');?>/template/common.css">
+<link rel="stylesheet" type="text/css" href="<?php print drupal_get_path('module', 'erpal_invoice_helper'); ?>/template/common.css">
 <!--
 "Ihre Bestellnummer: echo $order_numbers_extern"
 "Unsere Auftragsnummer: echo $order_numbers_intern"
@@ -74,6 +74,9 @@
           </td>
           <td id="rechnungsdatum" class="right">
             <table>
+              <tr>
+                <td><?php if ($copy) : ?><?php print $copy; ?><?php endif; ?></td>
+              </tr>
               <tr>
                 <td><?php if ($order_numbers_extern) : ?> Ihre Bestellnummer: <?php print $order_numbers_extern; ?><?php endif; ?></td>
               </tr>
@@ -192,12 +195,17 @@ if (is_array($billables)) {
   print $table;
 }
 ?>
-<div id="rechnungshinweis">
-  <?php
-  if (is_array($auto_notes)) {
-    print implode("<br />", $auto_notes);
-  }
-  print nl2br($notes);
-  ?>
-</div>
-<?php return; ?>
+<table id="rechnungshinweis">
+  <tr>
+    <td>
+<?php
+if (is_array($auto_notes)) {
+print implode("<br />\n", $auto_notes);
+}
+
+print "<br />\n" . nl2br($notes);
+print "\n";
+?>
+    </td>
+  </tr>
+</table>

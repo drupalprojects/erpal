@@ -1,5 +1,6 @@
 <?php
-  $logo_path = erpal_print_logo_path();
-  if ($logo_path)
-    echo '<img src="'.$logo_path.'" />';
+  $logo_rel_path = erpal_print_logo_path(true);
+
+  if ($logo_rel_path)
+    echo '<img src="'.$logo_rel_path.'" />';
 ?>

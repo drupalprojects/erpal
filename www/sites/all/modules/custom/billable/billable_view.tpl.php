@@ -3,6 +3,10 @@
 <div class="billable_field" id="billable_contractor">Contractor: <a href="/node/<?php echo $contractor->nid; ?>"><?php echo $contractor->title; ?></a></div>
 <?php $customer = node_load($billable->customer_nid); ?>
 <div class="billable_field" id="billable_customer">Customer: <a href="/node/<?php echo $customer->nid; ?>"><?php echo $customer->title; ?></a></div>
+<?php if ($billable->subject_nid) :?>
+<?php $subject_node = node_load($billable->subject_nid); ?>
+<div class="billable_field" id="billable_single_price">Subject: <a href="/node/<?php echo $subject_node->nid; ?>"><?php echo $subject_node->title; ?></a></div>
+<?php endif ?>
 <?php $currency = $billable->currency; ?> 
 <div class="billable_field" id="billable_single_price">Single Price: <?php echo $billable->single_price; ?>&nbsp;<?php echo $billable->currency; ?></div>
 <div class="billable_field" id="billable_vat_rate">VAT rate: <?php echo $billable->vat_rate; ?>%</div>

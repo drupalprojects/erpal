@@ -50,8 +50,15 @@ function _ctools_content_vocabulary_terms($vid, $max_depth, $depth = -1, $tid = 
     return array();
   }
   $return = array();
-  $result = db_query('SELECT t.name, t.tid FROM {taxonomy_term_data} t INNER JOIN {taxonomy_term_hierarchy} h ON t.tid = h.tid WHERE t.vid = :vid AND h.parent = :parent ORDER BY t.weight ASC, t.name ASC', array(':vid' => $vid, ':parent' => $tid));
-  foreach ($result as $term) {
+  $query = db_select('taxonomy_term_data', 't')->fields('t', array('tid'));
+  $query->join('taxonomy_term_hierarchy', 'h', ' t.tid = h.tid');
+  $query->condition('t.vid', $vid)
+    ->condition('h.parent', $tid)
+    ->orderBy('t.weight')
+    ->orderBy('t.name');
+  $tids = $query->execute()->fetchCol();
+  $terms = taxonomy_term_load_multiple($tids);
+  foreach ($terms as $term) {
     $return[] = array(
       'data' => l($term->name, 'taxonomy/term/' . $term->tid),
       'children' => _ctools_content_vocabulary_terms($vid, $max_depth, $depth, $term->tid),

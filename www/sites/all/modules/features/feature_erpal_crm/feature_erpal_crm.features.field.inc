@@ -164,64 +164,77 @@ function feature_erpal_crm_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_account_manager',
       'foreign keys' => array(
-        'uid' => array(
+        'users' => array(
           'columns' => array(
-            'uid' => 'uid',
+            'target_id' => 'uid',
           ),
           'table' => 'users',
         ),
       ),
       'indexes' => array(
-        'uid' => array(
-          0 => 'uid',
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'user_reference',
+      'module' => 'entityreference',
       'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => '',
+            'property' => 'uid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(),
+        ),
+        'handler_submit' => 'Change handler',
         'profile2_private' => FALSE,
-        'referenceable_roles' => array(
-          2 => 0,
-          3 => 0,
-          4 => '4',
-          5 => 0,
-          6 => 0,
-        ),
-        'referenceable_status' => array(
-          0 => 0,
-          1 => '1',
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'target_type' => 'user',
       ),
       'translatable' => '0',
-      'type' => 'user_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'user_reference',
-          'settings' => array(),
-          'type' => 'user_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 3,
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
       ),
@@ -230,13 +243,29 @@ function feature_erpal_crm_field_default_fields() {
       'label' => 'Account Manager',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
         'weight' => '9',
       ),
     ),
@@ -328,60 +357,70 @@ function feature_erpal_crm_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_asset_files',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
+      'foreign keys' => array(),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_contact' => 0,
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 'erpal_file',
-          'page' => 0,
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 1,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_file' => 'erpal_file',
+          ),
         ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
       'description' => 'Select or add files from / to the document management system',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 8,
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
           'weight' => 0,
         ),
       ),
@@ -390,22 +429,30 @@ function feature_erpal_crm_field_default_fields() {
       'label' => 'Global documents',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'node_reference',
+        'module' => 'entityreference',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
+          'match_operator' => 'CONTAINS',
+          'path' => '',
           'references_dialog_add' => 1,
           'references_dialog_edit' => 1,
           'references_dialog_search' => 1,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '12',
+        'type' => 'entityreference_autocomplete',
+        'weight' => '11',
       ),
     ),
   );
@@ -481,142 +528,71 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_contact_ref'
-  $fields['node-erpal_crm_activity-field_contact_ref'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_contact_ref',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'profile2_private' => FALSE,
-        'referenceable_types' => array(
-          'article' => 0,
-          'erpal_book' => 0,
-          'erpal_book_page' => 0,
-          'erpal_contact' => 'erpal_contact',
-          'erpal_crm_activity' => 0,
-          'erpal_file' => 0,
-          'erpal_invoice' => 0,
-          'erpal_project' => 0,
-          'erpal_task' => 0,
-          'erpal_timetracking' => 0,
-          'page' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_crm_activity',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Any other contacts that are related to this activity',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 1,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_contact_ref',
-      'label' => 'Contacts',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '2',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_crm_activity-field_local_files'
-  $fields['node-erpal_crm_activity-field_local_files'] = array(
+  // Exported field: 'node-erpal_crm_activity-field_contacts_ref'
+  $fields['node-erpal_crm_activity-field_contacts_ref'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_local_files',
+      'field_name' => 'field_contacts_ref',
       'foreign keys' => array(
-        'fid' => array(
+        'node' => array(
           'columns' => array(
-            'fid' => 'fid',
+            'target_id' => 'nid',
           ),
-          'table' => 'file_managed',
+          'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
         ),
       ),
-      'module' => 'file',
+      'module' => 'entityreference',
       'settings' => array(
-        'display_default' => 0,
-        'display_field' => 0,
-        'uri_scheme' => 'public',
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_contact' => 'erpal_contact',
+          ),
+        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'node',
       ),
       'translatable' => '0',
-      'type' => 'file',
+      'type' => 'entityreference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
-      'description' => 'Files uploaded here will not added to the document management system',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'file',
-          'settings' => array(),
-          'type' => 'file_default',
-          'weight' => 9,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => 14,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -626,24 +602,130 @@ function feature_erpal_crm_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_local_files',
-      'label' => 'Local files',
+      'field_name' => 'field_contacts_ref',
+      'label' => 'Contacts',
       'required' => 0,
       'settings' => array(
-        'description_field' => 0,
-        'file_directory' => 'crm-activity/files',
-        'file_extensions' => 'txt pdf doc docx xls csv bmp jpg',
-        'max_filesize' => '',
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'file',
+        'module' => 'entityreference',
         'settings' => array(
-          'progress_indicator' => 'throbber',
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
         ),
-        'type' => 'file_generic',
-        'weight' => '13',
+        'type' => 'entityreference_autocomplete',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_crm_activity-field_customer_ref'
+  $fields['node-erpal_crm_activity-field_customer_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_customer_ref',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'target_id' => array(
+          0 => 'target_id',
+        ),
+      ),
+      'module' => 'entityreference',
+      'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 1,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_contact' => 'erpal_contact',
+          ),
+        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'node',
+      ),
+      'translatable' => '0',
+      'type' => 'entityreference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => 13,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_customer_ref',
+      'label' => 'Customer',
+      'required' => 0,
+      'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
+        'weight' => '1',
       ),
     ),
   );
@@ -827,6 +909,7 @@ function feature_erpal_crm_field_default_fields() {
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'text',
@@ -946,14 +1029,12 @@ function feature_erpal_crm_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Account Manager');
   t('Activity status');
-  t('Any other contacts that are related to this activity');
   t('Body');
   t('Chance');
   t('Comment');
   t('Contacts');
-  t('Files uploaded here will not added to the document management system');
+  t('Customer');
   t('Global documents');
-  t('Local files');
   t('Next Contact');
   t('Order number extern');
   t('Order number intern');

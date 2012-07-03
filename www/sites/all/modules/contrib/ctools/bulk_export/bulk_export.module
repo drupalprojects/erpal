@@ -45,6 +45,7 @@ function bulk_export_menu() {
  */
 function bulk_export_export($cli = FALSE, $options = array()) {
   ctools_include('export');
+  $form = array();
   $schemas = ctools_export_get_schemas(TRUE);
   $exportables = $export_tables = array();
 
@@ -66,6 +67,7 @@ function bulk_export_export($cli = FALSE, $options = array()) {
       'export_tables' => $export_tables,
       'name' => '',
       'code' => '',
+      'module' => '',
     );
 
     // If called from drush_ctools_export, get the module name and
@@ -73,6 +75,9 @@ function bulk_export_export($cli = FALSE, $options = array()) {
     if ($cli) {
       $module_name = $options['name'];
       $form_state['values']['name'] = $module_name;
+      if (isset($options['selections'])) {
+        $exportables = $options['selections'];
+      }
       $form_state['values']['tables'] = array();
       foreach ($exportables as $table => $names) {
         if (!empty($names)) {
@@ -87,7 +92,7 @@ function bulk_export_export($cli = FALSE, $options = array()) {
     }
     else {
       $output = drupal_build_form('bulk_export_export_form', $form_state);
-      $module_name = $form_state['name'];
+      $module_name = $form_state['module'];
     }
 
     if (!empty($form_state['submitted']) || $cli) {
@@ -206,6 +211,7 @@ function bulk_export_export_form($form, &$form_state) {
 
     foreach ($list as $id => $title) {
       $options[$table][$id] = array($title);
+      $options[$table][$id]['#attributes'] = array('class' => array('bulk-selection'));
     }
 
     $module = $form_state['export_tables'][$table];
@@ -248,6 +254,7 @@ function bulk_export_export_form($form, &$form_state) {
 
   $form['#action'] = url('admin/structure/bulk-export/results');
   $form['#attached']['css'][] = drupal_get_path('module', 'bulk_export') . '/bulk_export.css';
+  $form['#attached']['js'][] = drupal_get_path('module', 'bulk_export') . '/bulk_export.js';
   return $form;
 }
 
