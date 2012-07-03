@@ -76,6 +76,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['views_bulk_operations']['alter']['nl2br'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['alter']['word_boundary'] = 1;
   $handler->display->display_options['fields']['views_bulk_operations']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['alter']['more_link'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['alter']['strip_tags'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['alter']['html'] = 0;
@@ -87,6 +88,12 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['views_bulk_operations']['vbo']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo']['operations'] = array(
     'action::erpal_invoice_helper_invoice_from_billables_action' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_delete_action' => array(
       'selected' => 1,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -113,6 +120,25 @@ echo _erpal_invoice_helper_view_billables_header_content();
       'override_label' => 0,
       'label' => '',
     ),
+    'action::billable_reduce_action' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_modify_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'show_all_tokens' => 1,
+        'display_values' => array(
+          '_all_' => '_all_',
+        ),
+      ),
+    ),
     'action::views_bulk_operations_argument_selector_action' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
@@ -129,15 +155,21 @@ echo _erpal_invoice_helper_view_billables_header_content();
       'override_label' => 0,
       'label' => '',
     ),
-    'action::billable_reduce_action' => array(
+    'action::system_send_email_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_billed_action' => array(
       'selected' => 1,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
     ),
-    'action::system_send_email_action' => array(
-      'selected' => 0,
-      'use_queue' => 0,
+    'action::billable_unbilled_action' => array(
+      'selected' => 1,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
@@ -172,31 +204,28 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['billable_id']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['billable_id']['separator'] = '';
   $handler->display->display_options['fields']['billable_id']['format_plural'] = 0;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title_2']['id'] = 'title_2';
-  $handler->display->display_options['fields']['title_2']['table'] = 'node';
-  $handler->display->display_options['fields']['title_2']['field'] = 'title';
-  $handler->display->display_options['fields']['title_2']['relationship'] = 'subject_nid';
-  $handler->display->display_options['fields']['title_2']['label'] = 'Subject';
-  $handler->display->display_options['fields']['title_2']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['title_2']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['title_2']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['title_2']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['title_2']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['title_2']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['title_2']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['title_2']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['title_2']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['title_2']['link_to_node'] = 1;
+  /* Field: Billable: Subject */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'billable';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['subject']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['subject']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['subject']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['subject']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['subject']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['subject']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['subject']['hide_alter_empty'] = 1;
   /* Field: Billable: Billed */
   $handler->display->display_options['fields']['billed']['id'] = 'billed';
   $handler->display->display_options['fields']['billed']['table'] = 'billable';

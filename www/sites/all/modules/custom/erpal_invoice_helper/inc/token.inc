@@ -8,11 +8,13 @@ function erpal_invoice_helper_token_info() {
   $types['erpal_invoice'] = array(
     'name' => t("Erpal invoice token"),
     'description' => t("Tokens for invoice notes."),
+    'needs-data' => 'erpal_invoice',
   );
   
   $types['erpal_invoice_referenced_data'] = array(
     'name' => t("Erpal invoice CRM data"),
     'description' => t("Tokens for invoice from crm activities."),
+    'needs-data' => 'erpal_invoice_referenced_data',
   );
 
   $invoice['total'] = array(

@@ -64,3 +64,28 @@ function _erpal_projects_helper_get_billing_duration($node) {
   
   return $duration;
 }
+
+/**
+* Return all timetracking nids that reference directely one of the given nids
+*/
+function _erpal_projects_helper_get_direct_timetrackings($nids) {
+
+  $timetracking_nids = array();
+  
+  if (!$nids || !count($nids))
+    return $timetracking_nids;
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_timetracking')
+  ->fieldCondition('field_timetracking_subject', 'target_id', $nids, 'IN')
+  ->addMetaData('account', user_load(1)); // run the query as user 1 to get all nodes
+  
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $timetracking_nids = array_keys($result['node']);    
+  }
+  
+  return $timetracking_nids;
+}

@@ -1,4 +1,1 @@
-Applyed patch from http://drupal.org/node/1275284#comment-5087878
-
-
-and another patch from january (sorry, internet down, cannot copy the url!)
+No modifications

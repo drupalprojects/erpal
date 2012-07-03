@@ -12,6 +12,7 @@ dependencies[] = feature_erpal_basic
 dependencies[] = features
 dependencies[] = field_group
 dependencies[] = file
+dependencies[] = fileedit
 dependencies[] = menu
 dependencies[] = page_manager
 dependencies[] = private_files_download_permission

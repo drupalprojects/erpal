@@ -110,91 +110,91 @@ function feature_erpal_invoice_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '17',
-        ),
-        'additional_settings' => array(
-          'weight' => '45',
-        ),
-        'revision_information' => array(
-          'weight' => '36',
-        ),
-        'revision' => array(
-          'weight' => '23',
-        ),
-        'log' => array(
-          'weight' => '29',
-        ),
-        'author' => array(
-          'weight' => '43',
-        ),
-        'name' => array(
           'weight' => '19',
         ),
-        'date' => array(
-          'weight' => '25',
-        ),
-        'options' => array(
-          'weight' => '44',
-        ),
-        'status' => array(
-          'weight' => '14',
-        ),
-        'promote' => array(
-          'weight' => '26',
-        ),
-        'sticky' => array(
-          'weight' => '30',
-        ),
-        'actions' => array(
+        'additional_settings' => array(
           'weight' => '46',
         ),
-        'submit' => array(
-          'weight' => '15',
-        ),
-        'preview' => array(
-          'weight' => '34',
-        ),
-        'delete' => array(
-          'weight' => '16',
-        ),
-        'token_tree' => array(
-          'weight' => '0',
-        ),
-        'comment_settings' => array(
-          'weight' => '38',
-        ),
-        'comment' => array(
-          'weight' => '22',
-        ),
-        'order_numbers_token_tree' => array(
-          'weight' => '33',
-        ),
-        'menu' => array(
-          'weight' => '18',
-        ),
-        'enabled' => array(
-          'weight' => '24',
-        ),
-        'link' => array(
-          'weight' => '27',
-        ),
-        'link_title' => array(
-          'weight' => '20',
-        ),
-        'description' => array(
-          'weight' => '28',
-        ),
-        'parent' => array(
-          'weight' => '31',
-        ),
-        'weight' => array(
-          'weight' => '32',
-        ),
-        'path' => array(
+        'revision_information' => array(
           'weight' => '37',
         ),
-        'alias' => array(
+        'revision' => array(
+          'weight' => '25',
+        ),
+        'log' => array(
+          'weight' => '31',
+        ),
+        'author' => array(
+          'weight' => '44',
+        ),
+        'name' => array(
           'weight' => '21',
+        ),
+        'date' => array(
+          'weight' => '27',
+        ),
+        'options' => array(
+          'weight' => '45',
+        ),
+        'status' => array(
+          'weight' => '16',
+        ),
+        'promote' => array(
+          'weight' => '28',
+        ),
+        'sticky' => array(
+          'weight' => '32',
+        ),
+        'actions' => array(
+          'weight' => '47',
+        ),
+        'submit' => array(
+          'weight' => '17',
+        ),
+        'preview' => array(
+          'weight' => '36',
+        ),
+        'delete' => array(
+          'weight' => '18',
+        ),
+        'token_tree' => array(
+          'weight' => '13',
+        ),
+        'comment_settings' => array(
+          'weight' => '39',
+        ),
+        'comment' => array(
+          'weight' => '24',
+        ),
+        'order_numbers_token_tree' => array(
+          'weight' => '35',
+        ),
+        'menu' => array(
+          'weight' => '20',
+        ),
+        'enabled' => array(
+          'weight' => '26',
+        ),
+        'link' => array(
+          'weight' => '29',
+        ),
+        'link_title' => array(
+          'weight' => '22',
+        ),
+        'description' => array(
+          'weight' => '30',
+        ),
+        'parent' => array(
+          'weight' => '33',
+        ),
+        'weight' => array(
+          'weight' => '34',
+        ),
+        'path' => array(
+          'weight' => '38',
+        ),
+        'alias' => array(
+          'weight' => '23',
         ),
       ),
       'display' => array(),

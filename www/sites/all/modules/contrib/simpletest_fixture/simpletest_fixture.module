@@ -1,0 +1,134 @@
+<?php
+
+/**
+ * @file
+ * This module provides functionality to generate and employ fixtures
+ * for SimpleTest tests.
+ */
+ 
+/**
+ * Generate new fixture tables
+ */
+function simpletest_fixture_generate($mode = 'fixtures') {
+  /**
+   * Write tests
+   * - generating fixtures for an empty db
+   * - generating fixtures for a populated db
+   *   1) mode "fixtures"
+   *   2) mode "full"
+   */
+   
+  /**
+   * TODO
+   * - split into simpletest_fixtures_clear() + simpletest_fixtures_create() 
+   * - implement confirmation dialog: do you really want to.. ? y/n
+   */
+  
+  // Rebuild schema based on prefixed database
+  $schemas = drupal_get_schema(NULL, TRUE);
+  // Create a list of prefixed source table names
+  $sources = array();
+  foreach ($schemas as $name => $schema) {
+    $sources[$name] = Database::getConnection()->prefixTables('{' . $name . '}');
+  }
+  
+  // Retrieve the default database name
+  $default_connection = Database::getConnectionInfo('default');
+  $source_db_name = $default_connection['default']['database'];
+  
+  // Retrieve the static prefix parameter stored in the fixture db info in settings.php
+  $fixturedb_connection = Database::getConnectionInfo('fixture');
+  $fixturedb_prefix = $fixturedb_connection['default']['simpletest_prefix'];
+  
+  // Switch to fixture database
+  Database::renameConnection('default', 'simpletest_original_default');
+  Database::addConnectionInfo('default', 'default', $fixturedb_connection['default']);
+  
+  
+  // TODO Check if we're really connected to fixtures db
+  
+  // Remove old fixtures tables
+  $res = db_query("SHOW TABLES");
+  $dropped_tables_count = 0;
+  foreach ($res as $table) {
+    $table = array_shift(array_values((array)$table));
+        
+    // Only drop fixture tables
+    if (strpos($table, $fixturedb_prefix) !== FALSE) {    
+      db_drop_table($table);
+      $dropped_tables_count++;
+    }
+    // Also drop drupal tables in mode "full"
+    else if ($mode == 'full') {
+      // Keep table 'watchdog' so dblog_watchdog() doesn't complain
+      if ($table == 'watchdog') {
+        continue;
+      }
+      
+      db_drop_table($table);
+      $dropped_tables_count++;
+    }
+    // The drupal tables are already there
+    else {
+      $skip_drupal_db = TRUE;
+    }
+  }
+  
+  // Clone tables from source into fixtures database
+  $cloned_tables_count = 0;
+
+  $excludeTables = array(
+    'cache',
+    'cache_block',
+    'cache_bootstrap',
+    'cache_field',
+    'cache_filter',
+    'cache_form',
+    'cache_image',
+    'cache_menu',
+    'cache_page',
+    'cache_path',
+    'cache_update',
+    'watchdog',
+  );
+  
+  // Clone drupal tables
+  if (!isset($skip_drupal_db)) {
+    foreach ($schemas as $table => $schema) {    
+      // Create 'watchdog' only if the entire db gets populated from the first time
+      if ($dropped_tables_count > 0 && $table == 'watchdog') {
+        continue;
+      }      
+      
+      $target = Database::getConnection()->prefixTables('{' . $table . '}');
+      db_create_table($target, $schema);
+    
+      if (!in_array($table, $excludeTables)) {
+        $source = $source_db_name .'.'. $sources[$table];
+        db_query('INSERT INTO ' . $target . ' SELECT * FROM ' . $source);
+      }
+      $cloned_tables_count++;
+    }
+  }
+  
+  // Clone fixture tables
+  foreach ($schemas as $table => $schema) {
+    $target_prefixed = Database::getConnection()->prefixTables('{' . $fixturedb_prefix . $table . '}');
+    db_create_table($target_prefixed, $schema);
+    
+    if (!in_array($table, $excludeTables)) {
+      $source = $source_db_name .'.'. $sources[$table];
+      db_query('INSERT INTO ' . $target_prefixed . ' SELECT * FROM ' . $source);
+    }
+    $cloned_tables_count++;
+  }  
+    
+  // Get back to the original connection.
+  Database::removeConnection('default');
+  Database::renameConnection('simpletest_original_default', 'default');
+  
+  return array(
+    'dropped_tables_count' => $dropped_tables_count,
+    'cloned_tables_count' => $cloned_tables_count,
+  );
+}

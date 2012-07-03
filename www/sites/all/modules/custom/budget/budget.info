@@ -1,0 +1,18 @@
+name = Budget
+description = Provides entity functionality for budget entites
+core = 7.x
+
+dependencies[] = entity
+dependencies[] = date_popup
+
+files[] = budget.module
+files[] = budget.install
+files[] = budget.admin.inc
+files[] = budget.entity.inc
+files[] = views/billable.views.inc
+files[] = views/billable_handler_link_field.inc
+files[] = views/billable_handler_delete_link_field.inc
+files[] = views/billable_handler_edit_link_field.inc
+files[] = views/billable_handler_billable_operations_field.inc
+
+
