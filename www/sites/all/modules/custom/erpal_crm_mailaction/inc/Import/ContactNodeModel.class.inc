@@ -9,7 +9,7 @@
 
 namespace erpal_crm_mailaction;
 
-class ContactModel {
+class ContactNodeModel {
   
   /*
    * Checks whether one of the contact participants exists in the database.
