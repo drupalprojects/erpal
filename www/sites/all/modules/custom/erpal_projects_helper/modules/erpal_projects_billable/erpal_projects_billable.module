@@ -321,7 +321,8 @@ function _erpal_projects_billable_get_task_preselects($ref_nid) {
 
   $ref_node = node_load($ref_nid);
 
-  $preselects = _erpal_projects_billable_get_pricing($ref_node);
+  //look for pricing information in the parent tree or at the node directely
+  $preselects = _erpal_projects_billable_get_pricing($ref_node, true);
   
   if ($preselects['price_mode'] == 'fixed_price')  
     $preselects['price_mode'] = 'not_billable'; //in most cases if the project is a fixed price project, the task is not billable
@@ -372,14 +373,15 @@ function _erpal_project_billable_save_billable($subject_title, $customer_nid, $s
 
 /**
 * Function that checks if a given subject is billable
-* @param a node as subject
+* @param $node a node as subject
+* @param $process_tree if true,search billable information in the parent tree as well, if given node has none as price mode
 * @return an array with billing information necessary for creating a new billable entiy
 */
-function _erpal_projects_billable_subject_billabel_information_subject($node) {
+function _erpal_projects_billable_subject_billabel_information_subject($node, $process_tree=false) {
 
   $type = $node->type;  
   switch ($type) {
-    case 'erpal_task': return _erpal_projects_billable_subject_billable_information_task_subject($node);    
+    case 'erpal_task': return _erpal_projects_billable_subject_billable_information_task_subject($node, $process_tree);    
     case 'erpal_project': return _erpal_projects_billable_subject_billable_information_project_subject($node); 
     case 'erpal_timetracking': return _erpal_projects_billable_subject_billable_information_timetracking_subject($node);  
   }
@@ -389,18 +391,19 @@ function _erpal_projects_billable_subject_billabel_information_subject($node) {
 
 /**
 * returns the billing information of a task
-* @param the task node
-* @retur an array with billing information like price mode, price etc
+* @param $node the task node
+* @param $process_tree if true search in the parent task tree for pricing information.
+* @return an array with billing information like price mode, price etc
 */
-function _erpal_projects_billable_subject_billable_information_task_subject($node) {
+function _erpal_projects_billable_subject_billable_information_task_subject($node, $process_tree=false) {
   
   //add the customer 
   //first get the project
   $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
   $project_node = node_load($project_nid);
   
-  //if task has own pricing information set, return these!
-  $pricing = _erpal_projects_billable_get_pricing($node);
+  //if task has own pricing information set, return these!  
+  $pricing = _erpal_projects_billable_get_pricing($node, $process_tree);
 
   //perhaps we have purchasing information set on the task or the project.
   $buy_pricing = array();
@@ -408,8 +411,8 @@ function _erpal_projects_billable_subject_billable_information_task_subject($nod
   $buy_pricing['buy_vat_rate'] = $pricing['buy_vat_rate'];
   $buy_pricing['buy_currency'] = $pricing['buy_currency'];
   $buy_pricing['contractor_nid'] = $pricing['contractor_nid'];
-  
-  if ($pricing['price_mode'] && $pricing['price']) {
+
+  //if ($pricing['price_mode'] && $pricing['price']) {
     $info['price_mode'] = $pricing['price_mode'];
     $info['price'] = $pricing['price'];
     $info['vat_rate'] = $pricing['vat_rate'];
@@ -420,11 +423,12 @@ function _erpal_projects_billable_subject_billable_information_task_subject($nod
     $info['customer'] = $customer_node;
     $info = array_merge($info, $buy_pricing);
     return $info;
-  }  
-    
+  //}  
+  /* //Think we dont need to look at the project because this will be done by _erpal_projects_billable_get_pricing
   $info = _erpal_projects_billable_subject_billable_information_project_subject($project_node);
   $info = array_merge($info, $buy_pricing);    
   return $info;
+  */
 }
 
 /**
@@ -473,7 +477,7 @@ function _erpal_projects_billable_subject_billable_information_timetracking_subj
   $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
   $subject_node = node_load($subject_nid);
   
-  return _erpal_projects_billable_subject_billable_information_task_subject($subject_node);
+  return _erpal_projects_billable_subject_billable_information_task_subject($subject_node, true);
 }
 
 /**
@@ -481,8 +485,9 @@ function _erpal_projects_billable_subject_billable_information_timetracking_subj
 * First we try to get a pricing at the given node. If the given node has price mode other than not_billable we stop the
 * search and us these pricing information. If price mode is none (no information) we go to the parent node and process
 * the same check and so on.
+* @param $process_tree if true, the tree will be seach
 */
-function _erpal_projects_get_pricing_entity($node) {
+function _erpal_projects_get_pricing_entity($node, $process_tree=true) {
   if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value']))
       return array();
       
@@ -490,11 +495,16 @@ function _erpal_projects_get_pricing_entity($node) {
 
   $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
   $pricing_entity = $pricing_entity[$pricing_entity_id];
-  $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']; 
   
+  if (!$process_tree)
+    return $pricing_entity;
+  
+  $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']; 
+
   if ($price_mode == 'none') {
     //we have no pricing information here, so get the parent and check its pricing information
     $parent_node = _erpal_project_task_parent($node);
+    
     if (!$parent_node)
       return false;
     
@@ -506,9 +516,10 @@ function _erpal_projects_get_pricing_entity($node) {
 
 /**
 * returns the price mode to an project or task
-* @param a project or task node
+* @param $node a project or task node
+* @param $process_tree if true, we search in the task tree until we find pricing information != none
 */
-function _erpal_projects_billable_get_pricing($node) {
+function _erpal_projects_billable_get_pricing($node, $process_tree=false) {
 
   $type = $node->type;
 
@@ -525,7 +536,7 @@ function _erpal_projects_billable_get_pricing($node) {
     $pricing_entity = $pricing_entity[$pricing_entity_id];*/
 
     //return the relevant pricing entity for the given node
-    $pricing_entity = _erpal_projects_get_pricing_entity($node);
+    $pricing_entity = _erpal_projects_get_pricing_entity($node, $process_tree);
 
     if (!$pricing_entity)
       return false;
@@ -635,7 +646,7 @@ function erpal_billable_field_buy_currency_allowed_values() {
 * @param $op may be insert (if node is inserted) or update (if node is updated)
 */
 function _erpal_billable_update_billable($node, $op) {
-    
+
   if ($node->type == 'erpal_timetracking') {
     $timetracking_node = $node;
     $quantity = $node->field_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
@@ -650,7 +661,9 @@ function _erpal_billable_update_billable($node, $op) {
     $subject_node = $node;
   }
   
-  $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);  
+  $process_tree = $subject_node->type == 'erpal_timetracking';
+
+  $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node, $process_tree);  
   
   $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
   //handle timetracking for the user that inserts the timetracking. If it is a freelancer, create a billable for him
