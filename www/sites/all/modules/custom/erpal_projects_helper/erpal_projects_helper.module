@@ -35,6 +35,18 @@ function erpal_projects_helper_menu(){
 }
 
 /**
+* Implements hook_theme
+*/
+function erpal_projects_helper_theme() {
+  return array(
+    'erpal_budget_usage' => array(
+      'variables' => array('node' => NULL, 'pdf_object' => NULL, 'options' => array(), 'counter' => 0),
+      'template' => 'template/budget_usage',
+    ),    
+  );
+}
+
+/**
 * Implements hook_node_validate
 */
 function erpal_projects_helper_node_validate($node) {

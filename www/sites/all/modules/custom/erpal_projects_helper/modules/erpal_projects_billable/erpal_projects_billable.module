@@ -47,6 +47,13 @@ function erpal_projects_billable_node_update($node) {
 }
 
 /**
+* Implements hook_preprocess_node().
+*/
+function erpal_projects_billable_preprocess_node(&$vars) {
+  _erpal_projects_billable_preprocess_for_budget($vars);
+}
+
+/**
 * Implements hook_node_delete
 */
 function erpal_projects_billable_node_delete($node) {
