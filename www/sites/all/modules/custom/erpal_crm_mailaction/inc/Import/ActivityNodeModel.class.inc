@@ -47,6 +47,9 @@ class ActivityNodeModel {
    */
   public function addToCustomerActivity ($nid, $to, $from, $subject, $body, $attachments) {
 
+    $auth     = new ContactNodeModel ();
+    $contact  = $auth->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
+    
     drupal_load ('module', 'comment');
     
     $comment = (object) array(
@@ -73,7 +76,14 @@ class ActivityNodeModel {
           )
         )
       ),
-    );
+      'field_contacts_ref' => array (
+        LANGUAGE_NONE => array (
+          0 => array (
+            'target_id' => $contact
+          )
+        )
+      )
+    ); 
 
     comment_submit($comment);
     comment_save($comment);
