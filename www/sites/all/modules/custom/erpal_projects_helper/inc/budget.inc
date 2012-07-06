@@ -118,3 +118,73 @@ function _erpal_projects_helper_pricing_entities_with_budget($budget_id) {
   
   return $item_nids;
 }
+
+/**
+* Function returns a total budget amount and all budget entities available
+* @param $node the node where to find the budget entity
+* @param $date unixtimestamp at which we want to determine the current budget. If false, we return all (no date filter)
+* @return array: 'total_hours': Sum of all total hours of all relevant budgets
+*                'available_hours': Sum of all available hours of all relevant budgets
+*                'budgets': array of all budget entites used to calculate the values
+*/
+function _erpal_projects_helper_get_budget($node, $date) {
+
+  if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value'])) 
+    return false; //no pricing available
+  
+  //get the pricing entity
+  $pricing_id = $node->field_pricing[LANGUAGE_NONE][0]['value'];
+  $pricing_entity = entity_load('field_collection_item', array($pricing_id));
+  $pricing_entity = $pricing_entity[$pricing_id];    
+  
+  if (!isset($pricing_entity->field_budgets[LANGUAGE_NONE]))
+    return false;
+  
+  $total_hours_sum = 0;
+  $available_hours_sum = 0;
+  $budgets = array();
+  
+  foreach ($pricing_entity->field_budgets[LANGUAGE_NONE] as $delta=>$target_id) {
+    $budget_id = $target_id['target_id'];
+    $budget = budget_load($budget_id);
+   
+    //if $date is given, ensure that the date is in range of each budget
+    if ($date) {
+      $budget_from = $budget->date_from ? $budget->date_from : 0;
+      $budget_till = $budget->date_till ? $budget->date_till : PHP_INT_MAX;
+      $in_date_range = ($budget_from <= $date) && ($date <= $budget_till);
+      
+      if (!$in_date_range)
+        continue;  //this budget is not relevant because of wrong date range
+    }
+    $budgets[] = $budget;    
+    $total_hours_sum += $budget->total_hours;
+    $available_hours_sum += $budget->available_hours;
+    
+  }
+  
+  $ret = array(
+    'total_hours' => $total_hours_sum,
+    'available_hours' => $available_hours_sum,
+    'budgets' => $budgets,
+  );
+  
+  return $ret;
+}
+
+/**
+* Creates fields for use as preprocess fields in display suite to make calculated values available there.
+*/
+function _erpal_projects_billable_preprocess_for_budget(&$vars) {
+
+  $node = $vars['node'];  
+  
+  if ($node->type == 'erpal_task' || $node->type == 'erpal_project') {
+    //add field to show the total available budget and to add a link for adding budget.
+    $budget_arr = _erpal_projects_helper_get_budget($node, time());  //get the budget that is NOW available
+    
+    if ($budget_arr)    
+      $vars['budget_usage'] = theme('erpal_budget_usage', array('budget_arr' => $budget_arr));
+  }
+  
+}

@@ -51,15 +51,24 @@ function _erpal_project_task_parent($node) {
   //ok, this is a task
   //does it have a direct parent?
   $parent_nid = false;
+  $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+  
   if (isset($node->field_parent[LANGUAGE_NONE][0]['target_id'])) {
     $parent_nid = $node->field_parent[LANGUAGE_NONE][0]['target_id'];    
   } else {
     //if there is no direct parent, use the project as parent with its pricing information
-    $parent_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+    $parent_nid = $project_nid;
   }
   
-  if ($parent_nid)
-    return node_load($parent_nid);
+  if ($parent_nid) {
+    $parent_node = node_load($parent_nid);
+    //if parent node is not a task or a project, use the referenced project
+    if ($parent_node->type != 'erpal_task' && $parent_node->type != 'erpal_project') {
+      $parent_node = node_load($project_nid);
+    }
+    
+    return $parent_node;
+  }
   
-  return $parent_nid;
+  return false;
 }
