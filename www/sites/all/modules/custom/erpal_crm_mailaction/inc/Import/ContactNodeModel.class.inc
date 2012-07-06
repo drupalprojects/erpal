@@ -34,7 +34,7 @@ class ContactNodeModel {
   /*
    * Loads a contact node which has a specific mail address-.
    * @param 	string 	$email	The email address which you want to check.
-   * @return 	boolean					TRUE on success.
+   * @return 	mixed						The database ID of the contact on success. Otherwise FALSE.
    */
 
   public function loadContactOfMailAddress ($emailAddress) {

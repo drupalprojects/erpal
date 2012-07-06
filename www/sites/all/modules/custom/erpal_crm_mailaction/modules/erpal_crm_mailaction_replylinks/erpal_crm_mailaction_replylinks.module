@@ -22,7 +22,7 @@ function erpal_crm_mailaction_replylinks_preprocess_node(&$vars) {
   }
 
   $vars['content']['links']['#links'] += _erpal_crm_helper_create_node_reply_links ($vars);
- 
+
   return;
 }
 
