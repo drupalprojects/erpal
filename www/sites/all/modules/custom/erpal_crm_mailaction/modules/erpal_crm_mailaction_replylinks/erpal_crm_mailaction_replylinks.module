@@ -8,34 +8,40 @@
  */
 
 
- 
- 
 /**
-* Implements hook_theme_registry_alter
+* Implements hook_preprocess_hook.
 */
 function erpal_crm_mailaction_replylinks_preprocess_node(&$vars) {
 
   if ($vars['type'] != 'erpal_crm_activity') {
     return;
   }
+  
+  if ($vars['teaser'] == TRUE) {
+    return;
+  }
 
-  $vars['content']['links']['#links'] = _erpal_crm_helper_create_node_reply_links ($vars);
-   
+  $vars['content']['links']['#links'] += _erpal_crm_helper_create_node_reply_links ($vars);
+
   return;
 }
 
 /**
-* Implements hook_theme_registry_alter
+* Implements hook_preprocess_hook.
 */
 function erpal_crm_mailaction_replylinks_preprocess_comment (&$vars) {
  
-  if ($vars['type'] != 'erpal_crm_activity') {
-  //  return;
+  if ($vars['node']->type != 'erpal_crm_activity') {
+    return;
   }
-// TODO
   
- // $vars['content']['links']['#links'] = _erpal_crm_helper_create_node_reply_links ($vars);
-   
+  $links = _erpal_crm_helper_create_comment_reply_links ($vars['node']->title, $vars['comment']);;
+  if ($links == FALSE) {
+    return;
+  }  
+ 
+  $vars['content']['links']['comment']['#links'] += $links;
+  
   return;
 }
 
@@ -66,7 +72,7 @@ function _erpal_crm_helper_create_reply_link ($receiver, $subject, $ticket) {
 }
 
 /*
- * This function creates a list of conversation partners.
+ * This function creates a list of conversation partners for a node.
  * @param  object $activity_node	The node object of the activity node.
  * @return array 									The reply links of the activity.
  */
@@ -77,7 +83,7 @@ function _erpal_crm_helper_create_node_reply_links ($activity_node) {
   
   foreach ($activity_node['field_contacts_ref'] as $index=>$contact) {
  
-    $links['reply_' . $index] = _erpal_crm_helper_create_reply_link (
+    $links['reply_activity_node_' . $index] = _erpal_crm_helper_create_reply_link (
       isset ($contact['entity']->field_email[LANGUAGE_NONE]) ? $contact['entity']->field_email[LANGUAGE_NONE][0] ['value'] : '',
       $node->title, 
       $activity_node['nid']
@@ -86,3 +92,28 @@ function _erpal_crm_helper_create_node_reply_links ($activity_node) {
  
   return $links;
 }
+
+/*
+ * This function creates a list of conversation partners for a comment.
+ * @param  object $activity_comment	The comment object of the activity comment.
+ * @return array 										The reply links of the activity.
+ */
+function _erpal_crm_helper_create_comment_reply_links ($node_title, $activity_comment) {
+ 
+  $links = array ();
+
+  if (! isset ($activity_comment->field_contacts_ref[LANGUAGE_NONE])) {
+    return;
+  }
+ 
+  foreach ($activity_comment->field_contacts_ref[LANGUAGE_NONE] as $index=>$contact) {
+    $links['reply_activity_comment_' . $index] = _erpal_crm_helper_create_reply_link (
+      isset ($contact['entity']->field_email[LANGUAGE_NONE]) ? $contact['entity']->field_email[LANGUAGE_NONE][0] ['value'] : '',
+      $node_title, 
+      $activity_comment->nid
+    );
+  }
+  
+  return $links;
+}
+  

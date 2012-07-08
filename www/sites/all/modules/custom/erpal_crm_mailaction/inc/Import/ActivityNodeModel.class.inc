@@ -47,6 +47,9 @@ class ActivityNodeModel {
    */
   public function addToCustomerActivity ($nid, $to, $from, $subject, $body, $attachments) {
 
+    $contactModel = new ContactNodeModel ();
+    $contactID    = $contactModel->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
+    
     drupal_load ('module', 'comment');
     
     $comment = (object) array(
@@ -73,7 +76,14 @@ class ActivityNodeModel {
           )
         )
       ),
-    );
+      'field_contacts_ref' => array (
+        LANGUAGE_NONE => array (
+          0 => array (
+            'target_id' => $contactID
+          )
+        )
+      )
+    ); 
 
     comment_submit($comment);
     comment_save($comment);
@@ -100,8 +110,8 @@ class ActivityNodeModel {
     
     module_load_include ('inc', 'erpal_crm_mailaction', 'includes/ContactNodeModel.class');
     
-    $auth     = new ContactNodeModel ();
-    $contact  = $auth->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
+    $contactModel = new ContactNodeModel ();
+    $contactID    = $contactModel->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
         
     $node           = new \stdClass ();
     $node->type     = 'erpal_crm_activity';
@@ -118,7 +128,7 @@ class ActivityNodeModel {
     $node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
     
     if ($contact !== FALSE) {
-      $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contact;
+      $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contactID;
     }
     
     node_save ($node);
