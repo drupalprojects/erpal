@@ -29,13 +29,13 @@ function budget_schema() {
       ),
       'available_hours' => array(
         'description' => 'Actually available hours at this budget',
-        'type' => 'int',
+        'type' => 'float',
         'not null' => TRUE,
         'default' => 0,
       ),
       'total_hours' => array(
         'description' => 'Initially total hours given at this budget',
-        'type' => 'int',
+        'type' => 'float',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -79,4 +79,28 @@ function budget_schema() {
   );
 
   return $schema;
+}
+
+/**
+* First Update to change field type of available hours and total hours to float
+*/
+function budget_update_7001(&$sandbox) {
+
+  db_change_field('budget', 'available_hours', 'available_hours',
+    array(
+      'type' => 'float', 
+      'not null' => TRUE,
+      'description' => 'Actually available hours at this budget',
+      'default' => 0,
+    )  
+  );
+  
+  db_change_field('budget', 'total_hours', 'total_hours',
+    array(
+      'type' => 'float', 
+      'not null' => TRUE,
+      'description' => 'Initially total hours given at this budget',
+      'default' => 0,
+    )
+  );
 }

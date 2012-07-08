@@ -161,7 +161,7 @@ class budget extends Entity {
   * if the added amount + available_hours is more than total hours, adding fails ans result is false
   *@return true if success false otherwise
   */
-  private function add_hours($amount, $negative=false) {
+  public function add_hours($amount, $negative=false) {
     //prepare values, especially float values
     $available_hours = $this->available_hours;
     $total_hours = $this->total_hours;

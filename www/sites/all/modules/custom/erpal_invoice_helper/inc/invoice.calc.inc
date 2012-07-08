@@ -406,6 +406,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //now create the invoice!
   //create the invoice with the  billables      
   $invoice = new stdClass();
+  $invoice->status = 1; //published
   $invoice->type = 'erpal_invoice';  
   node_object_prepare($invoice);  
   $invoice->uid = $user->uid;

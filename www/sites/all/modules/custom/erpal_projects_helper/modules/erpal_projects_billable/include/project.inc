@@ -37,7 +37,7 @@ function _erpal_projects_billable_update_project($node) {
   
   $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
     
-  $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);
+  $billable_information = _erpal_projects_billable_subject_billable_information_subject($node);
   
   /*
   //now we have all information to create a billable from this project

@@ -34,7 +34,7 @@ function _erpal_projects_billable_update_task($node) {
   
   $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
     
-  $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);
+  $billable_information = _erpal_projects_billable_subject_billable_information_subject($node);
   
   _erpal_billable_update_billable($node, 'update');
     

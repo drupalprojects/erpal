@@ -9,9 +9,15 @@
 */
 function erpal_projects_helper_node_presave_timetracking($node) {
  
+  if (isset($node->nid)) {
+    //load the old timetracking node to add its billing_duration, not the new current one
+    $old_node = node_load($node->nid);
+    _erpal_projects_helper_restore_timetracking_budget($old_node);
+  }
+  
   //if no value is available, we caclulate the value using start and end time
   $start_time = $node->field_date_time[LANGUAGE_NONE][0]['value'];
-  $end_time = $node->field_date_time[LANGUAGE_NONE][0]['value2'];
+  $end_time = isset($node->field_date_time[LANGUAGE_NONE][0]['value2']) ? $node->field_date_time[LANGUAGE_NONE][0]['value2'] : $node->field_date_time[LANGUAGE_NONE][0]['value'];
   
   $diff_duration = $end_time - $start_time;
   $diff_duration = $diff_duration / (60 * 60);//calculate hours
