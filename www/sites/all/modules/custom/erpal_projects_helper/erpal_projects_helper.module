@@ -10,6 +10,9 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/tasks');
 module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
 module_load_include('inc', 'erpal_projects_helper', 'inc/book');
 module_load_include('inc', 'erpal_projects_helper', 'inc/budget');
+module_load_include('inc', 'erpal_projects_helper', 'inc/config');
+module_load_include('inc', 'erpal_projects_helper', 'inc/rules');
+
  
 /**
 * Implements hook_init

@@ -7,7 +7,7 @@
 /**
 * Returns all the menu path for config of crm feature
 */
-function _erpal_projects_helper_config_menu(){
+function _erpal_projects_helper_config_menu() {
   
   $items['admin/erpal/projects'] = array(
     'title' => 'ERPAL Projects',
@@ -23,7 +23,63 @@ function _erpal_projects_helper_config_menu(){
 /**
 * Settings for the ERPAL CRM Feature
 */
-function _erpal_projects_helper_config_projects()
-{
-  return "ERPAL Projects";
+function _erpal_projects_helper_config_projects() {
+  $form = drupal_get_form('erpal_projects_helper_config_form');
+
+  return $form;
+}
+
+/**
+* Form to show all settings to configure ERPAL projects module
+*/
+function erpal_projects_helper_config_form($form, &$form_state) {
+
+  $form = array();
+  
+  $form['budget_usage_warn'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Warn at budget usage %'),
+    '#description' => t('If budget usage is closed to this value a warning is shown and the trigger is called.'),
+    '#size' => 5,
+    '#default_value' => _erpal_projects_helper_budget_usage_warn(),
+  );
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('save'),
+  );
+  
+  return $form;
+}
+
+/**
+* Validation callback of projects config form
+*/
+function erpal_projects_helper_config_form_validate($form, $form_state) {
+  $values = $form_state['values'];
+  $budget_usage_warn = trim($values['budget_usage_warn']);
+
+  $out_of_range = false;
+  if ($budget_usage_warn < 1 || $budget_usage_warn > 100)
+    $out_of_range = true;
+  
+  if (!is_numeric($budget_usage_warn) || $out_of_range)
+    form_set_error('budget_usage_warn', t('Please enter only numeric values between 1 and 100'));
+}
+
+/**
+* Submit callback of projects config form
+*/
+function erpal_projects_helper_config_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $budget_usage_warn = trim($values['budget_usage_warn']);
+  
+  variable_set('erpal_projects_budget_usage_warn', $budget_usage_warn);
+}
+
+/**
+* Return the project budget warn treshold
+*/
+function _erpal_projects_helper_budget_usage_warn() {
+  return variable_get('erpal_projects_budget_usage_warn', 90);
 }

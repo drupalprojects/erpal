@@ -238,7 +238,9 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
     //reduce the budget entity
     $budget_entity->add_hours(-1 * $billing_duration, $allow_negative);
     $budget_entity->save();
-dpm($budget_entity);
+    
+    _erpal_projects_helper_check_budget_usage($pricing_node, $booking_date, true);
+
     //save the budget entity reference field of the timetracking node to the chosen budget entity, so we dont neet to
     //save the whole timetracking node again
     //Get the id of your field
@@ -303,4 +305,55 @@ function _erpal_projects_helper_restore_timetracking_budget($timetracking_node) 
     $referenced_budget->add_hours($billing_duration);
     $referenced_budget->save();
   }  
+}
+
+/**
+* Warn if the budget has reached its usage limit
+* @param $node the node where the budgets are attached at
+* @param $booking_date the date at which we check the usage
+* @param $trigger_warnings if true warnings and triggers are called to warn the user
+*/
+function _erpal_projects_helper_check_budget_usage($node, $booking_date, $trigger_warnings=false) {
+  $budgets_arr = _erpal_projects_helper_get_budget($node, $booking_date);
+  
+  $total_hours = $budgets_arr['total_hours'];
+  $available_hours = $budgets_arr['available_hours'];
+  
+  $usage_percent = abs((($total_hours - $available_hours) / $total_hours) * 100);
+
+  $usage_limit = _erpal_projects_helper_budget_usage_warn();
+
+  $budget_usage = $available_hours.' / '.$total_hours;
+  $node_link = l($node->title, 'node/'.$node->nid);
+
+  //close to limit
+  if ($usage_percent >= $usage_limit && $usage_percent < 100) {
+    drupal_set_message(t('Budget of !node_link is closed to limit with !budget_usage', 
+      array(
+        '!node_link' => $node_link,
+        '!budget_usage' => $budget_usage,
+      )
+    ), 'warning');
+    
+    //call rules event
+    if (module_exists('rules')) {
+      rules_invoke_event('budget_warning', $node, $available_hours, $total_hours);
+    }
+  }
+  
+  //reached limit
+  if ($usage_percent >= 100) {
+    drupal_set_message(t('Budget of !node_link is completely used with !budget_usage', 
+      array(
+        '!node_link' => $node_link,
+        '!budget_usage' => $budget_usage,
+      )
+    ), 'error');
+    
+    //call rules event
+    if (module_exists('rules')) {
+      rules_invoke_event('budget_empty', $node, $available_hours, $total_hours);
+    }
+  }
+  
 }
