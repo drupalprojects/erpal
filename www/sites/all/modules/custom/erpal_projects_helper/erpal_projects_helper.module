@@ -49,6 +49,16 @@ function erpal_projects_helper_theme() {
   );
 }
 
+
+/**
+* Implements hook_node_delete
+*/
+function erpal_projects_helper_node_delete($node) {
+  if ($node->type == 'erpal_timetracking') {
+    _erpal_projects_helper_add_duration_to_budget($node);
+  }
+}
+
 /**
 * Implements hook_node_validate
 */
@@ -245,7 +255,7 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
 */
 function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
   $delete_nid = $form['nid']['#value'];
-  $delete_node = node_load($delete_nid);
+  $delete_node = node_load($delete_nid);  
   
   $project_nid = _erpal_projects_helper_has_project($delete_node);
   
@@ -279,6 +289,7 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
     ); 
     
     $form['#validate'][] = '_erpal_projects_helper_project_delete_confirm_validate';
+    $form['#validate'][] = '_erpal_projects_helper_check_budget_validate_on_delete';
     $form['#submit'][] = '_erpal_projects_helper_project_delete_confirm_submit';
     
   } elseif ($delete_node->type == 'erpal_task') {
@@ -332,6 +343,7 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
     );
     
     $form['#submit'][] = '_erpal_projects_helper_task_delete_confirm_submit';
+    $form['#validate'][] = '_erpal_projects_helper_check_budget_validate_on_delete';
   }
 }
 
@@ -409,6 +421,27 @@ function _erpal_projects_helper_project_delete_confirm_submit($form, $form_state
 }
 
 /**
+* Function to validate that no tasks with budgets are deleted directely or while deleting children
+*/
+function _erpal_projects_helper_check_budget_validate_on_delete($form, $form_state) {
+  //if node is not allowed to be deleted redirect with warning
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+  $delete_node = node_load($delete_nid);
+  $delete_children_type = isset($values['delete_children']) ? $values['delete_children'] : false;
+  $delete_children = ($delete_node->type == 'erpal_project') || ($delete_children_type == 'delete');
+
+  $messages = array();
+  if (!_erpal_projects_helper_can_delete($delete_node, $delete_children, $messages)) {
+    $message_string = '';   
+    foreach ($messages as $message) {
+      $message_string .= '<br/>'.$message;
+    }
+    form_set_error('delete_tasks_fieldset', t('This node cannot be deleted because: !message_string', array('!message_string' => $message_string)));      
+  }
+}
+
+/**
 * Validation handler of project delete confirm
 */
 function _erpal_projects_helper_project_delete_confirm_validate($form, $form_state) {
@@ -420,8 +453,9 @@ function _erpal_projects_helper_project_delete_confirm_validate($form, $form_sta
   
   //if book will be delete checkbox must be set!
   if ($delete_node->type == 'erpal_project') {
-    if (!$delete_children)
+    if (!$delete_children) {
       form_set_error('delete_children', t('Please submit checkbox to delete all tasks'));
+    }        
   }
 }
 
@@ -499,6 +533,22 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
     $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
   }
   
+}
+
+/**
+* if node is a timetracking node and references a budget, add the billing duration to the budget again
+*/
+function _erpal_projects_helper_add_duration_to_budget($node) {
+  if (!$node->type == 'erpal_timetracking')
+    return;
+         
+  if (isset($node->field_budget[LANGUAGE_NONE][0]['target_id'])) {
+    $budget_id = $node->field_budget[LANGUAGE_NONE][0]['target_id'];
+    $budget_entity = budget_load($budget_id);
+    $billing_duration = $node->field_billing_duration[LANGUAGE_NONE][0]['value'];
+    $budget_entity->add_hours($billing_duration);
+    $budget_entity->save();
+  }
 }
 
 /**
@@ -711,3 +761,52 @@ function _erpal_projects_helper_get_activity($node) {
   
 }
 
+/**
+* Checks if a task or a project could be delete
+* @param $node the node that is check to be deleted
+* @param $check_children if true the children of the node will be checked, too
+* @param $messages array with messages that will be returned
+*/
+function _erpal_projects_helper_can_delete($node, $check_children, &$messages) {
+  //if tasks or projects have budgets assigned, they cannot be delete.
+  if ($node->type != 'erpal_project' && $node->type != 'erpal_task')
+    return true;
+  
+  $all_task_nids = array();
+  if ($check_children) {
+    if ($node->type == 'erpal_project') {
+      $all_task_nids = _erpal_projects_helper_get_tasks_by_project($node->nid);
+    }elseif ($node->type == 'erpal_task') {
+      $all_task_nids = _erpal_basic_helper_get_all_child_nids_deep_search($node->nid, array('erpal_task'));
+    }
+  }
+  
+  //add the node that will be deleted, we have to check it, too
+  $all_task_nids[] = $node->nid;
+  
+  //check if children have budgets assigned, than it cannot be deleted
+  $found_budget = false;
+  foreach ($all_task_nids as $nid) {
+
+    if (is_array($nid) && isset($nid['child']) && $nid['child']) {
+      $nid = $nid['child'];
+    }
+
+    $a_node = node_load($nid);
+    $pricing_id = $a_node->field_pricing[LANGUAGE_NONE][0]['value'];
+    $pricing_entity = entity_load('field_collection_item', array($pricing_id));
+    $pricing_entity = $pricing_entity[$pricing_id];  
+
+    if (isset($pricing_entity->field_budgets[LANGUAGE_NONE]) && count($pricing_entity->field_budgets[LANGUAGE_NONE]) > 0) {
+      $node_link = l($a_node->title, 'node/'.$a_node->nid);
+      $messages[] = t('The node !node_link has budgets assigned.', array('!node_link' => $node_link));
+      $found_budget = true;
+    }    
+  }
+  
+  if ($found_budget) {
+    return false;
+  }
+
+  return true;
+}
