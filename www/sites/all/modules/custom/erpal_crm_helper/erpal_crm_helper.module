@@ -32,6 +32,10 @@ function erpal_crm_helper_permission(){
       'title'       => t('Mail reply from activity node'), 
       'description' => t('Shows a mailto reply link for the specific user on activity nodes and the commtents of such nodes.'),
     ),
+    'access activities view' => array(
+      'title' => t('Access activities view'), 
+      'description' => t('Allows the user to access the activities view'),
+    ),
   );
 }
  

@@ -96,6 +96,18 @@ function erpal_projects_helper_permission(){
       'title' => t('Administer ERPAL Projects'), 
       'description' => t('Perform administration tasks for ERPAL Projects module.'),
     ),
+    'access projects view' => array(
+      'title' => t('Access projects view'), 
+      'description' => t('Allows the user to access the projects view'),
+    ),
+    'access tasks view' => array(
+      'title' => t('Access tasks view'), 
+      'description' => t('Allows the user to access the tasks view'),
+    ),
+    'access timetrackings view' => array(
+      'title' => t('Access timetrackings view'), 
+      'description' => t('Allows the user to access the timetrackings view'),
+    ),
   );
 }
 

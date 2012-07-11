@@ -366,6 +366,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Books';
   $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access books view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;

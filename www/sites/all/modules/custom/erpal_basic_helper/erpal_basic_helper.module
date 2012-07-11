@@ -114,6 +114,10 @@ function erpal_basic_helper_permission(){
       'title' => t('Administer ERPAL'), 
       'description' => t('Perform administration tasks for ERPAL modules.'),
     ),
+    'access contact view' => array(
+      'title' => t('Access contact view'), 
+      'description' => t('Allows the user to access the contact view'),
+    ),    
   );
 }
  

@@ -13,6 +13,18 @@ require_once 'include/timetracking.inc';
 require_once 'include/ajax.inc';
 
 /**
+* Implements hook_permission
+*/
+function erpal_projects_billable_permission() {
+  return array(
+    'access billables view' => array(
+      'title' => t('Access billables view'), 
+      'description' => t('Allows the user to access the billables view'),
+    ),
+  );
+}
+
+/**
 * Implements hook_node_insert
 */
 function erpal_projects_billable_node_insert($node) {

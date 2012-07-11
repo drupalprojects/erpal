@@ -88,13 +88,19 @@ function erpal_book_helper_theme() {
 /**
 * Implements hook_permission
 */
-function _erpal_book_helper_permission() {
+function erpal_book_helper_permission() {
   $permissions = array(
     'clone complete books' => array(
       'title' => t('Clone complete books'),
       'description' => t('Allows a user to clone complete books'),
     ),
+    'access books view' => array(
+      'title' => t('Access books view'), 
+      'description' => t('Allows the user to access the books view'),
+    ),
   );
+  
+  return $permissions;
   
 }
 

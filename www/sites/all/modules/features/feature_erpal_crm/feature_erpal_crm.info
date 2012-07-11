@@ -52,7 +52,6 @@ features[node][] = erpal_crm_activity
 features[page_manager_handlers][] = node_view_panel_context_3
 features[page_manager_handlers][] = node_view_panel_context_8
 features[page_manager_pages][] = contact_activities
-features[user_role][] = crm user
 features[variable][] = additional_settings__active_tab_erpal_crm_activity
 features[variable][] = ant_erpal_crm_activity
 features[variable][] = ant_pattern_erpal_crm_activity
