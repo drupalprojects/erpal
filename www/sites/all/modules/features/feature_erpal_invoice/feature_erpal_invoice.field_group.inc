@@ -78,7 +78,7 @@ function feature_erpal_invoice_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Purchasing',
-    'weight' => '7',
+    'weight' => '5',
     'children' => array(
       0 => 'field_buy_currency',
       1 => 'field_buy_price',

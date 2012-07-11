@@ -180,7 +180,7 @@ function feature_erpal_invoice_field_default_fields() {
       ),
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_buy_currency',
-      'label' => 'Currency',
+      'label' => 'Purchase Currency',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -248,7 +248,7 @@ function feature_erpal_invoice_field_default_fields() {
       ),
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_buy_price',
-      'label' => 'Price',
+      'label' => 'Purchase Price',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -313,7 +313,7 @@ function feature_erpal_invoice_field_default_fields() {
       ),
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_buy_vat_rate',
-      'label' => 'VAT rate',
+      'label' => 'Purchase VAT',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -1975,7 +1975,9 @@ function feature_erpal_invoice_field_default_fields() {
   t('Order numbers intern');
   t('Payed');
   t('Payment date');
-  t('Price');
+  t('Purchase Currency');
+  t('Purchase Price');
+  t('Purchase VAT');
   t('Select a contact that has created the invoice. Leave blank, if your company is the contractor');
   t('Skonto');
   t('The address of the customer the invoice will be related to');
