@@ -134,7 +134,6 @@ function _erpal_book_helper_book_pdf_menu_access($node) {
 * Implements hook_node_view
 */
 function erpal_book_helper_node_view($node) {
-  dpm($node->field_weight[LANGUAGE_NONE][0]['value']);
   if ($node->type == 'erpal_book' || $node->type == 'erpal_book_page') {
     $links[] = array(
       'href' => 'books/'.$node->nid.'/pdf',
