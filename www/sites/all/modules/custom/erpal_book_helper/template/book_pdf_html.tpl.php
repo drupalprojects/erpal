@@ -1,9 +1,4 @@
-<?php
-$title = $counter." ".$title;
-$params = $pdf_object->serializeTCPDFtagParameters(array($title,1,0,'','',array(128,128,0)));  //needed later for table of contentes 
-
-echo '<tcpdf method="Bookmark" params="'.$params.'" />';
-?>
+<?php if ($bookmark) echo $bookmark; ?>
 
 <h1><?php echo $title; ?></h1>
 <p>

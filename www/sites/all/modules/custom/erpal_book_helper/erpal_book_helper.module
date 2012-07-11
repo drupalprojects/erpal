@@ -108,14 +108,15 @@ function _erpal_book_helper_book_clone_menu_access($node) {
 * Access Callback for url to create a pdf from a book
 */
 function _erpal_book_helper_book_pdf_menu_access($node) {
+  
   if ($node->type == 'erpal_book')
     if (!user_access('create erpal_book content'))
       return false;
-      
+    
   if ($node->type == 'erpal_book_page')
     if (!user_access('create erpal_book_page content'))
       return false;
-   
+ 
   //validate that given node is of type book or book_page
   $type_ok = $node->type == 'erpal_book' || $node->type == 'erpal_book_page';
   
