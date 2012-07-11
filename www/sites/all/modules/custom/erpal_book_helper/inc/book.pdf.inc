@@ -66,6 +66,12 @@ function erpal_books_helper_pdf_form($form, $form_state, $node) {
     '#default_value' => 'attach',
   );
   
+  $form['add_nids'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add IDs to PDF'),
+    '#default_value' => false,    
+  );
+  
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Create PDF'),
@@ -149,6 +155,7 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
     'skipp_root' => false,
     'set_bookmark' => false,
     'depth' => 1,
+    'add_nids' => false, //no nid at frontpage title
   );
   $frontpage_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options, 'counter' => false));
   //line bracks as <br>
@@ -213,6 +220,7 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
     'skipp_root' => $skipp_root,
     'set_bookmark' => true,
     'depth' => $depth_counter ? $depth_counter : 1,
+    'add_nids' => $options['add_nids'],
   );
   
   //save the body, if we dont do that, the content token will be replaced in the real node body....dont know why...??!
@@ -321,11 +329,14 @@ function _erpal_book_helper_preprocess_erpal_books_book_pdf_html(&$variables) {
   $variables['bookmark'] = false;
 
   if (isset($variables['options']['set_bookmark']) && $variables['options']['set_bookmark']) {
+    
     $title = $counter." ".$title;
+    $variables['title'] = $title;
     $depth--; //Start at 0 for tcpdf 
     $params = $pdf_object->serializeTCPDFtagParameters(array($title,$depth,0,'','',array(128,128,0)));  //needed later for table of contents 
     $bookmark = '<tcpdf method="Bookmark" params="'.$params.'" />';
     $variables['bookmark'] = $bookmark;
   }
+  
     
 }
