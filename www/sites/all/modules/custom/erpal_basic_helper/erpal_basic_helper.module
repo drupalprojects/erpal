@@ -609,11 +609,11 @@ function _erpal_basic_helper_bulk_update_operation($nids, $callback, $args, &$co
 }
 
 /**
-* returns an array of direct children of a node using field_parent
+* returns an array of direct children nids of a node using field_parent
 * @param $nid the parent nid to search children for
 * @param $types only those node types are returned
 */
-function _erpal_basic_helper_get_direct_children($nid, $types=array()) {
+function _erpal_basic_helper_get_direct_children($nid, $types=array(), $order_field=false) {
   
   $children = array();
   if (!count($types))
@@ -626,6 +626,9 @@ function _erpal_basic_helper_get_direct_children($nid, $types=array()) {
     ->fieldCondition('field_parent', 'target_id', $nid, '=')
     ->addMetaData('account', user_load(1)); // run the query as user 1
 
+    if ($order_field)
+      $query->fieldOrderBy($order_field, 'value', 'asc');
+    
     $result = $query->execute();
     if (isset($result['node'])) {
       $new_nids = array_keys($result['node']);

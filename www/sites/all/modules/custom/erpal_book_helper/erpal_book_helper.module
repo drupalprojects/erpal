@@ -134,9 +134,8 @@ function _erpal_book_helper_book_pdf_menu_access($node) {
 * Implements hook_node_view
 */
 function erpal_book_helper_node_view($node) {
-  
+  dpm($node->field_weight[LANGUAGE_NONE][0]['value']);
   if ($node->type == 'erpal_book' || $node->type == 'erpal_book_page') {
-    
     $links[] = array(
       'href' => 'books/'.$node->nid.'/pdf',
       'title' => t('Create PDF'),
@@ -302,6 +301,81 @@ function _erpal_book_helper_connect_page_to_book($node) {
     
   if ($book_nid)
     $node->field_book_ref[LANGUAGE_NONE][0]['target_id'] = $book_nid;
+    
+  //IF NODE IS NEW: now get all children of the parent and set the weight of the new page the last childnode->weight +10
+  if (!$node->nid) {
+    $types = array('erpal_task', 'erpal_book_page');
+    $child_nids = _erpal_basic_helper_get_direct_children($parent_node->nid, $types);
+    $biggest_weight = 0;
+    foreach ($child_nids as $nid) {
+      $child_node = node_load($nid);
+      $weight = $child_node->field_weight[LANGUAGE_NONE][0]['value'];
+      if ($weight > $biggest_weight)
+        $biggest_weight = $weight;
+    }
+    
+    $node->field_weight[LANGUAGE_NONE][0]['value'] = $biggest_weight +10;
+  }
+}
+
+/**
+* Implements hook_views_tree_before_move provided by views_jstree module after the moved node is saved
+* @param the node that is moved
+*/
+function erpal_book_helper_views_tree_before_move($node, $position) {
+  //get the precessor of the node and add 5 to its weight, this is the weight of the node
+  $types = array('erpal_task', 'erpal_book_page');
+  $order_field = 'field_weight';
+  $parent_nid = $node->field_parent[LANGUAGE_NONE][0]['target_id'];
+  $child_nids = _erpal_basic_helper_get_direct_children($parent_nid, $types, $order_field);
+  $position = $position -1; //the node bevor our given $node
+  
+  if ($position < 0)
+    $weight = 0;
+  else {
+    $pre_nid = $child_nids[$position];
+    $pre_node = node_load($pre_nid);
+    $weight = $pre_node->field_weight[LANGUAGE_NONE][0]['value'];
+  }
+ echo $weight."--";
+  $node->field_weight[LANGUAGE_NONE][0]['value'] = $weight + 5; //add 5 because we have always distance 5 between the nodes
+}
+
+/**
+* Implements hook_views_tree_after_move provided by views_jstree module after the moved node is saved
+* @param the node that is moved
+*/
+function erpal_book_helper_views_tree_after_move($node) {
+
+  _erpal_book_helper_reorganize_tree($node);  
+}
+
+/**
+* Reorganize all Nodes at the same child level depth like $node and set weight to the distance is always 10
+*/
+function _erpal_book_helper_reorganize_tree($node) {
+  //get all children ordered by weight
+  $types = array('erpal_task', 'erpal_book_page');
+  $order_field = 'field_weight';
+  $parent_nid = $node->field_parent[LANGUAGE_NONE][0]['target_id'];
+  $child_nids = _erpal_basic_helper_get_direct_children($parent_nid, $types, $order_field);
+
+  $weight_offset = 10;
+  foreach ($child_nids as $nid) {
+    $child_node = node_load($nid);
+    
+    //save only the weight field
+    $field_name = 'field_weight';
+    $info = field_info_field($field_name);
+    $fields = array($info['id']); 
+
+    //Execute the storage function
+    $child_node->field_weight[LANGUAGE_NONE][0]['value'] = $weight_offset;    
+    field_sql_storage_field_storage_write('node', $child_node, 'update', $fields);
+    //node_save($child_node);
+    $weight_offset += 10;
+    echo $nid."--".$weight_offset;
+  }
 }
 
 /**
