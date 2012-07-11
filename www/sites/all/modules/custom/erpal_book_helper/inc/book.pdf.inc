@@ -125,9 +125,11 @@ function erpal_books_helper_pdf_form_submit($form, $form_state) {
 */
 function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   global $user;
+  module_load_include('inc', 'erpal_book_helper', 'inc/config');
   $params = array(
     'title' => $root_node->title,
     'author' => _erpal_print_get_author($root_node),
+    'skip_pdf_header_frontpage' => _erpal_book_helper_skip_pdf_header_frontpage(),
   );
   
   $pdf_object = erpal_print_prepare_tcpdf($params);

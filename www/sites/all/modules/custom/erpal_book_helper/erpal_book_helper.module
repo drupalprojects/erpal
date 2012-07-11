@@ -3,7 +3,8 @@
  * @file
  * Module to provide helper functions for book feature
  */
- 
+
+module_load_include('inc', 'erpal_basic_helper', 'inc/config');
 module_load_include('inc', 'erpal_book_helper', 'inc/book.token'); 
 module_load_include('inc', 'erpal_book_helper', 'inc/book.clone'); 
 module_load_include('inc', 'erpal_book_helper', 'inc/book.action');
@@ -59,7 +60,11 @@ function erpal_book_helper_menu(){
     'file' => 'inc/book.pdf.inc',
     'type' => MENU_CALLBACK,
   );
-
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_book_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
 
   return $items;
 } 

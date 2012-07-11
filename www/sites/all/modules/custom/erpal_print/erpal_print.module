@@ -144,13 +144,18 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
    
   //if there are front pages add them and move them at first page (before table of contents)
   //because we go this way we have to iterate trhough the array starting at the bottom
+  $skip_pdf_header_frontpage = $params['skip_pdf_header_frontpage'];
+  if ($skip_pdf_header_frontpage)
+    $pdf_object->setPrintHeader(false);
   for ($i = count($frontpages) -1; $i >= 0; $i--) {
     $part_html = $frontpages[0];
+    
     $pdf_object->AddPage();
     $pdf_object->writeHTML($part_html, true, false, false, false, '');
     $inserted_page_no = $pdf_object->PageNo();
     $pdf_object->movePage($inserted_page_no, 1);
   }
+  $pdf_object->setPrintHeader(true);
    
   //now output the pdf
   if ($destination_uri) {
