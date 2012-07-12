@@ -125,7 +125,7 @@ function _erpal_projects_helper_pricing_entities_with_budget($budget_id) {
 * @param $date unixtimestamp at which we want to determine the current budget. If false, we return all (no date filter)
 * @return array: 'total_hours': Sum of all total hours of all relevant budgets
 *                'available_hours': Sum of all available hours of all relevant budgets
-*                'budgets': array of all budget entites used to calculate the values, ordered with the bigges budget first
+*                'budgets': array of all budget entites used to calculate the values
 */
 function _erpal_projects_helper_get_budget($node, $date) {
 
@@ -157,7 +157,7 @@ function _erpal_projects_helper_get_budget($node, $date) {
       if (!$in_date_range)
         continue;  //this budget is not relevant because of wrong date range
     }
-    $budgets[$budget->available_hours] = $budget;    
+    $budgets[] = $budget;    
     $total_hours_sum += $budget->total_hours;
     $available_hours_sum += $budget->available_hours;
     
@@ -191,6 +191,7 @@ function _erpal_projects_billable_preprocess_for_budget(&$vars) {
 
 /**
 * Book a timetracking node to budgets at a task, may be timetracking will be split if not budget of the needed sice is there
+* if we have the choice we first use the budget that time shortes time limit
 * @param $timetracking_node object a timetracking node that is booked
 * @param $billable_information billable information, not neccessaryly from the direct subject of the timetracking node
 *   but may be from prarent task or project nodes
@@ -201,14 +202,39 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
   //get the relevant subject node, we got the billable information from
   $pricing_nid = $billable_information['pricing_nid'];
   $pricing_node = node_load($pricing_nid);
-  
+
   $booking_date = time();
   if (isset($timetracking_node->field_date[LANGUAGE_NONE][0]['value']))
     $booking_date = strtotime($timetracking_node->field_date[LANGUAGE_NONE][0]['value']); //the date when the timetracking node is booked
   
   $budgets_arr = _erpal_projects_helper_get_budget($pricing_node, $booking_date);
+  
+  //sort budgets: date_till (smallest date at the top), available hours (biggest first)
   $budgets = $budgets_arr['budgets'];
+  $tmp_budgets = array();
+  //order by date_till first
+  if (is_array($budgets)) {
+    foreach ($budgets as  $delta=>$budget_entity) {
+      //load the budget entity again because we could have made changes above if there was a budget entity referenced before
+      $budget_entity_arr = entity_load('budget', array($budget_entity->budget_id)); 
+      $budget_entity = $budget_entity_arr[$budget_entity->budget_id];
+      $date_till = $budget_entity->date_till;
+      $available_hours = $budget_entity->available_hours;
+      $tmp_budgets[$date_till][$available_hours][] = $budget_entity;
+      ksort($tmp_budgets[$date_till]);
+    }
+  }
+  ksort($tmp_budgets);
 
+  $budgets = array();
+  //now flatten Budgets again
+  foreach ($tmp_budgets as $sub_budget_arr) {
+    foreach ($sub_budget_arr as $budget_entity_arr) {  //array by date_till
+      foreach ($budget_entity_arr as $budget_entity)  //array by available_hours
+      $budgets[] = $budget_entity;
+    }
+  }
+  
   //now we have budgets ordered with the biggest budget at the top.
   $billing_duration = $timetracking_node->field_billing_duration[LANGUAGE_NONE][0]['value'];
   
@@ -217,77 +243,81 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
     continue;
   }
 
-  foreach ($budgets as $delta=>$budget_entity) {
-    //load the budget entity again because we could have made changes above if there was a budget entity referenced before
-    $budget_entity_arr = entity_load('budget', array($budget_entity->budget_id)); 
-    $budget_entity = $budget_entity_arr[$budget_entity->budget_id];
+  $found_budget = false;
+  if (is_array($budgets)) {
+    foreach ($budgets as $delta=>$budget_entity) {
 
-    if ($budget_entity->available_hours <= 0 && !$allow_negative)
-      return $timetracking_node; //no budget available
+      if ($budget_entity->available_hours <= 0 && !$allow_negative)
+        continue; //no hours available, check next budget
 
-    //if the timetracking doesnt completely fit into the one budget, reduce the blling duration of the current 
-    //timetracking node and create a new one with the rest of the billing duration 
-    $rest_hours = 0;
-    if (($budget_entity->available_hours < $billing_duration) && !$allow_negative) {
-      //we cannot book the timetracking to this single budget. So we split it and try to book it to multiple budgets       
-      $rest_hours = $billing_duration - $budget_entity->available_hours;
-      $billing_duration = $budget_entity->available_hours;        
-    }      
-    
-    //book the complete timetracking node to this budget
-    //reduce the budget entity
-    $budget_entity->add_hours(-1 * $billing_duration, $allow_negative);
-    $budget_entity->save();
-    
-    _erpal_projects_helper_check_budget_usage($pricing_node, $booking_date, true);
+      $found_budget = true;
+      
+      //if the timetracking doesnt completely fit into the one budget, reduce the blling duration of the current 
+      //timetracking node and create a new one with the rest of the billing duration 
+      $rest_hours = 0;
+      if (($budget_entity->available_hours < $billing_duration) && !$allow_negative) {
+        //we cannot book the timetracking to this single budget. So we split it and try to book it to multiple budgets       
+        $rest_hours = $billing_duration - $budget_entity->available_hours;
+        $billing_duration = $budget_entity->available_hours;        
+      }      
+      
+      //book the complete timetracking node to this budget
+      //reduce the budget entity
+      $budget_entity->add_hours(-1 * $billing_duration, $allow_negative);
+      $budget_entity->save();
+      
+      _erpal_projects_helper_check_budget_usage($pricing_node, $booking_date, true);
 
-    //save the budget entity reference field of the timetracking node to the chosen budget entity, so we dont neet to
-    //save the whole timetracking node again
-    //Get the id of your field
-    $field_name = 'field_budget';
-    $info = field_info_field($field_name);
-    $fields = array($info['id']); 
-
-    //Execute the storage function
-    $timetracking_node->field_budget[LANGUAGE_NONE][0]['target_id'] = $budget_entity->budget_id;
-    field_sql_storage_field_storage_write('node', $timetracking_node, 'update', $fields);
-    
-    //if billing duration changed, update it at the initial timetracking node! But update only the field itself to avoid 
-    //recursion of timetracking node save
-    if ($timetracking_node->field_billing_duration[LANGUAGE_NONE][0]['value'] != $billing_duration) {
-      $field_name = 'field_billing_duration';
+      //save the budget entity reference field of the timetracking node to the chosen budget entity, so we dont neet to
+      //save the whole timetracking node again
+      //Get the id of your field
+      $field_name = 'field_budget';
       $info = field_info_field($field_name);
       $fields = array($info['id']); 
 
       //Execute the storage function
-      $timetracking_node->field_billing_duration[LANGUAGE_NONE][0]['value'] = $billing_duration;
+      $timetracking_node->field_budget[LANGUAGE_NONE][0]['target_id'] = $budget_entity->budget_id;
       field_sql_storage_field_storage_write('node', $timetracking_node, 'update', $fields);
-    }
-    
-    
-    //if we have a rest duration, create a new timetracking and loop again
-    if ($rest_hours) {
-      $timetracking_node_new = new stdClass();  
-      $timetracking_node_new->status = 1; //published
-      $timetracking_node_new->language = $timetracking_node->language;
-      $timetracking_node_new->type = $timetracking_node->type;
-      $timetracking_node_new->title = $timetracking_node->title;
-      $timetracking_node_new->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'] = $timetracking_node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
-      $timetracking_node_new->field_date_time[LANGUAGE_NONE][0]['value'] = $timetracking_node->field_date_time[LANGUAGE_NONE][0]['value'];  //no time till because this is not neccessary in the splitted timetracking node
-      $timetracking_node_new->field_billing_duration[LANGUAGE_NONE][0]['value'] = $rest_hours;
-      $timetracking_node_new->field_duration[LANGUAGE_NONE][0]['value'] = 0;  //for statistic reasons we have the total
-      //duration at the timtracking node inserted by the user, so here we have no further duration. Only billing_duration 
-      //will be dplit because it is used to calculate budgets and billables
-      node_object_prepare($timetracking_node_new);
-      node_save($timetracking_node_new);  //start recursion to save this timetracking node to budget...
-      return false;
       
-    } else
-      return false;
+      //if billing duration changed, update it at the initial timetracking node! But update only the field itself to avoid 
+      //recursion of timetracking node save
+      if ($timetracking_node->field_billing_duration[LANGUAGE_NONE][0]['value'] != $billing_duration) {
+        $field_name = 'field_billing_duration';
+        $info = field_info_field($field_name);
+        $fields = array($info['id']); 
+
+        //Execute the storage function
+        $timetracking_node->field_billing_duration[LANGUAGE_NONE][0]['value'] = $billing_duration;
+        field_sql_storage_field_storage_write('node', $timetracking_node, 'update', $fields);
+      }
+      
+      
+      //if we have a rest duration, create a new timetracking and loop again
+      if ($rest_hours) {
+        $timetracking_node_new = new stdClass();  
+        $timetracking_node_new->status = 1; //published
+        $timetracking_node_new->language = $timetracking_node->language;
+        $timetracking_node_new->type = $timetracking_node->type;
+        $timetracking_node_new->title = $timetracking_node->title;
+        $timetracking_node_new->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'] = $timetracking_node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
+        $timetracking_node_new->field_date_time[LANGUAGE_NONE][0]['value'] = $timetracking_node->field_date_time[LANGUAGE_NONE][0]['value'];  //no time till because this is not neccessary in the splitted timetracking node
+        $timetracking_node_new->field_billing_duration[LANGUAGE_NONE][0]['value'] = $rest_hours;
+        $timetracking_node_new->field_duration[LANGUAGE_NONE][0]['value'] = 0;  //for statistic reasons we have the total
+        //duration at the timtracking node inserted by the user, so here we have no further duration. Only billing_duration 
+        //will be dplit because it is used to calculate budgets and billables
+        node_object_prepare($timetracking_node_new);
+        node_save($timetracking_node_new);  //start recursion to save this timetracking node to budget...
+        return false;
+        
+      } else
+        return false;
+    }
   }
 
-  
-  return $timetracking_node; 
+  if ($found_budget)
+    return false;
+  else  
+    return $timetracking_node; 
   
 }
 

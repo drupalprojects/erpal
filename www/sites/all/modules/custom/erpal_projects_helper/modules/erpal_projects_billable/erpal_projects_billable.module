@@ -77,6 +77,44 @@ function erpal_projects_billable_node_delete($node) {
   }
 }
 
+/*
+* Implements hook_field_widget_form_alter
+* Adds a validation hook to the beginning of the #element_validate
+* to provide custom validation on the required fields within the
+* widget.
+*/
+function erpal_projects_billable_field_widget_form_alter(&$element, &$form_state, $context) {
+  switch ($context['instance']['widget']['type']) {
+    case 'field_collection_embed':
+      if ($element['#field_name'] == 'field_pricing') {
+        //add validation handler
+        $element['#element_validate'][] = '_erpal_projects_billable_field_pricing_widget_validate';
+      }
+      break;
+  }
+}
+
+/**
+* Validate the pricing field collection
+*/
+function _erpal_projects_billable_field_pricing_widget_validate($element, &$form_state, $form) {
+  $values = $form_state['values'];
+  $pricing_entity = $values['field_pricing'][LANGUAGE_NONE][0]['entity'];
+  $price_mode = isset($pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] : 'none';
+  $vat_rate = isset($pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'] : '_none';
+  $currency = isset($pricing_entity->field_currency[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_currency[LANGUAGE_NONE][0]['value'] : '_none';
+
+  $modes = array('fixed_price', 'per_hour', 'budget');
+  if (in_array($price_mode, $modes)) {
+    //vat_rate and currency must be set
+    if ($vat_rate == '_none')
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'], t('Please set vat rate'));
+    if ($currency == '_none')
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_currency'], t('Please set currency'));
+  }
+  
+}
+
 /**
 * Implements hook_element_info_alter
 */

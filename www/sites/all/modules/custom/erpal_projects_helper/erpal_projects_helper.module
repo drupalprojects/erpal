@@ -141,6 +141,51 @@ function erpal_projects_helper_clone_book_action_form_validate($form, $form_stat
     form_set_error('project', t('Please select a project'));
 }
 
+/*
+* Implements hook_field_widget_form_alter
+* Adds a validation hook to the beginning of the #element_validate
+* to provide custom validation on the required fields within the
+* widget.
+*/
+function erpal_projects_helper_field_widget_form_alter(&$element, &$form_state, $context) {
+  switch ($context['instance']['widget']['type']) {
+    case 'field_collection_embed':
+      if ($element['#field_name'] == 'field_pricing') {
+        //add validation handler
+        $element['#element_validate'][] = '_erpal_projects_helper_field_pricing_widget_validate';
+      }
+      break;
+  }
+}
+
+/**
+* Validate the pricing field collection
+*/
+function _erpal_projects_helper_field_pricing_widget_validate($element, &$form_state, $form) {
+  $values = $form_state['values'];
+  $pricing_entity = $values['field_pricing'][LANGUAGE_NONE][0]['entity'];
+  $price_mode = isset($pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] : 'none';
+  $price = isset($pricing_entity->field_price[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] : false;
+  $budgets = isset($pricing_entity->field_budgets[LANGUAGE_NONE]) ? $pricing_entity->field_budgets[LANGUAGE_NONE] : false;
+
+  $modes_price_needed = array('fixed_price', 'per_hour');
+  
+  //price must be set
+  if (in_array($price_mode, $modes_price_needed)) {    
+    if (!$price)
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_price'], t('Please set a price'));
+  }
+  
+  //price OR at least one budget must be set
+  if ($price_mode == 'budget') {
+    $budget_count = count($budgets);
+    if (!$budget_count && !$price) {
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_budgets'], t('Please set a price or add some budgets'));
+    }
+  }
+  
+}
+
 /**
 * Implements hook_clone_page_action_form_alter provided by clone bulk operation by erpal_book_helper module
 * @param $args['book_node'] is the book the cloned pages are referenced to
