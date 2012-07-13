@@ -123,7 +123,82 @@ function feature_erpal_contract_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
+        ),
+        'additional_settings' => array(
+          'weight' => '31',
+        ),
+        'revision_information' => array(
+          'weight' => '27',
+        ),
+        'revision' => array(
+          'weight' => '12',
+        ),
+        'log' => array(
+          'weight' => '22',
+        ),
+        'author' => array(
+          'weight' => '30',
+        ),
+        'name' => array(
+          'weight' => '11',
+        ),
+        'date' => array(
+          'weight' => '18',
+        ),
+        'options' => array(
+          'weight' => '8',
+        ),
+        'status' => array(
+          'weight' => '15',
+        ),
+        'promote' => array(
+          'weight' => '21',
+        ),
+        'sticky' => array(
+          'weight' => '23',
+        ),
+        'actions' => array(
+          'weight' => '32',
+        ),
+        'submit' => array(
+          'weight' => '9',
+        ),
+        'preview' => array(
+          'weight' => '26',
+        ),
+        'comment_settings' => array(
+          'weight' => '28',
+        ),
+        'comment' => array(
+          'weight' => '13',
+        ),
+        'menu' => array(
+          'weight' => '10',
+        ),
+        'enabled' => array(
+          'weight' => '14',
+        ),
+        'link' => array(
+          'weight' => '19',
+        ),
+        'link_title' => array(
+          'weight' => '17',
+        ),
+        'description' => array(
+          'weight' => '20',
+        ),
+        'parent' => array(
+          'weight' => '24',
+        ),
+        'weight' => array(
+          'weight' => '25',
+        ),
+        'path' => array(
+          'weight' => '29',
+        ),
+        'alias' => array(
+          'weight' => '16',
         ),
       ),
       'display' => array(),

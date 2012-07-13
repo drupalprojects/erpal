@@ -22,7 +22,15 @@ function erpal_contract_helper_permission() {
 function erpal_contract_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_contract_node_form') {    
     _erpal_contract_helper_set_default_pricing($form, $form_state, $form_id);
+    _erpal_contract_helper_manage_form_elements($form, $form_state, $form_id);
   }  
+}
+
+/**
+* Manage form elements that we dont manage by display suite and renderable elements
+*/
+function _erpal_contract_helper_manage_form_elements(&$form, &$form_state, $form_id) {
+  unset($form['field_budget_booking'][LANGUAGE_NONE][0]['field_budgets']);
 }
 
 /**
