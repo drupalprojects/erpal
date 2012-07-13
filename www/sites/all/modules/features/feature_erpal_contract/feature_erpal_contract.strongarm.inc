@@ -132,7 +132,7 @@ function feature_erpal_contract_strongarm() {
           'weight' => '27',
         ),
         'revision' => array(
-          'weight' => '12',
+          'weight' => '13',
         ),
         'log' => array(
           'weight' => '22',
@@ -147,10 +147,10 @@ function feature_erpal_contract_strongarm() {
           'weight' => '18',
         ),
         'options' => array(
-          'weight' => '8',
+          'weight' => '12',
         ),
         'status' => array(
-          'weight' => '15',
+          'weight' => '8',
         ),
         'promote' => array(
           'weight' => '21',
@@ -171,13 +171,13 @@ function feature_erpal_contract_strongarm() {
           'weight' => '28',
         ),
         'comment' => array(
-          'weight' => '13',
+          'weight' => '14',
         ),
         'menu' => array(
           'weight' => '10',
         ),
         'enabled' => array(
-          'weight' => '14',
+          'weight' => '15',
         ),
         'link' => array(
           'weight' => '19',
