@@ -13,39 +13,6 @@ function erpal_projects_helper_field_attach_validate($entity_type, $entity, &$er
     $new_errors = _erpal_projects_helper_field_pricing_validate($entity);
     $errors = array_merge($errors, $new_errors);
   }
-  
-  if ($entity_type == 'profile2') {
-    //validate that the referenced contact is not already referenced by another userd profile
-    $contact_nid = 0;
-    $new_errors = array();
-    if (isset($entity->field_contact_ref[LANGUAGE_NONE][0]['target_id'])) {
-      $contact_nid = $entity->field_contact_ref[LANGUAGE_NONE][0]['target_id'];
-      $referencing_profiles = _erpal_profile_helper_profiles_by_contact($contact_nid);
-      
-      $current_uid = arg(2);  //@todo: this is not very good, there should be another way to get the uid the entity is attached to.
-      if (count($referencing_profiles) > 1) {
-        //this contact is referenced by another user, create an error
-        foreach ($referencing_profiles as $profile_id) {          
-              
-          $profile = entity_load('profile2', array($profile_id));
-          $profile = $profile[$profile_id];
-
-          if ($profile->uid != $current_uid) {
-            $a_user = user_load($profile->uid);
-            $contact_node = node_load($contact_nid);
-            $errors['field_contact_ref'][LANGUAGE_NONE][0][] = array(
-              'error' => 'nid',
-              'message' => t('The user !user_link is already linked to the contact !contact_link', array(
-                '!user_link' => l($a_user->name, 'user/'.$a_user->uid),
-                '!contact_link' => l($contact_node->title, 'node/'.$contact_node->nid)
-              )),
-            );
-          }
-          
-        }
-      }
-    }
-  }
 }
 
 /**
@@ -58,6 +25,7 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
   
   $errors = array();
   if (isset($entity->field_budgets[LANGUAGE_NONE])) {
+    
     $budget_ids = array();
     foreach ($entity->field_budgets[LANGUAGE_NONE] as $delta=>$target_id) {
       $target_id = $target_id['target_id'];
@@ -91,8 +59,9 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
           );
         }      
         $budget_ids[$target_id] = $delta;
+               
       }           
-    }
+    }      
   }
   
   return $errors;

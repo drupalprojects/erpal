@@ -281,94 +281,23 @@ function erpal_projects_billable_clone_book_action_form_validate($form, $form_st
 * implements hook_form_alter
 */
 function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
-
-  if ($form_id == 'erpal_task_node_form') {    
-    $form_state['no_cache'] = TRUE;
-    //alter task node pricing according to referenced project pricing
-    $nid = $form['nid']['#value'];
-    /*
-    $default_value_project_ref = isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
-    $default_value_parent = isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
-    */
-    if (!$nid /*&& !$default_value_project_ref && !$default_value_parent*/) { //only alter the form fields if the node will be created, not at update
-      if (count($form_state['input']) <= 0 || isset($form_state['triggering_element'])) {
-        //if we dont do that if statement, the form will be altered after submission which will lead to 
-        //another altering of pricing information, which is bad!
-        _erpal_projects_billable_preselect_task_create_form($form, $form_state);     
-      }
-    }
-
-    //_erpal_projects_billable_prepare_ajax_pricing_preselect($form, $form_state);
+  if ($form_id == 'erpal_task_node_form' || $form_id == 'erpal_project_node_form') {    
+    _erpal_projects_billable_set_default_pricing($form, $form_state, $form_id);
   }  
-
 }
 
 /**
-* Adds ajax handler to project ref field to preselect pricing information
-* if a task is created NOT BY using the reference by url widget
+* Set default vat and currency if not set
 */
-
-function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_state) {
-  /*
-  $form['field_pricing'][LANGUAGE_NONE][0]['#prefix'] = '<div id="pricing_wrapper">';
-  $form['field_pricing'][LANGUAGE_NONE][0]['#suffix'] = '</div>';
-  $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#ajax'] = array(
-    'callback' => '_erpal_projects_billable_ajax_pricing_preselect_callback',
-    'wrapper' => 'pricing_wrapper',
-    'method' => 'replace',
-    'effect' => 'fade',
-  );
-  */
-}
-
-
-/**
-* preselects the task node form with pricing information from the referenced project (if one is referenced)
-*/
-function _erpal_projects_billable_preselect_task_create_form(&$form, &$form_state) {
-
-  //ref_nid id is the node we copy the pricing information from. Mayba a project or another task
-  //if parent is set and it is type erpal_task we use the parents tasks pricing
-  $ref_nid = false; 
- 
-  if (isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'])) 
-    if ($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
-      $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'];
-      $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
-
-      $parent_node = node_load($parent_nid);
-      if ($parent_node->type == 'erpal_task')
-        $ref_nid = $parent_nid;
-    }
-  
-  if (!$ref_nid) {
-    $ref_nid = $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
-    $ref_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($ref_nid);
+function _erpal_projects_billable_set_default_pricing(&$form, &$form_state, $form_id) {
+  //set only for new node
+  $nid = $form['nid']['#value'];
+  if (!$nid) {
+    $default_currency = _erpal_invoice_helper_get_default_currency();
+    $default_vat_rate = _erpal_invoice_helper_get_default_vat_rate();
+    $form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#default_value'] = $default_vat_rate;
+    $form['field_pricing'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
   }
- 
-  //perhaps, there is a project_nid in form_state, we can use that because it has been submitted by ajax!
-  if (!empty($form_state['values']['field_project_ref']))
-    $ref_nid = $form_state['values']['field_project_ref'][LANGUAGE_NONE][0]['target_id'];
-
-  if (!$ref_nid)
-    return; //if we dont have a project, we dont have data to preselect the task price fields with
-    
-  //we prefill the price mode of the task the same as at the project. If the project has
-  //price mode "per_hour" we preselect the price (this is the price per hour).
-
-  $preselects = _erpal_projects_billable_get_task_preselects($ref_nid);
-
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_price_mode'][LANGUAGE_NONE]['#value'] = $preselects['price_mode'];
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#value'] = $preselects['vat_rate'];
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#value'] = $preselects['currency'];
-
-  $price = '';
-  if ($preselects['price_mode'] == 'per_hour') {
-    //Fill the price per hour
-    $price = $preselects['price'];
-  }
-  
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_price'][LANGUAGE_NONE][0]['value']['#value'] = $price;
 }
 
 /**
