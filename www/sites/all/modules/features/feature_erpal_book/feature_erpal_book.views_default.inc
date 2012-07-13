@@ -526,9 +526,9 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['filters']['title']['expose']['multiple'] = FALSE;
   $handler->display->display_options['path'] = 'books/templates';
 
-  /* Display: Book pages to clone */
-  $handler = $view->new_display('page', 'Book pages to clone', 'page_2');
-  $handler->display->display_options['display_description'] = 'Lists all pages with bulk op to clone to book given in argument';
+  /* Display: Book templates to clone */
+  $handler = $view->new_display('page', 'Book templates to clone', 'page_2');
+  $handler->display->display_options['display_description'] = 'Lists all template pages with bulk op to clone to book given in argument';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
@@ -788,6 +788,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['filters']['field_is_template_value']['expose']['label'] = 'Is template';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['operator'] = 'field_is_template_value_op';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['identifier'] = 'field_is_template_value';
+  $handler->display->display_options['filters']['field_is_template_value']['expose']['remember'] = 1;
   $handler->display->display_options['filters']['field_is_template_value']['expose']['reduce'] = 0;
   $handler->display->display_options['path'] = 'books/clonetemplates/%';
   $export['books'] = $view;
