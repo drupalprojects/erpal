@@ -967,7 +967,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_invoice_number']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_invoice_number']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_invoice_number']['field_api_classes'] = 0;
-  /* Field: Content: Payed */
+  /* Field: Content: Paid */
   $handler->display->display_options['fields']['field_payed']['id'] = 'field_payed';
   $handler->display->display_options['fields']['field_payed']['table'] = 'field_data_field_payed';
   $handler->display->display_options['fields']['field_payed']['field'] = 'field_payed';
@@ -1123,7 +1123,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
     'link' => 1,
   );
   $handler->display->display_options['fields']['field_contractor_ref']['field_api_classes'] = 0;
-  /* Field: Content: Customer */
+  /* Field: Field: Customer */
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
@@ -1177,7 +1177,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Payed (field_payed) */
+  /* Filter criterion: Content: Paid (field_payed) */
   $handler->display->display_options['filters']['field_payed_value']['id'] = 'field_payed_value';
   $handler->display->display_options['filters']['field_payed_value']['table'] = 'field_data_field_payed';
   $handler->display->display_options['filters']['field_payed_value']['field'] = 'field_payed_value';
@@ -1248,7 +1248,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['operator'] = 'field_contractor_ref_target_id_op';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['identifier'] = 'field_contractor_ref_target_id';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['reduce'] = 0;
-  /* Filter criterion: Content: Customer (field_customer_ref) */
+  /* Filter criterion: Field: Customer (field_customer_ref) */
   $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
@@ -1267,7 +1267,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   /* Display: Invoices to contact pane */
   $handler = $view->new_display('panel_pane', 'Invoices to contact pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Customer (field_customer_ref) */
+  /* Contextual filter: Field: Customer (field_customer_ref) */
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
@@ -1280,7 +1280,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['not'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Payed (field_payed) */
+  /* Filter criterion: Content: Paid (field_payed) */
   $handler->display->display_options['filters']['field_payed_value']['id'] = 'field_payed_value';
   $handler->display->display_options['filters']['field_payed_value']['table'] = 'field_data_field_payed';
   $handler->display->display_options['filters']['field_payed_value']['field'] = 'field_payed_value';

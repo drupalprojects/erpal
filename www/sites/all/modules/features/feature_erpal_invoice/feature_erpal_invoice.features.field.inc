@@ -1716,10 +1716,11 @@ function feature_erpal_invoice_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => 'not payed',
-          1 => 'payed',
+          0 => 'not paid',
+          1 => 'paid',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
@@ -1749,7 +1750,7 @@ function feature_erpal_invoice_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_payed',
-      'label' => 'Payed',
+      'label' => 'Paid',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -1973,7 +1974,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Note');
   t('Order numbers extern');
   t('Order numbers intern');
-  t('Payed');
+  t('Paid');
   t('Payment date');
   t('Purchase Currency');
   t('Purchase Price');
