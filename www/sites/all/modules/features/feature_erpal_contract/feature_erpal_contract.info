@@ -36,6 +36,7 @@ features[ctools][] = views:views_default:3.0
 features[ds_layout_settings][] = node|erpal_contract|form
 features[features_api][] = api:1
 features[field][] = field_collection_item-field_budget_booking-field_budget_destination
+features[field][] = field_collection_item-field_budget_booking-field_budget_hours
 features[field][] = field_collection_item-field_budget_booking-field_budget_period
 features[field][] = field_collection_item-field_budget_booking-field_budgets
 features[field][] = field_collection_item-field_budget_booking-field_expire_period

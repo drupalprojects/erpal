@@ -108,6 +108,66 @@ function feature_erpal_contract_field_default_fields() {
     ),
   );
 
+  // Exported field: 'field_collection_item-field_budget_booking-field_budget_hours'
+  $fields['field_collection_item-field_budget_booking-field_budget_hours'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_budget_hours',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(
+        'decimal_separator' => '.',
+        'precision' => '10',
+        'profile2_private' => FALSE,
+        'scale' => '2',
+      ),
+      'translatable' => '0',
+      'type' => 'number_decimal',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_budget_booking',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'The amount of budget hours added to the budget destination',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => 6,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_budget_hours',
+      'label' => 'Budget hours',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => 'hours',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '6',
+      ),
+    ),
+  );
+
   // Exported field: 'field_collection_item-field_budget_booking-field_budget_period'
   $fields['field_collection_item-field_budget_booking-field_budget_period'] = array(
     'field_config' => array(
@@ -1638,6 +1698,7 @@ If not set, budget will not expire',
   t('Body');
   t('Budget booking');
   t('Budget destination');
+  t('Budget hours');
   t('Budget period');
   t('Budgets');
   t('Cancelation period');
@@ -1658,6 +1719,7 @@ If not set, budget will not expire',
   t('Payment type');
   t('Period');
   t('Price per month');
+  t('The amount of budget hours added to the budget destination');
   t('The period a budget will expire from date it was created.
 If not set, budget will not expire');
   t('VAT');
