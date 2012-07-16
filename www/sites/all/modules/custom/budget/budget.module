@@ -150,3 +150,18 @@ function budget_references_dialog_entity_admin_paths() {
   );
   return $admin_paths;
 }
+
+/**
+* Function to quick create a new budget entity
+*/
+function budget_create_new($total_hours, $date_from, $date_till) {
+  $budget_controler = entity_get_controller('budget');
+  $values = array();
+  $budget_entity = $budget_controler->create($values);
+  $budget_entity->total_hours = $total_hours;
+  $budget_entity->date_from = $date_from;
+  $budget_entity->date_till = $date_till;
+  
+  $budget_entity->save();
+  return $budget_entity;
+}

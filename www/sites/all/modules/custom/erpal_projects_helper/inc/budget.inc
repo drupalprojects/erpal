@@ -68,6 +68,18 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
 }
 
 /**
+* Adds a given budget entity to a project / task node with $destination_nid
+*/
+function _erpal_projects_helper_add_buget(budget $budget, $destination_nid) {
+  $destination_node = node_load($destination_nid);
+  $field_pricing_id = $destination_node->field_pricing[LANGUAGE_NONE][0]['value'];
+  $pricing_entity = entity_load('field_collection_item', array($field_pricing_id));
+  $pricing_entity = $pricing_entity[$field_pricing_id];
+  $pricing_entity->field_budgets[LANGUAGE_NONE][] = array('target_id' => $budget->budget_id);
+  $pricing_entity->save(true); //save without saving the host entity
+}
+
+/**
 * Returns all pricing field collection entities where the given budget entity is refernced at
 * @param $budget_id a budget entity ID
 */
