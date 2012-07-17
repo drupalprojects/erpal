@@ -171,8 +171,8 @@ function _erpal_projects_billable_preprocess_for_budget(&$vars) {
 }
 
 /**
-* Book a timetracking node to budgets at a task, may be timetracking will be split if not budget of the needed sice is there
-* if we have the choice we first use the budget that time shortes time limit
+* Book a timetracking node to budgets at a task, may be timetracking will be split if no budget of the needed sice is there
+* if we have the choice we first use the budget that has shortes time limit
 * @param $timetracking_node object a timetracking node that is booked
 * @param $billable_information billable information, not neccessaryly from the direct subject of the timetracking node
 *   but may be from prarent task or project nodes
@@ -276,6 +276,7 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
       //if we have a rest duration, create a new timetracking and loop again
       if ($rest_hours) {
         $timetracking_node_new = new stdClass();  
+        $timetracking_node_new->force_billable = $billable_information['budget_time_billing'] == 'billable';
         $timetracking_node_new->status = 1; //published
         $timetracking_node_new->language = $timetracking_node->language;
         $timetracking_node_new->type = $timetracking_node->type;

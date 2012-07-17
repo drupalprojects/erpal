@@ -56,6 +56,7 @@ features[features_plumber][] = feature_erpal_project_basic__field__field_collect
 features[features_plumber][] = feature_erpal_project_basic__field__field_collection_item-field_pricing-field_currency
 features[features_plumber][] = feature_erpal_project_basic__field__field_collection_item-field_pricing-field_vat_rate
 features[features_plumber][] = feature_erpal_project_basic__field__node-erpal_task-field_spec_ref
+features[field][] = field_collection_item-field_pricing-field_budget_time_billing
 features[field][] = field_collection_item-field_pricing-field_budgets
 features[field][] = field_collection_item-field_pricing-field_price
 features[field][] = field_collection_item-field_pricing-field_price_mode

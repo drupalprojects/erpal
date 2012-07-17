@@ -10,6 +10,67 @@
 function feature_erpal_project_basic_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'field_collection_item-field_pricing-field_budget_time_billing'
+  $fields['field_collection_item-field_pricing-field_budget_time_billing'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_budget_time_billing',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'billable' => 'Timetracking is always billed',
+          'not_billable' => 'Timetracking is not billed, only if budget is empty',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_pricing',
+      'default_value' => array(
+        0 => array(
+          'value' => 'billable',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Choose if timetrackings are billable within a budget or not. If not they will only billed if budget is empty and there is a price set.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 9,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_budget_time_billing',
+      'label' => 'Budget time billing',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'field_collection_item-field_pricing-field_budgets'
   $fields['field_collection_item-field_pricing-field_budgets'] = array(
     'field_config' => array(
@@ -110,7 +171,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -187,7 +248,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -2804,9 +2865,11 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Billing Duration');
   t('Body');
   t('Budget');
+  t('Budget time billing');
   t('Budgets');
   t('CRM activity');
   t('Choose contacts that are involved in this project');
+  t('Choose if timetrackings are billable within a budget or not. If not they will only billed if budget is empty and there is a price set.');
   t('Contacts');
   t('Customer');
   t('Customer of the project');
