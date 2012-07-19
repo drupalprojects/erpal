@@ -22,7 +22,7 @@ function feature_erpal_crm_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Next activities';
+  $handler->display->display_options['title'] = 'CRM activities';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access activities view';
@@ -284,6 +284,15 @@ return _erpal_basic_helper_view_contacts_header_content();
 
   /* Display: Next activities pane */
   $handler = $view->new_display('panel_pane', 'Next activities pane', 'panel_pane_2');
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'No activities';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -318,6 +327,15 @@ return _erpal_basic_helper_view_contacts_header_content();
   $handler = $view->new_display('panel_pane', 'Missed activities pane', 'panel_pane_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Missed activities';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'No activities';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Post date */
@@ -347,6 +365,10 @@ return _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['field_next_contact_value']['field'] = 'field_next_contact_value';
   $handler->display->display_options['filters']['field_next_contact_value']['operator'] = '<';
   $handler->display->display_options['filters']['field_next_contact_value']['default_date'] = 'now';
+
+  /* Display: activities view pane */
+  $handler = $view->new_display('panel_pane', 'activities view pane', 'panel_pane_4');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
   $export['crm_activities'] = $view;
 
   return $export;
