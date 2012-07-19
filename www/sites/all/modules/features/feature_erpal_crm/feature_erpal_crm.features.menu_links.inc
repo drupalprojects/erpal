@@ -10,11 +10,11 @@
 function feature_erpal_crm_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-erpal-menu:crm/activities
-  $menu_links['menu-erpal-menu:crm/activities'] = array(
+  // Exported menu link: menu-erpal-menu:crm
+  $menu_links['menu-erpal-menu:crm'] = array(
     'menu_name' => 'menu-erpal-menu',
-    'link_path' => 'crm/activities',
-    'router_path' => 'crm/activities',
+    'link_path' => 'crm',
+    'router_path' => 'crm',
     'link_title' => 'CRM Activities',
     'options' => array(
       'attributes' => array(
