@@ -40,6 +40,30 @@ function erpal_crm_helper_permission(){
 }
  
 /**
+* Implements hook_node_validate
+*/
+function erpal_crm_helper_node_validate($node, $form, $form_state) {
+  
+  if ($node->type == 'erpal_crm_activity')
+    _erpal_crm_helper_crm_activity_validate($node, $form, $form_state);
+  
+}
+
+/**
+* Validates crm activity nodes
+*/
+function _erpal_crm_helper_crm_activity_validate($node, $form, $form_state) {
+  $next_contact = isset($node->field_next_contact[LANGUAGE_NONE][0]['value']) ? $node->field_next_contact[LANGUAGE_NONE][0]['value'] : false;
+  
+  if ($next_contact) {
+    //if set, it must be in the future
+    $next_contact_unixtime = strtotime($next_contact);
+    if ($next_contact_unixtime < time())
+      form_error($form['field_next_contact'], t('If date for next contact is set, it must be in the fututre'));
+  }
+}
+
+/** 
 * Implements hook_view_contacts_header_content called by module erpal_basic_helper
 */
 function erpal_crm_helper_view_contacts_header_content(){

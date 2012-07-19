@@ -27,6 +27,44 @@ function erpal_contract_helper_node_presave($node) {
 }
 
 /**
+* Implementes hook_field_attach_validate() 
+*/
+function erpal_contract_helper_field_attach_validate($entity_type, $entity, &$errors) {
+
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_budget_booking') {
+    $new_errors = _erpal_contract_helper_field_budget_booking_validate($entity);
+    $errors = array_merge($errors, $new_errors);
+  }
+  
+}
+
+/**
+* Validate the budget booking field collection item
+*/
+function  _erpal_contract_helper_field_budget_booking_validate($entity){
+  
+  $errors = array();
+  $has_budget_destination = isset($entity->field_budget_destination[LANGUAGE_NONE][0]['target_id']) && $entity->field_budget_destination[LANGUAGE_NONE][0]['target_id'];
+  $budget_hours = isset($entity->field_budget_hours[LANGUAGE_NONE][0]['value']) && $entity->field_budget_hours[LANGUAGE_NONE][0]['value'];
+    
+  if ($has_budget_destination && !$budget_hours) {  
+    $errors['field_budget_hours'][LANGUAGE_NONE][0][] = array(
+      'error' => 'value',
+      'message' => t('If you select a budget destination, please enter the hours added to the budget'),
+    );
+  }
+  
+  if (!$has_budget_destination && $budget_hours) {  
+    $errors['field_budget_destination'][LANGUAGE_NONE][0][] = array(
+      'error' => 'target_id',
+      'message' => t('If you enter budget hour, please select a budget destination, too'),
+    );
+  }
+  
+  return $errors;
+}
+
+/**
 * Function calculates the next booking dates for budgets and payments 
 */
 function _erpal_contract_helper_recalculate_contract($contract_node) {

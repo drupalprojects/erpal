@@ -163,7 +163,11 @@ function erpal_projects_helper_field_widget_form_alter(&$element, &$form_state, 
 */
 function _erpal_projects_helper_field_pricing_widget_validate($element, &$form_state, $form) {
   $values = $form_state['values'];
-  $pricing_entity = $values['field_pricing'][LANGUAGE_NONE][0]['entity'];
+  $pricing_entity = isset($values['field_pricing'][LANGUAGE_NONE][0]['entity']) ? $values['field_pricing'][LANGUAGE_NONE][0]['entity'] : false;
+
+  if (!$pricing_entity)
+    return;
+  
   $price_mode = isset($pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] : 'none';
   $price = isset($pricing_entity->field_price[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] : false;
   $budgets = isset($pricing_entity->field_budgets[LANGUAGE_NONE]) ? $pricing_entity->field_budgets[LANGUAGE_NONE] : false;

@@ -250,7 +250,7 @@ function feature_erpal_crm_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '8',
+        'weight' => '10',
       ),
     ),
   );
@@ -366,7 +366,7 @@ function feature_erpal_crm_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '9',
+        'weight' => '11',
       ),
     ),
   );
@@ -552,7 +552,7 @@ function feature_erpal_crm_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '11',
+        'weight' => '13',
       ),
     ),
   );
@@ -830,6 +830,89 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_crm_activity-field_expected_date'
+  $fields['node-erpal_crm_activity-field_expected_date'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_expected_date',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'date',
+      'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
+        'granularity' => array(
+          'day' => 'day',
+          'hour' => 0,
+          'minute' => 0,
+          'month' => 'month',
+          'second' => 0,
+          'year' => 'year',
+        ),
+        'profile2_private' => FALSE,
+        'timezone_db' => '',
+        'todate' => '',
+        'tz_handling' => 'none',
+      ),
+      'translatable' => '0',
+      'type' => 'datestamp',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'deleted' => '0',
+      'description' => 'When do you expect the order',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+          ),
+          'type' => 'date_default',
+          'weight' => 15,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_expected_date',
+      'label' => 'Expected date',
+      'required' => 0,
+      'settings' => array(
+        'default_value' => 'now',
+        'default_value2' => 'same',
+        'default_value_code' => '',
+        'default_value_code2' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'date',
+        'settings' => array(
+          'increment' => '15',
+          'input_format' => 'm/d/Y - H:i:s',
+          'input_format_custom' => '',
+          'label_position' => 'above',
+          'text_parts' => array(),
+          'year_range' => '-3:+3',
+        ),
+        'type' => 'date_popup',
+        'weight' => '8',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_crm_activity-field_next_contact'
   $fields['node-erpal_crm_activity-field_next_contact'] = array(
     'field_config' => array(
@@ -912,7 +995,7 @@ function feature_erpal_crm_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '10',
+        'weight' => '12',
       ),
     ),
   );
@@ -1134,6 +1217,7 @@ function feature_erpal_crm_field_default_fields() {
   t('Comment');
   t('Contacts');
   t('Customer');
+  t('Expected date');
   t('Global documents');
   t('Next Contact');
   t('Order number extern');
@@ -1143,6 +1227,7 @@ function feature_erpal_crm_field_default_fields() {
   t('The number that identifies this order at your customer');
   t('The volume for the activities proposal or the budget for the request');
   t('Volume');
+  t('When do you expect the order');
   t('Your internal number that identifies the order');
 
   return $fields;

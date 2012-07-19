@@ -64,6 +64,20 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
     }      
   }
   
+  //if pricemode is "budget per hour" and field_budget_time_billing "billable" there must be a price set in price field
+  $price_mode = $entity->field_price_mode[LANGUAGE_NONE][0]['value'];
+  $budget_time_billing = $entity->field_budget_time_billing[LANGUAGE_NONE][0]['value'];
+  if ($price_mode == 'budget' && $budget_time_billing == 'billable') {
+    $price = $entity->field_price[LANGUAGE_NONE][0]['value'];
+
+    if (!$price) {
+      $errors['field_price'][LANGUAGE_NONE][0][] = array(
+        'error' => 'value',
+        'message' => t('If you want each timetracking to be billable, please enter a price'),
+      );
+    }
+  }
+  
   return $errors;
 }
 

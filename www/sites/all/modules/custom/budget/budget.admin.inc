@@ -238,13 +238,17 @@ function budget_edit_form_validate(&$form, &$form_state) {
   $budget = $form_state['budget'];
   
   $values = $form_state['values'];
-  $total_hours = $budget->total_hours;
+  $total_hours = $values['total_hours'];
   $available_hours = $values['available_hours'];
   
   //Validate that available_hours is not bigger than total budget
   if ($available_hours > $total_hours)
     form_set_error('available_hours', t('Available hours must be less or equal than total hours'));
-  
+
+  //allow only numbers in total_hours field
+  if ($total_hours && !is_numeric($total_hours)) {
+    form_set_error('total_hours', t('Please enter only numeric values.'));
+  }
   
   // Notify field widgets to validate their data.
   field_attach_form_validate('budget', $budget, $form, $form_state);

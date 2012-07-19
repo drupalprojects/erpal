@@ -99,7 +99,11 @@ function erpal_projects_billable_field_widget_form_alter(&$element, &$form_state
 */
 function _erpal_projects_billable_field_pricing_widget_validate($element, &$form_state, $form) {
   $values = $form_state['values'];
-  $pricing_entity = $values['field_pricing'][LANGUAGE_NONE][0]['entity'];
+  $pricing_entity = isset($values['field_pricing'][LANGUAGE_NONE][0]['entity']) ? $values['field_pricing'][LANGUAGE_NONE][0]['entity'] : false;
+  
+  if (!$pricing_entity)
+    return;
+  
   $price_mode = isset($pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] : 'none';
   $vat_rate = isset($pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'] : '_none';
   $currency = isset($pricing_entity->field_currency[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_currency[LANGUAGE_NONE][0]['value'] : '_none';
@@ -663,7 +667,7 @@ function _erpal_billable_update_billable($node, $op) {
     $subject_node->force_billable = $budget_time_billing == 'billable';
     $backupped_subject_node = $subject_node;
     $subject_node = _erpal_projects_billable_book_timetracking_to_budget($subject_node, $billable_information);
-    
+    dpm($subject_node);
     if ($subject_node) { //if there is another timetracking node because budget is not enough, check if we have other budgets in the parent tree
       $current_price_node = node_load($billable_information['pricing_nid']);
       $a_parent_node = _erpal_project_task_parent($current_price_node);
@@ -689,11 +693,13 @@ function _erpal_billable_update_billable($node, $op) {
       if ($budget_time_billing == 'not_billable')
         return;
     }
-    
+  
     if (!$subject_node)
       $subject_node = $backupped_subject_node;
+
+    //update quantity because if timetracking was split because of budget, we have changing value
+    $quantity = $subject_node->field_billing_duration[LANGUAGE_NONE][0]['value'];
     
-  dpm($subject_node);
     //if there is a "rest" timetracking node, set the price mode to "per hour" so it will be billed if there is 
     //a price per hour set.
     if ($billable_information['price']) {

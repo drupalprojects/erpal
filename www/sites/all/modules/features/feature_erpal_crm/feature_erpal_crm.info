@@ -42,6 +42,7 @@ features[field][] = node-erpal_crm_activity-field_asset_files
 features[field][] = node-erpal_crm_activity-field_chance
 features[field][] = node-erpal_crm_activity-field_contacts_ref
 features[field][] = node-erpal_crm_activity-field_customer_ref
+features[field][] = node-erpal_crm_activity-field_expected_date
 features[field][] = node-erpal_crm_activity-field_next_contact
 features[field][] = node-erpal_crm_activity-field_order_number_extern
 features[field][] = node-erpal_crm_activity-field_order_number_intern
