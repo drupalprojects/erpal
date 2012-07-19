@@ -284,6 +284,8 @@ return _erpal_basic_helper_view_contacts_header_content();
 
   /* Display: Next activities pane */
   $handler = $view->new_display('panel_pane', 'Next activities pane', 'panel_pane_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Next activities';
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
