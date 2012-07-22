@@ -44,8 +44,9 @@ function budget_load_multiple($budget_ids = array(), $conditions = array(), $res
 /**
  * Deletes a budget.
  */
-function budget_delete(budget $budget) {
-  $budget->delete();
+function budget_delete(budget $budget) {  
+  $result = $budget->delete();
+  return $result;
 }
 
 
@@ -191,7 +192,29 @@ class budget extends Entity {
     return array('path' => 'budget/' . $this->budget_id);
   }
   
-  
+  public function delete() {
+    
+    //check if budget could be delete
+    $results = module_invoke_all('budget_delete_validate', $this);
+
+    $can_delete = true;
+    foreach ($results as $module => $result_arr) {
+      $result = $result_arr['result'];
+      if (!$result) {
+        $can_delete = false;
+        $errors = $result_arr['errors'];
+        foreach ($errors as $error)
+          drupal_set_message($error, 'error');
+      }
+      
+    }
+    
+    if ($can_delete) {
+      parent::delete();
+      return true;
+    } else
+      return false;
+  }
 }
 
 

@@ -86,7 +86,41 @@ function erpal_projects_helper_node_validate($node) {
     }
   }
 }
+
+/**
+* Implementes hook_field_attach_validate() 
+*/
+function erpal_projects_helper_field_attach_validate($entity_type, $entity, &$errors) {
+
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_pricing') {
+    $new_errors = _erpal_projects_helper_field_pricing_validate($entity);
+    $errors = array_merge($errors, $new_errors);
+  }
+}
+
+/**
+* Implements hook_budget_delete_validate provided by budget module
+*/
+function erpal_projects_helper_budget_delete_validate($budget) {
+  //if the budget alway has timetrackings, user is not allowed to delete
+  $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($budget->budget_id);
   
+  if (count($timetracking_nids) > 0) {
+    $errors[] = t('The budget %budget_name could not be deleted because there are timetrackings booked to it.', array('%budget_name' => $budget->defaultLabel()));
+    return array(
+      'erpal_projects_helper' => array(
+        'result' => false,
+        'errors' => $errors,
+      ),
+    );
+  } else
+    return array(
+      'erpal_projects_helper' => array(
+        'result' => true,
+      ),
+    );
+}
+ 
 /**
 * Implements hook_permission
 */
@@ -310,6 +344,10 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
  
   if ($form_id == 'node_delete_confirm') {
     _erpal_projects_helper_node_delete_confirm_alter($form, $form_state);
+  }
+  
+  if ($form_id == 'budget_edit_form') {
+    $form['#validate'][] = '_erpal_projects_helper_budget_validate';
   }
 }
 

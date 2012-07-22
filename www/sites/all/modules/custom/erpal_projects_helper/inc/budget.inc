@@ -5,17 +5,6 @@
 */
 
 /**
-* Implementes hook_field_attach_validate() 
-*/
-function erpal_projects_helper_field_attach_validate($entity_type, $entity, &$errors) {
-
-  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_pricing') {
-    $new_errors = _erpal_projects_helper_field_pricing_validate($entity);
-    $errors = array_merge($errors, $new_errors);
-  }
-}
-
-/**
 * Validates pricing field collection so that an entity can only be referenced once
 * Validates that a budget entity can only be referenced once in on pricing field collection
 * @param $entity the fieldcollection entity that will be saved.
@@ -27,10 +16,25 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
   if (isset($entity->field_budgets[LANGUAGE_NONE])) {
     
     $budget_ids = array();
+
+    //load the former entity
+    $ids = array($entity->item_id);
+    $old_entity = entity_load('field_collection_item', $ids, array(), TRUE);
+    $old_entity = $old_entity[$entity->item_id];
+    $old_budgets = $old_entity->field_budgets[LANGUAGE_NONE];
+    //put all the old budget entity ids in an array
+    $old_budget_ids = array();
+    foreach ($old_budgets as $old_delta=>$old_budget_id) {
+      $old_budget_id = $old_budget_id['target_id'];
+      $old_budget_ids[$old_budget_id] = $old_delta;
+    }
+ 
     foreach ($entity->field_budgets[LANGUAGE_NONE] as $delta=>$target_id) {
       $target_id = $target_id['target_id'];
       if (trim($target_id)) {
         $pricing_fieldcollection_items = _erpal_projects_helper_pricing_entities_with_budget($target_id);
+        
+        unset($old_budget_ids[$target_id]); // unset the budgets that we actuallay have, so we have all deleted budgets in an array that we can check later.
         
         //check if pricing entiy is already referenced at another project / task (pricing field collection entity)
         foreach ($pricing_fieldcollection_items as $collection_id) {
@@ -75,6 +79,23 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
         'error' => 'value',
         'message' => t('If you want each timetracking to be billable, please enter a price'),
       );
+    }
+  }
+
+  //check if budgets that actually have been delete, have timetrackings referencing the budget. They are not allowed to remove
+  //from the pricing fieldcollection!
+  if (is_array($old_budget_ids)) {
+    foreach ($old_budget_ids as $budget_id=>$delta) {
+      //does budget have timetrackings?
+      $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($budget_id);
+
+      if (count($timetracking_nids) > 0) {
+        //sorry, but the user cannot remove this budget from the node
+        $errors['field_budgets'][LANGUAGE_NONE][$delta][] = array(
+          'error' => 'target_id',
+          'message' => t('Budgets that already have timetrackings cannot be deleted.'),
+        );
+      }
     }
   }
   
@@ -143,6 +164,9 @@ function _erpal_projects_helper_get_budget($node, $date) {
     $budget_id = $target_id['target_id'];
     $budget = budget_load($budget_id);
    
+    if (!$budget)
+      continue;
+   
     //if $date is given, ensure that the date is in range of each budget
     if ($date) {
       $budget_from = $budget->date_from ? $budget->date_from : 0;
@@ -165,6 +189,21 @@ function _erpal_projects_helper_get_budget($node, $date) {
   );
   
   return $ret;
+}
+
+/**
+* Validate budget entity edit form
+*/
+function _erpal_projects_helper_budget_validate($form, $form_state) {
+  $values = $form_state['values'];
+  
+  $budget_id = $values['budget_id'];
+  $timetracking_nid = _erpal_projects_helper_get_timetrackings_by_budget($budget_id);
+  
+  if (count($timetracking_nid)) {
+    //budgets that already have timetrackings cannot be edit
+    form_set_error('budget', t('Sorry, the budget has already timetrackings booked on it so it cannot be edit.'));
+  }
 }
 
 /**

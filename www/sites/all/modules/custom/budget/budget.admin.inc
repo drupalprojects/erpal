@@ -284,7 +284,8 @@ function budget_edit_form_submit(&$form, &$form_state) {
  * @todo Remove hard-coded path
  */
 function budget_form_submit_delete(&$form, &$form_state) {
-  $form_state['redirect'] = 'budget/' . $form_state['budget']->budget_id . '/delete';
+  $budget = entity_ui_controller('budget')->entityFormSubmitBuildEntity($form, $form_state);
+  $form_state['redirect'] = 'budget/'.$budget->budget_id."/delete";
 }
 
 
@@ -302,7 +303,7 @@ function budget_delete_form($form, &$form_state, $budget) {
   $form['#submit'][] = 'budget_delete_form_submit';
 
   $form = confirm_form($form,
-    t('Are you sure you want to delete budget %subject?', array('%subject' => $budget->subject)),
+    t('Are you sure you want to delete budget %subject?', array('%subject' => $budget->defaultLabel())),
     'budget/'.$budget->budget_id,
     '<p>' . t('This action cannot be undone.') . '</p>',
     t('Delete'),
@@ -319,10 +320,11 @@ function budget_delete_form($form, &$form_state, $budget) {
 function budget_delete_form_submit($form, &$form_state) {
   $budget = $form_state['budget'];
 
-  budget_delete($budget);
-
-  drupal_set_message(t('The budget %subject has been deleted.', array('%subject' => $budget->subject)));
-  watchdog('budget', 'Deleted budget %subject.', array('%subject' => $budget->subject));
+  $result = budget_delete($budget);
+  if ($result) {
+    drupal_set_message(t('The budget %subject has been deleted.', array('%subject' => $budget->defaultLabel())));
+    watchdog('budget', 'Deleted budget %subject.', array('%subject' => $budget->defaultLabel()));
+  }
 }
 
 

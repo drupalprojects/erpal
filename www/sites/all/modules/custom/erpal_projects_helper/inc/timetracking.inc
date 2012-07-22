@@ -95,3 +95,26 @@ function _erpal_projects_helper_get_direct_timetrackings($nids) {
   
   return $timetracking_nids;
 }
+
+/**
+* Return all timetrackings that reference to a given budget_id
+* @param $budget_id the budget id that the returned timetracking nodes must referr to
+* @return an array with all nids of timetrackgins
+*/
+function _erpal_projects_helper_get_timetrackings_by_budget($budget_id) {
+  $timetracking_nids = array();
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_timetracking')
+  ->fieldCondition('field_budget', 'target_id', $budget_id)
+  ->addMetaData('account', user_load(1)); // run the query as user 1 to get all nodes
+  
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $timetracking_nids = array_keys($result['node']);    
+  }
+  
+  return $timetracking_nids;
+}
