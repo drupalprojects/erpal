@@ -667,7 +667,7 @@ function _erpal_billable_update_billable($node, $op) {
     $subject_node->force_billable = $budget_time_billing == 'billable';
     $backupped_subject_node = $subject_node;
     $subject_node = _erpal_projects_billable_book_timetracking_to_budget($subject_node, $billable_information);
-    dpm($subject_node);
+
     if ($subject_node) { //if there is another timetracking node because budget is not enough, check if we have other budgets in the parent tree
       $current_price_node = node_load($billable_information['pricing_nid']);
       $a_parent_node = _erpal_project_task_parent($current_price_node);

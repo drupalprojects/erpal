@@ -408,7 +408,7 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   $invoice = new stdClass();
   $invoice->status = 1; //published
   $invoice->type = 'erpal_invoice';  
-  node_object_prepare($invoice);  
+   
   $invoice->uid = $user->uid;
   $invoice->language = LANGUAGE_NONE;
   //set some other invoice specific fields
@@ -460,7 +460,8 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   foreach ($billable_ids as $billable_id) {
     $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $billable_id;
   }
-
+  
+  node_object_prepare($invoice); 
   node_save($invoice);
   
   $status['invoice'] = $invoice;
