@@ -71,7 +71,7 @@ class dSyncMLClient
 		$this->sessionID = dCreateUniqueKey(24);
 		$this->username = $username;
 		$this->password = $password;
-		$this->deviceID = "dframe-".substr(md5($username.$password), 0, 16);
+		$this->deviceID = "drupal-".  md5(drupal_get_private_key());
 
 		// Init statistics
 		$this->statistics = array
@@ -397,9 +397,11 @@ class dSyncMLClient
 		// Reset the package xml for the next package
 		$this->packageXML = null;
 
+
 		// Parse response
 		try
 		{
+      dpm($http->getBody());
 			$xml = new SimpleXMLElement($http->getBody());
 
 			// Get the message package id
@@ -855,7 +857,7 @@ class dSyncMLClient
 
 		$this->serverHost = $info["host"];
 		$this->serverPath = $info["path"];
-		$this->serverPort = $info["port"];
+		$this->serverPort = isset($info["port"]) ? $info["port"] : null;
 		if (!$this->serverPort)
 		{
 			if ($info["scheme"] == "https")
@@ -962,5 +964,3 @@ class dSyncMLClientAuthenticationException extends Exception
 {
 
 }
-
-?>
