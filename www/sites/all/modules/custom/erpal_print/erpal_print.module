@@ -21,7 +21,7 @@ function erpal_print_theme() {
       'template' => 'template/doc_footer',
     ),
     'erpal_print_toc' => array(
-      'variables' => array('pdf_object' => NULL, 'title' => false),
+      'variables' => array('page' => 1, 'pdf_object' => NULL, 'title' => false),
       'template' => 'template/toc',
     ),
     'erpal_print_prepare_pdf' => array(
@@ -119,9 +119,12 @@ function _erpal_print_inject_basic_config_form_submit($form, $form_state)  {
 *   it will directly be given as download to the users
 * @param $download_filename the filename if the document is put as download
 * @param $params set author and title of the document
+* @param $pdf_object the tcpdf object that creates the pdf. If none is given, we create it
+* @param $print_toc if true the table of contents will be printed
+* @param $frontpages an array of html pages that are printed bevore the TOC each on a spearate page
 * @return a file object representing the temporaray file.
 */ 
-function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false, $params=false, $pdf_object=false, $print_toc=false) {
+function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false, $params=false, $pdf_object=false, $print_toc=false, $frontpages=array()) {
   global $user;
   
   if (!$pdf_object)    
@@ -138,7 +141,22 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
   
   if ($print_toc)
     _erpal_print_create_toc($pdf_object);
+   
+  //if there are front pages add them and move them at first page (before table of contents)
+  //because we go this way we have to iterate trhough the array starting at the bottom
+  $skip_pdf_header_frontpage = $params['skip_pdf_header_frontpage'];
+  if ($skip_pdf_header_frontpage)
+    $pdf_object->setPrintHeader(false);
+  for ($i = count($frontpages) -1; $i >= 0; $i--) {
+    $part_html = $frontpages[0];
     
+    $pdf_object->AddPage();
+    $pdf_object->writeHTML($part_html, true, false, false, false, '');
+    $inserted_page_no = $pdf_object->PageNo();
+    $pdf_object->movePage($inserted_page_no, 1);
+  }
+  $pdf_object->setPrintHeader(true);
+   
   //now output the pdf
   if ($destination_uri) {
     $destination_path = drupal_realpath($destination_uri."/".$basename);
@@ -183,7 +201,7 @@ function _erpal_print_get_author($node) {
 */
 function _erpal_print_create_toc($pdf_object) {    
   //create table of contents
-  theme('erpal_print_toc', array('pdf_object' => $pdf_object, 'title' => t('Table of contents')));
+  theme('erpal_print_toc', array('page' => 1, 'pdf_object' => $pdf_object, 'title' => t('Table of contents')));
 }
 
 /**

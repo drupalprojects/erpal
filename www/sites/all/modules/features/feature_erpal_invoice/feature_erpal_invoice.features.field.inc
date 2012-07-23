@@ -168,12 +168,19 @@ function feature_erpal_invoice_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 7,
+          'weight' => '7',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_buy_currency',
-      'label' => 'Currency',
+      'label' => 'Purchase Currency',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -224,12 +231,24 @@ function feature_erpal_invoice_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => 6,
+          'weight' => '6',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '6',
         ),
       ),
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_buy_price',
-      'label' => 'Price',
+      'label' => 'Purchase Price',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -282,12 +301,19 @@ function feature_erpal_invoice_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 4,
+          'weight' => '4',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_buy_vat_rate',
-      'label' => 'VAT rate',
+      'label' => 'Purchase VAT',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -365,7 +391,16 @@ function feature_erpal_invoice_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => 5,
+          'weight' => '5',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => TRUE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => '5',
         ),
       ),
       'entity_type' => 'field_collection_item',
@@ -1681,10 +1716,11 @@ function feature_erpal_invoice_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => 'not payed',
-          1 => 'payed',
+          0 => 'not paid',
+          1 => 'paid',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
@@ -1714,7 +1750,7 @@ function feature_erpal_invoice_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_payed',
-      'label' => 'Payed',
+      'label' => 'Paid',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -1938,9 +1974,11 @@ function feature_erpal_invoice_field_default_fields() {
   t('Note');
   t('Order numbers extern');
   t('Order numbers intern');
-  t('Payed');
+  t('Paid');
   t('Payment date');
-  t('Price');
+  t('Purchase Currency');
+  t('Purchase Price');
+  t('Purchase VAT');
   t('Select a contact that has created the invoice. Leave blank, if your company is the contractor');
   t('Skonto');
   t('The address of the customer the invoice will be related to');

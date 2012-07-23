@@ -9,3 +9,4 @@ version = "7.x-1.0-dev"
 dependencies[] = libraries
 files[] = erpal_book_helper.module
 files[] = inc/book.token.inc
+files[] = inc/config.inc

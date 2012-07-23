@@ -114,6 +114,10 @@ function erpal_basic_helper_permission(){
       'title' => t('Administer ERPAL'), 
       'description' => t('Perform administration tasks for ERPAL modules.'),
     ),
+    'access contact view' => array(
+      'title' => t('Access contact view'), 
+      'description' => t('Allows the user to access the contact view'),
+    ),    
   );
 }
  
@@ -170,7 +174,7 @@ function _erpal_basic_helper_create_contact_link($q_arg = false, $query_arr = ar
 function _erpal_basic_helper_contacts_autocomplete($string){
   
   $matches = array();
-  
+
   //Start a query over the node table
   $query = db_select('node', 'n');
   // Select rows that match the string within type erpal_contact
@@ -366,7 +370,12 @@ function _erpal_basic_helper_is_own_company($contact) {
 * @param $field_name the name of the field for which a value should be returned. CAUTION: Field must be a field_collection_item!
 */
 function _erpal_basic_helper_return_my_value($field_name) {
+
   $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);  
+  
+  if (!$my_company_nid)
+    return false;
+  
   $my_company_node = node_load($my_company_nid);
   
   //does the company have value set for this field?
@@ -604,11 +613,11 @@ function _erpal_basic_helper_bulk_update_operation($nids, $callback, $args, &$co
 }
 
 /**
-* returns an array of direct children of a node using field_parent
+* returns an array of direct children nids of a node using field_parent
 * @param $nid the parent nid to search children for
 * @param $types only those node types are returned
 */
-function _erpal_basic_helper_get_direct_children($nid, $types=array()) {
+function _erpal_basic_helper_get_direct_children($nid, $types=array(), $order_field=false) {
   
   $children = array();
   if (!count($types))
@@ -621,6 +630,9 @@ function _erpal_basic_helper_get_direct_children($nid, $types=array()) {
     ->fieldCondition('field_parent', 'target_id', $nid, '=')
     ->addMetaData('account', user_load(1)); // run the query as user 1
 
+    if ($order_field)
+      $query->fieldOrderBy($order_field, 'value', 'asc');
+    
     $result = $query->execute();
     if (isset($result['node'])) {
       $new_nids = array_keys($result['node']);

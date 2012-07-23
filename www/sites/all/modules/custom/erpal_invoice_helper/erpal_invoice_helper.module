@@ -448,6 +448,10 @@ function erpal_invoice_helper_permission(){
       'title' => t('Administer ERPAL invoice'), 
       'description' => t('Perform administration tasks for ERPAL invoice module.'),
     ),
+    'access invoices view' => array(
+      'title' => t('Access invoices view'), 
+      'description' => t('Allows the user to access the invoices view'),
+    ),
   );
 }
 

@@ -9,9 +9,15 @@
 */
 function erpal_projects_helper_node_presave_timetracking($node) {
  
+  if (isset($node->nid)) {
+    //load the old timetracking node to add its billing_duration, not the new current one
+    $old_node = node_load($node->nid);
+    _erpal_projects_helper_restore_timetracking_budget($old_node);
+  }
+  
   //if no value is available, we caclulate the value using start and end time
   $start_time = $node->field_date_time[LANGUAGE_NONE][0]['value'];
-  $end_time = $node->field_date_time[LANGUAGE_NONE][0]['value2'];
+  $end_time = isset($node->field_date_time[LANGUAGE_NONE][0]['value2']) ? $node->field_date_time[LANGUAGE_NONE][0]['value2'] : $node->field_date_time[LANGUAGE_NONE][0]['value'];
   
   $diff_duration = $end_time - $start_time;
   $diff_duration = $diff_duration / (60 * 60);//calculate hours
@@ -79,6 +85,29 @@ function _erpal_projects_helper_get_direct_timetrackings($nids) {
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_timetracking')
   ->fieldCondition('field_timetracking_subject', 'target_id', $nids, 'IN')
+  ->addMetaData('account', user_load(1)); // run the query as user 1 to get all nodes
+  
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $timetracking_nids = array_keys($result['node']);    
+  }
+  
+  return $timetracking_nids;
+}
+
+/**
+* Return all timetrackings that reference to a given budget_id
+* @param $budget_id the budget id that the returned timetracking nodes must referr to
+* @return an array with all nids of timetrackgins
+*/
+function _erpal_projects_helper_get_timetrackings_by_budget($budget_id) {
+  $timetracking_nids = array();
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_timetracking')
+  ->fieldCondition('field_budget', 'target_id', $budget_id)
   ->addMetaData('account', user_load(1)); // run the query as user 1 to get all nodes
   
   $result = $query->execute();

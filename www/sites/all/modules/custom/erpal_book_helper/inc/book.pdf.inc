@@ -66,6 +66,12 @@ function erpal_books_helper_pdf_form($form, $form_state, $node) {
     '#default_value' => 'attach',
   );
   
+  $form['add_nids'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add IDs to PDF'),
+    '#default_value' => false,    
+  );
+  
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Create PDF'),
@@ -119,12 +125,17 @@ function erpal_books_helper_pdf_form_submit($form, $form_state) {
 * Creates a PDF of the tree structure under a given root node and returns the fileobject
 * @TODO: create pdf by batch process. Caclulate all processed nodes by field query and process each node in batch process steps while
 * collection the global HTML in context variable of batch
+* @param $book_node the book node at top most level where all children are placed in
+* @param $root_node the node the is currently beeing exported with its children
+* @param $options some export options filled from export dialog
 */
 function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   global $user;
+  module_load_include('inc', 'erpal_book_helper', 'inc/config');
   $params = array(
     'title' => $root_node->title,
     'author' => _erpal_print_get_author($root_node),
+    'skip_pdf_header_frontpage' => _erpal_book_helper_skip_pdf_header_frontpage(),
   );
   
   $pdf_object = erpal_print_prepare_tcpdf($params);
@@ -134,6 +145,23 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   
   $html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options); 
 
+  //theme the frontpage as separate page and add it to the frontpages array
+  $theme_options = array(
+    'estimations' => array(
+      'task' => $options['export_estimations']['task'],
+      'page' => $options['export_estimations']['page'],
+      'total' => $options['total_estimation'],      
+    ),
+    'skipp_root' => false,
+    'set_bookmark' => false,
+    'depth' => 1,
+    'add_nids' => false, //no nid at frontpage title
+  );
+  $frontpage_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options, 'counter' => false));
+  //line bracks as <br>
+  $frontpage_html = nl2br($frontpage_html);  
+  $frontpages[] = $frontpage_html;
+  
   $total_estimation = $html['total_estimation'];
   $html = $html['html'];
   
@@ -154,7 +182,7 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   $version = $book_node->field_book_version[LANGUAGE_NONE][0]['value'] ? $book_node->field_book_version[LANGUAGE_NONE][0]['value'] : 1;
   $basename = _erpal_docs_make_filename($root_node->title."_".$version, 'pdf');
   
-  $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params, $pdf_object, true);
+  $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params, $pdf_object, true, $frontpages);
   
   if (!$doc_file) {
     drupal_set_message(t('There has been an error while creating you pdf. PDF not created.'), 'error');
@@ -176,9 +204,10 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
 
 /**
 * Recursive function to get HTML of all Child nodes
-* Depth is the counter to create the enumeration for each page
+* @param depth_counter is the counter to create the enumeration for each page
+* @param $skipp_root this is the signal that the given $root_node page will not be exported
 */
-function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options, $depth_prefix='', $depth_counter=0) {
+function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, $options, $depth_prefix='', $depth_counter=0, $iteration_counter=0, $skipp_root=true){
   
   //prepare fields so they can be included in entitiy field query easily
   $child_nodes = _erpal_book_helper_get_children($book_node, $root_node, $options);
@@ -186,28 +215,37 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
     'estimations' => array(
       'task' => $options['export_estimations']['task'],
       'page' => $options['export_estimations']['page'],
-      'total' => $options['total_estimation'],
-    )
+      'total' => $options['total_estimation'],      
+    ),
+    'skipp_root' => $skipp_root,
+    'set_bookmark' => true,
+    'depth' => $depth_counter ? $depth_counter : 1,
+    'add_nids' => $options['add_nids'],
   );
   
   //save the body, if we dont do that, the content token will be replaced in the real node body....dont know why...??!
-  //######### Important order!###############
+  //######### Important order of code!###############
   $body = '';
   if (isset($root_node->body[LANGUAGE_NONE][0]['value'])) {
     $body = $root_node->body[LANGUAGE_NONE][0]['value'];
     _erpal_book_helper_replace_tokens($root_node); //replace all tokens
-  }  
+  }    
   
-  //prepare the counter for table of contents enumeration
-  $node_counter = $depth_prefix;
-  if ($node_counter) {
-    $node_counter .= '.';
-  }
-  $node_counter .= $depth_counter ? $depth_counter : 1;
+  $this_html = '';
+  if (!$skipp_root) {  
+    //prepare the counter for table of contents enumeration
+    $node_counter = $depth_prefix;
+    if ($node_counter) {
+      $node_counter .= '.';
+    }
+    $node_counter .= $iteration_counter ? $iteration_counter : 1;
+
+    $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options, 'counter' => $node_counter));
+    //line bracks as <br>
+    $this_html = nl2br($this_html);
+  } else
+    $node_counter = '';
   
-  $this_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options, 'counter' => $node_counter));
-  //line bracks as <br>
-  $this_html = nl2br($this_html);
   $root_node->body[LANGUAGE_NONE][0]['value'] = $body; // set the body back again!
   //######## End ############################
   
@@ -224,16 +262,19 @@ function _erpal_book_helper_get_child_html($pdf_object, $book_node, $root_node, 
   
   //next step recursion
   $html = '';
+  $iteration_counter = 0;
+  $depth_counter++;
   foreach ($child_nodes as $child_node) {
     //get recusive HTML of children
     $depth_prefix = $node_counter;
-    $depth_counter++;  //next recursion
-    $child_html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $child_node, $options, $depth_prefix, $depth_counter);
+    $iteration_counter++;  //next recursion
+    $child_html = _erpal_book_helper_get_child_html($pdf_object, $book_node, $child_node, $options, $depth_prefix, $depth_counter, $iteration_counter, false);
 
     $estimation += $child_html['total_estimation'];
     $child_html = $child_html['html'];
     $html .= $child_html;
   }
+  $depth_counter--;
 
   $html = $this_html . theme('erpal_books_children_html', array('parent_node' => $root_node, 'html' => $html));
   
@@ -266,8 +307,12 @@ function _erpal_book_helper_get_estimation($node, $options=false) {
 * Preprocessing Variables for rendering a node as a page in pdf
 */
 function _erpal_book_helper_preprocess_erpal_books_book_pdf_html(&$variables) {
+  $pdf_object = $variables['pdf_object'];
+  
   $node = $variables['node'];
   $title = $node->title;
+  $counter = $variables['counter'];
+  $depth = $variables['options']['depth'];
   
   $body  = '';
   if (isset($node->body[LANGUAGE_NONE][0]['value']))
@@ -281,4 +326,17 @@ function _erpal_book_helper_preprocess_erpal_books_book_pdf_html(&$variables) {
   $variables['title'] = $title;
   $variables['duration'] = $duration;
   $variables['nid'] = $node->nid;
+  $variables['bookmark'] = false;
+
+  if (isset($variables['options']['set_bookmark']) && $variables['options']['set_bookmark']) {
+    
+    $title = $counter." ".$title;
+    $variables['title'] = $title;
+    $depth--; //Start at 0 for tcpdf 
+    $params = $pdf_object->serializeTCPDFtagParameters(array($title,$depth,0,'','',array(128,128,0)));  //needed later for table of contents 
+    $bookmark = '<tcpdf method="Bookmark" params="'.$params.'" />';
+    $variables['bookmark'] = $bookmark;
+  }
+  
+    
 }

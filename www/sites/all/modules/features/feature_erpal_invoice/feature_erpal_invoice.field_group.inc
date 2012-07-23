@@ -78,12 +78,12 @@ function feature_erpal_invoice_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Purchasing',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
-      0 => 'field_buy_vat_rate',
-      1 => 'field_contractor_ref',
-      2 => 'field_buy_price',
-      3 => 'field_buy_currency',
+      0 => 'field_buy_currency',
+      1 => 'field_buy_price',
+      2 => 'field_buy_vat_rate',
+      3 => 'field_contractor_ref',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
