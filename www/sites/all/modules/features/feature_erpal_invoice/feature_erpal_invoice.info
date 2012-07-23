@@ -69,6 +69,7 @@ features[menu_links][] = menu-erpal-menu:invoice/billables
 features[menu_links][] = menu-erpal-menu:invoice/invoices
 features[node][] = erpal_invoice
 features[page_manager_handlers][] = node_view_panel_context_4
+features[page_manager_pages][] = billables_pane
 features[page_manager_pages][] = invoices
 features[rel_builds][] = erpal_invoice_node_form
 features[variable][] = additional_settings__active_tab_erpal_invoice

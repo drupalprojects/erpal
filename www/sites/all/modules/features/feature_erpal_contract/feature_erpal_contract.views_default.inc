@@ -61,6 +61,14 @@ echo _erpal_contract_helper_view_contracts_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'No contract available';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Relationship: Content: Contract payment (field_contract_payment) */
   $handler->display->display_options['relationships']['field_contract_payment_value']['id'] = 'field_contract_payment_value';
   $handler->display->display_options['relationships']['field_contract_payment_value']['table'] = 'field_data_field_contract_payment';
@@ -321,6 +329,245 @@ echo _erpal_contract_helper_view_contracts_header_content();
   /* Display: Contracts */
   $handler = $view->new_display('page', 'Contracts', 'page');
   $handler->display->display_options['path'] = 'contracts';
+
+  /* Display: Budgets by contract pane */
+  $handler = $view->new_display('panel_pane', 'Budgets by contract pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Budgets';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'No budget available';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Budget booking (field_budget_booking) */
+  $handler->display->display_options['relationships']['field_budget_booking_value']['id'] = 'field_budget_booking_value';
+  $handler->display->display_options['relationships']['field_budget_booking_value']['table'] = 'field_data_field_budget_booking';
+  $handler->display->display_options['relationships']['field_budget_booking_value']['field'] = 'field_budget_booking_value';
+  $handler->display->display_options['relationships']['field_budget_booking_value']['required'] = 0;
+  $handler->display->display_options['relationships']['field_budget_booking_value']['delta'] = '-1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_budgets_target_id']['id'] = 'field_budgets_target_id';
+  $handler->display->display_options['relationships']['field_budgets_target_id']['table'] = 'field_data_field_budgets';
+  $handler->display->display_options['relationships']['field_budgets_target_id']['field'] = 'field_budgets_target_id';
+  $handler->display->display_options['relationships']['field_budgets_target_id']['relationship'] = 'field_budget_booking_value';
+  $handler->display->display_options['relationships']['field_budgets_target_id']['required'] = 0;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Budget: Budget ID */
+  $handler->display->display_options['fields']['budget_id']['id'] = 'budget_id';
+  $handler->display->display_options['fields']['budget_id']['table'] = 'budget';
+  $handler->display->display_options['fields']['budget_id']['field'] = 'budget_id';
+  $handler->display->display_options['fields']['budget_id']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['fields']['budget_id']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['budget_id']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['budget_id']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['budget_id']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['budget_id']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['budget_id']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['budget_id']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['budget_id']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['budget_id']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['budget_id']['separator'] = '';
+  $handler->display->display_options['fields']['budget_id']['format_plural'] = 0;
+  /* Field: Budget: Created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'budget';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['fields']['created']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['created']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['created']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['created']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['created']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['created']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['created']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['created']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['created']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  /* Field: Budget: Total_hours */
+  $handler->display->display_options['fields']['total_hours']['id'] = 'total_hours';
+  $handler->display->display_options['fields']['total_hours']['table'] = 'budget';
+  $handler->display->display_options['fields']['total_hours']['field'] = 'total_hours';
+  $handler->display->display_options['fields']['total_hours']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['fields']['total_hours']['label'] = 'Total hours';
+  $handler->display->display_options['fields']['total_hours']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['total_hours']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['total_hours']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['total_hours']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['total_hours']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['total_hours']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['total_hours']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['total_hours']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['total_hours']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['total_hours']['set_precision'] = 0;
+  $handler->display->display_options['fields']['total_hours']['precision'] = '0';
+  $handler->display->display_options['fields']['total_hours']['format_plural'] = 0;
+  /* Field: Budget: Available_hours */
+  $handler->display->display_options['fields']['available_hours']['id'] = 'available_hours';
+  $handler->display->display_options['fields']['available_hours']['table'] = 'budget';
+  $handler->display->display_options['fields']['available_hours']['field'] = 'available_hours';
+  $handler->display->display_options['fields']['available_hours']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['fields']['available_hours']['label'] = 'Available hours';
+  $handler->display->display_options['fields']['available_hours']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['available_hours']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['available_hours']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['available_hours']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['available_hours']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['available_hours']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['available_hours']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['available_hours']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['available_hours']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['available_hours']['set_precision'] = 0;
+  $handler->display->display_options['fields']['available_hours']['precision'] = '0';
+  $handler->display->display_options['fields']['available_hours']['format_plural'] = 0;
+  /* Field: Budget: Date_from */
+  $handler->display->display_options['fields']['date_from']['id'] = 'date_from';
+  $handler->display->display_options['fields']['date_from']['table'] = 'budget';
+  $handler->display->display_options['fields']['date_from']['field'] = 'date_from';
+  $handler->display->display_options['fields']['date_from']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['fields']['date_from']['label'] = 'Date from';
+  $handler->display->display_options['fields']['date_from']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['date_from']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['date_from']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['date_from']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['date_from']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['date_from']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['date_from']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['date_from']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['date_from']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['date_from']['date_format'] = 'short';
+  /* Field: Budget: Date_till */
+  $handler->display->display_options['fields']['date_till']['id'] = 'date_till';
+  $handler->display->display_options['fields']['date_till']['table'] = 'budget';
+  $handler->display->display_options['fields']['date_till']['field'] = 'date_till';
+  $handler->display->display_options['fields']['date_till']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['fields']['date_till']['label'] = 'Date till';
+  $handler->display->display_options['fields']['date_till']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['date_till']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['date_till']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['date_till']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['date_till']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['date_till']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['date_till']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['date_till']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['date_till']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['date_till']['date_format'] = 'short';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['nid']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_contract' => 'erpal_contract',
+  );
+  /* Filter criterion: Budget: Created */
+  $handler->display->display_options['filters']['created']['id'] = 'created';
+  $handler->display->display_options['filters']['created']['table'] = 'budget';
+  $handler->display->display_options['filters']['created']['field'] = 'created';
+  $handler->display->display_options['filters']['created']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['filters']['created']['operator'] = 'between';
+  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['label'] = 'Created';
+  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  $handler->display->display_options['filters']['created']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['created']['form_type'] = 'date_popup';
+  /* Filter criterion: Budget: Budget ID */
+  $handler->display->display_options['filters']['budget_id']['id'] = 'budget_id';
+  $handler->display->display_options['filters']['budget_id']['table'] = 'budget';
+  $handler->display->display_options['filters']['budget_id']['field'] = 'budget_id';
+  $handler->display->display_options['filters']['budget_id']['relationship'] = 'field_budgets_target_id';
+  $handler->display->display_options['filters']['budget_id']['operator'] = '>';
+  $handler->display->display_options['filters']['budget_id']['value']['value'] = '0';
+  $handler->display->display_options['argument_input'] = array(
+    'nid' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Nid',
+    ),
+  );
   $export['contracts'] = $view;
 
   return $export;
