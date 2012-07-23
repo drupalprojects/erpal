@@ -13,15 +13,15 @@
 function _erpal_projects_helper_field_pricing_validate($entity) {
   
   $errors = array();
-  if (isset($entity->field_budgets[LANGUAGE_NONE])) {
+  if ($entity->item_id && isset($entity->field_budgets[LANGUAGE_NONE])) {
     
     $budget_ids = array();
 
     //load the former entity
-    $ids = array($entity->item_id);
+    $ids = array($entity->item_id);    
     $old_entity = entity_load('field_collection_item', $ids, array(), TRUE);
     $old_entity = $old_entity[$entity->item_id];
-    $old_budgets = $old_entity->field_budgets[LANGUAGE_NONE];
+    $old_budgets = isset($old_entity->field_budgets[LANGUAGE_NONE]) ? $old_entity->field_budgets[LANGUAGE_NONE] : array();
     //put all the old budget entity ids in an array
     $old_budget_ids = array();
     foreach ($old_budgets as $old_delta=>$old_budget_id) {
@@ -84,7 +84,7 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
 
   //check if budgets that actually have been delete, have timetrackings referencing the budget. They are not allowed to remove
   //from the pricing fieldcollection!
-  if (is_array($old_budget_ids)) {
+  if (isset($old_budget_ids) && is_array($old_budget_ids)) {
     foreach ($old_budget_ids as $budget_id=>$delta) {
       //does budget have timetrackings?
       $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($budget_id);
