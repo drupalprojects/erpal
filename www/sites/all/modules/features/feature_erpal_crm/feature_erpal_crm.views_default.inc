@@ -269,8 +269,10 @@ return _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-erpal-menu';
 
-  /* Display: Activities by contact */
-  $handler = $view->new_display('panel_pane', 'Activities by contact', 'panel_pane_1');
+  /* Display: Activities by customer */
+  $handler = $view->new_display('panel_pane', 'Activities by customer', 'panel_pane_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'CRM activities as customer';
   $handler->display->display_options['argument_input'] = array(
     'field_customer_ref_nid' => array(
       'type' => 'panel',
@@ -371,6 +373,39 @@ return _erpal_basic_helper_view_contacts_header_content();
   /* Display: activities view pane */
   $handler = $view->new_display('panel_pane', 'activities view pane', 'panel_pane_4');
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+
+  /* Display: Activities by contact */
+  $handler = $view->new_display('panel_pane', 'Activities by contact', 'panel_pane_6');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'CRM activities involved';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
+  $handler->display->display_options['relationships']['field_contacts_ref_target_id']['table'] = 'field_data_field_contacts_ref';
+  $handler->display->display_options['relationships']['field_contacts_ref_target_id']['field'] = 'field_contacts_ref_target_id';
+  $handler->display->display_options['relationships']['field_contacts_ref_target_id']['required'] = 0;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Field: Contacts (field_contacts_ref) */
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['table'] = 'field_data_field_contacts_ref';
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['field'] = 'field_contacts_ref_target_id';
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_contacts_ref_target_id']['not'] = 0;
+  $handler->display->display_options['argument_input'] = array(
+    'field_contacts_ref_target_id' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Field: Contacts (field_contacts_ref)',
+    ),
+  );
   $export['crm_activities'] = $view;
 
   return $export;
