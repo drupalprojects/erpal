@@ -1508,6 +1508,86 @@ echo _erpal_projects_helper_view_projects_header_content();
       'label' => 'Content: Project (field_project_ref)',
     ),
   );
+
+  /* Display: Budget timetrackings pane */
+  $handler = $view->new_display('panel_pane', 'Budget timetrackings pane', 'panel_pane_3');
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = 0;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_budget_target_id']['id'] = 'field_budget_target_id';
+  $handler->display->display_options['relationships']['field_budget_target_id']['table'] = 'field_data_field_budget';
+  $handler->display->display_options['relationships']['field_budget_target_id']['field'] = 'field_budget_target_id';
+  $handler->display->display_options['relationships']['field_budget_target_id']['required'] = 0;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Budget: Budget ID */
+  $handler->display->display_options['arguments']['budget_id']['id'] = 'budget_id';
+  $handler->display->display_options['arguments']['budget_id']['table'] = 'budget';
+  $handler->display->display_options['arguments']['budget_id']['field'] = 'budget_id';
+  $handler->display->display_options['arguments']['budget_id']['relationship'] = 'field_budget_target_id';
+  $handler->display->display_options['arguments']['budget_id']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['budget_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['budget_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['budget_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['budget_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['budget_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['budget_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['budget_id']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_timetracking' => 'erpal_timetracking',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Author uid */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'node';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'User';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['uid']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Date -  start date (field_date_time) */
+  $handler->display->display_options['filters']['field_date_time_value']['id'] = 'field_date_time_value';
+  $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
+  $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
+  $handler->display->display_options['filters']['field_date_time_value']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_date_time_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_date_time_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['operator_id'] = 'field_date_time_value_op';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['label'] = 'Date';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['operator'] = 'field_date_time_value_op';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['identifier'] = 'field_date_time_value';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['field_date_time_value']['form_type'] = 'date_popup';
+  $handler->display->display_options['argument_input'] = array(
+    'budget_id' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Budget: Budget ID',
+    ),
+  );
   $export['timetrackings'] = $view;
 
   return $export;

@@ -40,12 +40,13 @@ class budgetUIController extends EntityDefaultUIController {
       'page callback' => 'budget_form_wrapper',
       'page arguments' => array(1),
       'access callback' => 'budget_access',
-      'access arguments' => array('edit', ),
+      'access arguments' => array('edit', 1),
       'weight' => 0,
-      'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-      'type' => MENU_DEFAULT_LOCAL_TASK,
+     // 'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+      'type' => MENU_LOCAL_TASK,
       'file' => 'budget.admin.inc',
-      'file path' => drupal_get_path('module', $this->entityInfo['module'])
+      'file path' => drupal_get_path('module', $this->entityInfo['module']),
+      'weight' => 1,
     );
    
     
@@ -55,7 +56,7 @@ class budgetUIController extends EntityDefaultUIController {
       'page arguments' => array(1),
       'access callback' => 'budget_access',
       'access arguments' => array('edit', 1),
-      'type' => MENU_LOCAL_TASK,
+      'type' => MENU_CALLBACK,
       'context' => MENU_CONTEXT_INLINE,
       'weight' => 10,
       'file' => 'budget.admin.inc',
@@ -64,14 +65,23 @@ class budgetUIController extends EntityDefaultUIController {
     
     // Menu item for viewing budgets
     $items['budget/%budget'] = array(
-      //'title' => 'Title',
       'title callback' => 'budget_page_title',
       'title arguments' => array(1),
       'page callback' => 'budget_page_view',
       'page arguments' => array(1),
       'access callback' => 'budget_access',
       'access arguments' => array('view', 1),
-      'type' => MENU_CALLBACK,
+      'weight' => 0,
+    );
+    
+    $items['budget/%budget/view'] = array(      
+      'page callback' => 'budget_page_view',
+      'page arguments' => array(1),
+      'access callback' => 'budget_access',
+      'access arguments' => array('view', 1),
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'title' => 'View',
+      'weight' => 0,
     );
     
     
