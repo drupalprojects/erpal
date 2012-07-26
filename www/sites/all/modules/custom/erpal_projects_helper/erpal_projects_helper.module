@@ -99,6 +99,15 @@ function erpal_projects_helper_field_attach_validate($entity_type, $entity, &$er
 }
 
 /**
+* Implementes hook_field_attach_presave() 
+*/
+function erpal_projects_helper_field_attach_presave($entity_type, $entity) {
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_pricing') {    
+    _erpal_projects_helper_field_pricing_presave($entity);
+  }
+}
+
+/**
 * Implements hook_budget_delete_validate provided by budget module
 */
 function erpal_projects_helper_budget_delete_validate($budget) {

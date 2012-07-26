@@ -561,7 +561,7 @@ function _erpal_projects_billable_get_pricing($node, $process_tree=false) {
     if (isset($pricing_entity->field_buy_currency[LANGUAGE_NONE]))
       $buy_currency = $pricing_entity->field_buy_currency[LANGUAGE_NONE][0]['value'];
      
-    $budget_time_billing = $pricing_entity->field_budget_time_billing[LANGUAGE_NONE][0]['value'];
+    $budget_time_billing = isset($pricing_entity->field_budget_time_billing[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_budget_time_billing[LANGUAGE_NONE][0]['value'] : false;
      
     return array(
       'price_mode' => $price_mode,

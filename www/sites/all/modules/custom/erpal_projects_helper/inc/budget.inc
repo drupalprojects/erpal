@@ -24,17 +24,19 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
     $old_budgets = isset($old_entity->field_budgets[LANGUAGE_NONE]) ? $old_entity->field_budgets[LANGUAGE_NONE] : array();
     //put all the old budget entity ids in an array
     $old_budget_ids = array();
+    
     foreach ($old_budgets as $old_delta=>$old_budget_id) {
       $old_budget_id = $old_budget_id['target_id'];
       $old_budget_ids[$old_budget_id] = $old_delta;
     }
+    $old_budget_ids_backup = $old_budget_ids;
  
     foreach ($entity->field_budgets[LANGUAGE_NONE] as $delta=>$target_id) {
       $target_id = $target_id['target_id'];
       if (trim($target_id)) {
         $pricing_fieldcollection_items = _erpal_projects_helper_pricing_entities_with_budget($target_id);
         
-        unset($old_budget_ids[$target_id]); // unset the budgets that we actuallay have, so we have all deleted budgets in an array that we can check later.
+        unset($old_budget_ids[$target_id]); // unset the budgets that we actuallay have, so we have all deleted budgets in an array that we can check later.               
         
         //check if pricing entiy is already referenced at another project / task (pricing field collection entity)
         foreach ($pricing_fieldcollection_items as $collection_id) {
@@ -81,10 +83,10 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
       );
     }
   }
-
-  //check if budgets that actually have been delete, have timetrackings referencing the budget. They are not allowed to remove
-  //from the pricing fieldcollection!
+  
   if (isset($old_budget_ids) && is_array($old_budget_ids)) {
+    //check if budgets that actually have been delete, have timetrackings referencing the budget. They are not allowed to remove
+    //from the pricing fieldcollection!
     foreach ($old_budget_ids as $budget_id=>$delta) {
       //does budget have timetrackings?
       $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($budget_id);
@@ -100,6 +102,114 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
   }
   
   return $errors;
+}
+
+/**
+* Function checks, if timetrackings must be reorganised because a budget has been added
+* @param $entity the pricing field collection entity
+*/
+function _erpal_projects_helper_field_pricing_presave($entity) {
+  if ($entity->item_id && isset($entity->field_budgets[LANGUAGE_NONE])) {    
+    $budget_ids = array();
+  
+    //load the former entity
+    $ids = array($entity->item_id);    
+    $old_entity = entity_load('field_collection_item', $ids, array(), TRUE);
+    $old_entity = $old_entity[$entity->item_id];
+    $old_budgets = isset($old_entity->field_budgets[LANGUAGE_NONE]) ? $old_entity->field_budgets[LANGUAGE_NONE] : array();
+    
+    //put all the old budget entity ids in an array
+    $old_budget_ids = array();    
+    foreach ($old_budgets as $old_delta=>$old_budget_id) {
+      $old_budget_id = $old_budget_id['target_id'];
+      $old_budget_ids[$old_budget_id] = $old_delta;
+    }
+ 
+    //check if there has been a new budget added, compared to the old version
+    $new_budget_ids = array();
+    foreach ($entity->field_budgets[LANGUAGE_NONE] as $delta=>$target_id) {
+      $target_id = $target_id['target_id'];
+      if (!isset($old_budget_ids[$target_id]))
+        $new_budget_ids[] = $target_id;
+    }
+    
+    if (count($new_budget_ids) > 0) {     
+      $budget_host_node = $entity->hostEntity();
+      _erpal_projects_helper_reorganize_timetrackings_to_budgets_bulk($budget_host_node, $new_budget_ids);
+    }
+  }
+}
+
+/**
+* Checks if there are timetrackings at the given host node or its children that have no budget assigned and match the validity period of the given budgets. For more information @see function _erpal_projects_helper_reorganize_timtrackings_by_single_budget
+*/
+function _erpal_projects_helper_reorganize_timetrackings_to_budgets_bulk($host_node, $new_budget_ids) {
+  
+  //start Bulk Operation here
+  //build operation for every entity type
+  $operations = array();
+  $total_count = count($new_budget_ids);
+  $operations[] = array('_erpal_projects_helper_reorganize_timetrackings_to_budgets_operation', array($host_node, $new_budget_ids, $total_count));  
+  
+  $batch = array(
+    'operations' => $operations,
+    'title' => t('Processing reorganization Batch'),
+    'init_message' => t('Reorganization Batch is starting.'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('Reorganization Batch has encountered an error.'),
+  );
+     
+  batch_set($batch);
+
+  batch_process($redirect); //return to the parent
+}
+
+/**
+* Bulk Operation to reorganize timetrackings and budgets
+*/
+function _erpal_projects_helper_reorganize_timetrackings_to_budgets_operation($host_node, $budget_ids, $total_count, &$context) {
+  
+  if (!isset($context['sandbox']['progress'])) {  
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['budget_ids'] = $budget_ids;
+    $context['sandbox']['last_delta'] = -1;
+    $context['sandbox']['host_node'] = $host_node;
+    $context['sandbox']['max'] = isset($context['sandbox']['max']) ? $context['sandbox']['max'] : $total_count;
+  }
+ 
+  $budget_ids = $context['sandbox']['budget_ids'];
+  $delta = $context['sandbox']['last_delta'] +1;
+  $host_node = $context['sandbox']['host_node'];
+
+  if (isset($budget_ids[$delta])) {
+    $budget_id = $budget_ids[$delta];
+    
+    $budget = budget_load($budget_id);
+    _erpal_projects_helper_reorganize_timtrackings_by_single_budget($host_node, $budget);
+         
+    $context['sandbox']['last_delta'] = $delta;
+  }
+ 
+  $context['sandbox']['progress']++;
+  $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  
+  
+  foreach ($new_budget_ids as $budget_id) {
+    $budget_entity = budget_load($budget_id);
+    $budget_host_node = $budget_entity->hostEntity();
+    _erpal_projects_helper_reorganize_timetrackings_to_budgets($budget_host_node, $budget_entity);
+  }
+}
+
+/**
+* Reorganize one budget node with timetrackings of the given host node and its children that have no budget and fit into the 
+* date time range of the budget (if one is set)
+*@TODO add more information here and implement as bulk operation and @see https://support.brightsolutions.de/node/31459
+* ACHTUNG ACHTUNG ACHTUNG: Wir müssen ALLE TIMETRACKINGS des BUDGETS, die in den Zeitraum fallen neu organisieren, nicht nur die, die kein Budget referenzieren. Denn auch wenn es eine Budget Überschreitung gab, wird ein Budget referenziert. Das muss dann auch reorganisiert werden, da durch das neue Budget ja weitere hours Kapazitäten dazugekommen sind.
+*/
+function _erpal_projects_helper_reorganize_timtrackings_by_single_budget($host_node, $budget) {
+  dpm($host_node);
+  dpm($budget);
 }
 
 /**
@@ -357,10 +467,10 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
 }
 
 /**
-* Saves the booked budget from the timetracking to the referenced budget entity again
+* Saves the booked budget hours from the timetracking to the referenced budget entity again
 */
 function _erpal_projects_helper_restore_timetracking_budget($timetracking_node) {
-  //if timetracking node already has a budget entity referenced, add the budget again to the budget_entity available_hours.
+  //if timetracking node already has a budget entity referenced, add the budgethours again to the budget_entity available_hours.
   //Otherwise we substract the duration multiple times
   if (isset($timetracking_node->field_budget[LANGUAGE_NONE][0]['target_id'])) {
     $budget_entity_id = $timetracking_node->field_budget[LANGUAGE_NONE][0]['target_id'];
