@@ -186,7 +186,7 @@ function budget_edit_form($form, &$form_state, $budget) {
     '#date_format' => $format,
     '#title' => t('Available from'),
     '#default_value' => $date_from ? date($popup_default_format, $date_from) : date($date_from),
-    '#required' => FALSE,
+    '#required' => TRUE,
   );
   
   $form['date_till'] = array(
