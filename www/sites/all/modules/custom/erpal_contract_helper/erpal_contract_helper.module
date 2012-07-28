@@ -239,7 +239,7 @@ function _erpal_contract_helper_check_payments() {
 function _erpal_contract_helper_check_budgets() {
   $contract_nodes = _erpal_contract_helper_get_contracts_to_budget();
 
-  //create billables$ and set last and next payment date in field collection
+  //create billables and set last and next payment date in field collection
   foreach ($contract_nodes as $contract_node) {
     $budget_booking_entity = $contract_node->field_budget_booking[LANGUAGE_NONE][0]['entity'];
     $budget_hours = isset($budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value']) ? $budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value'] : false;
@@ -251,7 +251,7 @@ function _erpal_contract_helper_check_budgets() {
 
     $next_budget_date = $budget_booking_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
     //check if budget will expire
-    $expire_period = $budget_booking_entity->field_expire_period[LANGUAGE_NONE][0]['value'];
+    $expire_period = isset($budget_booking_entity->field_expire_period[LANGUAGE_NONE][0]['value']) ? $budget_booking_entity->field_expire_period[LANGUAGE_NONE][0]['value'] : false;
     $date_from = $next_budget_date;
 
     $date_till = false;

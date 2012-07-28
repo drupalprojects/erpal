@@ -144,7 +144,7 @@ function _erpal_projects_helper_field_pricing_presave($entity) {
 * Checks if there are timetrackings at the given host node or its children that have no budget assigned and match the validity period of the given budgets. For more information @see function _erpal_projects_helper_reorganize_timtrackings_by_single_budget
 */
 function _erpal_projects_helper_reorganize_timetrackings_to_budgets_bulk($host_node, $new_budget_ids) {
-  
+  return;
   //start Bulk Operation here
   //build operation for every entity type
   $operations = array();
