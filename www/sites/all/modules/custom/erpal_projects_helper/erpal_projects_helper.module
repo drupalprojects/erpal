@@ -167,6 +167,19 @@ function erpal_projects_helper_clone_book_action_form_alter(&$form, $form_state,
 }
 
 /**
+* Implements hook_cron_queue_info ()
+*/
+function erpal_projects_helper_cron_queue_info() {
+  $queues = array();
+  $queues['reorganize_timetrackings'] = array(
+    'worker callback' => '_erpal_projects_helper_reorganize_timetrackings_queue_run', // This is the callback function for each queue item.
+    'time' => 30, // This is the max run time per cron run in seconds.
+  );
+  
+  return $queues;
+}
+
+/**
 * additional validation handler for clone config form of task elements
 */
 function erpal_projects_helper_clone_book_action_form_validate($form, $form_state) {

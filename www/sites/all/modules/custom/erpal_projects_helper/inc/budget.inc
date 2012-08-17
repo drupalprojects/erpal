@@ -105,13 +105,17 @@ function _erpal_projects_helper_field_pricing_validate($entity) {
 }
 
 /**
-* Function checks, if timetrackings must be reorganised because a budget has been added
+* Function checks, if timetrackings must be reorganised because a budget has been added to a task or a project
 * @param $entity the pricing field collection entity
 */
 function _erpal_projects_helper_field_pricing_presave($entity) {
   if ($entity->item_id && isset($entity->field_budgets[LANGUAGE_NONE])) {    
     $budget_ids = array();
   
+    //price mode must be budget per hour
+    if ($entity->field_price_mode[LANGUAGE_NONE][0]['value'] != 'budget')
+      return;  //only, if price mode is budget per hour
+      
     //load the former entity
     $ids = array($entity->item_id);    
     $old_entity = entity_load('field_collection_item', $ids, array(), TRUE);
@@ -135,81 +139,104 @@ function _erpal_projects_helper_field_pricing_presave($entity) {
     
     if (count($new_budget_ids) > 0) {     
       $budget_host_node = $entity->hostEntity();
-      _erpal_projects_helper_reorganize_timetrackings_to_budgets_bulk($budget_host_node, $new_budget_ids);
+      _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, $new_budget_ids);
     }
   }
 }
 
 /**
-* Checks if there are timetrackings at the given host node or its children that have no budget assigned and match the validity period of the given budgets. For more information @see function _erpal_projects_helper_reorganize_timtrackings_by_single_budget
+* Checks if there are timetrackings at the given host node or its children that match the validity period of the given budgets. For more information @see function _erpal_projects_helper_reorganize_timtrackings_by_single_budget
+* @param $host_node the node where the budget was added to
 */
-function _erpal_projects_helper_reorganize_timetrackings_to_budgets_bulk($host_node, $new_budget_ids) {
-  return;
-  //start Bulk Operation here
-  //build operation for every entity type
-  $operations = array();
-  $total_count = count($new_budget_ids);
-  $operations[] = array('_erpal_projects_helper_reorganize_timetrackings_to_budgets_operation', array($host_node, $new_budget_ids, $total_count));  
+function _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($host_node, $new_budget_ids) {
+  //get all timetrackings and add them to the queue
+  $types = array('erpal_task');
+  $sub_tasks = _erpal_basic_helper_get_all_child_nids_deep_search($host_node->nid, $types);
   
-  $batch = array(
-    'operations' => $operations,
-    'title' => t('Processing reorganization Batch'),
-    'init_message' => t('Reorganization Batch is starting.'),
-    'progress_message' => t('Processed @current out of @total.'),
-    'error_message' => t('Reorganization Batch has encountered an error.'),
-  );
-     
-  batch_set($batch);
-
-  batch_process($redirect); //return to the parent
-}
-
-/**
-* Bulk Operation to reorganize timetrackings and budgets
-*/
-function _erpal_projects_helper_reorganize_timetrackings_to_budgets_operation($host_node, $budget_ids, $total_count, &$context) {
-  
-  if (!isset($context['sandbox']['progress'])) {  
-    $context['sandbox']['progress'] = 0;
-    $context['sandbox']['budget_ids'] = $budget_ids;
-    $context['sandbox']['last_delta'] = -1;
-    $context['sandbox']['host_node'] = $host_node;
-    $context['sandbox']['max'] = isset($context['sandbox']['max']) ? $context['sandbox']['max'] : $total_count;
+  $child_nids = array($host_node->nid);
+  foreach ($sub_tasks as $task_arr) {
+    $child_nids[] = $task_arr['child'];
   }
- 
-  $budget_ids = $context['sandbox']['budget_ids'];
-  $delta = $context['sandbox']['last_delta'] +1;
-  $host_node = $context['sandbox']['host_node'];
-
-  if (isset($budget_ids[$delta])) {
-    $budget_id = $budget_ids[$delta];
-    
-    $budget = budget_load($budget_id);
-    _erpal_projects_helper_reorganize_timtrackings_by_single_budget($host_node, $budget);
-         
-    $context['sandbox']['last_delta'] = $delta;
-  }
- 
-  $context['sandbox']['progress']++;
-  $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   
-  
+  //find out minimum date from and maximum date till off all budgets
+  $min_budget_date_from = PHP_INT_MAX;
+  $max_budget_date_till = 0;
   foreach ($new_budget_ids as $budget_id) {
-    $budget_entity = budget_load($budget_id);
-    $budget_host_node = $budget_entity->hostEntity();
-    _erpal_projects_helper_reorganize_timetrackings_to_budgets($budget_host_node, $budget_entity);
+    $budget = budget_load($budget_id);
+    if ($budget->date_from) {
+      if ($budget->date_from < $min_budget_date_from)
+        $min_budget_date_from = $budget->date_from;
+    } else {
+      $min_budget_date_from = 0;
+    }
+    
+    if ($budget->date_till) {
+      if ($budget->date_till > $max_budget_date_till)
+        $max_budget_date_till = $budget->date_till;
+    } else {
+      $max_budget_date_till = PHP_INT_MAX;
+    }
+  }
+
+  //set the max time to last minute of the day so every hour is in it!
+  $max_budget_date_till = date('Y-m-d 23:59:59', $max_budget_date_till);
+  $max_budget_date_till = strtotime($max_budget_date_till);
+  
+  //now get all timetracking nodes assigned to these children tasks and to the host node itself  
+  $timetracking_nids = _erpal_projects_helper_get_direct_timetrackings_by_date_range($child_nids, $min_budget_date_from, $max_budget_date_till);
+  
+  //now process some items to have immidiately results in most cases, add others to the queue
+  $process_items_count = 20;
+  $count = 0;
+
+  foreach ($timetracking_nids as $key=>$nid) {
+    _erpal_projects_helper_process_queue_item_timetracking($nid);
+    
+    $count++;
+    unset($timetracking_nids[$key]);
+    
+    if ($count >= $process_items_count)
+      break;
+  }
+  
+  //now add these timetrackings to queue for processing later
+  $queue = DrupalQueue::get('reorganize_timetrackings');
+  foreach($timetracking_nids as $nid) {
+    $queue->createItem($nid);
   }
 }
 
+
 /**
-* Reorganize one budget node with timetrackings of the given host node and its children that have no budget and fit into the 
-* date time range of the budget (if one is set)
-*@TODO add more information here and implement as bulk operation and @see https://support.brightsolutions.de/node/31459
-* ACHTUNG ACHTUNG ACHTUNG: Wir müssen ALLE TIMETRACKINGS des BUDGETS, die in den Zeitraum fallen neu organisieren, nicht nur die, die kein Budget referenzieren. Denn auch wenn es eine Budget Überschreitung gab, wird ein Budget referenziert. Das muss dann auch reorganisiert werden, da durch das neue Budget ja weitere hours Kapazitäten dazugekommen sind.
+* Function that is called if the reorganize_timetrackings queue definied in erpal_projects_helper_cron_queue_info is processed
+* @param $nid a nid of a timetracking node that needs to be reorganized
 */
-function _erpal_projects_helper_reorganize_timtrackings_by_single_budget($host_node, $budget) {
-  dpm($host_node);
-  dpm($budget);
+function _erpal_projects_helper_reorganize_timetrackings_queue_run($nid) {
+  
+  _erpal_projects_helper_process_queue_item_timetracking($nid);  
+}
+
+/**
+* Function to process single queue item to refactore timetrackings and budgets
+*/
+function _erpal_projects_helper_process_queue_item_timetracking($nid) {
+  //delete billables if not billed and save the timetracking again  
+  $node = node_load($nid);
+  if ($node->type != 'erpal_timetracking')
+    return;
+    
+  //now delete the billables of this timetracking node
+  $billables = _billable_get_billables_by_subject(array($nid));
+  foreach ($billables as $billable_id) {
+    $billable = billable_load($billable_id);
+    
+    //delelte only if not already billed
+    if (!$billable->billed)    
+      billable_delete($billable);
+  }
+  
+  //now resave the timetracking node
+  node_save($node);  
 }
 
 /**
@@ -489,6 +516,8 @@ function _erpal_projects_helper_restore_timetracking_budget($timetracking_node) 
 * @param $trigger_warnings if true warnings and triggers are called to warn the user
 */
 function _erpal_projects_helper_check_budget_usage($node, $booking_date, $trigger_warnings=false) {
+  static $budget_warnings=array();
+  
   $budgets_arr = _erpal_projects_helper_get_budget($node, $booking_date);
   
   $total_hours = $budgets_arr['total_hours'];
@@ -503,12 +532,16 @@ function _erpal_projects_helper_check_budget_usage($node, $booking_date, $trigge
 
   //close to limit
   if ($usage_percent >= $usage_limit && $usage_percent < 100) {
-    drupal_set_message(t('Budget of !node_link is closed to limit with !budget_usage', 
+    $message = t('Budget of !node_link is closed to limit with !budget_usage', 
       array(
         '!node_link' => $node_link,
         '!budget_usage' => $budget_usage,
       )
-    ), 'warning');
+    );
+    if (!isset($budget_warnings[$message])) {
+      drupal_set_message($message, 'warning');
+      $budget_warnings[$message] = 1;
+    }
     
     //call rules event
     if (module_exists('rules')) {
@@ -518,12 +551,17 @@ function _erpal_projects_helper_check_budget_usage($node, $booking_date, $trigge
   
   //reached limit
   if ($usage_percent >= 100) {
-    drupal_set_message(t('Budget of !node_link is completely used with !budget_usage', 
+    $message = t('Budget of !node_link is completely used with !budget_usage', 
       array(
         '!node_link' => $node_link,
         '!budget_usage' => $budget_usage,
       )
-    ), 'error');
+    );
+    
+    if (!isset($budget_warnings[$message])) {
+      drupal_set_message($message, 'error');
+      $budget_warnings[$message] = 1;
+    }
     
     //call rules event
     if (module_exists('rules')) {

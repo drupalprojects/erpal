@@ -645,7 +645,7 @@ function _erpal_basic_helper_get_direct_children($nid, $types=array(), $order_fi
 
 /**
 * Gets all child nodes of a given parent by deepsearch.
-* @return a flat array with all children in deep search order, each node in an array whit key 'child' and 'parent'
+* @return a flat array with all children nids in deep search order, each node in an array whith key 'child' and 'parent'
 * @param $types the node types that should be returned and deep searched as children
 */
 function _erpal_basic_helper_get_all_child_nids_deep_search($nid, $types=array()) {
