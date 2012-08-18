@@ -175,7 +175,7 @@ function budget_edit_form($form, &$form_state, $budget) {
     '#value' => isset($budget->available_hours) ? $budget->available_hours : 0,
   );
   
-  $date_from = $budget->date_from;
+  $date_from = $budget->date_from ? $budget->date_from : time();
   $date_till = $budget->date_till;
 
   $format = _budget_get_date_format(false);

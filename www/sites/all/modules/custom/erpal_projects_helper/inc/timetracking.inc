@@ -119,6 +119,7 @@ function _erpal_projects_helper_get_direct_timetrackings_by_date_range($nids, $d
   ->fieldCondition('field_timetracking_subject', 'target_id', $nids, 'IN')
   ->fieldCondition('field_date_time', 'value', $date_from, '>=')
   ->fieldCondition('field_date_time', 'value2', $date_till, '<=')
+  ->fieldOrderBy('field_date_time', 'value', 'ASC')
   ->addMetaData('account', user_load(1)); // run the query as user 1 to get all nodes
   
   $result = $query->execute();
