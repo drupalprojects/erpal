@@ -206,6 +206,18 @@ function _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($host_
   }
 }
 
+/**
+* Warns on page invoice/billables if there are timetrackings in the queue and so some billables may not be correct or missing
+*/
+function _erpal_projects_helper_warn_items_in_queue_billing() {
+  if (arg(0) == 'invoice' && arg(1) == 'billables') {
+    $queue = DrupalQueue::get('reorganize_timetrackings');
+    $item_count = $queue->numberOfItems();
+    if ($item_count)
+      drupal_set_message(t('CAUTION! There are !item_count timetrackings in process. Please start cron, to process them und to have all billable items calculated', array('!item_count' => $item_count)), 'warning');
+  }
+}
+
 
 /**
 * Function that is called if the reorganize_timetrackings queue definied in erpal_projects_helper_cron_queue_info is processed
@@ -375,9 +387,11 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
   $pricing_node = node_load($pricing_nid);
 
   $booking_date = time();
-  if (isset($timetracking_node->field_date[LANGUAGE_NONE][0]['value']))
-    $booking_date = strtotime($timetracking_node->field_date[LANGUAGE_NONE][0]['value']); //the date when the timetracking node is booked
-  
+  if (isset($timetracking_node->field_date_time[LANGUAGE_NONE][0]['value'])) {
+    $booking_date = $timetracking_node->field_date_time[LANGUAGE_NONE][0]['value']; //the date when the timetracking node is booked
+      dpm('drin--'.$booking_date);
+  }
+  dpm($timetracking_node);
   $budgets_arr = _erpal_projects_helper_get_budget($pricing_node, $booking_date);
   
   //sort budgets: date_till (smallest date at the top), available hours (biggest first)

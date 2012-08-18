@@ -21,6 +21,8 @@ function erpal_projects_helper_init() {
   $mod_path = drupal_get_path('module', 'erpal_projects_helper');
   $css_path = $mod_path.'/erpal_projects_helper.css';
   drupal_add_css($css_path);
+  
+  _erpal_projects_helper_warn_items_in_queue_billing();
 }
  
 /**
