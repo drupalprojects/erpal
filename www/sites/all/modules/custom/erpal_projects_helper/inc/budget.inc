@@ -186,7 +186,7 @@ function _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($host_
   $timetracking_nids = _erpal_projects_helper_get_direct_timetrackings_by_date_range($child_nids, $min_budget_date_from, $max_budget_date_till);
   
   //now process some items to have immidiately results in most cases, add others to the queue
-  $process_items_count = 20;
+  /*$process_items_count = 1;
   $count = 0;
 
   foreach ($timetracking_nids as $key=>$nid) {
@@ -198,7 +198,7 @@ function _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($host_
     if ($count >= $process_items_count)
       break;
   }
-  
+  */
   //now add these timetrackings to queue for processing later
   $queue = DrupalQueue::get('reorganize_timetrackings');
   foreach($timetracking_nids as $nid) {
@@ -465,8 +465,7 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
       
       //if we have a rest duration, create a new timetracking and loop again
       if ($rest_hours) {
-        $timetracking_node_new = new stdClass();  
-        $timetracking_node_new->uid = $timetracking_node->uid;
+        $timetracking_node_new = new stdClass();          
         $timetracking_node_new->force_billable = $billable_information['budget_time_billing'] == 'billable';
         $timetracking_node_new->status = 1; //published
         $timetracking_node_new->language = $timetracking_node->language;
@@ -479,6 +478,7 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
         //duration at the timtracking node inserted by the user, so here we have no further duration. Only billing_duration 
         //will be dplit because it is used to calculate budgets and billables
         node_object_prepare($timetracking_node_new);
+        $timetracking_node_new->uid = $timetracking_node->uid;
         node_save($timetracking_node_new);  //start recursion to save this timetracking node to budget...
         return false;
         
