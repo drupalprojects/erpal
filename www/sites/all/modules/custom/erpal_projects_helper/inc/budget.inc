@@ -466,6 +466,7 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
       //if we have a rest duration, create a new timetracking and loop again
       if ($rest_hours) {
         $timetracking_node_new = new stdClass();  
+        $timetracking_node_new->uid = $timetracking_node->uid;
         $timetracking_node_new->force_billable = $billable_information['budget_time_billing'] == 'billable';
         $timetracking_node_new->status = 1; //published
         $timetracking_node_new->language = $timetracking_node->language;
