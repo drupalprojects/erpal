@@ -388,10 +388,8 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
 
   $booking_date = time();
   if (isset($timetracking_node->field_date_time[LANGUAGE_NONE][0]['value'])) {
-    $booking_date = $timetracking_node->field_date_time[LANGUAGE_NONE][0]['value']; //the date when the timetracking node is booked
-      dpm('drin--'.$booking_date);
+    $booking_date = $timetracking_node->field_date_time[LANGUAGE_NONE][0]['value']; //the date when the timetracking node is booked      
   }
-  dpm($timetracking_node);
   $budgets_arr = _erpal_projects_helper_get_budget($pricing_node, $booking_date);
   
   //sort budgets: date_till (smallest date at the top), available hours (biggest first)

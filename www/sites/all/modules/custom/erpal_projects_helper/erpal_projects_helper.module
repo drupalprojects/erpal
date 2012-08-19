@@ -40,6 +40,26 @@ function erpal_projects_helper_menu(){
 }
 
 /**
+* Implements hook_entity_update
+*/
+function erpal_projects_helper_entity_update($entity, $type) {
+  if ($type == 'budget') {
+    //if budget has no timetrackings yet, enque this budget and its host node to timetracking refactoring queue
+    $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($entity->budget_id);
+    if (count($timetracking_nids)) {
+      //get the field-collection that referenecs this budget entity
+      $pricing_field_collection = _erpal_projects_helper_pricing_entities_with_budget($entity->budget_id);
+      dpm($pricing_field_collection);
+      //get the host node of the budget
+      $budget_host_node = $pricing_field_collection->hostEntity();
+      _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, $new_budget_ids);
+    }
+  }
+}
+
+
+
+/**
 * Implements hook_theme
 */
 function erpal_projects_helper_theme() {

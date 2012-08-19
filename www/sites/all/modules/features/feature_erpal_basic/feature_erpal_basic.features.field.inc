@@ -2573,7 +2573,22 @@ function feature_erpal_basic_field_default_fields() {
         'default' => array(
           'label' => 'above',
           'module' => 'relation_endpoint',
-          'settings' => array(),
+          'settings' => array(
+            'view_modes' => array(
+              'billable' => 'default',
+              'budget' => 'default',
+              'comment' => 'default',
+              'field_collection_item' => 'default',
+              'file' => 'default',
+              'node' => 'default',
+              'profile2' => 'default',
+              'profile2_type' => 'default',
+              'relation' => 'default',
+              'taxonomy_term' => 'default',
+              'taxonomy_vocabulary' => 'default',
+              'user' => 'default',
+            ),
+          ),
           'type' => 'relation_endpoint',
           'weight' => 0,
         ),
