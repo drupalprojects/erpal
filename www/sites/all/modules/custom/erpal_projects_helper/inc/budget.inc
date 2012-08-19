@@ -185,24 +185,33 @@ function _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($host_
   //now get all timetracking nodes assigned to these children tasks and to the host node itself  
   $timetracking_nids = _erpal_projects_helper_get_direct_timetrackings_by_date_range($child_nids, $min_budget_date_from, $max_budget_date_till);
   
-  //now process some items to have immidiately results in most cases, add others to the queue
-  /*$process_items_count = 1;
-  $count = 0;
-
-  foreach ($timetracking_nids as $key=>$nid) {
-    _erpal_projects_helper_process_queue_item_timetracking($nid);
-    
-    $count++;
-    unset($timetracking_nids[$key]);
-    
-    if ($count >= $process_items_count)
-      break;
-  }
-  */
   //now add these timetrackings to queue for processing later
   $queue = DrupalQueue::get('reorganize_timetrackings');
+  //get all queue Items in an array
+  
+  $queue_items = array();
+  while($item = $queue->claimItem(0)) {
+    $queue_items[$item->data] = $item;
+    
+    //delete it and add it again so it is free again for next iteration
+    $queue->deleteItem($item);    
+  }
+  
+  //add items to queue again
+  foreach ($queue_items as $item) {
+    $queue->createItem($item->data);
+  }
+  
   foreach($timetracking_nids as $nid) {
-    $queue->createItem($nid);
+    
+    //add item only if it is not already in the queue
+    $nid_in_queue = false;
+    $nid_in_queue = isset($queue_items[$nid]);
+    
+    if (!$nid_in_queue) {
+      $queue->createItem($nid);
+      dpm('add '.$nid);
+    }
   }
 }
 
