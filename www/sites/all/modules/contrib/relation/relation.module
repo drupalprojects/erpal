@@ -188,122 +188,6 @@ function relation_permission() {
 }
 
 /**
- * Implements hook_menu().
- */
-function relation_menu() {
-  $items['relation/%relation'] = array(
-    'title callback' => 'relation_page_title',
-    'title arguments' => array(1),
-    'access arguments' => array('access relations'),
-    'page callback' => 'relation_page',
-    'page arguments' => array(1),
-  );
-  $items['relation/%relation/view'] = array(
-    'title' => 'View',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -10,
-  );
-  $items['relation/%relation/edit'] = array(
-    'title' => 'Edit',
-    'access arguments' => array('edit relations'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('relation_edit_form', 1),
-    'type' => MENU_LOCAL_TASK,
-  );
-  $items['relation/%relation/delete'] = array(
-    'title' => 'Delete',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('relation_delete_confirm', 1),
-    'access arguments' => array('delete relations'),
-    'weight' => 10,
-    'type' => MENU_LOCAL_TASK,
-  );
-  $items['admin/structure/relation'] = array(
-    'title' => 'Relation types',
-    'access arguments' => array('administer relation types'),
-    'page callback' => 'relation_type_list',
-    'file' => 'relation.admin.inc',
-    'description' => 'Manage relation types, including relation properties (directionality, transitivity etc), available bundles, and fields.',
-  );
-  $items['admin/structure/relation/list'] = array(
-    'title' => 'List',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -10,
-  );
-  $items['admin/structure/relation/add'] = array(
-    'title' => 'Add relation type',
-    'access arguments' => array('administer relation types'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('relation_type_form'),
-    'type' => MENU_LOCAL_ACTION,
-    'file' => 'relation.admin.inc',
-    'description' => 'Add new relation types.',
-  );
-  $items['admin/structure/relation/import'] = array(
-    'title' => 'Import  relation type',
-    'access arguments' => array('administer relation types'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('relation_type_import'),
-    'type' => MENU_LOCAL_ACTION,
-    'file' => 'relation.admin.inc',
-    'description' => 'Import existing relation types.',
-  );
-  $items['admin/structure/relation/manage/%relation_type'] = array(
-    'title' => 'Edit relation type',
-    'title callback' => 'relation_type_page_title',
-    'title arguments' => array(4),
-    'access arguments' => array('administer relation types'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('relation_type_form', 4),
-    'file' => 'relation.admin.inc',
-    'description' => 'Edit an existing relation type, including relation properties (directionality, transitivity etc), available bundles, and fields.',
-  );
-  $items['admin/structure/relation/manage/%relation_type/edit'] = array(
-    'title' => 'Edit',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -10,
-  );
-  $items['admin/structure/relation/manage/%relation_type/delete'] = array(
-    'title' => 'Delete',
-    'page arguments' => array('relation_type_delete_confirm', 4),
-    'access arguments' => array('administer relation types'),
-    'type' => MENU_LOCAL_TASK,
-    'file' => 'relation.admin.inc',
-    'weight' => 20,
-    'description' => 'Delete an existing relation type.',
-  );
-  if (module_exists('ctools')) {
-    $items['admin/structure/relation/manage/%relation_type/export'] = array(
-      'title' => 'Export',
-      'page callback' => 'drupal_get_form',
-      'page arguments' => array('relation_export_relation_type', 4),
-      'access arguments' => array('export relation types'),
-      'type' => MENU_LOCAL_TASK,
-      'file' => 'relation.ctools.inc',
-      'weight' => 10,
-    );
-  }
-  $items['admin/config/development/generate/relation'] = array(
-    'title' => 'Generate relations',
-    'access arguments' => array('administer relation types'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('relation_generate_form'),
-    'file' => 'relation.admin.inc',
-    'description' => 'Generate relations for testing.',
-  );
-  // Relations listing.
-  $items['admin/content/relation'] = array(
-    'title' => 'Relations',
-    'page callback' => 'relation_admin_content',
-    'access arguments' => array('administer relations'),
-    'description' => 'View, edit and delete all the available relations on your site.',
-    'file' => 'relation.admin.inc',
-    'type' => MENU_LOCAL_TASK,
-  );
-  return $items;
-}
-
-/**
  * Creates a relation bundle.
  *
  * @param $info
@@ -375,6 +259,7 @@ function relation_type_create($info = array()) {
 function relation_type_save($relation_type, $write_record_keys = array(), $rebuild_menu = TRUE) {
   // Make sure all keys are populated.
   $relation_type = relation_type_create($relation_type);
+  $existing_relation_type = relation_get_types(array($relation_type->relation_type));
 
   $type = $relation_type->relation_type;
   $source_bundles = $relation_type->source_bundles;
@@ -404,6 +289,9 @@ function relation_type_save($relation_type, $write_record_keys = array(), $rebui
   relation_type_ensure_instance($type);
   if ($rebuild_menu) {
     menu_rebuild();
+  }
+  if (empty($existing_relation_type)) {
+    field_attach_create_bundle('relation', $relation_type->relation_type);
   }
 }
 
@@ -450,6 +338,8 @@ function relation_type_load($relation_type) {
 function relation_get_types($types = array()) {
   if (module_exists('ctools')) {
     ctools_include('export');
+  }
+  if (function_exists('ctools_export_crud_load_multiple')) {
     $relation_types = $types ? ctools_export_crud_load_multiple('relation_type', $types) : ctools_export_crud_load_all('relation_type');
     static $recurse = FALSE;
     if (!$recurse) {
@@ -622,13 +512,6 @@ function relation_multiple_view($relations, $view_mode) {
 }
 
 /**
- * Relation display page title callback.
- */
-function relation_page_title($relation) {
-  return 'Relation ' . $relation->rid;
-}
-
-/**
  * Relation type display/edit page title callback.
  */
 function relation_type_page_title($type) {
@@ -744,13 +627,17 @@ function relation_save($relation) {
   catch (FieldValidationException $e) {
     return FALSE;
   }
+  // Determine if we will be inserting a new relation.
+  if (!isset($relation->is_new)) {
+    $relation->is_new = empty($relation->rid);
+  }
   $transaction = db_transaction();
   $endpoints = field_get_items('relation', $relation, 'endpoints');
   $relation->arity = count($endpoints);
   // use time() instead of REQUEST_TIME, because otherwise tests
   // RelationQuery::order() are impossible.
   $relation->changed = time();
-  if (empty($relation->is_new) && !empty($relation->rid)) {
+  if (!$relation->is_new) {
     $keys = array('rid');
     $op = 'update';
   }
@@ -764,6 +651,12 @@ function relation_save($relation) {
   unset($relation->vid);
   drupal_write_record('relation_revision', $relation);
   drupal_write_record('relation', $relation, $keys);
+  if ($relation->is_new) {
+    db_update('relation_revision')
+      ->fields(array('rid' => $relation->rid))
+      ->condition('vid', $relation->vid)
+      ->execute();
+  }
   call_user_func("field_attach_$op", 'relation', $relation);
   module_invoke_all('entity_' . $op, $relation, 'relation');
   module_invoke('rules', 'invoke_event', 'relation_' . $op, $relation);
@@ -871,10 +764,10 @@ function relation_uri($relation) {
  * Returns a query object to find related entities.
  *
  * @param $entity_type
- *   The entity type of one of the endpoints.
+ *   (optional) The entity type of one of the endpoints.
  * @param $entity_id
- *   The entity id of one of the endpoints. Can also be an array of entity
- *   IDs.
+ *   (optional) The entity id of one of the endpoints. Can also be an array of 
+ *   entity IDs.
  * @param $r_index
  *   (optional) The index of the search entity in the relation to be found
  *   (0 = source, 1 = target).
@@ -1036,18 +929,4 @@ function relation_get_type_label($relation, $reverse = FALSE) {
   else {
     return $type->label;
   }
-}
-
-/**
- * Implements hook_theme().
- */
-function relation_theme() {
-  $theme = array(
-    // relation.admin.inc.
-    'relation_admin_content' => array(
-      'variables' => array('relations' => NULL),
-      'file' => 'relation.admin.inc',
-    ),
-  );
-  return $theme;
 }
