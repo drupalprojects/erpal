@@ -439,7 +439,9 @@ function feature_erpal_invoice_field_default_fields() {
       'foreign keys' => array(),
       'indexes' => array(),
       'module' => 'number',
-      'settings' => array(),
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
       'type' => 'number_integer',
     ),
@@ -470,7 +472,7 @@ function feature_erpal_invoice_field_default_fields() {
         'max' => '',
         'min' => '',
         'prefix' => '',
-        'suffix' => '',
+        'suffix' => 'days',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -497,6 +499,7 @@ function feature_erpal_invoice_field_default_fields() {
       'settings' => array(
         'decimal_separator' => '.',
         'precision' => '10',
+        'profile2_private' => FALSE,
         'scale' => '2',
       ),
       'translatable' => '0',
@@ -529,7 +532,7 @@ function feature_erpal_invoice_field_default_fields() {
         'max' => '',
         'min' => '',
         'prefix' => '',
-        'suffix' => '',
+        'suffix' => '%',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -902,7 +905,9 @@ function feature_erpal_invoice_field_default_fields() {
       'foreign keys' => array(),
       'indexes' => array(),
       'module' => 'number',
-      'settings' => array(),
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
       'type' => 'number_integer',
     ),

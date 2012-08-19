@@ -206,8 +206,8 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
   if ($is_contractor_invoice)
     $default_notes = ''; //no default nodes if we enter a contractor invoice
   
-  $default_skonto_period = $defaults['skonto_period'];
-  $default_skonto_percent = $defaults['skonto_percent'];  
+  $default_skonto_period = $defaults['skonto_period'] ? $defaults['skonto_period'] : _erpal_invoice_helper_get_skonto_period();
+  $default_skonto_percent = $defaults['skonto_percent'] ? $defaults['skonto_percent'] : _erpal_invoice_helper_get_skonto_rate();  
  
   $form['customer_title'] = array(
     '#type' => 'item',

@@ -144,7 +144,7 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
    
   //if there are front pages add them and move them at first page (before table of contents)
   //because we go this way we have to iterate trhough the array starting at the bottom
-  $skip_pdf_header_frontpage = $params['skip_pdf_header_frontpage'];
+  $skip_pdf_header_frontpage = isset($params['skip_pdf_header_frontpage']) ? $params['skip_pdf_header_frontpage'] : false;
   if ($skip_pdf_header_frontpage)
     $pdf_object->setPrintHeader(false);
   for ($i = count($frontpages) -1; $i >= 0; $i--) {

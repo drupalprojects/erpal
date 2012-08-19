@@ -15,16 +15,9 @@
 <br>&nbsp;<br>&nbsp;<br>
 <?php
 
-function _invoice_attachment_load_reduced_billables($billables) {
-  foreach ($billables as $billable) {
-    foreach ($billable->reduced_billables as $reduced_billable) {
-      $billable->reduced_billables[$reduced_billable->billable_id] = billable_load($reduced_billable->billable_id);
-    }
-  }
-  return $billables;
-}
 
-$billables = _invoice_attachment_load_reduced_billables($billables);
+
+$billables = _erpal_invoice_helper_invoice_attachment_load_reduced_billables($billables);
 foreach ($billables as $billable) {
   if (count($billable->reduced_billables) == 0) {
     continue;
