@@ -16,7 +16,7 @@ module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
 function erpal_basic_helper_init() {
   _erpal_basic_helper_warnings();
 }
- 
+
 
 /**
 * Implements hook_menu
@@ -32,6 +32,13 @@ function erpal_basic_helper_menu(){
     'type' => MENU_CALLBACK,
   );
   
+  $items['node/%node/relations/add'] = array(
+    'page callback' => '_erpal_basic_helper_relation_add_page_callback',    
+    'access callback' => '_erpal_basic_helper_relation_add_access',  
+    'page arguments' => array(1),
+    'access arguments' => array(1),
+  );
+  
   require_once 'inc/config.inc';
   $config_items = _erpal_basic_helper_config_menu();
   
@@ -39,11 +46,12 @@ function erpal_basic_helper_menu(){
   return $items;
 } 
 
+
 /**
 * Implements hook_form_alter
 */
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
-  if ($form_id == 'relation_add_block_form')
+  if ($form_id == 'relation_add_block_form' || $form_id == 'erpal_basic_helper_node_relation_add_form')
     _erpal_basic_helper_relation_add_block_form_alter($form, $form_state);
   if ($form_id == 'erpal_contact_node_form') {
     _erpal_basic_helper_contact_node_form_alter($form, $form_state);    
@@ -661,3 +669,6 @@ function _erpal_basic_helper_get_all_child_nids_deep_search($nid, $types=array()
   return $all_children;
 }
 
+function _erpal_basic_helper_relation_add_link($node) {
+  return l('Add new relation', 'node/'.$node->nid.'/relations/add');
+}
