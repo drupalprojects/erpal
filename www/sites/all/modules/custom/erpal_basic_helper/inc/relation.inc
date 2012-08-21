@@ -42,7 +42,7 @@ function _erpal_basic_helper_relation_endpoint_field_create_html_table($endpoint
     $entity = reset($entities);
     $label = entity_label($endpoint['entity_type'], $entity);
     $uri = entity_uri($endpoint['entity_type'], $entity);    
-    $list_items[$delta] = array(l($label, $uri['path'], $uri['options']), $relation_links);
+    $list_items[$delta] = array(l($label, $uri['path'], $uri['options']));
   }
   
   $relation_links = l('Edit relation', 'relation/'.$relation_entity->rid.'/'.'edit');
