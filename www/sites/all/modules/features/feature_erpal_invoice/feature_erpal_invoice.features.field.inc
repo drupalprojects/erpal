@@ -545,6 +545,75 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_invoice-field_addition_to_address'
+  $fields['node-erpal_invoice-field_addition_to_address'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_addition_to_address',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_invoice',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Here you can enter further address information',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 31,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_addition_to_address',
+      'label' => 'Addition to address',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_invoice-field_asset_files'
   $fields['node-erpal_invoice-field_asset_files'] = array(
     'field_config' => array(
@@ -780,7 +849,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'erpal_invoice_helper',
         'settings' => array(),
         'type' => 'field_billable_inline',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -946,7 +1015,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -1021,7 +1090,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -1175,7 +1244,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -1248,7 +1317,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -1386,7 +1455,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '30',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1765,7 +1834,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -1841,7 +1910,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -1953,7 +2022,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -1961,6 +2030,7 @@ function feature_erpal_invoice_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Add some hintes for your invoice. There will be added some automated notes, too');
+  t('Addition to address');
   t('All order numbers the invoice is related to');
   t('Automated Notes');
   t('Contractor');
@@ -1970,6 +2040,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Customer');
   t('Discount percent');
   t('Exported');
+  t('Here you can enter further address information');
   t('In how many days the customer has to pay the invoice');
   t('Invoice Address');
   t('Invoice Date');

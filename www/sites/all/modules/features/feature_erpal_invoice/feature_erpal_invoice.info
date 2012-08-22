@@ -42,6 +42,7 @@ features[field][] = field_collection_item-field_pricing-field_buy_vat_rate
 features[field][] = field_collection_item-field_pricing-field_contractor_ref
 features[field][] = field_collection_item-field_skonto-field_credit_period
 features[field][] = field_collection_item-field_skonto-field_discount_percent
+features[field][] = node-erpal_invoice-field_addition_to_address
 features[field][] = node-erpal_invoice-field_asset_files
 features[field][] = node-erpal_invoice-field_auto_note
 features[field][] = node-erpal_invoice-field_billables_ref
