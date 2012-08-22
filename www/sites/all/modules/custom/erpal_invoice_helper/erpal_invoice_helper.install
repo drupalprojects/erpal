@@ -93,3 +93,10 @@ function erpal_invoice_helper_update_7002() {
     //do nothing may be the field is already deleted.
   }
 }
+
+/**
+* Add field for address addition to customer defaults
+*/
+function erpal_invoice_helper_update_7003() {
+  db_add_field('erpal_invoice_defaults', 'address_addition', array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => '', 'description' => 'Add customer address additions'));
+}

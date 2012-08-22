@@ -192,7 +192,6 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
     $default_skonto_period = _erpal_invoice_helper_get_skonto_period();
     $form['field_skonto'][LANGUAGE_NONE][0]['field_credit_period'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_skonto_period; 
     $form['field_skonto'][LANGUAGE_NONE][0]['field_discount_percent'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_skonto_rate; 
-    dpm($form);
   }
 
   //add available tokens to the form
@@ -630,6 +629,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
     'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
     //@TODO Country must be the display value of the field, not the database value (get it from allowed values of the country field)
     'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+    'address_additionals' => isset($invoice->field_addition_to_address[LANGUAGE_NONE][0]['value']) ? $invoice->field_addition_to_address[LANGUAGE_NONE][0]['value'] : false,
   );
   
   $invoice_number = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];

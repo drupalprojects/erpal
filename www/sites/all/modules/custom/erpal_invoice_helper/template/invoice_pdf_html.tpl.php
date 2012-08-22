@@ -45,8 +45,19 @@
 <table id="head_table">
   <tr>
     <td>
-      <div id="absender"><?php print implode(" - ", $company); ?></div>
-      <div id="anschrift"><?php print implode("<br />", $customer); ?></div>
+      <div id="absender">
+        <?php if ($company['name']) {print $company['name']; print "&nbsp;-";} ?>
+        <?php if ($company['street']) {print $company['street']; print "&nbsp;-";} ?>
+        <?php if ($company['zip']) {print $company['zip'];} ?>&nbsp;<?php if ($company['city']) {print $company['city']; print "&nbsp;-";} ?>
+        <?php if ($company['country']) {print $company['country']; print "&nbsp;-";} ?>
+      </div>
+      <div id="anschrift">
+        <?php if ($customer['name']) {print $customer['name']; print "<br />";} ?>
+        <?php if ($customer['address_additionals']) {print "&nbsp;&nbsp;"; print $customer['address_additionals']; print "<br />";} ?>        
+        <?php if ($customer['street']) {print "&nbsp;&nbsp;"; print $customer['street']; print "<br />";} ?>
+        <?php if ($customer['zip']) {print "&nbsp;&nbsp;"; print $customer['zip'];} ?>&nbsp;<?php if ($customer['city']) {print $customer['city']; print "<br />";} ?>
+        <?php if ($customer['country']) {print "&nbsp;&nbsp;"; print $customer['country']; print "<br />";} ?>
+      </div>
     </td>      
   </tr>
   <tr>
