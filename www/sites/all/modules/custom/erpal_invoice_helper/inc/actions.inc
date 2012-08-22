@@ -118,18 +118,9 @@ function erpal_invoice_helper_invoice_from_billables_action_submit($form, &$form
   $values = $form_state['values'];
 
   //save default invoice values für this customer!
-  $defaults = array(
-    'address_id' => isset($values['address_id']) ? $values['address_id'] : 0,
-    'credit_period' => isset($values['credit_period']) ? $values['credit_period'] : 0,    
-    'notes' => isset($values['notes']) ? $values['notes'] : '',
-    'skonto_percent' => isset($values['skonto_percent']) ? $values['skonto_percent'] : 0,
-    'skonto_period' => isset($values['skonto_period']) ? $values['skonto_period'] : 0,
-    'order_numbers_intern' => isset($values['order_numbers_intern']) ? $values['order_numbers_intern'] : '',
-    'order_numbers_extern' => isset($values['order_numbers_extern']) ? $values['order_numbers_extern'] : '',
-    'address_addition' => isset($values['address_addition']) ? $values['address_addition'] : '',
-  );
+  $defaults = $defaults = _erpal_invoice_helper_convert_default_form_to_array($values);
+  
   $customer_nid = $values['customer_nid'];
-  dpm($values);
   if ($values['save_defaults'])
     _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults);
   

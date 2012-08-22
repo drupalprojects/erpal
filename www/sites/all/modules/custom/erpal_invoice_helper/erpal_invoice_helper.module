@@ -415,12 +415,31 @@ function erpal_invoice_helper_menu(){
     'type' => MENU_CALLBACK,
   );
   
+  //add menu local action to show invoice defautls of a contact
+  $items['node/%node/invoices/defaults'] = array(
+    'title' => 'Invoice defaults',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('erpal_invoice_helper_contact_invoice_default_form', 1),
+    'access callback' => '_erpal_invoice_helper_invoice_defaults_menu_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_ACTION,
+  );
+  
   require_once 'inc/config.inc';
   $config_items = _erpal_invoice_helper_config_menu();
   
   $items = array_merge($items, $config_items);
   return $items;
 } 
+
+/**
+* Checks access for editing contact invoice defaults
+*/
+function _erpal_invoice_helper_invoice_defaults_menu_access($node) {
+  //@TODO implement
+  
+  return user_access($node);
+}
 
 /**
 * Checks access for creating a pdf
@@ -949,4 +968,100 @@ function _erpal_invoice_helper_get_skonto($invoice_node) {
   $skonto['period'] = $period;
   
   return $skonto;
+}
+
+/**
+* Form for editing customer invoice default settings
+*/
+function erpal_invoice_helper_contact_invoice_default_form($form, $form_state, $contact_node) {
+  $form = array();
+  
+  drupal_set_title(t('Invoice defaults of !contact_name', array('!contact_name' => $contact_node->title)));
+  
+  $defaults = _erpal_invoice_helper_get_customer_defaults($contact_node->nid);
+  
+  //save the id of the customer in form
+  $form['customer_nid'] = array(
+    '#type' => 'value',
+    '#value' => $contact_node->nid,
+  );
+  
+  //display all addresses of the contact to choose one as default
+  $customer_addresses = _erpal_basic_helper_get_contact_adresses($contact_node, true);
+  $form['address_id'] = array(
+    '#type' => 'select',
+    '#options' => $customer_addresses,
+    '#title' => t('Invoice address'),
+    '#default_value' => $defaults['address_id'],
+  );
+  
+  $form['credit_period'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Credit period'),
+    '#default_value' => $defaults['credit_period'],
+  );
+  
+  $form['notes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Notes'),
+    '#default_value' => $defaults['notes'],
+  );
+  
+  $form['skonto_percent'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skonto percent'),
+    '#default_value' => $defaults['skonto_percent'],
+  );
+  
+  $form['skonto_period'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skonto period'),
+    '#default_value' => $defaults['skonto_period'],
+  );
+  
+  //actually exposing a form element for order number patterns doesn't make any sence
+  //if we add them, we have to add the patterns as well under this field
+ 
+  $form['address_addition'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Addition to address'),
+    '#default_value' => $defaults['address_addition'],
+  );
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('save'),
+  );
+  return $form;
+}
+
+/**
+* Contact invoice defaults form submit handler
+*/
+function erpal_invoice_helper_contact_invoice_default_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  
+  //Save customer invoice default values
+  $defaults = _erpal_invoice_helper_convert_default_form_to_array($values);
+
+  $customer_nid = $values['customer_nid'];
+  _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults);
+}
+
+/**
+* Convert contact invoice default values to array to store to database
+*/
+function _erpal_invoice_helper_convert_default_form_to_array($values) {
+  $defaults = array(
+    'address_id' => isset($values['address_id']) ? $values['address_id'] : 0,
+    'credit_period' => isset($values['credit_period']) ? $values['credit_period'] : 0,    
+    'notes' => isset($values['notes']) ? $values['notes'] : '',
+    'skonto_percent' => isset($values['skonto_percent']) ? $values['skonto_percent'] : 0,
+    'skonto_period' => isset($values['skonto_period']) ? $values['skonto_period'] : 0,
+    'order_numbers_intern' => isset($values['order_numbers_intern']) ? $values['order_numbers_intern'] : '',
+    'order_numbers_extern' => isset($values['order_numbers_extern']) ? $values['order_numbers_extern'] : '',
+    'address_addition' => isset($values['address_addition']) ? $values['address_addition'] : '',
+  );
+  
+  return $defaults;
 }
