@@ -48,8 +48,7 @@
       <div id="absender">
         <?php if ($company['name']) {print $company['name']; print "&nbsp;-";} ?>
         <?php if ($company['street']) {print $company['street']; print "&nbsp;-";} ?>
-        <?php if ($company['zip']) {print $company['zip'];} ?>&nbsp;<?php if ($company['city']) {print $company['city']; print "&nbsp;-";} ?>
-        <?php if ($company['country']) {print $company['country']; print "&nbsp;-";} ?>
+        <?php if ($company['zip']) {print $company['zip'];} ?>&nbsp;<?php if ($company['city']) {print $company['city'];} ?>
       </div>
       <div id="anschrift">
         <?php if ($customer['name']) {print $customer['name']; print "<br />";} ?>
