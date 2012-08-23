@@ -89,7 +89,6 @@ function entity_token_token_info_alter(&$info) {
     // Just add all properties regardless whether it's in a bundle, but only if
     // there is no token of the property yet.
     foreach (entity_get_all_property_info($type) as $name => $property) {
-
       $name = str_replace('_', '-', $name);
       $property += array('type' => 'text', 'description' => $property['label']);
       $property_token_type = _entity_token_map_to_token_type($property);
@@ -108,7 +107,7 @@ function entity_token_token_info_alter(&$info) {
         $info['tokens'][$token_type][$name]['dynamic'] = TRUE;
         $help = array();
         foreach ($property['property info'] as $key => $property_info) {
-          $help[] = $key . ' (' . $property_info['label'] .')';
+          $help[] = $key . ' (' . $property_info['label'] . ')';
         }
         $info['tokens'][$token_type][$name]['description'] .= ' ' . t('The following properties may be appended to the token: @keys',
           array('@keys' => implode(', ', $help))
