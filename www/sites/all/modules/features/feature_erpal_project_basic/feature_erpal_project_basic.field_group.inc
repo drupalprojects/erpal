@@ -13,6 +13,33 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_budgets|field_collection_item|field_pricing|form';
+  $field_group->group_name = 'group_budgets';
+  $field_group->entity_type = 'field_collection_item';
+  $field_group->bundle = 'field_pricing';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Budget list',
+    'weight' => '15',
+    'children' => array(
+      0 => 'field_budgets',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_budgets|field_collection_item|field_pricing|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_task_time_group|node|erpal_task|form';
   $field_group->group_name = 'group_task_time_group';
   $field_group->entity_type = 'node';

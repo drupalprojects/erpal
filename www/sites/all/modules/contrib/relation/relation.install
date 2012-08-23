@@ -262,3 +262,25 @@ function relation_update_7001() {
     ->condition('field_name', 'endpoints')
     ->execute();
 }
+
+/**
+ * Update empty rid in relation_revision table
+ */
+function relation_update_7002() {
+  // Update statements with JOINs are not portable across SQL dialects.
+  // First get revisions needing update;
+  // retrieve all results before updating anything.
+  $query = db_select('relation_revision', 'v');
+  $query->join('relation', 'r', 'v.vid = r.vid');
+  $results = $query->fields('r', array('rid', 'vid'))
+    ->condition('v.rid', 0, '=')
+    ->execute()
+    ->fetchAll();
+  // Update all those revisions with the correct rid.
+  foreach ($results as $result) {
+    db_update('relation_revision')
+      ->fields(array('rid' => $result->rid))
+      ->condition('vid', $result->vid, '=')
+      ->execute();
+  }
+}

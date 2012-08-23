@@ -24,4 +24,5 @@
 
   // ---------------------------------------------------------
   $pdf_object->setPrintFooter(true);
+  $pdf_object->setPrintHeader(true);
 ?>

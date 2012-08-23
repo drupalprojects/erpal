@@ -23,10 +23,8 @@ function feature_erpal_project_basic_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Projects';
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    6 => '6',
-  );
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access projects view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
@@ -110,7 +108,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['fields']['field_project_status']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_project_status']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_project_status']['field_api_classes'] = 0;
-  /* Field: Content: Customer */
+  /* Field: Field: Customer */
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
@@ -166,7 +164,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_project' => 'erpal_project',
   );
-  /* Filter criterion: Content: Customer (field_customer_ref) */
+  /* Filter criterion: Field: Customer (field_customer_ref) */
   $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
@@ -221,6 +219,181 @@ echo _erpal_projects_helper_view_projects_header_content();
       'label' => 'Content: CRM activity (field_activity_ref)',
     ),
   );
+
+  /* Display: Projects and tasks reference dialog search */
+  $handler = $view->new_display('references_dialog', 'Projects and tasks reference dialog search', 'references_dialog_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Projects and tasks';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
+  $handler->display->display_options['relationships']['field_project_ref_target_id']['table'] = 'field_data_field_project_ref';
+  $handler->display->display_options['relationships']['field_project_ref_target_id']['field'] = 'field_project_ref_target_id';
+  $handler->display->display_options['relationships']['field_project_ref_target_id']['required'] = 0;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 0;
+  /* Field: Content: Project Status */
+  $handler->display->display_options['fields']['field_project_status']['id'] = 'field_project_status';
+  $handler->display->display_options['fields']['field_project_status']['table'] = 'field_data_field_project_status';
+  $handler->display->display_options['fields']['field_project_status']['field'] = 'field_project_status';
+  $handler->display->display_options['fields']['field_project_status']['label'] = 'Status';
+  $handler->display->display_options['fields']['field_project_status']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_project_status']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_project_status']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_project_status']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_project_status']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_project_status']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_project_status']['field_api_classes'] = 0;
+  /* Field: Field: Customer */
+  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_customer_ref']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
+    'link' => 0,
+  );
+  $handler->display->display_options['fields']['field_customer_ref']['field_api_classes'] = 0;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['type']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['type']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['type']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['type']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['type']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['type']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['type']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['type']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['type']['link_to_node'] = 0;
+  $handler->display->display_options['fields']['type']['machine_name'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Project Status (field_project_status) */
+  $handler->display->display_options['filters']['field_project_status_value']['id'] = 'field_project_status_value';
+  $handler->display->display_options['filters']['field_project_status_value']['table'] = 'field_data_field_project_status';
+  $handler->display->display_options['filters']['field_project_status_value']['field'] = 'field_project_status_value';
+  $handler->display->display_options['filters']['field_project_status_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_project_status_value']['expose']['operator_id'] = 'field_project_status_value_op';
+  $handler->display->display_options['filters']['field_project_status_value']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_project_status_value']['expose']['operator'] = 'field_project_status_value_op';
+  $handler->display->display_options['filters']['field_project_status_value']['expose']['identifier'] = 'field_project_status_value';
+  $handler->display->display_options['filters']['field_project_status_value']['expose']['multiple'] = 1;
+  $handler->display->display_options['filters']['field_project_status_value']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_project' => 'erpal_project',
+    'erpal_task' => 'erpal_task',
+  );
+  /* Filter criterion: Field: Customer (field_customer_ref) */
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'allwords';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['required'] = 0;
+  $handler->display->display_options['filters']['title']['expose']['multiple'] = FALSE;
+  /* Filter criterion: Content: Project (field_project_ref) */
+  $handler->display->display_options['filters']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
+  $handler->display->display_options['filters']['field_project_ref_target_id']['table'] = 'field_data_field_project_ref';
+  $handler->display->display_options['filters']['field_project_ref_target_id']['field'] = 'field_project_ref_target_id';
+  $handler->display->display_options['filters']['field_project_ref_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['operator_id'] = 'field_project_ref_target_id_op';
+  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['label'] = 'Tasks by project';
+  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['operator'] = 'field_project_ref_target_id_op';
+  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['identifier'] = 'field_project_ref_target_id';
+  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['reduce'] = 0;
+  $handler->display->display_options['attach'] = array(
+    0 => 'field_collection_item:field_budget_destination:field_budget_booking',
+  );
   $export['projects'] = $view;
 
   $view = new view;
@@ -237,10 +410,8 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Project tasks';
   $handler->display->display_options['use_ajax'] = TRUE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    6 => '6',
-  );
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access tasks view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
@@ -654,10 +825,8 @@ echo _erpal_projects_helper_view_projects_header_content();
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Timetrackings';
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    6 => '6',
-  );
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access timetrackings view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
@@ -1337,6 +1506,86 @@ echo _erpal_projects_helper_view_projects_header_content();
       'panel' => '0',
       'fixed' => '',
       'label' => 'Content: Project (field_project_ref)',
+    ),
+  );
+
+  /* Display: Budget timetrackings pane */
+  $handler = $view->new_display('panel_pane', 'Budget timetrackings pane', 'panel_pane_3');
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = 0;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_budget_target_id']['id'] = 'field_budget_target_id';
+  $handler->display->display_options['relationships']['field_budget_target_id']['table'] = 'field_data_field_budget';
+  $handler->display->display_options['relationships']['field_budget_target_id']['field'] = 'field_budget_target_id';
+  $handler->display->display_options['relationships']['field_budget_target_id']['required'] = 0;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Budget: Budget ID */
+  $handler->display->display_options['arguments']['budget_id']['id'] = 'budget_id';
+  $handler->display->display_options['arguments']['budget_id']['table'] = 'budget';
+  $handler->display->display_options['arguments']['budget_id']['field'] = 'budget_id';
+  $handler->display->display_options['arguments']['budget_id']['relationship'] = 'field_budget_target_id';
+  $handler->display->display_options['arguments']['budget_id']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['budget_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['budget_id']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['budget_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['budget_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['budget_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['budget_id']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['budget_id']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_timetracking' => 'erpal_timetracking',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Author uid */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'node';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'User';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['uid']['expose']['reduce'] = 0;
+  /* Filter criterion: Content: Date -  start date (field_date_time) */
+  $handler->display->display_options['filters']['field_date_time_value']['id'] = 'field_date_time_value';
+  $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
+  $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
+  $handler->display->display_options['filters']['field_date_time_value']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_date_time_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_date_time_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['operator_id'] = 'field_date_time_value_op';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['label'] = 'Date';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['operator'] = 'field_date_time_value_op';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['identifier'] = 'field_date_time_value';
+  $handler->display->display_options['filters']['field_date_time_value']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['field_date_time_value']['form_type'] = 'date_popup';
+  $handler->display->display_options['argument_input'] = array(
+    'budget_id' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Budget: Budget ID',
     ),
   );
   $export['timetrackings'] = $view;

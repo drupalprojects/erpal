@@ -36,6 +36,8 @@ class MailParser extends Properties {
     
     if (preg_match ('/.+\[ticket:(\d+)\]/i', $subject, $matches) >= 1) {
       $this->ticketID = trim($matches[1]);
+    }else{
+      $this->ticketID = FALSE;
     }
  
     $this->subject = trim(str_replace ('[ticket:' . $this->ticketID . ']', '', $subject));
@@ -45,13 +47,31 @@ class MailParser extends Properties {
   
   /*
    * 
-   * Enter description here ...
+   * Parses the body and removes unneed lines.
    * @param string $body	The mail body.
    */
   private function parseBody ($body) {
     
-    // Removes the quotations from mail-body.
-    $this->body = preg_replace ('/^>.*\n/ms', '', $body);
+    $this->body = '';
+    
+    $index = 0;
+    $chars = strlen ($body);
+    
+    while ($index < $chars) {
+      
+      switch ($body[$index]) {
+        case '>':
+          while ($index < $chars && $body[$index] != "\n") {
+            $index++;
+          }
+          break;
+          
+        default:
+          $this->body .= $body[$index];
+      }
+      
+      $index++;
+    }
     
     return;
   }

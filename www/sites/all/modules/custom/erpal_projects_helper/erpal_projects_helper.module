@@ -9,6 +9,10 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
 module_load_include('inc', 'erpal_projects_helper', 'inc/tasks');
 module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
 module_load_include('inc', 'erpal_projects_helper', 'inc/book');
+module_load_include('inc', 'erpal_projects_helper', 'inc/budget');
+module_load_include('inc', 'erpal_projects_helper', 'inc/config');
+module_load_include('inc', 'erpal_projects_helper', 'inc/rules');
+
  
 /**
 * Implements hook_init
@@ -17,6 +21,8 @@ function erpal_projects_helper_init() {
   $mod_path = drupal_get_path('module', 'erpal_projects_helper');
   $css_path = $mod_path.'/erpal_projects_helper.css';
   drupal_add_css($css_path);
+  
+  _erpal_projects_helper_warn_items_in_queue_billing();
 }
  
 /**
@@ -31,6 +37,55 @@ function erpal_projects_helper_menu(){
   
   $items = array_merge($items, $config_items);
   return $items;
+}
+
+/**
+* Implements hook_entity_update
+*/
+function erpal_projects_helper_entity_update($entity, $type) {
+
+  if ($type == 'budget') {
+    //if budget has no timetrackings yet, enque this budget and its host node to timetracking refactoring queue
+    $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($entity->budget_id);
+    if (!count($timetracking_nids)) {
+      //get the field-collection that referenecs this budget entity
+      $pricing_field_collection = _erpal_projects_helper_pricing_entities_with_budget($entity->budget_id);
+      if (!isset($pricing_field_collection[0]))
+        return;
+        
+      $pricing_field_collection_id = $pricing_field_collection[0];
+      $pricing_field_collection = entity_load('field_collection_item', array($pricing_field_collection_id));
+      $pricing_field_collection = $pricing_field_collection[$pricing_field_collection_id];
+      
+      //get the host node of the budget
+      $budget_host_node = $pricing_field_collection->hostEntity();
+      _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, array($entity->budget_id));
+    }
+  }
+}
+
+
+
+/**
+* Implements hook_theme
+*/
+function erpal_projects_helper_theme() {
+  return array(
+    'erpal_budget_usage' => array(
+      'variables' => array('node' => NULL, 'pdf_object' => NULL, 'options' => array(), 'counter' => 0),
+      'template' => 'template/budget_usage',
+    ),    
+  );
+}
+
+
+/**
+* Implements hook_node_delete
+*/
+function erpal_projects_helper_node_delete($node) {
+  if ($node->type == 'erpal_timetracking') {
+    _erpal_projects_helper_add_duration_to_budget($node);
+  }
 }
 
 /**
@@ -60,7 +115,50 @@ function erpal_projects_helper_node_validate($node) {
     }
   }
 }
+
+/**
+* Implementes hook_field_attach_validate() 
+*/
+function erpal_projects_helper_field_attach_validate($entity_type, $entity, &$errors) {
+
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_pricing') {
+    $new_errors = _erpal_projects_helper_field_pricing_validate($entity);
+    $errors = array_merge($errors, $new_errors);
+  }
+}
+
+/**
+* Implementes hook_field_attach_presave() 
+*/
+function erpal_projects_helper_field_attach_presave($entity_type, $entity) {
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_pricing') {    
+    _erpal_projects_helper_field_pricing_presave($entity);
+  }
+}
+
+/**
+* Implements hook_budget_delete_validate provided by budget module
+*/
+function erpal_projects_helper_budget_delete_validate($budget) {
+  //if the budget alway has timetrackings, user is not allowed to delete
+  $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($budget->budget_id);
   
+  if (count($timetracking_nids) > 0) {
+    $errors[] = t('The budget %budget_name could not be deleted because there are timetrackings booked to it.', array('%budget_name' => $budget->defaultLabel()));
+    return array(
+      'erpal_projects_helper' => array(
+        'result' => false,
+        'errors' => $errors,
+      ),
+    );
+  } else
+    return array(
+      'erpal_projects_helper' => array(
+        'result' => true,
+      ),
+    );
+}
+ 
 /**
 * Implements hook_permission
 */
@@ -69,6 +167,18 @@ function erpal_projects_helper_permission(){
     'config erpal projects' => array(
       'title' => t('Administer ERPAL Projects'), 
       'description' => t('Perform administration tasks for ERPAL Projects module.'),
+    ),
+    'access projects view' => array(
+      'title' => t('Access projects view'), 
+      'description' => t('Allows the user to access the projects view'),
+    ),
+    'access tasks view' => array(
+      'title' => t('Access tasks view'), 
+      'description' => t('Allows the user to access the tasks view'),
+    ),
+    'access timetrackings view' => array(
+      'title' => t('Access timetrackings view'), 
+      'description' => t('Allows the user to access the timetrackings view'),
     ),
   );
 }
@@ -83,6 +193,19 @@ function erpal_projects_helper_clone_book_action_form_alter(&$form, $form_state,
   _erpal_projects_helper_ensure_task_settings_form_element($form);
   _erpal_projects_helper_clone_tasks_form_add_elements($form, $book_node, 'book');
   
+}
+
+/**
+* Implements hook_cron_queue_info ()
+*/
+function erpal_projects_helper_cron_queue_info() {
+  $queues = array();
+  $queues['reorganize_timetrackings'] = array(
+    'worker callback' => '_erpal_projects_helper_reorganize_timetrackings_queue_run', // This is the callback function for each queue item.
+    'time' => 30, // This is the max run time per cron run in seconds.
+  );
+  
+  return $queues;
 }
 
 /**
@@ -101,6 +224,57 @@ function erpal_projects_helper_clone_book_action_form_validate($form, $form_stat
   //all values must be set!
   if (!$project && $clone_type == 'book')
     form_set_error('project', t('Please select a project'));
+}
+
+/*
+* Implements hook_field_widget_form_alter
+* Adds a validation hook to the beginning of the #element_validate
+* to provide custom validation on the required fields within the
+* widget.
+*/
+function erpal_projects_helper_field_widget_form_alter(&$element, &$form_state, $context) {
+  switch ($context['instance']['widget']['type']) {
+    case 'field_collection_embed':
+      if ($element['#field_name'] == 'field_pricing') {
+        //add validation handler
+        $element['#element_validate'][] = '_erpal_projects_helper_field_pricing_widget_validate';
+      }
+      break;
+  }
+}
+
+/**
+* Validate the pricing field collection
+*/
+function _erpal_projects_helper_field_pricing_widget_validate($element, &$form_state, $form) {
+  $values = $form_state['values'];
+  $pricing_entity = isset($values['field_pricing'][LANGUAGE_NONE][0]['entity']) ? $values['field_pricing'][LANGUAGE_NONE][0]['entity'] : false;
+
+  if (!$pricing_entity)
+    return;
+  
+  $price_mode = isset($pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] : 'none';
+  $price = isset($pricing_entity->field_price[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] : false;
+  $budgets = isset($pricing_entity->field_budgets[LANGUAGE_NONE]) ? $pricing_entity->field_budgets[LANGUAGE_NONE] : false;
+
+  $modes_price_needed = array('fixed_price', 'per_hour');
+  
+  //price must be set
+  if (in_array($price_mode, $modes_price_needed)) {    
+    if (!$price)
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_price'], t('Please set a price'));
+  }
+  
+  //price OR at least one budget must be set
+  if ($price_mode == 'budget') {
+    $budget_count = count($budgets);
+    if (!$budget_count && !$price) {
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_budgets'], t('Please set a price or add some budgets'));
+    }
+  }
+  
+  
+  
 }
 
 /**
@@ -222,6 +396,10 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'node_delete_confirm') {
     _erpal_projects_helper_node_delete_confirm_alter($form, $form_state);
   }
+  
+  if ($form_id == 'budget_edit_form') {
+    $form['#validate'][] = '_erpal_projects_helper_budget_validate';
+  }
 }
 
 /**
@@ -229,7 +407,7 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
 */
 function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
   $delete_nid = $form['nid']['#value'];
-  $delete_node = node_load($delete_nid);
+  $delete_node = node_load($delete_nid);  
   
   $project_nid = _erpal_projects_helper_has_project($delete_node);
   
@@ -263,6 +441,7 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
     ); 
     
     $form['#validate'][] = '_erpal_projects_helper_project_delete_confirm_validate';
+    $form['#validate'][] = '_erpal_projects_helper_check_budget_validate_on_delete';
     $form['#submit'][] = '_erpal_projects_helper_project_delete_confirm_submit';
     
   } elseif ($delete_node->type == 'erpal_task') {
@@ -316,6 +495,7 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
     );
     
     $form['#submit'][] = '_erpal_projects_helper_task_delete_confirm_submit';
+    $form['#validate'][] = '_erpal_projects_helper_check_budget_validate_on_delete';
   }
 }
 
@@ -393,6 +573,27 @@ function _erpal_projects_helper_project_delete_confirm_submit($form, $form_state
 }
 
 /**
+* Function to validate that no tasks with budgets are deleted directely or while deleting children
+*/
+function _erpal_projects_helper_check_budget_validate_on_delete($form, $form_state) {
+  //if node is not allowed to be deleted redirect with warning
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+  $delete_node = node_load($delete_nid);
+  $delete_children_type = isset($values['delete_children']) ? $values['delete_children'] : false;
+  $delete_children = ($delete_node->type == 'erpal_project') || ($delete_children_type == 'delete');
+
+  $messages = array();
+  if (!_erpal_projects_helper_can_delete($delete_node, $delete_children, $messages)) {
+    $message_string = '';   
+    foreach ($messages as $message) {
+      $message_string .= '<br/>'.$message;
+    }
+    form_set_error('delete_tasks_fieldset', t('This node cannot be deleted because: !message_string', array('!message_string' => $message_string)));      
+  }
+}
+
+/**
 * Validation handler of project delete confirm
 */
 function _erpal_projects_helper_project_delete_confirm_validate($form, $form_state) {
@@ -404,8 +605,9 @@ function _erpal_projects_helper_project_delete_confirm_validate($form, $form_sta
   
   //if book will be delete checkbox must be set!
   if ($delete_node->type == 'erpal_project') {
-    if (!$delete_children)
+    if (!$delete_children) {
       form_set_error('delete_children', t('Please submit checkbox to delete all tasks'));
+    }        
   }
 }
 
@@ -461,15 +663,12 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
         $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
         $parent_node = node_load($parent_nid);
         $project_nid = _erpal_projects_helper_has_project($parent_node);          
-        
+
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($project_nid);
 
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
-        
-        //alter pricing information!
-        //_erpal_projects_billable_preselect_task_create_form($form, $form_state);
-        
+       
       }
     //if project is already set, hide the parent field
     if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']))
@@ -483,6 +682,22 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
     $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
   }
   
+}
+
+/**
+* if node is a timetracking node and references a budget, add the billing duration to the budget again
+*/
+function _erpal_projects_helper_add_duration_to_budget($node) {
+  if (!$node->type == 'erpal_timetracking')
+    return;
+         
+  if (isset($node->field_budget[LANGUAGE_NONE][0]['target_id'])) {
+    $budget_id = $node->field_budget[LANGUAGE_NONE][0]['target_id'];
+    $budget_entity = budget_load($budget_id);
+    $billing_duration = $node->field_billing_duration[LANGUAGE_NONE][0]['value'];
+    $budget_entity->add_hours($billing_duration);
+    $budget_entity->save();
+  }
 }
 
 /**
@@ -693,4 +908,54 @@ function _erpal_projects_helper_get_activity($node) {
   if ($node->type == 'erpal_project')
     return _erpal_projects_helper_get_activity_by_project($node);
   
+}
+
+/**
+* Checks if a task or a project could be delete
+* @param $node the node that is check to be deleted
+* @param $check_children if true the children of the node will be checked, too
+* @param $messages array with messages that will be returned
+*/
+function _erpal_projects_helper_can_delete($node, $check_children, &$messages) {
+  //if tasks or projects have budgets assigned, they cannot be delete.
+  if ($node->type != 'erpal_project' && $node->type != 'erpal_task')
+    return true;
+  
+  $all_task_nids = array();
+  if ($check_children) {
+    if ($node->type == 'erpal_project') {
+      $all_task_nids = _erpal_projects_helper_get_tasks_by_project($node->nid);
+    }elseif ($node->type == 'erpal_task') {
+      $all_task_nids = _erpal_basic_helper_get_all_child_nids_deep_search($node->nid, array('erpal_task'));
+    }
+  }
+  
+  //add the node that will be deleted, we have to check it, too
+  $all_task_nids[] = $node->nid;
+  
+  //check if children have budgets assigned, than it cannot be deleted
+  $found_budget = false;
+  foreach ($all_task_nids as $nid) {
+
+    if (is_array($nid) && isset($nid['child']) && $nid['child']) {
+      $nid = $nid['child'];
+    }
+
+    $a_node = node_load($nid);
+    $pricing_id = $a_node->field_pricing[LANGUAGE_NONE][0]['value'];
+    $pricing_entity = entity_load('field_collection_item', array($pricing_id));
+    $pricing_entity = $pricing_entity[$pricing_id];  
+
+    if (isset($pricing_entity->field_budgets[LANGUAGE_NONE]) && count($pricing_entity->field_budgets[LANGUAGE_NONE]) > 0) {
+      $node_link = l($a_node->title, 'node/'.$a_node->nid);
+      $messages[] = t('The node !node_link has budgets assigned.', array('!node_link' => $node_link));
+      $found_budget = true;
+    }    
+  }
+  
+  if ($found_budget) {
+    return false;
+  }
+
+  return true;
 }

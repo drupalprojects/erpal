@@ -202,10 +202,16 @@ function views_jstree_move_child($view_name, $nid) {
   $node->{$parent_field['id']}[LANGUAGE_NONE][0]['target_id'] = $new_parent_nid;
   $node->{$weight_field['id']}[LANGUAGE_NONE][0]['value'] = $position;
   
+  //call hook when node is moved, so other module could interact with the moved node
+  module_invoke_all('views_tree_before_move', $node, $position);
+
   node_save($node);
+
+  module_invoke_all('views_tree_after_move', $node);
 
   die(json_encode(array('result' => true)));
 }
+
 
 /**
 * AJAX Callback function for loading tree children

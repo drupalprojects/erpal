@@ -108,7 +108,7 @@ $data['header'] = array(
     'amount' => array('data' => t("Quantity"), "class" => "left amount"),
     //'article'   => array('data' => t("Article nr."), "class" => "left article"),
     'description' => array('data' => t("Description"), "class" => "left description"),
-    'price' => array('data' => t("Price p.P. (%curr)", array('%curr' => $currency)), "class" => "right price"),
+    'price' => array('data' => t("Single price (%curr)", array('%curr' => $currency)), "class" => "right price"),
     'total' => array('data' => t("Total (%curr)", array('%curr' => $currency)), "class" => "right total"),
 );
 
@@ -158,24 +158,20 @@ if (is_array($billables)) {
 
   // VAT
   $totalvatstring = "";
+
   if (is_array($total_vat))
     foreach ($total_vat as $vatposition) {
-
-      $vatvalues = array(
-          "!vat_value" => $vatposition['vat_value'],
-          "!currency" => $vatposition['currency'],
+      $rows[] = array('data' => array(
+              0 => '',
+              1 => '',
+              2 => array('data' => t("!vat_rate% VAT", array("!vat_rate" => $vatposition['vat_rate'])), 'class' => 'right', 'colspan' => 2),
+              3 => array('data' => $vatposition['vat_value'], 'class' => 'right'),
+          ),
+          'class' => array('sumrow'),
       );
-      $totalvatstring .= t("!vat_value !currency", $vatvalues) . " <br />";
+    
     }
-  $rows[] = array('data' => array(
-          0 => '',
-          1 => '',
-          2 => array('data' => t("!var_rate% VAT", array("!var_rate" => $vatposition['var_rate'])), 'class' => 'right', 'colspan' => 2),
-          3 => array('data' => $totalvatstring, 'class' => 'right'),
-      ),
-      'class' => array('sumrow'),
-  );
-
+ 
   // Sum brutto
   $rows[] = array('data' => array(
           0 => '',
@@ -199,6 +195,10 @@ if (is_array($billables)) {
   <tr>
     <td>
 <?php
+//show skonto if set
+if ($skonto_text)
+  print $skonto_text."<br />";
+
 if (is_array($auto_notes)) {
 print implode("<br />\n", $auto_notes);
 }

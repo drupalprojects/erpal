@@ -3,6 +3,8 @@
  * @author 		Marc Sven Kleinboehl
  * @created 	01/14/2012
  * @copyright	2012 © Bright Solutions GmbH 
+ * 
+ * This class is for creating IMAP connections.
  */
  
 

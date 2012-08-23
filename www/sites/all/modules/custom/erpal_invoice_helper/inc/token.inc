@@ -11,6 +11,12 @@ function erpal_invoice_helper_token_info() {
     'needs-data' => 'erpal_invoice',
   );
   
+  $types['erpal_invoice_skonto'] = array(
+    'name' => t("Erpal invoice skonto token"),
+    'description' => t("Tokens for invoice skonto tokens."),
+    'needs-data' => 'erpal_invoice',
+  );
+  
   $types['erpal_invoice_referenced_data'] = array(
     'name' => t("Erpal invoice CRM data"),
     'description' => t("Tokens for invoice from crm activities."),
@@ -42,6 +48,17 @@ function erpal_invoice_helper_token_info() {
     'description' => t("The next invoice number in the system."),
   );
   
+  //skonto
+  $invoice_skonto['skonto_period'] = array(
+    'name' => t("The skonto period"),
+    'description' => t("This is the skonto period in days."),
+  );
+  $invoice_skonto['skonto_rate'] = array(
+    'name' => t("Skonto rate"),
+    'description' => t("The skonto rate in percent."),
+  );
+  
+  
   //if module erpal project basic is active, add tokens for 
   if (module_exists('feature_erpal_project_basic')) {
     $referenced_data['order_numbers_intern'] = array(
@@ -58,6 +75,7 @@ function erpal_invoice_helper_token_info() {
     'types' => $types,
     'tokens' => array(
       'erpal_invoice' => $invoice,
+      'erpal_invoice_skonto' => $invoice_skonto,
       'erpal_invoice_referenced_data' => $referenced_data,
     ),
   );
@@ -110,6 +128,19 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
           $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);            
           $replacements[$original] = implode(',', $order_numbers['extern']);        
           break;
+      }
+    }
+  } elseif ($type == 'erpal_invoice_skonto') {
+    $invoice = isset($data['erpal_invoice']) ? $data['erpal_invoice'] : false;
+    $skonto = _erpal_invoice_helper_get_skonto($invoice);
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'skonto_period':
+          $replacements[$original] = $skonto['period'];
+        break;
+        case 'skonto_rate':
+          $replacements[$original] = $skonto['rate'];
+        break;               
       }
     }
   }

@@ -1,0 +1,380 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_contract_helper module.
+ */
+
+/**
+* Implements hook_permission
+*/
+function erpal_contract_helper_permission() {
+  return array(
+    'access contracts view' => array(
+      'title' => t('Access contracts view'), 
+      'description' => t('Allows the user to access the contracts view'),
+    ),
+  );
+}
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_contract_helper_node_presave($node) {
+  if ($node->type == 'erpal_contract')
+    _erpal_contract_helper_recalculate_contract($node);
+    
+  
+}
+
+/**
+* Implementes hook_field_attach_validate() 
+*/
+function erpal_contract_helper_field_attach_validate($entity_type, $entity, &$errors) {
+
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_budget_booking') {
+    $new_errors = _erpal_contract_helper_field_budget_booking_validate($entity);
+    $errors = array_merge($errors, $new_errors);
+  }
+  
+}
+
+/**
+* Validate the budget booking field collection item
+*/
+function  _erpal_contract_helper_field_budget_booking_validate($entity){
+  
+  $errors = array();
+  $has_budget_destination = isset($entity->field_budget_destination[LANGUAGE_NONE][0]['target_id']) && $entity->field_budget_destination[LANGUAGE_NONE][0]['target_id'];
+  $budget_hours = isset($entity->field_budget_hours[LANGUAGE_NONE][0]['value']) && $entity->field_budget_hours[LANGUAGE_NONE][0]['value'];
+    
+  if ($has_budget_destination && !$budget_hours) {  
+    $errors['field_budget_hours'][LANGUAGE_NONE][0][] = array(
+      'error' => 'value',
+      'message' => t('If you select a budget destination, please enter the hours added to the budget'),
+    );
+  }
+  
+  if (!$has_budget_destination && $budget_hours) {  
+    $errors['field_budget_destination'][LANGUAGE_NONE][0][] = array(
+      'error' => 'target_id',
+      'message' => t('If you enter budget hour, please select a budget destination, too'),
+    );
+  }
+  
+  return $errors;
+}
+
+/**
+* Function calculates the next booking dates for budgets and payments 
+*/
+function _erpal_contract_helper_recalculate_contract($contract_node) {
+  //calculate payment dates
+  $payment_entity_id = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['value'];
+  $payment_fields = entity_load('field_collection_item', array($payment_entity_id));
+  $payment_fields = $payment_fields[$payment_entity_id];
+  $payment_type = $payment_fields->field_payment_type[LANGUAGE_NONE][0]['value'];
+  $contract_start_date = $contract_node->field_date[LANGUAGE_NONE][0]['value'];
+  $payment_period = $payment_fields->field_payment_period[LANGUAGE_NONE][0]['value'];
+  $last_booking = isset($payment_fields->field_last_booking_date[LANGUAGE_NONE][0]['value']) ? $payment_fields->field_last_booking_date[LANGUAGE_NONE][0]['value'] : false;
+  $next_booking = isset($payment_fields->field_next_booking_date[LANGUAGE_NONE][0]['value']) ? $payment_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] : false;
+  
+  if (!$next_booking) { 
+    if ($payment_type == 'pre') {
+      $next_booking = $contract_start_date;  //if we pay in advance and next booking date is not set, set this to contract start
+    } elseif ($payment_type == 'post') {
+      $next_booking = date("Y-m-d 00:00:00", strtotime($contract_start_date." +".$payment_period." month"));
+    }
+    
+    //update next booking field   
+ 
+    $payment_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] = strtotime($next_booking);
+    $payment_fields->save(true);  //skip saving of host entity    
+  }
+
+  //calculate budget dates
+  $budget_entity_id = isset($contract_node->field_budget_booking[LANGUAGE_NONE][0]['value']) ? $contract_node->field_budget_booking[LANGUAGE_NONE][0]['value'] : false;
+  if ($budget_entity_id) {
+    $budget_fields = entity_load('field_collection_item', array($budget_entity_id));
+    $budget_fields = $budget_fields[$budget_entity_id];
+    
+    $budget_period = $budget_fields->field_budget_period[LANGUAGE_NONE][0]['value'];
+    $last_booking = isset($budget_fields->field_last_booking_date[LANGUAGE_NONE][0]['value']) ? $budget_fields->field_last_booking_date[LANGUAGE_NONE][0]['value'] : false;
+    $next_booking = isset($budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value']) ? $budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] : false;
+    
+    if (!$next_booking) { 
+      $next_booking = date("Y-m-d 00:00:00", strtotime($contract_start_date));    
+      
+      //update next booking field    
+      $budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] = strtotime($next_booking);
+      $budget_fields->save(true);  //skip saving of host entity    
+    }
+  }
+}
+
+/**
+*Implements hook_cron
+*/
+function erpal_contract_helper_cron() {
+
+ _erpal_contract_helper_check_payments();
+ 
+  _erpal_contract_helper_check_budgets();
+}
+
+/**
+* implements hook_form_alter
+*/
+function erpal_contract_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_contract_node_form') {    
+    _erpal_contract_helper_set_default_pricing($form, $form_state, $form_id);
+    _erpal_contract_helper_manage_form_elements($form, $form_state, $form_id);
+  }  
+}
+
+/**
+* Manage form elements that we dont manage by display suite and renderable elements
+*/
+function _erpal_contract_helper_manage_form_elements(&$form, &$form_state, $form_id) {
+  unset($form['field_budget_booking'][LANGUAGE_NONE][0]['field_budgets']);
+}
+
+/**
+* Set default contractor, vat rate and currency if not set
+*/
+function _erpal_contract_helper_set_default_pricing(&$form, &$form_state, $form_id) {
+  //set only for new node
+  $nid = $form['nid']['#value'];
+  if (!$nid) {
+    $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+    $form['field_contract_payment'][LANGUAGE_NONE][0]['field_contractor_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($my_company_nid);
+    
+    $default_currency = _erpal_invoice_helper_get_default_currency();
+    $default_vat_rate = _erpal_invoice_helper_get_default_vat_rate();
+    $form['field_contract_payment'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#default_value'] = $default_vat_rate;
+    $form['field_contract_payment'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
+  }
+}
+
+/**
+* This function is called by the view contracts. Links for creating some nodes are added. 
+* With the hook other modules add some more links.
+*/
+function _erpal_contract_helper_view_contracts_header_content() {
+  
+  $add_erpal_contract = _erpal_contract_helper_create_contract_link();
+  
+  $my_content = array(
+    $add_erpal_contract,
+  );
+  
+  //ask all other modules for content in the header area of the view
+  $other_module_content = module_invoke_all('view_contracts_header_content');
+  
+  $all_content = array_merge($other_module_content, $my_content);
+  
+  $content = '';
+  foreach ($all_content as $a_content) {
+    $content .= '<br>'.$a_content;
+  }
+  
+  return $content;
+}
+
+
+/**
+* Helper function to create new contract link
+*/
+function _erpal_contract_helper_create_contract_link($q_arg = false, $query_arr = array(), $title=false){
+  if (!$q_arg)
+    $q = current_path();
+  else 
+    $q = $q_arg;
+  
+  if (!isset($query_arr['destination']) || $q_arg)
+    $query_arr['destination'] = $q;
+  
+  if (!$title)
+    $title = t("Create new contract");
+    
+  return l(
+    $title, "node/add/erpal-contract", array(
+        'query' => $query_arr,
+    )
+  );
+}
+
+/**
+* Set all billables for contracts that have to be billed
+*/
+function _erpal_contract_helper_check_payments() {
+  //get all contracts that have to be billed
+  $contract_nodes = _erpal_contract_helper_get_contracts_to_bill();
+
+  //create billables$ and set last and next payment date in field collection
+  foreach ($contract_nodes as $contract_node) {
+    $payment_entity = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['entity'];
+    $subject_title = t('Contract')." ".$contract_node->title;
+    $customer_nid = $payment_entity->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
+    $subject_nid = $contract_node->nid;
+    $quantity = $payment_entity->field_payment_period[LANGUAGE_NONE][0]['value'];
+    $single_price = $payment_entity->field_price[LANGUAGE_NONE][0]['value'];
+    $currency = $payment_entity->field_currency[LANGUAGE_NONE][0]['value'];
+    $vat_rate = $payment_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
+    $date_delivery = $payment_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
+    $contractor_nid = $payment_entity->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+    _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, false, $contractor_nid);
+    
+    //now set the nodes last payment and next payment date
+    $payment_period = $payment_entity->field_payment_period[LANGUAGE_NONE][0]['value'];
+    $next_booking_date = strtotime(date('Y-m-d 00:00:00', $date_delivery)." +".$payment_period."month");
+    $payment_entity->field_last_booking_date[LANGUAGE_NONE][0]['value'] = $date_delivery;
+    $payment_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'] = $next_booking_date;
+    $payment_entity->save(true); //save field collection entity but skipp saving the host to avoid recursion
+  }
+}
+
+/**
+* If contract has budget information set, check if new budgets must be created a create them
+*/
+function _erpal_contract_helper_check_budgets() {
+  $contract_nodes = _erpal_contract_helper_get_contracts_to_budget();
+
+  //create billables and set last and next payment date in field collection
+  foreach ($contract_nodes as $contract_node) {
+    $budget_booking_entity = $contract_node->field_budget_booking[LANGUAGE_NONE][0]['entity'];
+    $budget_hours = isset($budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value']) ? $budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value'] : false;
+    $budget_destination_nid = isset($budget_booking_entity->field_budget_destination[LANGUAGE_NONE][0]['target_id']) ? $budget_booking_entity->field_budget_destination[LANGUAGE_NONE][0]['target_id'] : false;
+
+    //if no budget destination is available skipp this node
+    if (!$budget_destination_nid || !$budget_hours)
+      continue;
+
+    $next_budget_date = $budget_booking_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
+    //check if budget will expire
+    $expire_period = isset($budget_booking_entity->field_expire_period[LANGUAGE_NONE][0]['value']) ? $budget_booking_entity->field_expire_period[LANGUAGE_NONE][0]['value'] : false;
+    $date_from = $next_budget_date;
+
+    $date_till = false;
+    if ($expire_period) {
+      $date_till = date('Y-m-d 00:00:00', $date_from);
+      $date_till = strtotime($date_till.' +'.$expire_period.'month');
+    }
+
+    //now create a budget entity        
+    $budget_entity = budget_create_new($budget_hours, $date_from, $date_till);
+
+    //now load the destination node and add this budget to    
+    _erpal_projects_helper_add_buget($budget_entity, $budget_destination_nid);
+    
+    //and now set the next budget date and last budget date
+    $last_budget_date = $budget_booking_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
+    $budget_booking_entity->field_last_booking_date[LANGUAGE_NONE][0]['value'] = $last_budget_date;
+    
+    $budget_period = $budget_booking_entity->field_budget_period[LANGUAGE_NONE][0]['value'];
+    $next_budget_date = date('Y-m-d 00:00:00', $last_budget_date);
+    $next_budget_date = strtotime($next_budget_date.' +'.$budget_period.'month');
+    $budget_booking_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'] = $next_budget_date;
+    
+    //add the budget to the field collections budgets field
+    $budget_booking_entity->field_budgets[LANGUAGE_NONE][] = array('target_id' => $budget_entity->budget_id);
+    
+    $budget_booking_entity->save(true);  //save without saving host entity
+  }
+}
+
+/**
+* Return all contract nodes that must create budget next
+* only those contract nodes are relevant that have a budgeting target set
+*/
+function _erpal_contract_helper_get_contracts_to_budget() {
+  $contract_nodes = array();
+
+  //get all field collection items first
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'field_collection_item')
+  ->entityCondition('bundle', 'field_budget_booking')
+  ->fieldCondition('field_next_booking_date', 'value', time(), '<=')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+
+  $field_collections = array();
+  $field_collection_ids = array();
+  if (isset($result['field_collection_item'])) {
+    $field_collection_ids = array_keys($result['field_collection_item']);
+    $field_collections = entity_load('field_collection_item', $field_collection_ids);
+  }
+  
+  if (!count($field_collection_ids))
+    return $contract_nodes;
+  
+  //now get the nodes to each field collection
+  $query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_contract')
+    ->fieldCondition('field_budget_booking', 'value', $field_collection_ids)
+    ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $contract_nodes = entity_load('node', $nids);
+  }
+  
+  //now add the field collections to the node so we dont have to load them again later!
+  foreach ($contract_nodes as $delta=>$contract_node) {
+    $entity_id = $contract_nodes[$delta]->field_budget_booking[LANGUAGE_NONE][0]['value'];
+    $contract_nodes[$delta]->field_budget_booking[LANGUAGE_NONE][0]['entity'] = $field_collections[$entity_id];
+  }
+  
+  return $contract_nodes;
+}
+
+/**
+* Return all contract nodes that must be billed next
+*/
+function _erpal_contract_helper_get_contracts_to_bill() {
+  $contract_nodes = array();
+
+  //get all field collection items first
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'field_collection_item')
+  ->entityCondition('bundle', 'field_contract_payment')
+  ->fieldCondition('field_next_booking_date', 'value', time(), '<=')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+   
+  $field_collections = array();
+  $field_collection_ids = array();
+  if (isset($result['field_collection_item'])) {
+    $field_collection_ids = array_keys($result['field_collection_item']);
+    $field_collections = entity_load('field_collection_item', $field_collection_ids);
+  }
+ 
+  if (!count($field_collection_ids))
+    return $contract_nodes;
+ 
+  //now get the nodes to each field collection
+  $query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_contract')
+    ->fieldCondition('field_contract_payment', 'value', $field_collection_ids)
+    ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $contract_nodes = entity_load('node', $nids);
+  }
+  
+  //now add the field collections to the node so we dont have to load them again later!
+  foreach ($contract_nodes as $delta=>$contract_node) {
+    $entity_id = $contract_nodes[$delta]->field_contract_payment[LANGUAGE_NONE][0]['value'];
+    $contract_nodes[$delta]->field_contract_payment[LANGUAGE_NONE][0]['entity'] = $field_collections[$entity_id];
+  }
+  
+  return $contract_nodes;
+}

@@ -186,6 +186,13 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
     $manual_notes = _erpal_invoice_helper_get_manuall_notes();
     //add these manual notes to the text area
     $form['field_note'][LANGUAGE_NONE][0]['value']['#default_value'] = $manual_notes;
+    
+    //default skonto @todo may be set dependend to the selected customer
+    $default_skonto_rate = _erpal_invoice_helper_get_skonto_rate();
+    $default_skonto_period = _erpal_invoice_helper_get_skonto_period();
+    $form['field_skonto'][LANGUAGE_NONE][0]['field_credit_period'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_skonto_period; 
+    $form['field_skonto'][LANGUAGE_NONE][0]['field_discount_percent'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_skonto_rate; 
+    dpm($form);
   }
 
   //add available tokens to the form
@@ -448,6 +455,10 @@ function erpal_invoice_helper_permission(){
       'title' => t('Administer ERPAL invoice'), 
       'description' => t('Perform administration tasks for ERPAL invoice module.'),
     ),
+    'access invoices view' => array(
+      'title' => t('Access invoices view'), 
+      'description' => t('Allows the user to access the invoices view'),
+    ),
   );
 }
 
@@ -669,7 +680,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
       $entity_vat_rate = $vat_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
       $entity_vat_total = $vat_entity->field_vat_total[LANGUAGE_NONE][0]['value'];
       $total_vats[] = array(
-        'var_rate' => $entity_vat_rate,
+        'vat_rate' => $entity_vat_rate,
         'vat_value' => $entity_vat_total,
         'currency' => $currency, //this is the curency of the invoice, it must be equal anyway!
       );
@@ -702,6 +713,14 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   
   $copy_text = _erpal_invoice_helper_get_invoice_copy_text(); //TODO dynamisch
   $variables['copy'] = $variables['params']['mark_copied'] ? $copy_text : false;
+  
+  //skonto information
+  $skonto = _erpal_invoice_helper_get_skonto($invoice);
+  $variables['skonto_text'] = false;
+  if ($skonto['rate'] && $skonto['period']) {
+    $skonto_text = _erpal_invoice_helper_get_skonto_text();
+    $variables['skonto_text'] = token_replace($skonto_text, array('erpal_invoice' => $invoice));
+  }
 
 }
 
@@ -902,4 +921,32 @@ function _erpal_invoice_helper_replace_order_number_tokens($invoice_node) {
     $invoice_node->field_order_number_extern[LANGUAGE_NONE][0]['value'] = token_replace($order_numbers_extern, $token_data);
   }
    
+}
+
+/**
+* Returns the skonto information from an invoice
+*/
+function _erpal_invoice_helper_get_skonto($invoice_node) {
+  $skonto = array('rate' => false, 'period' => false);
+  
+  if (!$invoice_node || $invoice_node->type != 'erpal_invoice')
+    return $skonto;
+  
+  //get skonto values from field collection
+  $skonto_field_collection_id = isset($invoice_node->field_skonto[LANGUAGE_NONE][0]['value']) ? $invoice_node->field_skonto[LANGUAGE_NONE][0]['value'] : false;
+  
+  if (!$skonto_field_collection_id)
+    return $skonto;
+  
+  $skonto_field_collection = entity_load('field_collection_item', array($skonto_field_collection_id));
+  $skonto_field_collection = $skonto_field_collection[$skonto_field_collection_id];
+  
+  $period = isset($skonto_field_collection->field_credit_period[LANGUAGE_NONE][0]['value']) ? $skonto_field_collection->field_credit_period[LANGUAGE_NONE][0]['value'] : false;
+  
+  $rate = isset($skonto_field_collection->field_discount_percent[LANGUAGE_NONE][0]['value']) ? $skonto_field_collection->field_discount_percent[LANGUAGE_NONE][0]['value'] : false;
+  
+  $skonto['rate'] = $rate;
+  $skonto['period'] = $period;
+  
+  return $skonto;
 }
