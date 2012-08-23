@@ -165,10 +165,11 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
 
   $form['field_customer_ref'] = _erpal_invoice_helper_field_customer_ref_alter($form['field_customer_ref']);
   
-  $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);
+  $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);  
   
   //if address has only one option, make this option the default value
-  $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];
+  $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];  
+  
   $default_id = false;
   if (count($options) == 2) {
     //get the one that is not "_none" and delete it!    
@@ -177,6 +178,22 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
         unset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$id]);
     }
   }
+  
+  //if customer is preselected, options are empty, put the addresses in the address select field
+  if (count($options) == 1) {
+    $customer_nid = isset($form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
+    if ($customer_nid) {      
+      $option_keys = array_keys($options);
+      $first_option = $option_keys[0];
+      if (!is_numeric($first_option)) {
+        $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid['#default_value']);   
+        $customer_node = node_load($customer_nid);
+        $addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);
+        $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'] = array_merge($options, $addresses);
+      }
+    }
+  }
+  
   if ($default_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
   }
