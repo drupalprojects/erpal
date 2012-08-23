@@ -995,6 +995,12 @@ function erpal_invoice_helper_contact_invoice_default_form($form, $form_state, $
     '#default_value' => $defaults['address_id'],
   );
   
+  $form['address_addition'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Addition to address'),
+    '#default_value' => $defaults['address_addition'],
+  );
+  
   $form['credit_period'] = array(
     '#type' => 'textfield',
     '#title' => t('Credit period'),
@@ -1020,13 +1026,7 @@ function erpal_invoice_helper_contact_invoice_default_form($form, $form_state, $
   );
   
   //actually exposing a form element for order number patterns doesn't make any sence
-  //if we add them, we have to add the patterns as well under this field
- 
-  $form['address_addition'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Addition to address'),
-    '#default_value' => $defaults['address_addition'],
-  );
+  //if we add them, we have to add the patterns as well under this field  
   
   $form['submit'] = array(
     '#type' => 'submit',
