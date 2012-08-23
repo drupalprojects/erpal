@@ -10,7 +10,7 @@
 function feature_erpal_crm_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'comment-comment_node_erpal_crm_activity-comment_body'
+  // Exported field: 'comment-comment_node_erpal_crm_activity-comment_body'.
   $fields['comment-comment_node_erpal_crm_activity-comment_body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -33,6 +33,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -77,7 +78,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'comment-comment_node_erpal_crm_activity-field_contacts_ref'
+  // Exported field: 'comment-comment_node_erpal_crm_activity-field_contacts_ref'.
   $fields['comment-comment_node_erpal_crm_activity-field_contacts_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -101,6 +102,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -177,7 +179,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-body'
+  // Exported field: 'node-erpal_crm_activity-body'.
   $fields['node-erpal_crm_activity-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -200,6 +202,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -255,7 +258,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_account_manager'
+  // Exported field: 'node-erpal_crm_activity-field_account_manager'.
   $fields['node-erpal_crm_activity-field_account_manager'] = array(
     'field_config' => array(
       'active' => '1',
@@ -279,6 +282,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -371,7 +375,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_activity_status'
+  // Exported field: 'node-erpal_crm_activity-field_activity_status'.
   $fields['node-erpal_crm_activity-field_activity_status'] = array(
     'field_config' => array(
       'active' => '1',
@@ -385,6 +389,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -449,7 +454,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_asset_files'
+  // Exported field: 'node-erpal_crm_activity-field_asset_files'.
   $fields['node-erpal_crm_activity-field_asset_files'] = array(
     'field_config' => array(
       'active' => '1',
@@ -463,6 +468,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -557,7 +563,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_chance'
+  // Exported field: 'node-erpal_crm_activity-field_chance'.
   $fields['node-erpal_crm_activity-field_chance'] = array(
     'field_config' => array(
       'active' => '1',
@@ -571,6 +577,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -628,7 +635,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_contacts_ref'
+  // Exported field: 'node-erpal_crm_activity-field_contacts_ref'.
   $fields['node-erpal_crm_activity-field_contacts_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -652,6 +659,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -734,7 +742,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_customer_ref'
+  // Exported field: 'node-erpal_crm_activity-field_customer_ref'.
   $fields['node-erpal_crm_activity-field_customer_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -748,6 +756,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -830,7 +839,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_expected_date'
+  // Exported field: 'node-erpal_crm_activity-field_expected_date'.
   $fields['node-erpal_crm_activity-field_expected_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -840,6 +849,7 @@ function feature_erpal_crm_field_default_fields() {
       'field_name' => 'field_expected_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -913,7 +923,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_next_contact'
+  // Exported field: 'node-erpal_crm_activity-field_next_contact'.
   $fields['node-erpal_crm_activity-field_next_contact'] = array(
     'field_config' => array(
       'active' => '1',
@@ -923,6 +933,7 @@ function feature_erpal_crm_field_default_fields() {
       'field_name' => 'field_next_contact',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'granularity' => array(
@@ -1000,7 +1011,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_order_number_extern'
+  // Exported field: 'node-erpal_crm_activity-field_order_number_extern'.
   $fields['node-erpal_crm_activity-field_order_number_extern'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1021,6 +1032,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1068,7 +1080,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_order_number_intern'
+  // Exported field: 'node-erpal_crm_activity-field_order_number_intern'.
   $fields['node-erpal_crm_activity-field_order_number_intern'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1089,6 +1101,7 @@ function feature_erpal_crm_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1137,7 +1150,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_volume'
+  // Exported field: 'node-erpal_crm_activity-field_volume'.
   $fields['node-erpal_crm_activity-field_volume'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1147,6 +1160,7 @@ function feature_erpal_crm_field_default_fields() {
       'field_name' => 'field_volume',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',

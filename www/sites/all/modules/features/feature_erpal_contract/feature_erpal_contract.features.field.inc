@@ -10,7 +10,7 @@
 function feature_erpal_contract_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'field_collection_item-field_budget_booking-field_budget_destination'
+  // Exported field: 'field_collection_item-field_budget_booking-field_budget_destination'.
   $fields['field_collection_item-field_budget_booking-field_budget_destination'] = array(
     'field_config' => array(
       'active' => '1',
@@ -31,6 +31,7 @@ function feature_erpal_contract_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -108,7 +109,7 @@ function feature_erpal_contract_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_budget_booking-field_budget_hours'
+  // Exported field: 'field_collection_item-field_budget_booking-field_budget_hours'.
   $fields['field_collection_item-field_budget_booking-field_budget_hours'] = array(
     'field_config' => array(
       'active' => '1',
@@ -118,6 +119,7 @@ function feature_erpal_contract_field_default_fields() {
       'field_name' => 'field_budget_hours',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -168,7 +170,7 @@ function feature_erpal_contract_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_budget_booking-field_budget_period'
+  // Exported field: 'field_collection_item-field_budget_booking-field_budget_period'.
   $fields['field_collection_item-field_budget_booking-field_budget_period'] = array(
     'field_config' => array(
       'active' => '1',
@@ -178,6 +180,7 @@ function feature_erpal_contract_field_default_fields() {
       'field_name' => 'field_budget_period',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -225,7 +228,7 @@ function feature_erpal_contract_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_budget_booking-field_budgets'
+  // Exported field: 'field_collection_item-field_budget_booking-field_budgets'.
   $fields['field_collection_item-field_budget_booking-field_budgets'] = array(
     'field_config' => array(
       'active' => '1',
@@ -246,6 +249,7 @@ function feature_erpal_contract_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -320,7 +324,7 @@ function feature_erpal_contract_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_budget_booking-field_expire_period'
+  // Exported field: 'field_collection_item-field_budget_booking-field_expire_period'.
   $fields['field_collection_item-field_budget_booking-field_expire_period'] = array(
     'field_config' => array(
       'active' => '1',
@@ -330,6 +334,7 @@ function feature_erpal_contract_field_default_fields() {
       'field_name' => 'field_expire_period',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -378,7 +383,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_budget_booking-field_last_booking_date'
+  // Exported field: 'field_collection_item-field_budget_booking-field_last_booking_date'.
   $fields['field_collection_item-field_budget_booking-field_last_booking_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -388,6 +393,7 @@ If not set, budget will not expire',
       'field_name' => 'field_last_booking_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -455,7 +461,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_budget_booking-field_next_booking_date'
+  // Exported field: 'field_collection_item-field_budget_booking-field_next_booking_date'.
   $fields['field_collection_item-field_budget_booking-field_next_booking_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -465,6 +471,7 @@ If not set, budget will not expire',
       'field_name' => 'field_next_booking_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -532,7 +539,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_contractor_ref'
+  // Exported field: 'field_collection_item-field_contract_payment-field_contractor_ref'.
   $fields['field_collection_item-field_contract_payment-field_contractor_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -556,6 +563,7 @@ If not set, budget will not expire',
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -632,7 +640,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_currency'
+  // Exported field: 'field_collection_item-field_contract_payment-field_currency'.
   $fields['field_collection_item-field_contract_payment-field_currency'] = array(
     'field_config' => array(
       'active' => '1',
@@ -658,6 +666,7 @@ If not set, budget will not expire',
         ),
       ),
       'label' => 'Currency',
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -698,7 +707,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_customer_ref'
+  // Exported field: 'field_collection_item-field_contract_payment-field_customer_ref'.
   $fields['field_collection_item-field_contract_payment-field_customer_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -712,6 +721,7 @@ If not set, budget will not expire',
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -788,7 +798,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_last_booking_date'
+  // Exported field: 'field_collection_item-field_contract_payment-field_last_booking_date'.
   $fields['field_collection_item-field_contract_payment-field_last_booking_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -798,6 +808,7 @@ If not set, budget will not expire',
       'field_name' => 'field_last_booking_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -865,7 +876,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_next_booking_date'
+  // Exported field: 'field_collection_item-field_contract_payment-field_next_booking_date'.
   $fields['field_collection_item-field_contract_payment-field_next_booking_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -875,6 +886,7 @@ If not set, budget will not expire',
       'field_name' => 'field_next_booking_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -942,7 +954,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_payment_period'
+  // Exported field: 'field_collection_item-field_contract_payment-field_payment_period'.
   $fields['field_collection_item-field_contract_payment-field_payment_period'] = array(
     'field_config' => array(
       'active' => '1',
@@ -952,6 +964,7 @@ If not set, budget will not expire',
       'field_name' => 'field_payment_period',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -999,7 +1012,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_payment_type'
+  // Exported field: 'field_collection_item-field_contract_payment-field_payment_type'.
   $fields['field_collection_item-field_contract_payment-field_payment_type'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1013,6 +1026,7 @@ If not set, budget will not expire',
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1056,7 +1070,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_price'
+  // Exported field: 'field_collection_item-field_contract_payment-field_price'.
   $fields['field_collection_item-field_contract_payment-field_price'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1066,6 +1080,7 @@ If not set, budget will not expire',
       'field_name' => 'field_price',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -1116,7 +1131,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_payment-field_vat_rate'
+  // Exported field: 'field_collection_item-field_contract_payment-field_vat_rate'.
   $fields['field_collection_item-field_contract_payment-field_vat_rate'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1142,6 +1157,7 @@ If not set, budget will not expire',
         ),
       ),
       'label' => 'VAT',
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -1182,7 +1198,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'node-erpal_contract-body'
+  // Exported field: 'node-erpal_contract-body'.
   $fields['node-erpal_contract-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1205,6 +1221,7 @@ If not set, budget will not expire',
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -1254,7 +1271,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'node-erpal_contract-field_asset_files'
+  // Exported field: 'node-erpal_contract-field_asset_files'.
   $fields['node-erpal_contract-field_asset_files'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1268,6 +1285,7 @@ If not set, budget will not expire',
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -1350,7 +1368,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'node-erpal_contract-field_budget_booking'
+  // Exported field: 'node-erpal_contract-field_budget_booking'.
   $fields['node-erpal_contract-field_budget_booking'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1360,6 +1378,7 @@ If not set, budget will not expire',
       'field_name' => 'field_budget_booking',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -1411,7 +1430,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'node-erpal_contract-field_cancelation_period'
+  // Exported field: 'node-erpal_contract-field_cancelation_period'.
   $fields['node-erpal_contract-field_cancelation_period'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1421,6 +1440,7 @@ If not set, budget will not expire',
       'field_name' => 'field_cancelation_period',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -1474,7 +1494,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'node-erpal_contract-field_contract_payment'
+  // Exported field: 'node-erpal_contract-field_contract_payment'.
   $fields['node-erpal_contract-field_contract_payment'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1484,6 +1504,7 @@ If not set, budget will not expire',
       'field_name' => 'field_contract_payment',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -1535,7 +1556,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'node-erpal_contract-field_contract_type'
+  // Exported field: 'node-erpal_contract-field_contract_type'.
   $fields['node-erpal_contract-field_contract_type'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1556,6 +1577,7 @@ If not set, budget will not expire',
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -1609,7 +1631,7 @@ If not set, budget will not expire',
     ),
   );
 
-  // Exported field: 'node-erpal_contract-field_date'
+  // Exported field: 'node-erpal_contract-field_date'.
   $fields['node-erpal_contract-field_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1619,6 +1641,7 @@ If not set, budget will not expire',
       'field_name' => 'field_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',

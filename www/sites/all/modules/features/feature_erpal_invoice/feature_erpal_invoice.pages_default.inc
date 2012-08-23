@@ -757,7 +757,7 @@ function feature_erpal_invoice_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-21';
+    $pane->pid = 'new-1';
     $pane->panel = 'left';
     $pane->type = 'views_panes';
     $pane->subtype = 'billables-panel_pane_2';
@@ -772,10 +772,10 @@ function feature_erpal_invoice_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-21'] = $pane;
-    $display->panels['left'][0] = 'new-21';
+    $display->content['new-1'] = $pane;
+    $display->panels['left'][0] = 'new-1';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-21';
+  $display->title_pane = 'new-1';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['billables_pane'] = $page;
@@ -890,7 +890,7 @@ function feature_erpal_invoice_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-22';
+    $pane->pid = 'new-2';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'invoices-panel_pane_1';
@@ -905,8 +905,8 @@ function feature_erpal_invoice_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-22'] = $pane;
-    $display->panels['middle'][0] = 'new-22';
+    $display->content['new-2'] = $pane;
+    $display->panels['middle'][0] = 'new-2';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

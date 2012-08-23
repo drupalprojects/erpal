@@ -10,7 +10,7 @@
 function feature_erpal_invoice_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'field_collection_item-field_invoice_vat-field_vat_rate'
+  // Exported field: 'field_collection_item-field_invoice_vat-field_vat_rate'.
   $fields['field_collection_item-field_invoice_vat-field_vat_rate'] = array(
     'field_config' => array(
       'active' => '1',
@@ -36,6 +36,7 @@ function feature_erpal_invoice_field_default_fields() {
         ),
       ),
       'label' => 'VAT',
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -76,7 +77,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_invoice_vat-field_vat_total'
+  // Exported field: 'field_collection_item-field_invoice_vat-field_vat_total'.
   $fields['field_collection_item-field_invoice_vat-field_vat_total'] = array(
     'field_config' => array(
       'active' => '1',
@@ -86,6 +87,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_vat_total',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -134,7 +136,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_pricing-field_buy_currency'
+  // Exported field: 'field_collection_item-field_pricing-field_buy_currency'.
   $fields['field_collection_item-field_pricing-field_buy_currency'] = array(
     'field_config' => array(
       'active' => '1',
@@ -148,6 +150,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -195,7 +198,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_pricing-field_buy_price'
+  // Exported field: 'field_collection_item-field_pricing-field_buy_price'.
   $fields['field_collection_item-field_pricing-field_buy_price'] = array(
     'field_config' => array(
       'active' => '1',
@@ -205,6 +208,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_buy_price',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -267,7 +271,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_pricing-field_buy_vat_rate'
+  // Exported field: 'field_collection_item-field_pricing-field_buy_vat_rate'.
   $fields['field_collection_item-field_pricing-field_buy_vat_rate'] = array(
     'field_config' => array(
       'active' => '1',
@@ -281,6 +285,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -328,7 +333,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_pricing-field_contractor_ref'
+  // Exported field: 'field_collection_item-field_pricing-field_contractor_ref'.
   $fields['field_collection_item-field_pricing-field_contractor_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -352,6 +357,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -428,7 +434,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_skonto-field_credit_period'
+  // Exported field: 'field_collection_item-field_skonto-field_credit_period'.
   $fields['field_collection_item-field_skonto-field_credit_period'] = array(
     'field_config' => array(
       'active' => '1',
@@ -438,6 +444,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_credit_period',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -485,7 +492,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_skonto-field_discount_percent'
+  // Exported field: 'field_collection_item-field_skonto-field_discount_percent'.
   $fields['field_collection_item-field_skonto-field_discount_percent'] = array(
     'field_config' => array(
       'active' => '1',
@@ -495,6 +502,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_discount_percent',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -545,7 +553,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_addition_to_address'
+  // Exported field: 'node-erpal_invoice-field_addition_to_address'.
   $fields['node-erpal_invoice-field_addition_to_address'] = array(
     'field_config' => array(
       'active' => '1',
@@ -566,6 +574,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -614,7 +623,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_asset_files'
+  // Exported field: 'node-erpal_invoice-field_asset_files'.
   $fields['node-erpal_invoice-field_asset_files'] = array(
     'field_config' => array(
       'active' => '1',
@@ -628,6 +637,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -713,7 +723,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_auto_note'
+  // Exported field: 'node-erpal_invoice-field_auto_note'.
   $fields['node-erpal_invoice-field_auto_note'] = array(
     'field_config' => array(
       'active' => '1',
@@ -734,6 +744,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -780,7 +791,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_billables_ref'
+  // Exported field: 'node-erpal_invoice-field_billables_ref'.
   $fields['node-erpal_invoice-field_billables_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -794,6 +805,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -854,7 +866,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_contractor_ref'
+  // Exported field: 'node-erpal_invoice-field_contractor_ref'.
   $fields['node-erpal_invoice-field_contractor_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -878,6 +890,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -963,7 +976,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_credit_period'
+  // Exported field: 'node-erpal_invoice-field_credit_period'.
   $fields['node-erpal_invoice-field_credit_period'] = array(
     'field_config' => array(
       'active' => '1',
@@ -973,6 +986,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_credit_period',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -1020,7 +1034,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_currency'
+  // Exported field: 'node-erpal_invoice-field_currency'.
   $fields['node-erpal_invoice-field_currency'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1046,6 +1060,7 @@ function feature_erpal_invoice_field_default_fields() {
         ),
       ),
       'label' => 'Currency',
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -1095,7 +1110,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_customer_ref'
+  // Exported field: 'node-erpal_invoice-field_customer_ref'.
   $fields['node-erpal_invoice-field_customer_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1109,6 +1124,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -1191,7 +1207,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_invoice_address_id'
+  // Exported field: 'node-erpal_invoice-field_invoice_address_id'.
   $fields['node-erpal_invoice-field_invoice_address_id'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1205,6 +1221,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -1249,7 +1266,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_invoice_date'
+  // Exported field: 'node-erpal_invoice-field_invoice_date'.
   $fields['node-erpal_invoice-field_invoice_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1259,6 +1276,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_invoice_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'granularity' => array(
@@ -1322,7 +1340,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_invoice_exported'
+  // Exported field: 'node-erpal_invoice-field_invoice_exported'.
   $fields['node-erpal_invoice-field_invoice_exported'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1336,6 +1354,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1391,7 +1410,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_invoice_number'
+  // Exported field: 'node-erpal_invoice-field_invoice_number'.
   $fields['node-erpal_invoice-field_invoice_number'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1412,6 +1431,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1460,7 +1480,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_invoice_total'
+  // Exported field: 'node-erpal_invoice-field_invoice_total'.
   $fields['node-erpal_invoice-field_invoice_total'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1470,6 +1490,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_invoice_total',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -1519,7 +1540,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_invoice_vat'
+  // Exported field: 'node-erpal_invoice-field_invoice_vat'.
   $fields['node-erpal_invoice-field_invoice_vat'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1529,6 +1550,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_invoice_vat',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -1572,7 +1594,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_note'
+  // Exported field: 'node-erpal_invoice-field_note'.
   $fields['node-erpal_invoice-field_note'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1593,6 +1615,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -1639,7 +1662,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_order_number_extern'
+  // Exported field: 'node-erpal_invoice-field_order_number_extern'.
   $fields['node-erpal_invoice-field_order_number_extern'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1660,6 +1683,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1706,7 +1730,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_order_number_intern'
+  // Exported field: 'node-erpal_invoice-field_order_number_intern'.
   $fields['node-erpal_invoice-field_order_number_intern'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1727,6 +1751,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1773,7 +1798,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_payed'
+  // Exported field: 'node-erpal_invoice-field_payed'.
   $fields['node-erpal_invoice-field_payed'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1787,6 +1812,7 @@ function feature_erpal_invoice_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1839,7 +1865,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_payment_date'
+  // Exported field: 'node-erpal_invoice-field_payment_date'.
   $fields['node-erpal_invoice-field_payment_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1849,6 +1875,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_payment_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -1915,7 +1942,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_price_no_vat'
+  // Exported field: 'node-erpal_invoice-field_price_no_vat'.
   $fields['node-erpal_invoice-field_price_no_vat'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1925,6 +1952,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_price_no_vat',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -1974,7 +2002,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_invoice-field_skonto'
+  // Exported field: 'node-erpal_invoice-field_skonto'.
   $fields['node-erpal_invoice-field_skonto'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1984,6 +2012,7 @@ function feature_erpal_invoice_field_default_fields() {
       'field_name' => 'field_skonto',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',

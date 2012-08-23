@@ -10,7 +10,7 @@
 function feature_erpal_crm_filter_default_formats() {
   $formats = array();
 
-  // Exported format: PHP code
+  // Exported format: PHP code.
   $formats['php_code'] = array(
     'format' => 'php_code',
     'name' => 'PHP code',
