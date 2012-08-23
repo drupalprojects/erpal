@@ -78,7 +78,7 @@ function billable_entity_info() {
     'fieldable' => TRUE,
     'entity keys' => array(
         'id' => 'billable_id',
-        //'bundle' => 'billable',
+        'bundle' => 'type',
     ),
 /*  dont need bundles! So we have a default billable bundle. Thats it and everything we need.
     // Bundles are defined by the billable types below

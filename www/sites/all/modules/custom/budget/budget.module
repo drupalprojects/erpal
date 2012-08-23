@@ -35,6 +35,7 @@ function budget_entity_info() {
     'fieldable' => TRUE,
     'entity keys' => array(
         'id' => 'budget_id',
+        'bundle' => 'type',
     ),
     'label callback' => 'entity_class_label',
     'uri callback' => 'entity_class_uri',

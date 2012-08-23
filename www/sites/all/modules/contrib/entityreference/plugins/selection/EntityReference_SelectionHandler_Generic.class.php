@@ -215,7 +215,8 @@ class EntityReference_SelectionHandler_Generic implements EntityReference_Select
   protected function buildEntityFieldQuery($match = NULL, $match_operator = 'CONTAINS') {
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', $this->field['settings']['target_type']);
-    if (!empty($this->field['settings']['handler_settings']['target_bundles'])) {
+
+    if (!empty($this->field['settings']['handler_settings']['target_bundles'])) {      
       $query->entityCondition('bundle', $this->field['settings']['handler_settings']['target_bundles'], 'IN');
     }
     if (isset($match)) {
