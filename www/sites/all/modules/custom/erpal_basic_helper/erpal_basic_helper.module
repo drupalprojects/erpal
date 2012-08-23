@@ -296,8 +296,19 @@ function erpal_basic_helper_entity_as_string($entity) {
     $zip_code = isset($entity->field_zip_code[LANGUAGE_NONE]) ? $entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '';
     $country = isset($entity->field_country[LANGUAGE_NONE]) ? $entity->field_country[LANGUAGE_NONE][0]['value'] : '';
     $city = isset($entity->field_city[LANGUAGE_NONE]) ? $entity->field_city[LANGUAGE_NONE][0]['value'] : '';
-    $address_type = isset($entity->field_address_type[LANGUAGE_NONE]) ? $entity->field_address_type[LANGUAGE_NONE][0]['value'] : '';
-    $entity_string = $street." - ".$zip_code." - ".$city." (".$address_type.")";
+    
+    $type_term_ids = isset($entity->field_address_type_terms[LANGUAGE_NONE]) ? $entity->field_address_type_terms[LANGUAGE_NONE] : array();
+
+    $terms = array();
+    foreach ($type_term_ids as $delta=>$tid) {
+      $tid = $tid['tid'];
+      $term = taxonomy_term_load_multiple(array($tid));
+      $term = $term[$tid];
+      $terms[] = $term->name;
+    }
+    
+    $address_types = implode(',', $terms);
+    $entity_string = $street." - ".$zip_code." - ".$city." (".$address_types.")";
   } elseif ($entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
     $phone_type = $entity->field_phone_type[LANGUAGE_NONE][0]['value'];
