@@ -244,6 +244,7 @@ function _erpal_basic_helper_get_contact_emails($contact_node) {
   return $ret;
 }
 
+
 /**
 * Returns all available phone numbers for a given contact node
 *
@@ -297,25 +298,35 @@ function erpal_basic_helper_entity_as_string($entity) {
     $country = isset($entity->field_country[LANGUAGE_NONE]) ? $entity->field_country[LANGUAGE_NONE][0]['value'] : '';
     $city = isset($entity->field_city[LANGUAGE_NONE]) ? $entity->field_city[LANGUAGE_NONE][0]['value'] : '';
     
-    $type_term_ids = isset($entity->field_address_type_terms[LANGUAGE_NONE]) ? $entity->field_address_type_terms[LANGUAGE_NONE] : array();
-
-    $terms = array();
-    foreach ($type_term_ids as $delta=>$tid) {
-      $tid = $tid['tid'];
-      $term = taxonomy_term_load_multiple(array($tid));
-      $term = $term[$tid];
-      $terms[] = $term->name;
-    }
-    
+    $terms = _erpal_basic_helper_term_references_terms($entity->field_address_type_terms);
     $address_types = implode(',', $terms);
     $entity_string = $street." - ".$zip_code." - ".$city." (".$address_types.")";
   } elseif ($entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
-    $phone_type = $entity->field_phone_type[LANGUAGE_NONE][0]['value'];
-    $entity_string = $phone_number." (".$phone_type.")";
+
+    $terms = _erpal_basic_helper_term_references_terms($entity->field_number_type_terms );
+    $phone_types = implode(',', $terms);
+    $entity_string = $phone_number." (".$phone_types.")";
   }
 
   return $entity_string;
+}
+
+/**
+* returns a term reference field as array with terms instead of ids
+*/
+function _erpal_basic_helper_term_references_terms($term_field) {
+  $type_term_ids = isset($term_field[LANGUAGE_NONE]) ? $term_field[LANGUAGE_NONE] : array();
+
+  $terms = array();
+  foreach ($type_term_ids as $delta=>$tid) {
+    $tid = $tid['tid'];
+    $term = taxonomy_term_load_multiple(array($tid));
+    $term = $term[$tid];
+    $terms[] = $term->name;
+  }
+  
+  return $terms;
 }
 
 /**

@@ -40,6 +40,19 @@ function erpal_crm_helper_permission(){
 }
  
 /**
+* Implements hook_field_attach_validate
+*/
+function erpal_crm_helper_field_attach_validate($entity_type, $entity, &$errors) {
+  if ($entity_type == 'taxonomy_term') {
+    if (isset($entity->field_is_default_term)) {
+      $new_errors = _erpal_crm_helper_validate_field_default_term($entity);
+      $errors = array_merge($errors, $new_errors);
+    }
+  }
+}
+ 
+ 
+/**
 * Implements hook_node_validate
 */
 function erpal_crm_helper_node_validate($node, $form, $form_state) {
@@ -117,3 +130,63 @@ function _erpal_crm_helper_create_activity_link($q_arg = false, $query_arr = arr
     )
   );
 }
+
+
+/**
+* returns the term with field_is_default_term set true within all terms in the given vocabulary
+* @param $vid the vocabulary id where to search the default term in
+*/
+function _erpal_crm_helper_get_default_tid($vid) {
+
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'taxonomy_term')
+    ->propertyCondition('vid', $vid)
+    ->fieldCondition('field_is_default_term', 'value', 1);
+
+  $result = $query->execute();
+  if (!$result)
+    return false;
+    
+  $result = array_keys($result['taxonomy_term']);
+  $result = isset($result[0]) ? $result[0] : false;
+
+  return $result;
+}
+
+/**
+* Function validates that there is only on term with field_is_default_term set in the vocabulary of the given term_entitiy
+*/
+function _erpal_crm_helper_validate_field_default_term($term_entity) {
+
+  $errors = array();
+  //check only if the given term is set to default
+  if (!isset($term_entity->field_is_default_term[LANGUAGE_NONE][0]['value']) || !$term_entity->field_is_default_term[LANGUAGE_NONE][0]['value'])
+    return $errors;
+  
+  $vid = $term_entity->vid;
+  $terms = taxonomy_get_tree($vid);
+  $has_other_default = false;
+  foreach ($terms as $term_obj) { //@TODO may be an entity field query would be more performant @see _erpal_crm_helper_get_default_term
+    $term = taxonomy_term_load($term_obj->tid);
+    if ($term->tid != $term_entity->tid) {
+      $is_default = isset($term->field_is_default_term[LANGUAGE_NONE][0]['value']) ? $term->field_is_default_term[LANGUAGE_NONE][0]['value'] : false;
+      if ($is_default) {
+        $has_other_default = $term;
+        break;
+      }
+    }
+  }
+  
+  if ($has_other_default) {
+    //oh, there is another term set to default, throw an error!
+    $term_link = l($has_other_default->name, 'taxonomy/term/'.$has_other_default->tid);
+    $errors['field_is_default_term'][LANGUAGE_NONE][0][] = array(
+      'error' => 'value',
+      'message' => t('Only one term in a vacabular can be set to default. Term !term_link is already set to default.', array('!term_link' => $term_link)),
+    );
+  }
+  
+  return $errors;
+}
+

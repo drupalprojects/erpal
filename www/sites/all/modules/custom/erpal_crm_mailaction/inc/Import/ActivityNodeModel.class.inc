@@ -125,7 +125,13 @@ class ActivityNodeModel {
     $node->title                              = check_plain ($subject);
     $node->language                           = LANGUAGE_NONE;
  
-    $node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
+    //$node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
+    //Update, da dieses Feld nun ein Term reference feld ist und es an den Terms ein Flag gibt, welcher Term der default Term ist.
+    $field_info = field_info_field('field_activity_status_term');
+    $vocabulary_name = $field_info['settings']['allowed_values'][0]['vocabulary'];
+    $taxonomy = taxonomy_vocabulary_machine_name_load($vocabulary_name);
+    $vid = $taxonomy->vid;
+    $node->field_is_default_term[LANGUAGE_NONE][0]['value'] = _erpal_crm_helper_get_default_tid($vid);   
     
     if ($contact !== FALSE) {
       $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contactID;

@@ -21,5 +21,13 @@ function _erpal_crm_helper_config_menu(){
 */
 function _erpal_crm_helper_config_core()
 {
-  return "ERPAL CRM";
+  //add a link to edit activity status terms
+  $form = array();
+  
+  $form['status_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit activity status terms'), 'admin/structure/taxonomy/activity_status_terms'),
+  );
+  
+  return $form;
 }
