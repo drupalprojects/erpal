@@ -35,8 +35,8 @@ function erpal_basic_helper_menu(){
   $items['node/%node/relations/add'] = array(
     'page callback' => '_erpal_basic_helper_relation_add_page_callback',    
     'access callback' => '_erpal_basic_helper_relation_add_access',  
-    'page arguments' => array(1),
-    'access arguments' => array(1),
+    'page arguments' => array(1, 'node'),
+    'access arguments' => array(1, 'node'),
   );
   
   require_once 'inc/config.inc';
