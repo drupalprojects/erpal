@@ -2894,85 +2894,6 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-group_content_access'.
-  $fields['node-erpal_timetracking-group_content_access'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'group_content_access',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'no_ui' => TRUE,
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Use group defaults',
-          1 => 'Public - accessible to all site users',
-          2 => 'Private - accessible only to group members',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_timetracking',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 6,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'group_content_access',
-      'label' => 'Group content visibility',
-      'required' => TRUE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'view modes' => array(
-        'full' => array(
-          'label' => 'above',
-          'type' => 'list_default',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'type' => 'list_default',
-        ),
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => 2,
-      ),
-      'widget_type' => 'options_select',
-    ),
-  );
-
   // Exported field: 'relation-participate_in-field_projet_role_rel_tags'.
   $fields['relation-participate_in-field_projet_role_rel_tags'] = array(
     'field_config' => array(
@@ -3370,7 +3291,6 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Duration');
   t('Estimated time');
   t('Exclude from');
-  t('Group content visibility');
   t('How long did you work?');
   t('Is default');
   t('Parent');
