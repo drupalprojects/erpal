@@ -52,7 +52,7 @@ function erpal_book_helper_menu(){
   );
   
   $items['books/%node/clone'] = array(
-    'title' => 'Create PDF of book',
+    'title' => 'Clone book',
     'page callback' => '_erpal_books_helper_book_clone_callback',    
     'page arguments' => array(1),
     'access callback' => '_erpal_book_helper_book_clone_menu_access',
