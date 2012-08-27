@@ -162,7 +162,7 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   $frontpage_html = theme('erpal_books_book_pdf_html', array('node' => $root_node, 'pdf_object' => $pdf_object, 'options' => $theme_options, 'counter' => false));
   //line bracks as <br>
   $frontpage_html = nl2br($frontpage_html);  
-  $frontpages[] = $frontpage_html;  
+   
     
   $total_estimation = $html['total_estimation'];
   $html = $html['html'];
@@ -170,7 +170,10 @@ function _erpal_book_helper_create_pdf($book_node, $root_node, $options) {
   //now replace the estimation token in the html
   $data = array('total_estimation' => $total_estimation);
   $html = token_replace($html, $data);  
+
+  $frontpage_html = token_replace($frontpage_html, $data);  
   
+  $frontpages[] = $frontpage_html; 
   //now put HTML content to PDF rendering
   
   $pdf_method = $options['pdf_create_method'];
