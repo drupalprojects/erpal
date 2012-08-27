@@ -70,7 +70,7 @@ function _erpal_basic_helper_relation_add_block_form_alter(&$form, &$form_state)
 */
 function _erpal_basic_helper_relation_add_access($node) {
   //@TODO validation handling for relation create page
-  return user_access($node);
+  return user_access('create relations');
 }
 
 /**
