@@ -375,85 +375,6 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_activity_status'.
-  $fields['node-erpal_crm_activity-field_activity_status'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_activity_status',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          1 => 'request',
-          2 => 'proposal',
-          3 => 'contract submitted',
-          4 => 'proposal not accepted',
-          5 => 'no activity (ABORTED)',
-          6 => 'cooperation request',
-          7 => 'cooperation not accepted',
-          8 => 'cooperation accepted',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_crm_activity',
-      'default_value' => array(
-        0 => array(
-          'value' => '1',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 5,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_activity_status',
-      'label' => 'Activity status',
-      'required' => 1,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '6',
-      ),
-    ),
-  );
-
   // Exported field: 'node-erpal_crm_activity-field_activity_status_term'.
   $fields['node-erpal_crm_activity-field_activity_status_term'] = array(
     'field_config' => array(
@@ -512,7 +433,7 @@ function feature_erpal_crm_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_activity_status_term',
       'label' => 'Status',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -1294,6 +1215,87 @@ function feature_erpal_crm_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_crm_activity-group_group'.
+  $fields['node-erpal_crm_activity-group_group'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'group_group',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Not a group',
+          1 => 'Group',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'default_value' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Determine if this is an OG group.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 16,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'display_label' => 1,
+      'entity_type' => 'node',
+      'field_name' => 'group_group',
+      'label' => 'Group',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'view modes' => array(
+        'full' => array(
+          'custom settings' => FALSE,
+          'label' => 'Full',
+          'type' => 'og_group_subscribe',
+        ),
+        'teaser' => array(
+          'custom settings' => FALSE,
+          'label' => 'Teaser',
+          'type' => 'og_group_subscribe',
+        ),
+      ),
+      'widget' => array(
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'taxonomy_term-activity_status_terms-field_is_default_term'.
   $fields['taxonomy_term-activity_status_terms-field_is_default_term'] = array(
     'field_config' => array(
@@ -1424,15 +1426,16 @@ function feature_erpal_crm_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Account Manager');
-  t('Activity status');
   t('Body');
   t('Chance');
   t('Check, if this is the default value on fields where to select on of the terms in this vocabulary');
   t('Comment');
   t('Contacts');
   t('Customer');
+  t('Determine if this is an OG group.');
   t('Expected date');
   t('Global documents');
+  t('Group');
   t('Is default');
   t('Next Contact');
   t('Order number extern');

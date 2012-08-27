@@ -22,6 +22,7 @@ function _erpal_projects_billable_test_create_contact() {
 
 /**
 * Creates a project
+* @TODO @see erpal_projects_billable.test file @todo information. (We changed the status field to term reference field)
 */
 function _erpal_projects_billable_test_create_project($pricing=array(), $status='inserted') {
 

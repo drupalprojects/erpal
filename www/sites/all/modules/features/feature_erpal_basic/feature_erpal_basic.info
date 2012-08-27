@@ -85,7 +85,6 @@ features[field][] = node-erpal_contact-field_twitter
 features[field][] = node-erpal_contact-field_vat_number
 features[field][] = node-erpal_contact-field_website
 features[field][] = node-erpal_contact-field_xing
-features[field][] = node-erpal_project-field_project_status
 features[field][] = relation-works_at-endpoints
 features[field][] = relation-works_at-field_date
 features[field][] = relation-works_at-field_work_at_rel_tags

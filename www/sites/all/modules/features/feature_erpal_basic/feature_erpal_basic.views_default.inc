@@ -10,7 +10,7 @@
 function feature_erpal_basic_views_default_views() {
   $export = array();
 
-  $view = new view;
+  $view = new view();
   $view->name = 'contacts';
   $view->description = '';
   $view->tag = 'default';
@@ -23,6 +23,7 @@ function feature_erpal_basic_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Contacts';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access contact view';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -59,9 +60,6 @@ function feature_erpal_basic_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  $handler->display->display_options['style_options']['override'] = 1;
-  $handler->display->display_options['style_options']['sticky'] = 0;
-  $handler->display->display_options['style_options']['empty_table'] = 0;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
@@ -71,81 +69,29 @@ function feature_erpal_basic_views_default_views() {
 echo _erpal_basic_helper_view_contacts_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
-  $handler->display->display_options['header']['area']['tokenize'] = 0;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
   $handler->display->display_options['empty']['area']['content'] = 'There are no contacts available';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Name';
-  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Field: Content: Contact Type */
   $handler->display->display_options['fields']['field_contact_type']['id'] = 'field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['table'] = 'field_data_field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
-  $handler->display->display_options['fields']['field_contact_type']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['field_api_classes'] = 0;
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
-  $handler->display->display_options['fields']['edit_node']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['edit_node']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['edit_node']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['edit_node']['alter']['html'] = 0;
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['edit_node']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['edit_node']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['edit_node']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['edit_node']['hide_alter_empty'] = 1;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -167,12 +113,8 @@ echo _erpal_basic_helper_view_contacts_header_content();
   );
   $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
-  $handler->display->display_options['filters']['type']['expose']['use_operator'] = FALSE;
   $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
-  $handler->display->display_options['filters']['type']['expose']['required'] = FALSE;
-  $handler->display->display_options['filters']['type']['expose']['remember'] = FALSE;
-  $handler->display->display_options['filters']['type']['expose']['multiple'] = FALSE;
   /* Filter criterion: Content: Contact Type (field_contact_type) */
   $handler->display->display_options['filters']['field_contact_type_value']['id'] = 'field_contact_type_value';
   $handler->display->display_options['filters']['field_contact_type_value']['table'] = 'field_data_field_contact_type';
@@ -186,9 +128,8 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Type';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember'] = 1;
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['multiple'] = 1;
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['multiple'] = TRUE;
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
@@ -199,13 +140,12 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Name';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
-  $handler->display->display_options['filters']['title']['expose']['required'] = 0;
-  $handler->display->display_options['filters']['title']['expose']['remember'] = 1;
-  $handler->display->display_options['filters']['title']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
 
   /* Display: Contacts */
   $handler = $view->new_display('page', 'Contacts', 'page');
   $handler->display->display_options['display_description'] = 'List of all contacts';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'crm/contacts';
   $handler->display->display_options['menu']['title'] = 'CRM';
   $handler->display->display_options['menu']['weight'] = '0';
@@ -219,6 +159,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Choose a contact';
   $handler->display->display_options['display_description'] = 'Search a customer for a project';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
@@ -228,52 +169,18 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Name';
-  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Field: Content: Contact Type */
   $handler->display->display_options['fields']['field_contact_type']['id'] = 'field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['table'] = 'field_data_field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
-  $handler->display->display_options['fields']['field_contact_type']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_contact_type']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_contact_type']['field_api_classes'] = 0;
   $handler->display->display_options['attach'] = array(
     0 => 'node:field_customer_ref:erpal_project',
   );
   $export['contacts'] = $view;
 
-  $view = new view;
+  $view = new view();
   $view->name = 'node_revisions';
   $view->description = '';
   $view->tag = 'default';
@@ -286,6 +193,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Revisions';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'view revisions';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -296,7 +204,6 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'timestamp' => 'timestamp',
@@ -319,72 +226,30 @@ echo _erpal_basic_helper_view_contacts_header_content();
       'empty_column' => 0,
     ),
   );
-  $handler->display->display_options['style_options']['override'] = 1;
-  $handler->display->display_options['style_options']['sticky'] = 0;
-  $handler->display->display_options['style_options']['empty_table'] = 0;
   /* Relationship: Content revision: User */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node_revision';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  $handler->display->display_options['relationships']['uid']['required'] = 0;
   /* Field: Content revision: Updated date */
   $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['table'] = 'node_revision';
   $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['timestamp']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['timestamp']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['timestamp']['alter']['word_boundary'] = 0;
-  $handler->display->display_options['fields']['timestamp']['alter']['ellipsis'] = 0;
-  $handler->display->display_options['fields']['timestamp']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['timestamp']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['timestamp']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['timestamp']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['timestamp']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['timestamp']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['alter']['ellipsis'] = FALSE;
   /* Field: Content revision: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node_revision';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['title']['link_to_node'] = 0;
-  $handler->display->display_options['fields']['title']['link_to_node_revision'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node_revision'] = TRUE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'User';
-  $handler->display->display_options['fields']['name']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['name']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['name']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['name']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['name']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['name']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['name']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['name']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['name']['link_to_user'] = 1;
-  $handler->display->display_options['fields']['name']['overwrite_anonymous'] = 0;
-  $handler->display->display_options['fields']['name']['format_username'] = 1;
   /* Sort criterion: Content revision: Updated date */
   $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['table'] = 'node_revision';
@@ -396,12 +261,9 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
   $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
   $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['nid']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['nid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['nid']['not'] = 0;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -412,6 +274,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
 
   /* Display: Pane node revisions */
   $handler = $view->new_display('panel_pane', 'Pane node revisions', 'panel_pane_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['argument_input'] = array(
     'nid' => array(
       'type' => 'panel',
@@ -424,7 +287,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
   );
   $export['node_revisions'] = $view;
 
-  $view = new view;
+  $view = new view();
   $view->name = 'relations_view';
   $view->description = 'Lists relations of a certain type';
   $view->tag = 'default';
@@ -437,6 +300,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Relations by node';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -446,45 +310,23 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['pager']['options']['items_per_page'] = '20';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
   $handler->display->display_options['empty']['area']['content'] = 'No relations available';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Relation: endpoints */
   $handler->display->display_options['fields']['endpoints']['id'] = 'endpoints';
   $handler->display->display_options['fields']['endpoints']['table'] = 'field_data_endpoints';
   $handler->display->display_options['fields']['endpoints']['field'] = 'endpoints';
   $handler->display->display_options['fields']['endpoints']['label'] = '';
-  $handler->display->display_options['fields']['endpoints']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['endpoints']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['endpoints']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['html'] = 0;
   $handler->display->display_options['fields']['endpoints']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['endpoints']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['endpoints']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['endpoints']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['endpoints']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['endpoints']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['endpoints']['click_sort_column'] = 'entity_type';
-  $handler->display->display_options['fields']['endpoints']['group_rows'] = 1;
   $handler->display->display_options['fields']['endpoints']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['endpoints']['delta_reversed'] = 0;
-  $handler->display->display_options['fields']['endpoints']['delta_first_last'] = 0;
-  $handler->display->display_options['fields']['endpoints']['field_api_classes'] = 0;
   /* Field: Relation: Rendered Relation */
   $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
   $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_relation';
@@ -495,14 +337,10 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['arguments']['relation_type']['field'] = 'relation_type';
   $handler->display->display_options['arguments']['relation_type']['default_action'] = 'summary';
   $handler->display->display_options['arguments']['relation_type']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['relation_type']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['relation_type']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['relation_type']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['relation_type']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['relation_type']['glossary'] = 0;
   $handler->display->display_options['arguments']['relation_type']['limit'] = '0';
-  $handler->display->display_options['arguments']['relation_type']['transform_dash'] = 0;
-  $handler->display->display_options['arguments']['relation_type']['break_phrase'] = 0;
   /* Filter criterion: Relation: Relation type */
   $handler->display->display_options['filters']['relation_type']['id'] = 'relation_type';
   $handler->display->display_options['filters']['relation_type']['table'] = 'relation';
@@ -512,10 +350,10 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['relation_type']['expose']['label'] = 'Relation type';
   $handler->display->display_options['filters']['relation_type']['expose']['operator'] = 'relation_type_op';
   $handler->display->display_options['filters']['relation_type']['expose']['identifier'] = 'relation_type';
-  $handler->display->display_options['filters']['relation_type']['expose']['reduce'] = 0;
 
   /* Display: Relations by node */
   $handler = $view->new_display('panel_pane', 'Relations by node', 'panel_pane_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -529,9 +367,6 @@ echo _erpal_basic_helper_view_contacts_header_content();
       'empty_column' => 0,
     ),
   );
-  $handler->display->display_options['style_options']['override'] = 1;
-  $handler->display->display_options['style_options']['sticky'] = 0;
-  $handler->display->display_options['style_options']['empty_table'] = 0;
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
@@ -541,53 +376,15 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['fields']['endpoints']['table'] = 'field_data_endpoints';
   $handler->display->display_options['fields']['endpoints']['field'] = 'endpoints';
   $handler->display->display_options['fields']['endpoints']['label'] = '';
-  $handler->display->display_options['fields']['endpoints']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['endpoints']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['endpoints']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['endpoints']['alter']['html'] = 0;
   $handler->display->display_options['fields']['endpoints']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['endpoints']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['endpoints']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['endpoints']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['endpoints']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['endpoints']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['endpoints']['click_sort_column'] = 'entity_type';
   $handler->display->display_options['fields']['endpoints']['type'] = 'relation_endpoint_simple_table';
-  $handler->display->display_options['fields']['endpoints']['group_rows'] = 1;
   $handler->display->display_options['fields']['endpoints']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['endpoints']['delta_reversed'] = 0;
-  $handler->display->display_options['fields']['endpoints']['delta_first_last'] = 0;
-  $handler->display->display_options['fields']['endpoints']['field_api_classes'] = 0;
   /* Field: Field: Period */
   $handler->display->display_options['fields']['field_date_1']['id'] = 'field_date_1';
   $handler->display->display_options['fields']['field_date_1']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date_1']['field'] = 'field_date';
-  $handler->display->display_options['fields']['field_date_1']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_date_1']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_date_1']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_date_1']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_date_1']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_date_1']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_date_1']['settings'] = array(
     'format_type' => 'int_date_only',
     'fromto' => 'both',
@@ -595,126 +392,33 @@ echo _erpal_basic_helper_view_contacts_header_content();
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  $handler->display->display_options['fields']['field_date_1']['field_api_classes'] = 0;
   /* Field: Relation: Change Date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'relation';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['label'] = 'Changed';
-  $handler->display->display_options['fields']['changed']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['changed']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['changed']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['changed']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['changed']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['changed']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['changed']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['changed']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['changed']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['changed']['date_format'] = 'int_date_time';
   /* Field: Relation: Create Date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'relation';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Created';
-  $handler->display->display_options['fields']['created']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['created']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['created']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['created']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['created']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['created']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['created']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['created']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['created']['date_format'] = 'int_date_time';
   /* Field: Relation: Relation Tags */
   $handler->display->display_options['fields']['field_work_at_rel_tags']['id'] = 'field_work_at_rel_tags';
   $handler->display->display_options['fields']['field_work_at_rel_tags']['table'] = 'field_data_field_work_at_rel_tags';
   $handler->display->display_options['fields']['field_work_at_rel_tags']['field'] = 'field_work_at_rel_tags';
   $handler->display->display_options['fields']['field_work_at_rel_tags']['label'] = 'Tags';
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_work_at_rel_tags']['type'] = 'taxonomy_term_reference_plain';
-  $handler->display->display_options['fields']['field_work_at_rel_tags']['field_api_classes'] = 0;
   /* Field: Relation: Relation type */
   $handler->display->display_options['fields']['relation_type']['id'] = 'relation_type';
   $handler->display->display_options['fields']['relation_type']['table'] = 'relation';
   $handler->display->display_options['fields']['relation_type']['field'] = 'relation_type';
-  $handler->display->display_options['fields']['relation_type']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['relation_type']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['relation_type']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['relation_type']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['relation_type']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['relation_type']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['relation_type']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['relation_type']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['relation_type']['hide_alter_empty'] = 1;
   /* Field: Relation: Role in project */
   $handler->display->display_options['fields']['field_projet_role_rel_tags']['id'] = 'field_projet_role_rel_tags';
   $handler->display->display_options['fields']['field_projet_role_rel_tags']['table'] = 'field_data_field_projet_role_rel_tags';
   $handler->display->display_options['fields']['field_projet_role_rel_tags']['field'] = 'field_projet_role_rel_tags';
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['more_link'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_projet_role_rel_tags']['type'] = 'taxonomy_term_reference_plain';
-  $handler->display->display_options['fields']['field_projet_role_rel_tags']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Relation: endpoints (endpoints:entity_id) */
   $handler->display->display_options['arguments']['endpoints_entity_id']['id'] = 'endpoints_entity_id';
@@ -722,12 +426,10 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['arguments']['endpoints_entity_id']['field'] = 'endpoints_entity_id';
   $handler->display->display_options['arguments']['endpoints_entity_id']['default_action'] = 'empty';
   $handler->display->display_options['arguments']['endpoints_entity_id']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['endpoints_entity_id']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['endpoints_entity_id']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['endpoints_entity_id']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['endpoints_entity_id']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['endpoints_entity_id']['break_phrase'] = 1;
-  $handler->display->display_options['arguments']['endpoints_entity_id']['not'] = 0;
+  $handler->display->display_options['arguments']['endpoints_entity_id']['break_phrase'] = TRUE;
   $handler->display->display_options['argument_input'] = array(
     'endpoints_entity_id' => array(
       'type' => 'panel',

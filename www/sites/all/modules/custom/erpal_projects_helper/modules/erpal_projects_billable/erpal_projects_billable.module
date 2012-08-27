@@ -922,11 +922,9 @@ function _erpal_billable_is_billable($billable_information, $node, $type, $fix_p
   $status = '';
   if ($type == 'erpal_task' || $type == 'erpal_project') {
     if ($type == 'erpal_task') {
-      if (isset($node->field_task_status[LANGUAGE_NONE][0]))
-        $status = $node->field_task_status[LANGUAGE_NONE][0]['value'];  
+      $status = _erpal_basic_helper_get_tid_semantic($node, 'field_task_status_term');;  
     } elseif ($type == 'erpal_project') {
-      if (isset($node->field_project_status[LANGUAGE_NONE][0]))
-        $status = $node->field_project_status[LANGUAGE_NONE][0]['value'];
+      $status = _erpal_basic_helper_get_tid_semantic($node, 'field_project_status_term');   
     }
     return ($price_mode == 'fixed_price' || !$fix_price_needed_for_billable) && $price && $customer_node && $status == 'completed';
   }

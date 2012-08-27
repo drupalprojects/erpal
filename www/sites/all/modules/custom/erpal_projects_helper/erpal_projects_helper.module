@@ -64,7 +64,17 @@ function erpal_projects_helper_entity_update($entity, $type) {
   }
 }
 
-
+/**
+ * Implements hook_help().
+ */
+function erpal_projects_helper_help($path, $arg) {
+  switch ($path) {    
+    case 'admin/structure/taxonomy/%':
+      $vocab_name = $arg[3];      
+      if ($vocab_name == 'project_status_terms' || $vocab_name == 'task_status_terms')
+        _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, 'field_simple_process_status');     
+  }
+}
 
 /**
 * Implements hook_theme
@@ -272,8 +282,48 @@ function _erpal_projects_helper_field_pricing_widget_validate($element, &$form_s
       form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_budgets'], t('Please set a price or add some budgets'));
     }
   }
+   
+}
+
+/**
+* Sets the default value of the field_project_status_term
+*/
+function _erpal_project_helper_field_project_status_term_set_default(&$form) {
+  if (isset($form['field_project_status_term'][LANGUAGE_NONE]['#default_value'][0]))
+    return;
+   
+  $vid = _erpal_crm_helper_term_field_get_vid('field_project_status_term'); 
+  $default_tid = _erpal_crm_helper_get_default_tid($vid);
+  if ($default_tid)
+    $form['field_project_status_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
   
+}
+
+/**
+* Sets the default value of the field_task_status_term
+*/
+function _erpal_project_helper_field_task_status_term_set_default(&$form) {
+  if (isset($form['field_task_status_term'][LANGUAGE_NONE]['#default_value'][0]))
+    return;
+   
+  $vid = _erpal_crm_helper_term_field_get_vid('field_task_status_term'); 
+  $default_tid = _erpal_crm_helper_get_default_tid($vid);
+  if ($default_tid)
+    $form['field_task_status_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
   
+}
+
+/**
+* Sets the default value of the field_task_type_term
+*/
+function _erpal_project_helper_field_type_term_set_default(&$form) {
+  if (isset($form['field_task_type_term'][LANGUAGE_NONE]['#default_value'][0]))
+    return;
+   
+  $vid = _erpal_crm_helper_term_field_get_vid('field_task_type_term'); 
+  $default_tid = _erpal_crm_helper_get_default_tid($vid);
+  if ($default_tid)
+    $form['field_task_type_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
   
 }
 
@@ -383,6 +433,10 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   
   if ($form_id == 'erpal_task_node_form') {
     _erpal_projects_helper_task_node_form_alter($form, $form_state);
+    _erpal_project_helper_field_type_term_set_default($form);
+    _erpal_project_helper_field_task_status_term_set_default($form);
+    
+    _erpal_basic_helper_warn_semantic_not_covered_by_terms('task_status_terms', 'field_simple_process_status');    
   }
   
   if ($form_id == 'erpal_books_helper_pdf_form') {
@@ -391,6 +445,9 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   
   if ($form_id == 'erpal_project_node_form') {
     _erpal_projects_helper_project_node_form_alter($form, $form_state);
+    _erpal_project_helper_field_project_status_term_set_default($form);
+    
+    _erpal_basic_helper_warn_semantic_not_covered_by_terms('project_status_terms', 'field_simple_process_status');
   }
  
   if ($form_id == 'node_delete_confirm') {
@@ -642,12 +699,6 @@ function _erpal_projects_helper_project_node_form_alter(&$form, &$form_state) {
   }
 }
 
-/**
-* Returns the initial task status if task is inserted
-*/
-function _erpal_projects_helper_insert_task_state() {
-  return 'inserted';
-}
 
 /**
 * Alters the tasks form
@@ -959,3 +1010,4 @@ function _erpal_projects_helper_can_delete($node, $check_children, &$messages) {
 
   return true;
 }
+

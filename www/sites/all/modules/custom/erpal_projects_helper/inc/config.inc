@@ -44,6 +44,21 @@ function erpal_projects_helper_config_form($form, &$form_state) {
     '#default_value' => _erpal_projects_helper_budget_usage_warn(),
   );
   
+  $form['status_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit project status terms'), 'admin/structure/taxonomy/project_status_terms'),
+  );
+  
+  $form['task_type_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit task type terms'), 'admin/structure/taxonomy/task_type_terms'),
+  );
+  
+  $form['task_status_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit task status terms'), 'admin/structure/taxonomy/task_status_terms'),
+  );
+  
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('save'),

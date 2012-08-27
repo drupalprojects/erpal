@@ -58,7 +58,7 @@ function _erpal_projects_service_task_update($nid, $task) {
   
   //map values to node
   if (isset($task['status'])) {
-    $task['field_task_status'][LANGUAGE_NONE][0] = $task['status'];
+    $task['field_task_status_term'][LANGUAGE_NONE][0]['tid'] = $task['status'];
     unset($task['status']);
   }
   
@@ -119,15 +119,33 @@ function _erpal_projects_service_get_task($id, $return_real_node=true) {
 */
 function _erpal_projects_service_task_out($task_node) {
 
+  //get task type
+  $type_tid = isset($task_node->field_task_type_term[LANGUAGE_NONE][0]['tid']) ? $task_node->field_task_type_term[LANGUAGE_NONE][0]['tid'] : false,
+  
+  $task_type = '';
+  if ($type_tid) {
+    $term = taxonomy_term_load($type_tid);
+    $task_type = $term->name;  //@TODO sollte hier evtl besser ein Array mit tid und name übergeben werden?
+  }
+  
+  //get task status
+  $status_tid = isset($task_node->field_task_status_term[LANGUAGE_NONE][0]['tid']) ? $task_node->field_task_status_term[LANGUAGE_NONE][0]['tid'] : false,
+  
+  $task_status = '';
+  if ($status_tid) {
+    $term = taxonomy_term_load($status_tid);
+    $task_status = $term->name;  //@TODO sollte hier evtl besser ein Array mit tid und name übergeben werden?
+  }
+
   return array(
     'id' => $task_node->nid,
     'title' => $task_node->title,    
     'date_start' => isset($task_node->field_date[LANGUAGE_NONE][0]['value']) ? $task_node->field_date[LANGUAGE_NONE][0]['value'] : 0,
     'date_end' => isset($task_node->field_date[LANGUAGE_NONE][0]['value2']) ? $task_node->field_date[LANGUAGE_NONE][0]['value2'] : 0,
     'estimated' => isset($task_node->field_estimated_time[LANGUAGE_NONE][0]['value']) ? $task_node->field_estimated_time[LANGUAGE_NONE][0]['value'] : 0,
-    'status' => isset($task_node->field_task_status[LANGUAGE_NONE][0]['value']) ? $task_node->field_task_status[LANGUAGE_NONE][0]['value'] : 0,
+    'status' => $task_status,
     'project_id' => $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'],
     'body' => isset($task_node->body[LANGUAGE_NONE][0]['value']) ? $task_node->body[LANGUAGE_NONE][0]['value'] : '',
-    'type' => isset($task_node->field_task_type[LANGUAGE_NONE][0]['value']) ? $task_node->field_task_type[LANGUAGE_NONE][0]['value'] : false,
+    'type' => $task_type,
   );
 }

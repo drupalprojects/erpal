@@ -82,7 +82,7 @@ function feature_erpal_book_views_default_views() {
     'thousand_separator' => ' ',
     'prefix_suffix' => 1,
   );
-  /* Field: Content: Task status */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_task_status']['id'] = 'field_task_status';
   $handler->display->display_options['fields']['field_task_status']['table'] = 'field_data_field_task_status';
   $handler->display->display_options['fields']['field_task_status']['field'] = 'field_task_status';

@@ -59,10 +59,6 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );
-  /* Field: Content: Activity status */
-  $handler->display->display_options['fields']['field_activity_status']['id'] = 'field_activity_status';
-  $handler->display->display_options['fields']['field_activity_status']['table'] = 'field_data_field_activity_status';
-  $handler->display->display_options['fields']['field_activity_status']['field'] = 'field_activity_status';
   /* Field: Content: Next Contact */
   $handler->display->display_options['fields']['field_next_contact']['id'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
@@ -94,16 +90,6 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Activity status (field_activity_status) */
-  $handler->display->display_options['filters']['field_activity_status_value']['id'] = 'field_activity_status_value';
-  $handler->display->display_options['filters']['field_activity_status_value']['table'] = 'field_data_field_activity_status';
-  $handler->display->display_options['filters']['field_activity_status_value']['field'] = 'field_activity_status_value';
-  $handler->display->display_options['filters']['field_activity_status_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['operator_id'] = 'field_activity_status_value_op';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['label'] = 'Activity status';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['operator'] = 'field_activity_status_value_op';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['identifier'] = 'field_activity_status_value';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['remember'] = TRUE;
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
@@ -149,17 +135,6 @@ return _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Activity status (field_activity_status) */
-  $handler->display->display_options['filters']['field_activity_status_value']['id'] = 'field_activity_status_value';
-  $handler->display->display_options['filters']['field_activity_status_value']['table'] = 'field_data_field_activity_status';
-  $handler->display->display_options['filters']['field_activity_status_value']['field'] = 'field_activity_status_value';
-  $handler->display->display_options['filters']['field_activity_status_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_activity_status_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['operator_id'] = 'field_activity_status_value_op';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['label'] = 'Activity status';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['operator'] = 'field_activity_status_value_op';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['identifier'] = 'field_activity_status_value';
-  $handler->display->display_options['filters']['field_activity_status_value']['expose']['remember'] = TRUE;
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
@@ -172,6 +147,27 @@ return _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
   $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  /* Filter criterion: Content: Status (field_activity_status_term) */
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['id'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['table'] = 'field_data_field_activity_status_term';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['field'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator_id'] = 'field_activity_status_term_tid_op';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+  );
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['vocabulary'] = 'activity_status_terms';
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -184,6 +180,7 @@ return _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['group'] = 1;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';

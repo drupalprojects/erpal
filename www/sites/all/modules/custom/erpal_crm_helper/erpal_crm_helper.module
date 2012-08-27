@@ -38,6 +38,54 @@ function erpal_crm_helper_permission(){
     ),
   );
 }
+
+/**
+ * Implements hook_help().
+ */
+function erpal_crm_helper_help($path, $arg) {
+  switch ($path) {    
+    case 'admin/structure/taxonomy/%':
+      $vocab_name = $arg[3];      
+      if ($vocab_name == 'activity_status_terms')
+        _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, 'field_simple_process_status');     
+  }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_crm_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_crm_activity_node_form') {
+    _erpal_crm_helper_field_status_term_set_default($form);
+    
+    _erpal_basic_helper_warn_semantic_not_covered_by_terms('activity_status_terms', 'field_simple_process_status');
+  }
+}
+
+/**
+* Sets the default value of the field_activity_status_term
+*/
+function _erpal_crm_helper_field_status_term_set_default(&$form) {
+  if (isset($form['field_activity_status_term'][LANGUAGE_NONE]['#default_value'][0]))
+    return;
+   
+  $vid = _erpal_crm_helper_term_field_get_vid('field_activity_status_term'); 
+  $default_tid = _erpal_crm_helper_get_default_tid($vid);
+  if ($default_tid)
+    $form['field_activity_status_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
+}
+
+/**
+* Returns the vid set as vocabulary of a term reference field
+*/
+function _erpal_crm_helper_term_field_get_vid($field_name) {
+  $field_info = field_info_field($field_name);
+  $vocabulary_name = $field_info['settings']['allowed_values'][0]['vocabulary'];
+  $taxonomy = taxonomy_vocabulary_machine_name_load($vocabulary_name);
+  $vid = $taxonomy->vid;
+  
+  return $vid;
+}
  
 /**
 * Implements hook_field_attach_validate

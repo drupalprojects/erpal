@@ -11,7 +11,7 @@
 function _erpal_projects_billable_insert_task($node) {
   
   //only process if the task is completed!
-  $task_status = $node->field_task_status[LANGUAGE_NONE][0]['value'];
+  $task_status = _erpal_basic_helper_get_tid_semantic($node, 'field_task_status_term');
   if ($task_status != 'completed')
     return;
 

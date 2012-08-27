@@ -296,85 +296,85 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '0',
         ),
         'additional_settings' => array(
-          'weight' => '35',
-        ),
-        'revision_information' => array(
-          'weight' => '30',
-        ),
-        'revision' => array(
-          'weight' => '19',
-        ),
-        'log' => array(
-          'weight' => '21',
-        ),
-        'author' => array(
-          'weight' => '33',
-        ),
-        'name' => array(
-          'weight' => '14',
-        ),
-        'date' => array(
-          'weight' => '17',
-        ),
-        'options' => array(
-          'weight' => '34',
-        ),
-        'status' => array(
-          'weight' => '10',
-        ),
-        'promote' => array(
-          'weight' => '22',
-        ),
-        'sticky' => array(
-          'weight' => '26',
-        ),
-        'actions' => array(
           'weight' => '36',
         ),
-        'submit' => array(
-          'weight' => '11',
-        ),
-        'preview' => array(
-          'weight' => '28',
-        ),
-        'delete' => array(
-          'weight' => '12',
-        ),
-        'preview_changes' => array(
-          'weight' => '29',
-        ),
-        'comment_settings' => array(
-          'weight' => '32',
-        ),
-        'comment' => array(
-          'weight' => '16',
-        ),
-        'menu' => array(
-          'weight' => '13',
-        ),
-        'enabled' => array(
-          'weight' => '15',
-        ),
-        'link' => array(
-          'weight' => '24',
-        ),
-        'link_title' => array(
-          'weight' => '20',
-        ),
-        'description' => array(
-          'weight' => '23',
-        ),
-        'parent' => array(
-          'weight' => '25',
-        ),
-        'weight' => array(
-          'weight' => '27',
-        ),
-        'path' => array(
+        'revision_information' => array(
           'weight' => '31',
         ),
-        'alias' => array(
+        'revision' => array(
+          'weight' => '20',
+        ),
+        'log' => array(
+          'weight' => '22',
+        ),
+        'author' => array(
+          'weight' => '34',
+        ),
+        'name' => array(
+          'weight' => '15',
+        ),
+        'date' => array(
           'weight' => '18',
+        ),
+        'options' => array(
+          'weight' => '35',
+        ),
+        'status' => array(
+          'weight' => '11',
+        ),
+        'promote' => array(
+          'weight' => '23',
+        ),
+        'sticky' => array(
+          'weight' => '27',
+        ),
+        'actions' => array(
+          'weight' => '37',
+        ),
+        'submit' => array(
+          'weight' => '12',
+        ),
+        'preview' => array(
+          'weight' => '29',
+        ),
+        'delete' => array(
+          'weight' => '13',
+        ),
+        'preview_changes' => array(
+          'weight' => '30',
+        ),
+        'comment_settings' => array(
+          'weight' => '33',
+        ),
+        'comment' => array(
+          'weight' => '17',
+        ),
+        'menu' => array(
+          'weight' => '14',
+        ),
+        'enabled' => array(
+          'weight' => '16',
+        ),
+        'link' => array(
+          'weight' => '25',
+        ),
+        'link_title' => array(
+          'weight' => '21',
+        ),
+        'description' => array(
+          'weight' => '24',
+        ),
+        'parent' => array(
+          'weight' => '26',
+        ),
+        'weight' => array(
+          'weight' => '28',
+        ),
+        'path' => array(
+          'weight' => '32',
+        ),
+        'alias' => array(
+          'weight' => '19',
         ),
       ),
       'display' => array(),
@@ -413,85 +413,85 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '0',
         ),
         'additional_settings' => array(
-          'weight' => '38',
-        ),
-        'revision_information' => array(
-          'weight' => '34',
-        ),
-        'revision' => array(
-          'weight' => '18',
-        ),
-        'log' => array(
-          'weight' => '29',
-        ),
-        'author' => array(
-          'weight' => '36',
-        ),
-        'name' => array(
-          'weight' => '22',
-        ),
-        'date' => array(
-          'weight' => '26',
-        ),
-        'options' => array(
-          'weight' => '37',
-        ),
-        'status' => array(
-          'weight' => '12',
-        ),
-        'promote' => array(
-          'weight' => '28',
-        ),
-        'sticky' => array(
-          'weight' => '30',
-        ),
-        'actions' => array(
           'weight' => '39',
         ),
-        'submit' => array(
-          'weight' => '13',
-        ),
-        'preview' => array(
-          'weight' => '31',
-        ),
-        'delete' => array(
-          'weight' => '14',
-        ),
-        'preview_changes' => array(
-          'weight' => '32',
-        ),
-        'comment_settings' => array(
-          'weight' => '15',
-        ),
-        'comment' => array(
-          'weight' => '19',
-        ),
-        'menu' => array(
-          'weight' => '21',
-        ),
-        'enabled' => array(
-          'weight' => '24',
-        ),
-        'link' => array(
-          'weight' => '27',
-        ),
-        'link_title' => array(
-          'weight' => '23',
-        ),
-        'description' => array(
-          'weight' => '16',
-        ),
-        'parent' => array(
-          'weight' => '17',
-        ),
-        'weight' => array(
-          'weight' => '20',
-        ),
-        'path' => array(
+        'revision_information' => array(
           'weight' => '35',
         ),
-        'alias' => array(
+        'revision' => array(
+          'weight' => '19',
+        ),
+        'log' => array(
+          'weight' => '30',
+        ),
+        'author' => array(
+          'weight' => '37',
+        ),
+        'name' => array(
+          'weight' => '23',
+        ),
+        'date' => array(
+          'weight' => '27',
+        ),
+        'options' => array(
+          'weight' => '38',
+        ),
+        'status' => array(
+          'weight' => '13',
+        ),
+        'promote' => array(
+          'weight' => '29',
+        ),
+        'sticky' => array(
+          'weight' => '31',
+        ),
+        'actions' => array(
+          'weight' => '40',
+        ),
+        'submit' => array(
+          'weight' => '14',
+        ),
+        'preview' => array(
+          'weight' => '32',
+        ),
+        'delete' => array(
+          'weight' => '15',
+        ),
+        'preview_changes' => array(
+          'weight' => '33',
+        ),
+        'comment_settings' => array(
+          'weight' => '16',
+        ),
+        'comment' => array(
+          'weight' => '20',
+        ),
+        'menu' => array(
+          'weight' => '22',
+        ),
+        'enabled' => array(
           'weight' => '25',
+        ),
+        'link' => array(
+          'weight' => '28',
+        ),
+        'link_title' => array(
+          'weight' => '24',
+        ),
+        'description' => array(
+          'weight' => '17',
+        ),
+        'parent' => array(
+          'weight' => '18',
+        ),
+        'weight' => array(
+          'weight' => '21',
+        ),
+        'path' => array(
+          'weight' => '36',
+        ),
+        'alias' => array(
+          'weight' => '26',
         ),
       ),
       'display' => array(),

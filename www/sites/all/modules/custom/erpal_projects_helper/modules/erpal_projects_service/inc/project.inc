@@ -111,10 +111,19 @@ function _erpal_projects_service_project_out($project_node) {
     $customer_title = $customer_node->title;
   }
 
+  //get project status term
+  $status_tid = isset($project_node->field_project_status_term[LANGUAGE_NONE][0]['tid']) ? $project_node->field_project_status_term[LANGUAGE_NONE][0]['tid'] : false,
+  
+  $status = '';
+  if ($status_tid) {
+    $term = taxonomy_term_load($status_tid);
+    $status = $term->name;
+  }
+  
   return array(
     'id' => $project_node->nid,
     'title' => $project_node->title,
-    'status' => $project_node->field_project_status[LANGUAGE_NONE][0]['value'],
+    'status' => $status,
     'date_start' => isset($project_node->field_date[LANGUAGE_NONE][0]['value']) ? $project_node->field_date[LANGUAGE_NONE][0]['value'] : 0,
     'date_end' => isset($project_node->field_date[LANGUAGE_NONE][0]['value2']) ? $project_node->field_date[LANGUAGE_NONE][0]['value2'] : 0,
     'body' => $project_node->body[LANGUAGE_NONE][0]['value'],

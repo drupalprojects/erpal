@@ -52,6 +52,8 @@ class FeatureProjectsBillableTestCase extends DrupalFixtureTestCase  {
     $billable = _erpal_projects_billable_test_get_billable($project);
     $this->assertFalse(count($billable) > 0, 'Not completed project kicks no billable on insert.', $group);    
     //set state to completed and update it -> billable entity should be kicked
+    
+    //@TODO this is broken because we dont use this field anymore. Now it is a term field, so change the fallowing line to a term with a semantic meaning of "completed".
     $project->field_project_status[LANGUAGE_NONE][0]['value'] = 'completed';
     node_save($project);
     $billable = _erpal_projects_billable_test_get_billable($project);
@@ -144,6 +146,7 @@ class FeatureProjectsBillableTestCase extends DrupalFixtureTestCase  {
     $billable = _erpal_projects_billable_test_get_billable($task);
     $this->assertFalse(count($billable) > 0, 'Not completed task kicks no billable on insert.', $group);    
     //set state to completed and update it -> billable entity should be kicked
+    //@TODO da das status feld nun ein term reference feld ist, muss das geändert werden. Vorher die Terms füllen und dann hier einen Term mit der semantischen bedeutung "completed" setzen als tid
     $task->field_task_status[LANGUAGE_NONE][0]['value'] = 'completed';
     node_save($task);
     $billable = _erpal_projects_billable_test_get_billable($task);

@@ -694,3 +694,62 @@ function _erpal_basic_helper_get_all_child_nids_deep_search($nid, $types=array()
 function _erpal_basic_helper_relation_add_link($node) {
   return l('Add new relation', 'node/'.$node->nid.'/relations/add');
 }
+
+/**
+* Returns the semantic status of a term reference field of a given node, a status of the allowed values of field_simple_process_status
+* @param the node where the field with the status term is attached to
+* @param $field_name the name if the field that contains the term id of the status term we want to analyse the semantic meaning
+* @return boolean value
+*/
+function _erpal_basic_helper_get_tid_semantic($node, $field_name) {
+  $status_tid = isset($node->{$field_name}[LANGUAGE_NONE][0]['tid']) ? $node->{$field_name}[LANGUAGE_NONE][0]['tid'] : false;
+  
+  if ($status_tid) {
+    $term = taxonomy_term_load($status_tid);
+    //get the semantic field
+    $semantic_status = isset($term->field_simple_process_status[LANGUAGE_NONE][0]['value']) ? $term->field_simple_process_status[LANGUAGE_NONE][0]['value'] : false;
+    return $semantic_status;
+  } else
+    return false;
+}
+
+/**
+* Checks, if a vocabulary has at least one term with one allowed value of the given field, so that all allowed values are used
+* @param $vocab_name the vocabulary machine name in which we check the terms. This vocabulary must have the field $field_name attached
+* @param $field_name this is the name of the field where we get the allowed values from and check them
+* @return an array with values from $field_name 's allowed values that are not used at terms in the vocabulary
+*/
+function _erpal_basic_helper_check_all_allowed_values_used_in_vocabulary($vocab_name, $field_name) {
+  $vocabulary = taxonomy_vocabulary_machine_name_load($vocab_name);
+  $field_info = field_info_field($field_name);
+  
+  $allowed_values = is_array($field_info['settings']['allowed_values']) ? $field_info['settings']['allowed_values'] : array();
+  
+  $terms = taxonomy_get_tree($vocabulary->vid);
+  
+  //now check if all allowed values are covered by the terms
+  foreach ($terms as $term) {
+    $term = taxonomy_term_load($term->tid);
+    $field_value = $term->{$field_name}[LANGUAGE_NONE][0]['value'];
+
+    if (isset($allowed_values[$field_value]))
+      unset($allowed_values[$field_value]);
+  }
+
+  //now each value available in array "allowed values" has not been found in term usage of the terms of the vocabulary
+  return $allowed_values;
+}
+
+/**
+* Shows warnings for results of @see _erpal_basic_helper_check_all_allowed_values_used_in vocabulary
+*/
+function _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, $field_name) {
+  $semantics_not_used = _erpal_basic_helper_check_all_allowed_values_used_in_vocabulary($vocab_name, $field_name);
+  
+  $vocabulary = taxonomy_vocabulary_machine_name_load($vocab_name);
+
+  $vocab_link = l($vocabulary->name, 'admin/structure/taxonomy/'.$vocabulary->machine_name);
+  foreach ($semantics_not_used as $key=>$value) {
+    drupal_set_message(t('The value %value is not used by any term of vocabulary !vocab_link. May be there appear some problems while using ERPAL.', array('%value' => $value, '!vocab_link' => $vocab_link)), 'warning');
+  }
+}

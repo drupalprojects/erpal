@@ -24,7 +24,7 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
   }
   
   if (count($task_states) > 0) {
-    $query->fieldCondition('field_task_status', 'value', $task_states, 'IN');
+    $query->fieldCondition('field_task_status_term', 'tid', $task_states, 'IN');
   }
   
   if ($changed) {
@@ -123,7 +123,9 @@ function erpal_projects_helper_erpal_clone_node_alter($node, $args) {
 
     //prepare other task node attributes according to option
     if ($options['reset_task_status']) {
-      $node->field_task_status[LANGUAGE_NONE][0]['value'] = _erpal_projects_helper_insert_task_state();
+      $vid = _erpal_crm_helper_term_field_get_vid('field_task_status_term'); 
+      $default_tid = _erpal_crm_helper_get_default_tid($vid);
+      $node->field_task_status_term[LANGUAGE_NONE][0]['tid'] = $default_tid;
       $node->field_progress_percent[LANGUAGE_NONE][0]['value'] = 0;
     }  
     

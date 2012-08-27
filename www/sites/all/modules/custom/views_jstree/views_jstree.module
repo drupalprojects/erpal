@@ -245,8 +245,8 @@ function views_jstree_load_children($view_name, $parent_id) {
     //@TODO ensure in views UI that for this style plugin node_type is set as field as well as nid!
 
     $status = '';
-    if (isset($row->field_field_task_status[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
-      $status = " ".$row->field_field_task_status[0]['raw']['value'];
+    if (isset($row->field_field_task_status_term[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
+      $status = " ".$row->field_field_task_status_term[0]['raw']['value'];
       
     $output[] = array(
       "attr" => array("id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, 'entity_id' => $row->nid, 'class' => $row->node_type.$status), 
