@@ -82,10 +82,6 @@ function feature_erpal_book_views_default_views() {
     'thousand_separator' => ' ',
     'prefix_suffix' => 1,
   );
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_task_status']['id'] = 'field_task_status';
-  $handler->display->display_options['fields']['field_task_status']['table'] = 'field_data_field_task_status';
-  $handler->display->display_options['fields']['field_task_status']['field'] = 'field_task_status';
   /* Sort criterion: Content: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
@@ -174,7 +170,23 @@ function feature_erpal_book_views_default_views() {
   $handler->display->display_options['style_options']['id_field'] = 'nid';
   $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
   $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
+  $handler->display->display_options['style_options']['type_field'] = 'type_1';
   $handler->display->display_options['style_options']['ajax_child_view'] = 1;
+  $handler->display->display_options['style_options']['ajax_child_view_top_types'] = array(
+    'erpal_book' => 'erpal_book',
+    'erpal_book_page' => 'erpal_book_page',
+    'erpal_contact' => 0,
+    'erpal_contract' => 0,
+    'erpal_crm_activity' => 0,
+    'erpal_file' => 0,
+    'erpal_invoice' => 0,
+    'erpal_project' => 0,
+    'erpal_task' => 0,
+    'erpal_timetracking' => 0,
+    'article' => 0,
+    'erpal_space' => 0,
+    'page' => 0,
+  );
   $handler->display->display_options['style_options']['context_menu'] = array(
     'use_context_menu_hook' => 1,
     'custom_context_menu' => 'Show IT|/node/[views_jstree_book_children_panel_pane_3:nid]
@@ -184,6 +196,51 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Edit link */
+  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = 'Edit';
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  /* Field: Content: Parent */
+  $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_parent']['settings'] = array(
+    'link' => 1,
+  );
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  /* Field: Content: Weight */
+  $handler->display->display_options['fields']['field_weight']['id'] = 'field_weight';
+  $handler->display->display_options['fields']['field_weight']['table'] = 'field_data_field_weight';
+  $handler->display->display_options['fields']['field_weight']['field'] = 'field_weight';
+  $handler->display->display_options['fields']['field_weight']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_weight']['settings'] = array(
+    'thousand_separator' => ' ',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type_1']['id'] = 'type_1';
+  $handler->display->display_options['fields']['type_1']['table'] = 'node';
+  $handler->display->display_options['fields']['type_1']['field'] = 'type';
+  $handler->display->display_options['fields']['type_1']['exclude'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Parent (field_parent) */
   $handler->display->display_options['arguments']['field_parent_target_id']['id'] = 'field_parent_target_id';

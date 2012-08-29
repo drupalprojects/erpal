@@ -342,7 +342,7 @@ function erpal_book_helper_views_tree_before_move($node, $position) {
     $pre_node = node_load($pre_nid);
     $weight = $pre_node->field_weight[LANGUAGE_NONE][0]['value'];
   }
- echo $weight."--";
+
   $node->field_weight[LANGUAGE_NONE][0]['value'] = $weight + 5; //add 5 because we have always distance 5 between the nodes
 }
 

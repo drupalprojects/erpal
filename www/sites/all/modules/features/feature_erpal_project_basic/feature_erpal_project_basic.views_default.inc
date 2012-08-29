@@ -358,20 +358,32 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
+  $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['style_options']['id_field'] = 'nid';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
+  $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
+  $handler->display->display_options['style_options']['type_field'] = 'type';
+  $handler->display->display_options['style_options']['ajax_child_view'] = 0;
+  $handler->display->display_options['style_options']['ajax_child_view_top_types'] = array(
+    'erpal_contact' => 0,
+    'erpal_book' => 0,
+    'erpal_book_page' => 0,
+    'erpal_contract' => 0,
+    'erpal_crm_activity' => 0,
+    'erpal_file' => 0,
+    'erpal_invoice' => 0,
+    'erpal_project' => 0,
+    'erpal_task' => 0,
+    'erpal_timetracking' => 0,
+    'article' => 0,
+    'erpal_space' => 0,
+    'page' => 0,
   );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
+  $handler->display->display_options['style_options']['context_menu'] = array(
+    'use_context_menu_hook' => 0,
+    'custom_context_menu' => '',
   );
+  $handler->display->display_options['row_plugin'] = 'fields';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -421,6 +433,33 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['text'] = 'Edit';
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  /* Field: Content: Parent */
+  $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_parent']['settings'] = array(
+    'link' => 0,
+  );
+  /* Field: Content: Weight */
+  $handler->display->display_options['fields']['field_weight']['id'] = 'field_weight';
+  $handler->display->display_options['fields']['field_weight']['table'] = 'field_data_field_weight';
+  $handler->display->display_options['fields']['field_weight']['field'] = 'field_weight';
+  $handler->display->display_options['fields']['field_weight']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_weight']['settings'] = array(
+    'thousand_separator' => ' ',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -534,6 +573,36 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['pager']['options']['items_per_page'] = '20';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['style_options']['id_field'] = 'nid';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
+  $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
+  $handler->display->display_options['style_options']['type_field'] = 'type';
+  $handler->display->display_options['style_options']['ajax_child_view'] = 0;
+  $handler->display->display_options['style_options']['ajax_child_view_top_types'] = array(
+    'erpal_contact' => 0,
+    'erpal_book' => 0,
+    'erpal_book_page' => 0,
+    'erpal_contract' => 0,
+    'erpal_crm_activity' => 0,
+    'erpal_file' => 0,
+    'erpal_invoice' => 0,
+    'erpal_project' => 0,
+    'erpal_task' => 0,
+    'erpal_timetracking' => 0,
+    'article' => 0,
+    'erpal_space' => 0,
+    'page' => 0,
+  );
+  $handler->display->display_options['style_options']['context_menu'] = array(
+    'use_context_menu_hook' => 0,
+    'custom_context_menu' => '',
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Project (field_project_ref) */
   $handler->display->display_options['arguments']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
@@ -640,6 +709,120 @@ echo _erpal_projects_helper_view_projects_header_content();
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+
+  /* Display: Task child view AJAX */
+  $handler = $view->new_display('panel_pane', 'Task child view AJAX', 'panel_pane_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['style_options']['id_field'] = 'nid';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
+  $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
+  $handler->display->display_options['style_options']['type_field'] = 'type';
+  $handler->display->display_options['style_options']['ajax_child_view'] = 1;
+  $handler->display->display_options['style_options']['ajax_child_view_top_types'] = array(
+    'erpal_task' => 'erpal_task',
+    'erpal_contact' => 0,
+    'erpal_book' => 0,
+    'erpal_book_page' => 0,
+    'erpal_contract' => 0,
+    'erpal_crm_activity' => 0,
+    'erpal_file' => 0,
+    'erpal_invoice' => 0,
+    'erpal_project' => 0,
+    'erpal_timetracking' => 0,
+    'article' => 0,
+    'erpal_space' => 0,
+    'page' => 0,
+  );
+  $handler->display->display_options['style_options']['context_menu'] = array(
+    'use_context_menu_hook' => 0,
+    'custom_context_menu' => '',
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Parent (field_parent) */
+  $handler->display->display_options['arguments']['field_parent_target_id']['id'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['arguments']['field_parent_target_id']['field'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary_options']['items_per_page'] = '25';
+
+  /* Display: Task child view AJAX TOP */
+  $handler = $view->new_display('panel_pane', 'Task child view AJAX TOP', 'panel_pane_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'jstree';
+  $handler->display->display_options['style_options']['id_field'] = 'nid';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
+  $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
+  $handler->display->display_options['style_options']['type_field'] = 'type';
+  $handler->display->display_options['style_options']['ajax_child_view'] = 1;
+  $handler->display->display_options['style_options']['ajax_child_view_top_types'] = array(
+    'erpal_project' => 'erpal_project',
+    'erpal_contact' => 0,
+    'erpal_book' => 0,
+    'erpal_book_page' => 0,
+    'erpal_contract' => 0,
+    'erpal_crm_activity' => 0,
+    'erpal_file' => 0,
+    'erpal_invoice' => 0,
+    'erpal_task' => 0,
+    'erpal_timetracking' => 0,
+    'article' => 0,
+    'erpal_space' => 0,
+    'page' => 0,
+  );
+  $handler->display->display_options['style_options']['context_menu'] = array(
+    'use_context_menu_hook' => 0,
+    'custom_context_menu' => '',
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Project (field_project_ref) */
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['table'] = 'field_data_field_project_ref';
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['field'] = 'field_project_ref_target_id';
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project_ref_target_id']['summary_options']['items_per_page'] = '25';
+
+  /* Display: Subtasks */
+  $handler = $view->new_display('panel_pane', 'Subtasks', 'panel_pane_4');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Subtasks';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Parent (field_parent) */
+  $handler->display->display_options['arguments']['field_parent_target_id']['id'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['arguments']['field_parent_target_id']['field'] = 'field_parent_target_id';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_parent_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_parent_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['argument_input'] = array(
+    'field_parent_target_id' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Parent (field_parent)',
+    ),
+  );
   $export['tasks'] = $view;
 
   $view = new view();
