@@ -33,6 +33,21 @@ function views_jstree_menu() {
   return $items;
 }
 
+/**
+* Implements hook_form_alter
+*/
+function views_jstree_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    $form['#submit'][] = 'views_js_tree_views_exposed_form_submit';
+  }
+}
+
+function views_js_tree_views_exposed_form_submit($form, $form_state) {
+  //save the values submitted to the view if view is js tree plugin
+  $_SESSION['views_jstree_filter'] = $_REQUEST;
+  
+}
+
 function views_jstree_require_jstree() {
   //include the jstree with the library module
   $jstree_path = libraries_get_path('jstree');
@@ -198,10 +213,10 @@ function views_jstree_move_child($view_name, $nid) {
     //set parent to argument, because this is the root.
     $new_parent_nid = $root;
   }
-  
+
   $node->{$parent_field['id']}[LANGUAGE_NONE][0]['target_id'] = $new_parent_nid;
   $node->{$weight_field['id']}[LANGUAGE_NONE][0]['value'] = $position;
-  
+
   //call hook when node is moved, so other module could interact with the moved node
   module_invoke_all('views_tree_before_move', $node, $position);
 
@@ -227,8 +242,13 @@ function views_jstree_load_children($view_name, $parent_id) {
 
   $children_display = _views_jstree_get_children_display($view, $parent_types);
 
-  //execute it and return data as json
+  //execute it and return data as json  
   $args = array($parent_id);
+  
+  $filter = $_SESSION['views_jstree_filter']; //@TODO this works but it is not the best way to do that!
+  if ($filter)
+    $view->set_exposed_input($filter);
+  
   $view->preview($children_display->id, $args);
   
   $result = $view->result;
@@ -285,10 +305,11 @@ function _views_jstree_get_context_menu($view, $display, $node_type, $nid, $row,
     //get options from default view
     $context_menu_options = $view->display['default']->display_options['style_options']['context_menu'];
   }
-  
+
   //now get the menu either from textarea or from implemented hooks
   if ($context_menu_options['use_context_menu_hook']) {
     //from hooks!
+    
     $menu = module_invoke_all('jstree_context_menu', 'node', $node_type, $nid, $root_id);
     return $menu;
   } else {

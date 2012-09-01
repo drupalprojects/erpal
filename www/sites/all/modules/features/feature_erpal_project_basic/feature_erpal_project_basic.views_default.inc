@@ -305,7 +305,6 @@ echo _erpal_projects_helper_view_projects_header_content();
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Project tasks';
-  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access tasks view';
@@ -380,7 +379,7 @@ echo _erpal_projects_helper_view_projects_header_content();
     'page' => 0,
   );
   $handler->display->display_options['style_options']['context_menu'] = array(
-    'use_context_menu_hook' => 0,
+    'use_context_menu_hook' => 1,
     'custom_context_menu' => '',
   );
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -596,7 +595,7 @@ echo _erpal_projects_helper_view_projects_header_content();
     'page' => 0,
   );
   $handler->display->display_options['style_options']['context_menu'] = array(
-    'use_context_menu_hook' => 0,
+    'use_context_menu_hook' => 1,
     'custom_context_menu' => '',
   );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -736,7 +735,7 @@ echo _erpal_projects_helper_view_projects_header_content();
     'page' => 0,
   );
   $handler->display->display_options['style_options']['context_menu'] = array(
-    'use_context_menu_hook' => 0,
+    'use_context_menu_hook' => 1,
     'custom_context_menu' => '',
   );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -780,7 +779,7 @@ echo _erpal_projects_helper_view_projects_header_content();
     'page' => 0,
   );
   $handler->display->display_options['style_options']['context_menu'] = array(
-    'use_context_menu_hook' => 0,
+    'use_context_menu_hook' => 1,
     'custom_context_menu' => '',
   );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
