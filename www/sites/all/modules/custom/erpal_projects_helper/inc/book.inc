@@ -88,12 +88,6 @@ function _erpal_projects_helper_book_pdf_form_alter(&$form, &$form_state) {
     
 }
 
-/**
-* Add context menu items for jstree
-*/
-function _erpal_projects_helper_book_context_menu_items($id, $root_id) {
-  
-}
 
 /**
 * Check, if a book has been removed comparing project and old_project params

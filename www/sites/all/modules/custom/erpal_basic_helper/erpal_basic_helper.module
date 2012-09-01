@@ -674,6 +674,25 @@ function _erpal_basic_helper_get_direct_children($nid, $types=array(), $order_fi
 }
 
 /**
+* Returns an array of nids (the same as in the given array) ordered by the given field field
+*/
+function _erpal_basic_helper_get_ordered_nids_by_weight($nids, $order_field) {
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')   
+    ->propertyCondition('nid', $nids, 'IN')
+    ->fieldOrderBy($order_field, 'value', 'ASC');
+  $result = $query->execute();
+  
+  $ordered_nids = array();
+  if (isset($result['node'])) {
+    $ordered_nids = array_keys($result['node']);
+  }
+
+  return $ordered_nids;
+}
+
+/**
 * Gets all child nodes of a given parent by deepsearch.
 * @return a flat array with all children nids in deep search order, each node in an array whith key 'child' and 'parent'
 * @param $types the node types that should be returned and deep searched as children

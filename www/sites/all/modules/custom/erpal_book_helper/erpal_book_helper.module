@@ -363,8 +363,18 @@ function _erpal_book_helper_reorganize_tree($node) {
   $types = array('erpal_task', 'erpal_book_page');
   $order_field = 'field_weight';
   $parent_nid = $node->field_parent[LANGUAGE_NONE][0]['target_id'];
+  $parent_node = node_load($parent_nid);
   $child_nids = _erpal_basic_helper_get_direct_children($parent_nid, $types, $order_field);
-
+  if ($parent_node->type == 'erpal_project') {
+    //get all tasks in the given project but having no parent or having no parent of type "erpal_task"
+    //This is neccessary because a task could have no parent, a book_page or a task as parent.
+    $top_level_nids = _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($parent_node);
+    $child_nids = array_merge($child_nids, $top_level_nids);
+    
+    //now greate a all over order of all merged nids
+    $child_nids = _erpal_basic_helper_get_ordered_nids_by_weight($child_nids, $order_field);
+  }
+  
   $weight_offset = 10;
   foreach ($child_nids as $nid) {
     $child_node = node_load($nid);
@@ -379,7 +389,6 @@ function _erpal_book_helper_reorganize_tree($node) {
     field_sql_storage_field_storage_write('node', $child_node, 'update', $fields);
     //node_save($child_node);
     $weight_offset += 10;
-    echo $nid."--".$weight_offset;
   }
 }
 

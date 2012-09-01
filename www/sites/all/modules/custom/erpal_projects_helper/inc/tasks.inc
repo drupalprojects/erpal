@@ -68,6 +68,40 @@ function _erpal_projects_helper_get_tasks_by_project($project_nid) {
 }
 
 /**
+* Return all tasks of a project that have no parent at all or no parent of type erpal_task
+*/
+function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($project_node) {
+  
+  $res = db_query('SELECT n.nid FROM {node} n 
+    LEFT JOIN {field_data_field_project_ref} project ON n.vid=project.revision_id
+    LEFT JOIN {field_data_field_parent} parent ON n.vid=parent.revision_id
+    LEFT JOIN {node} node_parent_type ON node_parent_type.vid=parent.revision_id
+    WHERE project.field_project_ref_target_id=:project_nid AND
+    ((parent.field_parent_target_id <> :parent_node_type) OR parent.field_parent_target_id IS NULL)
+  ', array(':project_nid' => $project_node->nid, ':parent_node_type' => 'erpal_task'))
+    ->fetchAll();
+  
+  $nids = array();
+  foreach ($res as $nid_obj) {
+    $nids[] = $nid_obj->nid;
+  }
+ 
+  return $nids;
+}
+
+/**
+ * Implements hook_query_TAG_alter()
+ */
+function erpal_projects_helper_query_tasks_no_task_parent_alter(QueryAlterableInterface $query) {
+  $query->leftJoin('node', 'no', 'field.nid = field_data_field_parent.entity_id');
+  $query->isNull('o.field_other_value');
+  
+  //hier weiter, ich bekomms nicht hin....für die Funktion _erpal_projects_helper_get_tasks_of_project_having_no_task_parent
+  //damit wollen wir das sortieren von tasks im taskbaum endlich mal hinbekommen!
+}
+
+
+/**
 * Presave function for tasks
 */
 function erpal_projects_helper_node_presave_task($task_node) {
