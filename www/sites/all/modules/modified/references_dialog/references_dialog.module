@@ -12,7 +12,7 @@ function references_dialog_element_info() {
   $types['references_dialog'] = array(
     '#input' => FALSE ,
     '#after_build' => array('references_dialog_build_element'),
-    '#attached' => references_dialog_attached(),
+    '#attached' => references_dialog_attached(false),
   );
   return $types;
 }
@@ -20,12 +20,18 @@ function references_dialog_element_info() {
 /**
  * Get everything that needs to be attached in order for the links to work.
  */
-function references_dialog_attached() {
-  return array(
-    'js' => array(drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js'),
-    'css' => array(drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css'),
-    'library' => array(array('system', 'ui.dialog')),
-  );
+function references_dialog_attached($element) {
+  if ($element) {
+    $element['#attached']['js'][] = drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js';
+    $element['#attached']['css'][] = drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css';
+    $element['#attached']['library'][] = array('system', 'ui.dialog');
+    return $element['#attached'];
+  } else
+    return array(
+      'js' => array(drupal_get_path('module', 'references_dialog') . '/js/references-dialog.js'),
+      'css' => array(drupal_get_path('module', 'references_dialog') . '/css/references-dialog-admin.css'),
+      'library' => array(array('system', 'ui.dialog')),
+    );
 }
 
 /**
@@ -90,11 +96,9 @@ function references_dialog_get_search_views($attachable) {
     // Get all views that has a references_dialog display.
     $results = references_dialog_get_applicable_views();
     foreach ($results as $view_name => $result) {
-      foreach ($result as $display_name => $result_displays) {
-        foreach ($result_displays['attachables'] as $name => $view_attachable) {
-          if ($attachable == $view_attachable) {
-            $search_views[$attachable][$view_name] = $result_displays;
-          }
+      foreach ($result['attachables'] as $name => $view_attachable) {
+        if ($attachable == $view_attachable) {
+          $search_views[$attachable][$view_name] = $result;
         }
       }
     }
@@ -117,7 +121,7 @@ function references_dialog_get_applicable_views() {
   foreach ($results as $result) {
     list($view, $display) = $result;
     if (is_object($view)) {
-      $views[$view->name][$display] = array(
+      $views[$view->name] = array(
         'display' => $display,
         'title' => isset($view->display[$view->current_display]->display_options['title']) ?
           $view->display[$view->current_display]->display_options['title'] : t('Search'),
@@ -299,12 +303,8 @@ function references_dialog_process_widget(&$element) {
   }
   $dialog_widget = references_dialog_widget_load($widget_type);
   // Attach javascript and CSS needed.
-  $attached = references_dialog_attached();
-  $element['#attached']['js'][] = $attached['js'][0];
+  $element['#attached'] = references_dialog_attached($element);
   $element['#attached']['js'][] = references_dialog_js_settings($element['#id'], array('format' => $dialog_widget['format']));
-  $element['#attached']['css'][] = $attached['css'][0];
-  $element['#attached']['library'][] = $attached['library'][0];
-
   $link_options = array('attributes' => array('class' => array('references-dialog-activate')));
   $dialog_links = array();
   foreach ($dialog_widget['operations'] as $operation => $settings) {
@@ -662,10 +662,7 @@ function references_dialog_get_admin_path($entity_type, $op, $bundle = NULL, $en
     if (isset($entity)) {
         $path = str_replace('[entity_id]', $wrapper->getIdentifier(), $path);
     }
-    if (!$bundle) {
-      $bundle = $wrapper->getBundle();
-    }
-    if ($bundle) {
+    if (isset($bundle)) {
       $path = str_replace('[bundle]', $bundle, $path);
       // Some entities (like node) provide a sort of sanitized version.
       // This makes sure we support this.
