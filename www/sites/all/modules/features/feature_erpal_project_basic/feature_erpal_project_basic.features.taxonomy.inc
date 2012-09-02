@@ -9,6 +9,29 @@
  */
 function feature_erpal_project_basic_taxonomy_default_vocabularies() {
   return array(
+    'priority_terms' => array(
+      'name' => 'Priority terms',
+      'machine_name' => 'priority_terms',
+      'description' => 'Terms for tasks priorities',
+      'hierarchy' => '0',
+      'module' => 'taxonomy',
+      'weight' => '0',
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
+    ),
     'project_role_tags' => array(
       'name' => 'Project role relation tags',
       'machine_name' => 'project_role_tags',

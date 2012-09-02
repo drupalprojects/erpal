@@ -83,6 +83,11 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['fields']['field_project_status_term']['table'] = 'field_data_field_project_status_term';
   $handler->display->display_options['fields']['field_project_status_term']['field'] = 'field_project_status_term';
   $handler->display->display_options['fields']['field_project_status_term']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Priority */
+  $handler->display->display_options['fields']['field_priority_term']['id'] = 'field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['field'] = 'field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['type'] = 'taxonomy_term_reference_plain';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -166,6 +171,26 @@ echo _erpal_projects_helper_view_projects_header_content();
   );
   $handler->display->display_options['filters']['field_project_status_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_status_term_tid']['vocabulary'] = 'project_status_terms';
+  /* Filter criterion: Content: Priority (field_priority_term) */
+  $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+  );
+  $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
   $handler->display->display_options['path'] = 'projects/projects';
 
   /* Display: Projects by activity pane */
@@ -417,6 +442,11 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['fields']['field_task_status_term']['table'] = 'field_data_field_task_status_term';
   $handler->display->display_options['fields']['field_task_status_term']['field'] = 'field_task_status_term';
   $handler->display->display_options['fields']['field_task_status_term']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Priority */
+  $handler->display->display_options['fields']['field_priority_term']['id'] = 'field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['field'] = 'field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Estimated time */
   $handler->display->display_options['fields']['field_estimated_time']['id'] = 'field_estimated_time';
   $handler->display->display_options['fields']['field_estimated_time']['table'] = 'field_data_field_estimated_time';
@@ -560,6 +590,26 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_task_assigned_users_target_id']['expose']['label'] = 'Assigned';
   $handler->display->display_options['filters']['field_task_assigned_users_target_id']['expose']['operator'] = 'field_task_assigned_users_target_id_op';
   $handler->display->display_options['filters']['field_task_assigned_users_target_id']['expose']['identifier'] = 'field_task_assigned_users_target_id';
+  /* Filter criterion: Content: Priority (field_priority_term) */
+  $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+  );
+  $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
 
   /* Display: Tasks */
   $handler = $view->new_display('page', 'Tasks', 'page');
@@ -700,6 +750,34 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_task_assigned_users_target_id']['expose']['label'] = 'Assigned';
   $handler->display->display_options['filters']['field_task_assigned_users_target_id']['expose']['operator'] = 'field_task_assigned_users_target_id_op';
   $handler->display->display_options['filters']['field_task_assigned_users_target_id']['expose']['identifier'] = 'field_task_assigned_users_target_id';
+  /* Filter criterion: Content: Priority (field_priority_term) */
+  $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+  );
+  $handler->display->display_options['filters']['field_priority_term_tid']['group_info']['label'] = 'Priority (field_priority_term)';
+  $handler->display->display_options['filters']['field_priority_term_tid']['group_info']['identifier'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
+  $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
   $handler->display->display_options['argument_input'] = array(
     'field_project_ref_target_id' => array(
       'type' => 'panel',
@@ -920,6 +998,26 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['type_2']['relationship'] = 'field_parent_target_id';
   $handler->display->display_options['filters']['type_2']['operator'] = 'empty';
   $handler->display->display_options['filters']['type_2']['group'] = 2;
+  /* Filter criterion: Content: Priority (field_priority_term) */
+  $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+  );
+  $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
 
   /* Display: Subtasks */
   $handler = $view->new_display('panel_pane', 'Subtasks', 'panel_pane_4');
