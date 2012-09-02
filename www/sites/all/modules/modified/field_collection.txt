@@ -1,1 +1,0 @@
-applied path at http://drupal.org/node/1281974#comment-5890170 to make field collection work in profile
