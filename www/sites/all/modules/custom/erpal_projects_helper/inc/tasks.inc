@@ -157,8 +157,8 @@ function erpal_projects_helper_erpal_clone_node_alter($node, $args) {
 
     //prepare other task node attributes according to option
     if ($options['reset_task_status']) {
-      $vid = _erpal_crm_helper_term_field_get_vid('field_task_status_term'); 
-      $default_tid = _erpal_crm_helper_get_default_tid($vid);
+      $vid = _erpal_basic_helper_term_field_get_vid('field_task_status_term'); 
+      $default_tid = _erpal_basic_helper_get_default_tid($vid);
       $node->field_task_status_term[LANGUAGE_NONE][0]['tid'] = $default_tid;
       $node->field_progress_percent[LANGUAGE_NONE][0]['value'] = 0;
     }  

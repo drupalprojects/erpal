@@ -693,6 +693,40 @@ function _erpal_basic_helper_get_ordered_nids_by_weight($nids, $order_field) {
 }
 
 /**
+* Returns the vid set as vocabulary of a term reference field
+*/
+function _erpal_basic_helper_term_field_get_vid($field_name) {
+  $field_info = field_info_field($field_name);
+  $vocabulary_name = $field_info['settings']['allowed_values'][0]['vocabulary'];
+  $taxonomy = taxonomy_vocabulary_machine_name_load($vocabulary_name);
+  $vid = $taxonomy->vid;
+  
+  return $vid;
+}
+
+/**
+* returns the term with field_is_default_term set true within all terms in the given vocabulary
+* @param $vid the vocabulary id where to search the default term in
+*/
+function _erpal_basic_helper_get_default_tid($vid) {
+
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'taxonomy_term')
+    ->propertyCondition('vid', $vid)
+    ->fieldCondition('field_is_default_term', 'value', 1);
+
+  $result = $query->execute();
+  if (!$result)
+    return false;
+    
+  $result = array_keys($result['taxonomy_term']);
+  $result = isset($result[0]) ? $result[0] : false;
+
+  return $result;
+}
+
+/**
 * Gets all child nodes of a given parent by deepsearch.
 * @return a flat array with all children nids in deep search order, each node in an array whith key 'child' and 'parent'
 * @param $types the node types that should be returned and deep searched as children
@@ -771,4 +805,40 @@ function _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, $fi
   foreach ($semantics_not_used as $key=>$value) {
     drupal_set_message(t('The value %value is not used by any term of vocabulary !vocab_link. May be there appear some problems while using ERPAL.', array('%value' => $value, '!vocab_link' => $vocab_link)), 'warning');
   }
+}
+
+/**
+* Function validates that there is only on term with field_is_default_term set in the vocabulary of the given term_entitiy
+*/
+function _erpal_basic_helper_validate_field_default_term($term_entity) {
+
+  $errors = array();
+  //check only if the given term is set to default
+  if (!isset($term_entity->field_is_default_term[LANGUAGE_NONE][0]['value']) || !$term_entity->field_is_default_term[LANGUAGE_NONE][0]['value'])
+    return $errors;
+  
+  $vid = $term_entity->vid;
+  $terms = taxonomy_get_tree($vid);
+  $has_other_default = false;
+  foreach ($terms as $term_obj) { //@TODO may be an entity field query would be more performant @see _erpal_crm_helper_get_default_term
+    $term = taxonomy_term_load($term_obj->tid);
+    if ($term->tid != $term_entity->tid) {
+      $is_default = isset($term->field_is_default_term[LANGUAGE_NONE][0]['value']) ? $term->field_is_default_term[LANGUAGE_NONE][0]['value'] : false;
+      if ($is_default) {
+        $has_other_default = $term;
+        break;
+      }
+    }
+  }
+  
+  if ($has_other_default) {
+    //oh, there is another term set to default, throw an error!
+    $term_link = l($has_other_default->name, 'taxonomy/term/'.$has_other_default->tid);
+    $errors['field_is_default_term'][LANGUAGE_NONE][0][] = array(
+      'error' => 'value',
+      'message' => t('Only one term in a vacabular can be set to default. Term !term_link is already set to default.', array('!term_link' => $term_link)),
+    );
+  }
+  
+  return $errors;
 }

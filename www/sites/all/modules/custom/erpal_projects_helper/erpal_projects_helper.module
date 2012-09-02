@@ -337,8 +337,8 @@ function _erpal_project_helper_field_project_status_term_set_default(&$form) {
   if (isset($form['field_project_status_term'][LANGUAGE_NONE]['#default_value'][0]))
     return;
    
-  $vid = _erpal_crm_helper_term_field_get_vid('field_project_status_term'); 
-  $default_tid = _erpal_crm_helper_get_default_tid($vid);
+  $vid = _erpal_basic_helper_term_field_get_vid('field_project_status_term'); 
+  $default_tid = _erpal_basic_helper_get_default_tid($vid);
   if ($default_tid)
     $form['field_project_status_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
   
@@ -351,11 +351,25 @@ function _erpal_project_helper_field_task_status_term_set_default(&$form) {
   if (isset($form['field_task_status_term'][LANGUAGE_NONE]['#default_value'][0]))
     return;
    
-  $vid = _erpal_crm_helper_term_field_get_vid('field_task_status_term'); 
-  $default_tid = _erpal_crm_helper_get_default_tid($vid);
+  $vid = _erpal_basic_helper_term_field_get_vid('field_task_status_term'); 
+  $default_tid = _erpal_basic_helper_get_default_tid($vid);
   if ($default_tid)
     $form['field_task_status_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
   
+}
+
+/**
+* Sets the default value of the field_priority_term
+*/
+function _erpal_project_helper_field_prority_term_set_default(&$form) {
+  if (isset($form['field_priority_term'][LANGUAGE_NONE]['#default_value'][0]))
+    return;
+  
+  $vid = _erpal_basic_helper_term_field_get_vid('field_priority_term'); 
+  $default_tid = _erpal_basic_helper_get_default_tid($vid);
+
+  if ($default_tid)
+    $form['field_priority_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
 }
 
 /**
@@ -365,8 +379,8 @@ function _erpal_project_helper_field_type_term_set_default(&$form) {
   if (isset($form['field_task_type_term'][LANGUAGE_NONE]['#default_value'][0]))
     return;
    
-  $vid = _erpal_crm_helper_term_field_get_vid('field_task_type_term'); 
-  $default_tid = _erpal_crm_helper_get_default_tid($vid);
+  $vid = _erpal_basic_helper_term_field_get_vid('field_task_type_term'); 
+  $default_tid = _erpal_basic_helper_get_default_tid($vid);
   if ($default_tid)
     $form['field_task_type_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
   
@@ -480,6 +494,7 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
     _erpal_projects_helper_task_node_form_alter($form, $form_state);
     _erpal_project_helper_field_type_term_set_default($form);
     _erpal_project_helper_field_task_status_term_set_default($form);
+    _erpal_project_helper_field_prority_term_set_default($form);
     
     _erpal_basic_helper_warn_semantic_not_covered_by_terms('task_status_terms', 'field_simple_process_status');    
   }
@@ -491,6 +506,7 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_project_node_form') {
     _erpal_projects_helper_project_node_form_alter($form, $form_state);
     _erpal_project_helper_field_project_status_term_set_default($form);
+    _erpal_project_helper_field_prority_term_set_default($form);
     
     _erpal_basic_helper_warn_semantic_not_covered_by_terms('project_status_terms', 'field_simple_process_status');
   }

@@ -131,7 +131,7 @@ class ActivityNodeModel {
     $vocabulary_name = $field_info['settings']['allowed_values'][0]['vocabulary'];
     $taxonomy = taxonomy_vocabulary_machine_name_load($vocabulary_name);
     $vid = $taxonomy->vid;
-    $node->field_is_default_term[LANGUAGE_NONE][0]['value'] = _erpal_crm_helper_get_default_tid($vid);   
+    $node->field_is_default_term[LANGUAGE_NONE][0]['value'] = _erpal_basic_helper_get_default_tid($vid);   
     
     if ($contact !== FALSE) {
       $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contactID;
