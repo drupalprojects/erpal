@@ -80,14 +80,11 @@ function billable_entity_info() {
         'id' => 'billable_id',
         'bundle' => 'type',
     ),
-/*  dont need bundles! So we have a default billable bundle. Thats it and everything we need.
-    // Bundles are defined by the billable types below
-    'bundles' => array(),
-    // Bundle keys tell the FieldAPI how to extract information from the bundle objects
-    'bundle keys' => array(
-      'bundle' => 'type',
+    'bundles' => array(
+      'billable'=> array(
+        'label' => 'Billable',        
+      ),
     ),
- */
     'label callback' => 'entity_class_label',
     'uri callback' => 'entity_class_uri',
     'creation callback' => 'billable_create',
