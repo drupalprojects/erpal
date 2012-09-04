@@ -23,7 +23,8 @@ function feature_erpal_docs_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Documents';
-  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access documents view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
@@ -179,6 +180,46 @@ echo _erpal_docs_helper_view_documents_header_content();
 ?>';
   $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_file' => 'erpal_file',
+  );
+  /* Filter criterion: Content: File tags (field_file_tags) */
+  $handler->display->display_options['filters']['field_file_tags_tid']['id'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['table'] = 'field_data_field_file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['field'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['value'] = '';
+  $handler->display->display_options['filters']['field_file_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator_id'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['label'] = 'File tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['identifier'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['reduce_duplicates'] = 0;
+  $handler->display->display_options['filters']['field_file_tags_tid']['vocabulary'] = 'file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['error_message'] = 1;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['required'] = 0;
+  $handler->display->display_options['filters']['title']['expose']['multiple'] = FALSE;
   $handler->display->display_options['path'] = 'documents';
 
   /* Display: Reference Dialog Search */
@@ -210,27 +251,6 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['title']['link_to_node'] = 0;
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
-  $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
-  $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
-  $handler->display->display_options['fields']['field_file']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_file']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_file']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_file']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_file']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_file']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_file']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_file']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_file']['hide_alter_empty'] = 1;
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';

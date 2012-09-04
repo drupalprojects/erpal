@@ -10,22 +10,7 @@ module_load_include("inc", "bs_syncml", "includes/BsSyncJobHandler");
 
 function bs_syncml_init() {
   
-//  $job =  new BsSyncJobHandler();
-//  
-//  $sids = array(1,2,3,4,5);
-//  $jid = $job->createSyncJob($sids, 1);
-//  
-//  dpm($jid);
-//  dpm($job->getJob($jid));
-//  
-//  $job->removeSyncJob($jid);
-  
-//  $syncd = new BsSyncMlDataHandler();
-//  
-//  $data = "aasdf".time();
-//  
-//  dpm(BsSyncMlDataHandler::create($data));
-  
+
 }
 
 
@@ -42,6 +27,15 @@ function bs_syncml_menu() {
     'access arguments' => array('administer bs_syncml'),
     'file' => 'includes/bs_syncml.admin.inc',
     'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['bssyncml'] = array(
+    'title' => 'Sync the stuff',
+    'description' =>  '',
+    'page callback' => 'bs_syncml_sync_page',
+    'access arguments' => array('administer bs_syncml'),
+    'file' => 'includes/bs_syncml.sync.inc',
+    'type' => MENU_CALLBACK,
   );
   
   return $items;

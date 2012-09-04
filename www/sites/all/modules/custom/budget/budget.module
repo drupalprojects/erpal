@@ -1,0 +1,174 @@
+<?php
+
+/**
+ * @file
+ * Module for the Budget Entity - developed within ERPAL
+ */  
+
+module_load_include('inc', 'budget', 'budget.entity');   
+ 
+/**
+ * Implements hook_views_api().
+ */
+function budget_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'budget') . '/views',
+  );
+} 
+ 
+/**
+ * Implement hook_entity_info().
+ *
+ * We define our entities here - the actual entity that will hold our domain
+ * specific information 
+ */
+function budget_entity_info() {
+  $return['budget'] = array(
+    'label' => t('budget'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'budget',
+    'controller class' => 'budgetController',
+    'base table' => 'budget',
+    'file' => 'budget.entity.inc',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+        'id' => 'budget_id',
+        'bundle' => 'type',
+    ),   
+    'bundles' => array(
+      'budget'=> array(
+        'label' => 'Budget',        
+      ),
+    ),
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => 'budget_create',
+    'access callback' => 'budget_access',
+    'module' => 'budget',
+    // The information below is used by the budgetUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/budgets',
+      'file' => 'budget.admin.inc',
+      'controller class' => 'budgetUIController',
+      'menu wildcard' => '%budget',
+    ),
+  );
+
+  return $return;
+}
+ 
+ 
+/**
+ * Implements hook_permission().
+ */
+function budget_permission() {
+  // We set up permisssions to manage entity types, manage all entities and the
+  // permissions for each individual entity
+  $permissions = array(
+    'create budget' => array(
+      'title' => t('Create budget'),
+    ),
+    'administer budgets' => array(
+      'title' => t('Administer all budgets'),
+    ),
+    "edit any budget" => array(
+      'title' => t('Edit any budget'),
+    ),
+    "view any budget" => array(
+      'title' => t('View any budget'),
+    ),    
+  );
+  
+  return $permissions;  
+}
+
+
+/**
+ * Determines whether the given user has access to a budget.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $budget
+ *   Optionally a budget or a budget type to check access for. If nothing is
+ *   given, access for all budgets is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function budget_access($op, $budget = NULL, $account = NULL) {
+ 
+  if (user_access('administer budgets', $account)) {
+    return TRUE;
+  }
+
+  if (isset($budget) && is_object($budget) && $type_name = $budget->type) {
+    $op = ($op == 'view') ? 'view' : 'edit';
+    if (user_access("$op any budget", $account)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Implement hook_theme().
+ */
+function budget_theme() {
+  //themes for our budget entity
+  require_once('budget.entity.inc');
+  $themes = _budget_entity_theme();
+  return $themes;
+}  
+
+
+/**
+* So we can make the user change the date format by changing this variable 
+*/
+function _budget_get_date_format($time = true){
+  if (module_exists('erpal_invoice_helper')) {
+    if (!$time)
+      return _erpal_basic_helper_date_format_date_only();
+    else
+      return _erpal_basic_helper_date_format_date_time();
+  } else {  
+    if (!$time)
+      return variable_get('date_format_short_date_only', 'Y/m/d');
+    else
+      return variable_get('date_format_short_date_time', 'Y/m/d H:i');
+  }
+}
+
+/**
+ * Implements hook_references_dialog_entity_admin_paths().
+ * Needed to provide a link path to create a new budget at an entity reference field in reference dialog widget
+ */
+function budget_references_dialog_entity_admin_paths() {
+  // We define the add and edit page callbacks for core entities here.
+  $admin_paths = array(
+    'budget' => array(
+      'add' => 'budget/add',
+      'edit' => 'budget/[entity_id]/edit',
+    ),
+  );
+  return $admin_paths;
+}
+
+/**
+* Function to quick create a new budget entity
+*/
+function budget_create_new($total_hours, $date_from, $date_till) {
+  $budget_controler = entity_get_controller('budget');
+  $values = array();
+  $budget_entity = $budget_controler->create($values);
+  $budget_entity->total_hours = $total_hours;
+  $budget_entity->available_hours = $total_hours;
+  $budget_entity->date_from = $date_from;
+  $budget_entity->date_till = $date_till;
+  
+  $budget_entity->save();
+  return $budget_entity;
+}

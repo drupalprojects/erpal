@@ -7,6 +7,7 @@
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
 module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
 module_load_include('inc', 'erpal_basic_helper', 'inc/token');
+module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
 
  
 /**
@@ -15,7 +16,7 @@ module_load_include('inc', 'erpal_basic_helper', 'inc/token');
 function erpal_basic_helper_init() {
   _erpal_basic_helper_warnings();
 }
- 
+
 
 /**
 * Implements hook_menu
@@ -31,6 +32,13 @@ function erpal_basic_helper_menu(){
     'type' => MENU_CALLBACK,
   );
   
+  $items['node/%node/relations/add'] = array(
+    'page callback' => '_erpal_basic_helper_relation_add_page_callback',    
+    'access callback' => '_erpal_basic_helper_relation_add_access',  
+    'page arguments' => array(1, 'node'),
+    'access arguments' => array(1, 'node'),
+  );
+  
   require_once 'inc/config.inc';
   $config_items = _erpal_basic_helper_config_menu();
   
@@ -38,16 +46,26 @@ function erpal_basic_helper_menu(){
   return $items;
 } 
 
+
 /**
 * Implements hook_form_alter
 */
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
-  if ($form_id == 'relation_add_block_form')
+  if ($form_id == 'relation_add_block_form' || $form_id == 'erpal_basic_helper_node_relation_add_form')
     _erpal_basic_helper_relation_add_block_form_alter($form, $form_state);
   if ($form_id == 'erpal_contact_node_form') {
-    $form['#submit'][] = '_erpal_basic_helper_contact_form_submit';
+    _erpal_basic_helper_contact_node_form_alter($form, $form_state);    
   }
 
+}
+
+/**
+* Alter contact node form
+*/
+function _erpal_basic_helper_contact_node_form_alter(&$form, &$form_state) {
+  $form['#submit'][] = '_erpal_basic_helper_contact_form_submit';
+  
+  _erpal_basic_helper_contact_node_form_field_conditions($form, $form_state);
 }
 
 /**
@@ -59,11 +77,21 @@ function _erpal_basic_helper_contact_form_submit($form, &$form_state) {
 
 
 /**
-* Function to manipulate fields firstname, lastname and company name because if hidden by conditional fields they are not emptied!
+* Function to manipulate fields firstname, lastname and company name because if hidden by conditional fields or form #states they are not emptied!
 * May be this will be a feature, action "emptied" in conditional fields doesn't work in combination with other hidden fields
 */
 function _erpal_basic_helper_postprocess_conditional_fields($form, &$form_state) {
   $values = $form_state['values'];
+  
+  $contact_type = $values['field_contact_type'][LANGUAGE_NONE][0]['value'];
+  
+  if ($contact_type == 'person') {
+    unset($values['field_company_name']);
+  } elseif ($contact_type == 'company') {
+    unset($values['field_firstname']);
+    unset($values['field_lastname']);
+  }
+  
   if (!isset($values['field_company_name'])) {
     //empty field company name
     $element = array('#parents' => array('field_company_name', LANGUAGE_NONE, 0, 'value'));
@@ -94,6 +122,10 @@ function erpal_basic_helper_permission(){
       'title' => t('Administer ERPAL'), 
       'description' => t('Perform administration tasks for ERPAL modules.'),
     ),
+    'access contact view' => array(
+      'title' => t('Access contact view'), 
+      'description' => t('Allows the user to access the contact view'),
+    ),    
   );
 }
  
@@ -150,7 +182,7 @@ function _erpal_basic_helper_create_contact_link($q_arg = false, $query_arr = ar
 function _erpal_basic_helper_contacts_autocomplete($string){
   
   $matches = array();
-  
+
   //Start a query over the node table
   $query = db_select('node', 'n');
   // Select rows that match the string within type erpal_contact
@@ -164,7 +196,7 @@ function _erpal_basic_helper_contacts_autocomplete($string){
   
   // add matches to $matches  
   foreach ($return as $row) {
-    $matches[check_plain($row->title)." [nid:".$row->nid."]"] = $row->title;
+    $matches[check_plain($row->title)." (".$row->nid.")"] = $row->title;
   }
   
   // return for JS
@@ -211,6 +243,7 @@ function _erpal_basic_helper_get_contact_emails($contact_node) {
 
   return $ret;
 }
+
 
 /**
 * Returns all available phone numbers for a given contact node
@@ -264,15 +297,36 @@ function erpal_basic_helper_entity_as_string($entity) {
     $zip_code = isset($entity->field_zip_code[LANGUAGE_NONE]) ? $entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '';
     $country = isset($entity->field_country[LANGUAGE_NONE]) ? $entity->field_country[LANGUAGE_NONE][0]['value'] : '';
     $city = isset($entity->field_city[LANGUAGE_NONE]) ? $entity->field_city[LANGUAGE_NONE][0]['value'] : '';
-    $address_type = isset($entity->field_address_type[LANGUAGE_NONE]) ? $entity->field_address_type[LANGUAGE_NONE][0]['value'] : '';
-    $entity_string = $street." - ".$zip_code." - ".$city." (".$address_type.")";
+    
+    $terms = _erpal_basic_helper_term_references_terms($entity->field_address_type_terms);
+    $address_types = implode(',', $terms);
+    $entity_string = $street." - ".$zip_code." - ".$city." (".$address_types.")";
   } elseif ($entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
-    $phone_type = $entity->field_phone_type[LANGUAGE_NONE][0]['value'];
-    $entity_string = $phone_number." (".$phone_type.")";
+
+    $terms = _erpal_basic_helper_term_references_terms($entity->field_number_type_terms );
+    $phone_types = implode(',', $terms);
+    $entity_string = $phone_number." (".$phone_types.")";
   }
 
   return $entity_string;
+}
+
+/**
+* returns a term reference field as array with terms instead of ids
+*/
+function _erpal_basic_helper_term_references_terms($term_field) {
+  $type_term_ids = isset($term_field[LANGUAGE_NONE]) ? $term_field[LANGUAGE_NONE] : array();
+
+  $terms = array();
+  foreach ($type_term_ids as $delta=>$tid) {
+    $tid = $tid['tid'];
+    $term = taxonomy_term_load_multiple(array($tid));
+    $term = $term[$tid];
+    $terms[] = $term->name;
+  }
+  
+  return $terms;
 }
 
 /**
@@ -327,11 +381,31 @@ function _erpal_basic_helper_get_my_phone_entity() {
 }
 
 /**
+* Checks if the given company is the own company
+* @param $contact a contact node or a contact nid
+*/
+function _erpal_basic_helper_is_own_company($contact) {
+  if (is_numeric($contact))
+    $contact_nid = $contact;
+  elseif (is_object($contact))
+    $contact_nid = $contact->nid;
+    
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);  
+
+  return $contact_nid == $my_company_nid;
+}
+
+/**
 * Function to return an entity (in most cases out of multiple field values) that has be definied as the main value
 * @param $field_name the name of the field for which a value should be returned. CAUTION: Field must be a field_collection_item!
 */
 function _erpal_basic_helper_return_my_value($field_name) {
+
   $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);  
+  
+  if (!$my_company_nid)
+    return false;
+  
   $my_company_node = node_load($my_company_nid);
   
   //does the company have value set for this field?
@@ -428,4 +502,343 @@ function  _erpal_basic_helper_get_date_formats() {
   }
   
   return $choices;
+}
+
+/**
+* Helper function to get the title of a node
+* @param $nids a single nid or an array with nids
+* @return an array with key = nid and value = title
+*/
+function _erpal_basic_helper_node_titles($nids) {
+  if (is_numeric($nids))
+    $nids = array($nids);
+  
+  $query = db_select('node', 'n');
+  $query
+    ->fields('n', array('nid', 'title'))
+    ->condition('n.nid', $nids)
+    ->addTag('node_access');
+  
+  $result = $query->execute();
+  
+  $nodes = array();
+  foreach ($result as $record) {
+    $nodes[$record->nid] = $record->title;
+  }  
+  
+  return $nodes;
+}
+
+/**
+* Bulk operation to delete nodes
+* @param $nids array of nids to be deleted
+*/
+function _erpal_basic_helper_bulk_delete($nids, $redirect) {
+  
+  //build operation for every entity type
+  $operations = array();
+  $total_count = 0;
+  foreach ($nids as $type=>$ids) {
+    $total_count += count($ids);
+    if ($total_count)
+      $operations[] = array('_erpal_basic_helper_bulk_delete_operation', array($ids, $type, $total_count));
+  }
+  
+  $batch = array(
+    'operations' => $operations,
+    'title' => t('Processing Delete Batch'),
+    'init_message' => t('Delete Batch is starting.'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('Delete Batch has encountered an error.'),
+  );
+  
+   
+  batch_set($batch);
+
+  batch_process($redirect); //return to the parent
+}
+
+/**
+* Start bulk delete operation
+* @param $nids array of entity ids that will be deleted
+*/
+function _erpal_basic_helper_bulk_delete_operation($nids, $entity_type, $total_count, &$context) {
+  if (!isset($context['sandbox']['progress'])) {  
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['nids'] = $nids;
+    $context['sandbox']['last_delta'] = -1;
+    $context['sandbox']['max'] = isset($context['sandbox']['max']) ? $context['sandbox']['max'] : $total_count;
+  }
+ 
+  $nids = $context['sandbox']['nids'];
+  $delta = $context['sandbox']['last_delta'] +1;
+
+  if (isset($nids[$delta])) {
+    $nid = $nids[$delta];
+    
+    if ($entity_type == 'node')
+      node_delete($nid);
+    else
+      entity_delete($entity_type, $nid);
+         
+    $context['sandbox']['last_delta'] = $delta;
+  }
+ 
+  $context['sandbox']['progress']++;
+  $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+
+}
+
+/**
+* Function to bulk update nodes
+* @param $callback a function as string that is called on each node update to set values of the updated node.
+*/
+function _erpal_basic_helper_bulk_update($nids, $callback, $args, $redirect) {
+  $batch = array(
+    'operations' => array(
+      array('_erpal_basic_helper_bulk_update_operation', array($nids, $callback, $args)),
+    ),
+    'title' => t('Processing Update Batch'),
+    'init_message' => t('Update Batch is starting.'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('UPdate Batch has encountered an error.'),
+  );
+  batch_set($batch);
+
+  batch_process($redirect); //return to the parent
+}
+
+function _erpal_basic_helper_bulk_update_operation($nids, $callback, $args, &$context) {
+  if (!isset($context['sandbox']['progress'])) {  
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['nids'] = $nids;
+    $context['sandbox']['last_delta'] = -1;
+    $context['sandbox']['max'] = count($nids);
+  }
+ 
+  $nids = $context['sandbox']['nids'];
+  $delta = $context['sandbox']['last_delta'] +1;
+  
+  if (!$context['sandbox']['max']) {
+    $context['finished'] = true;
+    return;
+  }
+    
+  if (isset($nids[$delta])) {
+    $nid = $nids[$delta];
+    
+    $node = node_load($nid);
+   
+    if (function_exists($callback)) {
+      call_user_func($callback, $node, $args);
+    }
+    
+    node_save($node);
+    
+    $context['sandbox']['last_delta'] = $delta;
+  }
+  
+  $context['sandbox']['progress']++;
+  $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+}
+
+/**
+* returns an array of direct children nids of a node using field_parent
+* @param $nid the parent nid to search children for
+* @param $types only those node types are returned
+*/
+function _erpal_basic_helper_get_direct_children($nid, $types=array(), $order_field=false) {
+  
+  $children = array();
+  if (!count($types))
+    return $children;
+ 
+  foreach ($types as $type) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', $type)
+    ->fieldCondition('field_parent', 'target_id', $nid, '=')
+    ->addMetaData('account', user_load(1)); // run the query as user 1
+
+    if ($order_field)
+      $query->fieldOrderBy($order_field, 'value', 'asc');
+    
+    $result = $query->execute();
+    if (isset($result['node'])) {
+      $new_nids = array_keys($result['node']);
+      $children = array_merge($children, $new_nids);
+    }
+  }
+  
+  return $children;
+}
+
+/**
+* Returns an array of nids (the same as in the given array) ordered by the given field field
+*/
+function _erpal_basic_helper_get_ordered_nids_by_weight($nids, $order_field) {
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')   
+    ->propertyCondition('nid', $nids, 'IN')
+    ->fieldOrderBy($order_field, 'value', 'ASC');
+  $result = $query->execute();
+  
+  $ordered_nids = array();
+  if (isset($result['node'])) {
+    $ordered_nids = array_keys($result['node']);
+  }
+
+  return $ordered_nids;
+}
+
+/**
+* Returns the vid set as vocabulary of a term reference field
+*/
+function _erpal_basic_helper_term_field_get_vid($field_name) {
+  $field_info = field_info_field($field_name);
+  $vocabulary_name = $field_info['settings']['allowed_values'][0]['vocabulary'];
+  $taxonomy = taxonomy_vocabulary_machine_name_load($vocabulary_name);
+  $vid = $taxonomy->vid;
+  
+  return $vid;
+}
+
+/**
+* returns the term with field_is_default_term set true within all terms in the given vocabulary
+* @param $vid the vocabulary id where to search the default term in
+*/
+function _erpal_basic_helper_get_default_tid($vid) {
+
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'taxonomy_term')
+    ->propertyCondition('vid', $vid)
+    ->fieldCondition('field_is_default_term', 'value', 1);
+
+  $result = $query->execute();
+  if (!$result)
+    return false;
+    
+  $result = array_keys($result['taxonomy_term']);
+  $result = isset($result[0]) ? $result[0] : false;
+
+  return $result;
+}
+
+/**
+* Gets all child nodes of a given parent by deepsearch.
+* @return a flat array with all children nids in deep search order, each node in an array whith key 'child' and 'parent'
+* @param $types the node types that should be returned and deep searched as children
+*/
+function _erpal_basic_helper_get_all_child_nids_deep_search($nid, $types=array()) {
+  $children = _erpal_basic_helper_get_direct_children($nid, $types);
+ 
+  $all_children = array();
+  foreach ($children as $delta=>$child_nid) {    
+    $sub_children = _erpal_basic_helper_get_all_child_nids_deep_search($child_nid, $types);
+    $all_children[] = array('parent' => $nid, 'child' => $child_nid);
+    $all_children = array_merge($all_children, $sub_children);
+  }
+  
+  return $all_children;
+}
+
+function _erpal_basic_helper_relation_add_link($node) {
+  return l('Add new relation', 'node/'.$node->nid.'/relations/add');
+}
+
+/**
+* Returns the semantic status of a term reference field of a given node, a status of the allowed values of field_simple_process_status
+* @param the node where the field with the status term is attached to
+* @param $field_name the name if the field that contains the term id of the status term we want to analyse the semantic meaning
+* @return boolean value
+*/
+function _erpal_basic_helper_get_tid_semantic($node, $field_name) {
+  $status_tid = isset($node->{$field_name}[LANGUAGE_NONE][0]['tid']) ? $node->{$field_name}[LANGUAGE_NONE][0]['tid'] : false;
+  
+  if ($status_tid) {
+    $term = taxonomy_term_load($status_tid);
+    //get the semantic field
+    $semantic_status = isset($term->field_simple_process_status[LANGUAGE_NONE][0]['value']) ? $term->field_simple_process_status[LANGUAGE_NONE][0]['value'] : false;
+    return $semantic_status;
+  } else
+    return false;
+}
+
+/**
+* Checks, if a vocabulary has at least one term with one allowed value of the given field, so that all allowed values are used
+* @param $vocab_name the vocabulary machine name in which we check the terms. This vocabulary must have the field $field_name attached
+* @param $field_name this is the name of the field where we get the allowed values from and check them
+* @return an array with values from $field_name 's allowed values that are not used at terms in the vocabulary
+*/
+function _erpal_basic_helper_check_all_allowed_values_used_in_vocabulary($vocab_name, $field_name) {
+  $vocabulary = taxonomy_vocabulary_machine_name_load($vocab_name);
+  $field_info = field_info_field($field_name);
+  
+  $allowed_values = is_array($field_info['settings']['allowed_values']) ? $field_info['settings']['allowed_values'] : array();
+  
+  $terms = taxonomy_get_tree($vocabulary->vid);
+  
+  //now check if all allowed values are covered by the terms
+  foreach ($terms as $term) {
+    $term = taxonomy_term_load($term->tid);
+    $field_value = $term->{$field_name}[LANGUAGE_NONE][0]['value'];
+
+    if (isset($allowed_values[$field_value]))
+      unset($allowed_values[$field_value]);
+  }
+
+  //now each value available in array "allowed values" has not been found in term usage of the terms of the vocabulary
+  return $allowed_values;
+}
+
+/**
+* Shows warnings for results of @see _erpal_basic_helper_check_all_allowed_values_used_in vocabulary
+*/
+function _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, $field_name) {
+  $semantics_not_used = _erpal_basic_helper_check_all_allowed_values_used_in_vocabulary($vocab_name, $field_name);
+  
+  $vocabulary = taxonomy_vocabulary_machine_name_load($vocab_name);
+
+  $vocab_link = l($vocabulary->name, 'admin/structure/taxonomy/'.$vocabulary->machine_name);
+  foreach ($semantics_not_used as $key=>$value) {
+    drupal_set_message(t('The value %value is not used by any term of vocabulary !vocab_link. May be there appear some problems while using ERPAL.', array('%value' => $value, '!vocab_link' => $vocab_link)), 'warning');
+  }
+}
+
+/**
+* Function validates that there is only on term with field_is_default_term set in the vocabulary of the given term_entitiy
+*/
+function _erpal_basic_helper_validate_field_default_term($term_entity) {
+
+  $errors = array();
+  //check only if the given term is set to default
+  if (!isset($term_entity->field_is_default_term[LANGUAGE_NONE][0]['value']) || !$term_entity->field_is_default_term[LANGUAGE_NONE][0]['value'])
+    return $errors;
+  
+  $vid = $term_entity->vid;
+  $terms = taxonomy_get_tree($vid);
+  $has_other_default = false;
+  foreach ($terms as $term_obj) { //@TODO may be an entity field query would be more performant @see _erpal_crm_helper_get_default_term
+    $term = taxonomy_term_load($term_obj->tid);
+    if ($term->tid != $term_entity->tid) {
+      $is_default = isset($term->field_is_default_term[LANGUAGE_NONE][0]['value']) ? $term->field_is_default_term[LANGUAGE_NONE][0]['value'] : false;
+      if ($is_default) {
+        $has_other_default = $term;
+        break;
+      }
+    }
+  }
+  
+  if ($has_other_default) {
+    //oh, there is another term set to default, throw an error!
+    $term_link = l($has_other_default->name, 'taxonomy/term/'.$has_other_default->tid);
+    $errors['field_is_default_term'][LANGUAGE_NONE][0][] = array(
+      'error' => 'value',
+      'message' => t('Only one term in a vacabular can be set to default. Term !term_link is already set to default.', array('!term_link' => $term_link)),
+    );
+  }
+  
+  return $errors;
 }

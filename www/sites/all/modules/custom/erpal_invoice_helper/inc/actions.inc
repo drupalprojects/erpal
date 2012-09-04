@@ -66,7 +66,7 @@ function erpal_invoice_helper_invoice_from_billables_action_form($context, $form
     '#value' => $contractor_node->nid,
   );
   
-  //now get invoce address etc of customer, we are sure, we only have one customer here, but we prepare for the future already
+  //now get invoce address etc of customer, we are sure, we only have one customer here, but we prepare for the future already and loop through the customer array @TODO: merge forms
   foreach ($customer_id_arr as $customer_id) {
     $customer_node = node_load($customer_id);
     $customer_defaults_form = _erpal_invoice_helper_customer_defaults_form($customer_node, $contractor_node);
@@ -100,18 +100,7 @@ function erpal_invoice_helper_invoice_from_billables_action_validate($form, &$fo
   if ($skonto_period && (!is_numeric($skonto_period) || strpos($skonto_period, '.') > 0))
     form_set_error('skonto_period', t('Please enter only full numeric values for skonto period.'));
   if ($skonto_percent && (!is_numeric($skonto_percent) || strpos($skonto_percent, '.') > 0))
-    form_set_error('skonto_percent', t('Please enter only full numeric values for skonto percent.'));
-    
-  //if contractor is own company, ensure we enter only a numeric invoice number, because prefix will be set in defaults of
-  //this module
-  $contractor_nid = $values['contractor_nid'];
-  if (isset($values['invoice_number']))
-    $invoice_number = $values['invoice_number'];
-  $own_company_nid = _erpal_basic_helper_get_own_company_nid(false);
-  if ($contractor_nid == $own_company_nid) {
-    if (!is_numeric($invoice_number))
-      form_set_error('invoice_number', t('Please enter only numeric values for invoice number'));
-  }
+    form_set_error('skonto_percent', t('Please enter only full numeric values for skonto percent.'));    
   
   //credit period must be numeric
   $credit_period = 0;
@@ -129,17 +118,9 @@ function erpal_invoice_helper_invoice_from_billables_action_submit($form, &$form
   $values = $form_state['values'];
 
   //save default invoice values für this customer!
-  $defaults = array(
-    'address_id' => isset($values['address_id']) ? $values['address_id'] : 0,
-    'credit_period' => isset($values['credit_period']) ? $values['credit_period'] : 0,    
-    'notes' => isset($values['notes']) ? $values['notes'] : '',
-    'skonto_percent' => isset($values['skonto_percent']) ? $values['skonto_percent'] : 0,
-    'skonto_period' => isset($values['skonto_period']) ? $values['skonto_period'] : 0,
-    'order_numbers_intern' => isset($values['order_numbers_intern']) ? $values['order_numbers_intern'] : '',
-    'order_numbers_extern' => isset($values['order_numbers_extern']) ? $values['order_numbers_extern'] : '',
-  );
-  $customer_nid = $values['customer_nid'];
+  $defaults = $defaults = _erpal_invoice_helper_convert_default_form_to_array($values);
   
+  $customer_nid = $values['customer_nid'];
   if ($values['save_defaults'])
     _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults);
   
@@ -210,6 +191,8 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
   $default_credit_period = $defaults['credit_period'] ? $defaults['credit_period'] : _erpal_invoice_helper_get_default_credit_period();
   $default_notes = $defaults['notes'];
   
+  $default_address_addition = $defaults['address_addition'];
+  
   //no default nodes if customer is not the own company
   module_load_include('inc', 'erpal_basic_helper', 'inc/config');
   $company_nid = _erpal_basic_helper_get_own_company_nid(false);
@@ -217,13 +200,19 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
   if ($is_contractor_invoice)
     $default_notes = ''; //no default nodes if we enter a contractor invoice
   
-  $default_skonto_period = $defaults['skonto_period'];
-  $default_skonto_percent = $defaults['skonto_percent'];  
+  $default_skonto_period = $defaults['skonto_period'] ? $defaults['skonto_period'] : _erpal_invoice_helper_get_skonto_period();
+  $default_skonto_percent = $defaults['skonto_percent'] ? $defaults['skonto_percent'] : _erpal_invoice_helper_get_skonto_rate();  
  
   $form['customer_title'] = array(
     '#type' => 'item',
     '#title' => t('Customer'),
     '#markup' => l($customer_node->title, "node/".$customer_node->nid),
+  );
+  
+  $form['address_addition'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Addition to address'),
+    '#default_value' => $default_address_addition,
   );
   
   $form['customer_nid'] = array(
@@ -274,6 +263,9 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
     '#default_value' => $next_invoice_number,
     '#required' => $invoice_number_required,
   );
+  
+
+  _erpal_invoice_helper_alter_invoice_number_field($form['invoice_number']['#default_value'], $form['invoice_number']['#description']);    
   
   //add fields for order numbers for intern and extern
   $form['order_numbers'] = array(
@@ -383,6 +375,7 @@ function _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults) {
     'notes' => $defaults['notes'] ? $defaults['notes'] : '',
     'skonto_period' => $defaults['skonto_period'] ? $defaults['skonto_period'] : 0,
     'skonto_percent' => $defaults['skonto_percent'] ? $defaults['skonto_percent'] : 0,
+    'address_addition' => $defaults['address_addition'] ? $defaults['address_addition'] : '',
   ))
   ->execute();
 }
@@ -400,13 +393,14 @@ function _erpal_invoice_helper_get_customer_defaults($customer_nid) {
     'skonto_period' => '',
     'skonto_percent' => '',
     'notes' => _erpal_invoice_helper_get_manuall_notes(),
+    'address_addition' => '',
   );
 
   //Start a query over the erpal_invoice_defaults table
   $query = db_select('erpal_invoice_defaults', 'd');
   // Select rows that match the string within type erpal_contact
   $return = $query
-    ->fields('d', array('customer_nid', 'address_id', 'credit_period', 'notes', 'skonto_period', 'skonto_percent'))
+    ->fields('d', array('customer_nid', 'address_id', 'credit_period', 'notes', 'skonto_period', 'skonto_percent', 'address_addition'))
     ->condition('d.customer_nid', $customer_nid, '=')
     ->execute();
   

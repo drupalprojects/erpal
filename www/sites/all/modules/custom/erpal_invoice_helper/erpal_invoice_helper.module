@@ -165,10 +165,11 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
 
   $form['field_customer_ref'] = _erpal_invoice_helper_field_customer_ref_alter($form['field_customer_ref']);
   
-  $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);
+  $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);  
   
   //if address has only one option, make this option the default value
-  $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];
+  $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];  
+  
   $default_id = false;
   if (count($options) == 2) {
     //get the one that is not "_none" and delete it!    
@@ -177,6 +178,22 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
         unset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$id]);
     }
   }
+  
+  //if customer is preselected, options are empty, put the addresses in the address select field
+  if (count($options) == 1) {
+    $customer_nid = isset($form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
+    if ($customer_nid) {      
+      $option_keys = array_keys($options);
+      $first_option = $option_keys[0];
+      if (!is_numeric($first_option)) {
+        $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid['#default_value']);   
+        $customer_node = node_load($customer_nid);
+        $addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);
+        $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'] = array_merge($options, $addresses);
+      }
+    }
+  }
+  
   if ($default_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
   }
@@ -186,6 +203,12 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
     $manual_notes = _erpal_invoice_helper_get_manuall_notes();
     //add these manual notes to the text area
     $form['field_note'][LANGUAGE_NONE][0]['value']['#default_value'] = $manual_notes;
+    
+    //default skonto @todo may be set dependend to the selected customer
+    $default_skonto_rate = _erpal_invoice_helper_get_skonto_rate();
+    $default_skonto_period = _erpal_invoice_helper_get_skonto_period();
+    $form['field_skonto'][LANGUAGE_NONE][0]['field_credit_period'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_skonto_period; 
+    $form['field_skonto'][LANGUAGE_NONE][0]['field_discount_percent'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_skonto_rate; 
   }
 
   //add available tokens to the form
@@ -228,8 +251,13 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
 
   //prefill invoice number field with next possible value if no invoice number is already set
   if (isset($form['field_invoice_number'][LANGUAGE_NONE][0]['value'])) {   
-    if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {
-      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = _erpal_invoice_helper_get_next_invoice_number();
+    if (!$form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value']) {      
+      $default_value_key = $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'];
+      $description_key = $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#description'];
+      _erpal_invoice_helper_alter_invoice_number_field($default_value_key, $description_key);    
+      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#description'] = $description_key;
+      $form['field_invoice_number'][LANGUAGE_NONE][0]['value']['#default_value'] = $default_value_key;
+      
     }
   }
   
@@ -246,8 +274,22 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   }
 
   $form['field_payment_date'][LANGUAGE_NONE][0]['#type'] = 'value'; //this field is hidden by display suite forms, too, but there 
+  $form['field_payment_date']['#type'] = 'hidden';
   //is an error if we dont set the field to 'value'. @see http://drupal.org/node/1547236 
   
+}
+
+/**
+* Alters a default_value_field with the default invoice number pattern and the description with a invoice number preview
+*/
+function _erpal_invoice_helper_alter_invoice_number_field(&$default_value_key, &$description_key) {
+  $invoice_number_pattern = _erpal_invoice_helper_get_invoice_number_pattern();
+  $default_value_key = $invoice_number_pattern;
+  $invoice_number_preview = token_replace($invoice_number_pattern);
+
+  //add a preview. We do not replace the value with prefilled form because if another user opens the add new invoice 
+  //form at the same time he will get the same number which results in duplicate invoice numbers!
+  $description_key = t('Preview: ').$invoice_number_preview; 
 }
 
 
@@ -390,12 +432,31 @@ function erpal_invoice_helper_menu(){
     'type' => MENU_CALLBACK,
   );
   
+  //add menu local action to show invoice defautls of a contact
+  $items['node/%node/invoices/defaults'] = array(
+    'title' => 'Invoice defaults',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('erpal_invoice_helper_contact_invoice_default_form', 1),
+    'access callback' => '_erpal_invoice_helper_invoice_defaults_menu_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_ACTION,
+  );
+  
   require_once 'inc/config.inc';
   $config_items = _erpal_invoice_helper_config_menu();
   
   $items = array_merge($items, $config_items);
   return $items;
 } 
+
+/**
+* Checks access for editing contact invoice defaults
+*/
+function _erpal_invoice_helper_invoice_defaults_menu_access($node) {
+  //@TODO implement
+  
+  return user_access($node);
+}
 
 /**
 * Checks access for creating a pdf
@@ -429,6 +490,10 @@ function erpal_invoice_helper_permission(){
       'title' => t('Administer ERPAL invoice'), 
       'description' => t('Perform administration tasks for ERPAL invoice module.'),
     ),
+    'access invoices view' => array(
+      'title' => t('Access invoices view'), 
+      'description' => t('Allows the user to access the invoices view'),
+    ),
   );
 }
 
@@ -453,8 +518,6 @@ function erpal_invoice_helper_node_update($node) {
   if ($type->type == 'erpal_invoice') {
     if (!isset($node->nid) || (isset($node->nid) && !$node->nid))
       _erpal_invoice_helper_caclulate_invoice($node);
-    
-    _erpal_invoice_helper_set_last_invoice_number($node);
   }
 
 }
@@ -477,6 +540,23 @@ function erpal_invoice_helper_node_presave($node) {
     
     _erpal_invoice_helper_replace_order_number_tokens($node);
     
+    //replace token for invoice pattern and save the last invoice 
+    $invoice_number_numeric = _erpal_invoice_helper_get_next_invoice_number();
+    $pattern = $node->field_invoice_number[LANGUAGE_NONE][0]['value'];
+    $invoice_number = token_replace($pattern, array('invoice_number' => $invoice_number_numeric));
+    $node->field_invoice_number[LANGUAGE_NONE][0]['value'] = $invoice_number;
+    //replace title token again because we use the invoice number for auto title which was generated here.
+
+    if (isset($node->title))
+      $node->title = _auto_nodetitle_patternprocessor($node->title, $node);
+    
+    if (!isset($node->invoice_number_incremented) || (isset($node->invoice_number_incremented) && !$node->invoice_number_incremented)) {
+      //do this only for invoice where contractor is the own company!
+      $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+      if (_erpal_basic_helper_is_own_company($contractor_nid))
+        _erpal_invoice_helper_set_last_invoice_number($node, $invoice_number_numeric);     
+    }
+    $node->invoice_number_incremented = true;
   }
 } 
 
@@ -489,9 +569,7 @@ function erpal_invoice_helper_node_insert($node) {
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice') {
-    _erpal_invoice_helper_caclulate_invoice($node);
-    
-    _erpal_invoice_helper_set_last_invoice_number($node);
+    _erpal_invoice_helper_caclulate_invoice($node);    
   }
 }
 
@@ -565,10 +643,14 @@ function template_preprocess_invoice_pdf_html(&$variables) {
     'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
     'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
     'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
-    //@TODO Country must be the display value of the field, not the database value (get it from allowed values of the country field)
     'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
   );
   
+  //show displayable value of country instead of the database value
+  $field_country = field_info_field('field_country');
+  if (isset($company_arr['country']) && $company_arr['country'])
+    $company_arr['country'] = $field_country['settings']['allowed_values'][$company_arr['country']];
+    
   //get the customer
   $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
   $customer_node = node_load($customer_nid);
@@ -585,9 +667,13 @@ function template_preprocess_invoice_pdf_html(&$variables) {
     'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
     'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
     'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
-    //@TODO Country must be the display value of the field, not the database value (get it from allowed values of the country field)
     'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+    'address_additionals' => isset($invoice->field_addition_to_address[LANGUAGE_NONE][0]['value']) ? $invoice->field_addition_to_address[LANGUAGE_NONE][0]['value'] : false,
   );
+  
+  //show country value to display, not the value, stored in the 
+  if (isset($customer_arr['country']) && $customer_arr['country'])
+    $customer_arr['country'] = $field_country['settings']['allowed_values'][$customer_arr['country']];
   
   $invoice_number = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
   $invoice_date = $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'];
@@ -637,7 +723,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
       $entity_vat_rate = $vat_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
       $entity_vat_total = $vat_entity->field_vat_total[LANGUAGE_NONE][0]['value'];
       $total_vats[] = array(
-        'var_rate' => $entity_vat_rate,
+        'vat_rate' => $entity_vat_rate,
         'vat_value' => $entity_vat_total,
         'currency' => $currency, //this is the curency of the invoice, it must be equal anyway!
       );
@@ -655,7 +741,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['company'] = $company_arr;
   $variables['company_node'] = $company;
   $variables['customer'] = $customer_arr;
-  $variables['invoice_number'] = _erpal_invoice_helper_get_invoice_number_prefix().$invoice_number;
+  $variables['invoice_number'] = $invoice_number;
   $variables['invoice_date'] = date($date_form_date, $invoice_date);
   $variables['billables'] = $billables;
   $variables['total'] = $total;
@@ -670,6 +756,14 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   
   $copy_text = _erpal_invoice_helper_get_invoice_copy_text(); //TODO dynamisch
   $variables['copy'] = $variables['params']['mark_copied'] ? $copy_text : false;
+  
+  //skonto information
+  $skonto = _erpal_invoice_helper_get_skonto($invoice);
+  $variables['skonto_text'] = false;
+  if ($skonto['rate'] && $skonto['period']) {
+    $skonto_text = _erpal_invoice_helper_get_skonto_text();
+    $variables['skonto_text'] = token_replace($skonto_text, array('erpal_invoice' => $invoice));
+  }
 
 }
 
@@ -786,6 +880,9 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
       
       $subject_node = node_load($subject_nid);
       
+      if (!$subject_node)
+        continue;  //perhaps the subject doesn't exist any more
+      
       if ($subject_node->type == 'erpal_timetracking') {
         //get the subject of the timetracking
         $subject_nid = $subject_node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
@@ -819,8 +916,10 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
 
 /**
 * Saves the given invoice number as last invoice number
+* @param $invoice the invoice that has the number added into invoicenumber prefix
+* @param $invoice_number the invoice pure numeric number that should be saved.
 */
-function _erpal_invoice_helper_set_last_invoice_number($invoice) {
+function _erpal_invoice_helper_set_last_invoice_number($invoice, $invoice_number) {
   //save only if it is numeric, this will be validated in validation function
   //save only for contractor = own company
   module_load_include('inc', 'erpal_basic_helper', 'inc/config');
@@ -830,14 +929,13 @@ function _erpal_invoice_helper_set_last_invoice_number($invoice) {
   else
     $contractor_nid = $company_nid;
     
-  if (!isset($invoice->field_invoice_number[LANGUAGE_NONE][0]['value']))  
+  if (!$invoice_number)  
     return; 
-    
-  $invoice_numer = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
-  $is_higher = variable_get('erpal_last_invoice_number', 0) < $invoice_numer;   //update only, if invoice number is higher, otherwise invoice numbr will be set back if we update an older invoice node
+
+  $is_higher = variable_get('erpal_last_invoice_number', 0) < $invoice_number;   //update only, if invoice number is higher, otherwise invoice number will be set back if we update an older invoice node
   if ($contractor_nid == $company_nid)
-    if (is_numeric($invoice_numer) && $is_higher) 
-      variable_set('erpal_last_invoice_number', $invoice_numer);
+    if (is_numeric($invoice_number) && $is_higher) 
+      variable_set('erpal_last_invoice_number', $invoice_number);
 }
 
 /**
@@ -866,4 +964,128 @@ function _erpal_invoice_helper_replace_order_number_tokens($invoice_node) {
     $invoice_node->field_order_number_extern[LANGUAGE_NONE][0]['value'] = token_replace($order_numbers_extern, $token_data);
   }
    
+}
+
+/**
+* Returns the skonto information from an invoice
+*/
+function _erpal_invoice_helper_get_skonto($invoice_node) {
+  $skonto = array('rate' => false, 'period' => false);
+  
+  if (!$invoice_node || $invoice_node->type != 'erpal_invoice')
+    return $skonto;
+  
+  //get skonto values from field collection
+  $skonto_field_collection_id = isset($invoice_node->field_skonto[LANGUAGE_NONE][0]['value']) ? $invoice_node->field_skonto[LANGUAGE_NONE][0]['value'] : false;
+  
+  if (!$skonto_field_collection_id)
+    return $skonto;
+  
+  $skonto_field_collection = entity_load('field_collection_item', array($skonto_field_collection_id));
+  $skonto_field_collection = $skonto_field_collection[$skonto_field_collection_id];
+  
+  $period = isset($skonto_field_collection->field_credit_period[LANGUAGE_NONE][0]['value']) ? $skonto_field_collection->field_credit_period[LANGUAGE_NONE][0]['value'] : false;
+  
+  $rate = isset($skonto_field_collection->field_discount_percent[LANGUAGE_NONE][0]['value']) ? $skonto_field_collection->field_discount_percent[LANGUAGE_NONE][0]['value'] : false;
+  
+  $skonto['rate'] = $rate;
+  $skonto['period'] = $period;
+  
+  return $skonto;
+}
+
+/**
+* Form for editing customer invoice default settings
+*/
+function erpal_invoice_helper_contact_invoice_default_form($form, $form_state, $contact_node) {
+  $form = array();
+  
+  drupal_set_title(t('Invoice defaults of !contact_name', array('!contact_name' => $contact_node->title)));
+  
+  $defaults = _erpal_invoice_helper_get_customer_defaults($contact_node->nid);
+  
+  //save the id of the customer in form
+  $form['customer_nid'] = array(
+    '#type' => 'value',
+    '#value' => $contact_node->nid,
+  );
+  
+  //display all addresses of the contact to choose one as default
+  $customer_addresses = _erpal_basic_helper_get_contact_adresses($contact_node, true);
+  $form['address_id'] = array(
+    '#type' => 'select',
+    '#options' => $customer_addresses,
+    '#title' => t('Invoice address'),
+    '#default_value' => $defaults['address_id'],
+  );
+  
+  $form['address_addition'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Addition to address'),
+    '#default_value' => $defaults['address_addition'],
+  );
+  
+  $form['credit_period'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Credit period'),
+    '#default_value' => $defaults['credit_period'],
+  );
+  
+  $form['notes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Notes'),
+    '#default_value' => $defaults['notes'],
+  );
+  
+  $form['skonto_percent'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skonto percent'),
+    '#default_value' => $defaults['skonto_percent'],
+  );
+  
+  $form['skonto_period'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skonto period'),
+    '#default_value' => $defaults['skonto_period'],
+  );
+  
+  //actually exposing a form element for order number patterns doesn't make any sence
+  //if we add them, we have to add the patterns as well under this field  
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('save'),
+  );
+  return $form;
+}
+
+/**
+* Contact invoice defaults form submit handler
+*/
+function erpal_invoice_helper_contact_invoice_default_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  
+  //Save customer invoice default values
+  $defaults = _erpal_invoice_helper_convert_default_form_to_array($values);
+
+  $customer_nid = $values['customer_nid'];
+  _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults);
+}
+
+/**
+* Convert contact invoice default values to array to store to database
+*/
+function _erpal_invoice_helper_convert_default_form_to_array($values) {
+  $defaults = array(
+    'address_id' => isset($values['address_id']) ? $values['address_id'] : 0,
+    'credit_period' => isset($values['credit_period']) ? $values['credit_period'] : 0,    
+    'notes' => isset($values['notes']) ? $values['notes'] : '',
+    'skonto_percent' => isset($values['skonto_percent']) ? $values['skonto_percent'] : 0,
+    'skonto_period' => isset($values['skonto_period']) ? $values['skonto_period'] : 0,
+    'order_numbers_intern' => isset($values['order_numbers_intern']) ? $values['order_numbers_intern'] : '',
+    'order_numbers_extern' => isset($values['order_numbers_extern']) ? $values['order_numbers_extern'] : '',
+    'address_addition' => isset($values['address_addition']) ? $values['address_addition'] : '',
+  );
+  
+  return $defaults;
 }

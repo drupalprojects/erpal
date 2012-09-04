@@ -6,7 +6,7 @@
 
 require_once 'billable.test.helper';
  
-class BillableTestCase extends DrupalWebTestCase  {
+class BillableTestCase extends DrupalFixtureTestCase  {
 
   public static function getInfo() {
     return array(
@@ -17,13 +17,14 @@ class BillableTestCase extends DrupalWebTestCase  {
   }
   
   function setUp() {    
-    parent::setUp('billable');
+    //parent::setUp('billable');
+    parent::setUp();
     
     // Run a features rebuild to ensure our feature is fully installed.
-    features_rebuild();
+    //features_rebuild();
     
     // Clear all caches so everything from the feature is recognized now that it is fully loaded.
-    cache_clear_all();
+    //cache_clear_all();
   }
   
   

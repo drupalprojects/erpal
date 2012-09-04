@@ -3,6 +3,8 @@
  * @author 		Marc Sven Kleinboehl
  * @created 	01/14/2012
  * @copyright	2012 © Bright Solutions GmbH 
+ * 
+ * This class is an IMAP email fetcher.
  */
  
 namespace erpal_crm_mailaction;
@@ -21,6 +23,9 @@ class ImapFetcher {
 		return;
 	}
 	
+	/*
+	 * Dtor.
+	 */
 	public function __destruct () {
 	  
 	  if ($this->connection == NULL) {
@@ -126,7 +131,7 @@ class ImapFetcher {
 	 */
 	public function readUnseen () {
 		
-		return $this->read ('ALL UNDELETED');
+		return $this->read ('UNSEEN');
 	}
 }
 

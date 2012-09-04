@@ -24,7 +24,7 @@ function erpal_invoice_helper_invoice_pdf_form($form, $form_state, $invoice_nid)
     '#type' => 'checkboxes',
     '#options' => $documents,
     '#title' => t('Documents to export as PDF'),
-    '#default_value' => array('invoice'),
+    '#default_value' => array('invoice', 'attachment'),
   );
   
   $form['attach'] = array(
@@ -185,8 +185,10 @@ function _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied=f
     $invoice_html = theme('invoice_pdf_html', array('invoice' => $invoice, 'params' => $params));
  
   if (isset($documents['attachment']) && $documents['attachment']) {
-    $billables = _erpal_invoice_helper_invoice_attachment_billables($invoice);
-    $attachment_html = theme('invoice_attachment_pdf_html', array('invoice' => $invoice, 'billables' => $billables));
+    $billables = _erpal_invoice_helper_invoice_attachment_billables($invoice); 
+    $has_reduced_billables = _erpal_invoice_helper_billables_have_reduced_billables($billables);
+    if ($has_reduced_billables)
+      $attachment_html = theme('invoice_attachment_pdf_html', array('invoice' => $invoice, 'billables' => $billables));
   }
  
   if ($invoice_html) {
@@ -204,3 +206,27 @@ function _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied=f
   return $output;
 }
 
+/**
+* Load all reduced billables
+*/
+function _erpal_invoice_helper_invoice_attachment_load_reduced_billables($billables) {
+  foreach ($billables as $billable) {
+    foreach ($billable->reduced_billables as $reduced_billable) {
+      $billable->reduced_billables[$reduced_billable->billable_id] = billable_load($reduced_billable->billable_id);
+    }
+  }
+  return $billables;
+}
+
+/**
+* Check if billables have reduced billables
+*/
+function _erpal_invoice_helper_billables_have_reduced_billables($billables) {
+  foreach ($billables as $billable) {
+    if (count($billable->reduced_billables) > 0) {
+      return true;
+    }
+  }
+  
+  return false;
+}

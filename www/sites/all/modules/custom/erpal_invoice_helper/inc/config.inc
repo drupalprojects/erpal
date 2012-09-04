@@ -58,11 +58,35 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#description' => t('You can change your company in !link', array('!link' => l(t('ERPAL basic settings'), 'admin/erpal/basic'))),    
   );
   
-  $form['erpal_invoice_number_prefix'] = array(
+  $form['invoice_number'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Invoice number'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  
+  $form['invoice_number']['erpal_invoice_number_pattern'] = array(
     '#type' => 'textfield',
-    '#title' => t('Invoice number prefix'),
-    '#default_value' => _erpal_invoice_helper_get_invoice_number_prefix(),    
-    '#description' => t('This prefix will be added as prefix to every invoice number'),
+    '#title' => t('Invoice number pattern'),
+    '#default_value' => _erpal_invoice_helper_get_invoice_number_pattern(),    
+    '#description' => t('This pattern will let you design your invoice number'),
+  );
+  
+  $form['invoice_number']['erpal_invoice_number_offset'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Invoice number offset'),
+    '#default_value' => _erpal_invoice_helper_get_next_invoice_number(),    
+    '#description' => t('This offset definies the last invoice number, next increment will be this +1'),
+  );
+  
+  //Tokens for invoice pattern
+  //show available Tokens  
+  $form['invoice_number']['token_tree'] = array(
+    '#theme' => 'token_tree',   
+    //'#token_types' => array(),
+    '#global_types' => TRUE,
+    '#click_insert' => TRUE,
+    '#recursion_limit' => 1,
   );
   
   $form['erpal_invoice_currencies'] = array(
@@ -113,7 +137,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#title' => t('Manuall invoice notes'),
     '#default_value' => _erpal_invoice_helper_get_manuall_notes(),    
     '#description' => t('Manually entered notes to show below your invoice calculation. Please use the following tokens to add invoice data to your text'),
-  );
+  ); 
   
   //show available Tokens  
   if (module_exists('token')) {
@@ -125,11 +149,48 @@ function erpal_invoice_helper_config_form($form, &$form_state){
       '#recursion_limit' => 1,
     );
   }
-  else {
-    $form['token_tree'] = array(
-      '#markup' => '<p>' . t('Enable the <a href="@drupal-token">Token module</a> to view the available token browser.', array('@drupal-token' => 'http://drupal.org/project/token')) . '</p>',
+
+  $form['skonto'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Skonto settings'),
+    '#collapsible' => true,
+    '#collapsed' => false,
+  );
+  
+  $form['skonto']['erpal_invoice_skonto_text'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Skonto text'),
+    '#default_value' => _erpal_invoice_helper_get_skonto_text(),    
+    '#description' => t('If your invoice has skonto settings, this text will be printed to the invoice export.'),
+  );    
+  
+  //show available Tokens  
+  if (module_exists('token')) {
+    $form['skonto']['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_invoice_skonto'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
     );
   }
+  
+  $form['skonto']['erpal_invoice_skonto_period'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skonto priod in days'),
+    '#size' => 4,
+    '#default_value' => _erpal_invoice_helper_get_skonto_period(),    
+    '#description' => t('The default skonto period in days for your invoices. You can also set this per customer.'),
+  );
+  
+  $form['skonto']['erpal_invoice_skonto_rate'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skonto rate in percent'),
+    '#size' => 4,
+    '#default_value' => _erpal_invoice_helper_get_skonto_rate(),    
+    '#description' => t('The default skonto rate in percent for your invoices. You can also set this per customer.'),
+  );
+  
   
   //text for a invoice copy marked in pdf export
   $form['erpal_invoice_copy_text'] = array(
@@ -154,7 +215,7 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
 
   $values = $form_state['values'];
 
-  variable_set('erpal_invoice_number_prefix', $values['erpal_invoice_number_prefix']);
+  variable_set('erpal_invoice_number_pattern', $values['erpal_invoice_number_pattern']);
   variable_set('erpal_invoice_vat_rates_string', $values['erpal_invoice_vat_rates']);
   variable_set('erpal_invoice_default_vat_rate', $values['erpal_invoice_default_vat_rate']);
   variable_set('erpal_invoice_credit_periods_string', $values['erpal_invoice_credit_periods']);
@@ -163,13 +224,24 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
   variable_set('erpal_invoice_default_currency', $values['erpal_invoice_default_currency']);
   variable_set('erpal_invoice_default_credit_period', $values['erpal_invoice_default_credit_period']);
   variable_set('erpal_invoice_copy_text', $values['erpal_invoice_copy_text']);
+  variable_set('erpal_last_invoice_number', $values['erpal_invoice_number_offset']);
+  
+  //skonto
+  variable_set('erpal_invoice_skonto_text', $values['erpal_invoice_skonto_text']);
+  variable_set('erpal_invoice_skonto_period', $values['erpal_invoice_skonto_period']);
+  variable_set('erpal_invoice_skonto_rate', $values['erpal_invoice_skonto_rate']);
 }
 
 /**
 * Function to return the invoice number prefix
 */
-function _erpal_invoice_helper_get_invoice_number_prefix() {
-  return variable_get('erpal_invoice_number_prefix', '');
+function _erpal_invoice_helper_get_invoice_number_pattern() {
+  $pattern = variable_get('erpal_invoice_number_pattern', '');
+  
+  if (!$pattern)
+    $pattern = "[erpal_invoice:next_invoice_number]";
+    
+  return $pattern;
 }
 
 /**
@@ -201,6 +273,27 @@ function _erpal_invoice_helper_get_credit_periods_arr() {
 */
 function _erpal_invoice_helper_get_manuall_notes() {
   return variable_get('erpal_invoice_manuall_notes', '');
+}
+
+/**
+* Returns the skonto text
+*/
+function _erpal_invoice_helper_get_skonto_text() {
+  return variable_get('erpal_invoice_skonto_text', '');
+}
+
+/**
+* Returns the skonto period
+*/
+function _erpal_invoice_helper_get_skonto_period() {
+  return variable_get('erpal_invoice_skonto_period', '');
+}
+
+/**
+* Returns the skonto rate
+*/
+function _erpal_invoice_helper_get_skonto_rate() {
+  return variable_get('erpal_invoice_skonto_rate', '');
 }
 
 /**
@@ -263,7 +356,7 @@ function _erpal_invoice_helper_currencies_arr() {
 /**
 * returns vat rates as array
 * @param $add_notes - if true the funciton adds all notes that are related to each vat rate.
-* @return array var_rate value is the key, the array value is either the vat label (if $add_notes=false) or
+* @return array vat_rate value is the key, the array value is either the vat label (if $add_notes=false) or
 * an array with keys 'label' and 'note'.
 */
 function _erpal_invoice_helper_vat_rates_arr($add_notes=false) {
@@ -272,7 +365,7 @@ function _erpal_invoice_helper_vat_rates_arr($add_notes=false) {
   //split to get each row
   $vat_rates_strings = explode("\r\n", $vat_rates_string);
 
-  //now split each row, so first value ist var_rate value in percen, secound valu is the label
+  //now split each row, so first value ist vat_rate value in percen, secound valu is the label
   //third value is a note
   $rates = array();
   foreach ($vat_rates_strings as $rate_string) {

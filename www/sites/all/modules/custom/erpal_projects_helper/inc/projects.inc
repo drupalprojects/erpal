@@ -63,3 +63,11 @@ function _erpal_projects_helper_get_activity_by_project($project_node) {
   return $activity_node;
   
 }
+
+/**
+* called in hook_node_presave of this module if presaved node is a project
+*/
+function erpal_projects_helper_node_presave_project($node) {
+  $old_node = node_load($node->nid);
+  _erpal_projects_helper_handle_removed_book_nodes($node, $old_node);
+}

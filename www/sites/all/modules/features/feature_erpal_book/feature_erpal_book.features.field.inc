@@ -10,7 +10,7 @@
 function feature_erpal_book_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'node-erpal_book-body'
+  // Exported field: 'node-erpal_book-body'.
   $fields['node-erpal_book-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -33,9 +33,10 @@ function feature_erpal_book_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -82,7 +83,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book-field_address_id'
+  // Exported field: 'node-erpal_book-field_address_id'.
   $fields['node-erpal_book-field_address_id'] = array(
     'field_config' => array(
       'active' => '1',
@@ -96,6 +97,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -142,7 +144,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book-field_asset_files'
+  // Exported field: 'node-erpal_book-field_asset_files'.
   $fields['node-erpal_book-field_asset_files'] = array(
     'field_config' => array(
       'active' => '1',
@@ -156,6 +158,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -232,7 +235,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book-field_book_origin'
+  // Exported field: 'node-erpal_book-field_book_origin'.
   $fields['node-erpal_book-field_book_origin'] = array(
     'field_config' => array(
       'active' => '1',
@@ -246,10 +249,16 @@ function feature_erpal_book_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
         'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
           'sort' => array(
             'direction' => 'ASC',
             'field' => 'body:value',
@@ -257,6 +266,7 @@ function feature_erpal_book_field_default_fields() {
             'type' => 'none',
           ),
           'target_bundles' => array(
+            'erpal_book' => 'erpal_book',
             'erpal_book_page' => 'erpal_book_page',
           ),
         ),
@@ -270,6 +280,7 @@ function feature_erpal_book_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'erpal_book',
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -294,6 +305,14 @@ function feature_erpal_book_field_default_fields() {
       'label' => 'Origin template',
       'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -314,7 +333,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book-field_book_tags'
+  // Exported field: 'node-erpal_book-field_book_tags'.
   $fields['node-erpal_book-field_book_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -335,6 +354,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -388,7 +408,75 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book-field_contact_ref'
+  // Exported field: 'node-erpal_book-field_book_version'.
+  $fields['node-erpal_book-field_book_version'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_book_version',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'number',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_book',
+      'default_value' => array(
+        0 => array(
+          'value' => '1',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 8,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_book_version',
+      'label' => 'Version',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '10',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_book-field_contact_ref'.
   $fields['node-erpal_book-field_contact_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -402,6 +490,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -487,7 +576,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book-field_is_template'
+  // Exported field: 'node-erpal_book-field_is_template'.
   $fields['node-erpal_book-field_is_template'] = array(
     'field_config' => array(
       'active' => '1',
@@ -501,6 +590,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -556,7 +646,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-body'
+  // Exported field: 'node-erpal_book_page-body'.
   $fields['node-erpal_book_page-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -579,9 +669,10 @@ function feature_erpal_book_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -628,7 +719,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_asset_files'
+  // Exported field: 'node-erpal_book_page-field_asset_files'.
   $fields['node-erpal_book_page-field_asset_files'] = array(
     'field_config' => array(
       'active' => '1',
@@ -642,6 +733,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -718,7 +810,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_book_origin'
+  // Exported field: 'node-erpal_book_page-field_book_origin'.
   $fields['node-erpal_book_page-field_book_origin'] = array(
     'field_config' => array(
       'active' => '1',
@@ -732,10 +824,16 @@ function feature_erpal_book_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
         'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
           'sort' => array(
             'direction' => 'ASC',
             'field' => 'body:value',
@@ -743,6 +841,7 @@ function feature_erpal_book_field_default_fields() {
             'type' => 'none',
           ),
           'target_bundles' => array(
+            'erpal_book' => 'erpal_book',
             'erpal_book_page' => 'erpal_book_page',
           ),
         ),
@@ -800,7 +899,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_book_ref'
+  // Exported field: 'node-erpal_book_page-field_book_ref'.
   $fields['node-erpal_book_page-field_book_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -824,6 +923,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -909,7 +1009,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_book_tags'
+  // Exported field: 'node-erpal_book_page-field_book_tags'.
   $fields['node-erpal_book_page-field_book_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -930,6 +1030,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -983,7 +1084,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_estimated_duration'
+  // Exported field: 'node-erpal_book_page-field_estimated_duration'.
   $fields['node-erpal_book_page-field_estimated_duration'] = array(
     'field_config' => array(
       'active' => '1',
@@ -993,6 +1094,7 @@ function feature_erpal_book_field_default_fields() {
       'field_name' => 'field_estimated_duration',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -1049,7 +1151,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_is_template'
+  // Exported field: 'node-erpal_book_page-field_is_template'.
   $fields['node-erpal_book_page-field_is_template'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1063,6 +1165,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1118,7 +1221,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_page_exclude_from'
+  // Exported field: 'node-erpal_book_page-field_page_exclude_from'.
   $fields['node-erpal_book_page-field_page_exclude_from'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1132,6 +1235,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1180,7 +1284,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_parent'
+  // Exported field: 'node-erpal_book_page-field_parent'.
   $fields['node-erpal_book_page-field_parent'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1204,6 +1308,7 @@ function feature_erpal_book_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -1292,7 +1397,7 @@ function feature_erpal_book_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book_page-field_weight'
+  // Exported field: 'node-erpal_book_page-field_weight'.
   $fields['node-erpal_book_page-field_weight'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1302,6 +1407,7 @@ function feature_erpal_book_field_default_fields() {
       'field_name' => 'field_weight',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -1375,6 +1481,7 @@ function feature_erpal_book_field_default_fields() {
   t('PDF exports');
   t('Parent');
   t('Select an address to use address tokens in your document');
+  t('Version');
   t('Weight');
 
   return $fields;

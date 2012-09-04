@@ -10,13 +10,14 @@
 function views_jstree_token_info() {
   $type_name = t("Tokens for jstree menu");
   $type_desc = t("Tokens for jstree e.g. for use in context menu.");
+  $needs_data = 'view';
 
   $views_jstree = array();
   // List all views.
   $views = views_get_all_views();
   $types = array();
   $tokens = array();
-  
+ 
   $type_prefix = 'views_jstree';
   foreach ($views as $view) {
     // Skip disabled views.
@@ -31,6 +32,7 @@ function views_jstree_token_info() {
       $types[$type] = array(
         'name' => $type_name,
         'description' => $type_desc,
+        'needs-data' => $needs_data,
       );
       
       //now add the tokens for this type      

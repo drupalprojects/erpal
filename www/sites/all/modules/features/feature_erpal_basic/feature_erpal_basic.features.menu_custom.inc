@@ -10,7 +10,7 @@
 function feature_erpal_basic_menu_default_menu_custom() {
   $menus = array();
 
-  // Exported menu: menu-erpal-menu
+  // Exported menu: menu-erpal-menu.
   $menus['menu-erpal-menu'] = array(
     'menu_name' => 'menu-erpal-menu',
     'title' => 'ERPAL Menu',

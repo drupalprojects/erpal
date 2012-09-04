@@ -10,7 +10,175 @@
 function feature_erpal_project_basic_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'field_collection_item-field_pricing-field_price'
+  // Exported field: 'field_collection_item-field_pricing-field_budget_time_billing'.
+  $fields['field_collection_item-field_pricing-field_budget_time_billing'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_budget_time_billing',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'billable' => 'Timetracking is always billed',
+          'not_billable' => 'Timetracking is not billed, only if budget is empty',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_pricing',
+      'default_value' => array(
+        0 => array(
+          'value' => 'billable',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Choose if timetrackings are billable within a budget or not. If not they will only billed if budget is empty and there is a price set.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 9,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_budget_time_billing',
+      'label' => 'Budget time billing',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'field_collection_item-field_pricing-field_budgets'.
+  $fields['field_collection_item-field_pricing-field_budgets'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_budgets',
+      'foreign keys' => array(
+        'node' => array(
+          'columns' => array(
+            'target_id' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'target_id' => array(
+          0 => 'target_id',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'entityreference',
+      'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'none',
+            'property' => 'budget_id',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(),
+        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'budget',
+      ),
+      'translatable' => '0',
+      'type' => 'entityreference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_pricing',
+      'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => '8',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => '8',
+        ),
+      ),
+      'ds_extras_field_template' => '',
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_budgets',
+      'label' => 'Budgets',
+      'required' => 0,
+      'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'hide',
+            'fallback' => 'redirect',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 1,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'field_collection_item-field_pricing-field_price'.
   $fields['field_collection_item-field_pricing-field_price'] = array(
     'field_config' => array(
       'active' => '1',
@@ -20,6 +188,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_price',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -46,13 +215,25 @@ function feature_erpal_project_basic_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => 1,
+          'weight' => '1',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'field_collection_item',
@@ -70,12 +251,12 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
 
-  // Exported field: 'field_collection_item-field_pricing-field_price_mode'
+  // Exported field: 'field_collection_item-field_pricing-field_price_mode'.
   $fields['field_collection_item-field_pricing-field_price_mode'] = array(
     'field_config' => array(
       'active' => '1',
@@ -89,15 +270,18 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
+          'none' => 'No Information',
           'not_billable' => 'Not billable',
           'fixed_price' => 'Fixed price',
           'per_hour' => 'Per hour',
           'budget' => 'Budget per hour',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_text',
@@ -106,7 +290,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'bundle' => 'field_pricing',
       'default_value' => array(
         0 => array(
-          'value' => 'not_billable',
+          'value' => 'none',
         ),
       ),
       'deleted' => '0',
@@ -117,13 +301,20 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 0,
+          'weight' => '0',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'field_collection_item',
@@ -138,12 +329,12 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '0',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_project-body'
+  // Exported field: 'node-erpal_project-body'.
   $fields['node-erpal_project-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -166,9 +357,10 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -195,7 +387,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '13',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -235,7 +427,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_activity_ref'
+  // Exported field: 'node-erpal_project-field_activity_ref'.
   $fields['node-erpal_project-field_activity_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -259,6 +451,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -308,7 +501,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '12',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -357,12 +550,12 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_books_ref'
+  // Exported field: 'node-erpal_project-field_books_ref'.
   $fields['node-erpal_project-field_books_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -383,6 +576,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -429,7 +623,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '16',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -466,12 +660,12 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_customer_ref'
+  // Exported field: 'node-erpal_project-field_customer_ref'.
   $fields['node-erpal_project-field_customer_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -485,6 +679,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -543,7 +738,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '9',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -592,12 +787,12 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_date'
+  // Exported field: 'node-erpal_project-field_date'.
   $fields['node-erpal_project-field_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -607,8 +802,11 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
         'granularity' => array(
           'day' => 'day',
           'hour' => 0,
@@ -617,6 +815,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
+        'profile2_private' => FALSE,
         'repeat' => 0,
         'timezone_db' => '',
         'todate' => 'optional',
@@ -654,7 +853,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -704,7 +903,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_pricing'
+  // Exported field: 'node-erpal_project-field_pricing'.
   $fields['node-erpal_project-field_pricing'] = array(
     'field_config' => array(
       'active' => '1',
@@ -714,6 +913,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_pricing',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -750,12 +950,9 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection',
-          'settings' => array(
-            'view_mode' => 'full',
-          ),
-          'type' => 'field_collection_fields',
-          'weight' => '6',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -789,12 +986,90 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '7',
+        'weight' => '9',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_project_contacts'
+  // Exported field: 'node-erpal_project-field_priority_term'.
+  $fields['node-erpal_project-field_priority_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_priority_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'priority_terms',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 13,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_priority_term',
+      'label' => 'Priority',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_project-field_project_contacts'.
   $fields['node-erpal_project-field_project_contacts'] = array(
     'field_config' => array(
       'active' => '1',
@@ -804,6 +1079,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_project_contacts',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'relation_dummy_field',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -829,7 +1105,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'relation_dummy_field',
           'settings' => array(),
           'type' => 'relation_default',
-          'weight' => '10',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -860,12 +1136,91 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'relation_dummy_field',
         'settings' => array(),
         'type' => 'relation_default',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_project_tags'
+  // Exported field: 'node-erpal_project-field_project_status_term'.
+  $fields['node-erpal_project-field_project_status_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_project_status_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'project_status_terms',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_project',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 12,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '4',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_project_status_term',
+      'label' => 'Status',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_project-field_project_tags'.
   $fields['node-erpal_project-field_project_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -886,6 +1241,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -946,7 +1302,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-body'
+  // Exported field: 'node-erpal_task-body'.
   $fields['node-erpal_task-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -969,9 +1325,10 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -1032,7 +1389,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_date'
+  // Exported field: 'node-erpal_task-field_date'.
   $fields['node-erpal_task-field_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1042,8 +1399,11 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
         'granularity' => array(
           'day' => 'day',
           'hour' => 0,
@@ -1052,6 +1412,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
+        'profile2_private' => FALSE,
         'repeat' => 0,
         'timezone_db' => '',
         'todate' => 'optional',
@@ -1095,7 +1456,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => '6',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1133,7 +1494,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_estimated_time'
+  // Exported field: 'node-erpal_task-field_estimated_time'.
   $fields['node-erpal_task-field_estimated_time'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1143,6 +1504,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_estimated_time',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -1186,7 +1548,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '11',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1216,7 +1578,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_parent'
+  // Exported field: 'node-erpal_task-field_parent'.
   $fields['node-erpal_task-field_parent'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1240,6 +1602,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -1292,7 +1655,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '8',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1334,7 +1697,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_pricing'
+  // Exported field: 'node-erpal_task-field_pricing'.
   $fields['node-erpal_task-field_pricing'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1344,6 +1707,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_pricing',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -1377,12 +1741,9 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection',
-          'settings' => array(
-            'view_mode' => 'full',
-          ),
-          'type' => 'field_collection_fields',
-          'weight' => '10',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1402,12 +1763,90 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_progress_percent'
+  // Exported field: 'node-erpal_task-field_priority_term'.
+  $fields['node-erpal_task-field_priority_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_priority_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'priority_terms',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 25,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_priority_term',
+      'label' => 'Priority',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '41',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_task-field_progress_percent'.
   $fields['node-erpal_task-field_progress_percent'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1421,6 +1860,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1462,7 +1902,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '14',
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1488,7 +1928,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_project_ref'
+  // Exported field: 'node-erpal_task-field_project_ref'.
   $fields['node-erpal_task-field_project_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1512,6 +1952,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -1570,7 +2011,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '12',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1615,7 +2056,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_project_tags'
+  // Exported field: 'node-erpal_task-field_project_tags'.
   $fields['node-erpal_task-field_project_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1636,6 +2077,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -1691,12 +2133,12 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '9',
+        'weight' => '11',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_task_assigned_users'
+  // Exported field: 'node-erpal_task-field_task_assigned_users'.
   $fields['node-erpal_task-field_task_assigned_users'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1720,6 +2162,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -1767,7 +2210,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '7',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1812,7 +2255,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_task_exclude_from'
+  // Exported field: 'node-erpal_task-field_task_exclude_from'.
   $fields['node-erpal_task-field_task_exclude_from'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1826,6 +2269,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1855,7 +2299,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '9',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1876,71 +2320,65 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_task_status'
-  $fields['node-erpal_task-field_task_status'] = array(
+  // Exported field: 'node-erpal_task-field_task_status_term'.
+  $fields['node-erpal_task-field_task_status_term'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_task_status',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+      'field_name' => 'field_task_status_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
         ),
       ),
-      'module' => 'list',
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
-          'inserted' => 'inserted',
-          'in_progress' => 'in progress',
-          'on_hold' => 'on hold',
-          'testing' => 'Testing',
-          'test_ok' => 'Test OK',
-          'question' => 'Question',
-          'buggy' => 'buggy',
-          'completed' => 'completed',
+          0 => array(
+            'vocabulary' => 'task_status_terms',
+            'parent' => '0',
+          ),
         ),
-        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
-      'type' => 'list_text',
+      'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
-      'default_value' => array(
-        0 => array(
-          'value' => 'inserted',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '10',
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 24,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '13',
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1950,9 +2388,9 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_task_status',
-      'label' => 'Task status',
-      'required' => 0,
+      'field_name' => 'field_task_status_term',
+      'label' => 'Status',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -1966,60 +2404,59 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_task_type'
-  $fields['node-erpal_task-field_task_type'] = array(
+  // Exported field: 'node-erpal_task-field_task_type_term'.
+  $fields['node-erpal_task-field_task_type_term'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_task_type',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+      'field_name' => 'field_task_type_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
         ),
       ),
-      'module' => 'list',
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
-          'question' => 'Question',
-          'support' => 'Support',
-          'task' => 'Tasks',
+          0 => array(
+            'vocabulary' => 'task_type_terms',
+            'parent' => '0',
+          ),
         ),
-        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
-      'type' => 'list_text',
+      'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
-      'default_value' => array(
-        0 => array(
-          'value' => 'task',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '6',
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 23,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'list_default',
+          'type' => 'taxonomy_term_reference_link',
           'weight' => '5',
         ),
         'teaser' => array(
@@ -2030,9 +2467,9 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_task_type',
-      'label' => 'Task Type',
-      'required' => 0,
+      'field_name' => 'field_task_type_term',
+      'label' => 'Type',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -2046,7 +2483,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-field_weight'
+  // Exported field: 'node-erpal_task-field_weight'.
   $fields['node-erpal_task-field_weight'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2056,6 +2493,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_weight',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -2083,7 +2521,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '20',
+          'weight' => '21',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2108,12 +2546,12 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '33',
+        'weight' => '34',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-body'
+  // Exported field: 'node-erpal_timetracking-body'.
   $fields['node-erpal_timetracking-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2136,9 +2574,10 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -2185,7 +2624,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-field_billing_duration'
+  // Exported field: 'node-erpal_timetracking-field_billing_duration'.
   $fields['node-erpal_timetracking-field_billing_duration'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2195,6 +2634,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_billing_duration',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -2251,7 +2691,109 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-field_date_time'
+  // Exported field: 'node-erpal_timetracking-field_budget'.
+  $fields['node-erpal_timetracking-field_budget'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_budget',
+      'foreign keys' => array(
+        'node' => array(
+          'columns' => array(
+            'target_id' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'target_id' => array(
+          0 => 'target_id',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'entityreference',
+      'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'none',
+            'property' => 'budget_id',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(),
+        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'budget',
+      ),
+      'translatable' => '0',
+      'type' => 'entityreference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_timetracking',
+      'default_value' => NULL,
+      'default_value_function' => '',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => 5,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_budget',
+      'label' => 'Budget',
+      'required' => 0,
+      'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 0,
+          ),
+        ),
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_timetracking-field_date_time'.
   $fields['node-erpal_timetracking-field_date_time'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2261,6 +2803,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_date_time',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'granularity' => array(
@@ -2331,7 +2874,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-field_timetracking_duration'
+  // Exported field: 'node-erpal_timetracking-field_timetracking_duration'.
   $fields['node-erpal_timetracking-field_timetracking_duration'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2341,6 +2884,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'field_name' => 'field_timetracking_duration',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -2396,7 +2940,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-field_timetracking_subject'
+  // Exported field: 'node-erpal_timetracking-field_timetracking_subject'.
   $fields['node-erpal_timetracking-field_timetracking_subject'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2420,6 +2964,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -2500,12 +3045,12 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 0,
+        'weight' => '0',
       ),
     ),
   );
 
-  // Exported field: 'relation-participate_in-field_projet_role_rel_tags'
+  // Exported field: 'relation-participate_in-field_projet_role_rel_tags'.
   $fields['relation-participate_in-field_projet_role_rel_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2526,6 +3071,7 @@ function feature_erpal_project_basic_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -2571,13 +3117,392 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'taxonomy_term-priority_terms-field_is_default_term'.
+  $fields['taxonomy_term-priority_terms-field_is_default_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_is_default_term',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'priority_terms',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Check, if this is the default value on fields where to select on of the terms in this vocabulary',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_is_default_term',
+      'label' => 'Is default',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-project_status_terms-field_is_default_term'.
+  $fields['taxonomy_term-project_status_terms-field_is_default_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_is_default_term',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project_status_terms',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Check, if this is the default value on fields where to select on of the terms in this vocabulary',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 1,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_is_default_term',
+      'label' => 'Is default',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-project_status_terms-field_simple_process_status'.
+  $fields['taxonomy_term-project_status_terms-field_simple_process_status'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_simple_process_status',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'in_progress' => 'in progress',
+          'completed' => 'completed',
+          'aborted' => 'aborted',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'project_status_terms',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_simple_process_status',
+      'label' => 'Semantic process',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-task_status_terms-field_is_default_term'.
+  $fields['taxonomy_term-task_status_terms-field_is_default_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_is_default_term',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'task_status_terms',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Check, if this is the default value on fields where to select on of the terms in this vocabulary',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 1,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_is_default_term',
+      'label' => 'Is default',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-task_status_terms-field_simple_process_status'.
+  $fields['taxonomy_term-task_status_terms-field_simple_process_status'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_simple_process_status',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'in_progress' => 'in progress',
+          'completed' => 'completed',
+          'aborted' => 'aborted',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'task_status_terms',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'This gives the status tag a semantic meaning',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_simple_process_status',
+      'label' => 'Semantic process',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-task_type_terms-field_is_default_term'.
+  $fields['taxonomy_term-task_type_terms-field_is_default_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_is_default_term',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'task_type_terms',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Check, if this is the default value on fields where to select on of the terms in this vocabulary',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_is_default_term',
+      'label' => 'Is default',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Assigned To Users');
   t('Billing Duration');
   t('Body');
+  t('Budget');
+  t('Budget time billing');
+  t('Budgets');
   t('CRM activity');
+  t('Check, if this is the default value on fields where to select on of the terms in this vocabulary');
   t('Choose contacts that are involved in this project');
+  t('Choose if timetrackings are billable within a budget or not. If not they will only billed if budget is empty and there is a price set.');
   t('Contacts');
   t('Customer');
   t('Customer of the project');
@@ -2587,23 +3512,27 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Estimated time');
   t('Exclude from');
   t('How long did you work?');
+  t('Is default');
   t('Parent');
   t('Planed realisation date');
   t('Price');
   t('Price mode');
   t('Pricing');
+  t('Priority');
   t('Progress');
   t('Project');
   t('Project tags');
   t('Role in project');
+  t('Semantic process');
   t('Specification');
   t('Start and end time of your work');
+  t('Status');
   t('Subject');
-  t('Task Type');
-  t('Task status');
   t('The description of a task');
   t('The duration that will be billed to the customer');
+  t('This gives the status tag a semantic meaning');
   t('Time estimated for this task');
+  t('Type');
   t('Weight');
   t('When will the project be developed? Only for planing purpose.');
   t('Work progress of field');

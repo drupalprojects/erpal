@@ -23,7 +23,9 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
     $options['id_field'] = array('default' => '');
     $options['parent_field'] = array('default' => '');
     $options['weight_field'] = array('default' => false);
+    $options['type_field'] = array('default' => false);
     $options['ajax_child_view'] = array('default' => false);
+    $options['ajax_child_view_top_types'] = array('default' => false);
     $hook_implemented = hook_jstree_context_implemented();
     $options['context_menu']['use_context_menu_hook'] = array('default' => $hook_implemented);
     $options['context_menu']['custom_context_menu'] = array('default' => '');
@@ -72,11 +74,33 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
       '#description' => t('Select the field that contains the weight to order the tree.'),
     );
     
+    $form['type_field'] = array(
+      '#type' => 'select',
+      '#title' => t('Type field'),
+      '#options' => $fields,
+      '#default_value' => $this->options['type_field'],
+      '#description' => t('Select the field that contains the type of the node in the selected row.'),
+      '#required' => true,
+    );
+    
     $form['ajax_child_view'] = array(
       '#type' => 'checkbox',
       '#title' => t('AJAX child view'),
       '#default_value' => $this->options['ajax_child_view'],
       '#description' => t('Check, if this is the display for loading the children using ajax'),
+    );
+    
+    $node_types = node_type_get_types();
+    $node_type_options = array();
+    foreach ($node_types as $type_name => $type_obj) {
+      $node_type_options[$type_name] = $type_obj->name;
+    }
+    $form['ajax_child_view_top_types'] = array(
+      '#type' => 'checkboxes',
+      '#options' => $node_type_options,
+      '#title' => t('AJAX child view for first children with parent of type'),
+      '#default_value' => $this->options['ajax_child_view_top_types'],
+      '#description' => t('If you select a content type here, this view is only for nodes with the selected type as parent (like book is container for book pages or project is container for tasks)'),
     );
     
     $form['context_menu'] = array(
@@ -122,6 +146,7 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
       );
     }
   }  
+  
 }
 
 /**

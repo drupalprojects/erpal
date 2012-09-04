@@ -76,11 +76,12 @@ function _billable_element_process($element, &$form_state, $complete_form) {
   $element['#tree'] = TRUE;
 
   $billable_id = $element['#default_value'];
+
   if ($billable_id)
     $billable = billable_load($billable_id);
   // Normal FAPI field definitions, except that #value is defined. This is done by '#default' value
   //if the element is used in concrete.
-  
+
   $element['billable_id'] = array(
     '#type' => 'value', //just to keep the id of a billable that already exists
     '#value' => isset($billable) ? $billable->billable_id : '',
@@ -123,7 +124,7 @@ function _billable_element_process($element, &$form_state, $complete_form) {
     '#options' => _erpal_invoice_helper_vat_rates_arr(),  
     '#default_value' => isset($billable) ? $billable->vat_rate : _erpal_invoice_helper_get_default_vat_rate(),
   );
-  
+
   return $element;
 }
 
@@ -131,8 +132,13 @@ function _billable_element_process($element, &$form_state, $complete_form) {
 * Value callback for billable_element
 */
 function _billable_element_value_callback($element, $input = FALSE, &$form_state) {  
+
   if (isset($element['billable_id']) && $element['billable_id']) {
     return $element['billable_id'];
+  } elseif (isset($element['#default_value']) && $element['#default_value']) {
+    
+    $billable = billable_load($element['#default_value']);
+    return $element['#default_value'];  //after update, we need this...
   } else
     return 0; // no billable, it has to be created
 }

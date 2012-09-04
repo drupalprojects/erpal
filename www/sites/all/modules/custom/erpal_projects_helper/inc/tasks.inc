@@ -24,7 +24,7 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
   }
   
   if (count($task_states) > 0) {
-    $query->fieldCondition('field_task_status', 'value', $task_states, 'IN');
+    $query->fieldCondition('field_task_status_term', 'tid', $task_states, 'IN');
   }
   
   if ($changed) {
@@ -45,6 +45,61 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
  
   return $task_nodes;
 }
+
+/**
+* Return tasks by project
+* @return array with nids of tasks referencing the given project_nid
+*/
+function _erpal_projects_helper_get_tasks_by_project($project_nid) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_task')
+  ->propertyCondition('status', 1)
+  ->fieldCondition('field_project_ref', 'target_id', $project_nid);
+    
+  $result = $query->execute();
+
+  $task_nodes = array();
+  if (isset($result['node'])) {
+    $task_nids = array_keys($result['node']);
+  }
+
+  return $task_nids;
+}
+
+/**
+* Return all tasks of a project that have no parent at all or no parent of type erpal_task
+*/
+function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($project_node) {
+  
+  $res = db_query('SELECT n.nid FROM {node} n 
+    LEFT JOIN {field_data_field_project_ref} project ON n.vid=project.revision_id
+    LEFT JOIN {field_data_field_parent} parent ON n.vid=parent.revision_id
+    LEFT JOIN {node} node_parent_type ON node_parent_type.vid=parent.revision_id
+    WHERE project.field_project_ref_target_id=:project_nid AND
+    ((parent.field_parent_target_id <> :parent_node_type) OR parent.field_parent_target_id IS NULL)
+  ', array(':project_nid' => $project_node->nid, ':parent_node_type' => 'erpal_task'))
+    ->fetchAll();
+  
+  $nids = array();
+  foreach ($res as $nid_obj) {
+    $nids[] = $nid_obj->nid;
+  }
+ 
+  return $nids;
+}
+
+/**
+ * Implements hook_query_TAG_alter()
+ */
+function erpal_projects_helper_query_tasks_no_task_parent_alter(QueryAlterableInterface $query) {
+  $query->leftJoin('node', 'no', 'field.nid = field_data_field_parent.entity_id');
+  $query->isNull('o.field_other_value');
+  
+  //hier weiter, ich bekomms nicht hin....für die Funktion _erpal_projects_helper_get_tasks_of_project_having_no_task_parent
+  //damit wollen wir das sortieren von tasks im taskbaum endlich mal hinbekommen!
+}
+
 
 /**
 * Presave function for tasks
@@ -83,4 +138,54 @@ function _erpal_projects_helper_get_activity_by_task($task_node) {
   $activity_node = _erpal_projects_helper_get_activity_by_project($project_node);
   
   return $activity_node;
+}
+
+/**
+* Implements hook_erpal_clone_node_alter to alter task node if cloned
+* @param $node is the new cloned node
+* @param $args[parent_nid] is the nid of the new parent_node of the cloned node
+* @param $args[options] some options given to the clone process
+*/
+function erpal_projects_helper_erpal_clone_node_alter($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  $options = $args['options'];
+  
+  if ($node->type == 'erpal_task') {
+    //ensure that the correct project is set to the task
+    //even this is done in presave (@see erpal_projects_helper_node_presave_task) it is important to ensure, so we do it again here after cloning
+    _erpal_projects_helper_task_set_project($node);  
+
+    //prepare other task node attributes according to option
+    if ($options['reset_task_status']) {
+      $vid = _erpal_basic_helper_term_field_get_vid('field_task_status_term'); 
+      $default_tid = _erpal_basic_helper_get_default_tid($vid);
+      $node->field_task_status_term[LANGUAGE_NONE][0]['tid'] = $default_tid;
+      $node->field_progress_percent[LANGUAGE_NONE][0]['value'] = 0;
+    }  
+    
+    //anyway, delete the assigned user because this will be a ressource planing issue
+    unset($node->field_task_assigned_users);
+    
+  }
+ 
+}
+
+/**
+* Implements hook_erpal_clone_node_postprocess_alter to add the new book to the given project
+*/
+function erpal_projects_helper_erpal_clone_node_postprocess_alter($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  $options = $args['options'];
+  
+  if ($node->type == 'erpal_book') {
+    //Link new book to selected project and delete all references to exported files of the new 
+    //if tasks are cloned, they will be added to this project
+  
+    if ($options['project']) {
+      $project_nid = $options['project'];
+      $project_node = node_load($project_nid);
+      $project_node->field_books_ref[LANGUAGE_NONE][]['target_id'] = $node->nid;
+      node_save($project_node);
+    }
+  }
 }

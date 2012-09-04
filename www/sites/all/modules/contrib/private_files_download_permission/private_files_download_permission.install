@@ -13,7 +13,7 @@
  * Implements hook_disable().
  */
 function private_files_download_permission_disable() {
-  foreach (user_roles() as $rid) {
+  foreach (user_roles() as $rid => $role_name) {
     user_role_revoke_permissions($rid, array(
       'download private files',
       'administer private files download permission'

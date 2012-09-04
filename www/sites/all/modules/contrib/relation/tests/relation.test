@@ -25,6 +25,7 @@ class RelationTestCase extends DrupalWebTestCase {
       'create article content',
       'create page content',
       'administer relation types',
+      'administer relations',
       'access relations',
       'create relations',
       'edit relations',
@@ -354,30 +355,13 @@ class RelationAPITestCase extends RelationTestCase {
         unset($need_ids[$endpoint['entity_id']]);
       }
       $this->assertFalse($need_ids, 'All ids found.');
+      // Confirm the rid in revision table.
+      $revision = db_select('relation_revision', 'v')
+          ->fields('v', array('rid'))
+          ->condition('vid', $relation->vid)
+          ->execute()
+          ->fetchAllAssoc('rid');
+      $this->assertTrue(array_key_exists($rid, $revision), 'Relation revision created.');
     }
-  }
-
-  /**
-   * Tests deletion of a relation.
-   */
-  function testRelationDelete() {
-    $relations = relation_query('node', $this->node1->nid)
-      ->propertyOrderBy('created', 'DESC')
-      ->execute();
-    $relation = $relations[$this->rid_directional];
-
-    $this->drupalPost("relation/$relation->rid/delete", array(), t('Delete'));
-    $arg = array(':rid' => $relation->rid);
-    $this->assertFalse((bool) db_query_range('SELECT * FROM {relation} WHERE rid = :rid', 0, 1, $arg)->fetchField(), 'Nothing in relation table after delete.');
-    $this->assertFalse((bool) db_query_range('SELECT * FROM {relation_revision} WHERE rid = :rid', 0, 1, $arg)->fetchField(), 'Nothing in relation revision table after delete.');
-    $skeleton_relation = entity_create_stub_entity('relation', array($relation->rid, $relation->vid, $relation->relation_type));
-    field_attach_load('relation', array($relation->rid => $skeleton_relation));
-    $this->assertIdentical($skeleton_relation->endpoints, array(), t('Field data not present after delete'));
-
-    // Try deleting the content types.
-    $this->drupalGet("admin/structure/relation/manage/$this->relation_type_symmetric/delete");
-    $num_relations = 1;
-    // See relation_type_delete_confirm() in relation.admin.inc
-    $this->assertRaw(format_plural($num_relations, 'The %label relation type is used by 1 relation on your site. If you remove this relation type, you will not be able to edit  %label relations and they may not display correctly.', 'The %label relation type is used by @count relations on your site. If you remove %label, you will not be able to edit %label relations and they may not display correctly.', array('%label' => $this->relation_types['symmetric']['label'], '@count' => $num_relations)), 'Correct number of relations found (1) for ' . $this->relation_types['symmetric']['label'] . ' relation type.');
   }
 }

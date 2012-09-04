@@ -20,6 +20,13 @@ function _erpal_crm_mailaction_config_menu(){
     'type' => MENU_LOCAL_TASK,
   );
   
+  $items['admin/erpal/crm-mailaction/run-import'] = array(
+    'page callback' => '_erpal_crm_mailaction_cron_page_wrapper',
+    'access arguments' => array('config erpal crm mailaction'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  
   return $items;
 }
 
@@ -38,8 +45,6 @@ function _erpal_crm_mailaction_config_basic(){
 */
 function _erpal_crm_mailaction_config_form($form, &$form_state){
 
-  erpal_crm_mailaction_cron ();
-  
   $form = array();
 
  
@@ -158,6 +163,31 @@ function _erpal_crm_mailaction_config_form($form, &$form_state){
     '#title'	         => t('Publish imported attachments'),
     '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_attachments', FALSE),
   ); 
+  
+  $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS]['create_contact_for_unknown_user'] = array (
+    '#type'            => 'checkbox',
+    '#title'	         => t('Create contacts for unknown users. (NOT SECURE!)'),
+    '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'create_contact_for_unknown_user', FALSE),
+  ); 
+  
+  $form['erpal_crm_mailaction'][ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS]['cc_box'] = array (
+    '#type'            => 'textfield',
+    '#title'	         => t('Reply (cc) box'),
+    '#default_value'	 => _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'cc_box', ''),
+    '#description'		 => t('It is the email address which will all the mails of a conversion per cc.')
+  ); 
+  
+  $form['erpal_crm_mailaction']['test'] = array (
+    '#type'           => 'fieldset',
+    '#title'		      => t('Test import'),
+    '#collapsible'    => TRUE,
+    '#collapsed'      => TRUE,
+    '#description'		=> T('Same function like with cron job. So, you maybe have to run this function more than one time to import many mails.')
+  ); 
+  
+  $form['erpal_crm_mailaction']['test']['link'] = array (
+    '#markup'       => l(t('Start import'), 'admin/erpal/crm-mailaction/run-import'),
+  ); 
  
   $form['submit'] = array(
     '#type'   => 'submit',
@@ -175,7 +205,7 @@ function _erpal_crm_mailaction_config_form_validate($form, &$form_state) {
   $values   = (object)$form_state['values']['erpal_crm_mailaction'];
   $mailBox  = (object)$values->mailbox;
   
-  if (intval ($mailBox->port) == 0) {
+  if (intval ($mailBox->port) <= 0) {
     form_set_error ('mailbox[port]', t('Please specify a valid port number (>0).'));
   }   
   

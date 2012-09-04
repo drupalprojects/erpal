@@ -28,7 +28,7 @@ function feature_erpal_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ant_pattern_erpal_contact';
-  $strongarm->value = '[node:field_company_name] [node:field_firstname] [node:field_lastname]';
+  $strongarm->value = '[erpal_contact:company_name] [erpal_contact:firstname] [erpal_contact:lastname]';
   $export['ant_pattern_erpal_contact'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -155,7 +155,11 @@ function feature_erpal_basic_strongarm() {
       ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'title' => array(
+          'weight' => '0',
+        ),
+      ),
       'display' => array(),
     ),
   );

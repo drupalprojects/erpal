@@ -8,11 +8,19 @@ function erpal_invoice_helper_token_info() {
   $types['erpal_invoice'] = array(
     'name' => t("Erpal invoice token"),
     'description' => t("Tokens for invoice notes."),
+    'needs-data' => 'erpal_invoice',
+  );
+  
+  $types['erpal_invoice_skonto'] = array(
+    'name' => t("Erpal invoice skonto token"),
+    'description' => t("Tokens for invoice skonto tokens."),
+    'needs-data' => 'erpal_invoice',
   );
   
   $types['erpal_invoice_referenced_data'] = array(
     'name' => t("Erpal invoice CRM data"),
     'description' => t("Tokens for invoice from crm activities."),
+    'needs-data' => 'erpal_invoice_referenced_data',
   );
 
   $invoice['total'] = array(
@@ -35,6 +43,21 @@ function erpal_invoice_helper_token_info() {
     'name' => t("The currency"),
     'description' => t("The currency of the invoice."),
   );
+  $invoice['next_invoice_number'] = array(
+    'name' => t("Next invoice number"),
+    'description' => t("The next invoice number in the system."),
+  );
+  
+  //skonto
+  $invoice_skonto['skonto_period'] = array(
+    'name' => t("The skonto period"),
+    'description' => t("This is the skonto period in days."),
+  );
+  $invoice_skonto['skonto_rate'] = array(
+    'name' => t("Skonto rate"),
+    'description' => t("The skonto rate in percent."),
+  );
+  
   
   //if module erpal project basic is active, add tokens for 
   if (module_exists('feature_erpal_project_basic')) {
@@ -52,6 +75,7 @@ function erpal_invoice_helper_token_info() {
     'types' => $types,
     'tokens' => array(
       'erpal_invoice' => $invoice,
+      'erpal_invoice_skonto' => $invoice_skonto,
       'erpal_invoice_referenced_data' => $referenced_data,
     ),
   );
@@ -67,7 +91,7 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
   
   $date_form_date = _erpal_basic_helper_date_format_date_only();
   if ($type == 'erpal_invoice') {
-    $invoice = $data['erpal_invoice'];
+    $invoice = isset($data['erpal_invoice']) ? $data['erpal_invoice'] : false;
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'credit_period':
@@ -85,6 +109,10 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
         case 'currency':
           $replacements[$original] = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
         break;
+        case 'next_invoice_number':
+          $invoice_number = isset($data['invoice_number']) && $data['invoice_number'] ? $data['invoice_number'] : _erpal_invoice_helper_get_next_invoice_number();
+          $replacements[$original] = $invoice_number;
+        break;
         
       }
     }
@@ -100,6 +128,19 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
           $order_numbers = _erpal_invoice_helper_get_order_numbers($invoice);            
           $replacements[$original] = implode(',', $order_numbers['extern']);        
           break;
+      }
+    }
+  } elseif ($type == 'erpal_invoice_skonto') {
+    $invoice = isset($data['erpal_invoice']) ? $data['erpal_invoice'] : false;
+    $skonto = _erpal_invoice_helper_get_skonto($invoice);
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'skonto_period':
+          $replacements[$original] = $skonto['period'];
+        break;
+        case 'skonto_rate':
+          $replacements[$original] = $skonto['rate'];
+        break;               
       }
     }
   }

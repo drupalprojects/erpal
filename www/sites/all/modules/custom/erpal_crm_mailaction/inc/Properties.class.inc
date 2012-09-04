@@ -5,6 +5,7 @@
  * @copyright	2012 © Bright Solutions GmbH
  * 
  * This is an abstract class for extending other class with property functionality.
+ * It is for extending other classes with properties functionality.
  */
 
 namespace erpal_crm_mailaction;

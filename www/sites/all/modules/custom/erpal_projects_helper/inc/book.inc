@@ -2,12 +2,26 @@
 
 /**
 * Implements hook_book_child_nodes provided by erpal_book_helper module
+* @param $nids_only if true only nids are returned otherwise node objects are fully loaded
 */
-function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $options) {
+function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $options, $nids_only) {
   
+  //set default value if not set
+  if (!isset($options['export_tasks']))
+    $options['export_tasks'] = false;
+    
   if (!$options['export_tasks'])
     return array();
-  
+
+  $child_task_nodes = _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $nids_only);
+
+  return $child_task_nodes;
+}
+
+/**
+* Return all Task children
+*/
+function _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $nids_only) {
   //we return all tasks that have the given parent_node as parent
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
@@ -16,11 +30,15 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
   ->fieldCondition('field_parent', 'target_id', $parent_node->nid, '=')
   ->fieldOrderBy('field_weight', 'value', 'ASC');
 
+  //set some default values
+  if (!isset($options['ignore_exclude']['pdf']))
+    $options['ignore_exclude']['pdf'] = true;
+  
   if (!$options['ignore_exclude']['pdf']) {
     //exclude some node from export
     $exclude = array('pdf');
     
-    //normally we would do it lik
+    //normally we would do it like
     //$query->fieldCondition('field_task_exclude_from', 'value', 'pdf', '!=');
     //but that doenst work if field has no value, not even NULL at all. So we get all excluded nids and
     //exclude them in the query.
@@ -37,12 +55,15 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
   $child_task_nodes = array();
   if (isset($result['node'])) {
     $child_nids = array_keys($result['node']);
-    $child_task_nodes = entity_load('node', $child_nids);
+    
+    if (!$nids_only)
+      $child_task_nodes = entity_load('node', $child_nids);
+    else
+      $child_task_nodes = $child_nids;
   }
-
+  
   return $child_task_nodes;
 }
-
 
 /**
 * alter pdf create form provided by erpal_book_helper module
@@ -67,45 +88,50 @@ function _erpal_projects_helper_book_pdf_form_alter(&$form, &$form_state) {
     
 }
 
-/**
-* Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
-*/
-function erpal_projects_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {
-  
-  $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
-  $query_back = array('destination' => $current_viewed_url);
-  $query_add = $query_back;
-  $query_add['field_parent'] = $id;
-  
-  $parent_node = node_load($id);
 
-  $has_project = _erpal_projects_helper_has_project($parent_node);
-  
-  if ($type == 'erpal_task') {
-    
-    $menu = array(
-      array('title' => t('View'), 'url' => url('node/'.$id)),
-      array('title' => t('Edit'), 'url' => url('node/'.$id.'/edit', array('query' => $query_back))),
-      array('title' => t('Delete'), 'url' => url('node/'.$id.'/delete', array('query' => $query_back))),            
-    );
-    
-    if ($has_project) {
-      $menu[] = array('title' => t('Add sub task'), 'url' => url('node/add/erpal-task', array('query' => $query_add)));
-      $menu[] = array('title' => t('Add timetracking'), 'url' => url('node/add/erpal-timetracking', array('query' => $query_add)));
+/**
+* Check, if a book has been removed comparing project and old_project params
+*/
+function _erpal_projects_helper_handle_removed_book_nodes($project_node, $old_project_node) {
+  $old_books = isset($old_project_node->field_books_ref[LANGUAGE_NONE]) ? $old_project_node->field_books_ref[LANGUAGE_NONE] : array();
+  $new_books = isset($project_node->field_books_ref[LANGUAGE_NONE]) ? $project_node->field_books_ref[LANGUAGE_NONE] : array();
+
+  //is there a book in old_books that is no more in new books?
+  $no_more_linked = array();
+  foreach ($old_books as $old_delta => $old_nid) {
+    $old_nid = $old_nid['target_id'];
+    $is_linked = false;
+    foreach ($new_books as $new_delta => $new_nid) {
+      $new_nid = $new_nid['target_id'];
+      if ($old_nid == $new_nid)
+        $is_linked = true;
     }
     
-    return $menu;
+    if (!$is_linked)
+      $no_more_linked[] = $old_nid;
+  }
+
+  //now go throug all book nids that are no more linked, load their deep searched children but only tasks and
+  //remove the parent link of each task that links to one of these pages
+  $types = array('erpal_task', 'erpal_book_page');
+  $all_task_nids = array();
+  foreach ($no_more_linked as $book_nid) {
+    $nids = _erpal_basic_helper_get_all_child_nids_deep_search($book_nid, $types);
+    $all_task_nids = array_merge($all_task_nids, $nids);
+  }
+
+  //now update and delete the parent of these tasks if they really belong to the project given
+  foreach ($all_task_nids as $nid) {
+    $nid = $nid['child'];
+    $a_node = node_load($nid);
+    $task_project_nid = isset($a_node->field_project_ref[LANGUAGE_NONE][0]['target_id']) ? $a_node->field_project_ref[LANGUAGE_NONE][0]['target_id'] : false;
+    if ($a_node->type == 'erpal_task' && $task_project_nid == $project_node->nid) {
+      unset($a_node->field_parent[LANGUAGE_NONE]);
+      node_save($a_node);
+      dpm($a_node);
+    }
   }
   
-  if ($type == 'erpal_book_page') {            
-    if ($has_project) {
-      $menu = array(
-        array('title' => t('Add task'), 'url' => url('node/add/erpal-task', array('query' => $query_add))),
-      );
-      
-      return $menu;
-    }    
-  }
 }
 
 /**

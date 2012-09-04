@@ -7,6 +7,18 @@
 module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
  
 /**
+* Implements hook_permission
+*/
+function erpal_docs_helper_permission() {
+  return array(
+    'access documents view' => array(
+      'title' => t('Access documents view'), 
+      'description' => t('Allows the user to access the documents view'),
+    ),
+  );
+} 
+ 
+/**
 * This function is called in header area of documents view
 */
 function _erpal_docs_helper_view_documents_header_content()
@@ -61,7 +73,7 @@ function _erpal_docs_helper_create_document_link($q_arg = false, $query_arr = ar
     file_node and thei erpal_file_node itself will be referenced by the field_asset_files of the node param. 
     if there is no field_asset_files nothing will be done
 * @param $delete_source if true, $file will be deleted
-* @return true if success otherwise false
+* @return true (the created file node) if success otherwise false
 */
 function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_parent=false, $delete_source=false) {
   if (!$file_node) {

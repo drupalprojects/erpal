@@ -11,10 +11,9 @@
 function _erpal_projects_billable_insert_project($node) {
   
   //only process if the task is completed!
-  $project_status = 'inserted';
-  if (isset($node->field_project_status[LANGUAGE_NONE][0]))
-    $project_status = $node->field_project_status[LANGUAGE_NONE][0]['value'];
-    
+  $project_status = false;
+  $project_status = _erpal_basic_helper_get_tid_semantic($node, 'field_project_status_term');  
+
   if ($project_status != 'completed')
     return;
     
@@ -37,7 +36,7 @@ function _erpal_projects_billable_update_project($node) {
   
   $billables = _erpal_projects_billable_billbales_by_subject_nid($node->nid, true);
     
-  $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);
+  $billable_information = _erpal_projects_billable_subject_billable_information_subject($node);
   
   /*
   //now we have all information to create a billable from this project

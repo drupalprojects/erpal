@@ -17,6 +17,11 @@ function feature_erpal_project_basic_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'erpal_project';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
+    'budget_usage' => array(
+      'weight' => '6',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
     'title' => array(
       'weight' => '0',
       'label' => 'hidden',
@@ -42,6 +47,11 @@ function feature_erpal_project_basic_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'erpal_task';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
+    'budget_usage' => array(
+      'weight' => '7',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
     'links' => array(
       'weight' => '0',
       'label' => 'hidden',
@@ -59,6 +69,26 @@ function feature_erpal_project_basic_ds_field_settings_info() {
     ),
   );
   $export['node|erpal_task|full'] = $ds_fieldsetting;
+
+  return $export;
+}
+
+/**
+ * Implements hook_ds_custom_fields_info().
+ */
+function feature_erpal_project_basic_ds_custom_fields_info() {
+  $export = array();
+
+  $ds_field = new stdClass();
+  $ds_field->api_version = 1;
+  $ds_field->field = 'budget_usage';
+  $ds_field->label = 'Budget usage';
+  $ds_field->field_type = 3;
+  $ds_field->entities = array(
+    'node' => 'node',
+  );
+  $ds_field->properties = array();
+  $export['budget_usage'] = $ds_field;
 
   return $export;
 }
@@ -86,14 +116,15 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       ),
       'left' => array(
         0 => 'field_date',
-        1 => 'field_project_status',
-        2 => 'field_project_contacts',
-        3 => 'field_customer_ref',
-        4 => 'field_activity_ref',
+        1 => 'field_project_status_term',
+        2 => 'field_priority_term',
+        3 => 'field_project_contacts',
+        4 => 'field_customer_ref',
+        5 => 'field_activity_ref',
       ),
       'right' => array(
-        0 => 'field_pricing',
-        1 => 'field_project_tags',
+        0 => 'field_project_tags',
+        1 => 'field_pricing',
       ),
       'footer' => array(
         0 => 'field_books_ref',
@@ -133,12 +164,13 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'title' => 'header',
       'body' => 'header',
       'field_date' => 'left',
-      'field_project_status' => 'left',
+      'field_project_status_term' => 'left',
+      'field_priority_term' => 'left',
       'field_project_contacts' => 'left',
       'field_customer_ref' => 'left',
       'field_activity_ref' => 'left',
-      'field_pricing' => 'right',
       'field_project_tags' => 'right',
+      'field_pricing' => 'right',
       'field_books_ref' => 'footer',
       'status' => 'footer',
       'submit' => 'footer',
@@ -181,7 +213,7 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
   $ds_layout->view_mode = 'full';
   $ds_layout->layout = 'ds_2col';
   $ds_layout->settings = array(
-    'hide_empty_regions' => 1,
+    'hide_empty_regions' => 0,
     'hide_sidebars' => 0,
     'regions' => array(
       'left' => array(
@@ -189,16 +221,15 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
         1 => 'author',
         2 => 'post_date',
         3 => 'field_project_tags',
-        4 => 'field_date',
-        5 => 'field_project_status',
-        6 => 'field_pricing',
+        4 => 'field_project_status_term',
+        5 => 'field_date',
+        6 => 'budget_usage',
       ),
       'right' => array(
         0 => 'field_customer_ref',
         1 => 'field_project_contacts',
-        2 => 'field_book_ref',
-        3 => 'field_activity_ref',
-        4 => 'body',
+        2 => 'field_activity_ref',
+        3 => 'body',
       ),
     ),
     'fields' => array(
@@ -206,12 +237,11 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'author' => 'left',
       'post_date' => 'left',
       'field_project_tags' => 'left',
+      'field_project_status_term' => 'left',
       'field_date' => 'left',
-      'field_project_status' => 'left',
-      'field_pricing' => 'left',
+      'budget_usage' => 'left',
       'field_customer_ref' => 'right',
       'field_project_contacts' => 'right',
-      'field_book_ref' => 'right',
       'field_activity_ref' => 'right',
       'body' => 'right',
     ),
@@ -233,11 +263,12 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'left' => array(
         0 => 'field_date',
         1 => 'field_estimated_time',
-        2 => 'field_task_type',
+        2 => 'field_task_type_term',
         3 => 'group_task_time_group',
         4 => 'field_parent',
         5 => 'field_progress_percent',
-        6 => 'field_task_status',
+        6 => 'field_task_status_term',
+        7 => 'field_priority_term',
       ),
       'header' => array(
         0 => 'title',
@@ -290,14 +321,14 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'title' => 'header',
       'field_project_ref' => 'header',
       'body' => 'header',
-      'field_task_type' => 'left',
+      'field_task_type_term' => 'left',
       'group_task_time_group' => 'left',
       'field_parent' => 'left',
       'field_progress_percent' => 'left',
-      'field_task_status' => 'left',
+      'field_task_status_term' => 'left',
       'field_pricing' => 'right',
-      'field_project_tags' => 'footer',
       'field_task_assigned_users' => 'right',
+      'field_project_tags' => 'footer',
       'field_task_exclude_from' => 'footer',
       'status' => 'footer',
       'submit' => 'footer',
@@ -327,6 +358,7 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'options' => 'hidden',
       'additional_settings' => 'hidden',
       'actions' => 'hidden',
+      'field_priority_term' => 'left',
       '_add_existing_field' => 'hidden',
     ),
     'classes' => array(),
@@ -341,7 +373,7 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
   $ds_layout->view_mode = 'full';
   $ds_layout->layout = 'ds_2col_stacked';
   $ds_layout->settings = array(
-    'hide_empty_regions' => 1,
+    'hide_empty_regions' => 0,
     'hide_sidebars' => 0,
     'regions' => array(
       'header' => array(
@@ -350,20 +382,21 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
         2 => 'author',
         3 => 'body',
         4 => 'field_project_tags',
+        5 => 'field_task_type_term',
+        6 => 'field_task_status_term',
       ),
       'left' => array(
-        0 => 'field_task_type',
+        0 => 'budget_usage',
         1 => 'field_date',
         2 => 'field_task_assigned_users',
         3 => 'field_parent',
         4 => 'field_task_exclude_from',
       ),
       'right' => array(
-        0 => 'field_pricing',
-        1 => 'field_estimated_time',
-        2 => 'field_project_ref',
-        3 => 'field_task_status',
-        4 => 'field_progress_percent',
+        0 => 'field_estimated_time',
+        1 => 'field_project_ref',
+        2 => 'field_task_status',
+        3 => 'field_progress_percent',
       ),
     ),
     'fields' => array(
@@ -372,12 +405,13 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'author' => 'header',
       'body' => 'header',
       'field_project_tags' => 'header',
-      'field_task_type' => 'left',
+      'field_task_type_term' => 'header',
+      'field_task_status_term' => 'header',
+      'budget_usage' => 'left',
       'field_date' => 'left',
       'field_task_assigned_users' => 'left',
       'field_parent' => 'left',
       'field_task_exclude_from' => 'left',
-      'field_pricing' => 'right',
       'field_estimated_time' => 'right',
       'field_project_ref' => 'right',
       'field_task_status' => 'right',

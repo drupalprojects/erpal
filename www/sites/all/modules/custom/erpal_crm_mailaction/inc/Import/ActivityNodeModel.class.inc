@@ -46,6 +46,9 @@ class ActivityNodeModel {
    * @param		string	$body			The body of the mail.
    */
   public function addToCustomerActivity ($nid, $to, $from, $subject, $body, $attachments) {
+
+    $contactModel = new ContactNodeModel ();
+    $contactID    = $contactModel->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
     
     drupal_load ('module', 'comment');
     
@@ -73,15 +76,22 @@ class ActivityNodeModel {
           )
         )
       ),
-    );
-  
+      'field_contacts_ref' => array (
+        LANGUAGE_NONE => array (
+          0 => array (
+            'target_id' => $contactID
+          )
+        )
+      )
+    ); 
+
     comment_submit($comment);
     comment_save($comment);
-    
+ 
     if (! empty ($attachments)) {
       
       foreach ($attachments as $attachment) {
-        $this->addFile ($nid, $attachment, $subject);
+        $this->addFile ($comment->cid, $attachment, $subject, TRUE);
       }
     }
     
@@ -98,10 +108,10 @@ class ActivityNodeModel {
    */
   public function insertCustomerActivity ($to, $from, $subject, $body, $attachments) {
     
-    module_load_include ('inc', 'erpal_crm_mailaction', 'includes/ContactModel.class');
+    module_load_include ('inc', 'erpal_crm_mailaction', 'includes/ContactNodeModel.class');
     
-    $auth     = new ContactModel ();
-    $contact  = $auth->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
+    $contactModel = new ContactNodeModel ();
+    $contactID    = $contactModel->loadContactOfMailAddress ($from->mailbox . '@' . $from->host);
         
     $node           = new \stdClass ();
     $node->type     = 'erpal_crm_activity';
@@ -113,11 +123,18 @@ class ActivityNodeModel {
     $node->body[LANGUAGE_NONE][0]['value']    = $body;
     $node->body[LANGUAGE_NONE][0]['format']   = 'filtered_html';
     $node->title                              = check_plain ($subject);
+    $node->language                           = LANGUAGE_NONE;
  
-    $node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
+    //$node->field_activity_status[LANGUAGE_NONE][]['value'] = 1; // REQUEST
+    //Update, da dieses Feld nun ein Term reference feld ist und es an den Terms ein Flag gibt, welcher Term der default Term ist.
+    $field_info = field_info_field('field_activity_status_term');
+    $vocabulary_name = $field_info['settings']['allowed_values'][0]['vocabulary'];
+    $taxonomy = taxonomy_vocabulary_machine_name_load($vocabulary_name);
+    $vid = $taxonomy->vid;
+    $node->field_is_default_term[LANGUAGE_NONE][0]['value'] = _erpal_basic_helper_get_default_tid($vid);   
     
     if ($contact !== FALSE) {
-      $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contact;
+      $node->field_contact_ref[LANGUAGE_NONE][]['target_id'] = $contactID;
     }
     
     node_save ($node);
@@ -150,10 +167,15 @@ class ActivityNodeModel {
    * @param		string		The source description.
    * @return	boolean		TRUE on success.
    */
-  private function addFile ($nid, $file, $sourceDescription) {
+  private function addFile ($parentID, $file, $sourceDescription, $parentIsComment = FALSE) {
     
-    $parentNode = node_load ($nid);
-    if ($parentNode === FALSE) {
+    if (! $parentIsComment) {
+      $parentObject = node_load ($parentID);
+    }else{
+      $parentObject = comment_load ($parentID);
+    }
+  
+    if ($parentObject === FALSE) {
       return FALSE;
     }
     
@@ -162,9 +184,13 @@ class ActivityNodeModel {
     
     node_object_prepare($node);
     
-    $node->status                             = (int)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 'publish_attachments', FALSE);
+    $node->status                             = (int)_erpal_crm_mailaction_get_settings (
+                                                ERPAL_CRM_MAILACTION_CONFIG_GROUP_IMPORT_SETTINGS, 
+                                                'publish_attachments', 
+                                                FALSE);
     $node->has_body                           = TRUE;
-    $node->title                              = check_plain ($file->filename);    
+    $node->title                              = check_plain ($file->filename);
+    $node->language                           = LANGUAGE_NONE;
     $node->body[LANGUAGE_NONE][0]['value']    = check_plain ($sourceDescription);
     $node->body[LANGUAGE_NONE][0]['format']   = 'filtered_html';
     
@@ -179,13 +205,25 @@ class ActivityNodeModel {
     if (! isset ($node->nid)) {
       return FALSE;
     }
- 
-    $target = array(
-      'target_id' => $node->nid,
-      'target_type' => 'node',
-    );
-    $parentNode->field_asset_files[LANGUAGE_NONE][] = $target;
-    node_save ($parentNode);
+    
+    if (! $parentIsComment) {
+    
+    	$parentObject->field_asset_files[LANGUAGE_NONE][]['nid'] = array(
+        'target_id' => $node->nid,
+        'target_type' => 'node',
+      );
+    
+      node_save ($parentObject);
+    }else{ 
+    
+    	$parentObject->field_asset_files[LANGUAGE_NONE][]['nid'] = array(
+        'target_id'   => $node->nid,
+        'target_type' => 'node',
+      );
+      
+      comment_save($parentObject);
+    }
+
     
     return TRUE;
   }

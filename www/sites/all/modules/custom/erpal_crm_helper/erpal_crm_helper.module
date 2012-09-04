@@ -32,10 +32,87 @@ function erpal_crm_helper_permission(){
       'title'       => t('Mail reply from activity node'), 
       'description' => t('Shows a mailto reply link for the specific user on activity nodes and the commtents of such nodes.'),
     ),
+    'access activities view' => array(
+      'title' => t('Access activities view'), 
+      'description' => t('Allows the user to access the activities view'),
+    ),
   );
+}
+
+/**
+ * Implements hook_help().
+ */
+function erpal_crm_helper_help($path, $arg) {
+  switch ($path) {    
+    case 'admin/structure/taxonomy/%':
+      $vocab_name = $arg[3];      
+      if ($vocab_name == 'activity_status_terms')
+        _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, 'field_simple_process_status');     
+  }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_crm_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_crm_activity_node_form') {
+    _erpal_crm_helper_field_status_term_set_default($form);
+    
+    _erpal_basic_helper_warn_semantic_not_covered_by_terms('activity_status_terms', 'field_simple_process_status');
+  }
+}
+
+/**
+* Sets the default value of the field_activity_status_term
+*/
+function _erpal_crm_helper_field_status_term_set_default(&$form) {
+  if (isset($form['field_activity_status_term'][LANGUAGE_NONE]['#default_value'][0]))
+    return;
+   
+  $vid = _erpal_basic_helper_term_field_get_vid('field_activity_status_term'); 
+  $default_tid = _erpal_basic_helper_get_default_tid($vid);
+  if ($default_tid)
+    $form['field_activity_status_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
 }
  
 /**
+* Implements hook_field_attach_validate
+*/
+function erpal_crm_helper_field_attach_validate($entity_type, $entity, &$errors) {
+  if ($entity_type == 'taxonomy_term') {
+    if (isset($entity->field_is_default_term)) {
+      $new_errors = _erpal_basic_helper_validate_field_default_term($entity);
+      $errors = array_merge($errors, $new_errors);
+    }
+  }
+}
+ 
+ 
+/**
+* Implements hook_node_validate
+*/
+function erpal_crm_helper_node_validate($node, $form, $form_state) {
+  
+  if ($node->type == 'erpal_crm_activity')
+    _erpal_crm_helper_crm_activity_validate($node, $form, $form_state);
+  
+}
+
+/**
+* Validates crm activity nodes
+*/
+function _erpal_crm_helper_crm_activity_validate($node, $form, $form_state) {
+  $next_contact = isset($node->field_next_contact[LANGUAGE_NONE][0]['value']) ? $node->field_next_contact[LANGUAGE_NONE][0]['value'] : false;
+  
+  if ($next_contact) {
+    //if set, it must be in the future
+    $next_contact_unixtime = strtotime($next_contact);
+    if ($next_contact_unixtime < time())
+      form_error($form['field_next_contact'], t('If date for next contact is set, it must be in the fututre'));
+  }
+}
+
+/** 
 * Implements hook_view_contacts_header_content called by module erpal_basic_helper
 */
 function erpal_crm_helper_view_contacts_header_content(){
@@ -90,43 +167,4 @@ function _erpal_crm_helper_create_activity_link($q_arg = false, $query_arr = arr
   );
 }
 
-/*
- * Implements hook_node_view_alter.
- * Used to add "Reply per mail" links to an activity node and the comments of such a node.
- */
-function erpal_crm_helper_node_view_alter(&$build) {
 
-  if ($build['#bundle'] != 'erpal_crm_activity') {
-    
-    return;
-  }
-  
-  if (! user_access ('reply mails erpal activity')) {
-    
-    return;
-  }
-  //@TODO: hier umstellen auf entity referencens und berücksichtigen, dass ein Vorgang mehrere Kontakte haben kann
-  if (isset ($build['#node']->field_contact_ref['object']->field_email[LANGUAGE_NONE][0]['value'])) {
-    $build ['links']['node']['#links']['test']  =array ( 
-      'title'=> t('Reply per mail'),
-      'href' => 'mailto: ' . $build['#node']->field_contact_ref[LANGUAGE_NONE][0]['node']->field_email[LANGUAGE_NONE][0]['value'] . '?subject=Re:' . $build['#node']->title . ' [ticket:' . $build['#node']->nid . ']',
-      'html' => TRUE
-    );
-  }
-  
-  $comments = isset ($build['comments']['comments']) ? $build['comments']['comments'] : array ();
-  
-  foreach ($comments as $id=>&$comment) {
-    
-    if (intval ($id) > 0) {
-      
-      $build['comments']['comments'][$id]['links']['comment']['#links']['test']  =array ( 
-      'title'=> t('Reply per mail'),
-      'href' => 'mailto: ' . $comment['#comment']->mail . '?subject=Re:' . $comment['#comment']->subject . ' [ticket:' . $comment['#comment']->nid . ']',
-      'html' => TRUE
-      );
-    }
-  }
-  
-  return;
-}

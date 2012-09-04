@@ -8,5 +8,6 @@
  * $body	- The body of the mail.
  */
 ?>
-<p><strong><?php print t('Receiver'); ?>:&nbsp;<?php print $to; ?></p>
+<p><strong><?php print t('Sender'); ?>:&nbsp;<?php print $from; ?></strong></p>
+<p><strong><?php print t('Receiver'); ?>:&nbsp;<?php print $to; ?></strong></p>
 <p><?php print $body; ?></p>

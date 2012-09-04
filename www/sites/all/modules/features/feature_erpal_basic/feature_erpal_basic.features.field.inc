@@ -10,31 +10,40 @@
 function feature_erpal_basic_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'field_collection_item-field_addresses-field_address_type'
-  $fields['field_collection_item-field_addresses-field_address_type'] = array(
+  // Exported field: 'field_collection_item-field_addresses-field_address_type_terms'.
+  $fields['field_collection_item-field_addresses-field_address_type_terms'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_address_type',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+      'field_name' => 'field_address_type_terms',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
         ),
       ),
-      'module' => 'list',
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
-          'invoice' => 'Invoice',
-          'hq' => 'Headquarter',
-          'branch' => 'Branch Office',
+          0 => array(
+            'vocabulary' => 'address_types',
+            'parent' => '0',
+          ),
         ),
-        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
-      'type' => 'list_text',
+      'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
       'bundle' => 'field_addresses',
@@ -44,36 +53,33 @@ function feature_erpal_basic_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 5,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 6,
         ),
       ),
       'entity_type' => 'field_collection_item',
-      'field_name' => 'field_address_type',
-      'label' => 'Address Type',
+      'field_name' => 'field_address_type_terms',
+      'label' => 'Address type',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '6',
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '7',
       ),
     ),
   );
 
-  // Exported field: 'field_collection_item-field_addresses-field_city'
+  // Exported field: 'field_collection_item-field_addresses-field_city'.
   $fields['field_collection_item-field_addresses-field_city'] = array(
     'field_config' => array(
       'active' => '1',
@@ -94,6 +100,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '80',
@@ -141,7 +148,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_addresses-field_country'
+  // Exported field: 'field_collection_item-field_addresses-field_country'.
   $fields['field_collection_item-field_addresses-field_country'] = array(
     'field_config' => array(
       'active' => '1',
@@ -155,6 +162,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -204,7 +212,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_addresses-field_street'
+  // Exported field: 'field_collection_item-field_addresses-field_street'.
   $fields['field_collection_item-field_addresses-field_street'] = array(
     'field_config' => array(
       'active' => '1',
@@ -225,6 +233,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -273,7 +282,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_addresses-field_zip_code'
+  // Exported field: 'field_collection_item-field_addresses-field_zip_code'.
   $fields['field_collection_item-field_addresses-field_zip_code'] = array(
     'field_config' => array(
       'active' => '1',
@@ -294,6 +303,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '10',
@@ -342,7 +352,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_bank_accounts-field_bank_account_number'
+  // Exported field: 'field_collection_item-field_bank_accounts-field_bank_account_number'.
   $fields['field_collection_item-field_bank_accounts-field_bank_account_number'] = array(
     'field_config' => array(
       'active' => '1',
@@ -363,6 +373,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -404,7 +415,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_bank_accounts-field_bank_name'
+  // Exported field: 'field_collection_item-field_bank_accounts-field_bank_name'.
   $fields['field_collection_item-field_bank_accounts-field_bank_name'] = array(
     'field_config' => array(
       'active' => '1',
@@ -425,6 +436,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -466,7 +478,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_bank_accounts-field_bank_number'
+  // Exported field: 'field_collection_item-field_bank_accounts-field_bank_number'.
   $fields['field_collection_item-field_bank_accounts-field_bank_number'] = array(
     'field_config' => array(
       'active' => '1',
@@ -487,6 +499,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -528,7 +541,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_bank_accounts-field_iban'
+  // Exported field: 'field_collection_item-field_bank_accounts-field_iban'.
   $fields['field_collection_item-field_bank_accounts-field_iban'] = array(
     'field_config' => array(
       'active' => '1',
@@ -549,6 +562,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -590,7 +604,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_bank_accounts-field_swift'
+  // Exported field: 'field_collection_item-field_bank_accounts-field_swift'.
   $fields['field_collection_item-field_bank_accounts-field_swift'] = array(
     'field_config' => array(
       'active' => '1',
@@ -611,6 +625,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -652,7 +667,76 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_phone-field_phone_number'
+  // Exported field: 'field_collection_item-field_phone-field_number_type_terms'.
+  $fields['field_collection_item-field_phone-field_number_type_terms'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_number_type_terms',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'number_types',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_phone',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 2,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_number_type_terms',
+      'label' => 'Number Type',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'field_collection_item-field_phone-field_phone_number'.
   $fields['field_collection_item-field_phone-field_phone_number'] = array(
     'field_config' => array(
       'active' => '1',
@@ -673,6 +757,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -720,70 +805,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_phone-field_phone_type'
-  $fields['field_collection_item-field_phone-field_phone_type'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_phone_type',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          'office' => 'Office',
-          'mobile' => 'Mobile',
-          'private' => 'Private',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'field_phone',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 1,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'field_collection_item',
-      'field_name' => 'field_phone_type',
-      'label' => 'Number Type',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '2',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_contact-field_addresses'
+  // Exported field: 'node-erpal_contact-field_addresses'.
   $fields['node-erpal_contact-field_addresses'] = array(
     'field_config' => array(
       'active' => '1',
@@ -793,6 +815,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_addresses',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -858,12 +881,12 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_bank_accounts'
+  // Exported field: 'node-erpal_contact-field_bank_accounts'.
   $fields['node-erpal_contact-field_bank_accounts'] = array(
     'field_config' => array(
       'active' => '1',
@@ -873,6 +896,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_bank_accounts',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -888,24 +912,30 @@ function feature_erpal_basic_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'field_collection',
+          'module' => 'field_collection_table',
           'settings' => array(
             'add' => 'Add',
             'delete' => 'Delete',
             'description' => TRUE,
             'edit' => 'Edit',
+            'empty' => TRUE,
             'view_mode' => 'full',
           ),
-          'type' => 'field_collection_view',
-          'weight' => 18,
+          'type' => 'field_collection_table_view',
+          'weight' => '18',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection',
+          'module' => 'field_collection_table',
           'settings' => array(
+            'add' => 'Add',
+            'delete' => 'Delete',
+            'description' => TRUE,
+            'edit' => 'Edit',
+            'empty' => TRUE,
             'view_mode' => 'full',
           ),
-          'type' => 'field_collection_fields',
+          'type' => 'field_collection_table_view',
           'weight' => '18',
         ),
         'teaser' => array(
@@ -927,12 +957,12 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '16',
+        'weight' => '14',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_birthday'
+  // Exported field: 'node-erpal_contact-field_birthday'.
   $fields['node-erpal_contact-field_birthday'] = array(
     'field_config' => array(
       'active' => '1',
@@ -942,6 +972,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_birthday',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -977,10 +1008,9 @@ function feature_erpal_basic_field_default_fields() {
             'multiple_from' => '',
             'multiple_number' => '',
             'multiple_to' => '',
-            'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => 14,
+          'weight' => '14',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -1031,12 +1061,12 @@ function feature_erpal_basic_field_default_fields() {
           'year_range' => '-100:+0',
         ),
         'type' => 'date_popup',
-        'weight' => '12',
+        'weight' => '10',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_company_name'
+  // Exported field: 'node-erpal_contact-field_company_name'.
   $fields['node-erpal_contact-field_company_name'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1057,6 +1087,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1076,7 +1107,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 12,
+          'weight' => '12',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -1117,7 +1148,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_contact_image'
+  // Exported field: 'node-erpal_contact-field_contact_image'.
   $fields['node-erpal_contact-field_contact_image'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1138,6 +1169,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'fid',
         ),
       ),
+      'locked' => '0',
       'module' => 'image',
       'settings' => array(
         'default_image' => 0,
@@ -1207,12 +1239,12 @@ function feature_erpal_basic_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '7',
+        'weight' => '6',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_contact_relations'
+  // Exported field: 'node-erpal_contact-field_contact_relations'.
   $fields['node-erpal_contact-field_contact_relations'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1222,6 +1254,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_contact_relations',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'relation_dummy_field',
       'settings' => array(
         'profile2_private' => FALSE,
@@ -1240,7 +1273,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'relation_dummy_field',
           'settings' => array(),
           'type' => 'relation_default',
-          'weight' => 15,
+          'weight' => '15',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -1276,12 +1309,12 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'relation_dummy_field',
         'settings' => array(),
         'type' => 'relation_default',
-        'weight' => '13',
+        'weight' => '11',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_contact_tags'
+  // Exported field: 'node-erpal_contact-field_contact_tags'.
   $fields['node-erpal_contact-field_contact_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1302,6 +1335,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -1326,7 +1360,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 17,
+          'weight' => '17',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -1363,12 +1397,12 @@ function feature_erpal_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '15',
+        'weight' => '13',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_contact_type'
+  // Exported field: 'node-erpal_contact-field_contact_type'.
   $fields['node-erpal_contact-field_contact_type'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1382,6 +1416,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1448,84 +1483,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_customer_category'
-  $fields['node-erpal_contact-field_customer_category'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_customer_category',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          'A' => 'A-Customer',
-          'B' => 'B-Customer',
-          'C' => 'C-Customer',
-          'NO' => 'NO-Customer',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_contact',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 16,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'full' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '9',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_customer_category',
-      'label' => 'Customer Category',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '14',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_contact-field_email'
+  // Exported field: 'node-erpal_contact-field_email'.
   $fields['node-erpal_contact-field_email'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1546,6 +1504,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1564,7 +1523,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 20,
+          'weight' => '20',
         ),
         'full' => array(
           'label' => 'above',
@@ -1595,12 +1554,12 @@ function feature_erpal_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '10',
+        'weight' => '9',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_facebook'
+  // Exported field: 'node-erpal_contact-field_facebook'.
   $fields['node-erpal_contact-field_facebook'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1610,6 +1569,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_facebook',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'link',
       'settings' => array(
         'attributes' => array(
@@ -1640,7 +1600,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'link',
           'settings' => array(),
           'type' => 'link_default',
-          'weight' => 11,
+          'weight' => '11',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -1695,7 +1655,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_fax'
+  // Exported field: 'node-erpal_contact-field_fax'.
   $fields['node-erpal_contact-field_fax'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1716,6 +1676,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1735,7 +1696,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 21,
+          'weight' => '21',
         ),
         'full' => array(
           'label' => 'above',
@@ -1766,12 +1727,12 @@ function feature_erpal_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '9',
+        'weight' => '8',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_firstname'
+  // Exported field: 'node-erpal_contact-field_firstname'.
   $fields['node-erpal_contact-field_firstname'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1792,6 +1753,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1851,7 +1813,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_gender'
+  // Exported field: 'node-erpal_contact-field_gender'.
   $fields['node-erpal_contact-field_gender'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1865,6 +1827,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -1888,7 +1851,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 22,
+          'weight' => '22',
         ),
         'full' => array(
           'label' => 'above',
@@ -1921,7 +1884,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_lastname'
+  // Exported field: 'node-erpal_contact-field_lastname'.
   $fields['node-erpal_contact-field_lastname'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1942,9 +1905,11 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'text',
@@ -1984,7 +1949,7 @@ function feature_erpal_basic_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_lastname',
       'label' => 'Lastname',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -2001,7 +1966,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_legal_other'
+  // Exported field: 'node-erpal_contact-field_legal_other'.
   $fields['node-erpal_contact-field_legal_other'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2022,6 +1987,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -2038,7 +2004,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 19,
+          'weight' => '19',
         ),
         'full' => array(
           'label' => 'above',
@@ -2074,7 +2040,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_phone'
+  // Exported field: 'node-erpal_contact-field_phone'.
   $fields['node-erpal_contact-field_phone'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2084,9 +2050,11 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_phone',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'field_collection',
@@ -2108,7 +2076,7 @@ function feature_erpal_basic_field_default_fields() {
             'view_mode' => 'full',
           ),
           'type' => 'field_collection_view',
-          'weight' => 8,
+          'weight' => '8',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -2118,11 +2086,16 @@ function feature_erpal_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'field_collection',
+          'module' => 'field_collection_table',
           'settings' => array(
+            'add' => 'Add',
+            'delete' => 'Delete',
+            'description' => TRUE,
+            'edit' => 'Edit',
+            'empty' => TRUE,
             'view_mode' => 'full',
           ),
-          'type' => 'field_collection_fields',
+          'type' => 'field_collection_table_view',
           'weight' => '13',
         ),
         'teaser' => array(
@@ -2144,12 +2117,12 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '8',
+        'weight' => '10',
       ),
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_twitter'
+  // Exported field: 'node-erpal_contact-field_twitter'.
   $fields['node-erpal_contact-field_twitter'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2159,6 +2132,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_twitter',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'link',
       'settings' => array(
         'attributes' => array(
@@ -2189,7 +2163,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'link',
           'settings' => array(),
           'type' => 'link_default',
-          'weight' => 13,
+          'weight' => '13',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -2244,7 +2218,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_vat_number'
+  // Exported field: 'node-erpal_contact-field_vat_number'.
   $fields['node-erpal_contact-field_vat_number'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2265,6 +2239,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '25',
@@ -2283,7 +2258,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 9,
+          'weight' => '9',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -2325,7 +2300,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_website'
+  // Exported field: 'node-erpal_contact-field_website'.
   $fields['node-erpal_contact-field_website'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2335,6 +2310,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_website',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'link',
       'settings' => array(
         'attributes' => array(
@@ -2365,7 +2341,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'link',
           'settings' => array(),
           'type' => 'link_default',
-          'weight' => 7,
+          'weight' => '7',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -2420,7 +2396,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_contact-field_xing'
+  // Exported field: 'node-erpal_contact-field_xing'.
   $fields['node-erpal_contact-field_xing'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2430,6 +2406,7 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_xing',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'link',
       'settings' => array(
         'attributes' => array(
@@ -2460,7 +2437,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'link',
           'settings' => array(),
           'type' => 'link_default',
-          'weight' => 10,
+          'weight' => '10',
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
@@ -2515,90 +2492,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_project-field_project_status'
-  $fields['node-erpal_project-field_project_status'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_project_status',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          'planing' => 'In planing',
-          'in_progress' => 'In progress',
-          'completed' => 'Completed',
-          'abort' => 'Abort',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_project',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '3',
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'full' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '5',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'test' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '3',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_project_status',
-      'label' => 'Project Status',
-      'required' => FALSE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'relation-works_at-endpoints'
+  // Exported field: 'relation-works_at-endpoints'.
   $fields['relation-works_at-endpoints'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2614,6 +2508,7 @@ function feature_erpal_basic_field_default_fields() {
           2 => 'r_index',
         ),
       ),
+      'locked' => '0',
       'module' => 'relation_endpoint',
       'settings' => array(),
       'translatable' => '0',
@@ -2628,7 +2523,22 @@ function feature_erpal_basic_field_default_fields() {
         'default' => array(
           'label' => 'above',
           'module' => 'relation_endpoint',
-          'settings' => array(),
+          'settings' => array(
+            'view_modes' => array(
+              'billable' => 'default',
+              'budget' => 'default',
+              'comment' => 'default',
+              'field_collection_item' => 'default',
+              'file' => 'default',
+              'node' => 'default',
+              'profile2' => 'default',
+              'profile2_type' => 'default',
+              'relation' => 'default',
+              'taxonomy_term' => 'default',
+              'taxonomy_vocabulary' => 'default',
+              'user' => 'default',
+            ),
+          ),
           'type' => 'relation_endpoint',
           'weight' => 0,
         ),
@@ -2655,7 +2565,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'relation-works_at-field_date'
+  // Exported field: 'relation-works_at-field_date'.
   $fields['relation-works_at-field_date'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2665,8 +2575,11 @@ function feature_erpal_basic_field_default_fields() {
       'field_name' => 'field_date',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
         'granularity' => array(
           'day' => 'day',
           'hour' => 0,
@@ -2675,6 +2588,7 @@ function feature_erpal_basic_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
+        'profile2_private' => FALSE,
         'repeat' => 0,
         'timezone_db' => '',
         'todate' => 'optional',
@@ -2714,7 +2628,7 @@ function feature_erpal_basic_field_default_fields() {
       'label' => 'Period',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
+        'default_value' => 'blank',
         'default_value2' => 'blank',
         'default_value_code' => '',
         'default_value_code2' => '',
@@ -2724,12 +2638,10 @@ function feature_erpal_basic_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'display_all_day' => 0,
           'increment' => '15',
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
-          'repeat_collapsed' => 0,
           'text_parts' => array(),
           'year_range' => '-3:+3',
         ),
@@ -2739,7 +2651,7 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'relation-works_at-field_work_at_rel_tags'
+  // Exported field: 'relation-works_at-field_work_at_rel_tags'.
   $fields['relation-works_at-field_work_at_rel_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2760,6 +2672,7 @@ function feature_erpal_basic_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -2815,7 +2728,7 @@ function feature_erpal_basic_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Account number');
-  t('Address Type');
+  t('Address type');
   t('Addresses');
   t('Bank accounts');
   t('Bank name');
@@ -2829,7 +2742,6 @@ function feature_erpal_basic_field_default_fields() {
   t('Contact Tags');
   t('Contact Type');
   t('Country');
-  t('Customer Category');
   t('Email Addresses');
   t('Facebook');
   t('Fax numbers');
@@ -2843,7 +2755,6 @@ function feature_erpal_basic_field_default_fields() {
   t('Other legal information');
   t('Period');
   t('Phone Numbers');
-  t('Project Status');
   t('Relation Tags');
   t('SWIFT');
   t('Street');

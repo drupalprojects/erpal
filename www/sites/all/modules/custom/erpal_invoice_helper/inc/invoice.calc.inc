@@ -15,7 +15,26 @@ function _erpal_invoice_helper_calculate_fields($invoice) {
   
   //now the caclulations using entity references and field collections
   _erpal_invoice_helper_calculate_prices($invoice);
-  _erpal_invoice_helper_set_billables_billed($invoice);  
+  _erpal_invoice_helper_set_billables_billed($invoice); 
+
+  //if invoice contractor is not own company, set exported because it cannot be exported an so filtering is not possible
+  //e.g. for all unexported invoices
+  _erpal_invoice_helper_set_exported_if_extern($invoice);
+}
+
+/**
+* Set a invoice to exported if contractor is not the own company
+*/
+function _erpal_invoice_helper_set_exported_if_extern($invoice, $skipp_save_invoice=true) {
+  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+  $company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  $contractor_nid = $invoice->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+  
+  if ($company_nid != $contractor_nid)
+    $invoice->field_invoice_exported[LANGUAGE_NONE][0]['value'] = 1;
+    
+  if (!$skipp_save_invoice)
+    node_save($invoice);
 }
 
 /**
@@ -387,8 +406,9 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   //now create the invoice!
   //create the invoice with the  billables      
   $invoice = new stdClass();
+  $invoice->status = 1; //published
   $invoice->type = 'erpal_invoice';  
-  node_object_prepare($invoice);  
+   
   $invoice->uid = $user->uid;
   $invoice->language = LANGUAGE_NONE;
   //set some other invoice specific fields
@@ -440,7 +460,8 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   foreach ($billable_ids as $billable_id) {
     $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $billable_id;
   }
-
+  
+  node_object_prepare($invoice); 
   node_save($invoice);
   
   $status['invoice'] = $invoice;

@@ -1,0 +1,23 @@
+INSTALLATION
+============
+
+Paste this code into settings.php and set your db connection parameters:
+
+  // Define a fixture database
+  $databases['fixture'] = array(
+    'default' => array(
+      'database' => '[DATABASE]',
+      'username' => '[USERNAME]',
+      'password' => '[PASSWORD]',
+      'host' => '127.0.0.1',
+      'port' => '',
+      'driver' => 'mysql',
+      // custom paramater for use in simpletest_fixture environment
+      'simpletest_prefix' => 'simpletest692391',
+    ),
+  );
+
+  // Use the fixture database when the site runs in a Simpletest or Selenium session
+  if (strpos($_SERVER['HTTP_USER_AGENT'], 'simpletest') !== FALSE) {
+    $databases['default'] = $databases['fixture'];
+  }

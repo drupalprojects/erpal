@@ -27,10 +27,25 @@ function views_jstree_menu() {
   $items['jstree/move/%/%'] = array(
     'page callback' => 'views_jstree_move_child',
     'page arguments' => array(2, 3), //2=view name, 3=the nid that is moved
-    'access callback' => true,  //@TODO: user can alway move? Cannot? Shouldnot?
+    'access callback' => true,  //@TODO: user can alway move? Cannot? Shouldnot? only if he can edit the task!
   );
 
   return $items;
+}
+
+/**
+* Implements hook_form_alter
+*/
+function views_jstree_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    $form['#submit'][] = 'views_js_tree_views_exposed_form_submit';
+  }
+}
+
+function views_js_tree_views_exposed_form_submit($form, $form_state) {
+  //save the values submitted to the view if view is js tree plugin
+  $_SESSION['views_jstree_filter'] = $_REQUEST;
+  
 }
 
 function views_jstree_require_jstree() {
@@ -198,14 +213,20 @@ function views_jstree_move_child($view_name, $nid) {
     //set parent to argument, because this is the root.
     $new_parent_nid = $root;
   }
-  
+
   $node->{$parent_field['id']}[LANGUAGE_NONE][0]['target_id'] = $new_parent_nid;
   $node->{$weight_field['id']}[LANGUAGE_NONE][0]['value'] = $position;
-  
+
+  //call hook when node is moved, so other module could interact with the moved node
+  module_invoke_all('views_tree_before_move', $node, $position);
+
   node_save($node);
+
+  module_invoke_all('views_tree_after_move', $node);
 
   die(json_encode(array('result' => true)));
 }
+
 
 /**
 * AJAX Callback function for loading tree children
@@ -215,32 +236,53 @@ function views_jstree_load_children($view_name, $parent_id) {
   $view = views_get_view($view_name);
   if (!is_object($view))
     return array();
-    
-  $children_display = _views_jstree_get_children_display($view);
-  //execute it and return data as json
+  
+  $parent_node = node_load($parent_id);
+  $parent_types = array($parent_node->type);
+
+  $children_display = _views_jstree_get_children_display($view, $parent_types);
+
+  //execute it and return data as json  
   $args = array($parent_id);
+  
+  $filter = $_SESSION['views_jstree_filter']; //@TODO this works but it is not the best way to do that!
+  if ($filter)
+    $view->set_exposed_input($filter);
+  
   $view->preview($children_display->id, $args);
   
   $result = $view->result;
   
+  $fields = views_jstree_get_fields_of_view($view, $children_display);
+  $options = views_jstree_get_options_of_view($view, $children_display);
+  
+  $parent_field = $fields[$options['parent_field']];
+  $weight_field = $fields[$options['weight_field']];  
+  $type_field = $fields[$options['type_field']];
+
   //output result as json to display in jstree
   $output = array();
-  
   foreach($result as $delta=>$row) {        
     //Execute next view to see if it hase some children!
-    
     $subargs = array($row->nid);
-    $subview = views_get_view($view_name);
-    $subview->preview($children_display->id, $subargs);
-    $hasChildren = $subview->total_rows > 0;   
+    $node_type = 'node_'.$type_field['id'];
+    $row_type = $row->{$node_type};
+    $parent_types = array($row_type);
+
+    $view = views_get_view($view_name);
+    $subview = _views_jstree_get_children_display($view, $parent_types);
+
+    $view->preview($subview->id, $subargs);
+   
+    $hasChildren = $view->total_rows > 0;   
     
     $node_uri = url('node/'.$row->nid);
     //@TODO Views row style plugin? No hard coded row style format!
     //@TODO ensure in views UI that for this style plugin node_type is set as field as well as nid!
 
     $status = '';
-    if (isset($row->field_field_task_status[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
-      $status = " ".$row->field_field_task_status[0]['raw']['value'];
+    if (isset($row->field_field_task_status_term[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
+      $status = " ".$row->field_field_task_status_term[0]['raw']['value'];
       
     $output[] = array(
       "attr" => array("id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, 'entity_id' => $row->nid, 'class' => $row->node_type.$status), 
@@ -263,10 +305,11 @@ function _views_jstree_get_context_menu($view, $display, $node_type, $nid, $row,
     //get options from default view
     $context_menu_options = $view->display['default']->display_options['style_options']['context_menu'];
   }
-  
+
   //now get the menu either from textarea or from implemented hooks
   if ($context_menu_options['use_context_menu_hook']) {
     //from hooks!
+    
     $menu = module_invoke_all('jstree_context_menu', 'node', $node_type, $nid, $root_id);
     return $menu;
   } else {
@@ -296,20 +339,33 @@ $br = "
 * Return the view displaying the children using the ajax allback related to the given view
 * @param a view which contains the display to get children
 */
-function _views_jstree_get_children_display($view) {
+function _views_jstree_get_children_display($view, $for_types=array()) {
   //@TODO make dynamic options in view to select the child view displaying ajax children
-  $display = false;
+  $display_normal = false;
+  $top_row_display = false;
   foreach($view->display as $display_id=>$display) {
     $display_options = $display->display_options;
-    if (isset($display_options['style_options']['ajax_child_view']))
+    if (isset($display_options['style_options']['ajax_child_view'])) {
       if ($display_options['style_options']['ajax_child_view']) {
         //that ist the display!
-        return $display;
+        $display_normal = $display;
       }
-    
+
+      $ajax_child_view_top_types = $display_options['style_options']['ajax_child_view_top_types'];
+      $types_intersection = array_intersect($for_types, $ajax_child_view_top_types);
+
+      if (count($types_intersection)) {
+        //that ist the display!
+        $top_row_display = $display;
+      }
+    }
   }
   
-  return $display;
+  if (count($for_types) && $top_row_display) {
+    return $top_row_display;
+  }
+  
+  return $display_normal;
 }
 
 /**

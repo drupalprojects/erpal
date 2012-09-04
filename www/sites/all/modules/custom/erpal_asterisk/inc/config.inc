@@ -17,7 +17,7 @@ function _erpal_asterisk_menu(){
   $items['asterisk/ingoingcall/%'] = array(
     'page callback' => '_erpal_asterisk_call',    
     'page arguments' => array(2,3),
-    'access arguments' => array('config erpal asterisk'),
+    'access callback' => TRUE,
     'file' => 'inc/config.inc',
   );
 

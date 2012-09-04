@@ -13,16 +13,30 @@ require_once 'include/timetracking.inc';
 require_once 'include/ajax.inc';
 
 /**
+* Implements hook_permission
+*/
+function erpal_projects_billable_permission() {
+  return array(
+    'access billables view' => array(
+      'title' => t('Access billables view'), 
+      'description' => t('Allows the user to access the billables view'),
+    ),
+  );
+}
+
+/**
 * Implements hook_node_insert
 */
 function erpal_projects_billable_node_insert($node) {
   $type = $node->type;
 
-  if ($type == 'erpal_timetracking')
+  if ($type == 'erpal_timetracking') {
     _erpal_projects_billable_insert_timetracking($node);
+  }
  
-  if ($type == 'erpal_task')
+  if ($type == 'erpal_task') {
     _erpal_projects_billable_insert_task($node);
+  }
     
   if ($type == 'erpal_project')
     _erpal_projects_billable_insert_project($node);
@@ -45,6 +59,13 @@ function erpal_projects_billable_node_update($node) {
 }
 
 /**
+* Implements hook_preprocess_node().
+*/
+function erpal_projects_billable_preprocess_node(&$vars) {
+  _erpal_projects_billable_preprocess_for_budget($vars);
+}
+
+/**
 * Implements hook_node_delete
 */
 function erpal_projects_billable_node_delete($node) {
@@ -56,6 +77,48 @@ function erpal_projects_billable_node_delete($node) {
   }
 }
 
+/*
+* Implements hook_field_widget_form_alter
+* Adds a validation hook to the beginning of the #element_validate
+* to provide custom validation on the required fields within the
+* widget.
+*/
+function erpal_projects_billable_field_widget_form_alter(&$element, &$form_state, $context) {
+  switch ($context['instance']['widget']['type']) {
+    case 'field_collection_embed':
+      if ($element['#field_name'] == 'field_pricing') {
+        //add validation handler
+        $element['#element_validate'][] = '_erpal_projects_billable_field_pricing_widget_validate';
+      }
+      break;
+  }
+}
+
+/**
+* Validate the pricing field collection
+*/
+function _erpal_projects_billable_field_pricing_widget_validate($element, &$form_state, $form) {
+  $values = $form_state['values'];
+  $pricing_entity = isset($values['field_pricing'][LANGUAGE_NONE][0]['entity']) ? $values['field_pricing'][LANGUAGE_NONE][0]['entity'] : false;
+  
+  if (!$pricing_entity)
+    return;
+  
+  $price_mode = isset($pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] : 'none';
+  $vat_rate = isset($pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'] : '_none';
+  $currency = isset($pricing_entity->field_currency[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_currency[LANGUAGE_NONE][0]['value'] : '_none';
+
+  $modes = array('fixed_price', 'per_hour', 'budget');
+  if (in_array($price_mode, $modes)) {
+    //vat_rate and currency must be set
+    if ($vat_rate == '_none')
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'], t('Please set vat rate'));
+    if ($currency == '_none')
+      form_error($form['field_pricing'][LANGUAGE_NONE][0]['field_currency'], t('Please set currency'));
+  }
+  
+}
+
 /**
 * Implements hook_element_info_alter
 */
@@ -65,89 +128,180 @@ function erpal_projects_billable_element_info_alter(&$type) {
 }
 
 /**
+* Implements hook_options_for_clone_alter
+* Function alters clone options after clone config form has been submitted by clone bulk operation or book clone
+*/
+function erpal_projects_billable_options_for_clone_alter(&$options, $form_values) {
+  $options['price_per_hour'] = isset($form_values['price_per_hour']) ? $form_values['price_per_hour'] : 0;
+  $options['vat_rate'] = isset($form_values['vat_rate'])? $form_values['vat_rate'] : 0;
+  $options['currency'] = isset($form_values['currency']) ? $form_values['currency'] : 0;
+}
+
+/**
+* Implements hook_erpal_clone_node_alter to alter task node if cloned
+* @param $node is the new cloned node
+* @param $args[parent_nid] is the nid of the new parent_node of the cloned node
+* @param $args[options] some options given to the clone process
+*/
+function erpal_projects_billable_erpal_clone_node_alter($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  $options = $args['options'];
+  $original_node = $args['original_node'];
+  
+  if ($node->type == 'erpal_task') {
+    //ensure that prices, assigned users are set
+    //load the pricing entity and set its values if pice mode is per hour or fixed price
+    $pricing_entity_id = $original_node->field_pricing[LANGUAGE_NONE][0]['value'];
+    $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
+    $pricing_entity = $pricing_entity[$pricing_entity_id];  
+    $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'];
+
+    //clone the new pricing entity
+    $originial_pricing_entity = clone $pricing_entity; //clone the total node object!
+    $pricing_entity->item_id = NULL;  //to create a new one on save
+    
+    if ($price_mode == 'fixed_price' || $price_mode == 'per_hour') {
+      if ($price_mode == 'per_hour')   //price is only set if price mode is per hour     
+        $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] = $options['price_per_hour'];
+            
+      $pricing_entity->field_vat_rate[LANGUAGE_NONE][0]['value'] = $options['vat_rate'];
+      $pricing_entity->field_currency[LANGUAGE_NONE][0]['value'] = $options['currency'];
+      $pricing_entity->save(true); //save entity without saving the host entity  
+      $node->field_pricing[LANGUAGE_NONE][0]['value'] = $pricing_entity->item_id;
+
+    }
+    
+  }
+  
+}
+
+/**
+* Implements hook_clone_book_action_form_alter
+* Form to set parameter to clone tasks in book clone process
+* @param $args['book_node'] is the book node that will be cloned
+*/
+function erpal_projects_billable_clone_book_action_form_alter(&$form, $form_state, $args) {
+  $book_node = $args['book_node'];
+
+  _erpal_projects_helper_ensure_task_settings_form_element($form);
+  _erpal_projects_billable_clone_tasks_form_add_elements($form, $book_node, 'book');
+}
+
+/**
+* Implements hook_clone_page_action_form_alter provided by clone bulk operation by erpal_book_helper module
+* @param $args['book_node'] is the book the cloned pages are referenced to
+* @param $args['parent_node'] is the parent node the cloned node will be directely referenced to.
+*/
+function erpal_projects_billable_clone_page_action_form_alter(&$form, $form_state, $args) {
+  $book_node = $args['book_node'];
+
+  //check if the given book to clone hase a project, otherwise show a message that tasks will not be cloned
+  //cause book needs a project
+  _erpal_projects_helper_ensure_task_settings_form_element($form);
+  $projects = _erpal_project_helper_get_referencing_projects_by_book($book_node->nid);
+  $task_form = array();
+  if ($projects) {
+    _erpal_projects_billable_clone_tasks_form_add_elements($form, $book_node, 'page');
+  }
+
+}
+
+/**
+* Subform for pricing information on page and book clone config form
+*/
+function _erpal_projects_billable_clone_tasks_form_add_elements(&$form, $book_node, $clone_type) {
+  
+  //if there is no project referencing that book, no options to clone taks should be displayed
+  $project_nid = _erpal_projects_helper_has_project($book_node);
+  
+  if (!$project_nid)
+    return;
+  
+  $form['task_settings']['price_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Price settings'),
+    '#collapsible' => true,
+    '#collapsed' => false,
+  );
+  
+  $form['task_settings']['price_settings']['price_per_hour'] = array(
+    '#type' => 'textfield',
+    '#size' => 5,
+    '#title' => t('Price per hour'),
+    '#desription' => t('All tasks with price mode "per hour" will be updated with this price per hour value.'),
+  );
+  
+  $form['task_settings']['price_settings']['vat_rate'] = array(
+    '#type' => 'select',
+    '#title' => t('VAT rate'),
+    '#desription' => t('All tasks with price mode "per hour" will be updated with this VAT rate.'),
+    '#options' => _erpal_invoice_helper_vat_rates_arr(),
+    '#default_value' => _erpal_invoice_helper_get_default_vat_rate(),
+  );
+  
+  $form['task_settings']['price_settings']['currency'] = array(
+    '#type' => 'select',
+    '#title' => t('Currency'),
+    '#desription' => t('All tasks with price mode "per hour" will be updated with this currency.'),
+    '#options' => _erpal_invoice_helper_currencies_arr(),
+    '#default_value' => _erpal_invoice_helper_get_default_currency(),
+  );
+  
+  //@TODO this doesnt work becaus in bulk operation exposed form the validation handler will be overridden
+  //$form['#validate'][] = 'erpal_projects_billable_clone_book_action_form_validate';
+ 
+} 
+
+/**
+* Implements hook_erpal_clone_page_validate
+* provided by erpal_book_helper in clone to page bulk operation
+*/
+function erpal_projects_billable_erpal_clone_page_validate($form, $form_state) {
+  erpal_projects_billable_clone_book_action_form_validate($form, $form_state);
+}
+
+function erpal_projects_billable_clone_book_action_form_validate($form, $form_state) {
+  $values = $form_state['values'];
+  $clone_tasks = isset($values['clone_tasks']) ? $values['clone_tasks'] : false;
+  $price_per_hour  = isset($values['price_per_hour']) ? $values['price_per_hour'] : false;
+  $vat_rate = isset($values['vat_rate']) ? $values['vat_rate'] : false;
+  $currency = isset($values['currency']) ? $values['currency'] : false;
+
+  if (!$clone_tasks)
+    return; //if tasks will not be cloned no further validation is needed
+    
+  if (!$price_per_hour)
+    form_set_error('price_per_hour', t('Please set price per hour'));
+    
+  if (!$vat_rate)
+    form_set_error('vat_rate', t('Please set VAT rate'));
+    
+  if (!$currency)
+    form_set_error('currency', t('Please set currency'));
+}
+
+
+/**
 * implements hook_form_alter
 */
 function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
-
-  if ($form_id == 'erpal_task_node_form') {
-    //alter task node pricing according to referenced project pricing
-    $nid = $form['nid']['#value'];
-    if (!$nid) { //only alter the form fields if the node will be created, not at update
-      if (count($form_state['input']) <= 0 || isset($form_state['triggering_element'])) {
-        //if we dont do that if statement, the form will be altered after submission which will lead to 
-        //another altering of pricing information, which is bad!
-        _erpal_projects_billable_preselect_task_create_form($form, $form_state);     
-        
-      }
-    }
-    
-    _erpal_projects_billable_prepare_ajax_pricing_preselect($form, $form_state);
+  if ($form_id == 'erpal_task_node_form' || $form_id == 'erpal_project_node_form') {    
+    _erpal_projects_billable_set_default_pricing($form, $form_state, $form_id);
   }  
-  
 }
 
 /**
-* Adds ajax handler to project ref field to preselect pricing information
-* if a task is created NOT BY using the reference by url widget
+* Set default vat and currency if not set
 */
-function _erpal_projects_billable_prepare_ajax_pricing_preselect(&$form, $form_state) {
-  $form['field_pricing'][LANGUAGE_NONE][0]['#prefix'] = '<div id="pricing_wrapper">';
-  $form['field_pricing'][LANGUAGE_NONE][0]['#suffix'] = '</div>';
-  $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#ajax'] = array(
-    'callback' => '_erpal_projects_billable_ajax_pricing_preselect_callback',
-    'wrapper' => 'pricing_wrapper',
-    'method' => 'replace',
-    'effect' => 'fade',
-  );
-}
-
-/**
-* preselects the task node form with pricing information from the referenced project (if one is referenced)
-*/
-function _erpal_projects_billable_preselect_task_create_form(&$form, $form_state) {
-
-  //ref_nid id is the node we copy the pricing information from. Mayba a project or another task
-  //if parent is set and it is type erpal_task we use the parents tasks pricing
-  $ref_nid = false; 
- 
-  if (isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'])) 
-    if ($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
-      $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'];
-      $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
-
-      $parent_node = node_load($parent_nid);
-      if ($parent_node->type == 'erpal_task')
-        $ref_nid = $parent_nid;
-    }
-  
-  if (!$ref_nid) {
-    $ref_nid = $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
-    $ref_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($ref_nid);
+function _erpal_projects_billable_set_default_pricing(&$form, &$form_state, $form_id) {
+  //set only for new node
+  $nid = $form['nid']['#value'];
+  if (!$nid) {
+    $default_currency = _erpal_invoice_helper_get_default_currency();
+    $default_vat_rate = _erpal_invoice_helper_get_default_vat_rate();
+    $form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#default_value'] = $default_vat_rate;
+    $form['field_pricing'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
   }
- 
-  //perhaps, there is a project_nid in form_state, we can use that because it has been submitted by ajax!
-  if (!empty($form_state['values']['field_project_ref']))
-    $ref_nid = $form_state['values']['field_project_ref'][LANGUAGE_NONE][0]['target_id'];
-
-  if (!$ref_nid)
-    return; //if we dont have a project, we dont have data to preselect the task price fields with
-    
-  //we prefill the price mode of the task the same as at the project. If the project has
-  //price mode "per_hour" we preselect the price (this is the price per hour).
-
-  $preselects = _erpal_projects_billable_get_task_preselects($ref_nid);
-
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_price_mode'][LANGUAGE_NONE]['#value'] = $preselects['price_mode'];
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#value'] = $preselects['vat_rate'];
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#value'] = $preselects['currency'];
-  
-  $price = '';
-  if ($preselects['price_mode'] == 'per_hour') {
-    //Fill the price per hour
-    $price = $preselects['price'];
-  }
-  
-  $form['field_pricing'][LANGUAGE_NONE][0]['field_price'][LANGUAGE_NONE][0]['value']['#value'] = $price;
 }
 
 /**
@@ -157,11 +311,15 @@ function _erpal_projects_billable_get_task_preselects($ref_nid) {
 
   $ref_node = node_load($ref_nid);
 
-  $preselects = _erpal_projects_billable_get_pricing($ref_node);
+  //look for pricing information in the parent tree or at the node directely
+  $preselects = _erpal_projects_billable_get_pricing($ref_node, true);
   
   if ($preselects['price_mode'] == 'fixed_price')  
     $preselects['price_mode'] = 'not_billable'; //in most cases if the project is a fixed price project, the task is not billable
-    
+   
+  if ($preselects['price_mode'] == 'budget')  
+    $preselects['price_mode'] = 'none'; //if budget price mode, we set preselect to no information so pricing information from parent will be used
+   
   return $preselects;
 }
 
@@ -205,14 +363,15 @@ function _erpal_project_billable_save_billable($subject_title, $customer_nid, $s
 
 /**
 * Function that checks if a given subject is billable
-* @param a node as subject
+* @param $node a node as subject
+* @param $process_tree if true,search billable information in the parent tree as well, if given node has none as price mode
 * @return an array with billing information necessary for creating a new billable entiy
 */
-function _erpal_projects_billable_subject_billabel_information_subject($node) {
+function _erpal_projects_billable_subject_billable_information_subject($node, $process_tree=false) {
 
   $type = $node->type;  
   switch ($type) {
-    case 'erpal_task': return _erpal_projects_billable_subject_billable_information_task_subject($node);    
+    case 'erpal_task': return _erpal_projects_billable_subject_billable_information_task_subject($node, $process_tree);    
     case 'erpal_project': return _erpal_projects_billable_subject_billable_information_project_subject($node); 
     case 'erpal_timetracking': return _erpal_projects_billable_subject_billable_information_timetracking_subject($node);  
   }
@@ -222,18 +381,19 @@ function _erpal_projects_billable_subject_billabel_information_subject($node) {
 
 /**
 * returns the billing information of a task
-* @param the task node
-* @retur an array with billing information like price mode, price etc
+* @param $node the task node
+* @param $process_tree if true search in the parent task tree for pricing information.
+* @return an array with billing information like price mode, price etc
 */
-function _erpal_projects_billable_subject_billable_information_task_subject($node) {
+function _erpal_projects_billable_subject_billable_information_task_subject($node, $process_tree=false) {
   
   //add the customer 
   //first get the project
   $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
   $project_node = node_load($project_nid);
   
-  //if task has own pricing information set, return these!
-  $pricing = _erpal_projects_billable_get_pricing($node);
+  //if task has own pricing information set, return these!  
+  $pricing = _erpal_projects_billable_get_pricing($node, $process_tree);
 
   //perhaps we have purchasing information set on the task or the project.
   $buy_pricing = array();
@@ -241,23 +401,26 @@ function _erpal_projects_billable_subject_billable_information_task_subject($nod
   $buy_pricing['buy_vat_rate'] = $pricing['buy_vat_rate'];
   $buy_pricing['buy_currency'] = $pricing['buy_currency'];
   $buy_pricing['contractor_nid'] = $pricing['contractor_nid'];
+
+  $info['price_mode'] = $pricing['price_mode'];
+  $info['price'] = $pricing['price'];
+  $info['vat_rate'] = $pricing['vat_rate'];
+  $info['currency'] = $pricing['currency'];
+  $info['pricing_nid'] = $pricing['pricing_nid']; //the nid of the node we got the pricing information from (perhaps from parent tree)
+  $info['budget_time_billing'] = $pricing['budget_time_billing'];
   
-  if ($pricing['price_mode'] && $pricing['price']) {
-    $info['price_mode'] = $pricing['price_mode'];
-    $info['price'] = $pricing['price'];
-    $info['vat_rate'] = $pricing['vat_rate'];
-    $info['currency'] = $pricing['currency'];
-    //now get customer of project
-    $customer_nid = $project_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
-    $customer_node = node_load($customer_nid);
-    $info['customer'] = $customer_node;
-    $info = array_merge($info, $buy_pricing);
-    return $info;
-  }  
+  //now get customer of project
+  $customer_nid = $project_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
+  $customer_node = node_load($customer_nid);
+  $info['customer'] = $customer_node;
+  $info = array_merge($info, $buy_pricing);
+  return $info;
     
+  /* //Think we dont need to look at the project because this will be done by _erpal_projects_billable_get_pricing
   $info = _erpal_projects_billable_subject_billable_information_project_subject($project_node);
   $info = array_merge($info, $buy_pricing);    
   return $info;
+  */
 }
 
 /**
@@ -292,6 +455,8 @@ function _erpal_projects_billable_subject_billable_information_project_subject($
   $info['buy_vat_rate'] = $pricing['buy_vat_rate'];
   $info['buy_currency'] = $pricing['buy_currency'];
   $info['contractor_nid'] = $pricing['contractor_nid'];
+  $info['pricing_nid'] = $pricing['pricing_nid'];
+  $info['budget_time_billing'] = $pricing['budget_time_billing'];
     
   return $info;
 }
@@ -306,28 +471,66 @@ function _erpal_projects_billable_subject_billable_information_timetracking_subj
   $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
   $subject_node = node_load($subject_nid);
   
-  return _erpal_projects_billable_subject_billable_information_task_subject($subject_node);
+  return _erpal_projects_billable_subject_billable_information_task_subject($subject_node, true);
+}
+
+/**
+* Returns the pricing field collection entity that is relevant for the given node (task or project).
+* First we try to get a pricing at the given node. If the given node has price mode other than not_billable we stop the
+* search and us these pricing information. If price mode is none (no information) we go to the parent node and process
+* the same check and so on.
+* @param $pricing_nid this reference will be filled with the node in the tree we got the pricing information from
+* @param $process_tree if true, the tree will be seach
+*/
+function _erpal_projects_get_pricing_entity($node, $process_tree, &$pricing_nid) {
+  if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value']))
+      return array();
+      
+  $pricing_entity_id = $node->field_pricing[LANGUAGE_NONE][0]['value'];
+
+  $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
+  $pricing_entity = $pricing_entity[$pricing_entity_id];
+  
+  if (!$process_tree) {
+    $pricing_nid = $node->nid;
+    return $pricing_entity;
+  }
+  
+  $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']; 
+
+  if ($price_mode == 'none') {
+    //we have no pricing information here, so get the parent and check its pricing information
+    $parent_node = _erpal_project_task_parent($node);
+    
+    if (!$parent_node)
+      return false;
+    
+    //get pricing of the parent
+    return _erpal_projects_get_pricing_entity($parent_node, $process_tree, $pricing_nid);
+  } else {
+    $pricing_nid = $node->nid;
+    return $pricing_entity;
+  }
 }
 
 /**
 * returns the price mode to an project or task
-* @param a project or task node
+* @param $node a project or task node
+* @param $process_tree if true, we search in the task tree until we find pricing information != none
 */
-function _erpal_projects_billable_get_pricing($node) {
+function _erpal_projects_billable_get_pricing($node, $process_tree=false) {
 
   $type = $node->type;
-  
+
   if ($type == 'erpal_project' || $type == 'erpal_task') {
     //get the pricing field collection    
+    //return the relevant pricing entity for the given node
+    $pricing_nid = false;
+    $pricing_entity = _erpal_projects_get_pricing_entity($node, $process_tree, $pricing_nid);
+
+    if (!$pricing_entity)
+      return false;
     
-    if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value']))
-      return array();
-      
-    $pricing_entity_id = $node->field_pricing[LANGUAGE_NONE][0]['value'];
-
-    $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
-    $pricing_entity = $pricing_entity[$pricing_entity_id];
-
     $price_mode = $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value']; 
     $price = 0;
     if (isset($pricing_entity->field_price[LANGUAGE_NONE]))
@@ -357,7 +560,9 @@ function _erpal_projects_billable_get_pricing($node) {
     $buy_currency = 0;
     if (isset($pricing_entity->field_buy_currency[LANGUAGE_NONE]))
       $buy_currency = $pricing_entity->field_buy_currency[LANGUAGE_NONE][0]['value'];
-      
+     
+    $budget_time_billing = isset($pricing_entity->field_budget_time_billing[LANGUAGE_NONE][0]['value']) ? $pricing_entity->field_budget_time_billing[LANGUAGE_NONE][0]['value'] : false;
+     
     return array(
       'price_mode' => $price_mode,
       'price' => $price,
@@ -367,6 +572,8 @@ function _erpal_projects_billable_get_pricing($node) {
       'buy_price' => $buy_price,
       'buy_vat_rate' => $buy_vat_rate,
       'buy_currency' => $buy_currency,
+      'pricing_nid' => $pricing_nid,
+      'budget_time_billing' => $budget_time_billing,
     );
   }
 }
@@ -433,7 +640,7 @@ function erpal_billable_field_buy_currency_allowed_values() {
 * @param $op may be insert (if node is inserted) or update (if node is updated)
 */
 function _erpal_billable_update_billable($node, $op) {
-    
+
   if ($node->type == 'erpal_timetracking') {
     $timetracking_node = $node;
     $quantity = $node->field_billing_duration[LANGUAGE_NONE][0]['value']; //cause it is a timetracking node!
@@ -448,7 +655,74 @@ function _erpal_billable_update_billable($node, $op) {
     $subject_node = $node;
   }
   
-  $billable_information = _erpal_projects_billable_subject_billabel_information_subject($node);  
+  $is_timetracking = $subject_node->type == 'erpal_timetracking';
+
+  $billable_information = _erpal_projects_billable_subject_billable_information_subject($node, $is_timetracking);  
+
+  //if we have timetracking and budget per hour price mode, preprocess the timetracking
+  if ($is_timetracking && $billable_information['price_mode'] == 'budget') {
+    
+    //start iteration up to the parent tree until we find no more budgets
+    $budget_time_billing = $billable_information['budget_time_billing'];
+    $subject_node->force_billable = $budget_time_billing == 'billable';
+    $backupped_subject_node = $subject_node;
+    $subject_node = _erpal_projects_billable_book_timetracking_to_budget($subject_node, $billable_information);
+
+    if ($subject_node) { //if there is another timetracking node because budget is not enough, check if we have other budgets in the parent tree
+      $current_price_node = node_load($billable_information['pricing_nid']);
+      $a_parent_node = _erpal_project_task_parent($current_price_node);
+      $need_more_budget = true;
+      while ($a_parent_node && $need_more_budget) {
+        $a_billable_information = _erpal_projects_billable_subject_billable_information_subject($a_parent_node, $is_timetracking);        
+        $current_price_node = node_load($a_billable_information['pricing_nid']);        
+        $subject_node = _erpal_projects_billable_book_timetracking_to_budget($subject_node, $a_billable_information);
+        $budget_time_billing = $a_billable_information['budget_time_billing'];
+        
+        //if every timetracking should be billed, break the loop and save the timetracking first, so each one will be billed!
+        if ($budget_time_billing == 'billable')
+          break;
+        
+        $need_more_budget = $subject_node;
+        $a_parent_node = _erpal_project_task_parent($current_price_node);
+      }
+      
+      if (!$subject_node && $budget_time_billing == 'not_billable') {
+        return;  //all the timetracking budget has been booked onto budget entities
+      }
+    } else {
+      if ($budget_time_billing == 'not_billable')
+        return;
+    }
+  
+    if (!$subject_node)
+      $subject_node = $backupped_subject_node;
+
+    //update quantity because if timetracking was split because of budget, we have changing value
+    $quantity = $subject_node->field_billing_duration[LANGUAGE_NONE][0]['value'];
+    
+    //if there is a "rest" timetracking node, set the price mode to "per hour" so it will be billed if there is 
+    //a price per hour set.
+    if ($billable_information['price']) {
+      $billable_information['price_mode'] = 'per_hour';
+    } else {
+      //check at the parent tree if there is another task / project that has price mode "per hour" set. If yes, use these information.
+      $current_price_node = node_load($billable_information['pricing_nid']);
+      $parent_node = _erpal_project_task_parent($current_price_node);
+
+      $billable_information_parent = _erpal_projects_billable_subject_billable_information_subject($parent_node, $is_timetracking);
+
+      if ($billable_information_parent['price_mode'] == 'per_hour') {
+        $billable_information['price_mode'] = $billable_information_parent['price_mode'];
+        $billable_information['price'] = $billable_information_parent['price'];
+        
+      } else {
+        //here we have no price per hour set, so we allow to reduce budgets to negative value for available hours.
+        _erpal_projects_billable_book_timetracking_to_budget($subject_node, $billable_information, true);
+        return;
+        
+      }
+    }
+  }
   
   $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
   //handle timetracking for the user that inserts the timetracking. If it is a freelancer, create a billable for him
@@ -648,11 +922,9 @@ function _erpal_billable_is_billable($billable_information, $node, $type, $fix_p
   $status = '';
   if ($type == 'erpal_task' || $type == 'erpal_project') {
     if ($type == 'erpal_task') {
-      if (isset($node->field_task_status[LANGUAGE_NONE][0]))
-        $status = $node->field_task_status[LANGUAGE_NONE][0]['value'];  
+      $status = _erpal_basic_helper_get_tid_semantic($node, 'field_task_status_term');;  
     } elseif ($type == 'erpal_project') {
-      if (isset($node->field_project_status[LANGUAGE_NONE][0]))
-        $status = $node->field_project_status[LANGUAGE_NONE][0]['value'];
+      $status = _erpal_basic_helper_get_tid_semantic($node, 'field_project_status_term');   
     }
     return ($price_mode == 'fixed_price' || !$fix_price_needed_for_billable) && $price && $customer_node && $status == 'completed';
   }
