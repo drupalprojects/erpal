@@ -29,25 +29,6 @@ function feature_erpal_basic_default_fe_block_settings() {
 
   $export['bartik'] = $theme;
 
-  // erpal
-  $theme = array();
-
-  $theme['menu-menu-erpal-menu'] = array(
-    'module' => 'menu',
-    'delta' => 'menu-erpal-menu',
-    'theme' => 'erpal',
-    'status' => '1',
-    'weight' => '-10',
-    'region' => 'sidebar_first',
-    'custom' => '0',
-    'visibility' => '0',
-    'pages' => '',
-    'title' => '',
-    'cache' => -1,
-  );
-
-  $export['erpal'] = $theme;
-
   // seven
   $theme = array();
 
