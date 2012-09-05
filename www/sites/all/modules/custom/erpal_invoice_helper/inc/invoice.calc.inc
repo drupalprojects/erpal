@@ -441,19 +441,28 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
   
   //add skonto information from params if set!
   if (isset($params['skonto'])) {
-    $credit_period = $params['skonto']['credit_period'];
-    $discount_percent = $params['skonto']['discount_percent'];
+    $credit_period = isset($params['skonto']['credit_period']) ? $params['skonto']['credit_period'] : 0;
+    $discount_percent = isset($params['skonto']['discount_percent']) ? $params['skonto']['discount_percent'] : 0;
+    
+    if (!$credit_period)
+      $credit_period = 0;
+    if (!$discount_percent)
+      $discount_percent = 0;
     
     //create an skonto fieldset collection
     $values = array();
     $values['field_name'] = 'field_skonto';      
-    $values['field_credit_period'][LANGUAGE_NONE][0]['value'] = $credit_period;   
-    $values['field_discount_percent'][LANGUAGE_NONE][0]['value'] = $discount_percent;   
-    
+
     //save the entity to link it to the host with its id, otherwise we dont have an id      
     $skonto_collection = entity_create('field_collection_item', $values);    
+    
+    //set field values of field collection
+    $skonto_collection->field_credit_period[LANGUAGE_NONE][0]['value'] = $credit_period;
+    $skonto_collection->field_discount_percent[LANGUAGE_NONE][0]['value'] = $discount_percent;
+    
     $skonto_collection->setHostEntity('node', $invoice, LANGUAGE_NONE, TRUE); //last param: true= link node to host      
     $skonto_collection->save(true);  //save the entity AND skip saving the host, it will be saved later!
+    
   }
   
   //add billables
