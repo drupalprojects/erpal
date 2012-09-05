@@ -57,6 +57,13 @@ function erpal_invoice_helper_schema() {
         'unsigned' => TRUE,
         'default' => 0,
       ),
+      'address_addition' => array(
+        'type' => 'varchar', 
+        'length' => 255, 
+        'not null' => TRUE, 
+        'default' => '', 
+        'description' => 'Add customer address additions'
+      ),
       'notes' => array(
         'description' => 'The default notes on invoices of the customer.',
         'type' => 'text',
