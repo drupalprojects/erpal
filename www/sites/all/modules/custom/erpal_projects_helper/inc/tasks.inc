@@ -93,11 +93,10 @@ function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($proj
  * Implements hook_query_TAG_alter()
  */
 function erpal_projects_helper_query_tasks_no_task_parent_alter(QueryAlterableInterface $query) {
+  /*
   $query->leftJoin('node', 'no', 'field.nid = field_data_field_parent.entity_id');
   $query->isNull('o.field_other_value');
-  
-  //hier weiter, ich bekomms nicht hin....für die Funktion _erpal_projects_helper_get_tasks_of_project_having_no_task_parent
-  //damit wollen wir das sortieren von tasks im taskbaum endlich mal hinbekommen!
+  */
 }
 
 

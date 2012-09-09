@@ -21,6 +21,7 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
     $options['class'] = array('default' => '');
     $options['wrapper_class'] = array('default' => 'item-list');
     $options['id_field'] = array('default' => '');
+    $options['results_id'] = array('default' => false);
     $options['parent_field'] = array('default' => '');
     $options['weight_field'] = array('default' => false);
     $options['type_field'] = array('default' => false);
@@ -49,6 +50,14 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
       }
     }
 
+    $form['results_id'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Use to query by'),
+      '#default_value' => $this->options['results_id'],
+      '#description' => t('This query will return all entites with the ids given as argument'),
+      '#required' => TRUE,
+    );
+    
     $form['id_field'] = array(
       '#type' => 'select',
       '#title' => t('ID field'),
