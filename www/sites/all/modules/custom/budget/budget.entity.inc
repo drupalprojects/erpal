@@ -152,9 +152,6 @@ function _budget_entity_theme() {
  * The class used for budget entities
  */
 class budget extends Entity {
-  //numers to round
-  protected $round_digits = 2;
-  
   /**
   * Adds a amount (may be negative) of hours to a budget. 
   *@param $negative if true the resulting value for available_hours could be negative
