@@ -55,7 +55,7 @@ class views_jstree_plugin_style_tree extends views_plugin_style_list {
       '#title' => t('Use to query by'),
       '#default_value' => $this->options['results_id'],
       '#description' => t('This query will return all entites with the ids given as argument'),
-      '#required' => TRUE,
+      '#required' => FALSE,
     );
     
     $form['id_field'] = array(

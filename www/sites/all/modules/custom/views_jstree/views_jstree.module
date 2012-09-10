@@ -45,8 +45,12 @@ function views_jstree_form_alter(&$form, &$form_state, $form_id) {
 function views_js_tree_views_exposed_form_submit($form, $form_state) {
   //save the values submitted to the view if view is js tree plugin
   //but we dont save the filter for get children requests because they dont submit filter data on ajax request
-  if (!isset($_REQUEST['operation']))
-    $_SESSION['views_jstree_filter'] = $_REQUEST;
+  if (!isset($_REQUEST['operation'])) {
+    $display = $form_state['display'];
+    $display_vid = $display->vid;
+    $display_id = $display->id;
+    $_SESSION['views_jstree_filter'][$display_vid] = $_REQUEST;
+  }
   
 }
 
@@ -247,7 +251,8 @@ function views_jstree_load_children($view_name, $parent_id) {
   //execute it and return data as json  
   $args = array($parent_id);
   
-  $filter_values = $_SESSION['views_jstree_filter']; //@TODO this works but it is not the best way to do that!
+  $display_vid = $children_display->vid; 
+  $filter_values = $_SESSION['views_jstree_filter'][$display_vid]; //@TODO this works but it is not the best way to do that!
   
   $view->preview($children_display->id, $args);
 
@@ -279,7 +284,7 @@ function views_jstree_load_children($view_name, $parent_id) {
       $filtered_types = $filter['type']->options['value'];
     else
       $filtered_types = array();
- 
+
     $filtered_types = array_keys($filtered_types);
     $all_children_flat = array(); //simply all the child nids
     $children_by_root = array(); //child nids grouped by parent
@@ -338,8 +343,10 @@ function views_jstree_load_children($view_name, $parent_id) {
         unset($total_result[$delta]);
       }
     }
-    $result = $total_result;
+    
   }
+  
+  $result = $total_result;
   
   //output result as json to display in jstree
   $output = array();
