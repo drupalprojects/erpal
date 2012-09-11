@@ -5,6 +5,119 @@
 */
 
 /**
+* Callback for action with the same name definied in hook_action_info
+*/
+function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $context) {
+  //first validate
+  $errors = _erpal_projects_helper_timetracking_finalise_action_validate($timetrackings);
+  
+  if ($errors) {
+    foreach ($errors as $id=>$errors_arr) {
+      $entity = $errors_arr['entity'];
+      $error_texts = $errors_arr['errors'];
+      foreach ($error_texts as $text) {
+        drupal_set_message($text, 'error');
+      }
+    }
+    
+    drupal_goto($_GET['q']);
+  } else {
+    //no errors so finalise the timetrackings
+    foreach ($timetrackings as $timetracking) {
+      $timetracking_node = _erpal_projects_helper_timetracking_finalise($timetracking);
+      //if timetracking node was created, delete the temporary timetracking entity
+      if ($timetracking_node->nid) {
+        $timetracking->delete();
+      } else {
+        $timetracking_link = l($timetracking->defaultLabel(), 'timetracking/'.$timetracking->timetracking_id.'/edit');
+        drupal_set_message(t('Timetracking !timetracking_link could not be finalised.', array('!timetracking_link' => $timetracking_link)), 'error');
+      }
+    }
+  }
+  
+}
+
+/**
+* Renders the html code for timetracking button on tasks
+*/
+function _erpal_projects_helper_preprocess_for_timetracking(&$vars) {
+  if (!isset($vars['node']))
+  return;
+  
+  $node = $vars['node'];  
+  
+  if ($node->type == 'erpal_task') {
+    //add field to show the timetracking toggle button   
+    $has_timetracking_active = _erpal_projects_helper_task_has_timetracking_entity_active($node);
+    $vars['timetracking_button'] = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$node->nid, 'state' => $has_timetracking_active));
+  }
+}
+
+/**
+* Checks if there are timetracking entity (temporary) that have the given node as subject_id and have no duration set
+* @return false if no timetracking entities, otherwise an array with all active timetracking entites
+*/
+function _erpal_projects_helper_task_has_timetracking_entity_active($node) {
+  return 0;
+}
+
+
+/**
+* Create a real timetracking node from a temporary timetracking entity
+*/
+function _erpal_projects_helper_timetracking_finalise($timetracking) {
+  $timetracking->close();  //it should already be closed
+  $subject_nid = $timetracking->subject_id;
+  $subject_node = node_load($subject_nid);
+  //create a timetracking
+  $tt = new stdClass();    
+  $tt->language = LANGUAGE_NONE;
+  $tt->type = 'erpal_timetracking';
+  $tt->title = $timetracking->description ? $timetracking->description : $subject_node->title;
+  $tt->field_timetracking_subject[LANGUAGE_NONE][]['target_id'] = $timetracking->subject_id;
+  $tt->field_date_time[LANGUAGE_NONE][0]['value'] = $timetracking->time_start;
+  $tt->field_date_time[LANGUAGE_NONE][0]['value2'] = $timetracking->time_end;
+  $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $timetracking->duration;
+  $tt->uid = $timetracking->uid;
+  $tt->created = $timetracking->created;
+  $tt->changed = $timetracking->changed;
+ 
+  node_object_prepare($tt);
+  node_save($tt); 
+  
+  return $tt;
+}
+
+/**
+* Validate all timetracking of the bulk operation erpal_projects_helper_timetracking_finalise_action
+* @param $timetrackings
+* @return array of array with the timetracking and an errormessage 
+*/
+function _erpal_projects_helper_timetracking_finalise_action_validate($timetrackings) {
+  $errors = false;
+  
+  foreach ($timetrackings as $timetracking) {
+    //error if timetracking has no subject
+    $timetracking_link = l($timetracking->defaultLabel(), 'timetracking/'.$timetracking->timetracking_id.'/edit', array('query' => array('destination' => $_GET['q'])));
+    if (!$timetracking->subject_id) {      
+      $errors[$timetracking->timetracking_id]['entity'] = $timetracking;
+      $errors[$timetracking->timetracking_id]['errors'][] = t('To finalise a timetracking, ensure that a subject task is set for !timetracking_link', array('!timetracking_link' => $timetracking_link));      
+    } elseif (!$timetracking->duration) {
+      //if we dont have a duration the timetracking is still running and cannot be finalised!
+      $errors[$timetracking->timetracking_id]['entity'] = $timetracking;
+      $errors[$timetracking->timetracking_id]['errors'][] = t('To finalise the timetracking !timetracking_link, ensure that it is not still tracking the time!', array('!timetracking_link' => $timetracking_link));      
+    }
+  }
+  
+  return $errors;
+}
+
+function erpal_projects_helper_timetracking_finalise_action_validate($form, &$form_state) {
+  dpm($form);
+  dpm($form_state);
+}
+
+/**
 * Presave hook a timetracking node 
 */
 function erpal_projects_helper_node_presave_timetracking($node) {

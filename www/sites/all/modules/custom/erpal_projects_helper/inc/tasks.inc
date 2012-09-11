@@ -68,6 +68,47 @@ function _erpal_projects_helper_get_tasks_by_project($project_nid) {
 }
 
 /**
+* Return all tasks
+* @return array with nids of tasks referencing the given project_nid if set
+*/
+function _erpal_projects_helper_get_tasks($project_nid=false, $for_options=false) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_task')
+  ->propertyCondition('status', 1);  
+  //@TODO maybe add access control to query
+  
+  if ($project_nid) {
+    $query->fieldCondition('field_project_ref', 'target_id', $project_nid);
+  }
+    
+  $result = $query->execute();
+
+  $task_nodes = array();
+  if (isset($result['node'])) {
+    $task_nids = array_keys($result['node']);
+  }
+
+  //now we have task nids, now execute a query to get nid, title pairs
+  $result = db_select('node', 'n')
+    ->fields('n', array('nid', 'title'))
+    ->condition('nid', $task_nids, 'IN')
+    ->orderBy('title', 'ASC')//ORDER BY created
+    ->execute()
+    ->fetchAll();
+    
+  $ret = array();
+  if ($for_options) {
+    foreach ($result as $obj) {
+      $ret[$obj->nid] = ($obj->title);
+    }
+  } else
+    return $result;
+
+  return $ret;
+}
+
+/**
 * Return all tasks of a project that have no parent at all or no parent of type erpal_task
 */
 function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($project_node) {

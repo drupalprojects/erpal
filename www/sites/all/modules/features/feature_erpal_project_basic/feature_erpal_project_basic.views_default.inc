@@ -1586,6 +1586,268 @@ echo _erpal_projects_helper_view_projects_header_content();
   $export['tasks'] = $view;
 
   $view = new view();
+  $view->name = 'timetracking_entities';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'timetracking';
+  $view->human_name = 'timetracking entities';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'My unbooked timetrackings';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'timetracking_id' => 'timetracking_id',
+    'changed' => 'changed',
+    'delete_timetracking' => 'delete_timetracking',
+    'description' => 'description',
+    'duration' => 'duration',
+    'edit_timetracking' => 'edit_timetracking',
+    'time_end' => 'time_end',
+    'time_start' => 'time_start',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'timetracking_id' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'delete_timetracking' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'description' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'duration' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_timetracking' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'time_end' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'time_start' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Relationship: Timetracking: Timetracking subject */
+  $handler->display->display_options['relationships']['subject_id']['id'] = 'subject_id';
+  $handler->display->display_options['relationships']['subject_id']['table'] = 'timetracking';
+  $handler->display->display_options['relationships']['subject_id']['field'] = 'subject_id';
+  /* Relationship: Timetracking: Timetracking user */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'timetracking';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Field: Bulk operations: Timetracking */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['operations'] = array(
+    'action::erpal_invoice_helper_invoice_from_billables_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_delete_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_delete_item' => array(
+      'selected' => 1,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::system_message_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_script_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::erpal_projects_helper_timetracking_finalise_action' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_reduce_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_modify_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'show_all_tokens' => 1,
+        'display_values' => array(
+          '_all_' => '_all_',
+        ),
+      ),
+    ),
+    'action::views_bulk_operations_argument_selector_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'url' => '',
+      ),
+    ),
+    'action::system_goto_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::system_send_email_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_billed_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_unbilled_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+  );
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['display_result'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['merge_single_action'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo']['force_single'] = 0;
+  /* Field: Timetracking: Timetracking ID */
+  $handler->display->display_options['fields']['timetracking_id']['id'] = 'timetracking_id';
+  $handler->display->display_options['fields']['timetracking_id']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['timetracking_id']['field'] = 'timetracking_id';
+  /* Field: Timetracking: Changed */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  /* Field: Timetracking: Description */
+  $handler->display->display_options['fields']['description']['id'] = 'description';
+  $handler->display->display_options['fields']['description']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['description']['field'] = 'description';
+  /* Field: Timetracking: Time_start */
+  $handler->display->display_options['fields']['time_start']['id'] = 'time_start';
+  $handler->display->display_options['fields']['time_start']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['time_start']['field'] = 'time_start';
+  $handler->display->display_options['fields']['time_start']['label'] = 'start';
+  $handler->display->display_options['fields']['time_start']['date_format'] = 'short';
+  /* Field: Timetracking: Time_end */
+  $handler->display->display_options['fields']['time_end']['id'] = 'time_end';
+  $handler->display->display_options['fields']['time_end']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['time_end']['field'] = 'time_end';
+  $handler->display->display_options['fields']['time_end']['label'] = 'end';
+  $handler->display->display_options['fields']['time_end']['date_format'] = 'short';
+  /* Field: Timetracking: Duration */
+  $handler->display->display_options['fields']['duration']['id'] = 'duration';
+  $handler->display->display_options['fields']['duration']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['duration']['field'] = 'duration';
+  $handler->display->display_options['fields']['duration']['precision'] = '0';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'subject_id';
+  $handler->display->display_options['fields']['title']['label'] = 'Subject';
+  /* Field: Timetracking: Delete Link */
+  $handler->display->display_options['fields']['delete_timetracking']['id'] = 'delete_timetracking';
+  $handler->display->display_options['fields']['delete_timetracking']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['delete_timetracking']['field'] = 'delete_timetracking';
+  /* Field: Timetracking: Edit Link */
+  $handler->display->display_options['fields']['edit_timetracking']['id'] = 'edit_timetracking';
+  $handler->display->display_options['fields']['edit_timetracking']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['edit_timetracking']['field'] = 'edit_timetracking';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'User';
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
+
+  /* Display: My timetracking entites */
+  $handler = $view->new_display('page', 'My timetracking entites', 'page');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['path'] = 'projects/timetrackings/tmp';
+  $export['timetracking_entities'] = $view;
+
+  $view = new view();
   $view->name = 'timetrackings';
   $view->description = '';
   $view->tag = 'default';
