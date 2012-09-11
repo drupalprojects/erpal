@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for our entity
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function timetracking_schema() {
+  $schema = array();
+
+  $schema['timetracking'] = array(
+    'description' => 'The base table for timetracking entities.',
+    'fields' => array(
+      'timetracking_id' => array(
+        'description' => 'Primary Key: Identifier for a timetracking entity.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The type of this timetracking entity.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'time_start' => array(
+        'description' => 'Timestamp when tracking was started',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'time_end' => array(
+        'description' => 'Timestamp when tracking ended',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'duration' => array(
+        'description' => 'Time in hours for duration',
+        'type' => 'float',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'description' => array(
+        'description' => 'The description of this timetracking entity.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ),
+      'subject_id' => array(
+        'description' => 'Reference to an entity where the timetracking was started at',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'uid' => array(
+        'description' => 'User ID of the user that created the timetracking entity',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the timetracking was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the timetracking was changed last time.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('timetracking_id'),
+    'indexes' => array(
+      'user' => array('uid'),
+    ),
+  );
+
+  return $schema;
+}

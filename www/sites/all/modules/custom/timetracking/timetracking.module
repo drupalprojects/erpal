@@ -1,0 +1,235 @@
+<?php
+
+/**
+ * @file
+ * Module for the timetracking Entity - developed within ERPAL
+ */  
+
+module_load_include('inc', 'timetracking', 'timetracking.entity');   
+ 
+/**
+ * Implements hook_views_api().
+ */
+function timetracking_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'timetracking') . '/views',
+  );
+} 
+ 
+/**
+ * Implement hook_entity_info().
+ *
+ * We define our entities here - the actual entity that will hold our domain
+ * specific information 
+ */
+function timetracking_entity_info() {
+  $return['timetracking'] = array(
+    'label' => t('timetracking'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'timetracking',
+    'controller class' => 'timetrackingController',
+    'base table' => 'timetracking',
+    'file' => 'timetracking.entity.inc',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+        'id' => 'timetracking_id',
+        'bundle' => 'type',
+    ),   
+    'bundles' => array(
+      'timetracking'=> array(
+        'label' => 'timetracking',        
+      ),
+    ),
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => 'timetracking_create',
+    'access callback' => 'timetracking_access',
+    'module' => 'timetracking',
+    // The information below is used by the timetrackingUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/timetrackings',
+      'file' => 'timetracking.admin.inc',
+      'controller class' => 'timetrackingUIController',
+      'menu wildcard' => '%timetracking',
+    ),
+  );
+
+  return $return;
+}
+ 
+ 
+/**
+ * Implements hook_permission().
+ */
+function timetracking_permission() {
+  // We set up permisssions to manage entity types, manage all entities and the
+  // permissions for each individual entity
+  $permissions = array(
+    'create timetracking' => array(
+      'title' => t('Create timetracking'),
+    ),
+    'administer timetrackings' => array(
+      'title' => t('Administer all timetrackings'),
+    ),
+    "edit any timetracking" => array(
+      'title' => t('Edit any timetracking'),
+    ),
+    "view any timetracking" => array(
+      'title' => t('View any timetracking'),
+    ),    
+  );
+  
+  return $permissions;  
+}
+
+
+/**
+ * Determines whether the given user has access to a timetracking.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $timetracking
+ *   Optionally a timetracking or a timetracking type to check access for. If nothing is
+ *   given, access for all timetrackings is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function timetracking_access($op, $timetracking = NULL, $account = NULL) {
+ 
+  if (user_access('administer timetrackings', $account)) {
+    return TRUE;
+  }
+
+  if (isset($timetracking) && is_object($timetracking) && $type_name = $timetracking->type) {
+    $op = ($op == 'view') ? 'view' : 'edit';
+    if (user_access("$op any timetracking", $account)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Implement hook_theme().
+ */
+function timetracking_theme() {
+  //themes for our timetracking entity
+  require_once('timetracking.entity.inc');
+  $themes = _timetracking_entity_theme();
+  
+  $themes['timetracking_button'] = array(
+    'variables' => array('entity_type' => false, 'entity_id' => array(), 'state' => false),
+    'template' => 'template/timetracking_button',
+  );
+  
+  return $themes;
+}  
+
+/**
+* So we can make the user change the date format by changing this variable 
+*/
+function _timetracking_get_date_format($time = true){
+  if (module_exists('erpal_invoice_helper')) {
+    if (!$time)
+      return _erpal_basic_helper_date_format_date_only();
+    else
+      return _erpal_basic_helper_date_format_date_time();
+  } else {  
+    if (!$time)
+      return variable_get('date_format_short_date_only', 'Y/m/d');
+    else
+      return variable_get('date_format_short_date_time', 'Y/m/d H:i');
+  }
+}
+
+
+/**
+ * Implements hook_references_dialog_entity_admin_paths().
+ * Needed to provide a link path to create a new timetracking at an entity reference field in reference dialog widget
+ */
+function timetracking_references_dialog_entity_admin_paths() {
+  // We define the add and edit page callbacks for core entities here.
+  $admin_paths = array(
+    'timetracking' => array(
+      'add' => 'timetracking/add',
+      'edit' => 'timetracking/[entity_id]/edit',
+    ),
+  );
+  return $admin_paths;
+}
+
+/**
+* Function to quick create a new timetracking entity
+*/
+function timetracking_create_new($time_start, $uid, $description=false, $subject_id=false) {
+  $timetracking_controler = entity_get_controller('timetracking');
+  $values = array();
+  
+  //stop all other timetrackings of the user
+  _timetracking_stop_other_user_times($uid);
+  
+  $timetracking_entity = $timetracking_controler->create($values);
+  $timetracking_entity->time_start = $time_start;
+  $timetracking_entity->uid = $uid;
+  $timetracking_entity->description = $description;
+  $timetracking_entity->subject_id = $subject_id;
+  $timetracking_entity->created = time();
+  $timetracking_entity->save();
+  
+  return $timetracking_entity;
+}
+
+/**
+* Stops all other user timetracking entities
+*/
+function _timetracking_stop_other_user_times($uid) {
+  $timetracking_nids = _timetrackings_by_user($uid);
+  $timetrackings = timetracking_load_multiple($timetracking_nids);
+  
+  //now close them
+  foreach ($timetrackings as $timetracking) {
+    $timetracking->close();
+  } 
+}
+
+/**
+* Returns all timetrackings by a given user
+*/
+function _timetrackings_by_user($uid) {
+  $result = db_select('timetracking', 't')
+  ->fields('t', array('timetracking_id'))
+  ->condition('uid', $uid, '=')
+  ->execute()
+  ->fetchAll();
+  
+  //load all timetracking entities
+  $entities = array();
+  
+  foreach ($result as $obj) {
+    $entities[] = $obj->timetracking_id;
+  }
+  
+  return $entities;
+}
+
+/**
+* Returns all posaible entities that could be referenzed by a timetracking. This is dann by each module implementing the provided hook
+*/
+function _timetracking_get_possible_timetracking_subjects() {
+  $subjects = module_invoke_all('possible_timetracking_subjects');
+
+  //each module sets his list into a spearate array
+  $ret = array();
+  foreach ($subjects as $subject_arr) {
+    foreach ($subject_arr as $id=>$title) {
+      $ret[$id] = $title;
+    }
+  }
+  
+  return $ret;
+}
