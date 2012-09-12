@@ -294,6 +294,9 @@ dpm($options);
     //in results array we have all nids that have parent_id as direct parent
     foreach ($total_result as $delta=>$row) {      
       //now get all children of the current rows sub tree
+      dpm($parent_field);
+      dpm($row);
+      
       $sub_children = _views_jstree_get_all_child_nids_deep_search($row->nid, $parent_field->id, $filtered_types);
       
       //add the node itself, too
