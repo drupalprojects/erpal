@@ -66,8 +66,28 @@ function feature_erpal_project_basic_menu_default_menu_links() {
     'weight' => '-49',
     'parent_path' => 'projects/projects',
   );
+  // Exported menu link: menu-erpal-menu:projects/timetrackings/tmp
+  $menu_links['menu-erpal-menu:projects/timetrackings/tmp'] = array(
+    'menu_name' => 'menu-erpal-menu',
+    'link_path' => 'projects/timetrackings/tmp',
+    'router_path' => 'projects/timetrackings/tmp',
+    'link_title' => 'Active timetrackings',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '-48',
+    'parent_path' => 'projects/projects',
+  );
   // Translatables
   // Included for use with string extractors like potx.
+  t('Active timetrackings');
   t('Projects');
   t('Tasks');
   t('Timetrackings');

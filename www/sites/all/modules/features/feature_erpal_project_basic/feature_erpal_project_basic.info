@@ -103,6 +103,7 @@ features[field_group][] = group_task_time_group|node|erpal_task|form
 features[menu_links][] = menu-erpal-menu:projects/projects
 features[menu_links][] = menu-erpal-menu:projects/tasks
 features[menu_links][] = menu-erpal-menu:projects/timetrackings
+features[menu_links][] = menu-erpal-menu:projects/timetrackings/tmp
 features[node][] = erpal_project
 features[node][] = erpal_task
 features[node][] = erpal_timetracking
