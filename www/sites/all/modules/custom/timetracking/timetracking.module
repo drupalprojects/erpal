@@ -16,6 +16,56 @@ function timetracking_views_api() {
     'path' => drupal_get_path('module', 'timetracking') . '/views',
   );
 } 
+
+/**
+* Implements hook_menu
+*/ 
+function timetracking_menu(){
+
+  $items = array();
+  
+  $items['timetracking/toggle/%/%/%'] = array(
+    'page callback' => '_timetracking_toggle',
+    'page arguments' => array(2,3,4), //entity_type, subject nid, next_state [on, off]
+    'access callback' => '_timetracking_toggle_access',
+    'access arguments' => array(2,3), //entity_type, subject_nid
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+} 
+ 
+/**
+* Function that toggles the timetracking for a entity as subject
+*/
+function _timetracking_toggle($entity_type, $subject_id, $new_state) {
+  global $user;
+  if ($new_state == 'on') {
+    //toggle on
+    //get the entity
+    $entity = entity_load('node', array($subject_id));
+    $entity = $entity[$subject_id];
+    $description = t('Work on !subject_title', array('!subject_title' => $entity->title)); //@todo ->title is not for every entity, so make it generic with e.g. get_label or something equal
+    timetracking_create_new(time(), $user->uid, $description, $subject_id);
+  } else {
+    //toggle off
+    //get the timetracking that are "on" and stop them
+    $timetrackings = _timetrackings_by_user($user->uid, $subject_id, false);
+    foreach ($timetrackings as $timetracking_id) {
+      $timetracking = timetracking_load($timetracking_id);
+      $timetracking->close();
+    }
+  }
+}
+
+/**
+* Access callback for timetracking toggle path
+*/
+function _timetracking_toggle_access($entity_type, $subject_id) {
+  if ($entity_type == 'node')
+    $node = node_load($subject_id);
+  return node_access('view', $node);
+}
  
 /**
  * Implement hook_entity_info().
@@ -199,12 +249,22 @@ function _timetracking_stop_other_user_times($uid) {
 
 /**
 * Returns all timetrackings by a given user
+* @param $need_time_end if true, we only return timetrackings that don't have a end time set
 */
-function _timetrackings_by_user($uid) {
-  $result = db_select('timetracking', 't')
+function _timetrackings_by_user($uid, $subject_id=false, $need_time_end=false) {
+  $query = db_select('timetracking', 't')
   ->fields('t', array('timetracking_id'))
-  ->condition('uid', $uid, '=')
-  ->execute()
+  ->condition('uid', $uid, '=');
+  
+  if ($subject_id) {
+    $query->condition('subject_id', $subject_id, '=');
+  }
+  
+  if ($need_time_end) {
+    $query->condition('time_end', 0, '=');
+  }
+  
+  $result = $query->execute()
   ->fetchAll();
   
   //load all timetracking entities
@@ -232,4 +292,12 @@ function _timetracking_get_possible_timetracking_subjects() {
   }
   
   return $ret;
+}
+
+/**
+* preprocess function for timetracking button
+*/
+function template_preprocess_timetracking_button(&$variables) {
+  //add timetracking script
+  drupal_add_js(drupal_get_path('module', 'timetracking')."/script/timetracking_toggle.js");
 }
