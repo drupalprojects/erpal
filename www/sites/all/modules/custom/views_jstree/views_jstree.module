@@ -214,9 +214,7 @@ function views_jstree_move_child($view_name, $nid) {
   
   $parent_field = $fields[$options['parent_field']];
   $weight_field = $fields[$options['weight_field']];
-dpm($parent_field);
-dpm($fields);
-dpm($options);
+
   if ($new_parent_nid == 1){  //@TODO: is this really allways 1 if we drag at top level under the root??
     //set parent to argument, because this is the root.
     $new_parent_nid = $root;
@@ -267,7 +265,9 @@ function views_jstree_load_children($view_name, $parent_id) {
   $id_field = $fields[$options['parent_field']];
   $weight_field = $fields[$options['weight_field']];  
   $type_field = $fields[$options['type_field']];
-
+dpm($parent_field);
+dpm($fields);
+dpm($options);
   //go through the results and get the nids of all parents that have filter-matching childs but dont match the filter themselfes.
 
   /*  
