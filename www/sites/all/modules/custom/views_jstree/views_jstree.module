@@ -480,6 +480,7 @@ function _views_jstree_get_children_display($view, $for_types=array()) {
       }
 
       $ajax_child_view_top_types = isset($display_options['style_options']['ajax_child_view_top_types']) ? $display_options['style_options']['ajax_child_view_top_types'] : array();
+      dpm($ajax_child_view_top_types);
       $types_intersection = array_intersect($for_types, $ajax_child_view_top_types);
 
       if (count($types_intersection)) {
