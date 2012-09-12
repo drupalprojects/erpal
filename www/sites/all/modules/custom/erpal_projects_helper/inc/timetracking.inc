@@ -10,8 +10,9 @@
 function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $context) {
   //first validate
   $errors = _erpal_projects_helper_timetracking_finalise_action_validate($timetrackings);
-  
-  if ($errors) {
+
+  if ($errors && is_array($errors) && count($errors)) {
+    
     foreach ($errors as $id=>$errors_arr) {
       $entity = $errors_arr['entity'];
       $error_texts = $errors_arr['errors'];
@@ -20,7 +21,7 @@ function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $co
       }
     }
     
-    drupal_goto($_GET['q']);
+    //drupal_goto($_GET['q']);
   } else {
     //no errors so finalise the timetrackings
     foreach ($timetrackings as $timetracking) {
@@ -30,6 +31,7 @@ function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $co
         $timetracking->delete();
         continue;
       }
+      
       
       $timetracking_node = _erpal_projects_helper_timetracking_finalise($timetracking);
       //if timetracking node was created, delete the temporary timetracking entity

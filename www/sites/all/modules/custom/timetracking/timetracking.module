@@ -36,6 +36,43 @@ function timetracking_menu(){
 } 
  
 /**
+ * Implements hook_block_info().
+ */
+function timetracking_block_info() {
+  return array(
+    'block' => array(
+      'info' => t('Timetracking'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function timetracking_block_view() {
+  if (!(user_access('use quick timetracking') || user_access('create timetracking'))) {
+    return NULL;
+  };
+  $block['subject'] = t('Quick timetracking');
+  $block['content'] = drupal_get_form('timetracking_quick_form');
+  return $block;
+}
+
+/**
+* For for adding quick timetracking
+*/
+function timetracking_quick_form($form, $form_state) {
+  $form = array();
+  
+  $form['test'] = array(
+    '#type' => 'item',
+    '#markup' => 'geht',
+  );
+  
+  return $form;
+}
+ 
+/**
 * Function that toggles the timetracking for a entity as subject
 */
 function _timetracking_toggle($entity_type, $subject_id, $new_state) {
@@ -123,12 +160,15 @@ function timetracking_permission() {
     'administer timetrackings' => array(
       'title' => t('Administer all timetrackings'),
     ),
-    "edit any timetracking" => array(
+    'edit any timetracking' => array(
       'title' => t('Edit any timetracking'),
     ),
-    "view any timetracking" => array(
+    'view any timetracking' => array(
       'title' => t('View any timetracking'),
-    ),    
+    ),  
+    'use quick timetracking' => array(
+      'title' => t('Use quick timetracking'),
+    ),
   );
   
   return $permissions;  
