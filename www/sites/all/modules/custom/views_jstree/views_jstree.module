@@ -265,9 +265,7 @@ function views_jstree_load_children($view_name, $parent_id) {
   $id_field = $fields[$options['parent_field']];
   $weight_field = $fields[$options['weight_field']];  
   $type_field = $fields[$options['type_field']];
-dpm($parent_field);
-dpm($fields);
-dpm($options);
+
   //go through the results and get the nids of all parents that have filter-matching childs but dont match the filter themselfes.
 
   /*  
@@ -277,7 +275,7 @@ dpm($options);
     alle nids im Subtree, die dem Filter entsprechen.
   - 4) Wir gehen nun alle gruppierten Nodes aus schritt zwei durch und deren kinder (die wir ja durch die Tiefensuche kennen) und prüfen ob sich eines dieser Kinder noch in in der Ergebnismenge aus Schritt 3 befindet) wenn das nicht so ist, werfen wir die nid weg, sonst wird sie aufgehoben und kommt mit in die Ergebnismenge.
   */  
-dpm($filter_values);
+
   unset($filter_values['operation']);  //if not removed, this will disturb our filtering "if-statement"
   if (/*true ||*/ $filter_values && is_array($filter_values) && count($filter_values)) {  //only neccessary if we have a filter set
     $filter = $children_display->handler->view->filter;
@@ -309,43 +307,44 @@ dpm($filter_values);
 
     //now execute a view by id arguement and the given filter to filter node that should not be displayed according to the current set filter
     $by_id_view = views_get_view($view_name);
-    $by_id_display = _views_jstree_get_by_id_display($by_id_view);
-    $id_args = array(implode('+', $all_children_flat));
+    if ($by_id_view) {  //if there is no view for selecting nodes by id skip this process!
+      $by_id_display = _views_jstree_get_by_id_display($by_id_view);
+      $id_args = array(implode('+', $all_children_flat));
 
-    //set filter
-    $by_id_view->set_exposed_input($filter_values);
-    $by_id_view->preview($by_id_display->id, $id_args);
-    $filtered_result = $by_id_view->result;
+      //set filter
+      $by_id_view->set_exposed_input($filter_values);
+      $by_id_view->preview($by_id_display->id, $id_args);
+      $filtered_result = $by_id_view->result;
 
-    //now go through the grouped array of all results and eleminate nodes from deep search that are no more part of the filtered result set.
-    foreach ($children_by_root as $parent_nid=>$children_nids) {
-      foreach ($children_nids as $delta=>$child_nid) {
-        $in_filtered_result = false;
-        foreach ($filtered_result as $filtered_obj) {
-          if ($filtered_obj->nid == $child_nid) {
-            $in_filtered_result = true;
-            break;
+      //now go through the grouped array of all results and eleminate nodes from deep search that are no more part of the filtered result set.
+      foreach ($children_by_root as $parent_nid=>$children_nids) {
+        foreach ($children_nids as $delta=>$child_nid) {
+          $in_filtered_result = false;
+          foreach ($filtered_result as $filtered_obj) {
+            if ($filtered_obj->nid == $child_nid) {
+              $in_filtered_result = true;
+              break;
+            }
           }
-        }
-        
-        if (!$in_filtered_result) {
-          unset($children_by_root[$parent_nid][$delta]); //no result of filtered nodes, so delete the node from final resultset
-          if (!count($children_by_root[$parent_nid])) { //if there are no child nids in the parent subtree, delete the parent
-            unset($children_by_root[$parent_nid]);
+          
+          if (!$in_filtered_result) {
+            unset($children_by_root[$parent_nid][$delta]); //no result of filtered nodes, so delete the node from final resultset
+            if (!count($children_by_root[$parent_nid])) { //if there are no child nids in the parent subtree, delete the parent
+              unset($children_by_root[$parent_nid]);
+            }
           }
+          
         }
-        
+      }
+      
+      //now delete the nodes in filtered_result
+      foreach ($total_result as $delta=>$result_obj) {
+        //if (!in_array($result_obj->nid, $children_by_root))  {
+        if (!isset($children_by_root[$result_obj->nid])) {
+          unset($total_result[$delta]);
+        }
       }
     }
-    
-    //now delete the nodes in filtered_result
-    foreach ($total_result as $delta=>$result_obj) {
-      //if (!in_array($result_obj->nid, $children_by_root))  {
-      if (!isset($children_by_root[$result_obj->nid])) {
-        unset($total_result[$delta]);
-      }
-    }
-    
   }
   
   $result = $total_result;
