@@ -277,7 +277,7 @@ dpm($options);
     alle nids im Subtree, die dem Filter entsprechen.
   - 4) Wir gehen nun alle gruppierten Nodes aus schritt zwei durch und deren kinder (die wir ja durch die Tiefensuche kennen) und prüfen ob sich eines dieser Kinder noch in in der Ergebnismenge aus Schritt 3 befindet) wenn das nicht so ist, werfen wir die nid weg, sonst wird sie aufgehoben und kommt mit in die Ergebnismenge.
   */  
-
+dpm($filter_values);
   unset($filter_values['operation']);  //if not removed, this will disturb our filtering "if-statement"
   if (/*true ||*/ $filter_values && is_array($filter_values) && count($filter_values)) {  //only neccessary if we have a filter set
     $filter = $children_display->handler->view->filter;
