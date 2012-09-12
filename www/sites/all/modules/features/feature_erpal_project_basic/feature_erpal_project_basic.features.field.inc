@@ -1456,7 +1456,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => '8',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1548,7 +1548,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '12',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1655,7 +1655,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '10',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1743,7 +1743,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '20',
+          'weight' => '21',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1820,7 +1820,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2011,7 +2011,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '13',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2210,7 +2210,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '9',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2299,7 +2299,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '11',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2521,7 +2521,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '21',
+          'weight' => '22',
         ),
         'teaser' => array(
           'label' => 'above',

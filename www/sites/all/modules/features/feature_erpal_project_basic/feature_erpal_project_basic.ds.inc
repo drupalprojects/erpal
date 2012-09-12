@@ -47,8 +47,13 @@ function feature_erpal_project_basic_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'erpal_task';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
-    'budget_usage' => array(
+    'timetracking_button' => array(
       'weight' => '7',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
+    'budget_usage' => array(
+      'weight' => '8',
       'label' => 'hidden',
       'format' => 'default',
     ),
@@ -384,6 +389,7 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
         4 => 'field_project_tags',
         5 => 'field_task_type_term',
         6 => 'field_task_status_term',
+        7 => 'timetracking_button',
       ),
       'left' => array(
         0 => 'budget_usage',
@@ -395,8 +401,7 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'right' => array(
         0 => 'field_estimated_time',
         1 => 'field_project_ref',
-        2 => 'field_task_status',
-        3 => 'field_progress_percent',
+        2 => 'field_progress_percent',
       ),
     ),
     'fields' => array(
@@ -407,6 +412,7 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'field_project_tags' => 'header',
       'field_task_type_term' => 'header',
       'field_task_status_term' => 'header',
+      'timetracking_button' => 'header',
       'budget_usage' => 'left',
       'field_date' => 'left',
       'field_task_assigned_users' => 'left',
@@ -414,7 +420,6 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'field_task_exclude_from' => 'left',
       'field_estimated_time' => 'right',
       'field_project_ref' => 'right',
-      'field_task_status' => 'right',
       'field_progress_percent' => 'right',
     ),
     'classes' => array(),
