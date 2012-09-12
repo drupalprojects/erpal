@@ -214,7 +214,7 @@ function views_jstree_move_child($view_name, $nid) {
   
   $parent_field = $fields[$options['parent_field']];
   $weight_field = $fields[$options['weight_field']];
-
+dpm($parent_field);
   if ($new_parent_nid == 1){  //@TODO: is this really allways 1 if we drag at top level under the root??
     //set parent to argument, because this is the root.
     $new_parent_nid = $root;
@@ -480,7 +480,6 @@ function _views_jstree_get_children_display($view, $for_types=array()) {
       }
 
       $ajax_child_view_top_types = isset($display_options['style_options']['ajax_child_view_top_types']) ? $display_options['style_options']['ajax_child_view_top_types'] : array();
-      dpm($ajax_child_view_top_types);
       $types_intersection = array_intersect($for_types, $ajax_child_view_top_types);
 
       if (count($types_intersection)) {
