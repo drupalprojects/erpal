@@ -5,6 +5,41 @@
 */
 
 /**
+* Callback for autocomplete path for tasks by project
+*/
+function _erpal_projects_helper_tasks_autocomplete($project_nid, $text) {
+  $project_nid = arg(3) ? arg(3) : 0; //if it is not set, return all tasks
+
+  $task_nids = _erpal_projects_helper_get_tasks_by_project($project_nid, $text);
+  
+  //make a query with nid and title, its more performant to load all the possible nodes!  
+  $result = array();
+  if (count($task_nids)) {
+    $query = db_select('node', 'n')
+    ->fields('n', array('nid', 'title'))
+    ->condition('nid', $task_nids, 'IN');
+    
+    $result = $query->execute()
+    ->fetchAll();
+  }
+  
+  $matches = array();
+  foreach ($result as $row) {
+    $matches[check_plain($row->title)." (".$row->nid.")"] = $row->title;
+  }
+  
+  // return for JS
+  drupal_json_output($matches);
+}
+
+/**
+* Access callback for validating access to task by project autocomplete path
+*/
+function _erpal_projects_helper_tasks_autocomplete_access() {
+  return user_access('access tasks view');
+}
+
+/**
 * Function returns a list of tasks respecting the given params as filter. 
 *
 * @param array $task_states array of all states tasks are returned with.
@@ -48,18 +83,27 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
 
 /**
 * Return tasks by project
+* @param $project_nid the nid of the project we want the tasks for
+* @param $like_title a substring the task title must contain
 * @return array with nids of tasks referencing the given project_nid
 */
-function _erpal_projects_helper_get_tasks_by_project($project_nid) {
+function _erpal_projects_helper_get_tasks_by_project($project_nid, $like_title=false) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_task')
-  ->propertyCondition('status', 1)
-  ->fieldCondition('field_project_ref', 'target_id', $project_nid);
-    
+  ->propertyCondition('status', 1);
+  
+  if ($project_nid)
+    $query->fieldCondition('field_project_ref', 'target_id', $project_nid);
+   
+  if ($like_title) {
+    //add like condition
+    $query->propertyCondition('title', '%'.$like_title.'%', 'LIKE');
+  }
+   
   $result = $query->execute();
 
-  $task_nodes = array();
+  $task_nids = array();
   if (isset($result['node'])) {
     $task_nids = array_keys($result['node']);
   }

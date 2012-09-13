@@ -51,6 +51,13 @@ function erpal_projects_helper_menu(){
   require_once 'inc/config.inc';
   $config_items = _erpal_projects_helper_config_menu();
   
+  $items['projects/tasks/autocomplete'] = array(
+    'page callback' => '_erpal_projects_helper_tasks_autocomplete',
+    'access callback' => '_erpal_projects_helper_tasks_autocomplete_access',
+    'type' => MENU_CALLBACK,
+  );
+  
+  
   $items = array_merge($items, $config_items);
   return $items;
 }
@@ -551,6 +558,10 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   
   if ($form_id == 'budget_edit_form') {
     $form['#validate'][] = '_erpal_projects_helper_budget_validate';
+  }
+  
+  if ($form_id == 'timetracking_quick_form') {
+    _erpal_projects_helper_alter_timetracking_quick_form($form, $form_state);
   }
 }
 

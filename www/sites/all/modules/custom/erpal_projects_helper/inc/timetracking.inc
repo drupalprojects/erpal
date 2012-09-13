@@ -57,26 +57,84 @@ function _erpal_projects_helper_preprocess_for_timetracking(&$vars) {
   
   if ($node->type == 'erpal_task') {
     //add field to show the timetracking toggle button   
-    $has_timetracking_active = _erpal_projects_helper_task_has_timetracking_entity_active($node);
+    $has_timetracking_active = _erpal_projects_helper_task_has_timetracking_entity_active($node, $tracked_time);
     $has_timetracking_active_str = $has_timetracking_active ? 'on' : 'off';
-    $vars['timetracking_button'] = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$node->nid, 'state' => $has_timetracking_active_str));
+    $vars['timetracking_button'] = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$node->nid, 'state' => $has_timetracking_active_str, 'duration' => $tracked_time));
   }
 }
 
 /**
 * Checks if there are timetracking entity (temporary) that have the given node as subject_id and have no duration set
-* @return false if no timetracking entities, otherwise an array with all active timetracking entites
+* @return false if no timetracking entities are running, otherwise true
 */
-function _erpal_projects_helper_task_has_timetracking_entity_active($node) {
+function _erpal_projects_helper_task_has_timetracking_entity_active($node, &$tracked_time) {
   global $user;
   $timetracking_nids = _timetrackings_by_user($user->uid, $node->nid);
   
-  if (count($timetracking_nids) == 0)
-    return false;
-    
-  return $timetracking_nids;
+  //load all entities and calculate the total time.
+  $timetrackings = timetracking_load_multiple($timetracking_nids);
+  $total = 0;
+  $has_running = false;
+  foreach ($timetrackings as $timetracking) {
+    if ($timetracking->time_end) {
+      $duration = $timetracking->duration;
+    } else {
+      $duration = (time() - $timetracking->time_start) / (60*60);
+      $has_running = true;
+    }
+      
+    $total += $duration;
+  }
+
+  $tracked_time = round($total, 2);
+
+  return $has_running;
 }
 
+
+/**
+* Add elements to select projects and tasks
+*/
+function _erpal_projects_helper_alter_timetracking_quick_form(&$form, $form_state, $project_nid=false) {
+  //first add a project select box
+  $projects = _erpal_projects_helper_get_all_projects(true);
+  
+  $projects[0] = ' ';
+  $form['project_nid'] = array( 
+    '#type' => 'select',
+    '#options' => $projects,
+    '#title' => t('Project'),
+    '#default_value' => 0,
+    '#ajax' => array(
+      'callback' => '_erpal_projects_helper_timetracking_ajax_project_select',
+      'wrapper' => 'timetracking_subject_wrapper',
+      'effect' => 'fade',
+      'method' => 'replace',
+    ),
+  );
+  
+  //replace the subject field with autocomplete for tasks
+  $form['subject']['#autocomplete_path'] = _erpal_projects_helper_get_tasks_by_project_autocomplete_path($project_nid);
+  $form['subject']['#prefix'] = '<div id="timetracking_subject_wrapper">';
+  $form['subject']['#suffix'] = '</div>';
+}
+
+/**
+* Get autocomplete path for tasks by project
+*/
+function _erpal_projects_helper_get_tasks_by_project_autocomplete_path($project_nid=0) {
+  return 'projects/tasks/autocomplete/'.$project_nid;
+}
+
+/**
+* Submit callback when project is chosen in timetracking block and we want wo actualise the autocomplete path for tasks
+*/
+function _erpal_projects_helper_timetracking_ajax_project_select($form, $form_state) {
+  $values = $form_state['values'];
+  $project_nid = $values['project_nid'];
+  $form['subject']['#autocomplete_path'] = _erpal_projects_helper_get_tasks_by_project_autocomplete_path($project_nid);
+  return $form['subject']; //TODO implement
+}
 
 /**
 * Create a real timetracking node from a temporary timetracking entity

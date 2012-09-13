@@ -71,3 +71,44 @@ function erpal_projects_helper_node_presave_project($node) {
   $old_node = node_load($node->nid);
   _erpal_projects_helper_handle_removed_book_nodes($node, $old_node);
 }
+
+/**
+* Just return all projects the user is allowed to see
+*/
+function _erpal_projects_helper_get_all_projects($for_select=false) {
+  
+  $projects = array();
+  if ($for_select) {    
+   
+    $query = db_select('node', 'n');
+    $query
+      ->fields('n', array('nid', 'title'))
+      ->condition('n.type', 'erpal_project')
+      ->condition('n.status', '1')
+      ->orderBy('n.title', 'DESC')
+      ->addTag('node_access');
+    
+    $result = $query->execute();
+    
+    foreach ($result as $record) {
+      // Do something with each $record
+      $projects[$record->nid] = $record->title;
+    }
+    
+    return $projects;
+  } else {  
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_project')
+    ->propertyCondition('status', 1);
+    
+    $result = $query->execute();
+
+    if (isset($result['node'])) {
+      $project_nids = array_keys($result['node']);
+      $project_nodes = entity_load('node', $project_nids);
+      
+      $projects = array_merge($projects, $project_nodes);
+    }
+  }
+}

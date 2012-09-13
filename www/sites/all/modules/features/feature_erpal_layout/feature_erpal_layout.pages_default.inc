@@ -53,15 +53,11 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-1';
     $pane->panel = 'center';
-    $pane->type = 'page_content';
-    $pane->subtype = 'page_content';
+    $pane->type = 'pane_messages';
+    $pane->subtype = 'pane_messages';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array(
-      'context' => 'argument_page_content_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
+    $pane->configuration = array();
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
@@ -75,12 +71,12 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-2';
     $pane->panel = 'center';
-    $pane->type = 'user_signature';
-    $pane->subtype = 'user_signature';
+    $pane->type = 'page_content';
+    $pane->subtype = 'page_content';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'context' => 'logged-in-user',
+      'context' => 'argument_page_content_1',
       'override_title' => 0,
       'override_title_text' => '',
     );

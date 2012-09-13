@@ -62,14 +62,206 @@ function timetracking_block_view() {
 * For for adding quick timetracking
 */
 function timetracking_quick_form($form, $form_state) {
+  global $user;
+  
   $form = array();
   
-  $form['test'] = array(
-    '#type' => 'item',
-    '#markup' => 'geht',
+  $form['subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('What?'), 
+    '#size' => 15,
+    '#weight' => 10
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Track'), 
+    '#weight' => 20,
+    '#ajax' => array(
+      'callback' => '_timetracking_ajax_track_submit',
+      'wrapper' => 'timetracking_block_timetrackings_wrapper',
+      'effect' => 'fade',
+      'method' => 'replace',
+    ),
   );
   
+  $form['timetrackings'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => false,
+    '#collapsed' => false,
+    '#prefix' => '<div id="timetracking_block_timetrackings_wrapper">',
+    '#suffix' => '</div>',
+    '#weight' => 30,
+  );
+  
+  //order timetrackings that have a subject and the ones that dont have a subject      
+  $form['timetrackings']['with_subject'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('With subject'),
+    '#collapsible' => false,
+    '#collapsed' => false,
+  );
+  
+  $form['timetrackings']['without_subject'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Without subject'),
+    '#collapsible' => false,
+    '#collapsed' => false,
+  );
+  
+  //add timetracking to fieldsets
+  $grouped_trackings = _timetracking_calculate_current_timetrackings();
+
+  $with_subject = $grouped_trackings['with_subject'];
+  $without_subject = $grouped_trackings['without_subject'];
+  $with_subject_for_list = array();
+  foreach ($with_subject as $subject_id=>$data) {
+    $subject = $data['subject'];
+
+    $duration = round($data['total_duration'],2);
+    $subject_link = l($subject->title, 'node/'.$subject->nid);
+    $with_subject_for_list[] = $subject_link.theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => $subject_id, 'state' => $data['state'], 'duration' => $duration));
+  }
+
+  if (count($with_subject)) {
+    //for each fieldset a list
+    $variables = array(
+      'items' => $with_subject_for_list,
+    );
+    $form['timetrackings']['with_subject']['timetrackings'] = array(
+      '#type' => 'item',
+      '#markup' => theme('item_list', $variables),
+    );
+  }
+    
+  if (count($without_subject)) {
+    $variables = array(
+      'items' => $without_subject,
+      'title' => false,
+      'type' => false,
+      'attributes' => array(),
+    );
+    $form['timetrackings']['without_subject']['timetrackings'] = array(
+      '#type' => 'item',
+      '#markup' => theme('item_list', $variables),
+    );
+  }
+  
+  
+  
+  
+  //add javascript
+  _timetracking_add_track_js();
+  
   return $form;
+}
+
+/**
+* Validation handler for timetracking form
+*/
+function timetracking_quick_form_validate($form, $form_state) {
+  //@TODO validate timetracking subject
+  $values = $form_state['values'];
+  $subject = $values['subject'];
+  
+  if (!$subject) form_set_error('subject', t('Please add a subject'));
+  
+  //check if there is a nid if the user is allowed to use this node. @TODO actually it doesnt work with all entities, only with nodes
+  $subject_nid = _timetracking_get_nid_from_autocomplete_string($subject);
+  if ($subject_nid) {
+    $subject_node = node_load($subject_nid);
+    if (!node_access('view', $subject_node) || !$subject_node->nid)
+      form_set_error('subject', 'You are not allowed to use this node');
+  }
+}
+
+/**
+* Submit handler for timetracking form
+*/
+function timetracking_quick_form_submit($form, $form_state) {
+  global $user;
+  $values = $form_state['values'];
+  $subject = $values['subject'];
+  
+  //if subject has entity reference syntax we use the nid as subject
+  $subject_nid = _timetracking_get_nid_from_autocomplete_string($subject);
+  
+  //stop all other timetrackings by the user
+  
+  if (!$subject_nid) {
+    //create a new timetracking without a subject
+    
+  } else {
+    //create a new timetracking with subject_nid
+    $subject_node = node_load($subject_nid);
+    $description = _timetracking_default_description($subject_node);
+    timetracking_create_new(time(), $user->uid, $description, $subject_nid);
+  }  
+  
+}
+
+
+/**
+* Handler to output form element that should be replaced or added using ajax framework
+*/
+function _timetracking_ajax_track_submit($form, $form_state) {
+  //recreate the form but without drupal get form. Otherwise, the new timetracking will not be shown in the list because of cache
+  $new_form = timetracking_quick_form($form, $form_state);
+
+  return $new_form['timetrackings'];
+}
+
+/**
+* Prepares the timetrackings for the quick timetracking so that every subject has a sum of all timetrackings
+* @return an array with keys "with_subject" and "without_subject" containing arrays of timetrackings with metadata like total_duration etc.
+*/
+function _timetracking_calculate_current_timetrackings() {
+  global $user;
+  
+  //get list of all timetrackings by current user
+  $timetracking_nids = _timetrackings_by_user($user->uid);
+  $timetrackings = timetracking_load_multiple($timetracking_nids);
+  
+  $with_subject = array();
+  $without_subject = array();
+  foreach ($timetrackings as $timetracking) {    
+    
+    $subject_id = $timetracking->subject_id;
+
+    //get the state
+    if ($timetracking->time_end) {
+      $state = 'off';
+    } else {
+      $state = 'on';
+    }
+
+    $init_data = array('total_duration'=>0, 'state'=>'off', 'subject'=>false); //initialise data array
+    
+    if ($subject_id) {
+      $subject = node_load($subject_id);//@TODO make this compatible with all entitys and save the entity type into the datebase of timetrackings, 
+      //group them by subject
+      if (isset($with_subject[$subject_id]) && $with_subject[$subject_id]) {
+        $data = $with_subject[$subject_id];        
+      } else
+        $data = $init_data;
+      
+      $duration = $timetracking->time_end ? $timetracking->duration : (time() - $timetracking->time_start) / (60*60);
+      $data['total_duration'] += $duration;
+      if ($state == 'on')
+        $data['state'] = 'on'; //if one is "on" (and there should always be only one "on", it could not be off.
+      
+      $data['subject'] = $subject;
+      
+      $with_subject[$subject_id] = $data;
+    } else {      
+      //if there is no subject, group by unity
+    }
+  }
+  
+  return array(
+    'with_subject' => $with_subject,
+    'without_subject' => $without_subject,
+  );
 }
  
 /**
@@ -82,7 +274,7 @@ function _timetracking_toggle($entity_type, $subject_id, $new_state) {
     //get the entity
     $entity = entity_load('node', array($subject_id));
     $entity = $entity[$subject_id];
-    $description = t('Work on !subject_title', array('!subject_title' => $entity->title)); //@todo ->title is not for every entity, so make it generic with e.g. get_label or something equal
+    $description = _timetracking_default_description($node);
     timetracking_create_new(time(), $user->uid, $description, $subject_id);
   } else {
     //toggle off
@@ -96,12 +288,22 @@ function _timetracking_toggle($entity_type, $subject_id, $new_state) {
 }
 
 /**
+* Get default description for timetrackings
+*/
+function _timetracking_default_description($node) {
+  return t('Work on !subject_title', array('!subject_title' => $node->title)); //@todo ->title is not for every entity, so make it generic with e.g. get_label or something equal
+}
+
+/**
 * Access callback for timetracking toggle path
 */
 function _timetracking_toggle_access($entity_type, $subject_id) {
+
   if ($entity_type == 'node')
     $node = node_load($subject_id);
-  return node_access('view', $node);
+  
+  //return node_access('view', $node);
+  return true; //@todo validation like tries with node access, but doesnt work..!
 }
  
 /**
@@ -213,7 +415,7 @@ function timetracking_theme() {
   $themes = _timetracking_entity_theme();
   
   $themes['timetracking_button'] = array(
-    'variables' => array('entity_type' => false, 'entity_id' => array(), 'state' => false),
+    'variables' => array('entity_type' => false, 'entity_id' => array(), 'state' => false, 'duration' => false),
     'template' => 'template/timetracking_button',
   );
   
@@ -339,5 +541,39 @@ function _timetracking_get_possible_timetracking_subjects() {
 */
 function template_preprocess_timetracking_button(&$variables) {
   //add timetracking script
+  _timetracking_add_track_js();
+}
+
+/**
+* Adds timetracking javascript
+*/
+function _timetracking_add_track_js() {
   drupal_add_js(drupal_get_path('module', 'timetracking')."/script/timetracking_toggle.js");
+}
+
+/**
+* returnd the nid from a string created by autocomplete funcitons like entity reference etc.
+* @TODO: this is already placed in erpal_basic_helper. So duplicate. May be a library would be nice for such things
+*/
+function _timetracking_get_nid_from_autocomplete_string($autocomplete_string){
+
+  if (is_numeric($autocomplete_string))
+    return $autocomplete_string;
+
+  preg_match('/^(?:\s*|(.*) )?\[\s*nid\s*:\s*(\d+)\s*\]$/', $autocomplete_string, $matches);
+  $nid = 0;
+  if (!empty($matches)) {
+    //try with [nid]
+    $nid = $matches[2];
+  } else {
+    //try with (nid)
+    preg_match('/^(?:\s*|(.*) )?\(\s*(\d+)\s*\)$/', $autocomplete_string, $matches);
+    $nid = 0;
+    if (!empty($matches)) {
+      //try with [nid]
+      $nid = $matches[2];
+    }
+  }
+
+  return $nid;
 }
