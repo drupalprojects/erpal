@@ -284,12 +284,22 @@ function _timetracking_calculate_current_timetrackings() {
 */
 function _timetracking_toggle($entity_type, $subject_id, $new_state) {
   global $user;
+  
+  //check if we have a real subject or just a md5 checksum of the description
+  if (!is_numeric($subject_id)) {
+    //so this is toggeling. Means we have already a timetracking entity with the same description. So letzt find it und use the discription of the existing timetracking entity
+    $description = _timetracking_get_timetracking_description_by_checksum_by_user($subject_id, $user->uid);
+    
+    $subject_id = false; //because it is no real subject_id so it willbe handled like no subject_id would be available
+  }
+  
   if ($new_state == 'on') {
-    //toggle on
+    //toggle on    
     //get the entity
     $entity = entity_load('node', array($subject_id));
     $entity = $entity[$subject_id];
-    $description = _timetracking_default_description($node);
+    if ($subject_id)
+      $description = _timetracking_default_description($entity);
     timetracking_create_new(time(), $user->uid, $description, $subject_id);
   } else {
     //toggle off
@@ -300,6 +310,22 @@ function _timetracking_toggle($entity_type, $subject_id, $new_state) {
       $timetracking->close();
     }
   }
+}
+
+/**
+* Returns a description of timetrackings that have match the md5 of their descrition with the given checksum
+*/
+function _timetracking_get_timetracking_description_by_checksum_by_user($checksum, $uid) {
+  $timetracking_nids = _timetrackings_by_user($uid);
+  $timetrackings = timetracking_load_multiple($timetracking_nids);
+  
+  foreach ($timetrackings as $timetracking) {
+    $md5_description = md5($timetracking->description);
+    if ($md5_description == $checksum)
+      return $timetracking->description;
+  }
+  
+  return false;  //no description found...should not happen!
 }
 
 /**
