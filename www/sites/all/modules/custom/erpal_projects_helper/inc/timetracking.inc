@@ -131,9 +131,24 @@ function _erpal_projects_helper_get_tasks_by_project_autocomplete_path($project_
 */
 function _erpal_projects_helper_timetracking_ajax_project_select($form, $form_state) {
   $values = $form_state['values'];
-  $project_nid = $values['project_nid'];
-  $form['subject']['#autocomplete_path'] = _erpal_projects_helper_get_tasks_by_project_autocomplete_path($project_nid);
-  return $form['subject']; //TODO implement
+  $project_nid = $values['project_nid'];  
+
+  //if there is a project nid, subject will be selected by select box, not autocomplete
+  if ($project_nid) {    
+    //we do this because just switching to #type = select doesn't work....so introduce a new element
+    $form['subject_select']['#prefix'] = $form['subject']['#prefix'];
+    $form['subject_select']['#suffix'] = $form['subject']['#suffix'];
+    $form['subject_select']['#type'] = 'select';    
+    $form['subject_select']['#name'] = 'subject';
+    $task_nids = _erpal_projects_helper_get_tasks_by_project($project_nid);
+    $tasks = _erpal_basic_helper_nids_for_form_select($task_nids);
+    $form['subject_select']['#options'] = $tasks;
+    return $form['subject_select'];
+  } else {
+    $form['subject']['#autocomplete_path'] = _erpal_projects_helper_get_tasks_by_project_autocomplete_path($project_nid);
+  }
+
+  return $form['subject'];
 }
 
 /**

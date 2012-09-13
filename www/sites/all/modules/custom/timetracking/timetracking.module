@@ -65,7 +65,7 @@ function timetracking_quick_form($form, $form_state) {
   global $user;
   
   $form = array();
-  
+
   $form['subject'] = array(
     '#type' => 'textfield',
     '#title' => t('What?'), 
@@ -122,6 +122,12 @@ function timetracking_quick_form($form, $form_state) {
     $subject_link = l($subject->title, 'node/'.$subject->nid);
     $with_subject_for_list[] = $subject_link.theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => $subject_id, 'state' => $data['state'], 'duration' => $duration));
   }
+  
+  $without_subject_for_list = array();
+  foreach ($without_subject as $description=>$data) {    
+    $duration = round($data['total_duration'],2);
+    $without_subject_for_list[] = $description.theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => md5($description), 'state' => $data['state'], 'duration' => $duration));
+  }
 
   if (count($with_subject)) {
     //for each fieldset a list
@@ -136,10 +142,7 @@ function timetracking_quick_form($form, $form_state) {
     
   if (count($without_subject)) {
     $variables = array(
-      'items' => $without_subject,
-      'title' => false,
-      'type' => false,
-      'attributes' => array(),
+      'items' => $without_subject_for_list,
     );
     $form['timetrackings']['without_subject']['timetrackings'] = array(
       '#type' => 'item',
@@ -181,7 +184,7 @@ function timetracking_quick_form_validate($form, $form_state) {
 function timetracking_quick_form_submit($form, $form_state) {
   global $user;
   $values = $form_state['values'];
-  $subject = $values['subject'];
+  $subject = check_plain($values['subject']);
   
   //if subject has entity reference syntax we use the nid as subject
   $subject_nid = _timetracking_get_nid_from_autocomplete_string($subject);
@@ -190,7 +193,7 @@ function timetracking_quick_form_submit($form, $form_state) {
   
   if (!$subject_nid) {
     //create a new timetracking without a subject
-    
+    timetracking_create_new(time(), $user->uid, $subject, $subject_nid);
   } else {
     //create a new timetracking with subject_nid
     $subject_node = node_load($subject_nid);
@@ -236,7 +239,7 @@ function _timetracking_calculate_current_timetrackings() {
     }
 
     $init_data = array('total_duration'=>0, 'state'=>'off', 'subject'=>false); //initialise data array
-    
+    $duration = $timetracking->time_end ? $timetracking->duration : (time() - $timetracking->time_start) / (60*60);
     if ($subject_id) {
       $subject = node_load($subject_id);//@TODO make this compatible with all entitys and save the entity type into the datebase of timetrackings, 
       //group them by subject
@@ -245,7 +248,6 @@ function _timetracking_calculate_current_timetrackings() {
       } else
         $data = $init_data;
       
-      $duration = $timetracking->time_end ? $timetracking->duration : (time() - $timetracking->time_start) / (60*60);
       $data['total_duration'] += $duration;
       if ($state == 'on')
         $data['state'] = 'on'; //if one is "on" (and there should always be only one "on", it could not be off.
@@ -254,10 +256,23 @@ function _timetracking_calculate_current_timetrackings() {
       
       $with_subject[$subject_id] = $data;
     } else {      
-      //if there is no subject, group by unity
+      //if there is no subject, group by description
+      $description = $timetracking->description;
+      if (isset($without_subject[$description]) && $without_subject[$description]) {
+        $data = $without_subject[$description];        
+      } else
+        $data = $init_data;
+            
+      $data['total_duration'] += $duration;
+      if ($state == 'on')
+        $data['state'] = 'on'; //if one is "on" (and there should always be only one "on", it could not be off.
+      
+      $data['subject'] = false;
+      
+      $without_subject[$description] = $data;
     }
   }
-  
+
   return array(
     'with_subject' => $with_subject,
     'without_subject' => $without_subject,
@@ -542,6 +557,48 @@ function _timetracking_get_possible_timetracking_subjects() {
 function template_preprocess_timetracking_button(&$variables) {
   //add timetracking script
   _timetracking_add_track_js();
+  
+  $state = $variables['state'];
+  $entity_type = $variables['entity_type'];
+  
+  //prepare some path of images
+  $mod_path = drupal_get_path('module', 'timetracking');
+  $image_path = '/'.$mod_path.'/image';
+  $path_start = $image_path.'/control_play.png';
+  $path_stop = $image_path.'/control_stop.png';
+  
+  $start_text = t('Start');
+  $stop_text = t('Stop');
+  if ($state=='on') {
+    $image = $path_stop;
+    $linktext = $stop_text;
+  }else{
+    $image = $path_start;
+    $linktext = $start_text;
+  }
+
+  //add the image paths to javascript variables to script can use them!
+  $togglevalues = array(
+    'on' => array(
+      'imagepath' => $path_stop,
+      'linktext' => $stop_text,
+      'togglepath' => url('timetracking/toggle/'.$entity_type.'/', array('absolute' => true)),
+    ),
+    'off' => array(
+      'imagepath' => $path_start,
+      'linktext' => $start_text,
+      'togglepath' => url('timetracking/toggle/'.$entity_type.'/', array('absolute' => true)),
+    ),
+  );
+  
+  $variables['image'] = $image;
+  $variables['linktext'] = $linktext;
+  
+  static $js_added = false;
+  if (!$js_added) {
+    drupal_add_js(array('timetracking' => $togglevalues), 'setting');
+    $js_added = true;
+  }
 }
 
 /**

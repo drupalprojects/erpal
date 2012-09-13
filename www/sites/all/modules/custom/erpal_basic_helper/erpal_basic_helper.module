@@ -842,3 +842,26 @@ function _erpal_basic_helper_validate_field_default_term($term_entity) {
   
   return $errors;
 }
+
+/**
+* Function that returns an array useful for select box with nid and title from nid array
+*/
+function _erpal_basic_helper_nids_for_form_select($nids) {
+  //make a query with nid and title, its more performant to load all the possible nodes!  
+  $result = array();
+  if (count($nids)) {
+    $query = db_select('node', 'n')
+    ->fields('n', array('nid', 'title'))
+    ->condition('nid', $nids, 'IN');
+    
+    $result = $query->execute()
+    ->fetchAll();
+  }
+  
+  $matches = array();
+  foreach ($result as $row) {
+    $matches[check_plain($row->title)." (".$row->nid.")"] = $row->title;
+  }
+  
+  return $matches;
+}

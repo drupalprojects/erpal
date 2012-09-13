@@ -10,23 +10,9 @@
 function _erpal_projects_helper_tasks_autocomplete($project_nid, $text) {
   $project_nid = arg(3) ? arg(3) : 0; //if it is not set, return all tasks
 
-  $task_nids = _erpal_projects_helper_get_tasks_by_project($project_nid, $text);
+  $task_nids = _erpal_projects_helper_get_tasks_by_project($project_nid, $text, 20); //limit to only 20 rows
   
-  //make a query with nid and title, its more performant to load all the possible nodes!  
-  $result = array();
-  if (count($task_nids)) {
-    $query = db_select('node', 'n')
-    ->fields('n', array('nid', 'title'))
-    ->condition('nid', $task_nids, 'IN');
-    
-    $result = $query->execute()
-    ->fetchAll();
-  }
-  
-  $matches = array();
-  foreach ($result as $row) {
-    $matches[check_plain($row->title)." (".$row->nid.")"] = $row->title;
-  }
+  $matches = _erpal_basic_helper_nids_for_form_select($task_nids);
   
   // return for JS
   drupal_json_output($matches);
@@ -87,7 +73,7 @@ function _erpal_projects_helper_get_tasks_by_assigned_user($task_states=array(),
 * @param $like_title a substring the task title must contain
 * @return array with nids of tasks referencing the given project_nid
 */
-function _erpal_projects_helper_get_tasks_by_project($project_nid, $like_title=false) {
+function _erpal_projects_helper_get_tasks_by_project($project_nid, $like_title=false, $limit=false) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_task')
@@ -100,6 +86,9 @@ function _erpal_projects_helper_get_tasks_by_project($project_nid, $like_title=f
     //add like condition
     $query->propertyCondition('title', '%'.$like_title.'%', 'LIKE');
   }
+  
+  if ($limit)
+    $query->range(0,$limit); //limit rows, if set!
    
   $result = $query->execute();
 

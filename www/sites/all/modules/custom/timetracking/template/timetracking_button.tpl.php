@@ -1,36 +1,4 @@
-<?php
-  //prepare some path of images
-  $mod_path = drupal_get_path('module', 'timetracking');
-  $image_path = '/'.$mod_path.'/image';
-  $path_start = $image_path.'/control_play.png';
-  $path_stop = $image_path.'/control_stop.png';
-  
-  $start_text = t('Start');
-  $stop_text = t('Stop');
-  if ($state=='on') {
-    $image = $path_stop;
-    $linktext = $stop_text;
-  }else{
-    $image = $path_start;
-    $linktext = $start_text;
-  }
-  
-  //add the image paths to javascript variables to script can use them!
-  $togglevalues = array(
-    'on' => array(
-      'imagepath' => $path_stop,
-      'linktext' => $stop_text,
-      'togglepath' => url('timetracking/toggle/'.$entity_type.'/', array('absolute' => true)),
-    ),
-    'off' => array(
-      'imagepath' => $path_start,
-      'linktext' => $start_text,
-      'togglepath' => url('timetracking/toggle/'.$entity_type.'/', array('absolute' => true)),
-    ),
-  );
-
-  drupal_add_js(array('timetracking' => $togglevalues), 'setting');
-  
+<?php  
   //caution!!!! A timetracking button can appear multiple times at one page if the task is shown in a view an another view or in the node view of its own. So we cannot use an id but class of html attributes.
 ?>
 <div class='timetracking'>
