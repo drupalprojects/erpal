@@ -26,7 +26,8 @@ function feature_erpal_crm_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-49',
+    'weight' => '-50',
+    'parent_path' => 'crm/contacts',
   );
   // Translatables
   // Included for use with string extractors like potx.
