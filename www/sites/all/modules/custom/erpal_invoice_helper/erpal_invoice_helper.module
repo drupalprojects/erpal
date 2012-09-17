@@ -321,7 +321,7 @@ function _erpal_invoice_helper_invoice_form_submit($form, &$form_state) {
 */
 function _erpal_invoice_helper_invoice_node_handle_removed_billables($node) {
   $values = $_POST;  //this is not the best way to get values but we added a new checkbox via AJAX to the widget when the remove button was clicked and this value didn't come here!
-  dpm($node);
+
   $removed_billables = isset($values['removed_billables']) ? $values['removed_billables'] : array();
   foreach ($removed_billables as $delta=>$remove) {
     if (!$remove)
