@@ -21,7 +21,7 @@ function erpal_invoice_helper_field_widget_info() {
 * Implements hook_field_widget_form().
 */
 function erpal_invoice_helper_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  //dpm($items);
+
   $value = isset($items[$delta]['target_id']) ? $items[$delta]['target_id'] : '';
  
   $widget = $element;
@@ -36,13 +36,128 @@ function erpal_invoice_helper_field_widget_form(&$form, &$form_state, $field, $i
         // Allow a slightly larger size that the field length to allow for some
         // configurations where all characters won't fit in input field.
         '#size' => 7,
-        '#maxlength' => 7,
+        '#maxlength' => 7, 
       );
     break;
   }
   
+  $element['#prefix'] = '<div id="billable_element_wrapper_'.$delta.'">';
+  $element['#suffix'] = '</div>';
+  
+  $element['remove_group'] = array(
+    '#type' => 'fieldset',
+    '#collapbsilbe' => false,
+    '#collapsed' => false,
+  );
+
+  $element['remove_group']['remove_'.$delta] = array(
+    '#type' => 'submit',
+    '#value' => t('remove'),
+    '#delta' => $delta,
+    '#name' => 'remove_'.$delta,
+    '#submit' => array('_erpal_invoice_helper_remove_billable_submit'),
+    '#ajax' => array(
+      'callback' => '_erpal_invoice_helper_ajax_remove_billable_from_invoice',
+      'wrapper' => 'billable_element_wrapper_'.$delta,
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
+
+  $element['remove_group']['keep_billable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('keep billable'),
+    '#default_value' => true,
+  );
+  
+  
   $element['target_id'] = $widget;
+  
   return $element;
+}
+
+
+function _erpal_invoice_helper_remove_billable_submit($form, &$form_state) {
+/*
+  $delta = 0;
+  $form_state['hallo'];
+  form_set_value($form['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['mark_remove'], true, $form_state);
+  $form_state['rebuild'] = TRUE;
+  $my_values = array('ff' => 'ggg');
+  $new_element = array('#parents' => array('field_billables_ref_values', LANGUAGE_NONE, $delta, 'lalala'));
+  form_set_value($new_element, $my_values, $form_state);
+  */
+}
+
+
+/**
+* AJAX Callback to remove a billable from the invoice form
+*/
+function _erpal_invoice_helper_ajax_remove_billable_from_invoice($form, &$form_state) {
+  $values = $form_state['values'];
+  $button = $form_state['triggering_element'];
+  //$delta = $button['#delta'];
+
+  //get the submitted delta, bad way to do this may be, but i dont know how to get the delta of the submitted remove button...
+  $delta = false;
+  foreach ($values as $key=>$value) {
+    //is there a value key starting with "remove_"?
+    if (strpos($key, 'remove_') === 0) {
+      $key_arr = explode('_', $key);
+      $delta = $key_arr[1];      
+      break;
+    }
+  }
+  
+  //check if billable should be deleted
+  $keep_billable = $values['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['keep_billable'];
+
+  $field_billables_ref_new = array();
+  $field_billables_ref_new['remove_group'] = array(
+    '#type' => 'fieldset',
+  );
+  
+  $field_billables_ref_new['remove_group']['keep_billable'] = $form['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['keep_billable'];
+  
+  //just a text to give some information to the user
+  /*
+  $field_billables_ref_new['remove_group']['remove_info'] = array(    
+    '#type' => 'item',
+    '#markup' => t('Will be removed on form submit'),
+  );
+  */
+  
+  $field_billables_ref_new['remove_group']['mark_remove'] = $form['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['mark_remove'];
+  $field_billables_ref_new['remove_group']['mark_remove'] = array (
+    '#type' => 'checkbox',
+    '#title' => t('remove on save'),
+    '#name' => 'removed_billables['.$delta.']',
+    '#checked' => true,
+  );
+ 
+  /*$field_billables_ref_new['remove_group']['mark_remove']['#type']= 'checkbox';
+  $field_billables_ref_new['remove_group']['mark_remove']['#checked']= true;
+  $field_billables_ref_new['remove_group']['mark_remove']['#title']= t('remove');
+  $form_state['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['mark_remove'] = true;
+  $form_state['rebuild'] = TRUE;*/
+  
+  return $field_billables_ref_new;
+  //add invisible form element to save the billable deltas to remove
+  /*
+  $form['keep_billable_arr']['keep_billable_deltas'][$delta] = array(    
+    '#type' => 'hidden',  //@TODO @see _erpal_invoice_helper_handle_deleted_billables_from_form is not the best way but i dont get it with hiddn field, it will not be submitted in form submit form_state...:-(
+    '#name' => 'keep_billable_deltas['.$delta.']',
+    '#value' => $keep_billable ? 'keep' : 'delete',
+  );
+  
+  $form['keep_billable_arr']['remove_info'][$delta] = array(    
+    '#type' => 'item',
+    '#markup' => t('Will be removed on form submit'),
+  );
+  */
+  //$form_state['rebuild'] = TRUE;
+ 
+  return $form['keep_billable_arr'];
 }
 
 

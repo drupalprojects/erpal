@@ -166,7 +166,7 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   $form['field_customer_ref'] = _erpal_invoice_helper_field_customer_ref_alter($form['field_customer_ref']);
   
   $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);  
-  
+
   //if address has only one option, make this option the default value
   $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];  
   
@@ -305,7 +305,40 @@ function erpal_invoice_helper_billable_currencies() {
 * submit handler for invoice node form
 */
 function _erpal_invoice_helper_invoice_form_submit($form, &$form_state) {
-  _erpal_invoice_helper_calculate_billables_ref_from_form($form, $form_state);
+  
+  //do this only if form save button was submitted
+  $clicked_button_name = $form_state['clicked_button']['#name'];
+  $clicked_button_value = $form_state['clicked_button']['#value'];
+  if ($form['submit']['#value' ] == $clicked_button_value) {
+    _erpal_invoice_helper_calculate_billables_ref_from_form($form, $form_state);
+  }
+  
+}
+
+/**
+* in invoice edit form billables could be deleted and removed from billable. We dont handle this in the submit of the
+* remove button so we do it here
+*/
+function _erpal_invoice_helper_invoice_node_handle_removed_billables($node) {
+  $values = $_POST;  //this is not the best way to get values but we added a new checkbox via AJAX to the widget when the remove button was clicked and this value didn't come here!
+  dpm($node);
+  $removed_billables = isset($values['removed_billables']) ? $values['removed_billables'] : array();
+  foreach ($removed_billables as $delta=>$remove) {
+    if (!$remove)
+      continue;
+      
+    //now delete remove billables from the invoice node and save the hole invoice again to recalculate the vat etc.
+    $keep_billable = $node->field_billables_ref[LANGUAGE_NONE][$delta]['remove_group']['keep_billable'];
+    $billable_id = $node->field_billables_ref[LANGUAGE_NONE][$delta]['target_id'];
+    
+    //unset from node at first
+    unset($node->field_billables_ref[LANGUAGE_NONE][$delta]);
+
+    //may be delete the billable
+    if (!$keep_billable) {
+      billable_delete_multiple(array($billable_id));
+    }
+  }
   
 }
 
@@ -528,7 +561,7 @@ function erpal_invoice_helper_node_update($node) {
 function erpal_invoice_helper_node_presave($node) {
   //it must be an invoice node
   $type = node_type_get_type($node);
-  
+
   if ($type->type == 'erpal_invoice') {
 
     _erpal_invoice_helper_set_notes($node);
@@ -536,6 +569,8 @@ function erpal_invoice_helper_node_presave($node) {
     if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
     //that is because the vat entity will be saved to a node that does not exist!
       _erpal_invoice_helper_caclulate_invoice($node);
+      _erpal_invoice_helper_invoice_node_handle_removed_billables($node);
+      
     }
     
     _erpal_invoice_helper_replace_order_number_tokens($node);
