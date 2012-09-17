@@ -245,6 +245,13 @@ function feature_erpal_invoice_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_erpal_invoice_pattern';
+  $strongarm->value = 'invoices/invoice/[node:nid]';
+  $export['pathauto_node_erpal_invoice_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'save_continue_erpal_invoice';
   $strongarm->value = 'Save and add fields';
   $export['save_continue_erpal_invoice'] = $strongarm;

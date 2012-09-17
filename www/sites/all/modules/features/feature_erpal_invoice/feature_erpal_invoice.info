@@ -92,6 +92,7 @@ features[variable][] = menu_parent_erpal_invoice
 features[variable][] = node_options_erpal_invoice
 features[variable][] = node_preview_erpal_invoice
 features[variable][] = node_submitted_erpal_invoice
+features[variable][] = pathauto_node_erpal_invoice_pattern
 features[variable][] = save_continue_erpal_invoice
 features[variable][] = show_preview_changes_erpal_invoice
 features[views_view][] = billables

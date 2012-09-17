@@ -222,6 +222,41 @@ function feature_erpal_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_erpal_contact_pattern';
+  $strongarm->value = 'crm/contact/[node:nid]';
+  $export['pathauto_node_erpal_contact_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_address_types_pattern';
+  $strongarm->value = 'crm/address-type/[term:name]';
+  $export['pathauto_taxonomy_term_address_types_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_company_relation_tags_pattern';
+  $strongarm->value = 'crm/company-relation/[term:name]';
+  $export['pathauto_taxonomy_term_company_relation_tags_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_contact_tags_pattern';
+  $strongarm->value = 'crm/contact-type/[term:name]';
+  $export['pathauto_taxonomy_term_contact_tags_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_number_types_pattern';
+  $strongarm->value = 'crm/number-type/[term:name]';
+  $export['pathauto_taxonomy_term_number_types_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'save_continue_erpal_contact';
   $strongarm->value = 'Save and add fields';
   $export['save_continue_erpal_contact'] = $strongarm;

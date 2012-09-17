@@ -113,6 +113,27 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $display->panels['left_region'][0] = 'new-3';
     $pane = new stdClass();
     $pane->pid = 'new-4';
+    $pane->panel = 'left_region';
+    $pane->type = 'block';
+    $pane->subtype = 'timetracking-block';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-4'] = $pane;
+    $display->panels['left_region'][1] = 'new-4';
+    $pane = new stdClass();
+    $pane->pid = 'new-5';
     $pane->panel = 'tabs_region';
     $pane->type = 'page_tabs';
     $pane->subtype = 'page_tabs';
@@ -132,10 +153,10 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['tabs_region'][0] = 'new-4';
+    $display->content['new-5'] = $pane;
+    $display->panels['tabs_region'][0] = 'new-5';
     $pane = new stdClass();
-    $pane->pid = 'new-5';
+    $pane->pid = 'new-6';
     $pane->panel = 'top_region';
     $pane->type = 'page_logo';
     $pane->subtype = 'page_logo';
@@ -150,10 +171,10 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-5'] = $pane;
-    $display->panels['top_region'][0] = 'new-5';
+    $display->content['new-6'] = $pane;
+    $display->panels['top_region'][0] = 'new-6';
     $pane = new stdClass();
-    $pane->pid = 'new-6';
+    $pane->pid = 'new-7';
     $pane->panel = 'top_region';
     $pane->type = 'block';
     $pane->subtype = 'system-user-menu';
@@ -171,8 +192,8 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['top_region'][1] = 'new-6';
+    $display->content['new-7'] = $pane;
+    $display->panels['top_region'][1] = 'new-7';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

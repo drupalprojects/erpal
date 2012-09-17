@@ -10,7 +10,7 @@
 function feature_erpal_docs_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'comment-comment_node_erpal_file-comment_body'
+  // Exported field: 'comment-comment_node_erpal_file-comment_body'.
   $fields['comment-comment_node_erpal_file-comment_body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -33,6 +33,7 @@ function feature_erpal_docs_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -77,7 +78,7 @@ function feature_erpal_docs_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_file-field_docs_file'
+  // Exported field: 'node-erpal_file-field_docs_file'.
   $fields['node-erpal_file-field_docs_file'] = array(
     'field_config' => array(
       'active' => '1',
@@ -98,6 +99,7 @@ function feature_erpal_docs_field_default_fields() {
           0 => 'fid',
         ),
       ),
+      'locked' => '0',
       'module' => 'file',
       'settings' => array(
         'display_default' => 0,
@@ -156,7 +158,7 @@ function feature_erpal_docs_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_file-field_file_tags'
+  // Exported field: 'node-erpal_file-field_file_tags'.
   $fields['node-erpal_file-field_file_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -177,6 +179,7 @@ function feature_erpal_docs_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(

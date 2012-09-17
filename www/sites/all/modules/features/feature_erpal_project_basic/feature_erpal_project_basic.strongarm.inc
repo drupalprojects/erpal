@@ -636,6 +636,69 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_erpal_project_pattern';
+  $strongarm->value = 'projects/project/[node:nid]';
+  $export['pathauto_node_erpal_project_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_erpal_task_pattern';
+  $strongarm->value = 'projects/project/task/[node:nid]';
+  $export['pathauto_node_erpal_task_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_erpal_timetracking_pattern';
+  $strongarm->value = 'projects/project/timetracking/[node:nid]';
+  $export['pathauto_node_erpal_timetracking_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_priority_terms_pattern';
+  $strongarm->value = 'projects/priority/[term:name]';
+  $export['pathauto_taxonomy_term_priority_terms_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_project_role_tags_pattern';
+  $strongarm->value = 'projects/project-role/[term:name]';
+  $export['pathauto_taxonomy_term_project_role_tags_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_project_status_terms_pattern';
+  $strongarm->value = 'projects/project-status/[term:name]';
+  $export['pathauto_taxonomy_term_project_status_terms_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_project_tags_pattern';
+  $strongarm->value = 'projects/project-terms/[term:name]';
+  $export['pathauto_taxonomy_term_project_tags_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_task_status_terms_pattern';
+  $strongarm->value = 'projects/task-status/[term:name]';
+  $export['pathauto_taxonomy_term_task_status_terms_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_task_type_terms_pattern';
+  $strongarm->value = 'projects/task-type/[term:name]';
+  $export['pathauto_taxonomy_term_task_type_terms_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'save_continue_erpal_project';
   $strongarm->value = 'Save and add fields';
   $export['save_continue_erpal_project'] = $strongarm;

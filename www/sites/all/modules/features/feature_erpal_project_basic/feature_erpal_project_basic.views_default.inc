@@ -1606,18 +1606,39 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'title',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+    1 => array(
+      'field' => 'description',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
   $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
     'timetracking_id' => 'timetracking_id',
     'changed' => 'changed',
-    'delete_timetracking' => 'delete_timetracking',
     'description' => 'description',
-    'duration' => 'duration',
-    'edit_timetracking' => 'edit_timetracking',
-    'time_end' => 'time_end',
     'time_start' => 'time_start',
+    'time_end' => 'time_end',
+    'duration' => 'duration',
+    'title' => 'title',
+    'delete_timetracking' => 'delete_timetracking',
+    'edit_timetracking' => 'edit_timetracking',
+    'name' => 'name',
+    'subject_id' => 'subject_id',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'timetracking_id' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
@@ -1632,12 +1653,21 @@ echo _erpal_projects_helper_view_projects_header_content();
       'separator' => '',
       'empty_column' => 0,
     ),
-    'delete_timetracking' => array(
+    'description' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'description' => array(
+    'time_start' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'time_end' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1651,19 +1681,31 @@ echo _erpal_projects_helper_view_projects_header_content();
       'separator' => '',
       'empty_column' => 0,
     ),
-    'edit_timetracking' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'time_end' => array(
+    'title' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'time_start' => array(
+    'delete_timetracking' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_timetracking' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'subject_id' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
