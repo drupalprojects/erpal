@@ -1351,10 +1351,8 @@ function feature_erpal_crm_field_default_fields() {
   t('Comment');
   t('Contacts');
   t('Customer');
-  t('Determine if this is an OG group.');
   t('Expected date');
   t('Global documents');
-  t('Group');
   t('Is default');
   t('Next Contact');
   t('Order number extern');
