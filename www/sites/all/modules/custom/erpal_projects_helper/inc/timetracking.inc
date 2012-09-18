@@ -5,6 +5,27 @@
 */
 
 /**
+* Implements callback for compute function for timetracking_button as computed field
+*/
+function computed_field_field_timetracking_button_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  if ($entity_type == 'node') {
+    if ($entity->type == 'erpal_task') {
+      $entity_field[0]['value'] = $entity->nid;
+    }
+  }
+  
+}
+
+/**
+* Implements callback for display funciton for timetracking_button as computed field
+*/
+function computed_field_field_timetracking_button_display($field, $entity_field_item, $entity_lang, $langcode) {
+  $nid = $entity_field_item['value'];
+  $display_output = _erpal_projects_helper_render_timetracking_button_field($nid);
+  return $display_output;
+}
+
+/**
 * Callback for action with the same name definied in hook_action_info
 */
 function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $context) {
@@ -49,17 +70,19 @@ function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $co
 /**
 * Renders the html code for timetracking button on tasks
 */
-function _erpal_projects_helper_preprocess_for_timetracking(&$vars) {
-  if (!isset($vars['node']))
-  return;
+function _erpal_projects_helper_render_timetracking_button_field($nid) {
+  if (!$nid)
+    return;
   
-  $node = $vars['node'];  
+  $node = node_load($nid);  
   
   if ($node->type == 'erpal_task') {
     //add field to show the timetracking toggle button   
     $has_timetracking_active = _erpal_projects_helper_task_has_timetracking_entity_active($node, $tracked_time);
     $has_timetracking_active_str = $has_timetracking_active ? 'on' : 'off';
-    $vars['timetracking_button'] = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$node->nid, 'state' => $has_timetracking_active_str, 'duration' => $tracked_time));
+    $timetracking_button = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$node->nid, 'state' => $has_timetracking_active_str, 'duration' => $tracked_time));
+    
+    return $timetracking_button;
   }
 }
 

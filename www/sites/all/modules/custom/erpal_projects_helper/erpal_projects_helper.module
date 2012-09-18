@@ -242,13 +242,6 @@ function erpal_projects_helper_cron_queue_info() {
 }
 
 /**
-* Implements hook_preprocess_node().
-*/
-function erpal_projects_helper_preprocess_node(&$vars) {
-  _erpal_projects_helper_preprocess_for_timetracking($vars);
-}
-
-/**
 * additional validation handler for clone config form of task elements
 */
 function erpal_projects_helper_clone_book_action_form_validate($form, $form_state) {
