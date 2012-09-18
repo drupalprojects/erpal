@@ -488,7 +488,7 @@ function erpal_invoice_helper_menu(){
 function _erpal_invoice_helper_invoice_defaults_menu_access($node) {
   //@TODO implement
   
-  return user_access($node);
+  return node_access('view', $node);
 }
 
 /**
