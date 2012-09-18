@@ -1763,7 +1763,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -1841,7 +1841,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '41',
+        'weight' => '9',
       ),
     ),
   );
@@ -1923,7 +1923,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -2133,7 +2133,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -2250,7 +2250,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -2320,7 +2320,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -2399,7 +2399,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -2483,6 +2483,79 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_task-field_timetracking_button'.
+  $fields['node-erpal_task-field_timetracking_button'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_timetracking_button',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'computed_field',
+      'settings' => array(
+        'code' => '$entity_field[0][\'value\'] = "";',
+        'database' => array(
+          'data_default' => '',
+          'data_index' => 0,
+          'data_length' => '',
+          'data_not_NULL' => 0,
+          'data_precision' => '10',
+          'data_scale' => '2',
+          'data_size' => 'normal',
+          'data_type' => 'int',
+        ),
+        'display_format' => '$display_output = $entity_field_item[\'value\'];',
+        'profile2_private' => FALSE,
+        'store' => 1,
+      ),
+      'translatable' => '0',
+      'type' => 'computed',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'computed_field',
+          'settings' => array(),
+          'type' => 'computed_field_plain',
+          'weight' => 26,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_timetracking_button',
+      'label' => 'Timetracking button',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed',
+        'weight' => '6',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_task-field_weight'.
   $fields['node-erpal_task-field_weight'] = array(
     'field_config' => array(
@@ -2546,7 +2619,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '34',
+        'weight' => '35',
       ),
     ),
   );
@@ -3532,6 +3605,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('The duration that will be billed to the customer');
   t('This gives the status tag a semantic meaning');
   t('Time estimated for this task');
+  t('Timetracking button');
   t('Type');
   t('Weight');
   t('When will the project be developed? Only for planing purpose.');

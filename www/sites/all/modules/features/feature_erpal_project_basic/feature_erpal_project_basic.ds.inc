@@ -47,11 +47,6 @@ function feature_erpal_project_basic_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'erpal_task';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
-    'timetracking_button' => array(
-      'weight' => '7',
-      'label' => 'hidden',
-      'format' => 'default',
-    ),
     'budget_usage' => array(
       'weight' => '8',
       'label' => 'hidden',
@@ -271,9 +266,10 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
         2 => 'field_task_type_term',
         3 => 'group_task_time_group',
         4 => 'field_parent',
-        5 => 'field_progress_percent',
-        6 => 'field_task_status_term',
-        7 => 'field_priority_term',
+        5 => 'field_timetracking_button',
+        6 => 'field_progress_percent',
+        7 => 'field_task_status_term',
+        8 => 'field_priority_term',
       ),
       'header' => array(
         0 => 'title',
@@ -317,7 +313,9 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
         21 => 'options',
         22 => 'additional_settings',
         23 => 'actions',
-        24 => '_add_existing_field',
+        24 => 'group_audience',
+        25 => 'group_content_access',
+        26 => '_add_existing_field',
       ),
     ),
     'fields' => array(
@@ -329,8 +327,10 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'field_task_type_term' => 'left',
       'group_task_time_group' => 'left',
       'field_parent' => 'left',
+      'field_timetracking_button' => 'left',
       'field_progress_percent' => 'left',
       'field_task_status_term' => 'left',
+      'field_priority_term' => 'left',
       'field_pricing' => 'right',
       'field_task_assigned_users' => 'right',
       'field_project_tags' => 'footer',
@@ -363,7 +363,8 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'options' => 'hidden',
       'additional_settings' => 'hidden',
       'actions' => 'hidden',
-      'field_priority_term' => 'left',
+      'group_audience' => 'hidden',
+      'group_content_access' => 'hidden',
       '_add_existing_field' => 'hidden',
     ),
     'classes' => array(),
@@ -389,7 +390,6 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
         4 => 'field_project_tags',
         5 => 'field_task_type_term',
         6 => 'field_task_status_term',
-        7 => 'timetracking_button',
       ),
       'left' => array(
         0 => 'budget_usage',
@@ -412,7 +412,6 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'field_project_tags' => 'header',
       'field_task_type_term' => 'header',
       'field_task_status_term' => 'header',
-      'timetracking_button' => 'header',
       'budget_usage' => 'left',
       'field_date' => 'left',
       'field_task_assigned_users' => 'left',
