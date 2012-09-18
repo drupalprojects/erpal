@@ -1608,7 +1608,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['grouping'] = array(
     0 => array(
-      'field' => 'title',
+      'field' => 'field_timetracking_button',
       'rendered' => 1,
       'rendered_strip' => 0,
     ),
@@ -1630,7 +1630,7 @@ echo _erpal_projects_helper_view_projects_header_content();
     'delete_timetracking' => 'delete_timetracking',
     'edit_timetracking' => 'edit_timetracking',
     'name' => 'name',
-    'subject_id' => 'subject_id',
+    'field_timetracking_button' => 'field_timetracking_button',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -1705,7 +1705,7 @@ echo _erpal_projects_helper_view_projects_header_content();
       'separator' => '',
       'empty_column' => 0,
     ),
-    'subject_id' => array(
+    'field_timetracking_button' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1876,6 +1876,13 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'User';
+  /* Field: Content: Timetracking button */
+  $handler->display->display_options['fields']['field_timetracking_button']['id'] = 'field_timetracking_button';
+  $handler->display->display_options['fields']['field_timetracking_button']['table'] = 'field_data_field_timetracking_button';
+  $handler->display->display_options['fields']['field_timetracking_button']['field'] = 'field_timetracking_button';
+  $handler->display->display_options['fields']['field_timetracking_button']['relationship'] = 'subject_id';
+  $handler->display->display_options['fields']['field_timetracking_button']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
