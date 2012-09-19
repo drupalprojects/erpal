@@ -35,7 +35,7 @@ function erpal_docs_helper_config_form($form, &$form_state){
   $form['doc_file_extensions'] = array(
     '#type' => 'textfield',
     '#title' => t('Allowed doc file extensions'),
-    '#description' => t('These extensions are allowed when uploading a file to the asset management. Separate them by spaces, no comma or semicolon.'),
+    '#description' => t('These extensions are allowed when uploading a file to the asset management. Separate them by spaces.'),
     '#default_value' => _erpal_docs_helper_doc_extensions(),
   );
   
@@ -52,7 +52,7 @@ function erpal_docs_helper_config_form($form, &$form_state){
 */
 function erpal_docs_helper_config_form_submit($form, &$form_state) {
   $values = $form_state['values'];
-  $extensions = $values['doc_file_extensions'];
+  $extensions = str_replace(',', '', $values['doc_file_extensions']);
   variable_set('erpal_docs_doc_file_extensions', $extensions);
 }
 
