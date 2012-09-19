@@ -5,6 +5,74 @@
 */
 
 module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
+module_load_include('inc', 'erpal_docs_helper', 'inc/config');
+ 
+/**
+* Implements hook_menu
+*/ 
+function erpal_docs_helper_menu(){
+
+  $items = array();
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_docs_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+ 
+/**
+* Implements hook_form_alter
+*/ 
+function erpal_docs_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'field_ui_field_edit_form') {
+    if (isset($form['instance']['field_name']))
+      if ($form['instance']['field_name']['#value'] == 'field_docs_file')
+        _erpal_docs_helper_field_docs_file_field_settings_form_alter($form, $form_state, $form_id);
+  }
+
+}
+
+/**
+* Alter the docs fiel field to hide the file extension form element because users should change these settings in ERPAL docs settings
+*/
+function _erpal_docs_helper_field_docs_file_field_settings_form_alter(&$form, &$form_state, $form_id) {
+  
+  $erpal_docs_settings_link = l(t('ERPAL docs settings'), 'admin/erpal/docs');
+  $form['instance']['settings']['file_extensions'] = array(
+    '#type' => 'item',
+    '#markup' => t('Please set extensions for this field in !erpal_docs_settings_link', array('!erpal_docs_settings_link' => $erpal_docs_settings_link)),
+    '#title' => $form['instance']['settings']['file_extensions']['#title'],
+  );
+}
+ 
+/**
+* Implements hook_field_widget_form_alter
+*/
+function erpal_docs_helper_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (!isset($element[0]['#field_name']))
+    return;
+  if ($element[0]['#field_name'] != 'field_docs_file')
+    return;
+  
+  //now alter the docs file widget to add validation handler
+  _erpal_docs_helper_field_docs_file_widget_form_alter($element, $form_state, $context);
+} 
+
+/**
+* Alters the file docs widget to make users enter thei allowed file extensions without orriding a feature that brings the docs_file field
+*/
+function _erpal_docs_helper_field_docs_file_widget_form_alter(&$element, &$form_state, $context) {
+  unset($element[0]['#upload_validators']['file_validate_extensions']);
+  $allowed_extensions = _erpal_docs_helper_doc_extensions();
+  $element[0]['#upload_validators']['file_validate_extensions'][] = $allowed_extensions;
+  
+  //now theme the description again
+  $description = theme('file_upload_help', array('upload_validators' => $element[0]['#upload_validators']));
+
+  $element[0]['#description'] = $description;
+}
+
  
 /**
 * Implements hook_permission
