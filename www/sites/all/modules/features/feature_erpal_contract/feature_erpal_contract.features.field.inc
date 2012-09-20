@@ -1266,7 +1266,7 @@ If not set, budget will not expire',
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -1363,7 +1363,7 @@ If not set, budget will not expire',
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -1425,7 +1425,7 @@ If not set, budget will not expire',
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -1481,7 +1481,7 @@ If not set, budget will not expire',
         'max' => '',
         'min' => '',
         'prefix' => '',
-        'suffix' => 'month',
+        'suffix' => '',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -1489,7 +1489,139 @@ If not set, budget will not expire',
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '4',
+        'weight' => '5',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_contract-field_cancelation_period_con'.
+  $fields['node-erpal_contract-field_cancelation_period_con'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_cancelation_period_con',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'number',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contract',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Cancelation period especially for the contractor. If not set, its the same as cancelation period.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 7,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_cancelation_period_con',
+      'label' => 'Cancelation period contractor',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_contract-field_cancelation_period_unit'.
+  $fields['node-erpal_contract-field_cancelation_period_unit'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_cancelation_period_unit',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'day' => 'Days',
+          'month' => 'months',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contract',
+      'default_value' => array(
+        0 => array(
+          'value' => 'month',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 8,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_cancelation_period_unit',
+      'label' => 'Cancelation period unit',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '7',
       ),
     ),
   );
@@ -1711,7 +1843,7 @@ If not set, budget will not expire',
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -1725,6 +1857,9 @@ If not set, budget will not expire',
   t('Budget period');
   t('Budgets');
   t('Cancelation period');
+  t('Cancelation period contractor');
+  t('Cancelation period especially for the contractor. If not set, its the same as cancelation period.');
+  t('Cancelation period unit');
   t('Contract files');
   t('Contract payment');
   t('Contract type');
