@@ -1608,12 +1608,12 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['grouping'] = array(
     0 => array(
-      'field' => 'field_timetracking_button',
+      'field' => 'description',
       'rendered' => 1,
       'rendered_strip' => 0,
     ),
     1 => array(
-      'field' => 'description',
+      'field' => 'field_timetracking_button',
       'rendered' => 1,
       'rendered_strip' => 0,
     ),
