@@ -199,6 +199,24 @@ function feature_erpal_docs_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-6'] = $pane;
     $display->panels['right'][0] = 'new-6';
+    $pane = new stdClass();
+    $pane->pid = 'new-7';
+    $pane->panel = 'right';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'documents_usage_comments-panel_pane_1';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-7'] = $pane;
+    $display->panels['right'][1] = 'new-7';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-3';
   $handler->conf['display'] = $display;
