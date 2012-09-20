@@ -37,6 +37,7 @@ features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
 features[features_plumber][] = feature_erpal_crm__dependencies__field_group
 features[field][] = comment-comment_node_erpal_crm_activity-comment_body
+features[field][] = comment-comment_node_erpal_crm_activity-field_asset_files
 features[field][] = comment-comment_node_erpal_crm_activity-field_contacts_ref
 features[field][] = node-erpal_crm_activity-body
 features[field][] = node-erpal_crm_activity-field_account_manager
