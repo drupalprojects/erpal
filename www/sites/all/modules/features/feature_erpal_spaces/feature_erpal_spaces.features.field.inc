@@ -10,7 +10,7 @@
 function feature_erpal_spaces_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'comment-comment_node_erpal_space-comment_body'
+  // Exported field: 'comment-comment_node_erpal_space-comment_body'.
   $fields['comment-comment_node_erpal_space-comment_body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -33,6 +33,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -71,7 +72,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'comment-comment_node_group-comment_body'
+  // Exported field: 'comment-comment_node_group-comment_body'.
   $fields['comment-comment_node_group-comment_body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -94,6 +95,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -132,403 +134,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_book-group_content_access'
-  $fields['node-erpal_book-group_content_access'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'group_content_access',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'no_ui' => TRUE,
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Use group defaults',
-          1 => 'Public - accessible to all site users',
-          2 => 'Private - accessible only to group members',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_book',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 9,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'group_content_access',
-      'label' => 'Group content visibility',
-      'required' => TRUE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'view modes' => array(
-        'full' => array(
-          'label' => 'above',
-          'type' => 'list_default',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'type' => 'list_default',
-        ),
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => 10,
-      ),
-      'widget_type' => 'options_select',
-    ),
-  );
-
-  // Exported field: 'node-erpal_book-group_group'
-  $fields['node-erpal_book-group_group'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'group_group',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Not a group',
-          1 => 'Group',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_book',
-      'default_value' => array(
-        0 => array(
-          'value' => 1,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'Determine if this is an OG group.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'og_ui',
-          'settings' => array(),
-          'type' => 'og_group_subscribe',
-          'weight' => 8,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'display_label' => 1,
-      'entity_type' => 'node',
-      'field_name' => 'group_group',
-      'label' => 'Group',
-      'required' => FALSE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'view modes' => array(
-        'full' => array(
-          'custom settings' => FALSE,
-          'label' => 'Full',
-          'type' => 'og_group_subscribe',
-        ),
-        'teaser' => array(
-          'custom settings' => FALSE,
-          'label' => 'Teaser',
-          'type' => 'og_group_subscribe',
-        ),
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 0,
-        ),
-        'type' => 'options_onoff',
-        'weight' => 0,
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_book_page-group_content_access'
-  $fields['node-erpal_book_page-group_content_access'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'group_content_access',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'no_ui' => TRUE,
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Use group defaults',
-          1 => 'Public - accessible to all site users',
-          2 => 'Private - accessible only to group members',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_book_page',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 11,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'group_content_access',
-      'label' => 'Group content visibility',
-      'required' => TRUE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'view modes' => array(
-        'full' => array(
-          'label' => 'above',
-          'type' => 'list_default',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'type' => 'list_default',
-        ),
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => 12,
-      ),
-      'widget_type' => 'options_select',
-    ),
-  );
-
-  // Exported field: 'node-erpal_book_page-group_group'
-  $fields['node-erpal_book_page-group_group'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'group_group',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Not a group',
-          1 => 'Group',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_book_page',
-      'default_value' => array(
-        0 => array(
-          'value' => 1,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'Determine if this is an OG group.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'og_ui',
-          'settings' => array(),
-          'type' => 'og_group_subscribe',
-          'weight' => 10,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'display_label' => 1,
-      'entity_type' => 'node',
-      'field_name' => 'group_group',
-      'label' => 'Group',
-      'required' => FALSE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'view modes' => array(
-        'full' => array(
-          'custom settings' => FALSE,
-          'label' => 'Full',
-          'type' => 'og_group_subscribe',
-        ),
-        'teaser' => array(
-          'custom settings' => FALSE,
-          'label' => 'Teaser',
-          'type' => 'og_group_subscribe',
-        ),
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 0,
-        ),
-        'type' => 'options_onoff',
-        'weight' => 0,
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_crm_activity-group_group'
-  $fields['node-erpal_crm_activity-group_group'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'group_group',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Not a group',
-          1 => 'Group',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_crm_activity',
-      'default_value' => array(
-        0 => array(
-          'value' => 1,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'Determine if this is an OG group.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'og_ui',
-          'settings' => array(),
-          'type' => 'og_group_subscribe',
-          'weight' => 16,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'display_label' => 1,
-      'entity_type' => 'node',
-      'field_name' => 'group_group',
-      'label' => 'Group',
-      'required' => FALSE,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'view modes' => array(
-        'full' => array(
-          'custom settings' => FALSE,
-          'label' => 'Full',
-          'type' => 'og_group_subscribe',
-        ),
-        'teaser' => array(
-          'custom settings' => FALSE,
-          'label' => 'Teaser',
-          'type' => 'og_group_subscribe',
-        ),
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 0,
-        ),
-        'type' => 'options_onoff',
-        'weight' => 0,
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_file-group_audience'
+  // Exported field: 'node-erpal_file-group_audience'.
   $fields['node-erpal_file-group_audience'] = array(
     'field_config' => array(
       'active' => '1',
@@ -542,6 +148,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'gid',
         ),
       ),
+      'locked' => '0',
       'module' => 'og',
       'no_ui' => TRUE,
       'settings' => array(),
@@ -599,7 +206,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_project-group_audience'
+  // Exported field: 'node-erpal_project-group_audience'.
   $fields['node-erpal_project-group_audience'] = array(
     'field_config' => array(
       'active' => '1',
@@ -613,6 +220,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'gid',
         ),
       ),
+      'locked' => '0',
       'module' => 'og',
       'no_ui' => TRUE,
       'settings' => array(),
@@ -670,13 +278,13 @@ function feature_erpal_spaces_field_default_fields() {
           'opt_group' => 'auto',
         ),
         'type' => 'group_audience',
-        'weight' => 37,
+        'weight' => '37',
       ),
       'widget_type' => 'group_audience',
     ),
   );
 
-  // Exported field: 'node-erpal_project-group_content_access'
+  // Exported field: 'node-erpal_project-group_content_access'.
   $fields['node-erpal_project-group_content_access'] = array(
     'field_config' => array(
       'active' => '1',
@@ -690,6 +298,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'no_ui' => TRUE,
       'settings' => array(
@@ -699,6 +308,7 @@ function feature_erpal_spaces_field_default_fields() {
           2 => 'Private - accessible only to group members',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
@@ -754,13 +364,13 @@ function feature_erpal_spaces_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 38,
+        'weight' => '38',
       ),
       'widget_type' => 'options_select',
     ),
   );
 
-  // Exported field: 'node-erpal_space-body'
+  // Exported field: 'node-erpal_space-body'.
   $fields['node-erpal_space-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -783,6 +393,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '1',
@@ -832,7 +443,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_space-group_access'
+  // Exported field: 'node-erpal_space-group_access'.
   $fields['node-erpal_space-group_access'] = array(
     'field_config' => array(
       'active' => '1',
@@ -846,6 +457,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'no_ui' => TRUE,
       'settings' => array(
@@ -909,7 +521,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_space-group_group'
+  // Exported field: 'node-erpal_space-group_group'.
   $fields['node-erpal_space-group_group'] = array(
     'field_config' => array(
       'active' => '1',
@@ -923,6 +535,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -989,7 +602,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_space-og_roles_permissions'
+  // Exported field: 'node-erpal_space-og_roles_permissions'.
   $fields['node-erpal_space-og_roles_permissions'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1003,6 +616,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'no_ui' => TRUE,
       'settings' => array(
@@ -1068,7 +682,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_task-group_audience'
+  // Exported field: 'node-erpal_task-group_audience'.
   $fields['node-erpal_task-group_audience'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1082,6 +696,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'gid',
         ),
       ),
+      'locked' => '0',
       'module' => 'og',
       'no_ui' => TRUE,
       'settings' => array(),
@@ -1105,7 +720,7 @@ function feature_erpal_spaces_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '21',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1139,13 +754,13 @@ function feature_erpal_spaces_field_default_fields() {
           'opt_group' => 'auto',
         ),
         'type' => 'group_audience',
-        'weight' => 40,
+        'weight' => '42',
       ),
       'widget_type' => 'group_audience',
     ),
   );
 
-  // Exported field: 'node-erpal_task-group_content_access'
+  // Exported field: 'node-erpal_task-group_content_access'.
   $fields['node-erpal_task-group_content_access'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1159,6 +774,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'no_ui' => TRUE,
       'settings' => array(
@@ -1168,6 +784,7 @@ function feature_erpal_spaces_field_default_fields() {
           2 => 'Private - accessible only to group members',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
@@ -1176,7 +793,7 @@ function feature_erpal_spaces_field_default_fields() {
       'bundle' => 'erpal_task',
       'default_value' => array(
         0 => array(
-          'value' => 0,
+          'value' => '0',
         ),
       ),
       'deleted' => '0',
@@ -1193,7 +810,7 @@ function feature_erpal_spaces_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1205,7 +822,7 @@ function feature_erpal_spaces_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'group_content_access',
       'label' => 'Group content visibility',
-      'required' => TRUE,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -1220,16 +837,17 @@ function feature_erpal_spaces_field_default_fields() {
         ),
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 41,
+        'weight' => '43',
       ),
       'widget_type' => 'options_select',
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-group_audience'
+  // Exported field: 'node-erpal_timetracking-group_audience'.
   $fields['node-erpal_timetracking-group_audience'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1243,6 +861,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'gid',
         ),
       ),
+      'locked' => '0',
       'module' => 'og',
       'no_ui' => TRUE,
       'settings' => array(),
@@ -1300,7 +919,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-group_content_access'
+  // Exported field: 'node-erpal_timetracking-group_content_access'.
   $fields['node-erpal_timetracking-group_content_access'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1314,6 +933,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'no_ui' => TRUE,
       'settings' => array(
@@ -1323,6 +943,7 @@ function feature_erpal_spaces_field_default_fields() {
           2 => 'Private - accessible only to group members',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
@@ -1378,7 +999,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'og_membership-og_membership_type_default-og_membership_request'
+  // Exported field: 'og_membership-og_membership_type_default-og_membership_request'.
   $fields['og_membership-og_membership_type_default-og_membership_request'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1401,6 +1022,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -1439,7 +1061,7 @@ function feature_erpal_spaces_field_default_fields() {
     ),
   );
 
-  // Exported field: 'user-user-group_audience'
+  // Exported field: 'user-user-group_audience'.
   $fields['user-user-group_audience'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1453,6 +1075,7 @@ function feature_erpal_spaces_field_default_fields() {
           0 => 'gid',
         ),
       ),
+      'locked' => '0',
       'module' => 'og',
       'no_ui' => TRUE,
       'settings' => array(),
