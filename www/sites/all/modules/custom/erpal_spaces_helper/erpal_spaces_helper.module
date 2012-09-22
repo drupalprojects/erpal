@@ -1,0 +1,138 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_spaces_helper module.
+*/
+
+/**
+* Implements hook_permission
+*/
+function erpal_spaces_helper_permission() {
+  return array(
+    'access spaces view' => array(
+      'title' => t('Access spaces view'), 
+      'description' => t('Allows the user to access the spaces view'),
+    ),
+    //TASKS
+    'change group audience task' => array(
+      'title' => t('Change group audience task'), 
+      'description' => t('Allows the user to select the groups audience on task nodes'),
+    ),
+    'change group content visibility task' => array(
+      'title' => t('Change group content visibility task'), 
+      'description' => t('Allows the user to change the group-content visibility on task nodes'),
+    ),
+    
+    //Projects
+    'change group audience project' => array(
+      'title' => t('Change group audience project'), 
+      'description' => t('Allows the user to select the groups audience on project nodes'),
+    ),
+    'change group content visibility task' => array(
+      'title' => t('Change group content visibility project'), 
+      'description' => t('Allows the user to change the group-content visibility on project nodes'),
+    ),
+    
+    //File
+    'change group audience file' => array(
+      'title' => t('Change group audience file'), 
+      'description' => t('Allows the user to select the groups audience on file nodes'),
+    ),
+    'change group content visibility task' => array(
+      'title' => t('Change group content visibility file'), 
+      'description' => t('Allows the user to change the group-content visibility on file nodes'),
+    ),
+    
+    //Timetracking
+    'change group audience timetracking' => array(
+      'title' => t('Change group audience timetracking'), 
+      'description' => t('Allows the user to select the groups audience on timetracking nodes'),
+    ),
+    'change group content visibility timetracking' => array(
+      'title' => t('Change group content visibility timetracking'), 
+      'description' => t('Allows the user to change the group-content visibility on timetracking nodes'),
+    ),
+  );
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_spaces_helper_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  //dpm($form_id);
+  //dpm($form);
+  if ($form_id == 'erpal_task_node_form') {
+    _erpal_spaces_helper_group_field_task_form_alter($form, $form_state);    
+  }
+    
+}
+
+/**
+* Alters the group fields of a task form
+*/
+function _erpal_spaces_helper_group_field_task_form_alter(&$form, &$form_state) {
+  if (isset($form['group_audience'][LANGUAGE_NONE])) {
+    //if no value is set and user has no permission to edit the field, set the value of the parent project
+    //if user has the permission, may be he will set no value because the node should not appear in a group
+    if (!count($form['group_audience'][LANGUAGE_NONE])) {
+      $field = field_info_field('group_audience');
+      if (!field_access('edit', $field, 'node', $node, $user)) {
+        
+      }
+    }
+    
+  }
+}
+
+
+/**
+* Implements hook field access
+*/
+function erpal_spaces_helper_field_access($op, $field, $entity_type, $entity, $account) {
+  //Task
+  if (is_object($entity) && $entity_type == 'node') {
+    if ($entity->type == 'erpal_task') {
+      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+        return user_access('change group audience task');
+      }
+      
+      if ($op == 'edit' && $field['field_name'] == 'group_content_access') {
+        return user_access('change group content visibility task');
+      }
+    }
+    
+    //Project
+    if ($entity->type == 'erpal_project') {
+      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+        return user_access('change group audience project');
+      }
+      
+      if ($op == 'edit' && $field['field_name'] == 'group_content_access') {
+        return user_access('change group content visibility project');
+      }
+    }
+    
+    //file
+    if ($entity->type == 'erpal_file') {
+      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+        return user_access('change group audience file');
+      }
+      
+      if ($op == 'edit' && $field['field_name'] == 'group_content_access') {
+        return user_access('change group content visibility file');
+      }
+    }
+    
+    //timetracking
+    if ($entity->type == 'erpal_timetracking') {
+      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+        return user_access('change group audience timetracking');
+      }
+      
+      if ($op == 'edit' && $field['field_name'] == 'group_content_access') {
+        return user_access('change group content visibility timetracking');
+      }
+    }
+  }
+}
