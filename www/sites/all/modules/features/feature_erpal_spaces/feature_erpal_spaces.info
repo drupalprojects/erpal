@@ -21,7 +21,6 @@ dependencies[] = feature_erpal_project_basic
 dependencies[] = features
 dependencies[] = og
 dependencies[] = og_access
-dependencies[] = og_create_perms
 dependencies[] = og_field_access
 dependencies[] = og_ui
 dependencies[] = page_manager
