@@ -321,7 +321,7 @@ function views_jstree_load_children($view_name, $parent_id) {
       $filtered_result = $by_id_view->result;
 
       //now go through the grouped array of all results and eleminate nodes from deep search that are no more part of the filtered result set.
-      dpm($children_by_root);
+      
       foreach ($children_by_root as $parent_nid=>$children_nids) {        
         foreach ($children_nids as $delta=>$child_nid) {
           $in_filtered_result = false;

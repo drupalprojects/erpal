@@ -59,29 +59,61 @@ function erpal_spaces_helper_permission() {
 * Implements hook_form_alter
 */
 function erpal_spaces_helper_form_alter(&$form, &$form_state, $form_id) {
-  global $user;
-  //dpm($form_id);
-  //dpm($form);
   if ($form_id == 'erpal_task_node_form') {
-    _erpal_spaces_helper_group_field_task_form_alter($form, $form_state);    
+    _erpal_spaces_helper_preset_parent_group_task($form, $form_state);
   }
-    
 }
 
 /**
-* Alters the group fields of a task form
-*/
-function _erpal_spaces_helper_group_field_task_form_alter(&$form, &$form_state) {
-  if (isset($form['group_audience'][LANGUAGE_NONE])) {
-    //if no value is set and user has no permission to edit the field, set the value of the parent project
-    //if user has the permission, may be he will set no value because the node should not appear in a group
-    if (!count($form['group_audience'][LANGUAGE_NONE])) {
-      $field = field_info_field('group_audience');
-      if (!field_access('edit', $field, 'node', $node, $user)) {
-        
-      }
+* For a tasks, if the form for inserting a new tasks is shown, we preselect the group to the group of the parent.
+*/ 
+function _erpal_spaces_helper_preset_parent_group_task(&$form, &$form_state) {
+
+  $nid = $form['nid']['#value'];
+  if ($nid) {  //only if node is new, preselect the group audience
+    return;
+  }
+  
+  $parent_node = _erpal_project_task_parent_from_form($form);
+  
+  //now prepopulate with the groups of the parent
+  $group_audience = array();
+  if (isset($parent_node->group_audience[LANGUAGE_NONE])) {
+    foreach ($parent_node->group_audience[LANGUAGE_NONE] as $delta=>$group_arr) {
+      $group_audience[$group_arr['gid']] = $group_arr['gid'];
     }
+  }
+  
+  $form['group_audience'][LANGUAGE_NONE]['#default_value'] = $group_audience;
+}
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_spaces_helper_node_presave($node) {
+  if ($node->type == 'erpal_task') {
+    _erpal_spaces_helper_ensure_group_audience_task_presave($node);
+  }
+}
+
+/**
+* Make sure, that if a user that has not the permnission to change the group_audience field saves a node and the field is empty, the task will be placed in the group, where the tasks parent is placed
+*/
+function _erpal_spaces_helper_ensure_group_audience_task_presave($node) {
+  global $user;
+  
+  $field = field_info_field('group_audience');
+  if (!field_access('edit', $field, 'node', $node, $user) && !$node->nid) {
+    //if user has no permission to access the field, and the node is new, we set the group to the group of the parent if one is set if there is a group set
     
+    //first check if task has a parent task
+    $parent_node = _erpal_project_task_parent($node);  //the parent may be a task or a project
+    
+    if ($parent_node) {
+      //get the group(s) of the project
+      $project_groups = $parent_node->group_audience[LANGUAGE_NONE];
+      $node->group_audience[LANGUAGE_NONE] = $project_groups;
+    }
   }
 }
 

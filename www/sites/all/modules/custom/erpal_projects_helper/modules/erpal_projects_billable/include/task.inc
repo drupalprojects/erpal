@@ -72,3 +72,50 @@ function _erpal_project_task_parent($node) {
   
   return false;
 }
+
+/**
+* Fallows the same logic as _erpal_project_task_parent but uses a task edit form with prepopulated project or if there is a
+* prepopulate paremter in the url (e.g. ?field_project_ref=1682)
+*/
+function _erpal_project_task_parent_from_form($form) {
+  $nid = $form['nid']['#value'];
+  
+  $type = $form['type']['#value'];
+  if ($type != 'erpal_task')
+    return false; //only task have a parent
+    
+  //ok, this is a task
+  //does it have a direct parent?
+  $parent_nid = false;
+  $project_nid = isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
+
+  if ($project_nid) {
+    //get from autocomplete string
+    $project_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($project_nid);
+  } else {
+    //may be get from URL
+    $project_nid = $_GET['field_project_ref'];
+  }
+
+  $parent_nid = isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
+
+  if (!$parent_nid) {
+    //if there is no direct parent, use the project as parent with its pricing information
+    $parent_nid = $project_nid;
+  } else {
+    //get from autocomplete
+    $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
+  }
+
+  if ($parent_nid) {
+    $parent_node = node_load($parent_nid);
+    //if parent node is not a task or a project, use the referenced project
+    if ($parent_node->type != 'erpal_task' && $parent_node->type != 'erpal_project') {
+      $parent_node = node_load($project_nid);
+    }
+    
+    return $parent_node;
+  }
+  
+  return false;
+}
