@@ -240,6 +240,7 @@ function views_jstree_move_child($view_name, $nid) {
 function views_jstree_load_children($view_name, $parent_id) {
 
   $view = views_get_view($view_name);
+ 
   if (!is_object($view))
     return array();
   
@@ -256,7 +257,8 @@ function views_jstree_load_children($view_name, $parent_id) {
   
   $view->preview($children_display->id, $args);
 
-  $total_result = $view->result;
+  $total_result = $view->result;  //here we have ALL nodes, independent of the set filter
+  
 
   $fields = views_jstree_get_fields_of_view($view, $children_display);
   $options = views_jstree_get_options_of_view($view, $children_display);
@@ -270,10 +272,11 @@ function views_jstree_load_children($view_name, $parent_id) {
 
   /*  
   - 1) wenn ein Filter gesetzt ist: Müssen wir erstmal ALLE! nodes laden die in dem PArent auf der ersten Ebene vorkommen. Dabei muss der Filter ignoriert werden!  
-  - 2) dann müssen wir eine Tiefensuche für jeden Result node starten. Wir sammeln all diese nids pro Parent node auf der ersdten Ebene gruppiert (also pro ergebnis row aus der ersten query) der Tiefensuche ein.
-  - 3) dann fürhren wir ein query aus, dem wir diese nids als arguemtn geben und wenden den Filter an. Nun haben wir 
+  - 2) dann müssen wir eine Tiefensuche für jeden Result node starten. Wir sammeln all diese nids pro Parent node auf der ersten Ebene gruppiert (also pro ergebnis row aus der ersten query) der Tiefensuche ein.
+  - 3) dann fürhren wir ein query aus, dem wir diese nids als argumente geben (inklusive der Parents auf erster Ebene) und wenden den Filter an. Nun haben wir 
     alle nids im Subtree, die dem Filter entsprechen.
-  - 4) Wir gehen nun alle gruppierten Nodes aus schritt zwei durch und deren kinder (die wir ja durch die Tiefensuche kennen) und prüfen ob sich eines dieser Kinder noch in in der Ergebnismenge aus Schritt 3 befindet) wenn das nicht so ist, werfen wir die nid weg, sonst wird sie aufgehoben und kommt mit in die Ergebnismenge.
+  - 4) Wir gehen nun alle gruppierten Nodes aus schritt zwei durch und deren kinder (die wir ja durch die Tiefensuche kennen) und prüfen ob sich eines dieser Kinder noch in in der Ergebnismenge aus Schritt 3 befindet wenn das nicht so ist, werfen wir die nid weg, sonst wird sie aufgehoben und kommt mit in die Ergebnismenge.
+  - 5) Wir prüfen nun noch, ob alle Parents auf erster Ebene ohne Kinder dem Filter entsprechen, sich also in den nids aus SChritt 3 befinden. Wenn nicht, werden sie aus der Ergebnismenge entfernt.
   */  
 
   unset($filter_values['operation']);  //if not removed, this will disturb our filtering "if-statement"
@@ -318,7 +321,8 @@ function views_jstree_load_children($view_name, $parent_id) {
       $filtered_result = $by_id_view->result;
 
       //now go through the grouped array of all results and eleminate nodes from deep search that are no more part of the filtered result set.
-      foreach ($children_by_root as $parent_nid=>$children_nids) {
+      dpm($children_by_root);
+      foreach ($children_by_root as $parent_nid=>$children_nids) {        
         foreach ($children_nids as $delta=>$child_nid) {
           $in_filtered_result = false;
           foreach ($filtered_result as $filtered_obj) {
@@ -329,15 +333,28 @@ function views_jstree_load_children($view_name, $parent_id) {
           }
           
           if (!$in_filtered_result) {
-            unset($children_by_root[$parent_nid][$delta]); //no result of filtered nodes, so delete the node from final resultset
-            if (!count($children_by_root[$parent_nid])) { //if there are no child nids in the parent subtree, delete the parent
-              unset($children_by_root[$parent_nid]);
-            }
+            unset($children_by_root[$parent_nid][$delta]); //no result of filtered nodes, so delete the node from final resultset            
           }
           
         }
+        
+        //if there are some root nodes without children in $children_by_root, check if they match the filtered_result. If not, delete them
+        if (is_array($children_by_root)) {
+          if (!count($children_by_root[$parent_nid])) { //if there are no child nids in the parent subtree, delete the parent, but only if the parent itself doesnt match the filter!
+ 
+            $in_filtered_result = false;
+            foreach ($filtered_result as $filtered_obj) {
+              if ($filtered_obj->nid == $parent_nid) {
+                $in_filtered_result = true;
+                break;
+              }
+            }
+            if (!$in_filtered_result)
+              unset($children_by_root[$parent_nid]);
+          }
+        }
       }
-      
+  
       //now delete the nodes in filtered_result
       foreach ($total_result as $delta=>$result_obj) {
         //if (!in_array($result_obj->nid, $children_by_root))  {
@@ -349,7 +366,7 @@ function views_jstree_load_children($view_name, $parent_id) {
   }
   
   $result = $total_result;
-  
+
   //output result as json to display in jstree
   $output = array();
   foreach($result as $delta=>$row) {        
@@ -384,29 +401,6 @@ function views_jstree_load_children($view_name, $parent_id) {
   }
 
   die(json_encode($output));
-}
-
-/**
-* Implements hook_views_query_alter
-*/
-function views_jstree_views_query_alter(&$view, &$query) {
-
-  if ($view->style_plugin->plugin_name == 'jstree') {
-    //tag the view so we can alter its query
-    $query->add_tag('jstree_parent_nodes');
-  }
-}
-
-/**
- * Implements hook_query_TAG_alter()
- */
-function views_jstree_query_jstree_parent_nodes_alter(QueryAlterableInterface $query) {
- // $query->leftJoin('node', 'no', 'field.nid = field_data_field_parent.entity_id');
- // $query->isNull('o.field_other_value');
-  if ($query->hasTag('jstree_parent_nodes')) {
-    $nids = array(1630);
-    //$query->condition('nid', $nids, 'IN');
-  }
 }
 
 /**
