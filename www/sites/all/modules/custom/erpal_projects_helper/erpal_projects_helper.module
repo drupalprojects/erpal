@@ -12,6 +12,7 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/book');
 module_load_include('inc', 'erpal_projects_helper', 'inc/budget');
 module_load_include('inc', 'erpal_projects_helper', 'inc/config');
 module_load_include('inc', 'erpal_projects_helper', 'inc/rules');
+module_load_include('inc', 'erpal_projects_helper', 'inc/field_access');
 
  
 /**
@@ -122,6 +123,13 @@ function erpal_projects_helper_node_delete($node) {
 }
 
 /**
+* Implements hook_field_access
+*/
+function erpal_projects_helper_field_access($op, $field, $entity_type, $entity = NULL, $account = NULL) {
+  return _erpal_projects_helper_field_access($op, $field, $entity_type, $entity, $account);
+}
+
+/**
 * Implements hook_node_validate
 */
 function erpal_projects_helper_node_validate($node) {
@@ -196,7 +204,7 @@ function erpal_projects_helper_budget_delete_validate($budget) {
 * Implements hook_permission
 */
 function erpal_projects_helper_permission(){
-  return array(
+  $permissions = array(
     'config erpal projects' => array(
       'title' => t('Administer ERPAL Projects'), 
       'description' => t('Perform administration tasks for ERPAL Projects module.'),
@@ -214,6 +222,10 @@ function erpal_projects_helper_permission(){
       'description' => t('Allows the user to access the timetrackings view'),
     ),
   );
+  
+  $field_access_permissions = _erpal_projects_helper_field_access_permissions();
+  
+  return array_merge($permissions, $field_access_permissions);
 }
 
 /**
