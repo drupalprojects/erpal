@@ -22,6 +22,10 @@ function erpal_spaces_helper_permission() {
       'title' => t('Change group content visibility task'), 
       'description' => t('Allows the user to change the group-content visibility on task nodes'),
     ),
+    'choose task file to group' => array(
+      'title' => t('Choose task file to group'), 
+      'description' => t('If checked, user can select if a file referenced to a task will be added to the group(s) of the task. If not checked, it will be added to the group.'),
+    ),
     
     //Projects
     'change group audience project' => array(
@@ -31,6 +35,10 @@ function erpal_spaces_helper_permission() {
     'change group content visibility task' => array(
       'title' => t('Change group content visibility project'), 
       'description' => t('Allows the user to change the group-content visibility on project nodes'),
+    ),
+    'choose project file to group' => array(
+      'title' => t('Choose project file to group'), 
+      'description' => t('If checked, user can select if a file referenced to a project will be added to the group(s) of the project. If not checked, it will be added to the group.'),
     ),
     
     //File
@@ -56,12 +64,51 @@ function erpal_spaces_helper_permission() {
 }
 
 /**
-* Implements hook_form_alter
+* Implements hook_field_widget_form_alter
 */
-function erpal_spaces_helper_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'erpal_task_node_form') {
-    _erpal_spaces_helper_preset_parent_group_task($form, $form_state);
+function erpal_spaces_helper_field_widget_form_alter(&$element, &$form_state, $context) {
+
+  if (isset($element['target_id']['#bundle'])) { 
+    //alter the asset file
+    if (isset($element['target_id'])) {
+      if ($element['target_id']['#field_name'] == 'field_asset_files') {
+        $bundle = $element['target_id']['#bundle'];
+        _erpal_spaces_helper_file_group_handling_widget_alter($element, $bundle);
+      }
+    }
   }
+}
+
+/**
+* add a checkbox to each delta of a field asset file to let user choose if he wants the file to be added to the group
+* of the referencing node (Task or Project). This will only be shown it the user has the right "
+*/
+function _erpal_spaces_helper_file_group_handling_widget_alter(&$element, $node_type) {
+      
+  if ($node_type == 'erpal_task') $type_text = t('task');
+  if ($node_type == 'erpal_project') $type_text = t('project');
+  if ($node_type == 'comment_node_erpal_project') $type_text = t('project');
+  if ($node_type == 'comment_node_erpal_task') $type_text = t('task');
+  
+  if (user_access('choose project file to group')) {
+    //if the user has the right to choose, show him a checkbox
+    $element['add_to_group'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Add file to !type group', array('!type' => $type_text)),
+      '#weight' => 10,
+      '#default_value' => isset($element['target_id']['#default_value']) && $element['target_id']['#default_value'] ? false : true,
+    );
+  } else {
+    //if not, we hide the element and set its value to true
+    $element['add_to_group'] = array(
+      '#type' => 'value',
+      '#value' => true,
+    );
+  }
+  
+  
+  
+ 
 }
 
 /**
@@ -93,6 +140,53 @@ function _erpal_spaces_helper_preset_parent_group_task(&$form, &$form_state) {
 function erpal_spaces_helper_node_presave($node) {
   if ($node->type == 'erpal_task') {
     _erpal_spaces_helper_ensure_group_audience_task_presave($node);
+    _erpal_spaces_helper_handle_asset_file_to_group($node);
+  }
+  if ($node->type == 'erpal_project') {
+    _erpal_spaces_helper_handle_asset_file_to_group($node);
+  }
+}
+
+/**
+* Implements hook_entity_presave
+*/
+function erpal_spaces_helper_entity_presave($entity, $type) {
+  if ($type == 'comment') {
+    if ($entity->node_type == 'comment_node_erpal_project' || $entity->node_type == 'comment_node_erpal_task') {
+      _erpal_spaces_helper_handle_asset_file_to_group($entity);
+    }
+  }
+}
+
+/**
+* if it should, add field asset files to nodes groups
+*/
+function _erpal_spaces_helper_handle_asset_file_to_group($entity) {
+
+  if (isset($entity->field_asset_files[LANGUAGE_NONE][0])) {
+    foreach ($entity->field_asset_files[LANGUAGE_NONE] as $delta=>$target_id) {
+      $nid = $target_id['target_id'];
+      $add_to_group = $target_id['add_to_group'];
+      
+      if ($add_to_group) {
+
+        if (isset($entity->node_type) && $entity->node_type = 'comment_node_erpal_project') {
+          $host_node = node_load($entity->nid); //the host node of the comment where we copy the group from
+        } elseif (isset($entity->type) && ($entity->type == 'erpal_task' || $entity->type == 'erpal_project')) {
+          $host_node = $entity;
+        } else
+          return; //unknown host entity
+          
+        $groups = $host_node->group_audience[LANGUAGE_NONE];
+        //MERGE THE GROUPS because ther could be other groups at the file that should stay!
+        $file_node = node_load($nid);
+        foreach ($groups as $delta=>$gid) {
+          $file_node->group_audience[LANGUAGE_NONE][] = array('gid' => $gid['gid']);
+        }
+        
+        node_save($file_node);
+      }
+    }
   }
 }
 
