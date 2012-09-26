@@ -23,12 +23,17 @@ function _erpal_projects_helper_view_timetracking_entites_post_execute(&$view) {
 
   foreach ($view->result as $delta=>$result_obj) {
     if (!$result_obj->field_field_timetracking_button) {
+      //if we have a subject, use this, otherwise use the md5 of the subject.
+      $subject_nid = $result_obj->node_timetracking_nid;
       $description = $result_obj->timetracking_description;
-      $md5 = md5($description);
-      $display_output = _erpal_projects_helper_render_timetracking_button_field($md5);
+      if (!$subject_nid) {
+        $subject_nid = md5($description);
+      }
+      dpm($subject_nid);      
+      $display_output = _erpal_projects_helper_render_timetracking_button_field($subject_nid);
       $result_obj->field_field_timetracking_button[0] = array(
         'rendered' => array('#markup' => $display_output, '#access' => true),
-        'raw' => array('value' => $md5),
+        'raw' => array('value' => $subject_nid),
       );
       
       $view->result[$delta] = $result_obj;
@@ -106,6 +111,7 @@ function _erpal_projects_helper_render_timetracking_button_field($nid) {
     //add field to show the timetracking toggle button   
     $has_timetracking_active = _erpal_projects_helper_task_has_timetracking_entity_active($nid, $tracked_time);
     $has_timetracking_active_str = $has_timetracking_active ? 'on' : 'off';
+
     $timetracking_button = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$nid, 'state' => $has_timetracking_active_str, 'duration' => $tracked_time));
     
     return $timetracking_button;
