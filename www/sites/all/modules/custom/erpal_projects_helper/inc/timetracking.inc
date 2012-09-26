@@ -28,8 +28,7 @@ function _erpal_projects_helper_view_timetracking_entites_post_execute(&$view) {
       $description = $result_obj->timetracking_description;
       if (!$subject_nid) {
         $subject_nid = md5($description);
-      }
-      dpm($subject_nid);      
+      }  
       $display_output = _erpal_projects_helper_render_timetracking_button_field($subject_nid);
       $result_obj->field_field_timetracking_button[0] = array(
         'rendered' => array('#markup' => $display_output, '#access' => true),
