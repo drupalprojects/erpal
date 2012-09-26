@@ -84,13 +84,13 @@ function erpal_spaces_helper_field_widget_form_alter(&$element, &$form_state, $c
 * of the referencing node (Task or Project). This will only be shown it the user has the right "
 */
 function _erpal_spaces_helper_file_group_handling_widget_alter(&$element, $node_type) {
-      
+  $type_text = false;    
   if ($node_type == 'erpal_task') $type_text = t('task');
   if ($node_type == 'erpal_project') $type_text = t('project');
   if ($node_type == 'comment_node_erpal_project') $type_text = t('project');
   if ($node_type == 'comment_node_erpal_task') $type_text = t('task');
   
-  if (user_access('choose project file to group')) {
+  if (user_access('choose project file to group') && $type_text) {
     //if the user has the right to choose, show him a checkbox
     $element['add_to_group'] = array(
       '#type' => 'checkbox',
