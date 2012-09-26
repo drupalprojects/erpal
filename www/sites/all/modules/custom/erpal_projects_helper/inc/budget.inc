@@ -210,7 +210,6 @@ function _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($host_
     
     if (!$nid_in_queue) {
       $queue->createItem($nid);
-      dpm('add '.$nid);
     }
   }
 }
