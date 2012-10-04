@@ -1,0 +1,405 @@
+<?php
+
+/**
+ * @file
+ * Module file for date_items.
+ */
+
+module_load_include('inc', 'date_item', 'includes/date_item.entity');
+module_load_include('inc', 'date_item', 'includes/date_item.field');
+module_load_include('inc', 'date_item', 'includes/date_item.forms');
+
+
+/**
+ * Implements hook_menu().
+ */
+function date_item_menu() {
+
+  $items['admin/structure/date_item'] = array(
+    'title' => 'Date item',
+    'description' => 'Administer date_item items',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer date_item'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
+  $items['date_item/%date_item'] = array(
+    'title callback' => 'date_item_page_title',
+    'title arguments' => array(1),
+    'page callback' => 'date_item_view',
+    'page arguments' => array(1),
+    'access callback' => 'entity_access',
+    'access arguments' => array('view', 'date_item', 1),
+  );
+  $items['date_item/%date_item/view'] = array(
+    'title' => 'View',
+    'page callback' => 'date_item_view',
+    'page arguments' => array(1),
+    'access callback' => 'entity_access',
+    'access arguments' => array('view', 'date_item', 1),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['date_item/%date_item/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('date_item_form', 1),
+    'access callback' => 'entity_access',
+    'access arguments' => array('update', 'date_item', 1),
+    'weight' => 10,
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['date_item/%date_item/delete'] = array(
+    'title' => 'Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('date_item_delete_confirm', 1),
+    'access callback' => 'entity_access',
+    'access arguments' => array('delete', 'date_item', 1),
+    'type' => MENU_CALLBACK,
+  );
+
+  if (module_exists('devel')) {
+    $items['date_item/%date_item/devel'] = array(
+      'title' => 'Devel',
+      'page callback' => 'devel_load_object',
+      'page arguments' => array('node', 1),
+      'access arguments' => array('access devel information'),
+      'type' => MENU_LOCAL_TASK,
+      'file path' => drupal_get_path('module', 'devel'),
+      'file' => 'devel.pages.inc',
+      'weight' => 100,
+    );
+    $items['date_item/%date_item/devel/load'] = array(
+      'title' => 'Load',
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function date_item_permission() {
+  $permissions = array(
+    'administer date_item types' => array(
+      'title' => t('Administer date_item types'),
+      'description' => t('Manage date_item types, fields, and display settings.'),
+      'restrict access' => TRUE,
+    ),
+    'administer date_item' => array(
+      'title' => t('Administer date_item'),
+      'description' => t('View, edit, delete, and manage all date_items, regardless of type.'),
+      'restrict access' => TRUE,
+    ),
+    'administer date item field config' => array(
+      'title' => t('Administer date_item field config'),
+      'description' => t('Administer the date item field config in field config form.'),
+      'restrict access' => TRUE,
+    ),
+  );
+
+  foreach (date_item_get_types() as $type_info) {
+    $permissions += date_item_permission_list($type_info);
+  }
+
+  return $permissions;
+}
+
+/**
+* Implements hook_form_alter
+*/
+function date_item_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'field_ui_field_edit_form') {
+    _date_item_field_settings_form_alter($form, $form_state);
+  }
+  
+}
+
+/**
+* Provide settings on date fields to add date item on save
+*/
+function _date_item_field_settings_form_alter(&$form, &$form_state) {
+  dpm($form);
+  //HIER WEITER
+  //@TODO nicht aufrufen, wenn das date field an einem date_item entity hängt, sonst gibt es rekursionen
+}
+
+
+/**
+ * Builds permissions for a date_item type.
+ *
+ * @param object $info
+ *   Information about a date_item type.
+ *
+ * @return array
+ *   An array of permission names and descriptions keyed by permission name.
+ */
+function date_item_permission_list($info) {
+  $type = $info->name;
+  $label = $info->label;
+
+  return array(
+    "administer $type date_item" => array(
+      'title' => t('%type_name: Administer settings', array('%type_name' => $label)),
+      'description' => t('Allow changing date_item settings for entities with this type.'),
+    ),
+    "administer own $type date_item" => array(
+      'title' => t('%type_name: Administer own settings', array('%type_name' => $label)),
+      'description' => t('Allow changing date_item settings for entities with this type authored by the given user.'),
+    ),
+    "view $type date_item" => array(
+      'title' => t('%type_name: View all date_items', array('%type_name' => $label)),
+    ),
+    "view own $type date_item" => array(
+      'title' => t('%type_name: View own date_items', array('%type_name' => $label)),
+    ),
+    "create $type date_item" => array(
+      'title' => t('%type_name: Create new date_item', array('%type_name' => $label)),
+    ),
+    "update own $type date_item" => array(
+      'title' => t('%type_name: Edit own date_items', array('%type_name' => $label)),
+    ),
+    "update any $type date_item" => array(
+      'title' => t('%type_name: Edit any date_items', array('%type_name' => $label)),
+    ),
+    "delete own $type date_item" => array(
+      'title' => t('%type_name: Delete own date_items', array('%type_name' => $label)),
+    ),
+    "delete any $type date_item" => array(
+      'title' => t('%type_name: Delete any date_items', array('%type_name' => $label)),
+    ),
+    "create $type date_item other users" => array(
+      'title' => t('%type_name: Register other accounts', array('%type_name' => $label)),
+    ),
+    "create $type date_item other anonymous" => array(
+      'title' => t('%type_name: Register other people', array('%type_name' => $label)),
+    ),
+  );
+}
+
+/**
+ * Display a date_item.
+ *
+ * @param object $date_item
+ *   A fully loaded date_item object.
+ *
+ * @return array
+ *   Renderable elements.
+ */
+function date_item_view(DateItem $date_item) {
+  return $date_item->view();
+}
+
+/**
+ * Title callback: Generate a title for a date_item entity.
+ *
+ * Callback for hook_menu() within system_themes_page().
+ *
+ * @param @date_item
+ *   A fully loaded date_item object.
+ *
+ * @return string
+ */
+function date_item_page_title(DateItem $date_item) {
+  return $date_item->label();
+}
+
+
+/**
+ * Access callback: for date_item_date_items_page().
+ *
+ * Check if user has access to administer date_items for a host entity.
+ *
+ * @param string $entity_type
+ *   The host entity type.
+ * @param object $entity
+ *   The host entity.
+ *
+ * @return bool
+ *   Whether a user can view date_items for a host entity.
+ *
+ * @see date_item_date_items_page()
+ * @see date_item_menu()
+ */
+function date_item_administer_date_items_access($entity_type, $entity) {
+  $date_item_type = date_item_get_entity_date_item_type($entity_type, $entity);
+  $ret = FALSE;
+  if ($date_item_type) {
+    if (!$ret = user_access("administer $date_item_type date_item")) {
+      $ret = user_access("administer own $date_item_type date_item");
+    }
+  }
+
+  return $ret;
+}
+
+
+/**
+ * Page callback: Show a list of date_items for a host entity.
+ *
+ * @param string $entity_type
+ *   The host entity type.
+ * @param object $entity
+ *   The host entity.
+ *
+ * @return array
+ *   A render array
+ *
+ * @see date_item_administer_date_items_access()
+ * @see date_item_menu()
+ */
+function date_item_date_items_page($entity_type, $entity) {
+  
+  // @TODO Implement for Date entity to show all date entites
+  $header = array(
+    array(
+      'data' => t('id'),
+      'field' => 'date_item_id',
+      'type' => 'property',
+      'specifier' => 'date_item_id'
+    ),
+    array(
+      'data' => t('Email'),
+      'field' => 'mail',
+      'type' => 'property',
+      'specifier' => 'mail'
+    ),
+    array(
+      'data' => t('User'),
+      'field' => 'user_uid',
+      'type' => 'property',
+      'specifier' => 'user'
+    ),
+    array(
+      'data' => t('Created By'),
+      'field' => 'author_uid',
+      'type' => 'property',
+      'specifier' => 'author_uid'
+    ),
+    array(
+      'data' => t('Count'),
+      'field' => 'count',
+      'type' => 'property',
+      'specifier' => 'count'
+    ),
+    array(
+      'data' => t('Created'),
+      'field' => 'created',
+      'sort' => 'desc',
+      'type' => 'property',
+      'specifier' => 'created'
+    ),
+    array(
+      'data' => t('State'),
+      'field' => 'state',
+      'type' => 'property',
+      'specifier' => 'state'
+    ),
+    array('data' => t('Actions')),
+  );
+
+  list($entity_id) = entity_extract_ids($entity_type, $entity);
+  $label = entity_label($entity_type, $entity);
+
+  $query = new EntityFieldQuery;
+  $result = $query
+    ->entityCondition('entity_type', 'date_item')
+    ->propertyCondition('entity_id', $entity_id)
+    ->propertyCondition('entity_type', $entity_type)
+    ->pager(20)
+    ->tableSort($header)
+    ->execute();
+
+  if (!empty($result['date_item'])) {
+    $date_items = date_item_load_multiple(array_keys($result['date_item']));
+    $rows = array();
+
+    foreach ($date_items as $date_item) {
+      $author_col = '';
+      if ($date_item->author) {
+        $uri = entity_uri('user', $date_item->author);
+        $author_col = l($date_item->author->name, $uri['path']);
+      }
+
+      $user_col = '';
+      if ($date_item->user_uid) {
+        $user = user_load($date_item->user_uid);
+        $uri = entity_uri('user', $user);
+        $user_col = l($user->name, $uri['path']);
+      }
+
+      $actions = array(
+        l(t('View'), 'date_item/' . $date_item->date_item_id),
+        l(t('Edit'), 'date_item/' . $date_item->date_item_id . '/edit', array('query' => drupal_get_destination())),
+        l(t('Delete'), 'date_item/' . $date_item->date_item_id . '/delete', array('query' => drupal_get_destination())),
+      );
+
+      $rows[] = array(
+        l($date_item->date_item_id, 'date_item/' . $date_item->date_item_id),
+        l($date_item->mail, 'mailto:' . $date_item->mail),
+        $user_col,
+        $author_col,
+        $date_item->count,
+        format_date($date_item->created),
+	      ($date_item->state ? filter_xss_admin(entity_label('date_item_state', $date_item->state)) : ''),
+        implode(' | ', $actions)
+      );
+    }
+
+    $settings = date_item_entity_settings($entity_type, $entity_id);
+
+    $table = array(
+      'header' => $header,
+      'rows' => $rows
+    );
+    if ($settings['capacity'] != 0) {
+      $table['caption'] = t('List of date_items for %title. !count of !capacity slots are filled.', array(
+        '%title' => $label,
+        '!count' => '<strong>' . date_item_event_count($entity_type, $entity_id) . '</strong>',
+        '!capacity' => '<strong>' . $settings['capacity'] . '</strong>'
+      ));
+    }
+    else {
+      $table['caption'] = t('List of date_items for %title. !count slots are filled.', array(
+        '%title' => $label,
+        '!count' => '<strong>' . date_item_event_count($entity_type, $entity_id) . '</strong>',
+      ));
+    }
+
+    $out = theme('table', $table) . theme('pager');
+  }
+  else {
+    $out = t('There are no registrants for %name',
+      array('%name' => $label));
+  }
+
+  return $out;
+}
+
+
+/**
+* So we can make the user change the date format by changing this variable 
+*/
+function _date_item_get_date_format($time = true){
+  if (module_exists('erpal_invoice_helper')) {
+    if (!$time)
+      return _erpal_basic_helper_date_format_date_only();
+    else
+      return _erpal_basic_helper_date_format_date_time();
+  } else {  
+    if (!$time)
+      return variable_get('date_format_short_date_only', 'Y/m/d');
+    else
+      return variable_get('date_format_short_date_time', 'Y/m/d H:i');
+  }
+}
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function date_item_field_extra_fields() {
+  // expose the email property on the fields and display settings forms.
+  //@TODO may be implement for further usage
+} 
