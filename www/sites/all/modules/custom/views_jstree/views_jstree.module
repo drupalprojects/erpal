@@ -280,7 +280,7 @@ function views_jstree_load_children($view_name, $parent_id) {
   */  
 
   unset($filter_values['operation']);  //if not removed, this will disturb our filtering "if-statement"
-  if (/*true ||*/ $filter_values && is_array($filter_values) && count($filter_values)) {  //only neccessary if we have a filter set
+  if (/*true || */$filter_values && is_array($filter_values) && count($filter_values)) {  //only neccessary if we have a filter set
     $filter = $children_display->handler->view->filter;
 
     if (isset($filter['type']->options['value']))
@@ -296,7 +296,7 @@ function views_jstree_load_children($view_name, $parent_id) {
     foreach ($total_result as $delta=>$row) {      
       //now get all children of the current rows sub tree
       $sub_children = _views_jstree_get_all_child_nids_deep_search($row->nid, $parent_field['id'], $filtered_types);
-      
+    
       //add the node itself, too
       $all_children_flat[] = $row->nid;
       $children_by_root[$row->nid] = array();  //otherwise the node will not be displayed if it has no children, which would be wrong.
@@ -310,7 +310,7 @@ function views_jstree_load_children($view_name, $parent_id) {
 
     //now execute a view by id arguement and the given filter to filter node that should not be displayed according to the current set filter
     $by_id_view = views_get_view($view_name);
-    
+
     $by_id_display = _views_jstree_get_by_id_display($by_id_view);
     if ($by_id_display) {  //if there is no view display for selecting nodes by id skip this process!
       $id_args = array(implode('+', $all_children_flat));
@@ -382,8 +382,8 @@ function views_jstree_load_children($view_name, $parent_id) {
 
     $view->preview($subview->id, $subargs); //@TODO may be a view that just counts the results would be much more performant   
 
-    $hasChildren = $view->total_rows > 0;   
-    
+    $hasChildren = count($view->result) > 0;   
+
     $node_uri = url('node/'.$row->nid);
     //@TODO Views row style plugin? No hard coded row style format!
     //@TODO ensure in views UI that for this style plugin node_type is set as field as well as nid!
