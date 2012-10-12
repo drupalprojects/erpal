@@ -46,6 +46,16 @@ function _erpal_projects_helper_field_access_permissions() {
       'title' => t('Field: Edit the duration of timetrackings'),
       'description' => t('User can edit the duration of timetracking nodes'),
     ),
+    
+    //advanced fields
+    'field view task advanced' => array(
+      'title' => t('Field: View advanced task fields'),
+      'description' => t('User can view the advanced fieldson tasks'),
+    ),
+    'field edit task advanced' => array(
+      'title' => t('Field: Edit advanced task fields'),
+      'description' => t('User can edit the advanced fieldson tasks'),
+    ),
   );
 }
 
@@ -69,4 +79,15 @@ function _erpal_projects_helper_field_access($op, $field, $entity_type, $entity 
       return user_access('field edit timetracking duration');
     }
   }
+  
+  //advanced fields
+  $advanced_fields = array('field_date', 'field_estimated_time', 'field_progress_percent', 'field_task_exclude_from', 'field_project_tags', 'field_task_assigned_users');
+  if (in_array($field['field_name'], $advanced_fields)) {
+    if ($op == 'view') {
+      return user_access('field view task advanced');
+    } elseif ($op == 'edit') {
+      return user_access('field edit task advanced');
+    }
+  }
+
 }
