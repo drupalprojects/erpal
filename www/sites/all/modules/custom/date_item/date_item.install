@@ -39,6 +39,25 @@ function date_item_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'offset_from' => array(
+        'description' => 'The timezone offset for the from date the date_item is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'offset_till' => array(
+        'description' => 'The timezone offset for the till date the date_item is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'timezone' => array(
+        'description' => 'The timezone for the date the date_item is for',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
       'src_type' => array(
         'description' => 'The type of the source entity where this date_item was created at (may be node or another entity type)',
         'type' => 'varchar',
@@ -119,6 +138,13 @@ function date_item_schema() {
       ),
       'entity_type' => array(
         'description' => 'The entity type of the field these date_item field config settings are for.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'date_item_type' => array(
+        'description' => 'The date_item type to create.',
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,

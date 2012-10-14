@@ -18,10 +18,11 @@ function date_item_menu() {
   $items['admin/structure/date_item'] = array(
     'title' => 'Date item',
     'description' => 'Administer date_item items',
-    'page callback' => 'system_admin_menu_block_page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('date_item_admin_settings_form'),
     'access arguments' => array('administer date_item'),
-    'file' => 'system.admin.inc',
-    'file path' => drupal_get_path('module', 'system'),
+    'file' => 'date_item.config.inc',
+    'file path' => drupal_get_path('module', 'date_item').'/includes',
   );
 
   $items['date_item/%date_item'] = array(
@@ -79,6 +80,34 @@ function date_item_menu() {
 }
 
 /**
+* Implements hook_cron
+*/
+function date_item_cron() {
+  _date_item_prepopulate_items();
+}
+
+/**
+* Implements hook_field_delete
+*/
+function date_item_field_delete_instance($instance) {
+  $field_name = $instance['field_name'];
+  $entity_type = $instance['entity_type'];
+  $bundle = $instance['bundle'];
+  _date_item_delete_config($field_name, $entity_type, $bundle);
+}
+
+/**
+* Deletes all config entity for the given field at the entity of bundle
+*/
+function _date_item_delete_config($field_name, $entity_type, $bundle) {
+  db_delete('date_item_field_config')
+    ->condition('entity_type', $entity_type)
+    ->condition('bundle', $bundle)
+    ->condition('field_name', $field_name)
+    ->execute();
+}
+
+/**
  * Implements hook_permission().
  */
 function date_item_permission() {
@@ -108,6 +137,277 @@ function date_item_permission() {
 }
 
 /**
+* Implements hook_field_attach_insert
+*/
+function date_item_field_attach_insert($entity_type, $entity) {
+  _date_item_update_date_items($entity_type, $entity);
+}
+
+/**
+* Implements hook_field_attach_update
+*/
+function date_item_field_attach_update($entity_type, $entity) {
+  _date_item_update_date_items($entity_type, $entity);
+}
+
+/**
+* Implements hook_entity_delete
+*/
+function date_item_entity_delete($entity, $entity_type) {
+  _date_item_delete_date_items($entity, $entity_type);
+}
+
+
+/**
+* delete all date items of the given entity
+*/
+function _date_item_delete_date_items($entity, $entity_type, $field_name=false) {
+  
+  $properties = _date_item_get_properties_of_entity($entity);
+  $query = db_delete('date_item')
+    ->condition('src_type', $entity_type)
+    ->condition('src_id', $properties['id']);
+   
+  if ($field_name)
+    $query->condition('src_field_name', $field_name);
+    
+  $query->execute();
+}
+
+/**
+* check if there is a date field that should be updated and if, update!
+*/
+function _date_item_update_date_items($entity_type, $entity) {
+  $type = isset($entity->type) ? $entity->type : false; //@todo bundle information from other entity_types as nodes!
+  
+  if (!$type)
+    return; //then we get no information
+  
+  $fields = date_item_get_fields($entity_type, $type);  
+  foreach ($fields as $field_name) {
+    $fileField = $field_name;
+    $fields = field_info_fields();
+    $field_info = field_info_field($fileField);    
+   
+    //check if the field is really there at the node and if, do the update!
+    if (isset($entity->{$field_name})) {
+      _date_item_update_date_items_process($entity, $field_name, $entity->{$field_name}, $entity_type, $type);
+    }
+  }
+}
+
+/**
+* Prepopulates all date items for all fields
+*/
+function _date_item_prepopulate_items() {
+  date_item_get_fields($entity_type, $bundle)
+/*  
+  - alle Felder laden, die grundsätzlich date items erzeugen (unique!)
+  - alle nodes laden, nur die nodes filter, bei denen das Datumsfeld überhaupt Dati in der Zukunft enthält, die vergangenen fassen wir hier nicht and, und mit _date_item_update_date_items die date items prepopulaten
+  
+  nochmal auf performance überdenken.
+*/
+}
+
+/**
+* Creates the date item entity and updates them
+*/
+function _date_item_update_date_items_process($entity, $field_name, $field_data, $entity_type, $bundle) {
+  global $user;
+  
+  if (!isset($field_data[LANGUAGE_NONE][0]))
+    $field_data[LANGUAGE_NONE][0] = false;  //so if there are date_items but no date any more, the date items will be reset.
+  
+  //load the config
+  $config_entity = _date_item_check_create_items($field_name, $entity_type, $bundle);
+  $settings = unserialize($config_entity->settings);
+  $date_item_type = $settings['date_item_type'];
+  
+  //get all entites that are already saved to this field
+  $properties = _date_item_get_properties_of_entity($entity);
+  $date_items = _date_item_get_items($field_name, $properties['type'], $properties['id'], time());  //only items in the future
+  
+  //check if there are date items that should not be in the rang, these items will be deleted
+  foreach ($date_items as $date_item) {
+    if ($date_item->removed)
+      continue;  //this is a removed item, we dont respect it!
+        
+    //now find it in the date field and, if not, delete
+    $found_it = false;
+    foreach ($field_data[LANGUAGE_NONE] as $delta=>$date_arr) {
+      if (!$date_arr)
+        continue;
+      
+      //convert the field data to unix timestamp
+      $date_from = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value']);
+      $date_till = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value2']);
+      
+      if (!$date_from && !$date_till)
+        continue;
+      
+      if ($date_item->date_from == $date_from && $date_item->date_till == $date_till) {
+        $found_it = true;
+        
+        //lets check if timezone settings are the same, of not, correct them.
+        $changed = $date_arr['timezone'] != $date_item->timezone ||
+          $date_arr['offset'] != $date_item->offset_from ||
+          $date_arr['offset2'] != $date_item->offset_till;
+          
+          if ($changed) {
+            //update the date item
+            $date_item->timezone = $date_arr['timezone'];
+            $date_item->offset_from = $date_arr['offset'];
+            $date_item->offset_till = $date_arr['offset2'];
+            $date_item->updated = time();
+            $date_item->save();
+          }
+        
+        break;
+      }
+      
+    }
+    
+    if (!$found_it) {
+      //if date isnt in range any more, delete it
+      $date_item->delete();
+    }
+  }
+  
+  //now get the date values first for start, end and all repeating dates for each delta and add all date_items that are actually not available
+  foreach ($field_data[LANGUAGE_NONE] as $delta=>$date_arr) {
+    $date_from = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value']);
+    $date_till = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value2']);
+
+    if (!$date_from && !$date_till)
+      continue;
+    
+    //we even add the dates in the past.
+    
+    $found_it = false;
+    foreach ($date_items as $date_item) {
+      if ($date_item->date_from == $date_from && $date_item->date_till == $date_till) {
+        $found_it = true;
+        
+        //lets check if timezone settings are the same, of not, correct them.
+        $changed = $date_arr['timezone'] != $date_item->timezone ||
+          $date_arr['offset'] != $date_item->offset_from ||
+          $date_arr['offset2'] != $date_item->offset_till || $date_item->removed;
+          
+          if ($changed) {
+            //update the date item
+            $date_item->timezone = $date_arr['timezone'];
+            $date_item->offset_from = $date_arr['offset'];
+            $date_item->offset_till = $date_arr['offset2'];
+            $date_item->removed = 0;
+            $date_item->updated = time();
+            $date_item->save();
+          }
+        
+        break;
+      }
+    }
+    
+    if (!$found_it) {
+    
+      //add a new date_item
+      $values['type'] = $config_entity->date_item_type;
+      $date_item = entity_create('date_item', $values);
+      
+      $date_item->type = $config_entity->date_item_type;
+      $date_item->uid = $user->uid;
+      $date_item->date_from = $date_from; //this value is already unix time
+      $date_item->date_till = $date_till; //this value is already unix time
+      $date_item->src_type = $properties['type'];
+      $date_item->src_id = $properties['id'];
+      $date_item->src_field_name = $field_name;
+      $date_item->offset_from = $date_arr['offset'];
+      $date_item->offset_till = $date_arr['offset2'];
+      $date_item->save();
+    }
+    
+  }
+}
+
+/**
+* Return the date always as unix timestamp. But that depends on the field type, so may be convert it
+*/
+function _date_item_as_unix_timestamp($field, $value) {
+  return $value;
+}
+
+/**
+* returns the properties type and id of an entity
+* @return array with keys (id, type)
+*/
+function _date_item_get_properties_of_entity($entity) {
+  $properties = array('id' => false, 'type' => false);
+  
+  //@TODO how to get the entity type and the id of an entity?
+  if (isset($entity->nid)) {
+    //node
+    $properties['id'] = $entity->nid;
+    $properties['type'] = 'node';
+  } else {
+    dpm($entity);
+    drupal_set_message(t('Could not specify the entity type in "_date_item_get_properties_of_entity"'), 'error');
+  }
+  
+  return $properties;
+}
+
+/**
+* Returns all items saved to this field
+* @param $field_name the fieldname from the source entity where the date item was created
+* @param $src_type the entity type of the entity where the date item was create
+* @param $src_id the id of the entity where the date item was create
+* @param $from_unixtime returns ONLY ITEMS IN THE FUTURE FROM THIS DATE ON, NOT IN THE PAST!
+*/
+function _date_item_get_items($field_name, $src_type, $src_id, $from_unixtime) {
+  $query = db_select('date_item', 'd');
+  $query
+    ->fields('d', array('date_item_id'))
+    ->condition('d.src_field_name', $field_name)
+    ->condition('d.src_type', $src_type)
+    ->condition('d.src_id', $src_id);
+  
+  if ($from_unixtime)  
+    $query->condition('d.date_till', $from_unixtime, '>=');
+  
+  $result = $query->execute();
+  
+  $field_names = array();
+  $items = array();
+  foreach ($result as $record) {
+    $id = $record->date_item_id;
+    $items[] = $id;    
+  }
+  
+  $items = entity_load('date_item', $items);
+  
+  return $items;
+}
+
+/**
+* Returns an array with all fields that should create date items
+*/
+function date_item_get_fields($entity_type, $bundle) {
+  $query = db_select('date_item_field_config', 'fc');
+  $query
+    ->fields('fc', array('field_name'))
+    ->condition('fc.entity_type', $entity_type)
+    ->condition('fc.bundle', $bundle);
+  
+  $result = $query->execute();
+  
+  $field_names = array();
+  foreach ($result as $record) {
+    $field_names[] = $record->field_name;
+  }
+  
+  return $field_names;
+}
+
+/**
 * Implements hook_form_alter
 */
 function date_item_form_alter(&$form, &$form_state, $form_id) {
@@ -118,14 +418,123 @@ function date_item_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+* Checks if calculations with this date field type are allowed according to data structure
+*/
+function _date_item_date_type_allowed($type) {
+  return $type == 'datestamp' || $type == 'datetime';
+}
+
+/**
 * Provide settings on date fields to add date item on save
 */
 function _date_item_field_settings_form_alter(&$form, &$form_state) {
-  dpm($form);
-  //HIER WEITER
-  //@TODO nicht aufrufen, wenn das date field an einem date_item entity hängt, sonst gibt es rekursionen
+
+  //check it is date field
+  if (_date_item_date_type_allowed($form['#field']['type']) && $form['#instance']['entity_type'] != 'date_item') {
+    
+    $field_name = $form['#instance']['field_name'];
+    $entity_type = $form['#instance']['entity_type'];
+    $bundle = $form['#instance']['bundle'];
+    
+    $form['instance']['date_item'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Date item settings'),
+      '#collapible' => true,
+      '#collapsed' => true,
+    );
+    
+    $current_entity = _date_item_check_create_items($field_name, $entity_type, $bundle);
+    $form['instance']['date_item']['create_date_item'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Create date items'),
+      '#description' => t('If checked there will be date items created for each date, especially for reoccuring dates.'),
+      '#default_value' => $current_entity ? true : false,
+    );
+    
+    //make the type to be created selectable
+    $form['instance']['date_item']['date_item_type'] = array(
+      '#type' => 'select',
+      '#options' => date_item_get_types(NULL, true),
+      '#title' => t('Date item type'),
+      '#description' => t('Select the date item type to be created for this field'),
+      '#default_value' => isset($current_entity->date_item_type) ? $current_entity->date_item_type : false,
+      '#states' => array(
+        'visible' => array(
+          ':input[id="edit-instance-date-item-create-date-item"]' => array('checked' => TRUE),
+        ),
+      )
+    );
+    
+    //Add a submit handler
+    $form['#submit'][] = '_date_item_field_config_form_submit';
+  }
+  
 }
 
+/**
+* Submit handler of field config form
+*/
+function _date_item_field_config_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $create_date_item = $values['instance']['date_item']['create_date_item'];
+  $field_name = $values['instance']['field_name'];
+  $entity_type = $values['instance']['entity_type'];
+  $date_item_type = $values['instance']['date_item']['date_item_type'];
+
+  $bundle = $values['instance']['bundle'];
+  $entity = _date_item_check_create_items($field_name, $entity_type, $bundle);
+  if (!$entity && $create_date_item) {
+    //insert new entity
+    $entity = new DateItemFieldConfig();    
+  } elseif ($entity && !$create_date_item) {
+    //delete the entity
+    $entity->delete();
+    $entity = false;
+  } elseif ($entity && $create_date_item) {
+    //update existing entity
+    //will be done above
+  } else
+    $entity = false;
+ 
+  
+  //now add all other information as serializes array
+  if ($entity) {
+    $settings = $values['instance']['date_item'];
+    $entity->field_name = $field_name;
+    $entity->entity_type = $entity_type;
+    $entity->bundle = $bundle;    
+    $entity->settings = serialize($settings);
+    $entity->date_item_type = $date_item_type;
+    //and save
+    $entity->save();
+  }
+}
+
+/**
+*  Checks, if a date items should be created for that field on that bundle of that entity_type
+* @return the entity representing the configuration, otherwise false
+*/
+function _date_item_check_create_items($field_name, $entity_type, $bundle) {
+  //make a query to check
+  $query = db_select('date_item_field_config', 'fc');
+  $query
+    ->fields('fc', array('date_item_field_config_id'))
+    ->condition('fc.field_name', $field_name)
+    ->condition('fc.entity_type', $entity_type)
+    ->condition('fc.bundle', $bundle);
+  
+  $result = $query->execute();
+  
+  foreach ($result as $record) {
+    //we should always have only one. So if find one, load the entity and just return it
+    $config_id = $record->date_item_field_config_id;
+    $entity = entity_load('date_item_field_config', array($config_id));
+    
+    return $entity[$config_id];
+  }
+  
+  return false;
+}
 
 /**
  * Builds permissions for a date_item type.

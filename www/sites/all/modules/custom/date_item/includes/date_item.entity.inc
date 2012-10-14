@@ -70,6 +70,7 @@ function date_item_entity_info() {
       'fieldable' => FALSE,
       'entity keys' => array(
         'id' => 'date_item_field_config_id',
+        'label' => 'field_name',
       ),
       'bundles' => array(
         'date_item_field_config' => array(
@@ -78,7 +79,7 @@ function date_item_entity_info() {
       ),
       'module' => 'date_item',
       'access callback' => 'date_item_field_config_access',
-      'exportable' => TRUE
+      'exportable' => TRUE,
     ),
     
   );
@@ -132,6 +133,9 @@ class DateItem extends Entity {
     $type,
     $date_from,
     $date_till,
+    $offset_from,
+    $offset_till,
+    $timezone,
     $src_type,
     $src_id,
     $src_field_name,
@@ -308,9 +312,24 @@ class DateItemMetadataController extends EntityDefaultMetadataController {
       'schema field' => 'uid',
       'getter callback' => 'date_item_get_properties',
     );
+    $properties['settings'] = array(
+      'label' => t("Settings"),
+      'type' => 'array',
+      'description' => t("Settings of the field"),
+      'schema field' => 'setting',
+      'getter callback' => 'date_item_get_properties',
+    );
+    $properties['date_item_type'] = array(
+      'label' => t("Date item type"),
+      'type' => 'varchar',
+      'description' => t("The type of the date item that should be created"),
+      'schema field' => 'setting',
+      'getter callback' => 'date_item_get_properties',
+    );
 
     return $info;
   }
+  
 }
 
 /**
@@ -332,7 +351,10 @@ function date_item_get_properties($entity, array $options, $name, $type) {
       $user = user_load($entity->uid);
       return $user;
       break;
+    case 'settings':     
+      return unserialize($entity->settings);
   }
+
 }
 
 /**
@@ -485,9 +507,21 @@ class DateItemFieldConfig extends Entity {
   public $field_name;
   public $entity_type;
   public $bundle;
+  public $date_item_type = '';
+  public $settings = '';
 
   public function __construct($values = array()) {
     parent::__construct($values, 'date_item_field_config');
+  }
+  
+  /**
+   * Specifies the default label, which is picked up by label() by default.
+   */
+  protected function defaultLabel() {
+    if ($this->field_name && $this->entity_type && $this->bundle) {     
+      return $this->field_name."-".$this->entity_type."-".$this->bundle;
+    }
+    return '';
   }
 }
 
@@ -526,8 +560,18 @@ class DateItemTypeUIController extends EntityDefaultUIController {
  * @param $name
  *   If set, the type with the given name is returned.
  */
-function date_item_get_types($name = NULL) {
+function date_item_get_types($name = NULL, $for_options=false) {
   $types = entity_load_multiple_by_name('date_item_type', isset($name) ? array($name) : FALSE);
+
+  if ($for_options) {
+    $ret_types = array();
+    foreach ($types as $type_key=>$type_value) {
+      $ret_types[$type_key] = $type_value->label;
+    }
+
+    return $ret_types;
+  }
+  
   return isset($name) ? reset($types) : $types;
 }
 
