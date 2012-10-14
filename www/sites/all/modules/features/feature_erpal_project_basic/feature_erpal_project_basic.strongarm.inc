@@ -299,22 +299,22 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '39',
         ),
         'revision_information' => array(
-          'weight' => '34',
+          'weight' => '35',
         ),
         'revision' => array(
-          'weight' => '23',
+          'weight' => '24',
         ),
         'log' => array(
-          'weight' => '25',
+          'weight' => '26',
         ),
         'author' => array(
           'weight' => '37',
         ),
         'name' => array(
-          'weight' => '18',
+          'weight' => '19',
         ),
         'date' => array(
-          'weight' => '21',
+          'weight' => '23',
         ),
         'options' => array(
           'weight' => '38',
@@ -323,58 +323,58 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '12',
         ),
         'promote' => array(
-          'weight' => '26',
+          'weight' => '27',
         ),
         'sticky' => array(
-          'weight' => '30',
+          'weight' => '31',
         ),
         'actions' => array(
           'weight' => '40',
         ),
         'submit' => array(
-          'weight' => '15',
-        ),
-        'preview' => array(
-          'weight' => '32',
-        ),
-        'delete' => array(
           'weight' => '16',
         ),
-        'preview_changes' => array(
+        'preview' => array(
           'weight' => '33',
+        ),
+        'delete' => array(
+          'weight' => '17',
+        ),
+        'preview_changes' => array(
+          'weight' => '34',
         ),
         'comment_settings' => array(
           'weight' => '36',
         ),
         'comment' => array(
-          'weight' => '20',
+          'weight' => '22',
         ),
         'menu' => array(
-          'weight' => '17',
+          'weight' => '18',
         ),
         'enabled' => array(
-          'weight' => '19',
+          'weight' => '20',
         ),
         'link' => array(
-          'weight' => '28',
-        ),
-        'link_title' => array(
-          'weight' => '24',
-        ),
-        'description' => array(
-          'weight' => '27',
-        ),
-        'parent' => array(
           'weight' => '29',
         ),
+        'link_title' => array(
+          'weight' => '25',
+        ),
+        'description' => array(
+          'weight' => '28',
+        ),
+        'parent' => array(
+          'weight' => '30',
+        ),
         'weight' => array(
-          'weight' => '31',
+          'weight' => '32',
         ),
         'path' => array(
-          'weight' => '35',
+          'weight' => '15',
         ),
         'alias' => array(
-          'weight' => '22',
+          'weight' => '21',
         ),
       ),
       'display' => array(),
@@ -413,85 +413,85 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '0',
         ),
         'additional_settings' => array(
-          'weight' => '43',
-        ),
-        'revision_information' => array(
-          'weight' => '39',
-        ),
-        'revision' => array(
-          'weight' => '23',
-        ),
-        'log' => array(
-          'weight' => '34',
-        ),
-        'author' => array(
-          'weight' => '41',
-        ),
-        'name' => array(
-          'weight' => '27',
-        ),
-        'date' => array(
-          'weight' => '31',
-        ),
-        'options' => array(
-          'weight' => '42',
-        ),
-        'status' => array(
-          'weight' => '15',
-        ),
-        'promote' => array(
-          'weight' => '33',
-        ),
-        'sticky' => array(
-          'weight' => '35',
-        ),
-        'actions' => array(
           'weight' => '44',
         ),
-        'submit' => array(
-          'weight' => '18',
-        ),
-        'preview' => array(
-          'weight' => '36',
-        ),
-        'delete' => array(
-          'weight' => '19',
-        ),
-        'preview_changes' => array(
-          'weight' => '37',
-        ),
-        'comment_settings' => array(
-          'weight' => '20',
-        ),
-        'comment' => array(
-          'weight' => '24',
-        ),
-        'menu' => array(
-          'weight' => '26',
-        ),
-        'enabled' => array(
-          'weight' => '29',
-        ),
-        'link' => array(
-          'weight' => '32',
-        ),
-        'link_title' => array(
-          'weight' => '28',
-        ),
-        'description' => array(
-          'weight' => '21',
-        ),
-        'parent' => array(
-          'weight' => '22',
-        ),
-        'weight' => array(
-          'weight' => '25',
-        ),
-        'path' => array(
+        'revision_information' => array(
           'weight' => '40',
         ),
-        'alias' => array(
+        'revision' => array(
+          'weight' => '24',
+        ),
+        'log' => array(
+          'weight' => '35',
+        ),
+        'author' => array(
+          'weight' => '42',
+        ),
+        'name' => array(
+          'weight' => '28',
+        ),
+        'date' => array(
+          'weight' => '32',
+        ),
+        'options' => array(
+          'weight' => '43',
+        ),
+        'status' => array(
+          'weight' => '16',
+        ),
+        'promote' => array(
+          'weight' => '34',
+        ),
+        'sticky' => array(
+          'weight' => '36',
+        ),
+        'actions' => array(
+          'weight' => '45',
+        ),
+        'submit' => array(
+          'weight' => '19',
+        ),
+        'preview' => array(
+          'weight' => '37',
+        ),
+        'delete' => array(
+          'weight' => '20',
+        ),
+        'preview_changes' => array(
+          'weight' => '38',
+        ),
+        'comment_settings' => array(
+          'weight' => '21',
+        ),
+        'comment' => array(
+          'weight' => '25',
+        ),
+        'menu' => array(
+          'weight' => '27',
+        ),
+        'enabled' => array(
           'weight' => '30',
+        ),
+        'link' => array(
+          'weight' => '33',
+        ),
+        'link_title' => array(
+          'weight' => '29',
+        ),
+        'description' => array(
+          'weight' => '22',
+        ),
+        'parent' => array(
+          'weight' => '23',
+        ),
+        'weight' => array(
+          'weight' => '26',
+        ),
+        'path' => array(
+          'weight' => '41',
+        ),
+        'alias' => array(
+          'weight' => '31',
         ),
       ),
       'display' => array(),
