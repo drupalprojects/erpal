@@ -2007,6 +2007,9 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'date_item' => array(
+        'create_date_item' => 1,
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -2064,7 +2067,6 @@ function feature_erpal_project_basic_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'display_all_day' => 0,
           'increment' => '15',
           'input_format' => 'Y-m-d H:i:s',
           'input_format_custom' => '',

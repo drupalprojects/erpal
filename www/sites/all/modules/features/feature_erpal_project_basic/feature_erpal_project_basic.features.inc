@@ -46,6 +46,22 @@ function feature_erpal_project_basic_views_api() {
 }
 
 /**
+ * Implements hook_default_date_item_field_config().
+ */
+function feature_erpal_project_basic_default_date_item_field_config() {
+  $items = array();
+  $items['2'] = entity_import('date_item_field_config', '{
+    "date_item_field_config_id" : "2",
+    "field_name" : "field_date",
+    "entity_type" : "node",
+    "bundle" : "erpal_task",
+    "settings" : "a:1:{s:16:\\u0022create_date_item\\u0022;i:1;}",
+    "rdf_mapping" : []
+  }');
+  return $items;
+}
+
+/**
  * Implements hook_node_info().
  */
 function feature_erpal_project_basic_node_info() {
