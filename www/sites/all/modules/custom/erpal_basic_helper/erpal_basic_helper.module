@@ -46,6 +46,51 @@ function erpal_basic_helper_menu(){
   return $items;
 } 
 
+/**
+ * Implements hook_block_info().
+ */
+function erpal_basic_helper_block_info() {
+  return array(
+    'erpal_context_links_block' => array(
+      'info' => t('ERPAL context links'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function erpal_basic_helper_block_view($delta = '') {  
+  if ($delta == 'erpal_context_links_block') {
+    $block['subject'] = t('ERPAL context links');
+    $block['content'] = _erpal_basic_helper_get_erpal_context_links();
+    return $block;
+  }
+}
+
+/**
+* Implements hook_theme
+*/
+function erpal_basic_helper_theme() {
+  return array(
+    'erpal_context_links' => array(
+      'variables' => array('links' => array()),
+      'template' => 'template/context_links',
+    ),
+  );
+}
+
+/**
+* Function retrieves all context links and asks other modules for links
+*/
+function _erpal_basic_helper_get_erpal_context_links() {
+  $links = array();
+  
+  //call hook to ask other modules for links
+  $links = module_invoke_all('erpal_context_links');
+  
+  return theme('erpal_context_links', array('links' => $links));
+}
 
 /**
 * Implements hook_form_alter

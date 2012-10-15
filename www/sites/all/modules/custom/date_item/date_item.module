@@ -200,7 +200,7 @@ function _date_item_update_date_items($entity_type, $entity) {
 * Prepopulates all date items for all fields
 */
 function _date_item_prepopulate_items() {
-  date_item_get_fields($entity_type, $bundle)
+  date_item_get_fields($entity_type, $bundle);
 /*  
   - alle Felder laden, die grundsätzlich date items erzeugen (unique!)
   - alle nodes laden, nur die nodes filter, bei denen das Datumsfeld überhaupt Dati in der Zukunft enthält, die vergangenen fassen wir hier nicht and, und mit _date_item_update_date_items die date items prepopulaten
@@ -309,10 +309,8 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     
     if (!$found_it) {
     
-      //add a new date_item
-      $values['type'] = $config_entity->date_item_type;
-      $date_item = entity_create('date_item', $values);
-      
+      //add a new date_item      
+      $date_item = entity_create('date_item', array());      
       $date_item->type = $config_entity->date_item_type;
       $date_item->uid = $user->uid;
       $date_item->date_from = $date_from; //this value is already unix time
@@ -322,6 +320,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
       $date_item->src_field_name = $field_name;
       $date_item->offset_from = $date_arr['offset'];
       $date_item->offset_till = $date_arr['offset2'];
+      dpm($date_item);
       $date_item->save();
     }
     

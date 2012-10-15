@@ -545,6 +545,30 @@ function _erpal_projects_helper_ensure_task_settings_form_element(&$form) {
 }
 
 /**
+* Implements hook_erpal_context_links provided in erpal_basic_helper
+*/
+function erpal_basic_helper_erpal_context_links() {
+  
+  //depending on the current page, add some links to the erpal context link block
+  $display = panels_get_current_page_display();
+  $nid = isset($display->args[0]) ? $display->args[0] : false;
+  if (arg(0) == 'node' && arg(1) == $nid && arg(2) == 'tickets') {
+    $add_ticket_link = l(
+      t('Add a ticket'), 
+      'node/add/erpal-task',
+      array(
+        'query' => array(
+          'is_ticket' => 1,
+          'project_ref' => $nid,
+          'destination' => $_GET['q'],
+        )
+      )
+    );
+    return array($add_ticket_link);
+  }
+}
+
+/**
 * Implements hook_form_alter
 */
 function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
@@ -555,7 +579,8 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
     _erpal_project_helper_field_task_status_term_set_default($form);
     _erpal_project_helper_field_prority_term_set_default($form);
     
-    _erpal_basic_helper_warn_semantic_not_covered_by_terms('task_status_terms', 'field_simple_process_status');    
+    _erpal_basic_helper_warn_semantic_not_covered_by_terms('task_status_terms', 'field_simple_process_status');   
+    _erpal_projects_helper_task_edit_form_prepopulate($form);
   }
   
   if ($form_id == 'erpal_books_helper_pdf_form') {

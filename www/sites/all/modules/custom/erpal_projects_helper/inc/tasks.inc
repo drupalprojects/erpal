@@ -163,16 +163,6 @@ function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($proj
   return $nids;
 }
 
-/**
- * Implements hook_query_TAG_alter()
- */
-function erpal_projects_helper_query_tasks_no_task_parent_alter(QueryAlterableInterface $query) {
-  /*
-  $query->leftJoin('node', 'no', 'field.nid = field_data_field_parent.entity_id');
-  $query->isNull('o.field_other_value');
-  */
-}
-
 
 /**
 * Presave function for tasks
@@ -211,6 +201,31 @@ function _erpal_projects_helper_get_activity_by_task($task_node) {
   $activity_node = _erpal_projects_helper_get_activity_by_project($project_node);
   
   return $activity_node;
+}
+
+/**
+* Prepopulate some fields on task edit / insert form
+*/
+function _erpal_projects_helper_task_edit_form_prepopulate(&$form) {
+  //IS_TICKET
+  $key = 'is_ticket';
+  if (isset($_GET[$key])) {    
+    //prepopulate the ticket field
+    $value = $_GET[$key] ? 1 : 0;
+    $form['field_is_ticket'][LANGUAGE_NONE]['#default_value'] = $value;
+    //now hide it
+    $form['field_is_ticket'][LANGUAGE_NONE]['#type'] = 'value';
+  }
+  
+  //PROJECT_REF
+  $key = 'project_ref';
+  if (isset($_GET[$key]) && $_GET[$key]) {    
+    //prepopulate the project_ref field
+    $value = _erpal_basic_helper_autocomplete_string_from_nid($_GET[$key]);
+    $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $value;
+    //now hide it
+    $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+  }
 }
 
 /**
