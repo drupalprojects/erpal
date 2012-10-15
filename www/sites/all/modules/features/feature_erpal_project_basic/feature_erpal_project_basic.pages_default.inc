@@ -336,7 +336,25 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->type = 'views_panes';
     $pane->subtype = 'tasks-panel_pane_4';
     $pane->shown = TRUE;
-    $pane->access = array();
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'entity_field_value:node:erpal_task:field_is_ticket',
+          'settings' => array(
+            'field_is_ticket' => array(
+              'und' => array(
+                0 => array(
+                  'value' => 1,
+                ),
+              ),
+            ),
+            'field_is_ticket_value' => '1',
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => TRUE,
+        ),
+      ),
+    );
     $pane->configuration = array();
     $pane->cache = array();
     $pane->style = array(
