@@ -552,20 +552,19 @@ function erpal_basic_helper_erpal_context_links() {
   //depending on the current page, add some links to the erpal context link block
   $display = panels_get_current_page_display();
   $nid = isset($display->args[0]) ? $display->args[0] : false;
-  if (arg(0) == 'node' && arg(1) == $nid && arg(2) == 'tickets') {
-    $add_ticket_link = l(
-      t('Add a ticket'), 
-      'node/add/erpal-task',
-      array(
-        'query' => array(
-          'is_ticket' => 1,
-          'project_ref' => $nid,
-          'destination' => $_GET['q'],
-        )
-      )
-    );
-    return array($add_ticket_link);
-  }
+  $links = array();
+  if (arg(0) == 'node' && arg(1) == $nid){ 
+    if (arg(2) == 'tickets') {
+      _erpal_projects_helper_add_ticket_list_links($links, $nid);  
+    } elseif (!arg(2)) { //so it is the node view  
+      $node = node_load($nid);
+      if ($node->type == 'erpal_task') {
+        _erpal_projects_helper_add_ticket_links($links, $node);
+      }
+    }
+  } 
+  
+  return $links;
 }
 
 /**

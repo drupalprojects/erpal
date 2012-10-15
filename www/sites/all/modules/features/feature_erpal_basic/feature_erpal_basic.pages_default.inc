@@ -40,6 +40,14 @@ function feature_erpal_basic_default_page_manager_pages() {
         'context' => 'argument_entity_id:node_1',
         'not' => FALSE,
       ),
+      2 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'access relations',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
     'logic' => 'and',
   );

@@ -101,6 +101,69 @@ function _erpal_projects_helper_get_tasks_by_project($project_nid, $like_title=f
 }
 
 /**
+* Checks if node is a ticket
+*/
+function _erpal_project_helper_is_ticket($node) {
+  if ($node->type != 'erpal_task')
+    return false;
+  
+  $is_ticket = isset($node->field_is_ticket[LANGUAGE_NONE][0]['value']) ? $node->field_is_ticket[LANGUAGE_NONE][0]['value'] : false;
+  
+  return $is_ticket;
+}
+
+/**
+* Adds some links to erpal context for adding a ticket
+*/
+function _erpal_projects_helper_add_ticket_list_links(&$links, $project_nid) {
+  $add_ticket_link = l(
+    t('Add a ticket'), 
+    'node/add/erpal-task',
+    array(
+      'query' => array(
+        'is_ticket' => 1,
+        'project_ref' => $project_nid,
+        'destination' => $_GET['q'],
+      )
+    )
+  );
+  
+  $links[] = $add_ticket_link;
+}
+
+/**
+* Adds erpal context links on task view
+*/
+function _erpal_projects_helper_add_ticket_links(&$links, $node) {
+  if (is_numeric($node))
+    $node = node_load($node);
+  
+  if ($node->type != 'erpal_task')
+    return;
+  
+  $is_ticket = _erpal_project_helper_is_ticket($node);
+  
+  //back to list links
+  if ($is_ticket) {
+    //back to tickets
+    $list_type = 'tickets';
+    $list_label = t('ticket');
+  } else {
+    //back to tasks
+    $list_type = 'tasks';
+    $list_label = t('task');
+  }
+  
+  $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+  $back_to_list = l(
+    t('Go to !type list', array('!type' => $list_label)), 
+    'node/'.$project_nid.'/'.$list_type
+  );
+  
+  $links[] = $back_to_list;
+}
+
+/**
 * Return all tasks
 * @return array with nids of tasks referencing the given project_nid if set
 */
@@ -250,11 +313,11 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
        
       }
     //if project is already set, hide the parent field
-    if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']))
-      if ($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
+    //if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']))
+      //if ($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
         $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
         $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#required'] = false;
-      }
+      //}
   } else {
     //hide parent and project ref anyway!
     $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';

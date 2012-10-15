@@ -406,6 +406,27 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-11'] = $pane;
     $display->panels['top'][1] = 'new-11';
+    $pane = new stdClass();
+    $pane->pid = 'new-12';
+    $pane->panel = 'top';
+    $pane->type = 'block';
+    $pane->subtype = 'erpal_basic_helper-erpal_context_links_block';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '<none>',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $display->content['new-12'] = $pane;
+    $display->panels['top'][2] = 'new-12';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -552,6 +573,14 @@ function feature_erpal_project_basic_default_page_manager_pages() {
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'not' => FALSE,
+      ),
+      2 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'field view pricing',
+        ),
+        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -702,6 +731,14 @@ function feature_erpal_project_basic_default_page_manager_pages() {
           ),
         ),
         'context' => 'argument_entity_id:node_1',
+        'not' => FALSE,
+      ),
+      2 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'access tasks view',
+        ),
+        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -872,6 +909,14 @@ function feature_erpal_project_basic_default_page_manager_pages() {
           ),
         ),
         'context' => 'argument_entity_id:node_1',
+        'not' => FALSE,
+      ),
+      2 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'access timetrackings view',
+        ),
+        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -1252,7 +1297,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     $pane->access = array();
     $pane->configuration = array(
       'override_title' => 1,
-      'override_title_text' => '',
+      'override_title_text' => '<none>',
     );
     $pane->cache = array();
     $pane->style = array(

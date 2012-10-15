@@ -89,5 +89,10 @@ function _erpal_projects_helper_field_access($op, $field, $entity_type, $entity 
       return user_access('field edit task advanced');
     }
   }
+  
+  //Timetracking toggle button in task form is only visible if user has right "create timetracking" from timetracking module
+  if ($field['field_name'] == 'field_timetracking_button') {
+    return user_access('create timetracking') && user_access('use quick timetracking');
+  }
 
 }
