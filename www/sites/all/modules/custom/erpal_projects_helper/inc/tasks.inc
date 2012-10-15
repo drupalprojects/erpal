@@ -229,6 +229,41 @@ function _erpal_projects_helper_task_edit_form_prepopulate(&$form) {
 }
 
 /**
+* Alters the tasks form
+*/
+function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
+  //only if node will be new created
+  $nid = $form['nid']['#value'];
+  if (!$nid) {
+    //if parent is already set, hide the project field, but preset it so pricing information can be reloaded!
+    if (isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']))
+      if ($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
+        $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+        $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
+        $parent_node = node_load($parent_nid);
+        $project_nid = _erpal_projects_helper_has_project($parent_node);          
+
+        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($project_nid);
+
+        $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
+       
+      }
+    //if project is already set, hide the parent field
+    if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']))
+      if ($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
+        $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+        $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#required'] = false;
+      }
+  } else {
+    //hide parent and project ref anyway!
+    $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+    $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+  }
+  
+}
+
+/**
 * Implements hook_erpal_clone_node_alter to alter task node if cloned
 * @param $node is the new cloned node
 * @param $args[parent_nid] is the nid of the new parent_node of the cloned node

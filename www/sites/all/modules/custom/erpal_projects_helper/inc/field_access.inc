@@ -81,7 +81,7 @@ function _erpal_projects_helper_field_access($op, $field, $entity_type, $entity 
   }
   
   //advanced fields
-  $advanced_fields = array('field_date', 'field_estimated_time', 'field_progress_percent', 'field_task_exclude_from', 'field_project_tags', 'field_task_assigned_users');
+  $advanced_fields = array(/*'field_date',*/ 'field_estimated_time', 'field_progress_percent', 'field_task_exclude_from', 'field_project_tags', 'field_task_assigned_users');
   if (in_array($field['field_name'], $advanced_fields)) {
     if ($op == 'view') {
       return user_access('field view task advanced');
