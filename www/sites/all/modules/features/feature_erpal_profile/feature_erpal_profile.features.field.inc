@@ -10,7 +10,7 @@
 function feature_erpal_profile_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'field_collection_item-field_contract_data-field_billing_duration'
+  // Exported field: 'field_collection_item-field_contract_data-field_billing_duration'.
   $fields['field_collection_item-field_contract_data-field_billing_duration'] = array(
     'field_config' => array(
       'active' => '1',
@@ -20,6 +20,7 @@ function feature_erpal_profile_field_default_fields() {
       'field_name' => 'field_billing_duration',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -70,7 +71,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_currency'
+  // Exported field: 'field_collection_item-field_contract_data-field_currency'.
   $fields['field_collection_item-field_contract_data-field_currency'] = array(
     'field_config' => array(
       'active' => '1',
@@ -96,6 +97,7 @@ function feature_erpal_profile_field_default_fields() {
         ),
       ),
       'label' => 'Currency',
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -136,7 +138,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_holiday_per_year'
+  // Exported field: 'field_collection_item-field_contract_data-field_holiday_per_year'.
   $fields['field_collection_item-field_contract_data-field_holiday_per_year'] = array(
     'field_config' => array(
       'active' => '1',
@@ -146,6 +148,7 @@ function feature_erpal_profile_field_default_fields() {
       'field_name' => 'field_holiday_per_year',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -196,7 +199,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_hours'
+  // Exported field: 'field_collection_item-field_contract_data-field_hours'.
   $fields['field_collection_item-field_contract_data-field_hours'] = array(
     'field_config' => array(
       'active' => '1',
@@ -206,6 +209,7 @@ function feature_erpal_profile_field_default_fields() {
       'field_name' => 'field_hours',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -256,7 +260,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_member_type'
+  // Exported field: 'field_collection_item-field_contract_data-field_member_type'.
   $fields['field_collection_item-field_contract_data-field_member_type'] = array(
     'field_config' => array(
       'active' => '1',
@@ -270,6 +274,7 @@ function feature_erpal_profile_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -313,7 +318,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_price'
+  // Exported field: 'field_collection_item-field_contract_data-field_price'.
   $fields['field_collection_item-field_contract_data-field_price'] = array(
     'field_config' => array(
       'active' => '1',
@@ -323,6 +328,7 @@ function feature_erpal_profile_field_default_fields() {
       'field_name' => 'field_price',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
@@ -373,7 +379,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_project_tags'
+  // Exported field: 'field_collection_item-field_contract_data-field_project_tags'.
   $fields['field_collection_item-field_contract_data-field_project_tags'] = array(
     'field_config' => array(
       'active' => '1',
@@ -394,6 +400,7 @@ function feature_erpal_profile_field_default_fields() {
           0 => 'tid',
         ),
       ),
+      'locked' => '0',
       'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
@@ -441,7 +448,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_valid_since'
+  // Exported field: 'field_collection_item-field_contract_data-field_valid_since'.
   $fields['field_collection_item-field_contract_data-field_valid_since'] = array(
     'field_config' => array(
       'active' => '1',
@@ -451,6 +458,7 @@ function feature_erpal_profile_field_default_fields() {
       'field_name' => 'field_valid_since',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'date',
       'settings' => array(
         'cache_count' => '4',
@@ -464,6 +472,7 @@ function feature_erpal_profile_field_default_fields() {
           'year' => 'year',
         ),
         'profile2_private' => FALSE,
+        'repeat' => 0,
         'timezone_db' => '',
         'todate' => '',
         'tz_handling' => 'none',
@@ -485,6 +494,7 @@ function feature_erpal_profile_field_default_fields() {
             'multiple_from' => '',
             'multiple_number' => '',
             'multiple_to' => '',
+            'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
           'weight' => 0,
@@ -509,6 +519,7 @@ function feature_erpal_profile_field_default_fields() {
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
+          'repeat_collapsed' => 0,
           'text_parts' => array(),
           'year_range' => '-3:+3',
         ),
@@ -518,7 +529,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_contract_data-field_vat_rate'
+  // Exported field: 'field_collection_item-field_contract_data-field_vat_rate'.
   $fields['field_collection_item-field_contract_data-field_vat_rate'] = array(
     'field_config' => array(
       'active' => '1',
@@ -544,6 +555,7 @@ function feature_erpal_profile_field_default_fields() {
         ),
       ),
       'label' => 'VAT',
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(),
@@ -584,7 +596,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'profile2-contract-field_contract_data'
+  // Exported field: 'profile2-contract-field_contract_data'.
   $fields['profile2-contract-field_contract_data'] = array(
     'field_config' => array(
       'active' => '1',
@@ -594,6 +606,7 @@ function feature_erpal_profile_field_default_fields() {
       'field_name' => 'field_contract_data',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -639,7 +652,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'profile2-main-field_contact_ref'
+  // Exported field: 'profile2-main-field_contact_ref'.
   $fields['profile2-main-field_contact_ref'] = array(
     'field_config' => array(
       'active' => '1',
@@ -653,6 +666,7 @@ function feature_erpal_profile_field_default_fields() {
           0 => 'target_id',
         ),
       ),
+      'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
         'handler' => 'base',
@@ -720,7 +734,7 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
-  // Exported field: 'profile2-main-field_hours_per_day'
+  // Exported field: 'profile2-main-field_hours_per_day'.
   $fields['profile2-main-field_hours_per_day'] = array(
     'field_config' => array(
       'active' => '1',
@@ -730,6 +744,7 @@ function feature_erpal_profile_field_default_fields() {
       'field_name' => 'field_hours_per_day',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(
         'decimal_separator' => '.',
