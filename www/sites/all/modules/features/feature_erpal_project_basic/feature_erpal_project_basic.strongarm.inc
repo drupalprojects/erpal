@@ -311,7 +311,7 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '37',
         ),
         'name' => array(
-          'weight' => '19',
+          'weight' => '18',
         ),
         'date' => array(
           'weight' => '23',
@@ -332,13 +332,13 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '40',
         ),
         'submit' => array(
-          'weight' => '16',
+          'weight' => '15',
         ),
         'preview' => array(
           'weight' => '33',
         ),
         'delete' => array(
-          'weight' => '17',
+          'weight' => '16',
         ),
         'preview_changes' => array(
           'weight' => '34',
@@ -350,10 +350,10 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '22',
         ),
         'menu' => array(
-          'weight' => '18',
+          'weight' => '17',
         ),
         'enabled' => array(
-          'weight' => '20',
+          'weight' => '19',
         ),
         'link' => array(
           'weight' => '29',
@@ -371,7 +371,7 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '32',
         ),
         'path' => array(
-          'weight' => '15',
+          'weight' => '20',
         ),
         'alias' => array(
           'weight' => '21',
@@ -416,22 +416,22 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '44',
         ),
         'revision_information' => array(
-          'weight' => '40',
+          'weight' => '41',
         ),
         'revision' => array(
           'weight' => '24',
         ),
         'log' => array(
-          'weight' => '35',
+          'weight' => '36',
         ),
         'author' => array(
           'weight' => '42',
         ),
         'name' => array(
-          'weight' => '28',
+          'weight' => '30',
         ),
         'date' => array(
-          'weight' => '32',
+          'weight' => '33',
         ),
         'options' => array(
           'weight' => '43',
@@ -440,10 +440,10 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '16',
         ),
         'promote' => array(
-          'weight' => '34',
+          'weight' => '35',
         ),
         'sticky' => array(
-          'weight' => '36',
+          'weight' => '37',
         ),
         'actions' => array(
           'weight' => '45',
@@ -452,31 +452,31 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '19',
         ),
         'preview' => array(
-          'weight' => '37',
+          'weight' => '38',
         ),
         'delete' => array(
           'weight' => '20',
         ),
         'preview_changes' => array(
-          'weight' => '38',
+          'weight' => '39',
         ),
         'comment_settings' => array(
           'weight' => '21',
         ),
         'comment' => array(
-          'weight' => '25',
+          'weight' => '26',
         ),
         'menu' => array(
-          'weight' => '27',
+          'weight' => '29',
         ),
         'enabled' => array(
-          'weight' => '30',
+          'weight' => '32',
         ),
         'link' => array(
-          'weight' => '33',
+          'weight' => '34',
         ),
         'link_title' => array(
-          'weight' => '29',
+          'weight' => '31',
         ),
         'description' => array(
           'weight' => '22',
@@ -485,13 +485,13 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '23',
         ),
         'weight' => array(
-          'weight' => '26',
+          'weight' => '28',
         ),
         'path' => array(
-          'weight' => '41',
+          'weight' => '25',
         ),
         'alias' => array(
-          'weight' => '31',
+          'weight' => '27',
         ),
       ),
       'display' => array(),

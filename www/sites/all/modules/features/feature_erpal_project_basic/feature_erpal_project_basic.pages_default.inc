@@ -1173,6 +1173,16 @@ function feature_erpal_project_basic_default_page_manager_pages() {
         'context' => 'logged-in-user',
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'node_type',
+        'settings' => array(
+          'type' => array(
+            'erpal_project' => 'erpal_project',
+          ),
+        ),
+        'context' => 'argument_entity_id:node_1',
+        'not' => FALSE,
+      ),
     ),
     'logic' => 'and',
   );
@@ -1274,6 +1284,27 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     $pane = new stdClass();
     $pane->pid = 'new-12';
     $pane->panel = 'middle';
+    $pane->type = 'block';
+    $pane->subtype = 'erpal_basic_helper-erpal_context_links_block';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-12'] = $pane;
+    $display->panels['middle'][1] = 'new-12';
+    $pane = new stdClass();
+    $pane->pid = 'new-13';
+    $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'tickets-panel_pane_1';
     $pane->shown = TRUE;
@@ -1285,10 +1316,10 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['middle'][1] = 'new-12';
+    $display->content['new-13'] = $pane;
+    $display->panels['middle'][2] = 'new-13';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
