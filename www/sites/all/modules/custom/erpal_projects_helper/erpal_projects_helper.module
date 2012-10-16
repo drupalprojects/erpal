@@ -555,16 +555,18 @@ function erpal_basic_helper_erpal_context_links() {
   $nid = isset($display->args[0]) ? $display->args[0] : false;
   $links = array();
   if (arg(0) == 'node' && arg(1) == $nid){ 
+    //viewing tickets of a project
     if (arg(2) == 'tickets') {
       _erpal_projects_helper_add_ticket_list_links($links, $nid);  
-    } elseif (!arg(2)) { //so it is the node view  
+    } elseif (!arg(2)) { //so it is the node view of the task
       $node = node_load($nid);
       if ($node->type == 'erpal_task') {
-        _erpal_projects_helper_add_ticket_links($links, $node);
+        _erpal_projects_helper_add_task_links($links, $node);
       }
     }
   }
 
+  //if we are in the projects view
   if (arg(0) == 'projects' && arg(1) == 'projects') {
     _erpal_projects_helper_add_projects_view_link($links);
   }

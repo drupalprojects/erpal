@@ -137,7 +137,7 @@ function _erpal_projects_helper_add_ticket_list_links(&$links, $project_nid) {
 /**
 * Adds erpal context links on task view
 */
-function _erpal_projects_helper_add_ticket_links(&$links, $node) {
+function _erpal_projects_helper_add_task_links(&$links, $node) {
   if (is_numeric($node))
     $node = node_load($node);
   
@@ -164,7 +164,23 @@ function _erpal_projects_helper_add_ticket_links(&$links, $node) {
   );
   
   $links[] = $back_to_list;
+  
+  //add subtask / Subticket link
+  if (!$is_ticket) {
+    $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+    $back_to_list = l(
+      t('Create a sub!type', array('!type' => $list_label)), 
+      'node/add/erpal-task'.$project_nid.'/'.$list_type
+    );
+    
+    $links[] = $back_to_list;
+  }
 }
+
+/**
+* Link to add a Subticket
+*/
+
 
 /**
 * Return all tasks
