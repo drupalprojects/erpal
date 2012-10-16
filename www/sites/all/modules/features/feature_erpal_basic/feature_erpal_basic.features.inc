@@ -38,6 +38,22 @@ function feature_erpal_basic_views_api() {
 }
 
 /**
+ * Implements hook_default_date_item_type().
+ */
+function feature_erpal_basic_default_date_item_type() {
+  $items = array();
+  $items['simple_date'] = entity_import('date_item_type', '{
+    "name" : "simple_date",
+    "label" : "simple date",
+    "locked" : "0",
+    "weight" : "0",
+    "data" : null,
+    "rdf_mapping" : []
+  }');
+  return $items;
+}
+
+/**
  * Implements hook_node_info().
  */
 function feature_erpal_basic_node_info() {
