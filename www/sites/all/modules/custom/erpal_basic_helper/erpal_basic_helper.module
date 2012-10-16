@@ -96,30 +96,7 @@ function _erpal_basic_helper_get_erpal_context_links() {
 * Implements hook_form_alter
 */
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
-/*
-include_once(DRUPAL_ROOT . '/' . drupal_get_path('module', 'date_api') . '/date_api_ical.inc');
-$nid = $form['nid']['#value'];
-$anode = node_load($nid);
-if (!$anode->nid)
-  return;
-dpm($anode);
-$rrule = $anode->field_repeating_date[LANGUAGE_NONE][0]['rrule'];
-$new_rule = _date_item_add_exdate($rrule, time());
 
-//recalculate the nodes date fields date items according to the rule>
-$field = field_info_field('field_repeating_date');
-//now get a date item with min and max range
-$item = _date_time_get_single_date_item($field, $anode->field_repeating_date);
-dpm($item);
-$dates = date_repeat_build_dates($new_rule, NULL, $field, $item);
-$anode->field_repeating_date[LANGUAGE_NONE] = $dates;
-node_save($anode);
-*/
-//TODOs: exception nur hinzufügen, wenn noch nicht hinzugefügt.
-//Was passiert mit nicht repeat feldern? Einzeln und Multiple? Da darf nicht die Rule angepasst werden, da muss das Datum einfach rausgelöscht werden.
-//mein timetracking um 2:30 stoppen
-//andere date field formate teste
-//hier weiter testen 
   if ($form_id == 'relation_add_block_form' || $form_id == 'erpal_basic_helper_node_relation_add_form')
     _erpal_basic_helper_relation_add_block_form_alter($form, $form_state);
   if ($form_id == 'erpal_contact_node_form') {

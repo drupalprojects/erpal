@@ -143,6 +143,7 @@ class DateItem extends Entity {
     $data,
     $uid,
     $created,
+    $date_items_update, //just a flag to provide information if entity is in update process whil saving a host entity with a date field that creates date entites
     $updated;
     
   public function __construct(array $values = array(), $entityType = NULL) {
@@ -232,6 +233,13 @@ class DateItem extends Entity {
     $build['uid'] = array(
       '#prefix' => '<div class="field date_item-user"><div class="field-label">' . t('User') . '</div>',
       '#markup' => (isset($author_uri['path']) ? l($author->name, $author_uri['path']) : t('Anonymous')),
+      '#suffix' => '</div>',
+    );
+    
+    //redirect to source entity after delete
+    $build['actions']['delete'] = array(
+      '#prefix' => '<div class="delete_link field date_item-entity-link">',
+      '#markup' => l(t('delete'), 'date_item/'.$this->date_item_id.'/delete', array('query' => array('destination' => $host_uri['path']))),
       '#suffix' => '</div>',
     );
 

@@ -256,6 +256,7 @@ function erpal_projects_helper_cron_queue_info() {
   return $queues;
 }
 
+
 /**
 * Implements hook_views_post_execute(&$view)
 */

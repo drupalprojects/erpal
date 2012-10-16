@@ -91,12 +91,6 @@ function date_item_edit_access($date_entity) {
   return $entity_access;
 }
 
-/**
-* Implements hook_cron
-*/
-function date_item_cron() {
-  _date_item_prepopulate_items();
-}
 
 /**
 * Implements hook_field_delete
@@ -165,36 +159,81 @@ function date_item_field_attach_update($entity_type, $entity) {
 /**
 * Implements hook_entity_delete
 */
-function date_item_entity_delete($entity, $entity_type) {
-  _date_item_delete_date_items($entity, $entity_type);
-  
+function date_item_entity_delete($entity, $entity_type) {    
   if ($entity_type == 'date_item') {
     //get the source item and there, add the date exception to the field
-    $src_id = $entity->src_id;
-    $src_type = $entity->src_type;
-    $src_field_name = $entity->src_field_name;
+    if ($entity->date_items_update)
+      return; //if this is set, the entity is delete during saving another entity with a field that should create date_items and the check process is called so this entity is deleted because it is not in date range of the date field any more.
+    $date_item = $entity;
+    $src_id = $date_item->src_id;
+    $src_type = $date_item->src_type;
+    $src_field_name = $date_item->src_field_name;
     
     //load the entity
-    $src_entity = $entity->src_entity();
-    
+    $src_entity = $date_item->src_entity();
+    $date_to_remove = $entity->date_from;
     if (isset($src_entity->{$src_field_name}[LANGUAGE_NONE])) {
-      //just add an exception of the deleted date, we only need to set the date of the beginning
-      //get the rule of the first element, others are equal
-      $rrule = $src_entity->{$src_field_name}[LANGUAGE_NONE][0]['rrule'];
-      $parsed_rrule = date_ical_parse_rrule($rrule);
-      //now add the exception
-      
-      //and write the rule back to the node.
-      
+      //delete the date of date_item from the src entity
+      $src_entity->date_items_update = true; //to avoid recursion
+      _date_item_delete_single_date_from_field($src_entity, $src_type, $src_field_name, $date_to_remove);
     }
+  } else {
+    //if it is not a date item, delete all the date item entites that belong to this deleted entity
+    _date_item_delete_date_items($entity, $entity_type);
   }
+}
+
+/**
+* Deletes a single date from a date field or adds the date as date exception if the date field is a repeating field
+*/
+function _date_item_delete_single_date_from_field($entity, $entity_type, $field_name, $date_to_remove) {
+  if (!isset($entity->{$field_name}[LANGUAGE_NONE]))
+    return; //if no date value is set, we cannot remove the date value
+
+  include_once(DRUPAL_ROOT . '/' . drupal_get_path('module', 'date_api') . '/date_api_ical.inc');  
+    
+  $field = field_info_field($field_name);
+
+  $date_to_remove = _date_item_as_unix_timestamp($date_to_remove);
+
+  $is_repeat_field = date_is_repeat_field($field);
+
+  if ($is_repeat_field) {
+    //for repeat dates add to exdates and get the dates be recalulating them from the rule
+    $rrule = $entity->{$field_name}[LANGUAGE_NONE][0]['rrule'];
+    $new_rule = _date_item_add_exdate($rrule, $date_to_remove);
+
+    //recalculate the nodes date fields date items according to the rule>
+    //now get a date item with min and max range
+    $item = _date_time_get_single_date_item($field, $entity->{$field_name});  
+    $dates = date_repeat_build_dates($new_rule, NULL, $field, $item);
+    
+    $entity->{$field_name}[LANGUAGE_NONE] = $dates;
+  } else {
+    
+    //non repeating dates, just remove the date in the delta if it can be found
+    $dates = array();
+    $delta_to_delete = -1;
+    foreach ($entity->{$field_name}[LANGUAGE_NONE] as $delta=>$date_arr) {      
+
+      $date_from = _date_item_as_unix_timestamp($date_arr['value'], $date_arr['timezone']);    
+
+      if ($date_from == $date_to_remove)      
+        $delta_to_delete = $delta;
+    }
+    
+    if ($delta_to_delete > -1)
+      unset($entity->{$field_name}[LANGUAGE_NONE][$delta_to_delete]);
+  }
+
+  //save the entity with the modified fields
+  entity_save($entity_type, $entity);
 }
 
 /**
 * Adds an exdate to an ical rule
 */
 function _date_item_add_exdate($rrule, $unix_time) {
-  dpm($rrule);
   $splitted_rule = explode(chr(13).chr(10), $rrule);
   //split each row again
   $exdate_delta = -1;
@@ -206,12 +245,17 @@ function _date_item_add_exdate($rrule, $unix_time) {
   
   //if we have an exdate, append the exception, otherwise insert an exdate
   $add_time = date('Ymd', $unix_time).'T'.date('His', $unix_time).'Z';
+    
+  
   if ($exdate_delta == -1) {
     $splitted_rule[] = 'EXDATE:';
     $exdate_delta = count($splitted_rule) -1;
     $splitted_rule[$exdate_delta] .= $add_time;
   } else {
-    $splitted_rule[$exdate_delta] .= ','.$add_time;
+    //time should only be added if not already added
+    if (strpos($splitted_rule[$exdate_delta], $add_time) === false) {    
+      $splitted_rule[$exdate_delta] .= ','.$add_time;
+    }
   }
   
   return implode(chr(13).chr(10), $splitted_rule);
@@ -264,11 +308,15 @@ function _date_item_delete_date_items($entity, $entity_type, $field_name=false) 
   $query->execute();
 }
 
+
 /**
 * check if there is a date field that should be updated and if, update!
 */
 function _date_item_update_date_items($entity_type, $entity) {
   $type = isset($entity->type) ? $entity->type : false; //@todo bundle information from other entity_types as nodes!
+  
+  if (isset($entity->date_items_update) && $entity->date_items_update)
+    return false; //because it is already in update process
   
   if (!$type)
     return; //then we get no information
@@ -281,33 +329,24 @@ function _date_item_update_date_items($entity_type, $entity) {
    
     //check if the field is really there at the node and if, do the update!
     if (isset($entity->{$field_name})) {
+      $entity->date_items_update = true;
       _date_item_update_date_items_process($entity, $field_name, $entity->{$field_name}, $entity_type, $type);
+      $entity->date_items_update = false;
     }
   }
 }
 
-/**
-* Prepopulates all date items for all fields
-*/
-function _date_item_prepopulate_items() {
-  date_item_get_fields($entity_type, $bundle);
-/*  
-  - alle Felder laden, die grundsätzlich date items erzeugen (unique!)
-  - alle nodes laden, nur die nodes filter, bei denen das Datumsfeld überhaupt Dati in der Zukunft enthält, die vergangenen fassen wir hier nicht and, und mit _date_item_update_date_items die date items prepopulaten
-  
-  nochmal auf performance überdenken.
-*/
-}
 
 /**
 * Creates the date item entity and updates them
+* @param $entity the entity where the date field is attached that created date entities
 */
 function _date_item_update_date_items_process($entity, $field_name, $field_data, $entity_type, $bundle) {
   global $user;
   
   if (!isset($field_data[LANGUAGE_NONE][0]))
     $field_data[LANGUAGE_NONE][0] = false;  //so if there are date_items but no date any more, the date items will be reset.
-  
+
   //load the config
   $config_entity = _date_item_check_create_items($field_name, $entity_type, $bundle);
   $settings = unserialize($config_entity->settings);
@@ -319,21 +358,27 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     return;
     
   $date_items = _date_item_get_items($field_name, $properties['type'], $properties['id'], time());  //only items in the future
-  
+
   //check if there are date items that should not be in the rang, these items will be deleted
   foreach ($date_items as $date_item) {
     if ($date_item->removed)
-      continue;  //this is a removed item, we dont respect it!
-        
+      continue;  //this is a removed item, we dont respect it! //@TODO actually we dont use this removed flag
+       
     //now find it in the date field and, if not, delete
     $found_it = false;
     foreach ($field_data[LANGUAGE_NONE] as $delta=>$date_arr) {
       if (!$date_arr)
         continue;
       
-      //convert the field data to unix timestamp
-      $date_from = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value']);
-      $date_till = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value2']);
+      //convert the field data to unix timestamp      
+      $date_from = _date_item_as_unix_timestamp($date_arr['value'], $date_arr['timezone']);
+      $date_arr['value2'] = isset($date_arr['value2']) ? $date_arr['value2'] : $date_arr['value'];
+      $date_till = _date_item_as_unix_timestamp($date_arr['value2'], $date_arr['timezone']);
+
+      //we dont handle dates in the past.      
+      if ($date_from < time())
+        continue;
+      
       
       if (!$date_from && !$date_till)
         continue;
@@ -341,17 +386,18 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
       if ($date_item->date_from == $date_from && $date_item->date_till == $date_till) {
         $found_it = true;
         
-        //lets check if timezone settings are the same, of not, correct them.
+        //lets check if timezone settings are the same, if not, correct them.
         $changed = $date_arr['timezone'] != $date_item->timezone ||
-          $date_arr['offset'] != $date_item->offset_from ||
-          $date_arr['offset2'] != $date_item->offset_till;
+          (isset($date_arr['offset']) && $date_arr['offset'] != $date_item->offset_from) ||
+          (isset($date_arr['offset2']) && $date_arr['offset2'] != $date_item->offset_till);
           
           if ($changed) {
             //update the date item
             $date_item->timezone = $date_arr['timezone'];
-            $date_item->offset_from = $date_arr['offset'];
-            $date_item->offset_till = $date_arr['offset2'];
+            $date_item->offset_from = isset($date_arr['offset']) ? $date_arr['offset'] : 0;
+            $date_item->offset_till = isset($date_arr['offset2']) ? $date_arr['offset2'] : 0;
             $date_item->updated = time();
+            $date_item->date_items_update = true;  //avoid recursion
             $date_item->save();
           }
         
@@ -362,22 +408,33 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     
     if (!$found_it) {
       //if date isnt in range any more, delete it
+      $date_item->date_items_update = true;  //to avoid recursion
       $date_item->delete();
     }
   }
   
   //now get the date values first for start, end and all repeating dates for each delta and add all date_items that are actually not available
   foreach ($field_data[LANGUAGE_NONE] as $delta=>$date_arr) {
-    $date_from = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value']);
-    $date_till = _date_item_as_unix_timestamp($date_arr['date_type'], $date_arr['value2']);
+
+    $date_from = _date_item_as_unix_timestamp($date_arr['value'], $date_arr['timezone']);
+    $date_arr['value2'] = isset($date_arr['value2']) ? $date_arr['value2'] : $date_arr['value'];
+    $date_till = _date_item_as_unix_timestamp($date_arr['value2'], $date_arr['timezone']);
 
     if (!$date_from && !$date_till)
       continue;
     
-    //we even add the dates in the past.
+    //we dnot handle dates in the past.
     
+    if ($date_from < time())
+      continue;
+    
+  
+    //we even add the dates in the past.
+    $date_arr['offset'] = isset($date_arr['offset']) ? $date_arr['offset'] : 0;
+    $date_arr['offset2'] = isset($date_arr['offset2']) ? $date_arr['offset2'] : 0;
     $found_it = false;
-    foreach ($date_items as $date_item) {
+    
+    foreach ($date_items as $date_item) {  
       if ($date_item->date_from == $date_from && $date_item->date_till == $date_till) {
         $found_it = true;
         
@@ -393,6 +450,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
             $date_item->offset_till = $date_arr['offset2'];
             $date_item->removed = 0;
             $date_item->updated = time();
+            $date_item->date_items_update = true;  //avoid recursion
             $date_item->save();
           }
         
@@ -401,7 +459,6 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     }
     
     if (!$found_it) {
-    
       //add a new date_item      
       $date_item = entity_create('date_item', array());      
       $date_item->type = $config_entity->date_item_type;
@@ -412,22 +469,43 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
       $date_item->src_id = $properties['id'];
       $date_item->src_field_name = $field_name;
       $date_item->offset_from = $date_arr['offset'];
+      $date_item->timezone = $date_arr['timezone'];
       $date_item->offset_till = $date_arr['offset2'];
-      dpm($date_item);
-      $date_item->save();
+      $date_item->date_items_update = true;  //avoid recursion
+      $date_item->save();      
     }
     
   }
 }
 
 /**
+* Implements hook_entity_presave
+*/
+function date_item_entity_presave(&$entity, $entity_type) {
+  if ($entity_type == 'date_item') {
+    module_invoke_all('date_item_presave', $entity);
+  }
+}
+
+/**
 * Return the date always as unix timestamp. But that depends on the field type, so may be convert it
 */
-function _date_item_as_unix_timestamp($field, $value) {
-  if ($field == 'datetime')
-    return strtotime($value);
+function _date_item_as_unix_timestamp($value, $tz_string=NULL) {
+  
+  if(is_numeric($value))
+    return $value; //then it is already a unix timestamp
+  
+  if ($tz_string)
+    $tz = new DateTimeZone($tz_string);
+  else
+    $tz = date_default_timezone_object();
     
-  return $value;
+  $date = new DateObject($value, $tz);
+  $date->setTimezone($tz);
+  $date_arr = $date->toArray();
+  //now convert as unix date!
+  $unix_time = mktime($date_arr['hour'], $date_arr['minute'], $date_arr['second'], $date_arr['month'], $date_arr['day'], $date_arr['year']);
+  return $unix_time;
 }
 
 /**
@@ -518,6 +596,7 @@ function date_item_form_alter(&$form, &$form_state, $form_id) {
 * Checks if calculations with this date field type are allowed according to data structure
 */
 function _date_item_date_type_allowed($type) {
+  return true; //because of date API magic we cann support all date types
   return $type == 'datestamp' || $type == 'datetime';
 }
 
