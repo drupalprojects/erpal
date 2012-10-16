@@ -1,12 +1,13 @@
-name = "Display suite Test"
-description = "Test module for display suite"
+name = "Display Suite Test"
+description = "Test module for Display Suite"
 core = "7.x"
-package = "Display suite"
+package = "Display Suite"
 dependencies[] = ds_extras
 hidden = TRUE
-; Information added by drupal.org packaging script on 2012-02-14
-version = "7.x-1.5"
+
+; Information added by drupal.org packaging script on 2012-10-05
+version = "7.x-2.0"
 core = "7.x"
 project = "ds"
-datestamp = "1329223541"
+datestamp = "1349439417"
 

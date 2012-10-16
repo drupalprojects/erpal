@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Display suite fields.
+ * Display Suite fields.
  */
 
 /**
@@ -23,6 +23,9 @@ function ds_ds_fields_info($entity_type) {
         'field_type' => $field->field_type,
         'properties' => $field->properties,
       );
+      if (!empty($field->ui_limit)) {
+        $fields[$entity_type][$key]['ui_limit'] = explode("\n", $field->ui_limit);
+      }
     }
   }
 
@@ -57,6 +60,9 @@ function ds_ds_fields_info($entity_type) {
     $fields['node']['comments'] = array(
       'title' => t('Comments'),
       'field_type' => DS_FIELD_TYPE_IGNORE,
+      'ui_limit' => array(
+        '*|full', '*|default',
+      ),
     );
   }
 
@@ -98,6 +104,17 @@ function ds_ds_fields_info($entity_type) {
     'title' => t('Post date'),
     'field_type' => DS_FIELD_TYPE_FUNCTION,
     'function' => 'ds_render_date_field',
+    'properties' => array(
+      'formatters' => $date_formatters,
+    ),
+  );
+
+  // "Submitted by"-line.
+  $date_formatters = array('ds_time_ago' => t('Time ago')) + $date_formatters;
+  $fields['node']['submitted_by'] = array(
+    'title' => t('Submitted by'),
+    'field_type' => DS_FIELD_TYPE_FUNCTION,
+    'function' => 'ds_render_submitted_by',
     'properties' => array(
       'formatters' => $date_formatters,
     ),
@@ -246,7 +263,7 @@ function ds_ds_fields_info($entity_type) {
 
   // Username
   $fields['user']['name'] = array(
-    'title' => 'Username',
+    'title' => t('Username'),
     'field_type' => DS_FIELD_TYPE_FUNCTION,
     'function' => 'ds_render_field',
     'properties' => array(

@@ -1,13 +1,13 @@
-name = "Extras"
-description = "Contains additional features."
+name = "Display Suite Extras"
+description = "Contains additional features for Display Suite."
 core = "7.x"
-package = "Display suite"
+package = "Display Suite"
 dependencies[] = ds
-configure = admin/structure/ds/extras
+configure = admin/structure/ds/list/extras
 
-; Information added by drupal.org packaging script on 2012-02-14
-version = "7.x-1.5"
+; Information added by drupal.org packaging script on 2012-10-05
+version = "7.x-2.0"
 core = "7.x"
 project = "ds"
-datestamp = "1329223541"
+datestamp = "1349439417"
 

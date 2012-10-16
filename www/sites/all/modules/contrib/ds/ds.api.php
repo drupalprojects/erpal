@@ -20,16 +20,16 @@ function hook_test_ctools_plugin_api($module, $api) {
 }
 
 /**
- * Expose Display suite field settings.
+ * Expose Display Suite field settings.
  *
  * This hook is called by CTools. For this hook to work, you need
  * hook_ctools_plugin_api(). The values of this hook can be overridden
  * and reverted through the UI.
  */
 function hook_ds_field_settings_info() {
-  $ds_fieldsettings = array();
+  $dsfieldsettings = array();
 
-  $ds_fieldsetting = new stdClass;
+  $dsfieldsetting = new stdClass;
   $dsfieldsetting->disabled = FALSE; /* Edit this to true to make a default dsfieldsetting disabled initially */
   $dsfieldsetting->api_version = 1;
   $dsfieldsetting->id = 'node|article|default';
@@ -410,6 +410,22 @@ function hook_ds_layout_info() {
 }
 
 /**
+ * Alter the layout render array.
+ *
+ * @param $layout_render_array
+ *   The render array
+ * @param $context
+ *   An array with the context that is being rendered. Available keys are
+ *   - entity
+ *   - entity_type
+ *   - bundle
+ *   - view_mode
+ */
+function hook_ds_pre_render_alter(&$layout_render_array, $context) {
+  $layout_render_array['left'][] = array('#markup' => 'cool!', '#weight' => 20);
+}
+
+/**
  * Alter layouts found by Display Suite.
  *
  * @param $layouts
@@ -483,20 +499,29 @@ function hook_ds_label_options_alter(&$field_label_options) {
       ),
       // Add this if there is a default css file.
       'css' => TRUE,
-      // Add this if this template is for a node form.
-      'form' => TRUE,
+      // Add this if there is a default preview image
+      'image' => TRUE,
     );
   }
 
  */
 
 /**
- * Return fields to be added when creating a new display with the panels editor.
+ * Alter the view mode just before it's rendered by the DS views entity plugin.
+ *
+ * @param $view_mode
+ *   The name of the view mode.
+ * @param $context
+ *   A collection of items which can be used to identify in what
+ *   context an entity is being rendered. The variable contains 3 keys:
+ *     - entity: The entity being rendered.
+ *     - view_name: the name of the view.
+ *     - display: the name of the display of the view.
  */
-function hook_ds_panels_default_fields($entity_type, $bundle, $view_mode) {
-  // Get the fields from Field API.
-  $fields = field_info_instances($entity_type, $bundle);
-  return $fields;
+function hook_ds_views_view_mode_alter(&$view_mode, $context) {
+  if ($context['view_name'] == 'my_view_name') {
+    $view_mode = 'new_view_mode';
+  }
 }
 
 /**
@@ -528,5 +553,15 @@ function ds_views_row_adv_VIEWS_NAME(&$vars, $view_mode) {
 }
 
 /**
+ * Alter the strings used to separate taxonomy terms.
+ */
+function hook_ds_taxonomy_term_separators(&$separators) {
+  // Remove the option to use a hyphen.
+  unset($separators[' - ']);
+  // Add the option to use a pipe.
+  $separators[' | '] = t('pipe');
+}
+
+/*
  * @} End of "addtogroup hooks".
  */
