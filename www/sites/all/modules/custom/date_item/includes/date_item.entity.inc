@@ -250,6 +250,10 @@ class DateItem extends Entity {
     }
     return parent::save();
   }
+  
+  public function delete() {      
+    parent::delete();    
+  }
 
   /**
    * Specify URI
@@ -516,6 +520,14 @@ class DateItemFieldConfig extends Entity {
       return $this->field_name."-".$this->entity_type."-".$this->bundle;
     }
     return '';
+  }
+  
+  public function delete() {      
+    parent::delete();    
+  }
+  
+  public function save() {      
+    parent::save();    
   }
 }
 

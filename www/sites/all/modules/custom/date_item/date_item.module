@@ -251,6 +251,9 @@ function _date_time_get_single_date_item($field, $field_data) {
 function _date_item_delete_date_items($entity, $entity_type, $field_name=false) {
   
   $properties = _date_item_get_properties_of_entity($entity);
+  if (!$properties)
+    return;
+    
   $query = db_delete('date_item')
     ->condition('src_type', $entity_type)
     ->condition('src_id', $properties['id']);
@@ -311,7 +314,10 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
   $date_item_type = $settings['date_item_type'];
   
   //get all entites that are already saved to this field
-  $properties = _date_item_get_properties_of_entity($entity);
+  $properties = _date_item_get_properties_of_entity($entity);  
+  if (!$properties)
+    return;
+    
   $date_items = _date_item_get_items($field_name, $properties['type'], $properties['id'], time());  //only items in the future
   
   //check if there are date items that should not be in the rang, these items will be deleted
@@ -438,10 +444,9 @@ function _date_item_get_properties_of_entity($entity) {
     $properties['type'] = 'node';
   } elseif (gettype($entity) == 'date_item' ) {
     $properties['id'] = $entity->date_item_id;
-    $properties['type'] = 'date_item';
+    $properties['type'] = 'date_item';    
   } else {
-    dpm($entity);
-    drupal_set_message(t('Could not specify the entity type in "_date_item_get_properties_of_entity"'), 'error');
+    return false;
   }
   
   return $properties;
@@ -579,7 +584,7 @@ function _date_item_field_config_form_submit($form, $form_state) {
     //insert new entity
     $entity = new DateItemFieldConfig();    
   } elseif ($entity && !$create_date_item) {
-    //delete the entity
+    //delete the entity    
     $entity->delete();
     $entity = false;
   } elseif ($entity && $create_date_item) {
@@ -600,6 +605,7 @@ function _date_item_field_config_form_submit($form, $form_state) {
     //and save
     $entity->save();
   }
+    
 }
 
 /**

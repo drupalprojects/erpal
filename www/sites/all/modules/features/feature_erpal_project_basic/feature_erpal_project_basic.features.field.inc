@@ -2016,7 +2016,7 @@ function feature_erpal_project_basic_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'erpal_task',
       'date_item' => array(
-        'create_date_item' => 1,
+        'create_date_item' => 0,
         'date_item_type' => 'simple_date',
       ),
       'deleted' => '0',
