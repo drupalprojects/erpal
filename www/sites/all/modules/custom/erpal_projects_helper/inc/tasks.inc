@@ -123,8 +123,8 @@ function _erpal_projects_helper_add_ticket_list_links(&$links, $project_nid) {
       'node/add/erpal-task',
       array(
         'query' => array(
-          'is_ticket' => 1,
-          'project_ref' => $project_nid,
+          'field_is_ticket' => 1,
+          'field_project_ref' => $project_nid,
           'destination' => $_GET['q'],
         )
       )
@@ -302,7 +302,7 @@ function _erpal_projects_helper_get_activity_by_task($task_node) {
 */
 function _erpal_projects_helper_task_edit_form_prepopulate(&$form) {
   //IS_TICKET
-  $key = 'is_ticket';
+  $key = 'field_is_ticket';
   if (isset($_GET[$key])) {    
     //prepopulate the ticket field
     $value = $_GET[$key] ? 1 : 0;
@@ -310,11 +310,12 @@ function _erpal_projects_helper_task_edit_form_prepopulate(&$form) {
     //now hide it
     $form['field_is_ticket'][LANGUAGE_NONE]['#type'] = 'value';
   }
-  
+
   //PROJECT_REF
-  $key = 'project_ref';
+  $key = 'field_project_ref';
   if (isset($_GET[$key]) && $_GET[$key]) {    
     //prepopulate the project_ref field
+    
     $value = _erpal_basic_helper_autocomplete_string_from_nid($_GET[$key]);
     $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $value;
     //now hide it
