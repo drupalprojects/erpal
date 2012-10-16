@@ -38,11 +38,11 @@ function feature_erpal_basic_menu_default_menu_links() {
       'alter' => TRUE,
     ),
     'module' => 'system',
-    'hidden' => '1',
+    'hidden' => '0',
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-50',
+    'weight' => '-10',
   );
   // Exported menu link: user-menu:user/login
   $menu_links['user-menu:user/login'] = array(
@@ -71,7 +71,7 @@ function feature_erpal_basic_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-48',
+    'weight' => '10',
   );
   // Translatables
   // Included for use with string extractors like potx.

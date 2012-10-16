@@ -2054,7 +2054,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => '10',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2146,7 +2146,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '14',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2224,7 +2224,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2329,7 +2329,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '12',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2421,7 +2421,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '24',
+          'weight' => '25',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2441,7 +2441,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '12',
+        'weight' => '11',
       ),
     ),
   );
@@ -2519,7 +2519,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '11',
+        'weight' => '10',
       ),
     ),
   );
@@ -2580,7 +2580,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '16',
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2601,7 +2601,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '9',
+        'weight' => '8',
       ),
     ),
   );
@@ -2689,7 +2689,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '15',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2811,7 +2811,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '14',
+        'weight' => '13',
       ),
     ),
   );
@@ -2888,7 +2888,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '11',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2928,7 +2928,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '13',
+        'weight' => '12',
       ),
     ),
   );
@@ -2977,7 +2977,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '13',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2998,7 +2998,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '15',
+        'weight' => '14',
       ),
     ),
   );
@@ -3077,7 +3077,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '10',
+        'weight' => '9',
       ),
     ),
   );
@@ -3206,10 +3206,9 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'computed_field',
           'settings' => array(),
-          'type' => 'computed_field_unsanitized',
-          'weight' => '8',
+          'type' => 'hidden',
+          'weight' => '24',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3230,7 +3229,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '8',
+        'weight' => '27',
       ),
     ),
   );
@@ -3273,7 +3272,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '25',
+          'weight' => '26',
         ),
         'teaser' => array(
           'label' => 'above',

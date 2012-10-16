@@ -161,20 +161,32 @@ function _erpal_projects_helper_add_task_links(&$links, $node) {
   $back_to_list = l(
     t('Go to !type list', array('!type' => $list_label)), 
     'node/'.$project_nid.'/'.$list_type
-  );
-  
+  );  
   $links[] = $back_to_list;
   
   //add subtask / Subticket link
-  if (!$is_ticket) {
+  if (user_access('create erpal_task content')) {
     $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
-    $back_to_list = l(
+    $subtask_link = l(
       t('Create a sub!type', array('!type' => $list_label)), 
-      'node/add/erpal-task'.$project_nid.'/'.$list_type
-    );
-    
-    $links[] = $back_to_list;
+      'node/add/erpal-task',
+      array(
+        'query' => array(
+          'field_parent' => $node->nid,
+          'field_project_ref' => $project_nid,
+          'is_ticket' => $is_ticket,
+        ),
+      )
+    );  
+    $links[] = $subtask_link;
   }
+  
+  //quick timetracking
+  if (user_access('use quick timetracking')) {
+    $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($node->nid);
+    $links[] = $timetracking_button;
+  }
+
 }
 
 /**
