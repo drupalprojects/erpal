@@ -1,27 +1,23 @@
-/**
- * @file
- * Styling for the ds-3col-stacked template.
- */
 
-.ds-3col-stacked > .group-header {
+.group-header {
   clear: both;
 }
 
-.ds-3col-stacked > .group-left {
+.group-left {
   width: 25%;
-  float: left; /* LTR */
+  float: left;
 }
 
-.ds-3col-stacked > .group-middle {
+.group-middle {
   width: 50%;
-  float: left; /* LTR */
+  float: left;
 }
 
-.ds-3col-stacked > .group-right {
+.group-right {
   width: 25%;
-  float: right; /* LTR */
+  float: right;
 }
 
-.ds-3col-stacked > .group-footer {
+.group-footer {
   clear: both;
 }

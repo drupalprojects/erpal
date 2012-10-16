@@ -1,14 +1,10 @@
-/**
- * @file
- * Styling for the ds_2col template.
- */
 
-.ds-2col > .group-left {
-  float: left; /* LTR */
+.group-left {
+  float: left;
   width: 50%;
 }
 
-.ds-2col > .group-right {
-  float: left; /* LTR */
+.group-right {
+	float: left;
   width: 50%;
 }

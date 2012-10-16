@@ -1,19 +1,15 @@
-/**
- * @file
- * Styling for the ds-3col-equal template.
- */
 
-.ds-3col-equal > .group-left {
+.group-left {
   width: 33%;
-  float: left; /* LTR */
+  float: left;
 }
 
-.ds-3col-equal > .group-middle {
+.group-middle {
   width: 34%;
-  float: left; /* LTR */
+  float: left;
 }
 
-.ds-3col-equal > .group-right {
+.group-right {
   width: 33%;
-  float: right; /* LTR */
+  float: right;
 }

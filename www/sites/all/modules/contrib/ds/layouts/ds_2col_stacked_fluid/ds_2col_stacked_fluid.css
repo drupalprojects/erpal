@@ -1,27 +1,23 @@
-/**
- * @file
- * Styling for the ds-2col-stacked-fluid template.
- */
 
-.ds-2col-stacked-fluid > .group-header {
+.group-header {
 }
 
-.ds-2col-stacked-fluid > .group-left {
-  float: left; /* LTR */
+.group-left {
+  float: left;
   width: 50%;
 }
 
-.ds-2col-stacked-fluid > .group-right {
-  float: right; /* LTR */
+.group-right {
+  float: right;
   width: 50%;
 }
 
-.ds-2col-stacked-fluid.group-one-column > .group-left,
-.ds-2col-stacked-fluid.group-one-column > .group-right {
-  width: 100%;
-  float: none;
-}
+.group-one-column .group-left,
+.group-one-column .group-right {
+	width: 100%;
+	float: none;
+} 
 
-.ds-2col-stacked-fluid > .group-footer {
+.group-footer {
   clear: both;
 }
