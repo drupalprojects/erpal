@@ -110,6 +110,7 @@ features[relation_type][] = works_at
 features[taxonomy][] = address_types
 features[taxonomy][] = company_relation_tags
 features[taxonomy][] = contact_tags
+features[taxonomy][] = date_item_tags
 features[taxonomy][] = number_types
 features[variable][] = additional_settings__active_tab_erpal_contact
 features[variable][] = ant_erpal_contact

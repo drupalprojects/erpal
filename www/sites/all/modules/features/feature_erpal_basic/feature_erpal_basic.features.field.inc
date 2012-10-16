@@ -36,10 +36,11 @@ function feature_erpal_basic_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'activity_status_terms',
+            'vocabulary' => 'date_item_tags',
             'parent' => '0',
           ),
         ),
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
@@ -61,11 +62,12 @@ function feature_erpal_basic_field_default_fields() {
       'entity_type' => 'date_item',
       'field_name' => 'field_date_item_tags',
       'label' => 'Date tags',
-      'required' => FALSE,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 0,
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
