@@ -1165,6 +1165,140 @@ function feature_erpal_project_basic_default_page_manager_pages() {
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
+  $page->name = 'projects_list';
+  $page->task = 'page';
+  $page->admin_title = 'Projects list';
+  $page->admin_description = '';
+  $page->path = 'projects/projects';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'access projects view',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_projects_list_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'projects_list';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'logic' => 'and',
+    ),
+  );
+  $display = new panels_display();
+  $display->layout = 'twocol_stacked';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'top' => NULL,
+      'left' => NULL,
+      'right' => NULL,
+      'bottom' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-11';
+    $pane->panel = 'bottom';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'projects-panel_pane_2';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-11'] = $pane;
+    $display->panels['bottom'][0] = 'new-11';
+    $pane = new stdClass();
+    $pane->pid = 'new-12';
+    $pane->panel = 'top';
+    $pane->type = 'page_title';
+    $pane->subtype = 'page_title';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'markup' => 'h2',
+      'class' => '',
+      'id' => '',
+      'override_title' => 1,
+      'override_title_text' => 'Projects',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-12'] = $pane;
+    $display->panels['top'][0] = 'new-12';
+    $pane = new stdClass();
+    $pane->pid = 'new-13';
+    $pane->panel = 'top';
+    $pane->type = 'block';
+    $pane->subtype = 'erpal_basic_helper-erpal_context_links_block';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '<none>',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-13'] = $pane;
+    $display->panels['top'][1] = 'new-13';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = 'new-11';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['projects_list'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
   $page->name = 'tickets';
   $page->task = 'page';
   $page->admin_title = 'Tickets';
@@ -1265,7 +1399,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-11';
+    $pane->pid = 'new-14';
     $pane->panel = 'middle';
     $pane->type = 'page_title';
     $pane->subtype = 'page_title';
@@ -1286,10 +1420,10 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['middle'][0] = 'new-11';
+    $display->content['new-14'] = $pane;
+    $display->panels['middle'][0] = 'new-14';
     $pane = new stdClass();
-    $pane->pid = 'new-12';
+    $pane->pid = 'new-15';
     $pane->panel = 'middle';
     $pane->type = 'block';
     $pane->subtype = 'erpal_basic_helper-erpal_context_links_block';
@@ -1307,10 +1441,10 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['middle'][1] = 'new-12';
+    $display->content['new-15'] = $pane;
+    $display->panels['middle'][1] = 'new-15';
     $pane = new stdClass();
-    $pane->pid = 'new-13';
+    $pane->pid = 'new-16';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'tickets-panel_pane_1';
@@ -1325,8 +1459,8 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['middle'][2] = 'new-13';
+    $display->content['new-16'] = $pane;
+    $display->panels['middle'][2] = 'new-16';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

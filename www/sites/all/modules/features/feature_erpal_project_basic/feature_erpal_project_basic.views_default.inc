@@ -22,7 +22,6 @@ function feature_erpal_project_basic_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Projects';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access projects view';
@@ -143,7 +142,42 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['filters']['field_project_status_term_tid']['id'] = 'field_project_status_term_tid';
   $handler->display->display_options['filters']['field_project_status_term_tid']['table'] = 'field_data_field_project_status_term';
   $handler->display->display_options['filters']['field_project_status_term_tid']['field'] = 'field_project_status_term_tid';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['operator_id'] = 'field_project_status_term_tid_op';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['operator'] = 'field_project_status_term_tid_op';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['identifier'] = 'field_project_status_term_tid';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_project_status_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_status_term_tid']['vocabulary'] = 'project_status_terms';
+  /* Filter criterion: Content: Priority (field_priority_term) */
+  $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
 
   /* Display: Projects */
   $handler = $view->new_display('page', 'Projects', 'page');
@@ -214,7 +248,7 @@ echo _erpal_projects_helper_view_projects_header_content();
   );
   $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
-  $handler->display->display_options['path'] = 'projects/projects';
+  $handler->display->display_options['path'] = 'projects/projects/old';
 
   /* Display: Projects by activity pane */
   $handler = $view->new_display('panel_pane', 'Projects by activity pane', 'panel_pane_1');
@@ -338,6 +372,12 @@ echo _erpal_projects_helper_view_projects_header_content();
   $handler->display->display_options['attach'] = array(
     0 => 'field_collection_item:field_budget_destination:field_budget_booking',
   );
+
+  /* Display: Projects pane */
+  $handler = $view->new_display('panel_pane', 'Projects pane', 'panel_pane_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $export['projects'] = $view;
 
   $view = new view();

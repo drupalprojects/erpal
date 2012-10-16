@@ -153,7 +153,7 @@ class DateItem extends Entity {
   /**
    * Specifies the default label, which is picked up by label() by default.
    */
-  protected function defaultLabel() {
+  public function defaultLabel() {
     if ($this->src_id && $this->src_type && $this->src_field_name) {
       $src_entity = $this->src_entity();
       return t('Date for @title', array(
@@ -170,7 +170,7 @@ class DateItem extends Entity {
    * @return object|bool
    *   An entity, or FALSE if the entity does not exist.
    */
-  protected function src_entity() {
+  public function src_entity() {
     return (($this->src_id && !empty($this->src_type)) ? entity_load_single($this->src_type, $this->src_id) : FALSE);
   }
 
@@ -228,16 +228,10 @@ class DateItem extends Entity {
     // date_item authored by
     $author = user_load($this->uid);
     $author_uri = user_uri($author);
-    
-    $build['author'] = array(
-      '#prefix' => '<div class="field date_item-author"><div class="field-label">' . t('Author') . '</div>',
-      '#markup' => (isset($author_uri['path']) ? l($this->author->name, $author_uri['path']) : t('Anonymous')),
-      '#suffix' => '</div>',
-    );
 
-    $build['user'] = array(
+    $build['uid'] = array(
       '#prefix' => '<div class="field date_item-user"><div class="field-label">' . t('User') . '</div>',
-      '#markup' => (isset($account_uri['path']) ? l($this->user->name, $account_uri['path']) : t('Anonymous')),
+      '#markup' => (isset($author_uri['path']) ? l($author->name, $author_uri['path']) : t('Anonymous')),
       '#suffix' => '</div>',
     );
 
@@ -517,7 +511,7 @@ class DateItemFieldConfig extends Entity {
   /**
    * Specifies the default label, which is picked up by label() by default.
    */
-  protected function defaultLabel() {
+  public function defaultLabel() {
     if ($this->field_name && $this->entity_type && $this->bundle) {     
       return $this->field_name."-".$this->entity_type."-".$this->bundle;
     }

@@ -51,6 +51,26 @@ function _erpal_projects_helper_get_projects_with_assigned_tasks($task_states=ar
 }
 
 /**
+* Add links shown on project lists
+*/
+function _erpal_projects_helper_add_projects_view_link(&$links) {
+ 
+  if (user_access('create erpal_project content')) {
+    $back_to_list = l(
+      t('Add new project'), 
+      'node/add/erpal-project',
+      array(
+        'query' => array(        
+          'destination' => $_GET['q'],
+        )
+      )
+    );
+    
+    $links[] = $back_to_list;
+  }
+}
+
+/**
 * Returns the activity referenced by the project
 */
 function _erpal_projects_helper_get_activity_by_project($project_node) {

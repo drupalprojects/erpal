@@ -45,8 +45,8 @@ function date_item_menu() {
     'title' => 'Edit',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('date_item_form', 1),
-    'access callback' => 'entity_access',
-    'access arguments' => array('update', 'date_item', 1),
+    'access callback' => 'date_item_edit_access',
+    'access arguments' => array(1),
     'weight' => 10,
     'type' => MENU_LOCAL_TASK,
   );
@@ -77,6 +77,18 @@ function date_item_menu() {
   }
 
   return $items;
+}
+
+
+/**
+* Decides of a date item could be edit or not
+*/
+function date_item_edit_access($date_entity) {
+  $entity_access = entity_access('update', 'date_item', $date_entity);
+  
+  $entity_access = $entity_access && !$date_entity->src_id;
+  
+  return $entity_access;
 }
 
 /**
@@ -155,8 +167,83 @@ function date_item_field_attach_update($entity_type, $entity) {
 */
 function date_item_entity_delete($entity, $entity_type) {
   _date_item_delete_date_items($entity, $entity_type);
+  
+  if ($entity_type == 'date_item') {
+    //get the source item and there, add the date exception to the field
+    $src_id = $entity->src_id;
+    $src_type = $entity->src_type;
+    $src_field_name = $entity->src_field_name;
+    
+    //load the entity
+    $src_entity = $entity->src_entity();
+    
+    if (isset($src_entity->{$src_field_name}[LANGUAGE_NONE])) {
+      //just add an exception of the deleted date, we only need to set the date of the beginning
+      //get the rule of the first element, others are equal
+      $rrule = $src_entity->{$src_field_name}[LANGUAGE_NONE][0]['rrule'];
+      $parsed_rrule = date_ical_parse_rrule($rrule);
+      //now add the exception
+      
+      //and write the rule back to the node.
+      
+    }
+  }
 }
 
+/**
+* Adds an exdate to an ical rule
+*/
+function _date_item_add_exdate($rrule, $unix_time) {
+  dpm($rrule);
+  $splitted_rule = explode(chr(13).chr(10), $rrule);
+  //split each row again
+  $exdate_delta = -1;
+  foreach ($splitted_rule as $delta => $rule_part) {
+    if (strpos($rule_part, 'EXDATE') !== false) {
+      $exdate_delta = $delta;
+    }
+  }
+  
+  //if we have an exdate, append the exception, otherwise insert an exdate
+  $add_time = date('Ymd', $unix_time).'T'.date('His', $unix_time).'Z';
+  if ($exdate_delta == -1) {
+    $splitted_rule[] = 'EXDATE:';
+    $exdate_delta = count($splitted_rule) -1;
+    $splitted_rule[$exdate_delta] .= $add_time;
+  } else {
+    $splitted_rule[$exdate_delta] .= ','.$add_time;
+  }
+  
+  return implode(chr(13).chr(10), $splitted_rule);
+}
+
+/**
+* From a field with multiples date values due to repeating date it gives us the mind and max range and the timezone in an array
+*/
+function _date_time_get_single_date_item($field, $field_data) {
+  $data = isset($field_data[LANGUAGE_NONE]) ? $field_data[LANGUAGE_NONE] : false;
+  if (!$data)
+    return false;
+    
+  $min = 10000000000;
+  $max = 0;
+  $timezone = '';
+  foreach ($data as $delta=>$date_arr) {
+    $value = $date_arr['value'];
+    $timezone = $date_arr['timezone'];
+    if ($min > $value)
+      $min = $value;
+    if ($max < $value)
+      $max = $value;
+  }
+  
+  return array(
+    'value' => $min,
+    'value2' => $max,
+    'timezone' => $timezone,
+  );
+  
+}
 
 /**
 * delete all date items of the given entity
@@ -331,6 +418,9 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
 * Return the date always as unix timestamp. But that depends on the field type, so may be convert it
 */
 function _date_item_as_unix_timestamp($field, $value) {
+  if ($field == 'datetime')
+    return strtotime($value);
+    
   return $value;
 }
 
@@ -346,6 +436,9 @@ function _date_item_get_properties_of_entity($entity) {
     //node
     $properties['id'] = $entity->nid;
     $properties['type'] = 'node';
+  } elseif (gettype($entity) == 'date_item' ) {
+    $properties['id'] = $entity->date_item_id;
+    $properties['type'] = 'date_item';
   } else {
     dpm($entity);
     drupal_set_message(t('Could not specify the entity type in "_date_item_get_properties_of_entity"'), 'error');

@@ -116,19 +116,22 @@ function _erpal_project_helper_is_ticket($node) {
 * Adds some links to erpal context for adding a ticket
 */
 function _erpal_projects_helper_add_ticket_list_links(&$links, $project_nid) {
-  $add_ticket_link = l(
-    t('Add a ticket'), 
-    'node/add/erpal-task',
-    array(
-      'query' => array(
-        'is_ticket' => 1,
-        'project_ref' => $project_nid,
-        'destination' => $_GET['q'],
-      )
-    )
-  );
   
-  $links[] = $add_ticket_link;
+  if (user_access('create erpal_task content')) {
+    $add_ticket_link = l(
+      t('Add a ticket'), 
+      'node/add/erpal-task',
+      array(
+        'query' => array(
+          'is_ticket' => 1,
+          'project_ref' => $project_nid,
+          'destination' => $_GET['q'],
+        )
+      )
+    );
+    
+    $links[] = $add_ticket_link;
+  }
 }
 
 /**

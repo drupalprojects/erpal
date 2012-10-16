@@ -562,7 +562,11 @@ function erpal_basic_helper_erpal_context_links() {
         _erpal_projects_helper_add_ticket_links($links, $node);
       }
     }
-  } 
+  }
+
+  if (arg(0) == 'projects' && arg(1) == 'projects') {
+    _erpal_projects_helper_add_projects_view_link($links);
+  }
   
   return $links;
 }

@@ -1300,6 +1300,10 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_project',
+      'date_item' => array(
+        'create_date_item' => 0,
+        'date_item_type' => 'simple_date',
+      ),
       'deleted' => '0',
       'description' => 'When will the project be developed? Only for planing purpose.',
       'display' => array(
@@ -1357,8 +1361,8 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Planed realisation date',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
-        'default_value2' => 'same',
+        'default_value' => 'blank',
+        'default_value2' => 'blank',
         'default_value_code' => '',
         'default_value_code2' => '',
         'user_register_form' => FALSE,
@@ -2064,7 +2068,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'label' => 'Date',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
+        'default_value' => 'blank',
         'default_value2' => 'blank',
         'default_value_code' => '',
         'default_value_code2' => '',
