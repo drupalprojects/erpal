@@ -18,6 +18,7 @@ function editablefields_field_formatter_info() {
         'fallback_format' => NULL,
         'fallback_settings' => array(),
         'click_to_edit' => FALSE,
+        'click_to_edit_style' => 'button',
         'empty_text' => '',
       ),
     ),
@@ -28,11 +29,15 @@ function editablefields_field_formatter_info() {
  * Implements hook_library().
  */
 function editablefields_library() {
+  $path = drupal_get_path('module', 'editablefields');
   $libraries['editablefields'] = array(
     'title' => 'Editable Fields',
     'version' => '1.x',
     'js' => array(
-      drupal_get_path('module', 'editablefields') . '/editablefields.js' => array('group' => JS_DEFAULT + 1),
+      $path . '/editablefields.js' => array('group' => JS_DEFAULT + 1),
+    ),
+    'css' => array(
+      $path . '/editablefields.css' => array('group' => CSS_DEFAULT + 1),
     ),
     'dependencies' => array(
       array('system', 'drupal.form'),
@@ -64,6 +69,17 @@ function editablefields_field_formatter_settings_form($field, $instance, $view_m
     '#title' => t('Click to edit'),
     '#default_value' => $settings['click_to_edit'],
   );
+
+  $element['click_to_edit_style'] = array(
+    '#type' => 'select',
+    '#title' => t('Click to edit style'),
+    '#options' => array(
+      'button' => t('Button'),
+      'hover' => t('Hover'),
+    ),
+    '#default_value' => $settings['click_to_edit_style'],
+  );
+
   $element['empty_text'] = array(
     '#type' => 'textarea',
     '#rows' => 3,
@@ -93,6 +109,15 @@ function editablefields_field_formatter_settings_form($field, $instance, $view_m
         'effect' => 'fade',
       ),
     );
+
+    $field_name = $form_state['triggering_element']['#field_name'];
+    $element['click_to_edit_style'] += array(
+      '#states' => array(
+        'visible' => array(
+          ':input[name="fields[' . $field_name . '][settings_edit_form][settings][click_to_edit]"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
   }
   else if (isset($form_state['form_id']) && $form_state['form_id'] == 'views_ui_config_item_form') {
     // Views UI.
@@ -102,6 +127,9 @@ function editablefields_field_formatter_settings_form($field, $instance, $view_m
       ),
       '#submit' => array('views_ui_config_item_form_submit_temporary'),
       '#executes_submit_callback' => TRUE,
+    );
+    $element['click_to_edit_style'] += array(
+      '#dependency' => array('edit-options-settings-click-to-edit' => array(1)),
     );
   }
 
@@ -267,7 +295,7 @@ function editablefields_form($form, &$form_state, $entity_type, $entity, $field,
   $form += array('#parents' => array());
 
   $form['#attached']['library'][] = array('editablefields', 'editablefields');
-  $form['#attributes'] = array('class' => 'editable-field');
+  $form['#attributes'] = array('class' => array('editable-field'));
 
   // Set the base properties of the form.
   list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
@@ -312,7 +340,7 @@ function editablefields_form($form, &$form_state, $entity_type, $entity, $field,
   // Remove the title of the field.
   $instance['label'] = '';
 
-  $edit_mode_state = isset($form_state['edit_mode']) && drupal_array_get_nested_value($form_state['edit_mode'], $form['#parents']);
+  $edit_mode_state = _editablefields_get_edit_mode($form_state, $form['#parents']);
   $edit_mode = empty($display['settings']['click_to_edit']) || $edit_mode_state;
 
   if ($edit_mode) {
@@ -333,6 +361,7 @@ function editablefields_form($form, &$form_state, $entity_type, $entity, $field,
     );
   }
   else {
+    $edit_style = isset($display['settings']['click_to_edit_style']) ? $display['settings']['click_to_edit_style'] : 'button';
     $items = $entity->{$field['field_name']};
     $items = isset($items[$langcode]) ? $items[$langcode] : array();
     $shield = new EditableFieldsShield();
@@ -351,7 +380,10 @@ function editablefields_form($form, &$form_state, $entity_type, $entity, $field,
       '#ajax' => $ajax,
       '#limit_validation_errors' => array($form['#parents']),
       '#attributes' => array(
-        'class' => array('editablefield-edit'),
+        'class' => array(
+          'editablefield-edit',
+          'editablefield-edit-' . $edit_style,
+        ),
       ),
     );
   }
@@ -468,11 +500,7 @@ function editablefields_form_submit_edit_mode(&$form, &$form_state) {
   $parents = $form_state['triggering_element']['#array_parents'];
   array_pop($parents);
   array_pop($parents);
-  if (!isset($form_state['edit_mode'])) {
-    $form_state['edit_mode'] = array();
-  }
-  drupal_array_set_nested_value($form_state['edit_mode'], $parents, TRUE);
-
+  _editablefields_set_edit_mode($form_state, TRUE, $parents);
   $form_state['rebuild'] = TRUE;
 }
 
@@ -490,11 +518,7 @@ function editablefields_form_submit(&$form, &$form_state) {
   foreach ($parents as $parent) {
     $element = &$element[$parent];
   }
-  if (!isset($form_state['edit_mode'])) {
-    $form_state['edit_mode'] = array();
-  }
-  drupal_array_set_nested_value($form_state['edit_mode'], $parents, FALSE);
-
+  _editablefields_set_edit_mode($form_state, FALSE, $parents);
   $entity = $form_state['editablefields_entities'][$element['#entity_type']][$element['#entity_id']];
 
   entity_form_submit_build_entity($element['#entity_type'], $entity, $element, $form_state);
@@ -506,4 +530,48 @@ function editablefields_form_submit(&$form, &$form_state) {
   // Re-load the entity so that fields can act on the new value.
   $entity = entity_load($element['#entity_type'], array($element['#entity_id']));
   $form_state['editablefields_entities'][$element['#entity_type']][$element['#entity_id']] = reset($entity);
+}
+
+/**
+ * Gets the edit mode of an editable field in form.
+ *
+ * @param $form_state
+ *   A keyed array containing the current state of the form.
+ * @param $parents
+ *   (optional) An array of parent form elements. Default to empty.
+ *
+ * @return
+ *   TRUE if the field is in edit mode, FALSE otherwise.
+ */
+function _editablefields_get_edit_mode($form_state, $parents = array()) {
+  if (!isset($form_state['edit_mode'])) {
+    return FALSE;
+  }
+
+  if (!empty($parents) && is_array($form_state['edit_mode'])) {
+    return drupal_array_get_nested_value($form_state['edit_mode'], $parents);
+  }
+  return (bool) $form_state['edit_mode'];
+}
+
+/**
+ * Sets the edit mode of an editable field in form.
+ *
+ * @param $form_state
+ *   A keyed array containing the current state of the form.
+ * @param $value
+ *   Edit mode value, either TRUE or FALSE.
+ * @param $parents
+ *   (optional) An array of parent form elements. Default to empty.
+ */
+function _editablefields_set_edit_mode(&$form_state, $value, $parents = array()) {
+  if (!empty($parents)) {
+    if (!isset($form_state['edit_mode']) || !is_array($form_state['edit_mode'])) {
+      $form_state['edit_mode'] = array();
+    }
+    drupal_array_set_nested_value($form_state['edit_mode'], $parents, $value);
+  }
+  else {
+    $form_state['edit_mode'] = $value;
+  }
 }
