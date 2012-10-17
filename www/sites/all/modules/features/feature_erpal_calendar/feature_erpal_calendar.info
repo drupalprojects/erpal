@@ -1,5 +1,5 @@
 name = feature_erpal_calendar
-description = Calendar features for ERPAL
+description = Calendar feature for ERPAL
 core = 7.x
 package = ERPAL Features
 php = 5.2.4
@@ -13,6 +13,7 @@ dependencies[] = date_views
 dependencies[] = erpal_calendar_helper
 dependencies[] = feature_erpal_basic
 dependencies[] = features
+dependencies[] = menu
 dependencies[] = taxonomy
 dependencies[] = views
 features[ctools][] = strongarm:strongarm:1
