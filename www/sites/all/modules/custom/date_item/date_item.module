@@ -481,7 +481,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
 /**
 * Implements hook_entity_presave
 */
-function date_item_entity_presave(&$entity, $entity_type) {
+function date_item_entity_presave($entity, $entity_type) {
   if ($entity_type == 'date_item') {
     module_invoke_all('date_item_presave', $entity);
   }
