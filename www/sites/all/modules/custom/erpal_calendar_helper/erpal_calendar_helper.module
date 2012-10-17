@@ -3,7 +3,7 @@
  * @file
  * Code for the erpal_calendar_helper module.
  */
-module_load_include('inc', 'erpal_calendar_helper', 'includes/config');
+module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
 
 /**
  * Implements hook_menu
@@ -12,7 +12,7 @@ function erpal_calendar_helper_menu(){
 
 	$items = array();
   
-  require_once 'includes/config.inc';
+  require_once 'inc/config.inc';
   $config_items = _erpal_calendar_helper_config_menu();
   
   $items = array_merge($items, $config_items);
