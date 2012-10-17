@@ -1,0 +1,37 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_calendar_helper module.
+ */
+module_load_include('inc', 'erpal_calendar_helper', 'includes/config.inc');
+
+/**
+ * Implements hook_menu
+ */ 
+function erpal_resource_helper_menu(){
+
+	$items = array();
+  
+  require_once 'includes/config.inc';
+  $config_items = _erpal_calendar_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+
+/**
+ * Implements hook_permission
+ */
+function erpal_calendar_helper_permission(){
+  return array(
+    'config erpal calendar' => array(
+      'title' => t('Administer ERPAL calendar'), 
+      'description' => t('Perform administration tasks for ERPAL calendar module.'),
+    ),
+    'access calendar view' => array(
+      'title' => t('Access calendar view'), 
+      'description' => t('Grant the user access to the calendar view.'),
+    ),
+  );
+	
+}
