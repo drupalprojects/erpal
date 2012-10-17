@@ -133,7 +133,7 @@ function feature_erpal_calendar_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
-  $handler->display->display_options['row_options']['calendar_date_link'] = 'date';
+  $handler->display->display_options['row_options']['calendar_date_link'] = 'erpal_date';
   $handler->display->display_options['row_options']['colors']['legend'] = 'taxonomy';
   $handler->display->display_options['row_options']['colors']['taxonomy_field'] = 'field_date_item_tags';
   $handler->display->display_options['row_options']['colors']['calendar_colors_vocabulary'] = array(
