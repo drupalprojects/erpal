@@ -8,7 +8,7 @@ module_load_include('inc', 'erpal_calendar_helper', 'includes/config.inc');
 /**
  * Implements hook_menu
  */ 
-function erpal_resource_helper_menu(){
+function erpal_calendar_helper_menu(){
 
 	$items = array();
   
