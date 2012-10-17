@@ -6,7 +6,7 @@
 function _erpal_calendar_helper_config_menu(){
   
   $items['admin/erpal/calendar'] = array(
-    'title' => 'ERPAL calendar',
+    'title' => 'ERPAL Calendar',
     'page callback' => '_erpal_calendar_helper_config_basic',    
     'access arguments' => array('config erpal calendar'),
     'file' => 'inc/config.inc',

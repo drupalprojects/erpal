@@ -3,7 +3,7 @@
  * @file
  * Code for the erpal_calendar_helper module.
  */
-module_load_include('inc', 'erpal_calendar_helper', 'includes/config.inc');
+module_load_include('inc', 'erpal_calendar_helper', 'includes/config');
 
 /**
  * Implements hook_menu
