@@ -9,6 +9,15 @@ module_load_include('inc', 'date_item', 'includes/date_item.entity');
 module_load_include('inc', 'date_item', 'includes/date_item.field');
 module_load_include('inc', 'date_item', 'includes/date_item.forms');
 
+/**
+ * Implements hook_views_api().
+ */
+function date_item_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'date_item') . '/views',
+  );
+} 
 
 /**
  * Implements hook_menu().

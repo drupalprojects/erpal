@@ -8,8 +8,7 @@
 /**
  * Implements hook_views_data_alter()
  */
-function budget_views_data_alter(&$data) {     
-  
+function date_item_views_data_alter(&$data) {     
   //make date fields handled like date fields!
   //date_from field integration
   $data['date_item']['date_from']['field']['handler'] = 'views_handler_field_date';
@@ -27,25 +26,23 @@ function budget_views_data_alter(&$data) {
   $data['date_item']['updated']['field']['handler'] = 'views_handler_field_date';
   $data['date_item']['updated']['filter']['handler'] = 'date_views_filter_handler_simple';
 
-/*  @TODO hier muss für src_id ein entity referenz handler hin, damit wir auf den src entity referenzieren können 
-siehe auch entityreference.views.inc im entityreference modul 
-  //nodereference handler for customer_nid
-  // Relationship.
-  $data['billable']['customer_nid']['relationship'] = array(
-    'handler' => 'views_handler_relationship',
-    'base' => 'node',
-    'base field' => 'nid',
-    'field' => 'customer_nid',
-    'label' => t('Customer'),
-    'field_name' => 'customer_nid',
-    'help' => t('The customer nid of a billable'),
-    'title' => t('Customer'),
-  );
-  
-  $data['billable']['customer_nid']['filter']['handler'] = 'views_handler_filter_many_to_one';
-  $data['billable']['customer_nid']['filter']['options callback'] = '_billable_get_customers';
-*/
-
+  foreach (entity_get_info() as $type => $entity_info) {
+    $data['date_item'][$type] = array(
+      'title' => t('Date item: @entity_type', array('@entity_type' => $type)),
+      'help' => 'TODO',
+      'relationship' => array(
+        'base' => $entity_info['base table'],
+        'base field' => $entity_info['entity keys']['id'],
+        'relationship field' => 'src_id',
+        'extra' => array(
+          0 => array(
+            'field' => 'src_type',
+            'value' => $type,
+          ),
+        ),
+      ),
+    );
+  }
 
 }
 
