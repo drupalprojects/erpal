@@ -6,45 +6,167 @@
  */
  
 /**
- * Implements hook_views_data_alter()
- */
-function date_item_views_data_alter(&$data) {     
-  //make date fields handled like date fields!
-  //date_from field integration
-  $data['date_item']['date_from']['field']['handler'] = 'views_handler_field_date';
-  $data['date_item']['date_from']['filter']['handler'] = 'date_views_filter_handler_simple';
+* Implements hook_views_data
+*/
+function date_item_views_data() {
+  // Define the base group of this table.
+  $data['date_item']['table']['group']  = t('Date item');
   
-  //date_till field integration
-  $data['date_item']['date_till']['field']['handler'] = 'views_handler_field_date';
-  $data['date_item']['date_till']['filter']['handler'] = 'date_views_filter_handler_simple';
+  // Advertise this table as a possible base table
+  $data['date_item']['table']['base'] = array(
+    'field' => 'date_item_id',
+    'title' => t('Date item'),
+    'weight' => -10,
+  );
+  $data['date_item']['table']['entity type'] = 'date_item';
+  $data['date_item']['date_item_id'] = array(
+    'title' => t('Date item ID'),
+    'help' => t('The date item ID.'),
+    'field' => array(
+      'handler' => 'views_handler_field_numeric',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_numeric',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_numeric',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
   
-  //created field integration
-  $data['date_item']['created']['field']['handler'] = 'views_handler_field_date';
-  $data['date_item']['created']['filter']['handler'] = 'date_views_filter_handler_simple';
+  $data['date_item']['type'] = array(
+    'title' => t('Date item type'),
+    'help' => t('The date item type.'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_in_operator',
+      'options callback' => 'date_item_get_types_options',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
   
-  //updated field integration
-  $data['date_item']['updated']['field']['handler'] = 'views_handler_field_date';
-  $data['date_item']['updated']['filter']['handler'] = 'date_views_filter_handler_simple';
-
-  foreach (entity_get_info() as $type => $entity_info) {
-    $data['date_item'][$type] = array(
-      'title' => t('Date item: @entity_type', array('@entity_type' => $type)),
-      'help' => 'TODO',
-      'relationship' => array(
-        'base' => $entity_info['base table'],
-        'base field' => $entity_info['entity keys']['id'],
-        'relationship field' => 'src_id',
-        'extra' => array(
-          0 => array(
-            'field' => 'src_type',
-            'value' => $type,
-          ),
-        ),
-      ),
-    );
-  }
-
+  $data['date_item']['uid'] = array(
+    'title' => t('Uid'),
+    'help' => t('The date item uid.'),
+    'field' => array(
+      'handler' => 'views_handler_field_numeric',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_numeric',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_numeric',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+    'relationship' => array(
+      'label' => 'relation author',
+      'title' => t('Relation Author'),
+      'base' => 'users',
+      'base field' => 'uid',
+    ),
+  );
+  
+  $data['date_item']['created'] = array(
+    'title' => t('Create Date'),
+    'help' => t('The date when the date item was created.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_date',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+  
+  $data['date_item']['updated'] = array(
+    'title' => t('Update Date'),
+    'help' => t('The date when the date item was updated.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_date',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+  
+  $data['date_item']['date_from'] = array(
+    'title' => t('Date From'),
+    'help' => t('The date from of the date item.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_date',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+  
+  $data['date_item']['date_till'] = array(
+    'title' => t('Date till'),
+    'help' => t('The date till of the date item.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_date',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+  
+  $data['date_item']['entity_label'] = array(
+    'title' => t('Entity label'),
+    'help' => t('A label of the entity the date_item is coming from, optionally linked'),
+    'field' => array(
+      'handler' => 'date_item_handler_field_entity_label',
+      'real field' => 'src_id',
+    ),
+  );
+  
+  return $data;
 }
-
-
-//@TODO perhaps provide a default view

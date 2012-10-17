@@ -6,6 +6,18 @@ Version 7.x-3.x-dev
 ===================
 
 ======================
+Version 7.x-3.4
+======================
+
+- Remove calendar_row_node completely.
+- Remove Calendar iCal completely.
+- Issue #1552212, Week numbers in the month view lost their links.
+- Change default tracking behavior to be off. 
+- Issue #1556180 by hass, Error: Strict warning: Declaration of calendar_plugin_style::options_submit().
+- Issue #1588590, Cannot always unset date link once set.
+- Issue #1565994, Remove default caching from calendar. Let people set it up themselves.
+
+======================
 Version 7.x-3.3
 ======================
 

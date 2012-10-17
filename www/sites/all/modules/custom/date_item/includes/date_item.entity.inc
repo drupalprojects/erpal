@@ -590,6 +590,13 @@ function date_item_get_types($name = NULL, $for_options=false) {
 }
 
 /**
+* Return all date item types for options
+*/
+function date_item_get_types_options() {
+  return date_item_get_types(NULL, true);
+}
+
+/**
  * Menu argument loader; Load a date_item type by string.
  *
  * @param $type

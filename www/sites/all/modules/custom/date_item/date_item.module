@@ -639,7 +639,7 @@ function _date_item_field_settings_form_alter(&$form, &$form_state) {
     //make the type to be created selectable
     $form['instance']['date_item']['date_item_type'] = array(
       '#type' => 'select',
-      '#options' => date_item_get_types(NULL, true),
+      '#options' => date_item_get_types_options(),
       '#title' => t('Date item type'),
       '#description' => t('Select the date item type to be created for this field'),
       '#default_value' => isset($current_entity->date_item_type) ? $current_entity->date_item_type : false,
