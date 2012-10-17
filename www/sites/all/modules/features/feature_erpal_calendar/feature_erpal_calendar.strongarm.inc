@@ -13,56 +13,56 @@ function feature_erpal_calendar_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_anonymous_date';
+  $strongarm->name = 'comment_anonymous_erpal_date';
   $strongarm->value = 0;
-  $export['comment_anonymous_date'] = $strongarm;
+  $export['comment_anonymous_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_date';
-  $strongarm->value = '2';
-  $export['comment_date'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_mode_date';
+  $strongarm->name = 'comment_default_mode_erpal_date';
   $strongarm->value = 1;
-  $export['comment_default_mode_date'] = $strongarm;
+  $export['comment_default_mode_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_per_page_date';
+  $strongarm->name = 'comment_default_per_page_erpal_date';
   $strongarm->value = '50';
-  $export['comment_default_per_page_date'] = $strongarm;
+  $export['comment_default_per_page_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_form_location_date';
+  $strongarm->name = 'comment_erpal_date';
+  $strongarm->value = '2';
+  $export['comment_erpal_date'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_form_location_erpal_date';
   $strongarm->value = 1;
-  $export['comment_form_location_date'] = $strongarm;
+  $export['comment_form_location_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_preview_date';
+  $strongarm->name = 'comment_preview_erpal_date';
   $strongarm->value = '1';
-  $export['comment_preview_date'] = $strongarm;
+  $export['comment_preview_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_subject_field_date';
+  $strongarm->name = 'comment_subject_field_erpal_date';
   $strongarm->value = 1;
-  $export['comment_subject_field_date'] = $strongarm;
+  $export['comment_subject_field_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_node__date';
+  $strongarm->name = 'field_bundle_settings_node__erpal_date';
   $strongarm->value = array(
     'view_modes' => array(),
     'extra_fields' => array(
@@ -77,47 +77,47 @@ function feature_erpal_calendar_strongarm() {
       'display' => array(),
     ),
   );
-  $export['field_bundle_settings_node__date'] = $strongarm;
+  $export['field_bundle_settings_node__erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_options_date';
+  $strongarm->name = 'menu_options_erpal_date';
   $strongarm->value = array(
     0 => 'main-menu',
   );
-  $export['menu_options_date'] = $strongarm;
+  $export['menu_options_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_parent_date';
+  $strongarm->name = 'menu_parent_erpal_date';
   $strongarm->value = 'main-menu:0';
-  $export['menu_parent_date'] = $strongarm;
+  $export['menu_parent_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_options_date';
+  $strongarm->name = 'node_options_erpal_date';
   $strongarm->value = array(
     0 => 'status',
     1 => 'promote',
   );
-  $export['node_options_date'] = $strongarm;
+  $export['node_options_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_preview_date';
+  $strongarm->name = 'node_preview_erpal_date';
   $strongarm->value = '1';
-  $export['node_preview_date'] = $strongarm;
+  $export['node_preview_erpal_date'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_submitted_date';
+  $strongarm->name = 'node_submitted_erpal_date';
   $strongarm->value = 1;
-  $export['node_submitted_date'] = $strongarm;
+  $export['node_submitted_erpal_date'] = $strongarm;
 
   return $export;
 }

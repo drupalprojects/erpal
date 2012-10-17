@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Code for the feature_calendar_profile feature.
+ * Code for the feature_erpal_calendar feature.
  */
 
-include_once('feature_erpal_calendar.features.inc');
+include_once 'feature_erpal_calendar.features.inc';
