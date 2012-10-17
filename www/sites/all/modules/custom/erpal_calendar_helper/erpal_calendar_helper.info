@@ -7,4 +7,4 @@ project = "erpal_calendar_helper"
 version = "7.x-1.0-dev"
 
 files[] = erpal_resource_helper.module
-files[] = includes/config.inc
+files[] = inc/config.inc
