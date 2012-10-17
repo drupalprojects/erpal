@@ -1,5 +1,8 @@
 <?php
+<?php
 /**
  * @file
- * Drupal needs this blank file.
+ * Code for the feature_calendar_profile feature.
  */
+
+include_once('feature_calendar_profile.features.inc');
