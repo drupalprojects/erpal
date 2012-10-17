@@ -123,44 +123,27 @@ function feature_erpal_calendar_views_default_views() {
   $handler->display->display_options['pager']['options']['date_id'] = 'month';
   $handler->display->display_options['pager']['options']['link_format'] = 'clean';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'entity_label' => 'entity_label',
-    'date_from' => 'date_from',
-    'date_till' => 'date_till',
-    'field_date_item_tags' => 'field_date_item_tags',
-  );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'entity_label' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'date_from' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'date_till' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_date_item_tags' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
+  $handler->display->display_options['style_plugin'] = 'calendar_style';
+  $handler->display->display_options['style_options']['name_size'] = '3';
+  $handler->display->display_options['style_options']['mini'] = '0';
+  $handler->display->display_options['style_options']['with_weekno'] = '0';
+  $handler->display->display_options['style_options']['multiday_theme'] = '1';
+  $handler->display->display_options['style_options']['theme_style'] = '1';
+  $handler->display->display_options['style_options']['max_items'] = '0';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'calendar_entity';
+  $handler->display->display_options['row_options']['calendar_date_link'] = 'erpal_date';
+  $handler->display->display_options['row_options']['colors']['legend'] = 'taxonomy';
+  $handler->display->display_options['row_options']['colors']['taxonomy_field'] = 'field_date_item_tags';
+  $handler->display->display_options['row_options']['colors']['calendar_colors_vocabulary'] = array(
+    'field_date_item_tags' => '16',
+  );
+  $handler->display->display_options['row_options']['colors']['calendar_colors_group'] = array(
+    1 => '#ffffff',
+    2 => '#ffffff',
+    3 => '#ffffff',
+  );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Date: Date (date_item) */
