@@ -4,4 +4,4 @@
  * Code for the feature_calendar_profile feature.
  */
 
-include_once('feature_calendar_profile.features.inc');
+include_once('feature_erpal_calendar.features.inc');
