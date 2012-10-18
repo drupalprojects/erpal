@@ -9,7 +9,6 @@ dependencies[] = calendar
 dependencies[] = feature_erpal_basic
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
-features[date_item_field_config][] = 13
 features[features_api][] = api:1
 features[field][] = date_item-simple_date-field_date_item_tags
 features[field][] = node-erpal_date-body
