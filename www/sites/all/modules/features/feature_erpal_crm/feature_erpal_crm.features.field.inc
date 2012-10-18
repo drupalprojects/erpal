@@ -1023,6 +1023,8 @@ function feature_erpal_crm_field_default_fields() {
       'locked' => '0',
       'module' => 'date',
       'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
         'granularity' => array(
           'day' => 'day',
           'hour' => 'hour',
@@ -1031,6 +1033,7 @@ function feature_erpal_crm_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
+        'profile2_private' => FALSE,
         'repeat' => 0,
         'timezone_db' => 'UTC',
         'todate' => '',
@@ -1041,6 +1044,10 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'date_item' => array(
+        'create_date_item' => 1,
+        'date_item_type' => 'simple_date',
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -1086,7 +1093,6 @@ function feature_erpal_crm_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'display_all_day' => 0,
           'increment' => '15',
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',

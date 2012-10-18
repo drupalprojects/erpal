@@ -49,7 +49,7 @@ function erpal_calendar_helper_config_form($form, &$form_state){
       foreach ($fields as $field_name=>$field) {
         if (isset($field['date_item']) && $field['date_item']['create_date_item']) {
           //may be add a fieldset first
-          if (!isset($form[$entity_type])) {            
+          if (!isset($form['date_item_tags'][$entity_type])) {            
             $form['date_item_tags'][$entity_type] = array(
               '#type' => 'fieldset',
               '#title' => t('!entity_type tags', array('!entity_type' => $entity_info['label'])),
@@ -58,7 +58,7 @@ function erpal_calendar_helper_config_form($form, &$form_state){
             );
           }
           
-          if ($bundle_name && !isset($form[$entity_type][$bundle_name])) {            
+          if ($bundle_name && !isset($form['date_item_tags'][$entity_type][$bundle_name])) {            
             $form['date_item_tags'][$entity_type][$bundle_name] = array(
               '#type' => 'fieldset',
               '#title' => t('!bundle_name tags', array('!bundle_name' => $bundle_name)),  //@TODO later use entity_bundle_label
@@ -74,8 +74,8 @@ function erpal_calendar_helper_config_form($form, &$form_state){
             '#title' => t('Tags for field !field_name', array('!field_name' => $field_name)),
             '#description' => t('This tag will be added as category to entities with this field'),
             '#default_value' => _erpal_calendar_helper_field_tag($entity_type, $bundle_name, $field_name),
-            //'#name' => 'date_item_tags['.$id.']',
           );
+         
         }
           
       }
