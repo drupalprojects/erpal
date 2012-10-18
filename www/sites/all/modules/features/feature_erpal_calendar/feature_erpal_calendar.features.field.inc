@@ -16,7 +16,9 @@ function feature_erpal_calendar_field_default_fields() {
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
-      'entity_types' => array(),
+      'entity_types' => array(
+        0 => 'date_item',
+      ),
       'field_name' => 'field_date_item_tags',
       'foreign keys' => array(
         'tid' => array(

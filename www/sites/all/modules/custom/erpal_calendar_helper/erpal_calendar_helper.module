@@ -35,3 +35,10 @@ function erpal_calendar_helper_permission(){
   );
 	
 }
+
+/**
+* Implements date_item_presave provided by date item module, if a date item is about to be saved
+*/
+function erpal_calendar_helper_date_item_presave($date_item) {
+  dpm($date_item);
+}

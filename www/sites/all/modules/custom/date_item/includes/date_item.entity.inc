@@ -24,7 +24,7 @@ function date_item_entity_info() {
       ),
       'access callback' => 'date_item_access',
       'bundle keys' => array(
-        'bundle' => 'type',
+        'bundle' => 'name',
       ),
       'bundles' => array(),
       'view modes' => array(
@@ -82,6 +82,7 @@ function date_item_entity_info_alter(&$entity_info) {
     // We are adding the info about the date_item types via a hook to avoid a
     // recursion issue as loading the types requires the entity info as well.
     foreach (date_item_get_types() as $type => $info) {
+      
       $entity_info['date_item']['bundles'][$type] = array(
         'label' => $info->label,
         'admin' => array(
