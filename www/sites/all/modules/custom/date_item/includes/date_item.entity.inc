@@ -394,7 +394,7 @@ function date_item_delete_multiple($date_item_ids) {
  *   If the record insert or update failed, returns FALSE. If it succeeded,
  *   returns SAVED_NEW or SAVED_UPDATED, depending on the operation performed.
  */
-function date_item_save(date_item $date_item) {
+function date_item_save(dateItem $date_item) {
   return $date_item->save();
 }
 

@@ -40,5 +40,71 @@ function erpal_calendar_helper_permission(){
 * Implements date_item_presave provided by date item module, if a date item is about to be saved
 */
 function erpal_calendar_helper_date_item_presave($date_item) {
-  dpm($date_item);
+  _erpal_calendar_helper_set_tag($date_item);
+}
+
+/**
+* set a tag to the entity if one should be set
+*/
+function _erpal_calendar_helper_set_tag($date_item) {
+  $current_tags = isset($date_item->field_date_item_tags[LANGUAGE_NONE]) ? $date_item->field_date_item_tags[LANGUAGE_NONE] : array();
+
+  $src_type = $date_item->src_type;
+  $src_entity = $date_item->src_entity();
+  $src_bundle = _date_entity_entity_bundle($src_entity, $src_type);
+  $src_field_name = $date_item->src_field_name;
+  $term_to_set = _erpal_calendar_helper_field_tag($src_type, $src_bundle, $src_field_name);
+
+  if (!$term_to_set)
+    return;  //no term to set!
+  
+  $tag_is_set = false;
+  foreach ($current_tags as $delta => $term_arr) {
+    if ($term_arr['name'] == $term_to_set) {
+      $tag_is_set = true;
+    }    
+  }
+
+  if (!$tag_is_set) {
+ 
+    //get field instance to get vocabulary of term refernce field
+    $instance = field_info_field('field_date_item_tags');
+
+    $vocab_machine_name = $instance['settings']['allowed_values'][0]['vocabulary'];
+    //now get the vocabulary id from the vocabulary machine name
+    $vocabs = taxonomy_get_vocabularies();
+    $vid = false;
+    foreach ($vocabs as $vocab) {
+      if ($vocab->machine_name == $vocab_machine_name) {
+        $vid = $vocab->vid;
+        break;
+      }
+    }
+    
+    if (!$vid)
+      return;  //bad! no vid found?!
+
+    //get the tid of the term
+    $term = taxonomy_get_term_by_name($term_to_set, $vocab_machine_name);
+    if (!count($term)) {
+      $term = false; 
+    } else {
+      $tid = array_keys($term);
+      $tid = $tid[0];
+      $term = $term[$tid];
+    }
+
+    //if term not exists, add it
+    if (!$term && $term_to_set) {
+      //@TODO
+      $term = new stdClass();
+      $term->name = $term_to_set;
+      $term->vid = $vid;
+      
+      taxonomy_term_save($term);      
+    }    
+
+    $date_item->field_date_item_tags[LANGUAGE_NONE][0]['tid'] = $term->tid;
+  }
+  
 }

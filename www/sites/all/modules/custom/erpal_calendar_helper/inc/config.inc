@@ -102,7 +102,7 @@ function _erpal_calendar_helper_field_tag($entity_type, $bundle_name, $field_nam
   
   if ($value)
     variable_set($id, $value);
-  
+
   return $current_tag;
 }
 

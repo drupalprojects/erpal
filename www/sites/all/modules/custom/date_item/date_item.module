@@ -94,7 +94,7 @@ function date_item_menu() {
 */
 function date_item_edit_access($date_entity) {
   $entity_access = entity_access('update', 'date_item', $date_entity);
-  
+
   $entity_access = $entity_access && !$date_entity->src_id;
   
   return $entity_access;
@@ -299,7 +299,7 @@ function _date_item_update_date_items($entity_type, $entity) {
   if (isset($entity->date_items_update) && $entity->date_items_update)
     return false; //because it is already in update process
   
-  $type = _date_entity_entity_type($entity, $entity_type);
+  $type = _date_entity_entity_bundle($entity, $entity_type);
   
   if (!$type)
     return; //then we get no information
@@ -323,10 +323,10 @@ function _date_item_update_date_items($entity_type, $entity) {
 /**
 * returns the bundle name of an entity
 */
-function _date_entity_entity_type($entity, $entity_type) {
+function _date_entity_entity_bundle($entity, $entity_type) {
   $entity_info = entity_get_info($entity_type);
   
-  if (isset($entity_info['bundle keys']['bundle']))
+  if (isset($entity_info['bundle keys']['bundle']) && isset($entity->{$entity_info['bundle keys']['bundle']}))
     $type = $entity->{$entity_info['bundle keys']['bundle']};
   else
     return false; 
@@ -349,10 +349,10 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
   $field_instance = field_info_instance($entity_type, $field_name, $bundle);
   
   $create_items = isset($field_instance['date_item']['create_date_item']) ? $field_instance['date_item']['create_date_item'] : false;
-  
+
   if (!$create_items)
     return;  //this field should not create date items
-  
+
   $date_item_type = $field_instance['date_item']['date_item_type'];
   
   //get all entites that are already saved to this field
@@ -379,8 +379,8 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
       $date_till = _date_item_as_unix_timestamp($date_arr['value2'], $date_arr['timezone']);
 
       //we dont handle dates in the past.      
-      if ($date_from < time())
-        continue;
+      //if ($date_from < time())
+        //continue;
       
       
       if (!$date_from && !$date_till)
@@ -428,8 +428,8 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     
     //we dnot handle dates in the past.
     
-    if ($date_from < time())
-      continue;
+    //if ($date_from < time())
+      //continue;
     
   
     //we even add the dates in the past.
@@ -463,6 +463,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     
     if (!$found_it) {
       //add a new date_item      
+      
       $date_item = entity_create('date_item', array());      
       $date_item->type = $date_item_type;
       $date_item->uid = $user->uid;
@@ -484,8 +485,8 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
 /**
 * Implements hook_entity_presave
 */
-function date_item_entity_presave($entity, $entity_type) {
-  if ($entity_type == 'date_item') {
+function date_item_field_attach_presave($entity, $entity_type) {
+  if ($entity_type == 'date_item') {    
     module_invoke_all('date_item_presave', $entity);
   }
 }
