@@ -294,11 +294,12 @@ function _date_item_delete_date_items($entity, $entity_type, $field_name=false) 
 /**
 * check if there is a date field that should be updated and if, update!
 */
-function _date_item_update_date_items($entity_type, $entity) {  
-  $type = _date_entity_entity_type($entity, $entity_type);
+function _date_item_update_date_items($entity_type, $entity) {    
   
   if (isset($entity->date_items_update) && $entity->date_items_update)
     return false; //because it is already in update process
+  
+  $type = _date_entity_entity_type($entity, $entity_type);
   
   if (!$type)
     return; //then we get no information
@@ -324,8 +325,12 @@ function _date_item_update_date_items($entity_type, $entity) {
 */
 function _date_entity_entity_type($entity, $entity_type) {
   $entity_info = entity_get_info($entity_type);
-  $type = $entity->{$entity_info['bundle keys']['bundle']};
   
+  if (isset($entity_info['bundle keys']['bundle']))
+    $type = $entity->{$entity_info['bundle keys']['bundle']};
+  else
+    return false; 
+    
   return $type;
 }
 

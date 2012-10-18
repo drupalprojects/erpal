@@ -24,7 +24,7 @@ function date_item_entity_info() {
       ),
       'access callback' => 'date_item_access',
       'bundle keys' => array(
-        'bundle' => 'name',
+        'bundle' => 'type',
       ),
       'bundles' => array(),
       'view modes' => array(
