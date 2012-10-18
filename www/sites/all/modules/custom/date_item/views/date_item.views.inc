@@ -186,6 +186,3 @@ function date_item_views_data() {
   return $data;
 }
 
-function date_item_views_data_alter($data) {
-  dpm($data);
-}
