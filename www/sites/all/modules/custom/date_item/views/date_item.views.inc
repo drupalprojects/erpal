@@ -121,12 +121,16 @@ function date_item_views_data() {
     ),
   );
   
-  $data['date_item']['date_from'] = array(
-    'title' => t('Date From'),
-    'help' => t('The date from of the date item.'),
+  $data['date_item']['date_item_date'] = array(
+    'title' => t('Date item date'),
+    'group' => t('Date item'),
+    'help' => t('The date of the date item.'),
     'field' => array(
       'handler' => 'views_handler_field_date',
+      'real field' => 'date_from',
+      'additional fields' => array('date_from', 'date_till'),
       'click sortable' => TRUE,
+      'is date' => TRUE,
     ),
     'argument' => array(
       'handler' => 'views_handler_argument_date',
@@ -140,13 +144,24 @@ function date_item_views_data() {
     ),
   );
   
-  $data['date_item']['date_till'] = array(
-    'title' => t('Date till'),
-    'help' => t('The date till of the date item.'),
-    'field' => array(
-      'handler' => 'views_handler_field_date',
-      'click sortable' => TRUE,
+  $data['date_item']['date_from'] = array(
+    'title' => t('Date item date from'),
+    'help' => t('The date till of the date item.'),    
+    'argument' => array(
+      'handler' => 'views_handler_argument_date',
+      'numeric' => TRUE,
     ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+  
+  $data['date_item']['date_till'] = array(
+    'title' => t('Date item date till'),
+    'help' => t('The date till of the date item.'),
     'argument' => array(
       'handler' => 'views_handler_argument_date',
       'numeric' => TRUE,
@@ -169,4 +184,8 @@ function date_item_views_data() {
   );
   
   return $data;
+}
+
+function date_item_views_data_alter($data) {
+  dpm($data);
 }
