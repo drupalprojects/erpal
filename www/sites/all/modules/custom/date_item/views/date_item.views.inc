@@ -185,4 +185,3 @@ function date_item_views_data() {
   
   return $data;
 }
-

@@ -647,9 +647,9 @@ function _date_item_date_type_allowed($type) {
 * Provide settings on date fields to add date item on save
 */
 function _date_item_field_settings_form_alter(&$form, &$form_state) {
-
+dpm($form);
   //check it is date field
-  if (_date_item_date_type_allowed($form['#field']['type']) && $form['#instance']['entity_type'] != 'date_item' && isset($form['#instance']['date_item'])) {
+  if (_date_item_date_type_allowed($form['#field']['type']) && $form['#instance']['entity_type'] != 'date_item') {
     
     $date_item_instance = $form['#instance']['date_item'];
     $field_name = $form['#instance']['field_name'];
@@ -964,4 +964,4 @@ function _date_item_get_date_format($time = true){
 function date_item_field_extra_fields() {
   // expose the email property on the fields and display settings forms.
   //@TODO may be implement for further usage
-} 
+}
