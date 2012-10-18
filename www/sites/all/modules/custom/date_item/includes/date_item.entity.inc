@@ -60,28 +60,7 @@ function date_item_entity_info() {
         'file path' => drupal_get_path('module', 'date_item') . '/includes',
         'controller class' => 'DateItemTypeUIController',
       ),
-    ),
-    'date_item_field_config' => array(
-      'label' => t('Date item field configuration'),
-      'plural label' => t('Date item field configurations'),
-      'controller class' => 'EntityAPIControllerExportable',
-      'entity class' => 'DateItemFieldConfig',
-      'base table' => 'date_item_field_config',
-      'fieldable' => FALSE,
-      'entity keys' => array(
-        'id' => 'date_item_field_config_id',
-        'label' => 'field_name',
-      ),
-      'bundles' => array(
-        'date_item_field_config' => array(
-          'label' => 'Date item field config',
-        ),
-      ),
-      'module' => 'date_item',
-      'access callback' => 'date_item_field_config_access',
-      'exportable' => TRUE,
-    ),
-    
+    ),        
   );
 
   // Support entity cache module.
@@ -91,13 +70,6 @@ function date_item_entity_info() {
   }
 
   return $entities;
-}
-
-/**
-*
-*/
-function date_item_field_config_access($op, $entity = NULL, $account = NULL, $entity_type = NULL) {
-  return user_access('administer date item field config', $account);
 }
 
 /**
@@ -504,40 +476,6 @@ function date_item_access($op, $date_item = NULL, $account = NULL, $entity_type)
   }
 }
 
-/**
- * The class used for date item type entities
- */
-class DateItemFieldConfig extends Entity {
-
-  public $date_item_field_config_id;
-  public $field_name;
-  public $entity_type;
-  public $bundle;
-  public $date_item_type = '';
-  public $settings = '';
-
-  public function __construct($values = array()) {
-    parent::__construct($values, 'date_item_field_config');
-  }
-  
-  /**
-   * Specifies the default label, which is picked up by label() by default.
-   */
-  public function defaultLabel() {
-    if ($this->field_name && $this->entity_type && $this->bundle) {     
-      return $this->field_name."-".$this->entity_type."-".$this->bundle;
-    }
-    return '';
-  }
-  
-  public function delete() {      
-    parent::delete();    
-  }
-  
-  public function save() {      
-    parent::save();    
-  }
-}
 
 /**
  * The class used for date item type entities
