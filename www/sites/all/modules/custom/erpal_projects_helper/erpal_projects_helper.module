@@ -226,6 +226,10 @@ function erpal_projects_helper_permission(){
       'title' => t('Access timetrackings view'), 
       'description' => t('Allows the user to access the timetrackings view'),
     ),
+    'access tasks tree' => array(
+      'title' => t('Access tasks tree view'), 
+      'description' => t('Allows the user to access the task tree view'),
+    ),
   );
   
   $field_access_permissions = _erpal_projects_helper_field_access_permissions();

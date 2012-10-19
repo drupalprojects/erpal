@@ -103,7 +103,7 @@ function _erpal_projects_helper_dynamic_menu_items(&$data, $router_item, $root_p
 function _erpal_projects_helper_projects_links(&$data) {
   //single project context
   $query = array('destination' => $_GET['q']);
-  erpal_make_action($data, t('Add a project'), 'node/add/erpal-project', $query);
+  erpal_make_action($data, t('Create a new project'), 'node/add/erpal-project', $query);
   
 }
 
@@ -140,17 +140,17 @@ function _erpal_projects_helper_project_links(&$data, $project_node, $router_ite
 */
 function _erpal_projects_helper_task_links(&$data, $task_node, $router_item=false) {
   
-  erpal_make_action($data, t('Edit this tasks'), 'node/'.$task_node->nid.'/edit');
+  erpal_make_action($data, t('Edit this task'), 'node/'.$task_node->nid.'/edit');
    
-  $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id']; 
-  $query = array('field_parent' => $node->nid, 'field_project_ref' => $project_nid);  
+  $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id']; 
+  $query = array('field_parent' => $task_node->nid, 'field_project_ref' => $project_nid);  
   erpal_make_action($data, t('Create a subtask'), 'node/add/erpal-task', $query);
    
-  //quick timetracking
-  //@TODO!!!
   if (user_access('use quick timetracking')) {
-    $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($node->nid);
-    $links[] = $timetracking_button;
+    $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($task_node->nid);
+    $data['actions']['output'][] = array(
+      '#markup' => $timetracking_button,
+    );    
   }
 }
 
@@ -165,9 +165,6 @@ function _erpal_projects_helper_ticket_links(&$data, $ticket_node, $router_item=
   $query = array('field_parent' => $ticket_node->nid, 'field_project_ref' => $project_nid);  
   erpal_make_action($data, t('Create a subticket'), 'node/add/erpal-task', $query);
    
-  //quick timetracking
-  //@TODO!!!
-  
   if (user_access('use quick timetracking')) {
     $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($ticket_node->nid);
     $data['actions']['output'][] = array(

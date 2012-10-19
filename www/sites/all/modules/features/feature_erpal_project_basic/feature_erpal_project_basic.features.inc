@@ -25,6 +25,10 @@ function feature_erpal_project_basic_ctools_plugin_api() {
     return array("version" => "1");
   }
   list($module, $api) = func_get_args();
+  if ($module == "panels_mini" && $api == "panels_default") {
+    return array("version" => "1");
+  }
+  list($module, $api) = func_get_args();
   if ($module == "rel" && $api == "rel") {
     return array("version" => "1");
   }

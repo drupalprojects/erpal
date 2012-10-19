@@ -420,7 +420,14 @@ function feature_erpal_project_basic_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 9,
+          'weight' => '9',
+        ),
+        'in_pane' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '9',
         ),
       ),
       'entity_type' => 'field_collection_item',
@@ -503,6 +510,15 @@ function feature_erpal_project_basic_field_default_fields() {
           'weight' => '8',
         ),
         'full' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => '8',
+        ),
+        'in_pane' => array(
           'label' => 'above',
           'module' => 'entityreference',
           'settings' => array(
@@ -603,6 +619,18 @@ function feature_erpal_project_basic_field_default_fields() {
           'type' => 'number_decimal',
           'weight' => '1',
         ),
+        'in_pane' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '1',
+        ),
       ),
       'entity_type' => 'field_collection_item',
       'field_name' => 'field_price',
@@ -678,6 +706,13 @@ function feature_erpal_project_basic_field_default_fields() {
           'weight' => 0,
         ),
         'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '0',
+        ),
+        'in_pane' => array(
           'label' => 'above',
           'module' => 'list',
           'settings' => array(),

@@ -21,7 +21,7 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_erpal_task';
-  $strongarm->value = 'edit-auto-nodetitle';
+  $strongarm->value = 'edit-comment';
   $export['additional_settings__active_tab_erpal_task'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -231,7 +231,7 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_erpal_task';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_subject_field_erpal_task'] = $strongarm;
 
   $strongarm = new stdClass();
