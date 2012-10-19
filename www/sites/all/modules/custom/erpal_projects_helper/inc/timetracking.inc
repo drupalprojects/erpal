@@ -17,6 +17,29 @@ function computed_field_field_timetracking_button_compute(&$entity_field, $entit
 }
 
 /**
+* Get the sum of timetracking, @TODO even calculate for projects, actually only for tasks
+*/
+function erpal_projects_helper_summed_timetracking($node) {
+  if ($node->type != 'erpal_task')
+    return;
+    
+  //get table for timetracking field_timetracking_duration
+  $field_info = field_info_field('field_timetracking_duration');
+  $sql_arr = $field_info['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
+  $field_name = array_keys($sql_arr);  
+  $field_name_table = $field_name[0];
+  $value_field = $sql_arr[$field_name_table]['value'];
+
+  $query = db_select($field_name_table,"f");
+  $query->addExpression("SUM(".$value_field.")", 'time');
+  $res = $query->execute()->fetchAssoc();
+  
+  $time = $res['time'];
+  
+  return $time;
+}
+
+/**
 * Post execute handles timetracking view so we can replace an empty timetracking button computed field the timetracking button using the md5 checksum of the description
 */
 function _erpal_projects_helper_view_timetracking_entites_post_execute(&$view) {

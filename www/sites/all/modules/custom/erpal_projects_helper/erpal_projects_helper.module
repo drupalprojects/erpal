@@ -18,6 +18,15 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/dynamic.menu');
 
  
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_projects_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'erpal_projects_helper' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+} 
+ 
+/**
 * Implements hook_init
 */
 function erpal_projects_helper_init() {

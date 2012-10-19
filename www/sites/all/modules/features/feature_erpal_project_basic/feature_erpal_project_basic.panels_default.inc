@@ -448,6 +448,27 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->locks = array();
     $display->content['new-12'] = $pane;
     $display->panels['middle'][1] = 'new-12';
+    $pane = new stdClass();
+    $pane->pid = 'new-13';
+    $pane->panel = 'middle';
+    $pane->type = 'timetracking_sum';
+    $pane->subtype = 'timetracking_sum';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'types' => array(),
+      'field_name' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $display->content['new-13'] = $pane;
+    $display->panels['middle'][2] = 'new-13';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-11';
   $mini->display = $display;
