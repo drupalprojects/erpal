@@ -7,12 +7,14 @@
 //@todo should be in hook_init?
 module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
 module_load_include('inc', 'erpal_projects_helper', 'inc/tasks');
+module_load_include('inc', 'erpal_projects_helper', 'inc/tasks');
 module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
 module_load_include('inc', 'erpal_projects_helper', 'inc/book');
 module_load_include('inc', 'erpal_projects_helper', 'inc/budget');
 module_load_include('inc', 'erpal_projects_helper', 'inc/config');
 module_load_include('inc', 'erpal_projects_helper', 'inc/rules');
 module_load_include('inc', 'erpal_projects_helper', 'inc/field_access');
+module_load_include('inc', 'erpal_projects_helper', 'inc/dynamic.menu');
 
  
 /**
@@ -546,33 +548,12 @@ function _erpal_projects_helper_ensure_task_settings_form_element(&$form) {
 }
 
 /**
-* Implements hook_erpal_context_links provided in erpal_basic_helper
+* Implements hook_menu_local_tasks_alter()
 */
-function erpal_basic_helper_erpal_context_links() {
-  
-  //depending on the current page, add some links to the erpal context link block
-  $display = panels_get_current_page_display();
-  $nid = isset($display->args[0]) ? $display->args[0] : false;
-  $links = array();
-  if (arg(0) == 'node' && arg(1) == $nid){ 
-    //viewing tickets of a project
-    if (arg(2) == 'tickets') {
-      _erpal_projects_helper_add_ticket_list_links($links, $nid);  
-    } elseif (!arg(2)) { //so it is the node view of the task
-      $node = node_load($nid);
-      if ($node->type == 'erpal_task') {
-        _erpal_projects_helper_add_task_links($links, $node);
-      }
-    }
-  }
-
-  //if we are in the projects view
-  if (arg(0) == 'projects' && arg(1) == 'projects') {
-    _erpal_projects_helper_add_projects_view_link($links);
-  }
-  
-  return $links;
+function erpal_projects_helper_menu_local_tasks_alter(&$data, $router_item, $root_path) {  
+  _erpal_projects_helper_dynamic_menu_items($data, $router_item, $root_path);
 }
+
 
 /**
 * Implements hook_form_alter
@@ -980,32 +961,6 @@ function _erpal_projects_helper_render_projects_referencing_books($book_nid) {
   return $links;
 }
 
-/**
-* This function is called by the projects view to add a link for new project node
-* it provides a hook to allow other modules to add a link to that view by implementing
-* hook_
-*/
-function _erpal_projects_helper_view_projects_header_content()
-{
-  $q = current_path();
-  $add_erpal_project =  _erpal_projects_helper_create_project_link();
-  
-  $my_content = array(
-    $add_erpal_project,
-  );
-  
-  //ask all other modules for content in the header area of the view
-  $other_module_content = module_invoke_all('view_projects_header_content');
-  
-  $all_content = array_merge($other_module_content, $my_content);
-  
-  $content = '';
-  foreach ($all_content as $a_content) {
-    $content .= '<br>'.$a_content;
-  }
-  
-  return $content;
-}
 
 /**
 * Implements hook_node_presave
@@ -1026,26 +981,6 @@ function erpal_projects_helper_node_presave($node) {
   }
 }
 
-
-/**
-* Helper function to create new project link
-*/
-function _erpal_projects_helper_create_project_link($q_arg = false, $query_arr = array())
-{
-  if (!$q_arg)
-    $q = current_path();
-  else 
-    $q = $q_arg;
-  
-  if (!isset($query_arr['destination']) || $q_arg)
-    $query_arr['destination'] = $q;
-  
-  return l(
-    t("Create new project"), "node/add/erpal-project", array(
-        'query' => $query_arr,
-    )
-  );
-}
 
 /**
 * Returns all projects visible for the user

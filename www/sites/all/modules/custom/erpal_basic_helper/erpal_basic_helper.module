@@ -47,52 +47,6 @@ function erpal_basic_helper_menu(){
 } 
 
 /**
- * Implements hook_block_info().
- */
-function erpal_basic_helper_block_info() {
-  return array(
-    'erpal_context_links_block' => array(
-      'info' => t('ERPAL context links'),
-    ),
-  );
-}
-
-/**
- * Implements hook_block_view().
- */
-function erpal_basic_helper_block_view($delta = '') {  
-  if ($delta == 'erpal_context_links_block') {
-    $block['subject'] = t('ERPAL context links');
-    $block['content'] = _erpal_basic_helper_get_erpal_context_links();
-    return $block;
-  }
-}
-
-/**
-* Implements hook_theme
-*/
-function erpal_basic_helper_theme() {
-  return array(
-    'erpal_context_links' => array(
-      'variables' => array('links' => array()),
-      'template' => 'template/context_links',
-    ),
-  );
-}
-
-/**
-* Function retrieves all context links and asks other modules for links
-*/
-function _erpal_basic_helper_get_erpal_context_links() {
-  $links = array();
-  
-  //call hook to ask other modules for links
-  $links = module_invoke_all('erpal_context_links');
-  
-  return theme('erpal_context_links', array('links' => $links));
-}
-
-/**
 * Implements hook_form_alter
 */
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
@@ -103,6 +57,56 @@ function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
     _erpal_basic_helper_contact_node_form_alter($form, $form_state);    
   }
 
+}
+
+/**
+* Checks, if a current page has a certain context
+*/
+function _erpal_basic_helper_has_context($context, $router_item = false) {
+  $contexts = _erpal_basic_helper_get_contexts($router_item);
+  
+  return isset($contexts[$context]) && $contexts[$context];
+}
+
+/**
+* Module determines the context(s) of the current page
+*/
+function _erpal_basic_helper_get_contexts($router_item = false) {
+  $my_contexts = array();
+  
+  if (!$router_item) {
+    //get a router item
+    $router_item = menu_get_item();
+  }
+
+  $other_contexts = module_invoke_all('erpal_contexts', $router_item);
+  
+  return array_merge($my_contexts, $other_contexts);
+}
+
+/**
+* Returns a local action item to path if user has access
+*/
+function erpal_make_action(&$data, $title, $path, $query = array()) {
+  $item = menu_get_item($path);
+  $item['title'] = $title;
+  // The add new content page would redirect to the new event
+  // if we did not override that here. This way they will
+  // redirect back to the calendar.
+  if (!isset($item['localized_options']) || !$item['localized_options'])
+    $item['localized_options'] = array();
+    
+  $item['localized_options'] += array('query' => array());
+  if (count($query))
+    $item['localized_options']['query'] += $query;
+    
+  $item['localized_options']['query'] += drupal_get_destination();
+  if (array_key_exists('access', $item) && $item['access']) {
+    $data['actions']['output'][] = array(
+      '#theme' => 'menu_local_action',
+      '#link' => $item,
+    );
+  }
 }
 
 /**

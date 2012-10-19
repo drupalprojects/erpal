@@ -103,35 +103,13 @@ function _erpal_projects_helper_get_tasks_by_project($project_nid, $like_title=f
 /**
 * Checks if node is a ticket
 */
-function _erpal_project_helper_is_ticket($node) {
+function _erpal_projects_helper_is_ticket($node) {
   if ($node->type != 'erpal_task')
     return false;
   
   $is_ticket = isset($node->field_is_ticket[LANGUAGE_NONE][0]['value']) ? $node->field_is_ticket[LANGUAGE_NONE][0]['value'] : false;
   
   return $is_ticket;
-}
-
-/**
-* Adds some links to erpal context for adding a ticket
-*/
-function _erpal_projects_helper_add_ticket_list_links(&$links, $project_nid) {
-  
-  if (user_access('create erpal_task content')) {
-    $add_ticket_link = l(
-      t('Add a ticket'), 
-      'node/add/erpal-task',
-      array(
-        'query' => array(
-          'field_is_ticket' => 1,
-          'field_project_ref' => $project_nid,
-          'destination' => $_GET['q'],
-        )
-      )
-    );
-    
-    $links[] = $add_ticket_link;
-  }
 }
 
 /**
@@ -144,7 +122,7 @@ function _erpal_projects_helper_add_task_links(&$links, $node) {
   if ($node->type != 'erpal_task')
     return;
   
-  $is_ticket = _erpal_project_helper_is_ticket($node);
+  $is_ticket = _erpal_projects_helper_is_ticket($node);
   
   //back to list links
   if ($is_ticket) {

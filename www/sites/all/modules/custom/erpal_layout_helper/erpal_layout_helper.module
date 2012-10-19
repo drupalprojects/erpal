@@ -1,0 +1,12 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_layout_helper module.
+ */
+ 
+/**
+* Preprocess pane messages to spearate local tasks from messages pane
+*/ 
+function erpal_layout_helper_preprocess_pane_messages(&$variables) {
+  $variables['action_links'] = '';  //we dont want the local actions to be rendert in messages pane
+}

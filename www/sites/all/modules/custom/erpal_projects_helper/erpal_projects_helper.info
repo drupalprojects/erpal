@@ -8,4 +8,11 @@ version = "7.x-1.0-dev"
 
 files[] = erpal_projects_helper.module
 files[] = inc/config.inc
-files[] = inc/functions.inc
+files[] = inc/book.inc
+files[] = inc/budget.inc
+files[] = inc/dynamic.menu.inc
+files[] = inc/field_access.inc
+files[] = inc/projects.inc
+files[] = inc/rules.inc
+files[] = inc/tasks.inc
+files[] = inc/timetracking.inc
