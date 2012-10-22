@@ -1638,6 +1638,70 @@ If not set, budget will not expire',
     ),
   );
 
+  // Exported field: 'node-erpal_contract-field_contract_duration'.
+  $fields['node-erpal_contract-field_contract_duration'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_contract_duration',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'number',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contract',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'The initial contract duration',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 9,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_contract_duration',
+      'label' => 'Duration',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '8',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_contract-field_contract_payment'.
   $fields['node-erpal_contract-field_contract_payment'] = array(
     'field_config' => array(
@@ -1862,6 +1926,70 @@ If not set, budget will not expire',
     ),
   );
 
+  // Exported field: 'node-erpal_contract-field_repeating_duration'.
+  $fields['node-erpal_contract-field_repeating_duration'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_repeating_duration',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'number',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contract',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'The duration the contract repeats after first duration period',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 10,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_repeating_duration',
+      'label' => 'Repeating duration',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '9',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
@@ -1880,6 +2008,7 @@ If not set, budget will not expire',
   t('Contractor');
   t('Currency');
   t('Customer');
+  t('Duration');
   t('Every period entered here new budgets will be available at the budget destination');
   t('Expire period');
   t('If the contract manages time budgets at projects, set the task / project where to add the budget and the amount and interval of the budget booked');
@@ -1891,7 +2020,10 @@ If not set, budget will not expire',
   t('Payment type');
   t('Period');
   t('Price per month');
+  t('Repeating duration');
   t('The amount of budget hours added to the budget destination');
+  t('The duration the contract repeats after first duration period');
+  t('The initial contract duration');
   t('The period a budget will expire from date it was created.
 If not set, budget will not expire');
   t('VAT');

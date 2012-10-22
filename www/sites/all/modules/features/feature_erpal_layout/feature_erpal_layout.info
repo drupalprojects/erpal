@@ -6,6 +6,7 @@ php = 5.2.4
 version = 7.x-1.0-dev
 project = feature_erpal_layout
 dependencies[] = ctools
+dependencies[] = erpal_layout_helper
 dependencies[] = page_manager
 dependencies[] = panels
 dependencies[] = panels_everywhere

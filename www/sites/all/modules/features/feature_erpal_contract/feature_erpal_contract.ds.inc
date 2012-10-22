@@ -35,6 +35,8 @@ function feature_erpal_contract_ds_layout_settings_info() {
         3 => 'field_cancelation_period_con',
         4 => 'field_budget_booking',
         5 => 'field_cancelation_period_unit',
+        6 => 'field_contract_duration',
+        7 => 'field_repeating_duration',
       ),
       'footer' => array(
         0 => 'field_asset_files',
@@ -81,7 +83,9 @@ function feature_erpal_contract_ds_layout_settings_info() {
       'field_cancelation_period_unit' => 'right',
       'field_asset_files' => 'footer',
       'body' => 'footer',
+      'field_contract_duration' => 'right',
       'status' => 'footer',
+      'field_repeating_duration' => 'right',
       'submit' => 'footer',
       'menu' => 'hidden',
       'name' => 'hidden',

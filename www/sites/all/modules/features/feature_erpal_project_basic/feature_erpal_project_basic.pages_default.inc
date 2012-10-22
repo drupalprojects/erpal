@@ -45,7 +45,7 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     ),
   );
   $display = new panels_display();
-  $display->layout = 'twocol_stacked';
+  $display->layout = 'erpal_content_layout';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -55,6 +55,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
       'top' => NULL,
       'bottom' => NULL,
       'middle' => NULL,
+      'sidebar_first_left' => NULL,
+      'sidebar_first_right' => NULL,
+      'sidebar_second_left' => NULL,
+      'sidebar_second_right' => NULL,
     ),
   );
   $display->cache = array();
@@ -63,7 +67,49 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-1';
-    $pane->panel = 'left';
+    $pane->panel = 'sidebar_first_left';
+    $pane->type = 'page_title';
+    $pane->subtype = 'page_title';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'markup' => 'h2',
+      'class' => '',
+      'id' => '',
+      'override_title' => 1,
+      'override_title_text' => '%node:title',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-1'] = $pane;
+    $display->panels['sidebar_first_left'][0] = 'new-1';
+    $pane = new stdClass();
+    $pane->pid = 'new-2';
+    $pane->panel = 'sidebar_first_right';
+    $pane->type = 'page_actions';
+    $pane->subtype = 'page_actions';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-2'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-2';
+    $pane = new stdClass();
+    $pane->pid = 'new-3';
+    $pane->panel = 'sidebar_second_left';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:body';
     $pane->shown = TRUE;
@@ -87,41 +133,11 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['left'][0] = 'new-1';
+    $display->content['new-3'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-3';
     $pane = new stdClass();
-    $pane->pid = 'new-2';
-    $pane->panel = 'right';
-    $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_books_ref';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'label' => 'title',
-      'formatter' => 'entityreference_label',
-      'delta_limit' => '0',
-      'delta_offset' => '0',
-      'delta_reversed' => 0,
-      'formatter_settings' => array(
-        'link' => 1,
-      ),
-      'context' => 'argument_entity_id:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['right'][0] = 'new-2';
-    $pane = new stdClass();
-    $pane->pid = 'new-3';
-    $pane->panel = 'right';
+    $pane->pid = 'new-4';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_customer_ref';
     $pane->shown = TRUE;
@@ -145,13 +161,13 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['right'][1] = 'new-3';
+    $display->content['new-4'] = $pane;
+    $display->panels['sidebar_second_right'][0] = 'new-4';
     $pane = new stdClass();
-    $pane->pid = 'new-4';
-    $pane->panel = 'right';
+    $pane->pid = 'new-5';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_activity_ref';
     $pane->shown = TRUE;
@@ -175,13 +191,41 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-5'] = $pane;
+    $display->panels['sidebar_second_right'][1] = 'new-5';
+    $pane = new stdClass();
+    $pane->pid = 'new-6';
+    $pane->panel = 'sidebar_second_right';
+    $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_project_status_term';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'title',
+      'formatter' => 'taxonomy_term_reference_plain',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(),
+      'context' => 'argument_entity_id:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['right'][2] = 'new-4';
+    $display->content['new-6'] = $pane;
+    $display->panels['sidebar_second_right'][2] = 'new-6';
     $pane = new stdClass();
-    $pane->pid = 'new-5';
-    $pane->panel = 'right';
+    $pane->pid = 'new-7';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_priority_term';
     $pane->shown = TRUE;
@@ -205,39 +249,11 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-5'] = $pane;
-    $display->panels['right'][3] = 'new-5';
+    $display->content['new-7'] = $pane;
+    $display->panels['sidebar_second_right'][3] = 'new-7';
     $pane = new stdClass();
-    $pane->pid = 'new-6';
-    $pane->panel = 'right';
-    $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_project_status_term';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'label' => 'title',
-      'formatter' => 'taxonomy_term_reference_plain',
-      'delta_limit' => 0,
-      'delta_offset' => '0',
-      'delta_reversed' => FALSE,
-      'formatter_settings' => array(),
-      'context' => 'argument_entity_id:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 4;
-    $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['right'][4] = 'new-6';
-    $pane = new stdClass();
-    $pane->pid = 'new-7';
-    $pane->panel = 'right';
+    $pane->pid = 'new-8';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_date';
     $pane->shown = TRUE;
@@ -266,23 +282,29 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 5;
+    $pane->position = 4;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['right'][5] = 'new-7';
+    $display->content['new-8'] = $pane;
+    $display->panels['sidebar_second_right'][4] = 'new-8';
     $pane = new stdClass();
-    $pane->pid = 'new-8';
-    $pane->panel = 'top';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
+    $pane->pid = 'new-9';
+    $pane->panel = 'sidebar_second_right';
+    $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_books_ref';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'markup' => 'h2',
-      'class' => '',
-      'id' => '',
-      'override_title' => 1,
-      'override_title_text' => '%node:title',
+      'label' => 'title',
+      'formatter' => 'entityreference_label',
+      'delta_limit' => '0',
+      'delta_offset' => '0',
+      'delta_reversed' => 0,
+      'formatter_settings' => array(
+        'link' => 1,
+      ),
+      'context' => 'argument_entity_id:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -290,28 +312,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-8'] = $pane;
-    $display->panels['top'][0] = 'new-8';
-    $pane = new stdClass();
-    $pane->pid = 'new-9';
-    $pane->panel = 'top';
-    $pane->type = 'page_actions';
-    $pane->subtype = 'page_actions';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array();
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 5;
     $pane->locks = array();
     $display->content['new-9'] = $pane;
-    $display->panels['top'][1] = 'new-9';
+    $display->panels['sidebar_second_right'][5] = 'new-9';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -352,7 +356,7 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     ),
   );
   $display = new panels_display();
-  $display->layout = 'twocol_stacked';
+  $display->layout = 'erpal_content_layout';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -361,6 +365,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
       'right' => NULL,
       'top' => NULL,
       'bottom' => NULL,
+      'sidebar_first_left' => NULL,
+      'sidebar_first_right' => NULL,
+      'sidebar_second_left' => NULL,
+      'sidebar_second_right' => NULL,
     ),
     'top' => array(
       'style' => 'naked',
@@ -372,7 +380,31 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-10';
-    $pane->panel = 'left';
+    $pane->panel = 'sidebar_first_left';
+    $pane->type = 'page_title';
+    $pane->subtype = 'page_title';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'markup' => 'h2',
+      'class' => '',
+      'id' => '',
+      'override_title' => 1,
+      'override_title_text' => '%node:field_is_ticket #%node:nid %node:title',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-10'] = $pane;
+    $display->panels['sidebar_first_left'][0] = 'new-10';
+    $pane = new stdClass();
+    $pane->pid = 'new-11';
+    $pane->panel = 'sidebar_first_left';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_task_status_term';
     $pane->shown = TRUE;
@@ -399,13 +431,13 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-10'] = $pane;
-    $display->panels['left'][0] = 'new-10';
+    $display->content['new-11'] = $pane;
+    $display->panels['sidebar_first_left'][1] = 'new-11';
     $pane = new stdClass();
-    $pane->pid = 'new-11';
-    $pane->panel = 'left';
+    $pane->pid = 'new-12';
+    $pane->panel = 'sidebar_first_left';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_progress_percent';
     $pane->shown = TRUE;
@@ -432,13 +464,13 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['left'][1] = 'new-11';
+    $display->content['new-12'] = $pane;
+    $display->panels['sidebar_first_left'][2] = 'new-12';
     $pane = new stdClass();
-    $pane->pid = 'new-12';
-    $pane->panel = 'left';
+    $pane->pid = 'new-13';
+    $pane->panel = 'sidebar_first_left';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_priority_term';
     $pane->shown = TRUE;
@@ -465,13 +497,31 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['left'][2] = 'new-12';
+    $display->content['new-13'] = $pane;
+    $display->panels['sidebar_first_left'][3] = 'new-13';
     $pane = new stdClass();
-    $pane->pid = 'new-13';
-    $pane->panel = 'left';
+    $pane->pid = 'new-14';
+    $pane->panel = 'sidebar_first_right';
+    $pane->type = 'page_actions';
+    $pane->subtype = 'page_actions';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-14'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-14';
+    $pane = new stdClass();
+    $pane->pid = 'new-15';
+    $pane->panel = 'sidebar_second_left';
     $pane->type = 'panels_mini';
     $pane->subtype = 'task_content_panel';
     $pane->shown = TRUE;
@@ -486,13 +536,13 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 3;
+    $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['left'][3] = 'new-13';
+    $display->content['new-15'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-15';
     $pane = new stdClass();
-    $pane->pid = 'new-14';
-    $pane->panel = 'right';
+    $pane->pid = 'new-16';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'panels_mini';
     $pane->subtype = 'task_general_fields';
     $pane->shown = TRUE;
@@ -513,11 +563,11 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-14'] = $pane;
-    $display->panels['right'][0] = 'new-14';
+    $display->content['new-16'] = $pane;
+    $display->panels['sidebar_second_right'][0] = 'new-16';
     $pane = new stdClass();
-    $pane->pid = 'new-15';
-    $pane->panel = 'right';
+    $pane->pid = 'new-17';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'panels_mini';
     $pane->subtype = 'time_information';
     $pane->shown = TRUE;
@@ -537,11 +587,11 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-15'] = $pane;
-    $display->panels['right'][1] = 'new-15';
+    $display->content['new-17'] = $pane;
+    $display->panels['sidebar_second_right'][1] = 'new-17';
     $pane = new stdClass();
-    $pane->pid = 'new-16';
-    $pane->panel = 'right';
+    $pane->pid = 'new-18';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_pricing';
     $pane->shown = TRUE;
@@ -572,11 +622,11 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-16'] = $pane;
-    $display->panels['right'][2] = 'new-16';
+    $display->content['new-18'] = $pane;
+    $display->panels['sidebar_second_right'][2] = 'new-18';
     $pane = new stdClass();
-    $pane->pid = 'new-17';
-    $pane->panel = 'right';
+    $pane->pid = 'new-19';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_asset_files';
     $pane->shown = TRUE;
@@ -602,50 +652,8 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-17'] = $pane;
-    $display->panels['right'][3] = 'new-17';
-    $pane = new stdClass();
-    $pane->pid = 'new-18';
-    $pane->panel = 'top';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'markup' => 'h2',
-      'class' => '',
-      'id' => '',
-      'override_title' => 1,
-      'override_title_text' => '%node:field_is_ticket #%node:nid %node:title',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-18'] = $pane;
-    $display->panels['top'][0] = 'new-18';
-    $pane = new stdClass();
-    $pane->pid = 'new-19';
-    $pane->panel = 'top';
-    $pane->type = 'page_actions';
-    $pane->subtype = 'page_actions';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array();
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
-    $pane->locks = array();
     $display->content['new-19'] = $pane;
-    $display->panels['top'][1] = 'new-19';
+    $display->panels['sidebar_second_right'][3] = 'new-19';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

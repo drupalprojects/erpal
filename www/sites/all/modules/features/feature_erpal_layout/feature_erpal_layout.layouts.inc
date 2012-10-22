@@ -43,37 +43,17 @@ function feature_erpal_layout_default_panels_layout() {
       'main-row' => array(
         'type' => 'row',
         'contains' => 'region',
-        'children' => array(
-          0 => 'center',
-          1 => 'right_region',
-        ),
+        'children' => array(),
         'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'row-second-left',
-        'width' => '100',
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'row-second-left',
       ),
       1 => array(
         'type' => 'row',
         'contains' => 'region',
         'children' => array(
-          0 => 'row_first_left_',
-          1 => 'row_first_right',
+          0 => 'center_region',
         ),
         'parent' => 'main',
         'class' => '',
-      ),
-      'right_region' => array(
-        'type' => 'region',
-        'title' => 'row-second-right',
-        'width' => '250',
-        'width_type' => 'px',
-        'parent' => 'main-row',
-        'class' => 'row-second-right',
       ),
       3 => array(
         'type' => 'column',
@@ -119,21 +99,13 @@ function feature_erpal_layout_default_panels_layout() {
         'parent' => '6',
         'class' => '',
       ),
-      'row_first_left_' => array(
+      'center_region' => array(
         'type' => 'region',
-        'title' => 'row-first-left',
-        'width' => '100',
+        'title' => 'center-region',
+        'width' => 100,
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'row-first-left',
-      ),
-      'row_first_right' => array(
-        'type' => 'region',
-        'title' => 'row-first-right',
-        'width' => '250',
-        'width_type' => 'px',
-        'parent' => '1',
-        'class' => 'row-first-right',
+        'class' => 'center-region',
       ),
     ),
   );

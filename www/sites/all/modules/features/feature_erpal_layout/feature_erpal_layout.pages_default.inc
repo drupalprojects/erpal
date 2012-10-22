@@ -47,6 +47,7 @@ function feature_erpal_layout_default_page_manager_handlers() {
       'tabs_region_' => NULL,
       'row_first_left_' => NULL,
       'row_first_right' => NULL,
+      'center_region' => NULL,
     ),
   );
   $display->cache = array();
@@ -55,12 +56,13 @@ function feature_erpal_layout_default_page_manager_handlers() {
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-1';
-    $pane->panel = 'left_region';
-    $pane->type = 'block';
-    $pane->subtype = 'system-user-menu';
+    $pane->panel = 'center_region';
+    $pane->type = 'page_content';
+    $pane->subtype = 'page_content';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
+      'context' => 'argument_page_content_1',
       'override_title' => 0,
       'override_title_text' => '',
     );
@@ -73,9 +75,30 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->position = 0;
     $pane->locks = array();
     $display->content['new-1'] = $pane;
-    $display->panels['left_region'][0] = 'new-1';
+    $display->panels['center_region'][0] = 'new-1';
     $pane = new stdClass();
     $pane->pid = 'new-2';
+    $pane->panel = 'left_region';
+    $pane->type = 'block';
+    $pane->subtype = 'system-user-menu';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '<none>',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-2'] = $pane;
+    $display->panels['left_region'][0] = 'new-2';
+    $pane = new stdClass();
+    $pane->pid = 'new-3';
     $pane->panel = 'left_region';
     $pane->type = 'page_logo';
     $pane->subtype = 'page_logo';
@@ -90,10 +113,10 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['left_region'][1] = 'new-2';
+    $display->content['new-3'] = $pane;
+    $display->panels['left_region'][1] = 'new-3';
     $pane = new stdClass();
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-4';
     $pane->panel = 'left_region';
     $pane->type = 'block';
     $pane->subtype = 'search-form';
@@ -111,10 +134,10 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['left_region'][2] = 'new-3';
+    $display->content['new-4'] = $pane;
+    $display->panels['left_region'][2] = 'new-4';
     $pane = new stdClass();
-    $pane->pid = 'new-4';
+    $pane->pid = 'new-5';
     $pane->panel = 'left_region';
     $pane->type = 'block';
     $pane->subtype = 'menu-menu-erpal-menu';
@@ -132,74 +155,10 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['left_region'][3] = 'new-4';
-    $pane = new stdClass();
-    $pane->pid = 'new-5';
-    $pane->panel = 'row_first_left_';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'markup' => 'h1',
-      'class' => '',
-      'id' => '',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
     $display->content['new-5'] = $pane;
-    $display->panels['row_first_left_'][0] = 'new-5';
+    $display->panels['left_region'][3] = 'new-5';
     $pane = new stdClass();
     $pane->pid = 'new-6';
-    $pane->panel = 'row_first_left_';
-    $pane->type = 'pane_messages';
-    $pane->subtype = 'pane_messages';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array();
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
-    $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['row_first_left_'][1] = 'new-6';
-    $pane = new stdClass();
-    $pane->pid = 'new-7';
-    $pane->panel = 'row_first_left_';
-    $pane->type = 'page_content';
-    $pane->subtype = 'page_content';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'context' => 'argument_page_content_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 2;
-    $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['row_first_left_'][2] = 'new-7';
-    $pane = new stdClass();
-    $pane->pid = 'new-8';
     $pane->panel = 'tabs_region_';
     $pane->type = 'page_tabs';
     $pane->subtype = 'page_tabs';
@@ -219,8 +178,8 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-8'] = $pane;
-    $display->panels['tabs_region_'][0] = 'new-8';
+    $display->content['new-6'] = $pane;
+    $display->panels['tabs_region_'][0] = 'new-6';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

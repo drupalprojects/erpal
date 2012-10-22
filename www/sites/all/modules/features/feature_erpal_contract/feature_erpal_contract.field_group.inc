@@ -26,6 +26,8 @@ function feature_erpal_contract_field_group_info() {
       0 => 'field_cancelation_period',
       1 => 'field_cancelation_period_con',
       2 => 'field_cancelation_period_unit',
+      3 => 'field_contract_duration',
+      4 => 'field_repeating_duration',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
