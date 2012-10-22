@@ -58,7 +58,13 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
       'sidebar_first_left' => NULL,
       'sidebar_first_right' => NULL,
       'sidebar_second_left' => NULL,
-      'sidebar_second_right' => NULL,
+      'sidebar_second_right' => array(
+        'region_title' => 'General',
+        'region_collapsed' => 0,
+      ),
+    ),
+    'sidebar_second_right' => array(
+      'style' => 'collapsible',
     ),
   );
   $display->cache = array();
@@ -556,8 +562,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
-      'style' => 'default',
+      'settings' => array(
+        'pane_collapsed' => 0,
+      ),
+      'style' => 'collapsible',
     );
     $pane->css = array();
     $pane->extras = array();
@@ -581,7 +589,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_collapsed' => 0,
+      ),
+      'style' => 'collapsible',
     );
     $pane->css = array();
     $pane->extras = array();
@@ -616,7 +627,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_collapsed' => 0,
+      ),
+      'style' => 'collapsible',
     );
     $pane->css = array();
     $pane->extras = array();
@@ -646,7 +660,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_collapsed' => 0,
+      ),
+      'style' => 'collapsible',
     );
     $pane->css = array();
     $pane->extras = array();
