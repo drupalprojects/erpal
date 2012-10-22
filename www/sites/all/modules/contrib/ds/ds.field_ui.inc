@@ -146,7 +146,7 @@ function ds_revert_layout_field_settings_form_submit(&$form, &$form_state) {
     ->execute();
 
   // Clear the ds_fields cache.
-  cache_clear_all('ds_fields', 'cache');
+  cache_clear_all('ds_fields:', 'cache', TRUE);
   cache_clear_all('ds_field_settings', 'cache');
 
   // Clear entity info cache.
@@ -550,6 +550,30 @@ function ds_field_ui_layouts_save($form, &$form_state) {
     // Let other modules alter the layout settings.
     drupal_alter('ds_layout_settings', $record, $form_state);
 
+    // Move current visible fields into a default region, so
+    // we keep their current settings.
+    $layouts = ds_get_layout_info();
+    $sl = $layouts[$layout];
+    $first_region = key($sl['regions']);
+    $record->settings['regions'] = array();
+    $record->settings['fields'] = array();
+    $record->settings['classes'] = array();
+    $record->settings['wrappers'] = array();
+    $record->settings['layout_wrapper'] = 'div';
+    $fields = _ds_sort_fields($form_state['values']['fields'], 'weight');
+    foreach ($fields as $field_key => $field) {
+      if (isset($field['type']) && $field['type'] != 'hidden') {
+        $record->settings['regions'][$first_region][] = $field_key;
+        $record->settings['fields'][$field_key] = $first_region;
+      }
+    }
+    // In case this is the full node view mode and if the comment module
+    // is enabled for this content type, add it as well.
+    if ($record->entity_type == 'node' && $record->view_mode == 'full' && module_exists('comment')) {
+      $record->settings['regions'][$first_region][] = 'comments';
+      $record->settings['fields']['comments'] = $first_region;
+    }
+
     // Save the record.
     drupal_write_record('ds_layout_settings', $record);
   }
@@ -675,7 +699,7 @@ function ds_field_ui_fields_save($form, &$form_state) {
   }
 
   // Clear the ds_fields cache.
-  cache_clear_all('ds_fields', 'cache');
+  cache_clear_all('ds_fields:', 'cache', TRUE);
   cache_clear_all('ds_field_settings', 'cache');
 }
 
@@ -708,14 +732,13 @@ function ds_field_ui_layout_clone($form, &$form_state) {
 
   // Save new layout record for ds.
   if ($layout) {
-    $settings = $layout->settings;
     $record = new stdClass();
     $record->id = $form['#export_id'];
     $record->entity_type = $entity_type;
     $record->bundle = $bundle;
     $record->view_mode = $view_mode;
     $record->layout = $layout->layout;
-    $record->settings = $settings;
+    $record->settings = $layout->settings;
 
     // Let other modules alter the layout settings.
     drupal_alter('ds_layout_settings', $record, $form_state);
@@ -723,16 +746,50 @@ function ds_field_ui_layout_clone($form, &$form_state) {
     // Save layout record.
     drupal_write_record('ds_layout_settings', $record);
 
+    // Copy the view mode settings.
+    list($ce, $cb, $cv) = explode('|', $clone);
+    _ds_field_ui_clone_view_mode_settings($entity_type, $bundle, $view_mode, $cv);
+
     // Clear entity info cache.
     cache_clear_all('entity_info', 'cache', TRUE);
 
     // Show message.
     drupal_set_message(t('The layout has been cloned. Note that not all settings for all fields have been copied over, you need to check those and save this screen again.'));
-  
+
   }
   else {
     drupal_set_message(t('No layout was cloned.'));
   }
+}
+
+/**
+ * Populates display settings for a new view mode from the another view mode.
+ *
+ * This is almost a straight copy from Field UI, but with the addition
+ * that we can pass the view mode from which we want to clone from.
+ */
+function _ds_field_ui_clone_view_mode_settings($entity_type, $bundle, $view_mode, $copy_view_mode) {
+
+  $settings = field_bundle_settings($entity_type, $bundle);
+
+  // Update display settings for field instances.
+  $instances = field_read_instances(array('entity_type' => $entity_type, 'bundle' => $bundle));
+  foreach ($instances as $instance) {
+    // If this field instance has display settings defined for this view mode,
+    // respect those settings.
+    $instance['display'][$view_mode] = $instance['display'][$copy_view_mode];
+    field_update_instance($instance);
+  }
+
+  // Update display settings for 'extra fields'.
+  foreach (array_keys($settings['extra_fields']['display']) as $name) {
+    if (isset($settings['extra_fields']['display'][$name][$copy_view_mode])) {
+      $settings['extra_fields']['display'][$name][$view_mode] = $settings['extra_fields']['display'][$name][$copy_view_mode];
+    }
+  }
+
+  // Save the settings.
+  field_bundle_settings($entity_type, $bundle, $settings);
 }
 
 /**
@@ -1245,8 +1302,13 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, &$form, $
     $chosen_layout = $ds_layouts[$layout->layout];
     $layout_string = $layout->layout;
     if (empty($chosen_layout['flexible'])) {
+
+      if (isset($chosen_layout['module']) && $chosen_layout['module'] == 'panels') {
+        $layout_string = $chosen_layout['panels']['theme'];
+      }
+
       $selected = t('You have selected the %layout_label layout. The default template can be found in %path', array('%layout_label' => $chosen_layout['label'], '%path' => $chosen_layout['path']));
-      $suggestions = 'Possible template suggestions are:<ul>';
+      $suggestions = t('Template suggestions') . ':<ul>';
       $suggestions .= '<li>' . $layout_string . '--' . $entity_type . '.tpl.php</li>';
       $suggestions .= '<li>' . $layout_string . '--' . $entity_type . '-' . $bundle . '.tpl.php</li>';
       if (!isset($form_state['no_view_mode_suggestions'])) {
@@ -1347,7 +1409,7 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, &$form, $
         if ($row->view_mode == 'form') {
           continue;
         }
-        if ($row->entity_type == $entity_type && !isset($row->settings['ds_panels'])) {
+        if ($row->entity_type == $entity_type && $row->bundle == $bundle && !isset($row->settings['ds_panels'])) {
           $options[$row->id] = drupal_ucfirst($row->entity_type) . ' > ' . drupal_ucfirst($row->bundle) . ' > ' . drupal_ucfirst($row->view_mode);
         }
       }
@@ -1367,7 +1429,6 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, &$form, $
           '#type' => 'select',
           '#options' => $options,
           '#weight' => 20,
-          '#description' => t('Note that not all fields might be available.'),
         );
         $form['additional_settings']['ds_clone']['clone_submit'] = array(
           '#type' => 'submit',

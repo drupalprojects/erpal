@@ -27,9 +27,9 @@ function hook_test_ctools_plugin_api($module, $api) {
  * and reverted through the UI.
  */
 function hook_ds_field_settings_info() {
-  $ds_fieldsettings = array();
+  $dsfieldsettings = array();
 
-  $ds_fieldsetting = new stdClass;
+  $dsfieldsetting = new stdClass;
   $dsfieldsetting->disabled = FALSE; /* Edit this to true to make a default dsfieldsetting disabled initially */
   $dsfieldsetting->api_version = 1;
   $dsfieldsetting->id = 'node|article|default';
@@ -497,6 +497,24 @@ function hook_ds_panels_default_fields($entity_type, $bundle, $view_mode) {
   // Get the fields from Field API.
   $fields = field_info_instances($entity_type, $bundle);
   return $fields;
+}
+
+/**
+ * Alter the view mode just before it's rendered by the DS views entity plugin.
+ *
+ * @param $view_mode
+ *   The name of the view mode.
+ * @param $context
+ *   A collection of items which can be used to identify in what
+ *   context an entity is being rendered. The variable contains 3 keys:
+ *     - entity: The entity being rendered.
+ *     - view_name: the name of the view.
+ *     - display: the name of the display of the view.
+ */
+function hook_ds_views_view_mode_alter(&$view_mode, $context) {
+  if ($context['view_name'] == 'my_view_name') {
+    $view_mode = 'new_view_mode';
+  }
 }
 
 /**

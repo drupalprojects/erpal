@@ -128,6 +128,7 @@ function ds_extras_uninstall() {
   variable_del('ft-default');
   variable_del('ft-kill-colon');
   variable_del('ds_extras_contextual');
+  variable_del('ds_extras_hidden_region');
   db_drop_field('node_revision', 'ds_switch');
 }
 

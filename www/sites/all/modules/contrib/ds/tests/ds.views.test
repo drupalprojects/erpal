@@ -159,7 +159,7 @@ class dsViewsTests extends dsBaseTest {
     $this->assertRaw('<div class="group-left">
         <div class="views-row views-row-1 views-row-odd views-row-first">');
     $this->assertRaw('<div class="group-right">
-      <form class="rel-register-build" action="/ds-testing-6"');
+      <form class="rel-register-build" action="' . url('ds-testing-6') . '"');
     $this->assertRaw('<div class="group-footer">
       <p>Header text</p>');
   }

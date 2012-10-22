@@ -306,7 +306,7 @@ function ds_node_type_update($info) {
 }
 
 /**
- * Implements hook_node_type_update().
+ * Implements hook_node_type_delete().
  */
 function ds_node_type_delete($info) {
   module_load_include('inc', 'ds', 'ds.registry');
@@ -440,8 +440,13 @@ function ds_get_layout_info() {
     // Give modules a chance to alter the layouts information.
     drupal_alter('ds_layout_info', $layouts);
 
-    // Check that there is no 'content' region.
+    // Check that there is no 'content' region, but ignore panel layouts.
+    // Because when entities are rendered, the field items are stored into a
+    // 'content' key so fields would be overwritten before they're all moved.
     foreach ($layouts as $key => $info) {
+      if (isset($info['panels'])) {
+        continue;
+      }
       if (isset($info['regions']['content'])) {
         $errors[] = $key;
       }
@@ -523,7 +528,7 @@ function ds_get_fields($entity_type, $cache = TRUE) {
   // Get fields from cache.
   if (!$loaded) {
     $loaded = TRUE;
-    if ($cache && $cached_fields = cache_get('ds_fields')) {
+    if ($cache && $cached_fields = cache_get('ds_fields:' . $GLOBALS[LANGUAGE_TYPE_CONTENT]->language)) {
       $fields_cached = $static_fields = $cached_fields->data;
     }
   }
@@ -558,7 +563,7 @@ function ds_get_fields($entity_type, $cache = TRUE) {
 
       // Cache the fields.
       if ($cache) {
-        cache_set('ds_fields', $fields_cached, 'cache');
+        cache_set('ds_fields:' . $GLOBALS[LANGUAGE_TYPE_CONTENT]->language, $fields_cached, 'cache');
       }
     }
     else {
@@ -622,17 +627,19 @@ function ds_get_field_settings($entity_type, $bundle, $view_mode, $default = TRU
  *   The name of the bundle.
  * @param $view_mode
  *   The name of the view mode.
+ * @param $build
+ *   The current built of the entity.
  * @return $markup
  *   The markup of the field used for output.
  */
-function ds_get_field_value($key, $field, $entity, $entity_type, $bundle, $view_mode) {
+function ds_get_field_value($key, $field, $entity, $entity_type, $bundle, $view_mode, $build = array()) {
 
-  static $included_files = array();
-
+  $field['field_name'] = $key;
   $field['entity'] = $entity;
   $field['entity_type'] = $entity_type;
   $field['bundle'] = $bundle;
   $field['view_mode'] = $view_mode;
+  $field['build'] = $build;
 
   // Special case for ds_views which can handle custom fields now.
   if ($field['field_type'] != DS_FIELD_TYPE_PREPROCESS && $entity_type == 'ds_views') {
@@ -646,9 +653,8 @@ function ds_get_field_value($key, $field, $entity, $entity_type, $bundle, $view_
       break;
 
     case DS_FIELD_TYPE_FUNCTION:
-      if (isset($field['file']) && !isset($included_files[$field['file']])) {
-        $included_files[$field['file']] = TRUE;
-        include $field['file'];
+      if (isset($field['file'])) {
+        include_once $field['file'];
       }
       return $field['function']($field);
 
@@ -729,17 +735,19 @@ function ds_field_attach_view_alter(&$build, $context) {
     }
 
     $field = $fields[$key];
-    $field['formatter'] = $field_values[$key]['format'];
+    if (isset($field_values[$key]['format'])) {
+      $field['formatter'] = $field_values[$key]['format'];
+    }
 
     if (isset($field_values[$key]['formatter_settings'])) {
       $field['formatter_settings'] = $field_values[$key]['formatter_settings'];
     }
-    $field_value = ds_get_field_value($key, $field, $entity, $entity_type, $bundle, $view_mode);
+    $field_value = ds_get_field_value($key, $field, $entity, $entity_type, $bundle, $view_mode, $build);
 
     // Title label.
     if ($key == 'title' && $entity_type == 'node') {
       $node_type = node_type_get_type($entity);
-      $field['title'] = $node_type->title_label;
+      $field['title'] = function_exists('i18n_node_translate_type') ? i18n_node_translate_type($node_type->type, 'title_label') : $node_type->title_label;
     }
 
     if ($field_value) {
@@ -885,6 +893,9 @@ function ds_entity_variables(&$vars) {
         $vars[$region_name . '_classes'] = !empty($layout['settings']['classes'][$region_name]) ? ' ' . implode(' ', $layout['settings']['classes'][$region_name]) : '';
       }
     }
+
+    // Let other modules know we have rendered.
+    $vars['rendered_by_ds'] = TRUE;
   }
 }
 
@@ -934,7 +945,7 @@ function ds_render_region($content, $region, $layout) {
  * @return $output
  *   The output from eval.
  */
-function ds_php_eval($code, $entity) {
+function ds_php_eval($code, $entity, $build = array()) {
   global $theme_path, $theme_info, $conf;
 
   // Store current theme path.
@@ -988,7 +999,7 @@ function ds_render_code_field($field) {
       $value = check_markup($field['properties']['code']['value'], $format);
     }
     else {
-      $value = ds_php_eval($field['properties']['code']['value'], $field['entity']);
+      $value = ds_php_eval($field['properties']['code']['value'], $field['entity'], isset($field['build']) ? $field['build'] : array());
     }
     // Token support - check on token property so we don't run every single field through token.
     if (isset($field['properties']['use_token']) && $field['properties']['use_token'] == TRUE) {
@@ -1082,21 +1093,50 @@ function ds_render_block_field($field) {
   if (isset($block['content']) && is_array($block['content'])) {
     $block['content'] = drupal_render($block['content']);
   }
-  if (!empty($block)) {
+  if (!empty($block['content'])) {
+
+    global $theme_key;
+    $block_title = db_query("SELECT title FROM {block} WHERE module = :module AND delta = :delta AND theme = :theme", array(':module' => $module, ':delta' => $delta, ':theme' => $theme_key))->fetchField();
+    if (!empty($block_title)) {
+      $block['subject'] = $block_title == '<none>' ? '' : check_plain($block_title);
+    }
+
+    // i18n support.
+    if (function_exists('i18n_block_block_view_alter')) {
+      // Check language visibility.
+      global $language;
+      static $block_languages = FALSE;
+      if (!$block_languages) {
+        $block_languages = array();
+        $result = db_query('SELECT module, delta, language FROM {i18n_block_language}');
+        foreach ($result as $record) {
+          $block_languages[$record->module][$record->delta][$record->language] = TRUE;
+        }
+      }
+      if (isset($block_languages[$module][$delta]) && !isset($block_languages[$module][$delta][$language->language])) {
+        return;
+      }
+
+      // Translate.
+      $i18n_block = db_query("SELECT * FROM {block} WHERE module = :module AND delta = :delta", array(':module' => $module, ':delta' => $delta))->fetchObject();
+      if (!empty($i18n_block->i18n_mode)) {
+        i18n_block_block_view_alter($block, $i18n_block);
+        // OH WTF ...
+        if (!empty($i18n_block->title)) {
+          $block['subject'] = $i18n_block->title;
+        }
+      }
+    }
+
+    $block = (object) $block;
     switch ($field['properties']['block_render']) {
       case DS_BLOCK_TEMPLATE:
-        global $theme_key;
-        $block = (object) $block;
         if (!isset($block->subject)) {
           $block->subject = NULL;
         }
         $block->region = NULL;
         $block->module = $module;
         $block->delta = $delta;
-        $block_title = db_query("SELECT title FROM {block} WHERE module = :module AND delta = :delta AND theme = :theme", array(':module' => $module, ':delta' => $delta, ':theme' => $theme_key))->fetchField();
-        if (!empty($block_title)) {
-          $block->subject = $block_title == '<none>' ? '' : check_plain($block_title);
-        }
         $elements = array('elements' => array('#block' => $block, '#children' => $block->content));
         // Add contextual links
         if (module_exists('contextual') && user_access('access contextual links')) {
@@ -1105,12 +1145,10 @@ function ds_render_block_field($field) {
         return theme('block', $elements);
         break;
       case DS_BLOCK_TITLE_CONTENT:
-        $content = '<h2 class="block-title">' . $block['subject'] . '</h2>';
-        $content .= $block['content'];
-        return $content;
+        return '<h2 class="block-title">' . $block->subject . '</h2>' . $block->content;
         break;
       case DS_BLOCK_CONTENT:
-        return $block['content'];
+        return $block->content;
         break;
     }
   }
@@ -1172,6 +1210,11 @@ function ds_render_field($field) {
  */
 function ds_render_author_field($field) {
 
+  // Users without a user name are anonymous users. These are never linked.
+  if (empty($field['entity']->name)) {
+    return check_plain(variable_get('anonymous', t('Anonymous')));
+  }
+
   if ($field['formatter'] == 'author') {
     return $field['entity']->name;
   }
@@ -1200,7 +1243,7 @@ function ds_return_picture($entity) {
   // Gravatar support.
   if (module_exists('gravatar')) {
     if (!isset($entity->mail)) {
-      $entity->mail = '';
+      $entity = _gravatar_load_account($entity);
     }
     $entity->picture = _gravatar_get_account_user_picture($entity);
   }

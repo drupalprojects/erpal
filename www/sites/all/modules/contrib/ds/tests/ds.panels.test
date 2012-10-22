@@ -86,7 +86,7 @@ class dsPanelViewModesTests extends dsBaseTest {
 
     variable_set('ds_extras_panel_view_modes', TRUE);
     $this->refreshVariables();
-    cache_clear_all('ds_fields', 'cache');
+    cache_clear_all('ds_fields:', 'cache', TRUE);
     cache_clear_all('entity_info:', 'cache', TRUE);
     cache_clear_all('theme_registry:', 'cache', TRUE);
     cache_clear_all('module_implements', 'cache_bootstrap');
@@ -272,7 +272,7 @@ class dsPanelViewModesTests extends dsBaseTest {
     // trigger any notices in entity_info_alter and on display of entities itself.
     variable_set('ds_extras_panel_view_modes', FALSE);
     $this->refreshVariables();
-    cache_clear_all('ds_fields', 'cache');
+    cache_clear_all('ds_fields:', 'cache', TRUE);
     cache_clear_all('entity_info:', 'cache', TRUE);
     cache_clear_all('theme_registry:', 'cache', TRUE);
     cache_clear_all('module_implements', 'cache_bootstrap');

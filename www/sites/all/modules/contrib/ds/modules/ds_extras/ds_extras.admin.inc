@@ -90,7 +90,7 @@ function ds_extras_settings($form) {
     $form['additional_settings']['fs3']['ds_extras_panel_view_modes'] = array(
       '#type' => 'checkbox',
       '#title' => t('Use the Panels editor on the \'Manage Display\' screen'),
-      '#description' => t('Use the Panels editor instead of Field UI to manage your layout.'),
+      '#description' => t('Use the Panels editor instead of Field UI to manage your layout. Note that this feature is better managed by the 7.x-3.x branch of the Panelizer project.'),
       '#default_value' => variable_get('ds_extras_panel_view_modes', FALSE),
     );
     $form['additional_settings']['fs3']['ds_extras_editor_switch'] = array(
@@ -114,7 +114,7 @@ function ds_extras_settings($form) {
   $form['additional_settings']['fs4']['ds_extras_switch_view_mode'] = array(
     '#type' => 'checkbox',
     '#title' => t('View mode per node'),
-    '#description' => t('Change view modes for individual nodes. A new tab \'Display settings\' will appear on the content create form.<br />You can also pass the name of a view mode through the URL, eg node/x?v=full.'),
+    '#description' => t('Change view modes for individual nodes. A new tab \'Display settings\' will appear on the content create form.<br />You can also pass the name of a view mode through the URL, eg node/x?v=full.<br />If you install the Page manager module and override the node view, Page manager will win.'),
     '#default_value' => variable_get('ds_extras_switch_view_mode', FALSE),
   );
 
@@ -130,6 +130,13 @@ function ds_extras_settings($form) {
     '#title' => t('Revision view mode'),
     '#description' => t('Make new view mode "Revision" available which can be used to style the revision of a node.'),
     '#default_value' => variable_get('ds_extras_revision_view_mode', FALSE),
+  );
+
+  $form['additional_settings']['fs4']['ds_extras_hidden_region'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hidden region'),
+    '#description' => t('Add a hidden region to the layouts. Fields will be built but not printed.'),
+    '#default_value' => variable_get('ds_extras_hidden_region', FALSE),
   );
 
   if (module_exists('contextual') && module_exists('field_ui')) {
@@ -239,7 +246,7 @@ function ds_extras_select_layout_editor($entity_type, $bundle_arg, $view_mode) {
  * Submit callback: Extras settings screen.
  */
 function ds_extras_settings_submit($form, &$form_state) {
-  cache_clear_all('ds_fields', 'cache');
+  cache_clear_all('ds_fields:', 'cache', TRUE);
   cache_clear_all('entity_info:', 'cache', TRUE);
   cache_clear_all('theme_registry:', 'cache', TRUE);
   cache_clear_all('module_implements', 'cache_bootstrap');
@@ -701,8 +708,8 @@ function _ds_extras_page_title_options($settings, $entity_type) {
     '#weight' => 101,
     '#states' => array(
       'visible' => array(
-        ':input[name="page_option_type"]' => array('value' => '2'),
-        ':input[name="additional_settings[ds_page_title_options][page_option_type]"]' => array('value' => '2'),
+        array(':input[name="page_option_type"]' => array('value' => '2')),
+        array(':input[name="additional_settings[ds_page_title_options][page_option_type]"]' => array('value' => '2')),
       ),
     ),
   );
@@ -717,8 +724,8 @@ function _ds_extras_page_title_options($settings, $entity_type) {
     '#weight' => 102,
     '#states' => array(
       'visible' => array(
-        ':input[name="page_option_type"]' => array('value' => '2'),
-        ':input[name="additional_settings[ds_page_title_options][page_option_type]"]' => array('value' => '2'),
+        array(':input[name="page_option_type"]' => array('value' => '2')),
+        array(':input[name="additional_settings[ds_page_title_options][page_option_type]"]' => array('value' => '2')),
       ),
     ),
   );

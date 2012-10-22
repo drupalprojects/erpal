@@ -198,7 +198,7 @@ class views_plugin_ds_entity_view extends views_plugin_row {
       $form['grouping_fieldset']['group_field_function'] = array(
         '#type' => 'textfield',
         '#title' => 'Heading function',
-        '#description' => check_plain(t('The value of the field can be in a very raw format (eg, date created). Enter a custom function which you can use to format that value. The value and the object will be passed into that function eg. <em>custom_function($raw_value, $object);</em>')),
+        '#description' => check_plain(t('The value of the field can be in a very raw format (eg, date created). Enter a custom function which you can use to format that value. The value and the object will be passed into that function eg. custom_function($raw_value, $object);')),
         '#default_value' => isset($this->options['grouping_fieldset']['group_field_function']) ? $this->options['grouping_fieldset']['group_field_function'] : '',
       );
     }
@@ -217,7 +217,7 @@ class views_plugin_ds_entity_view extends views_plugin_row {
     $form['advanced_fieldset']['advanced'] = array(
       '#type' => 'checkbox',
       '#title' => t('Use the advanced view mode selector'),
-      '#description' => t('This gives you the opportunity to have full control of a list for really advanced features.<br /> There is no UI for this, you need to create a function named like this: <strong><em>ds_views_row_adv_@VIEWSNAME($entity, $view_mode, $load_comments)</em></strong>.<br />See <a href="http://drupal.org/node/697320#ds_views_row_adv_VIEWSNAME">http://drupal.org/node/697320#ds_views_row_adv_VIEWSNAME</a> for an example.', array('@VIEWSNAME' => $this->view->name)),
+      '#description' => t('This gives you the opportunity to have full control of a list for really advanced features.<br /> There is no UI for this, you need to create a function named like this: ds_views_row_adv_@VIEWSNAME($entity, $view_mode, $load_comments).<br />See <a href="http://drupal.org/node/697320#ds_views_row_adv_VIEWSNAME">http://drupal.org/node/697320#ds_views_row_adv_VIEWSNAME</a> for an example.', array('@VIEWSNAME' => $this->view->name)),
       '#default_value' => $this->options['advanced'],
     );
   }
@@ -263,9 +263,16 @@ class views_plugin_ds_entity_view extends views_plugin_row {
         break;
       case 'taxonomy_term_data':
         $this->entities = taxonomy_term_load_multiple($ids);
+        if (function_exists('i18n_taxonomy_localize_terms')) {
+          global $language;
+          foreach($this->entities as $index => &$entity) {
+            $entity = i18n_taxonomy_localize_terms($entity, $language->language);
+          }
+        }
         break;
       case 'file_managed':
         $this->entities = file_load_multiple($ids);
+        break;
       case 'micro':
         $this->entities = entity_load($this->base_table, $ids);
         break;
@@ -308,6 +315,13 @@ class views_plugin_ds_entity_view extends views_plugin_row {
       }
     }
 
+    // Give modules a chance to alter the $view_mode. Use $view_mode by ref.
+    $context = array(
+      'entity' => $this->entities[$row->{$this->field_alias}],
+      'view_name' => $this->view->name,
+      'display' => $this->view->current_display
+    );
+    drupal_alter('ds_views_view_mode', $view_mode, $context);
     // Call the row render function.
     $content = $this->ds_views_row_render_entity($view_mode, $row, $load_comments);
 
@@ -424,4 +438,3 @@ function ds_views_row_render_micro($entity, $view_mode, $load_comments) {
   $element = micro_view($entity, $view_mode);
   return drupal_render($element);
 }
-

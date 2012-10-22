@@ -31,13 +31,12 @@ $plugin = array(
 function ds_dsc_content_type_render($subtype, $conf, $panel_args, $context, $incoming) {
   $block = new stdClass();
 
-  $entity = array_shift($context);
-  $entity = $entity->data;
-
   $field = array();
+
+  $entity = array_shift($context);
+  $field['entity'] = isset($entity->data) ? $entity->data : NULL;
   $field['properties']['code']['format'] = $conf['format'];
   $field['properties']['code']['value'] = $conf['body'];
-  $field['entity'] = $entity;
 
   $block->module = 'ds';
   $block->title = $conf['title'];

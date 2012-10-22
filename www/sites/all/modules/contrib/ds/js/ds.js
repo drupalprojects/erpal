@@ -205,8 +205,13 @@ Drupal.fieldUIDisplayOverview.ds = function (row, data) {
   this.region = data.region;
   this.tableDrag = data.tableDrag;
 
+  // Attach change listener to the 'region' select.
   this.$regionSelect = $('select.ds-field-region', row);
   this.$regionSelect.change(Drupal.fieldUIOverview.onChange);
+
+  // Attach change listener to the 'formatter type' select.
+  this.$formatSelect = $('select.field-formatter-type', row);
+  this.$formatSelect.change(Drupal.fieldUIOverview.onChange);
 
   return this;
 };
@@ -239,7 +244,7 @@ Drupal.fieldUIDisplayOverview.ds.prototype = {
   regionChange: function (region) {
 
      // Replace dashes with underscores.
-     region = region.replace('-', '_');
+     region = region.replace(/-/g, '_');
 
      // Set the region of the select list.
      this.$regionSelect.val(region);

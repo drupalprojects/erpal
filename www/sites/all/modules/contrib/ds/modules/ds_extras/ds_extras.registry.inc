@@ -12,9 +12,22 @@ function _ds_extras_menu_alter(&$items) {
 
   // Switch view mode.
   if (variable_get('ds_extras_switch_view_mode', FALSE)) {
-    $items['node/%node']['page callback'] = 'ds_extras_node_page_view';
-    $items['node/%node']['file'] = 'ds_extras.pages.inc';
-    $items['node/%node']['file path'] = drupal_get_path('module', 'ds_extras');
+
+    // Check if page manager is overriding.
+    $skip_node_override = FALSE;
+    if (module_exists('page_manager')) {
+      if ($task = page_manager_get_task('node_view')) {
+        if (isset($task['disabled']) && !$task['disabled']) {
+          $skip_node_override = TRUE;
+        }
+      }
+    }
+
+    if (!$skip_node_override) {
+      $items['node/%node']['page callback'] = 'ds_extras_node_page_view';
+      $items['node/%node']['file'] = 'ds_extras.pages.inc';
+      $items['node/%node']['file path'] = drupal_get_path('module', 'ds_extras');
+    }
   }
 
   // Revision view mode.
@@ -197,8 +210,10 @@ function _ds_extras_module_implements_alter(&$implementations, $hook) {
     'contextual_links_view_alter',
     'admin_paths',
   );
-  if ((!variable_get('ds_extras_contextual', FALSE) && in_array($hook, $con_hooks)) || !module_exists('field_ui')) {
-    unset($implementations['ds_extras']);
+  if ((!variable_get('ds_extras_contextual', FALSE) && in_array($hook, $con_hooks))) {
+    if (!module_exists('field_ui')) {
+      unset($implementations['ds_extras']);
+    }
   }
 
   // Region to block
