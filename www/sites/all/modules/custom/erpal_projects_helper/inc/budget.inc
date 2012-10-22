@@ -494,9 +494,9 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
         $timetracking_node_new->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'] = $timetracking_node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
         $timetracking_node_new->field_date_time[LANGUAGE_NONE][0]['value'] = $timetracking_node->field_date_time[LANGUAGE_NONE][0]['value'];  //no time till because this is not neccessary in the splitted timetracking node
         $timetracking_node_new->field_billing_duration[LANGUAGE_NONE][0]['value'] = $rest_hours;
-        $timetracking_node_new->field_duration[LANGUAGE_NONE][0]['value'] = 0;  //for statistic reasons we have the total
+        $timetracking_node_new->field_timetracking_duration[LANGUAGE_NONE][0]['value'] = -1;  //for statistic reasons we have the total
         //duration at the timtracking node inserted by the user, so here we have no further duration. Only billing_duration 
-        //will be dplit because it is used to calculate budgets and billables
+        //will be dplit because it is used to calculate budgets and billables. We cannot split the duration because we dont know where to split if duration and billing duration have different values
         node_object_prepare($timetracking_node_new);
         $timetracking_node_new->uid = $timetracking_node->uid;
         node_save($timetracking_node_new);  //start recursion to save this timetracking node to budget...

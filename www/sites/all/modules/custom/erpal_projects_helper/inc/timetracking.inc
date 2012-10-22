@@ -321,10 +321,9 @@ function erpal_projects_helper_node_presave_timetracking($node) {
   $time_duration = round($diff_duration, 2); //round with 2 digits
   
   $duration = 0;
-  if (isset($node->field_timetracking_duration[LANGUAGE_NONE][0]))
-    if (isset($node->field_timetracking_duration[LANGUAGE_NONE][0]['value']))
-      $duration = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
-  
+  if (isset($node->field_timetracking_duration[LANGUAGE_NONE][0]['value']))
+    $duration = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+
   if (!$duration)
     $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'] = $time_duration;
   
@@ -335,6 +334,15 @@ function erpal_projects_helper_node_presave_timetracking($node) {
   
   if (!$billing_duration)
     $node->field_billing_duration[LANGUAGE_NONE][0]['value'] = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+  
+  //if node doesn't have a duration, but billing duration, set duration to billing duration.
+  if (!$duration && $billing_duration && !(isset($node->nid) && $node->nid)) {
+    $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'] = $billing_duration;
+  }
+  dpm($node);
+  //may be the duration was set to -1 in _erpal_projects_billable_book_timetracking_to_budget which signals that we dont want to change that value in presave routine.
+  if ($node->field_timetracking_duration[LANGUAGE_NONE][0]['value'] < 0)
+    $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'] = 0; 
   
   return $duration;
 }
