@@ -30,6 +30,7 @@ dependencies[] = og
 dependencies[] = options
 dependencies[] = page_manager
 dependencies[] = panels
+dependencies[] = panels_style_collapsible
 dependencies[] = references_dialog
 dependencies[] = strongarm
 dependencies[] = taxonomy
