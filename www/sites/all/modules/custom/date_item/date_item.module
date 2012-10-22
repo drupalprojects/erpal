@@ -639,19 +639,18 @@ function date_item_form_alter(&$form, &$form_state, $form_id) {
 * Checks if calculations with this date field type are allowed according to data structure
 */
 function _date_item_date_type_allowed($type) {
-  return true; //because of date API magic we cann support all date types
-  return $type == 'datestamp' || $type == 'datetime';
+  return $type == 'datestamp' || $type == 'datetime' || $type == 'date';
 }
 
 /**
 * Provide settings on date fields to add date item on save
 */
 function _date_item_field_settings_form_alter(&$form, &$form_state) {
-dpm($form);
+  
   //check it is date field
   if (_date_item_date_type_allowed($form['#field']['type']) && $form['#instance']['entity_type'] != 'date_item') {
     
-    $date_item_instance = $form['#instance']['date_item'];
+    $date_item_instance = isset($form['#instance']['date_item']) ? $form['#instance']['date_item'] : array();
     $field_name = $form['#instance']['field_name'];
     $entity_type = $form['#instance']['entity_type'];
     $bundle = $form['#instance']['bundle'];
