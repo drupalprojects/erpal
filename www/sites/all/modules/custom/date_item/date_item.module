@@ -386,27 +386,30 @@ function _date_entity_entity_bundle($entity, $entity_type) {
 * Creates the date item entity and updates them
 * @param $entity the entity where the date field is attached that created date entities
 */
-function _date_item_update_date_items_process($entity, $field_name, $field_data, $entity_type, $bundle) {
+function _date_item_update_date_items_process($entity, $field_name, $field_data, $entity_type, $bundle, $non_date_field=false) {
   global $user;
  
   if (!isset($field_data[LANGUAGE_NONE][0]))
     $field_data[LANGUAGE_NONE][0] = false;  //so if there are date_items but no date any more, the date items will be reset.
 
   //load the field instance and get the date_item_type to create
-  $field_instance = field_info_instance($entity_type, $field_name, $bundle);
-  
-  $create_items = isset($field_instance['date_item']['create_date_item']) ? $field_instance['date_item']['create_date_item'] : false;
+  if (!$non_date_field) {
+    //if $non_date_field IS SET, we force to create date_items
+    $field_instance = field_info_instance($entity_type, $field_name, $bundle);
+    
+    $create_items = isset($field_instance['date_item']['create_date_item']) ? $field_instance['date_item']['create_date_item'] : false;
 
-  if (!$create_items)
-    return;  //this field should not create date items
+    if (!$create_items)
+      return;  //this field should not create date items
+  }
 
   $date_item_type = $field_instance['date_item']['date_item_type'];
   
-  //get all entites that are already saved to this field
   $properties = _date_item_get_properties_of_entity($entity);  
   if (!$properties)
     return;
 
+  //get all entites that are already saved to this field
   $date_items = _date_item_get_items($field_name, $properties['type'], $properties['id'], time());  //only items in the future
 
   //check if there are date items that should not be in the rang, these items will be deleted
@@ -528,6 +531,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     
   }
 }
+
 
 /**
 * Implements hook_entity_presave

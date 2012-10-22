@@ -142,6 +142,7 @@ body.panels-ipe{
 .panels-flexible-column-erpal_panel_layout-main{
 	margin-left: -2px;
     width: 100%;
+	float: left;
 }
 .panels-flexible-row.panels-flexible-row-erpal_panel_layout-5.panels-flexible-row-first.clearfix.tabs-region{
 	margin-bottom: 30px;
@@ -157,14 +158,32 @@ body.panels-ipe{
 /* =============================================================================
  *   first row - middle section
  * ========================================================================== */
-.panels-flexible-row-erpal_panel_layout-1-middle {
-    margin-right: 270px;
-}
- .panels-flexible-region-erpal_panel_layout-row_first_right {
+.panels-flexible-region-erpal_panel_layout-row_first_right {
     margin-left: 20px;
 }
 .row-first-left{
 	min-width: 360px;
 }
 
+/* =============================================================================
+ *   erpal_content_layout
+ * ========================================================================== */
+.erpal-content-layout-template .region-sidebar-left{
+	float: left;
+}
+.erpal-content-layout-template .region-sidebar-right{
+	float: right;
+}
+.erpal-content-layout-template .region-sidebar-right{
+    margin: 0 0 0 -270px;
+    width: 250px;
+}
+.erpal-content-layout-template .content-inner{
+	padding-bottom: 30px;
+	clear: both;
+}
+.erpal-content-layout-template .region-sidebar-left{
+	margin-right: 280px;
+	min-width: 360px;
+}
 

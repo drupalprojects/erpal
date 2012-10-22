@@ -3,7 +3,24 @@
  * @file
  * Code for the erpal_contract_helper module.
  */
+module_load_include('inc', 'erpal_contract_helper', 'inc/config');
+ 
+ 
+/**
+* Implements hook_menu
+*/ 
+function erpal_contract_helper_menu(){
 
+  $items = array();
+
+  require_once 'inc/config.inc';
+  $config_items = _erpal_contract_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+ 
+ 
 /**
 * Implements hook_permission
 */
@@ -119,6 +136,8 @@ function erpal_contract_helper_cron() {
  _erpal_contract_helper_check_payments();
  
   _erpal_contract_helper_check_budgets();
+  
+  _erpal_contract_helper_calculate_cancelation_dates();
 }
 
 /**
@@ -377,4 +396,111 @@ function _erpal_contract_helper_get_contracts_to_bill() {
   }
   
   return $contract_nodes;
+}
+
+/**
+* pre-Calculates cancelation dates for alln contracts that have no end date set in the past and created date_item entites for that
+*/
+function _erpal_contract_helper_calculate_cancelation_dates() {
+  $active_contract_nids = _erpal_contract_helper_get_active_contracts();
+  
+  //now precalculate for each contract if not precalculated
+  $field_name_first_duration = 'field_contract_duration';
+  $field_name_repeating_duration = 'field_repeating_duration';
+  foreach ($active_contract_nids as $contract_nid) {
+    //check, if there is any cancelation data set
+    $contract_node = node_load($contract_nid);
+ 
+    $field_cancelation_period = isset($node->field_cancelation_period[LANGUAGE_NONE][0]['value']) ? $node->field_cancelation_period[LANGUAGE_NONE][0]['value'] : false;
+    
+    $field_cancelation_period_con = isset($node->field_cancelation_period_con[LANGUAGE_NONE][0]['value']) ? $node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] : $field_cancelation_period;
+    
+    $period_unit = isset($node->field_cancelation_period_unit[LANGUAGE_NONE][0]['value']) ? $node->field_cancelation_period_unit[LANGUAGE_NONE][0]['value'] : false;
+    
+    $contract_duration = isset($node->field_contract_duration[LANGUAGE_NONE][0]['value']) ? $node->field_contract_duration[LANGUAGE_NONE][0]['value'] : false;
+    
+    $repeating_duration = isset($node->field_repeating_duration[LANGUAGE_NONE][0]['value']) ? $node->field_repeating_duration[LANGUAGE_NONE][0]['value'] : $contract_duration;
+    
+    $start_date = isset($node->field_date[LANGUAGE_NONE][0]['value']) ? $node->field_date[LANGUAGE_NONE][0]['value'] : false;
+    if ($start_date)
+      $start_date = _date_item_as_unix_timestamp($start_date);    
+    
+    //for date_item first, we only need one date_item entity
+    $date_items_first = _date_item_get_items($field_name_first_duration, 'node', $contract_nid, time());
+    $start_offset = time();
+    
+    //calculate the first cancelation time
+    _erpal_contract_helper_cancelation_date_items_process($start_offset, $duration, $period_unit, $contract_node, 'field_contract_duration', 1);
+    
+    //calculate the other cancelation times
+    _erpal_contract_helper_cancelation_date_items_process($start_offset, $duration, $period_unit, $contract_node, 'field_contract_duration');
+  }
+}
+
+/**
+* creates a date item for the given 
+* @param $max_count if set, only that amount of date items will be created
+*/
+function _erpal_contract_helper_cancelation_date_items_process($start_offset, $duration, $duration_unit, $contract_node, $field_name, $max_count=0) {
+  $date_str = date('Y-m-d H:i:s', $start_offset);
+  
+  $calculation_range_days = _erpal_contract_helper_cancelation_precalculate_range();
+  $max_calculation_date = strtotime('+'.$calculation_range_days.' days', $date_str);
+  
+  $entity_type = 'node';
+  $bundle = 'erpal_contract';
+  
+  $field_data = array();
+  //now get all values in the date range and put them in the field_data array in the same way a date field does
+  
+  $current_date_unix = $start_offset;
+  while ($current_date_unix < $max_calculation_date) {
+  
+    $field_data[] = array(
+      'value' => $current_date_unix,
+      'value2' => false,
+      'timezone' => date_default_timezone(),
+      'offset' => false, //@TODO set value here?
+      'offset2' => false, //@TODO set value here?
+    );
+  
+    $current_date_sql = date('Y-m-d H:i:s', $current_date_unix);
+    $next_date_unix = strtotime('+'.$duration.' '.$duration_unit.'s', $current_date_sql);
+dpm(date('Y-m-d H:i:s', $next_date_unix));
+    
+    if ($max_count && count($field_data) >= $max_count)
+      break;
+  }
+dpm($field_data);
+return;
+  _date_item_update_date_items_process($contract_node, $field_name, $field_data, $entity_type, $bundle, true);
+}
+
+/**
+* returns all contract nids that have no end date set bevore the given $date
+*/
+function _erpal_contract_helper_get_active_contracts($date=false) {
+  if (!$date)
+    $date = time();
+  
+  //date field is mysql date format so format the variable to match this format
+  $date_sql = date('Y-m-d 23:59:59', $date);
+  
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_contract')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_date', 'value', $date_sql, '>')
+    ->range(0, 10)
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  $contract_nids = array();
+  if (isset($result['node'])) {
+    $contract_nids = array_keys($result['node']);
+  }
+  
+  return $contract_nids;
 }
