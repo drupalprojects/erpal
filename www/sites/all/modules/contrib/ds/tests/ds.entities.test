@@ -27,7 +27,7 @@ class dsNodeTests extends dsBaseTest {
   function entitiesTestSetup($label = 'above') {
 
     // Create a node.
-    $settings = array('type' => 'article');
+    $settings = array('type' => 'article', 'promote' => 1);
     $node = $this->drupalCreateNode($settings);
 
     // Create field styles.
@@ -73,7 +73,7 @@ class dsNodeTests extends dsBaseTest {
    */
   function entitiesClearFieldSettings() {
     db_query('TRUNCATE {ds_field_settings}');
-    cache_clear_all('ds_fields', 'cache');
+    cache_clear_all('ds_fields:', 'cache', TRUE);
     cache_clear_all('ds_field_settings', 'cache');
   }
 
@@ -195,11 +195,25 @@ class dsNodeTests extends dsBaseTest {
           '. $node->title . '        </h1>');
 
     // Use page title substitutions.
-    $edit = array('additional_settings[ds_page_title_options][page_option_type]' => '2', 'additional_settings[ds_page_title_options][page_option_title]' => '%node:type');
+    $edit = array('additional_settings[ds_page_title_options][page_option_type]' => '2', 'additional_settings[ds_page_title_options][page_option_title]' => 'Change title: %node:type');
     $this->dsConfigureUI($edit, 'admin/structure/types/manage/article/display/teaser');
     $this->drupalGet('node/' . $node->nid);
     $this->assertRaw('<h1 class="title" id="page-title">
-          '. $node->type . '        </h1>');
+          Change title: '. $node->type . '        </h1>');
+    $edit = array('additional_settings[ds_page_title_options][page_option_type]' => '0');
+    $this->dsConfigureUI($edit, 'admin/structure/types/manage/article/display/teaser');
+
+    // Go to home page, page title shouldn't bleed here
+    // see http://drupal.org/node/1446554.
+    $edit = array('ds_switch' => '');
+    $this->drupalPost('node/' . $node->nid . '/edit', $edit, t('Save'));
+    $edit = array('additional_settings[ds_page_title_options][page_option_type]' => '2', 'additional_settings[ds_page_title_options][page_option_title]' => 'Bleed title: %node:type');
+    $this->dsConfigureUI($edit, 'admin/structure/types/manage/article/display');
+    $this->drupalGet('node/' . $node->nid);
+    $this->assertRaw('<h1 class="title" id="page-title">
+          Bleed title: '. $node->type . '        </h1>');
+    $this->drupalGet('node');
+    $this->assertNoText('Bleed title');
 
     // Test revisions. Enable the revision view mode
     $edit = array('additional_settings[modes][view_modes_custom][revision]' => '1');

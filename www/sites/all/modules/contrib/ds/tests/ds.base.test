@@ -525,7 +525,7 @@ class dsLayoutsStylesTests extends dsBaseTest {
     $record->view_mode = 'default';
     $record->settings = $field_settings;
     drupal_write_record('ds_field_settings', $record, array('id'));
-    cache_clear_all('ds_fields', 'cache');
+    cache_clear_all('ds_fields:', 'cache', TRUE);
     cache_clear_all('ds_field_settings', 'cache');
 
 

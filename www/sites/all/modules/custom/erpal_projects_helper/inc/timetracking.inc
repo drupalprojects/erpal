@@ -27,15 +27,24 @@ function erpal_projects_helper_summed_timetracking($node) {
   $field_info = field_info_field('field_timetracking_duration');
   $sql_arr = $field_info['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
   $field_name = array_keys($sql_arr);  
-  $field_name_table = $field_name[0];
-  $value_field = $sql_arr[$field_name_table]['value'];
+  $field_name_table_duration = $field_name[0];
+  $value_field_duration = $sql_arr[$field_name_table_duration]['value'];
+  
+  //get table for field_timetracking_subject
+  $field_info = field_info_field('field_timetracking_subject');
+  $sql_arr = $field_info['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
+  $field_name = array_keys($sql_arr);  
+  $field_name_table_subject = $field_name[0];
+  $value_field_subject = $sql_arr[$field_name_table_subject]['target_id'];
 
-  $query = db_select($field_name_table,"f");
-  $query->addExpression("SUM(".$value_field.")", 'time');
+  $query = db_select($field_name_table_duration,"f");
+  $query->join($field_name_table_subject, 's', 'f.revision_id = s.revision_id');
+  $query->condition('s.'.$value_field_subject, $node->nid);
+  $query->addExpression("SUM(".$value_field_duration.")", 'time');
   $res = $query->execute()->fetchAssoc();
   
   $time = $res['time'];
-  
+
   return $time;
 }
 

@@ -406,6 +406,9 @@ function feature_erpal_project_basic_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'view_row_details' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
