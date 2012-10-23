@@ -85,6 +85,22 @@ function  _erpal_contract_helper_field_budget_booking_validate($entity){
 * Function calculates the next booking dates for budgets and payments 
 */
 function _erpal_contract_helper_recalculate_contract($contract_node) {
+  
+  //set empty fields if possible
+  $field_cancelation_period_con = isset($contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_cancelation_period = isset($contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_contract_duration = isset($contract_node->field_contract_duration[LANGUAGE_NONE][0]['value']) ? $contract_node->field_contract_duration[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_repeating_duration = isset($contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value']) ? $contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value'] : false;
+  
+  if ($field_cancelation_period && !$field_cancelation_period_con)
+    $contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] = $field_cancelation_period;
+    
+  if ($field_contract_duration && !$field_repeating_duration)
+    $contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value'] = $field_contract_duration;
+  
   //calculate payment dates
   $payment_entity_id = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['value'];
   $payment_fields = entity_load('field_collection_item', array($payment_entity_id));
@@ -163,21 +179,21 @@ function _erpal_contract_helper_contract_node_validate($node, $form, &$form_stat
     form_set_error('field_cancelation_period', t('If you set a duration please set cancelation period, too.'));
     
   if ($field_cancelation_period) {
-    if ($field_cancelation_period > $field_contract_duration) {
+    if ($field_contract_duration && $field_cancelation_period > $field_contract_duration) {
       form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract duration'));
     }    
     
-    if ($field_cancelation_period > $field_repeating_duration) {
+    if ($field_repeating_duration && $field_cancelation_period > $field_repeating_duration) {
       form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract repeating duration'));
     } 
   }
   
   if ($field_cancelation_period_con) {
-    if ($field_cancelation_period_con > $field_contract_duration) {
+    if ($field_contract_duration && $field_cancelation_period_con > $field_contract_duration) {
       form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract duration'));
     }
     
-    if ($field_cancelation_period_con > $field_repeating_duration) {
+    if ($field_repeating_duration && $field_cancelation_period_con > $field_repeating_duration) {
       form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract repeating duration'));
     } 
   }
