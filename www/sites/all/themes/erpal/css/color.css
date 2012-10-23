@@ -1,5 +1,5 @@
 body{
-    color: #3B3B3B;
+    color: #525252;
 	background: #E5E5E5;
 }
 
@@ -138,4 +138,56 @@ h2.pane-title {
 }
 h1 {
 	color: #525252;
+}
+
+/*
+ *  tabs buttons
+ */
+.region-sidebar-right .pane-page-actions li a{
+	color: #888888;
+	background-color: #dedede;
+	border: 1px solid #eeeeee;
+}
+
+#mini-panel-task_status_panel{
+	background-color: #dddddd;
+	color: #525252;
+}
+.region-sidebar-left .pane-entity-field h2.pane-title {
+    color: #525252;
+}
+.region-sidebar-left .tabs-processed  .ui-widget-header{
+	border: none;
+}
+#mini-panel-task_content_panel .ui-tabs .ui-tabs-panel{
+	background-color: #EEEEEE;
+}
+#mini-panel-task_content_panel .ui-state-active{
+	background-color: #F6F6F6 !important;
+}
+#mini-panel-task_content_panel .ui-state-active a{
+	color: #525252 !important;
+}
+#mini-panel-task_content_panel .ui-widget-content a {
+    color: #888888;
+}
+#mini-panel-task_content_panel .ui-state-default{
+	background-image: none;
+	background-color: #dedede;
+	border: 1px solid #eeeeee;
+}
+.ctools-collapsible-container {
+	background-color: #DEDEDE;
+	border: 1px solid #EEEEEE;
+}
+.ctools-collapsible-processed h2.pane-title {
+    background-color: #AFAFAF;
+	color: #525252;
+}
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
+	background: none;
+	color: #525252;
+}
+.ctools-collapsible-processed .panel-separator{
+	border-bottom: 1px solid #EEEEEE;
 }

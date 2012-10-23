@@ -149,7 +149,7 @@ function _erpal_projects_helper_task_links(&$data, $task_node, $router_item=fals
   if (user_access('use quick timetracking')) {
     $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($task_node->nid);
     $data['actions']['output'][] = array(
-      '#markup' => $timetracking_button,
+      '#markup' => '<li>'.$timetracking_button.'</li>',
     );    
   }
 }

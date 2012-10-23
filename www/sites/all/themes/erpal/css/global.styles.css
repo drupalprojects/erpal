@@ -431,10 +431,13 @@ ul.links li {
 
 a {
   text-decoration: none;
+   color: #525252;
 }
 
 a:link,
-a:visited {}
+a:visited {
+ color: #525252;
+}
 
 a:active,
 a.active {}

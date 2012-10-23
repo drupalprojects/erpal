@@ -354,9 +354,6 @@ function _date_item_update_date_items($entity_type, $entity) {
   $fields = date_item_get_fields($entity_type, $type);
  
   foreach ($fields as $field_name) {
-    $fileField = $field_name;
-    $fields = field_info_fields();
-    $field_info = field_info_field($fileField);    
    
     //check if the field is really there at the node and if, do the update!
     if (isset($entity->{$field_name})) {
@@ -386,13 +383,14 @@ function _date_entity_entity_bundle($entity, $entity_type) {
 * Creates the date item entity and updates them
 * @param $entity the entity where the date field is attached that created date entities
 */
-function _date_item_update_date_items_process($entity, $field_name, $field_data, $entity_type, $bundle, $non_date_field=false) {
+function _date_item_update_date_items_process($entity, $field_name, $field_data, $entity_type, $bundle, $non_date_field=false, $date_item_type=false) {
   global $user;
  
   if (!isset($field_data[LANGUAGE_NONE][0]))
     $field_data[LANGUAGE_NONE][0] = false;  //so if there are date_items but no date any more, the date items will be reset.
-
+    
   //load the field instance and get the date_item_type to create
+  $handle_start_end_date = 'range';
   if (!$non_date_field) {
     //if $non_date_field IS SET, we force to create date_items
     $field_instance = field_info_instance($entity_type, $field_name, $bundle);
@@ -401,10 +399,28 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
 
     if (!$create_items)
       return;  //this field should not create date items
+      
+    $date_item_type = $field_instance['date_item']['date_item_type'];
+    $handle_start_end_date = isset($field_instance['date_item']['handle_range']) ? $field_instance['date_item']['handle_range'] : $handle_start_end_date;
   }
 
-  $date_item_type = $field_instance['date_item']['date_item_type'];
-  
+  //Preprocess Field data, because if there are fields with special end date set, but date ranges should not be handeled as range but as single dates, we duplicate these dates because they will need an extra date entity
+  if ($handle_start_end_date == 'single') {
+    $new_field_data[LANGUAGE_NONE] = $field_data[LANGUAGE_NONE];
+    foreach ($field_data[LANGUAGE_NONE] as $delta => $date_arr) {
+      if ($date_arr['value'] != $date_arr['value2']) {
+        $date_arr_new = $date_arr;
+        $date_arr_new['value'] = $date_arr_new['value2'];
+        $date_arr['value2'] = $date_arr['value'];
+        $new_field_data[LANGUAGE_NONE][$delta] = $date_arr;
+        $new_field_data[LANGUAGE_NONE][] = $date_arr_new;
+      }
+    }
+    
+    //now add the dates_to_add to the field_data
+    $field_data = $new_field_data;
+  }
+
   $properties = _date_item_get_properties_of_entity($entity);  
   if (!$properties)
     return;
@@ -530,6 +546,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     }
     
   }
+
 }
 
 
@@ -546,9 +563,13 @@ function date_item_field_attach_presave($entity, $entity_type) {
 * Return the date always as unix timestamp. But that depends on the field type, so may be convert it
 */
 function _date_item_as_unix_timestamp($value, $tz_string=NULL) {
-  
-  if(is_numeric($value))
+
+  if (!$value)
+    return false;
+
+  if(is_numeric($value) && (int)$value == $value) {
     return $value; //then it is already a unix timestamp
+  }
   
   if ($tz_string)
     $tz = new DateTimeZone($tz_string);
@@ -593,27 +614,39 @@ function _date_item_get_properties_of_entity($entity) {
 * @param $from_unixtime returns ONLY ITEMS IN THE FUTURE FROM THIS DATE ON, NOT IN THE PAST!
 */
 function _date_item_get_items($field_name, $src_type, $src_id, $from_unixtime) {
-  $query = db_select('date_item', 'd');
-  $query
-    ->fields('d', array('date_item_id'))
-    ->condition('d.src_field_name', $field_name)
-    ->condition('d.src_type', $src_type)
-    ->condition('d.src_id', $src_id);
   
-  if ($from_unixtime)  
-    $query->condition('d.date_till', $from_unixtime, '>=');
+  $alternating_field_conditions = array(
+    'd.date_from' => array('value' => $from_unixtime, 'op' => '>='),
+    'd.date_till' => array('value' => $from_unixtime, 'op' => '>='),
+  );
   
-  $result = $query->execute();
-  
-  $field_names = array();
   $items = array();
-  foreach ($result as $record) {
-    $id = $record->date_item_id;
-    $items[] = $id;    
+  foreach ($alternating_field_conditions as $alternating_field_name => $condition_arr) {
+
+    $query = db_select('date_item', 'd');
+    $query
+      ->fields('d', array('date_item_id'))
+      ->condition('d.src_field_name', $field_name)
+      ->condition('d.src_type', $src_type)
+      ->condition('d.src_id', $src_id);
+    
+    if ($from_unixtime) {
+      $op = $condition_arr['op'];
+      $value = $condition_arr['value'];
+      $query->condition($alternating_field_name, $value, $op);
+    }
+    
+    $result = $query->execute();
+    $item_ids = array();
+    foreach ($result as $record) {
+      $id = $record->date_item_id;
+      $item_ids[] = $id;    
+    }
+
+    $items_new = entity_load('date_item', $item_ids);
+    $items = array_merge($items, $items_new);
   }
-  
-  $items = entity_load('date_item', $items);
-  
+ 
   return $items;
 }
 
@@ -680,6 +713,23 @@ function _date_item_field_settings_form_alter(&$form, &$form_state) {
       '#title' => t('Date item type'),
       '#description' => t('Select the date item type to be created for this field'),
       '#default_value' => isset($date_item_instance['date_item_type']) && $date_item_instance['date_item_type'] ? 1 : 0,
+      '#states' => array(
+        'visible' => array(
+          ':input[id="edit-instance-date-item-create-date-item"]' => array('checked' => TRUE),
+        ),
+      )
+    );
+    
+    $handle_range_options = array(
+      'range' => t('Handle from / till date as range'),
+      'single' => t('Handle from / till date as single dates'),
+    );
+    $form['instance']['date_item']['handle_range'] = array(
+      '#type' => 'select',
+      '#options' => $handle_range_options,
+      '#title' => t('Date item type'),
+      '#description' => t('This only respected if you dont have repeating dates and date field collects end date'),
+      '#default_value' => isset($date_item_instance['handle_range']) && $date_item_instance['handle_range'] ? $date_item_instance['handle_range'] : 'range',
       '#states' => array(
         'visible' => array(
           ':input[id="edit-instance-date-item-create-date-item"]' => array('checked' => TRUE),

@@ -63,5 +63,5 @@ function _erpal_contract_helper_config_form_submit($form, $form_state) {
 * returns the precalculation range for contract cancelation dates
 */
 function _erpal_contract_helper_cancelation_precalculate_range() {
-  return variable_get('cancelation_precalculate_range', 60);
+  return variable_get('cancelation_precalculate_range', 500);
 }

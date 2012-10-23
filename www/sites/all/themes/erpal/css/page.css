@@ -53,10 +53,6 @@ body.panels-ipe{
 	display: block;
 	font-size: 14px;
 }
-.pane-menu-menu-erpal-menu ul li a.active,
-.pane-menu-menu-erpal-menu ul li a.active:hover {
-	padding: 9px 17px;
-}
 .pane-system-user-menu ul{
 	margin: 0px;
 	padding: 0;
@@ -70,9 +66,6 @@ body.panels-ipe{
 }
 .pane-system-user-menu li.first{
 	border-right: 1px solid #847C76;
-}
-.panels-flexible-column-erpal_panel_layout-3 {
-    border-right: 2px solid #AFAFAF;
 }
 .panels-flexible-erpal_panel_layout-inside,
 .panels-flexible-erpal_panel_layout-left,
@@ -140,7 +133,6 @@ body.panels-ipe{
 	display: none;
 }
 .panels-flexible-column-erpal_panel_layout-main{
-	margin-left: -2px;
     width: 100%;
 	float: left;
 }
@@ -148,7 +140,7 @@ body.panels-ipe{
 	margin-bottom: 30px;
 }
 .panels-flexible-erpal_panel_layout-middle {
-    margin-left: 153px;
+    margin-left: 150px;
     min-width: 440px;
 }
 .panels-flexible-erpal_panel_layout {
@@ -183,7 +175,132 @@ body.panels-ipe{
 	clear: both;
 }
 .erpal-content-layout-template .region-sidebar-left{
-	margin-right: 280px;
+	margin-right: 270px;
 	min-width: 360px;
+	width: 81.5%;
 }
 
+/* =============================================================================
+ *   Projects
+ * ========================================================================== */
+.region-sidebar-right .pane-page-actions li{
+	margin: 7px 0px;
+	list-style-type: none;
+}
+.region-sidebar-right .pane-page-actions li a{
+	padding: 6px 0px;
+	display: block;
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px; 
+	border-radius: 11px;
+	box-shadow: 2px 2px 2px #888888;
+	text-align: center;
+	font-size: 1.1em;
+}
+#mini-panel-task_status_panel{
+	padding: 10px 20px;
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px; 
+	border-radius: 11px;
+}
+.region-sidebar-left .pane-entity-field h2.pane-title {
+	margin-top: 11px;
+	padding-right: 5px;
+	float: left;
+	font-size: 14px;
+    font-weight: bold;
+}
+.region-sidebar-left .pane-entity-field .block-content{
+	float: left;
+}
+.region-sidebar-left .pane-entity-field  .ds-form .group-left {
+    width: auto;
+	float: none;
+}
+.region-sidebar-left .pane-entity-field .form-item label,
+.region-sidebar-left .pane-entity-field .rel-register-link {
+    float: left;
+}
+.region-sidebar-left .pane-entity-field  .field-type-taxonomy-term-reference{
+	margin: 0px;
+}
+.region-sidebar-left .pane-entity-field .form-item {
+	margin-bottom: 0px;
+}
+.region-sidebar-left .tabs-processed  .ui-widget-header{
+	padding-left: 0;
+	background: none;
+	border: none;
+}
+#mini-panel-task_content_panel .ui-widget-content{
+	background: none;
+	border: none;
+}
+#mini-panel-task_content_panel .ui-tabs .ui-tabs-panel{
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px; 
+	border-radius: 11px;
+	-webkit-border-top-left-radius: 0;
+	-moz-border-radius-topleft: 0;
+	border-top-left-radius: 0;
+}
+#mini-panel-task_content_panel .ui-tabs .ui-tabs-nav li a {
+    float: left;
+    padding: 0.2em 1.3em;
+    text-decoration: none;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.ctools-collapsible-container .ctools-collapsible-handle {
+    cursor: pointer;
+}
+
+/*
+ *  collapsible
+ */
+ .ctools-collapsible-processed h2.pane-title {
+    margin: 0;
+    padding: 3px 5px 0px 40px;
+	font-size: 13px;
+}
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
+	padding-left: 0;
+	color: #525252;
+}
+.ctools-collapsible-processed .ctools-collapsible-content{
+	padding-top: 10px;
+}
+.ctools-collapsible-container {
+	background-color: #DEDEDE;
+	border: 1px solid #EEEEEE;
+}
+.ctools-collapsible-container .block-content a{
+	text-decoration: underline;
+}
+.ctools-collapsible-processed section{
+	margin-bottom: 10px;
+	padding-left: 10px;
+	
+}
+.ctools-collapsible-processed .panel-separator{
+	height: 1px;
+	overflow: hidden;
+}
+.ctools-collapsible-processed ul{
+	margin: 0;
+	padding: 0px;
+}
+.ctools-collapsible-processed ul li{
+	list-style-type: none;
+}
+.ctools-collapsible-processed .field-type-taxonomy-term-reference{
+	margin: 0;
+}
+#mini-panel-task_status_panel .panel-separator{
+	display: none;
+}
+#mini-panel-task_status_panel section{
+	margin-right: 30px;
+	float: left;
+}
