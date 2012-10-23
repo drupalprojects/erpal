@@ -27,6 +27,25 @@ function _erpal_contract_helper_config_basic() {
 }
 
 /**
+* Adds tag textfields for calendar tags on date_item entites
+*/
+function _erpal_contract_helper_alter_calendar_config_form(&$form, $form_state) {
+ 
+  $field_names = array('field_cancelation_period', 'field_cancelation_period_con', 'field_date');
+  $entity_type = 'node';
+  $bundle_name = 'erpal_contract';
+  
+  foreach ($field_names as $field_name) {
+    $form['date_item_tags'][$entity_type][$bundle_name][$field_name] = array(
+      '#type' => 'textfield',
+      '#title' => t('Tags for field !field_name', array('!field_name' => $field_name)),
+      '#description' => t('This tag will be added as category to entities with this field'),
+      '#default_value' => _erpal_calendar_helper_field_tag($entity_type, $bundle_name, $field_name),
+    );
+  }
+}
+
+/**
 * Settings form for contract settings
 */
 function erpal_contract_helper_config_form($form, $form_state) {

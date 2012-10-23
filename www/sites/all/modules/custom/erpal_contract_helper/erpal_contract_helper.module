@@ -129,6 +129,61 @@ function _erpal_contract_helper_recalculate_contract($contract_node) {
 }
 
 /**
+* Implements hook_node_validate
+*/
+function erpal_contract_helper_node_validate($node, $form, &$form_state) {
+  if ($node->type != 'erpal_contract')
+    return;
+    
+  _erpal_contract_helper_contract_node_validate($node, $form, $form_state);
+}
+
+/**
+* Validate a contract node
+*/
+function _erpal_contract_helper_contract_node_validate($node, $form, &$form_state) {
+  $field_cancelation_period_con = isset($node->field_cancelation_period_con[LANGUAGE_NONE][0]['value']) ? $node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_cancelation_period = isset($node->field_cancelation_period[LANGUAGE_NONE][0]['value']) ? $node->field_cancelation_period[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_contract_duration = isset($node->field_contract_duration[LANGUAGE_NONE][0]['value']) ? $node->field_contract_duration[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_repeating_duration = isset($node->field_repeating_duration[LANGUAGE_NONE][0]['value']) ? $node->field_repeating_duration[LANGUAGE_NONE][0]['value'] : false;
+
+  if ($field_cancelation_period_con && !$field_cancelation_period)
+    form_set_error('field_cancelation_period', t('If you set a cancelation period for the contractor please set cancelation period, too.'));
+    
+  if ($field_repeating_duration && !$field_cancelation_period)
+    form_set_error('field_cancelation_period', t('If you set a repeating duration please set cancelation period, too.'));
+    
+  if ($field_repeating_duration && !$field_contract_duration)
+    form_set_error('field_contract_duration', t('If you set a repeating duration please set the contract duration, too.'));
+    
+  if ($field_contract_duration && !$field_cancelation_period)
+    form_set_error('field_cancelation_period', t('If you set a duration please set cancelation period, too.'));
+    
+  if ($field_cancelation_period) {
+    if ($field_cancelation_period > $field_contract_duration) {
+      form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract duration'));
+    }    
+    
+    if ($field_cancelation_period > $field_repeating_duration) {
+      form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract repeating duration'));
+    } 
+  }
+  
+  if ($field_cancelation_period_con) {
+    if ($field_cancelation_period_con > $field_contract_duration) {
+      form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract duration'));
+    }
+    
+    if ($field_cancelation_period_con > $field_repeating_duration) {
+      form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract repeating duration'));
+    } 
+  }
+}
+
+/**
 *Implements hook_cron
 */
 function erpal_contract_helper_cron() {
@@ -137,6 +192,7 @@ function erpal_contract_helper_cron() {
  
   _erpal_contract_helper_check_budgets();
   
+  //@TODO: better add to queue than only doing it in cron
   _erpal_contract_helper_calculate_cancelation_dates();
 }
 
@@ -147,7 +203,11 @@ function erpal_contract_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_contract_node_form') {    
     _erpal_contract_helper_set_default_pricing($form, $form_state, $form_id);
     _erpal_contract_helper_manage_form_elements($form, $form_state, $form_id);
-  }  
+  } 
+  elseif ($form_id == 'erpal_calendar_helper_config_form') {
+    _erpal_contract_helper_alter_calendar_config_form($form, $form_state);
+  }
+  
 }
 
 /**
@@ -409,7 +469,8 @@ function _erpal_contract_helper_calculate_cancelation_dates() {
   $field_name_repeating_duration = 'field_repeating_duration';
 
   foreach ($active_contract_nids as $contract_nid) {
-
+if ($contract_nid != 1833)
+  continue;
     //check, if there is any cancelation data set
     $contract_node = node_load($contract_nid);
  
@@ -431,6 +492,13 @@ function _erpal_contract_helper_calculate_cancelation_dates() {
     $start_date = isset($contract_node->field_date[LANGUAGE_NONE][0]['value']) ? $contract_node->field_date[LANGUAGE_NONE][0]['value'] : false;
     if ($start_date)
       $start_date = _date_item_as_unix_timestamp($start_date);    
+      
+    $end_date = isset($contract_node->field_date[LANGUAGE_NONE][0]['value2']) ? $contract_node->field_date[LANGUAGE_NONE][0]['value2'] : false;
+    if ($end_date)
+      $end_date = _date_item_as_unix_timestamp($end_date);  
+      
+    if ($start_date == $end_date)
+      $end_date = false; //if start and end are equal, no end date was set
     
     //at least we need a contract duration and a period unit and a start_offset
     if (!$contract_duration || !$period_unit || !$start_date)
@@ -456,10 +524,11 @@ function _erpal_contract_helper_calculate_cancelation_dates() {
     $repeat_start_date = strtotime($repeat_start_date.' +'.$contract_duration.' '.$period_unit);
         
     //calculate the other repeating cancelation times for customer
-    _erpal_contract_helper_cancelation_date_items_process($repeat_start_date, $field_cancelation_period, $repeating_duration, $period_unit, $contract_node, 'field_cancelation_period', array($first_cancelation_customer));
+    _erpal_contract_helper_cancelation_date_items_process($repeat_start_date, $field_cancelation_period, $repeating_duration, $period_unit, $contract_node, 'field_cancelation_period', array($first_cancelation_customer), $end_date);
     
     //calculate the other repeating cancelation times for contractor
-    _erpal_contract_helper_cancelation_date_items_process($repeat_start_date, $field_cancelation_period_con, $repeating_duration, $period_unit, $contract_node, 'field_cancelation_period_con', array($first_cancelation_contractor));
+    _erpal_contract_helper_cancelation_date_items_process($repeat_start_date, $field_cancelation_period_con, $repeating_duration, $period_unit, $contract_node, 'field_cancelation_period_con', array($first_cancelation_contractor), $end_date);
+   
   }
 
 }
@@ -469,7 +538,7 @@ function _erpal_contract_helper_calculate_cancelation_dates() {
 * @param $max_count if set, only that amount of date items will be created
 * @param $start_offset is the first date after the initial cancelation period
 */
-function _erpal_contract_helper_cancelation_date_items_process($start_offset, $canelation_period, $duration, $duration_unit, $contract_node, $field_name, $additional_dates=array()) {
+function _erpal_contract_helper_cancelation_date_items_process($start_offset, $canelation_period, $duration, $duration_unit, $contract_node, $field_name, $additional_dates=array(), $date_canceled=false) {
   
   $date_str = date('Y-m-d H:i:s', $start_offset);
   
@@ -485,7 +554,7 @@ function _erpal_contract_helper_cancelation_date_items_process($start_offset, $c
   $current_date_unix = $start_offset;
   $default_timezone = date_default_timezone();
   $repeated = 0;  //to avoid endless loops!
-  while ($current_date_unix < $max_calculation_date && $repeated < 1000) {
+  while ($current_date_unix < $max_calculation_date && $repeated < 1000 && (!$date_canceled || $date_canceled > $current_date_unix)) {
   
     $current_date_sql = date('Y-m-d H:i:s', $current_date_unix);
     $last_cancelation_day = strtotime($current_date_sql.' +'.$canelation_period.' '.$duration_unit.'s');   
@@ -495,10 +564,11 @@ function _erpal_contract_helper_cancelation_date_items_process($start_offset, $c
       'timezone' => $default_timezone,
       'offset' => false, //@TODO may be set value here?
       'offset2' => false, //@TODO may be set value here?
+      'debug' => date('Y-m-d', $last_cancelation_day).'-'.$field_name,
     );
   
     $current_date_unix = strtotime($current_date_sql.' +'.$duration.' '.$duration_unit.'s');    
-    
+
     $repeated++;
   }
 
@@ -510,11 +580,12 @@ function _erpal_contract_helper_cancelation_date_items_process($start_offset, $c
       'timezone' => $default_timezone,
       'offset' => false, //@TODO may be set value here?
       'offset2' => false, //@TODO may be set value here?
+      'debug' => date('Y-m-d', _date_item_as_unix_timestamp($a_date, $default_timezone)).'-'.$field_name,
     );
   }
-watchdog('contract_cancelation', print_r($field_data, true));
+//watchdog('contract_cancelation', print_r($field_data, true));
   _date_item_update_date_items_process($contract_node, $field_name, $field_data, $entity_type, $bundle, true, 'simple_date');
- 
+
 }
 
 /**

@@ -119,7 +119,10 @@ function feature_erpal_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'default_page_manager_pages';
-  $strongarm->value = array();
+  $strongarm->value = array(
+    'billables_pane' => TRUE,
+    'budget_by_contract_pane' => TRUE,
+  );
   $export['default_page_manager_pages'] = $strongarm;
 
   $strongarm = new stdClass();

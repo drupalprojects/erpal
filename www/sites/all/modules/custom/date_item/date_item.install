@@ -27,6 +27,13 @@ function date_item_schema() {
         'not null' => TRUE,
         'default' => '',
       ),
+      'title' => array(
+        'description' => 'The title this date_item.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ),
       'date_from' => array(
         'description' => 'The start date the date_item is for',
         'type' => 'int',
@@ -215,4 +222,18 @@ function date_item_field_schema($field) {
     'foreign keys' => $foreign_keys,
   );
 }
+
+/**
+* add colum title to table
+*/
+function date_item_update_7001 () {
+  $spec = array(
+    'description' => 'The title this date_item.',
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => FALSE,
+    'default' => '',
+  ); 
+  db_add_field( 'date_item', 'title', $spec);
+} 
 

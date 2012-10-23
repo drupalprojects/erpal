@@ -116,6 +116,7 @@ class DateItem extends Entity {
     $data,
     $uid,
     $created,
+    $title,
     $date_items_update, //just a flag to provide information if entity is in update process whil saving a host entity with a date field that creates date entites
     $updated;
     
@@ -130,6 +131,9 @@ class DateItem extends Entity {
   public function defaultLabel() {
     if ($this->src_id && $this->src_type && $this->src_field_name) {
       $src_entity = $this->src_entity();
+      if ($this->title)
+        return $this->title;
+        
       return t('Date for @title', array(
           '@title' => entity_label($this->src_type, $src_entity)
         )

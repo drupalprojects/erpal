@@ -1873,6 +1873,11 @@ If not set, budget will not expire',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_contract',
+      'date_item' => array(
+        'create_date_item' => 1,
+        'date_item_type' => 'simple_date',
+        'handle_range' => 'single',
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(

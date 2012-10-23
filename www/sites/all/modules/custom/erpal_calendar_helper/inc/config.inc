@@ -113,6 +113,7 @@ function _erpal_calendar_helper_field_tag($entity_type, $bundle_name, $field_nam
 function _erpal_calendar_helper_config_form_submit($form, $form_state){
 
   $values = $form_state['input'];
+ 
   $date_item_tags = $values['date_item_tags'];
   foreach ($date_item_tags as $entity_type=>$bundles) {
     foreach ($bundles as $bundle_name=>$fields) {

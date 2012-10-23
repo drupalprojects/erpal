@@ -55,14 +55,15 @@ function date_item_date_views_fields($field) {
     'related_fields' => $related_fields,
     // Granularity of this date field's db data.
     'granularity' => array('year', 'month', 'day', 'hour', 'minute', 'second'),
-    'fromto' => array(
+   /* 'fromto' => array(
       'date_from',
       'date_till',
-    ),
+    ), */
   );
   
-  if ($field == 'date_item.date_from' || $field == 'date_item.date_till')
+  if ($field == 'date_item.date_from' || $field == 'date_item.date_till') {
     return $values;
+  }
 
 }
 
@@ -197,6 +198,12 @@ function date_item_entity_delete($entity, $entity_type) {
     $src_id = $date_item->src_id;
     $src_type = $date_item->src_type;
     $src_field_name = $date_item->src_field_name;
+    
+    //check if this is a date field
+    $field_info = field_info_field($src_field_name);
+    $field_type = $field_info['type'];
+    if (!_date_item_date_type_allowed($field_type))
+      return;
     
     //load the entity
     $src_entity = $date_item->src_entity();
@@ -426,7 +433,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     return;
 
   //get all entites that are already saved to this field
-  $date_items = _date_item_get_items($field_name, $properties['type'], $properties['id'], time());  //only items in the future
+  $date_items = _date_item_get_items($field_name, $properties['type'], $properties['id']/*, time()*/);  //only items in the future
 
   //check if there are date items that should not be in the rang, these items will be deleted
   foreach ($date_items as $date_item) {
@@ -492,11 +499,9 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     if (!$date_from && !$date_till)
       continue;
     
-    //we dnot handle dates in the past.
-    
+    //we dont handle dates in the past.    
     //if ($date_from < time())
-      //continue;
-    
+      //continue;    
   
     //we even add the dates in the past.
     $date_arr['offset'] = isset($date_arr['offset']) ? $date_arr['offset'] : 0;
@@ -530,7 +535,8 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     if (!$found_it) {
       //add a new date_item      
       
-      $date_item = entity_create('date_item', array());      
+      $date_item = entity_create('date_item', array());  
+      $date_item->title = '';
       $date_item->type = $date_item_type;
       $date_item->uid = $user->uid;
       $date_item->date_from = $date_from; //this value is already unix time
@@ -613,7 +619,7 @@ function _date_item_get_properties_of_entity($entity) {
 * @param $src_id the id of the entity where the date item was create
 * @param $from_unixtime returns ONLY ITEMS IN THE FUTURE FROM THIS DATE ON, NOT IN THE PAST!
 */
-function _date_item_get_items($field_name, $src_type, $src_id, $from_unixtime) {
+function _date_item_get_items($field_name, $src_type, $src_id, $from_unixtime=false) {
   
   $alternating_field_conditions = array(
     'd.date_from' => array('value' => $from_unixtime, 'op' => '>='),
