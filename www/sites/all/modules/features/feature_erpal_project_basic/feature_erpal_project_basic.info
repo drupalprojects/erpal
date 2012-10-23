@@ -135,6 +135,7 @@ features[page_manager_pages][] = projects_list
 features[page_manager_pages][] = tickets
 features[panels_mini][] = task_content_panel
 features[panels_mini][] = task_general_fields
+features[panels_mini][] = task_status_panel
 features[panels_mini][] = time_information
 features[rel_builds][] = erpal_project_node_form
 features[rel_builds][] = erpal_task_node_form

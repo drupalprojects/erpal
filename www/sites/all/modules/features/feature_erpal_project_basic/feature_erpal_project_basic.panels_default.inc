@@ -352,9 +352,9 @@ function feature_erpal_project_basic_default_panels_mini() {
   $mini = new stdClass();
   $mini->disabled = FALSE; /* Edit this to true to make a default mini disabled initially */
   $mini->api_version = 1;
-  $mini->name = 'time_information';
+  $mini->name = 'task_status_panel';
   $mini->category = 'erpal tasks';
-  $mini->admin_title = 'Time information';
+  $mini->admin_title = 'Task status panel';
   $mini->admin_description = '';
   $mini->requiredcontexts = array(
     0 => array(
@@ -384,6 +384,141 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->pid = 'new-11';
     $pane->panel = 'middle';
     $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_task_status_term';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'title',
+      'formatter' => 'editable',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(
+        'fallback_format' => 'taxonomy_term_reference_plain',
+        'click_to_edit' => 0,
+        'click_to_edit_style' => 'button',
+        'empty_text' => '',
+      ),
+      'context' => 'requiredcontext_entity:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-11'] = $pane;
+    $display->panels['middle'][0] = 'new-11';
+    $pane = new stdClass();
+    $pane->pid = 'new-12';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_progress_percent';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'title',
+      'formatter' => 'editable',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(
+        'fallback_format' => 'list_default',
+        'click_to_edit' => 0,
+        'click_to_edit_style' => 'button',
+        'empty_text' => '',
+      ),
+      'context' => 'requiredcontext_entity:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-12'] = $pane;
+    $display->panels['middle'][1] = 'new-12';
+    $pane = new stdClass();
+    $pane->pid = 'new-13';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_priority_term';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'title',
+      'formatter' => 'editable',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(
+        'fallback_format' => 'taxonomy_term_reference_plain',
+        'click_to_edit' => 0,
+        'click_to_edit_style' => 'button',
+        'empty_text' => '',
+      ),
+      'context' => 'requiredcontext_entity:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $display->content['new-13'] = $pane;
+    $display->panels['middle'][2] = 'new-13';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-11';
+  $mini->display = $display;
+  $export['task_status_panel'] = $mini;
+
+  $mini = new stdClass();
+  $mini->disabled = FALSE; /* Edit this to true to make a default mini disabled initially */
+  $mini->api_version = 1;
+  $mini->name = 'time_information';
+  $mini->category = 'erpal tasks';
+  $mini->admin_title = 'Time information';
+  $mini->admin_description = '';
+  $mini->requiredcontexts = array(
+    0 => array(
+      'identifier' => 'Node',
+      'keyword' => 'node',
+      'name' => 'entity:node',
+      'entity_id' => '',
+      'id' => 1,
+    ),
+  );
+  $mini->contexts = array();
+  $mini->relationships = array();
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-14';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_field';
     $pane->subtype = 'node:field_estimated_time';
     $pane->shown = TRUE;
     $pane->access = array();
@@ -411,10 +546,10 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['middle'][0] = 'new-11';
+    $display->content['new-14'] = $pane;
+    $display->panels['middle'][0] = 'new-14';
     $pane = new stdClass();
-    $pane->pid = 'new-12';
+    $pane->pid = 'new-15';
     $pane->panel = 'middle';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_date';
@@ -446,10 +581,10 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['middle'][1] = 'new-12';
+    $display->content['new-15'] = $pane;
+    $display->panels['middle'][1] = 'new-15';
     $pane = new stdClass();
-    $pane->pid = 'new-13';
+    $pane->pid = 'new-16';
     $pane->panel = 'middle';
     $pane->type = 'timetracking_sum';
     $pane->subtype = 'timetracking_sum';
@@ -467,10 +602,10 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['middle'][2] = 'new-13';
+    $display->content['new-16'] = $pane;
+    $display->panels['middle'][2] = 'new-16';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-11';
+  $display->title_pane = 'new-14';
   $mini->display = $display;
   $export['time_information'] = $mini;
 
