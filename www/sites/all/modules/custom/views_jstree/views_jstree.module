@@ -175,7 +175,7 @@ function theme_views_jstree($variables) {
   //@TODO größe so viel wie Platz ist! (100%)
   $width = 900;  
   $height = 600;
-  return '<div id="'.$id.'" class="jstree" style="height:'.$height.'px; width:'.$width.'px !important;"></div>';
+  return '<div id="'.$id.'" class="jstree"></div>';
  
 }
 
