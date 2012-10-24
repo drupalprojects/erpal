@@ -20,8 +20,17 @@ function computed_field_field_timetracking_button_compute(&$entity_field, $entit
 * Get the sum of timetracking, @TODO even calculate for projects, actually only for tasks
 */
 function erpal_projects_helper_summed_timetracking($node) {
-  if ($node->type != 'erpal_task')
+  if ($node->type != 'erpal_task' && $node->type != 'erpal_project')
     return;
+    
+  if ($node->type == 'erpal_task') {
+    $nids = array($node->nid);
+  }  
+  elseif ($node->type == 'erpal_project') {
+    //get all tasks of the project
+    $task_nids = _erpal_projects_helper_get_tasks($node->nid, true, true);
+    $nids = array_keys($task_nids);
+  }
     
   //get table for timetracking field_timetracking_duration
   $field_info = field_info_field('field_timetracking_duration');
@@ -39,7 +48,7 @@ function erpal_projects_helper_summed_timetracking($node) {
 
   $query = db_select($field_name_table_duration,"f");
   $query->join($field_name_table_subject, 's', 'f.revision_id = s.revision_id');
-  $query->condition('s.'.$value_field_subject, $node->nid);
+  $query->condition('s.'.$value_field_subject, $nids);
   $query->addExpression("SUM(".$value_field_duration.")", 'time');
   $res = $query->execute()->fetchAssoc();
   

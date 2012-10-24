@@ -21,7 +21,7 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_erpal_task';
-  $strongarm->value = 'edit-comment';
+  $strongarm->value = 'edit-workflow';
   $export['additional_settings__active_tab_erpal_task'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -567,6 +567,7 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'promote',
+    2 => 'revision',
   );
   $export['node_options_erpal_task'] = $strongarm;
 

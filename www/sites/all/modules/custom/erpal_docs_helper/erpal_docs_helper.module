@@ -8,6 +8,15 @@ module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
 module_load_include('inc', 'erpal_docs_helper', 'inc/config');
  
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_docs_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'erpal_docs_helper' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+}  
+ 
+/**
 * Implements hook_menu
 */ 
 function erpal_docs_helper_menu(){

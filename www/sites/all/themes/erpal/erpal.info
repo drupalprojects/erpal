@@ -126,6 +126,7 @@
 
   ; Panels layout plugins
   plugins[panels][layouts] = plugins/layouts
+  ;plugins[panels][layouts] = plugins/layouts2
 
 
 ;----------// Site Features

@@ -239,6 +239,10 @@ function erpal_projects_helper_permission(){
       'title' => t('Access tasks tree view'), 
       'description' => t('Allows the user to access the task tree view'),
     ),
+    'access tickets tree' => array(
+      'title' => t('Access tickets tree view'), 
+      'description' => t('Allows the user to access the tickets tree view'),
+    ),
   );
   
   $field_access_permissions = _erpal_projects_helper_field_access_permissions();

@@ -70,6 +70,70 @@ function feature_erpal_project_basic_ds_field_settings_info() {
   );
   $export['node|erpal_task|full'] = $ds_fieldsetting;
 
+  $ds_fieldsetting = new stdClass();
+  $ds_fieldsetting->api_version = 1;
+  $ds_fieldsetting->id = 'node|erpal_task|view_row_details';
+  $ds_fieldsetting->entity_type = 'node';
+  $ds_fieldsetting->bundle = 'erpal_task';
+  $ds_fieldsetting->view_mode = 'view_row_details';
+  $ds_fieldsetting->settings = array(
+    'comment_count' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+      'formatter_settings' => array(
+        'show_title' => 0,
+        'title_wrapper' => '',
+        'ctools' => 'a:3:{s:4:"conf";a:5:{s:11:"admin_title";s:0:"";s:5:"title";s:0:"";s:4:"body";s:28:"%node:comment-count comments";s:6:"format";s:13:"filtered_html";s:10:"substitute";i:1;}s:4:"type";s:6:"custom";s:7:"subtype";s:6:"custom";}',
+        'load_terms' => 0,
+      ),
+    ),
+    'files_count' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+      'formatter_settings' => array(
+        'show_title' => 0,
+        'title_wrapper' => '',
+        'ctools' => 'a:3:{s:4:"conf";a:2:{s:5:"types";a:0:{}s:10:"field_name";s:0:"";}s:4:"type";s:11:"files_count";s:7:"subtype";s:11:"files_count";}',
+        'load_terms' => 0,
+      ),
+    ),
+    'task_customer_node' => array(
+      'weight' => '3',
+      'label' => 'hidden',
+      'format' => 'default',
+      'formatter_settings' => array(
+        'show_title' => 1,
+        'title_wrapper' => '',
+        'ctools' => 'a:3:{s:4:"conf";a:2:{s:5:"types";a:0:{}s:10:"field_name";s:0:"";}s:4:"type";s:13:"task_customer";s:7:"subtype";s:13:"task_customer";}',
+        'load_terms' => 0,
+      ),
+    ),
+    'task_title' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+      'formatter_settings' => array(
+        'show_title' => 0,
+        'title_wrapper' => 'h2',
+        'ctools' => 'a:3:{s:4:"conf";a:5:{s:11:"admin_title";s:10:"Task title";s:5:"title";s:0:"";s:4:"body";s:74:"<a href="/node/%node:nid">%node:field_is_ticket #%node:nid %node:title</a>";s:6:"format";s:13:"filtered_html";s:10:"substitute";i:1;}s:4:"type";s:6:"custom";s:7:"subtype";s:6:"custom";}',
+        'load_terms' => 0,
+      ),
+    ),
+    'author' => array(
+      'weight' => '9',
+      'label' => 'above',
+      'format' => 'author_linked',
+    ),
+    'post_date' => array(
+      'weight' => '10',
+      'label' => 'above',
+      'format' => 'ds_post_date_short',
+    ),
+  );
+  $export['node|erpal_task|view_row_details'] = $ds_fieldsetting;
+
   return $export;
 }
 
@@ -89,6 +153,81 @@ function feature_erpal_project_basic_ds_custom_fields_info() {
   );
   $ds_field->properties = array();
   $export['budget_usage'] = $ds_field;
+
+  $ds_field = new stdClass();
+  $ds_field->api_version = 1;
+  $ds_field->field = 'task_customer_node';
+  $ds_field->label = 'Task customer node';
+  $ds_field->field_type = 7;
+  $ds_field->entities = array(
+    'node' => 'node',
+  );
+  $ds_field->properties = array(
+    'default' => array(),
+    'settings' => array(
+      'show_title' => array(
+        'type' => 'checkbox',
+      ),
+      'title_wrapper' => array(
+        'type' => 'textfield',
+        'description' => 'Eg: h1, h2, p',
+      ),
+      'ctools' => array(
+        'type' => 'ctools',
+      ),
+    ),
+  );
+  $export['task_customer_node'] = $ds_field;
+
+  $ds_field = new stdClass();
+  $ds_field->api_version = 1;
+  $ds_field->field = 'task_title';
+  $ds_field->label = 'Task title';
+  $ds_field->field_type = 7;
+  $ds_field->entities = array(
+    'node' => 'node',
+  );
+  $ds_field->properties = array(
+    'default' => array(),
+    'settings' => array(
+      'show_title' => array(
+        'type' => 'checkbox',
+      ),
+      'title_wrapper' => array(
+        'type' => 'textfield',
+        'description' => 'Eg: h1, h2, p',
+      ),
+      'ctools' => array(
+        'type' => 'ctools',
+      ),
+    ),
+  );
+  $export['task_title'] = $ds_field;
+
+  $ds_field = new stdClass();
+  $ds_field->api_version = 1;
+  $ds_field->field = 'time_used';
+  $ds_field->label = 'time used';
+  $ds_field->field_type = 7;
+  $ds_field->entities = array(
+    'node' => 'node',
+  );
+  $ds_field->properties = array(
+    'default' => array(),
+    'settings' => array(
+      'show_title' => array(
+        'type' => 'checkbox',
+      ),
+      'title_wrapper' => array(
+        'type' => 'textfield',
+        'description' => 'Eg: h1, h2, p',
+      ),
+      'ctools' => array(
+        'type' => 'ctools',
+      ),
+    ),
+  );
+  $export['time_used'] = $ds_field;
 
   return $export;
 }
@@ -438,6 +577,66 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
     'classes' => array(),
   );
   $export['node|erpal_task|full'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
+  $ds_layout->id = 'node|erpal_task|view_row_details';
+  $ds_layout->entity_type = 'node';
+  $ds_layout->bundle = 'erpal_task';
+  $ds_layout->view_mode = 'view_row_details';
+  $ds_layout->layout = 'panels-erpal_task_view_row_layout';
+  $ds_layout->settings = array(
+    'hide_empty_regions' => 0,
+    'hide_sidebars' => 0,
+    'regions' => array(
+      'sidebar_third_right' => array(
+        0 => 'comment_count',
+        1 => 'files_count',
+      ),
+      'sidebar_first_left' => array(
+        0 => 'task_title',
+      ),
+      'sidebar_second_left' => array(
+        0 => 'field_parent',
+        1 => 'field_estimated_time',
+        2 => 'field_date',
+        3 => 'field_task_assigned_users',
+        4 => 'field_task_status_term',
+        5 => 'field_priority_term',
+        6 => 'author',
+        7 => 'post_date',
+      ),
+      'sidebar_first_right' => array(
+        0 => 'field_project_ref',
+        1 => 'task_customer_node',
+      ),
+      'sidebar_second_right' => array(
+        0 => 'body',
+      ),
+      'sidebar_third_left' => array(
+        0 => 'field_pricing',
+      ),
+    ),
+    'fields' => array(
+      'comment_count' => 'sidebar_third_right',
+      'task_title' => 'sidebar_first_left',
+      'files_count' => 'sidebar_third_right',
+      'field_parent' => 'sidebar_second_left',
+      'field_project_ref' => 'sidebar_first_right',
+      'task_customer_node' => 'sidebar_first_right',
+      'field_estimated_time' => 'sidebar_second_left',
+      'field_date' => 'sidebar_second_left',
+      'field_task_assigned_users' => 'sidebar_second_left',
+      'field_task_status_term' => 'sidebar_second_left',
+      'field_priority_term' => 'sidebar_second_left',
+      'author' => 'sidebar_second_left',
+      'post_date' => 'sidebar_second_left',
+      'body' => 'sidebar_second_right',
+      'field_pricing' => 'sidebar_third_left',
+    ),
+    'classes' => array(),
+  );
+  $export['node|erpal_task|view_row_details'] = $ds_layout;
 
   return $export;
 }

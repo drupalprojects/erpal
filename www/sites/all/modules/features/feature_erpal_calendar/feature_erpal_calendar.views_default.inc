@@ -50,28 +50,30 @@ function feature_erpal_calendar_views_default_views() {
   $handler->display->display_options['fields']['entity_label']['field'] = 'entity_label';
   $handler->display->display_options['fields']['entity_label']['label'] = 'Date Item';
   $handler->display->display_options['fields']['entity_label']['link_to_entity'] = TRUE;
-  /* Field: Date item: Date From */
+  /* Field: Date item: Date item date from */
   $handler->display->display_options['fields']['date_from']['id'] = 'date_from';
   $handler->display->display_options['fields']['date_from']['table'] = 'date_item';
   $handler->display->display_options['fields']['date_from']['field'] = 'date_from';
   $handler->display->display_options['fields']['date_from']['label'] = '';
   $handler->display->display_options['fields']['date_from']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['date_from']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['date_from']['date_format'] = 'short';
-  /* Field: Date item: Date till */
+  $handler->display->display_options['fields']['date_from']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['date_from']['custom_date_format'] = 'H:i';
+  /* Field: Date item: Date item date till */
   $handler->display->display_options['fields']['date_till']['id'] = 'date_till';
   $handler->display->display_options['fields']['date_till']['table'] = 'date_item';
   $handler->display->display_options['fields']['date_till']['field'] = 'date_till';
   $handler->display->display_options['fields']['date_till']['label'] = '';
   $handler->display->display_options['fields']['date_till']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['date_till']['date_format'] = 'short';
+  $handler->display->display_options['fields']['date_till']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['date_till']['custom_date_format'] = 'H:i';
   /* Field: date item: Date tags */
   $handler->display->display_options['fields']['field_date_item_tags']['id'] = 'field_date_item_tags';
   $handler->display->display_options['fields']['field_date_item_tags']['table'] = 'field_data_field_date_item_tags';
   $handler->display->display_options['fields']['field_date_item_tags']['field'] = 'field_date_item_tags';
   $handler->display->display_options['fields']['field_date_item_tags']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_date_item_tags']['type'] = 'taxonomy_term_reference_plain';
-  /* Sort criterion: Date item: Date From */
+  /* Sort criterion: Date item: Date item date from */
   $handler->display->display_options['sorts']['date_from']['id'] = 'date_from';
   $handler->display->display_options['sorts']['date_from']['table'] = 'date_item';
   $handler->display->display_options['sorts']['date_from']['field'] = 'date_from';
@@ -262,7 +264,7 @@ function feature_erpal_calendar_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Date item: Date From */
+  /* Field: Date item: Date item date from */
   $handler->display->display_options['fields']['date_from']['id'] = 'date_from';
   $handler->display->display_options['fields']['date_from']['table'] = 'date_item';
   $handler->display->display_options['fields']['date_from']['field'] = 'date_from';

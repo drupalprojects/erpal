@@ -176,12 +176,17 @@ function _erpal_projects_helper_add_task_links(&$links, $node) {
 * Return all tasks
 * @return array with nids of tasks referencing the given project_nid if set
 */
-function _erpal_projects_helper_get_tasks($project_nid=false, $for_options=false) {
+function _erpal_projects_helper_get_tasks($project_nid=false, $for_options=false, $ignore_permissions=false) {
+  //@TODO my be add static cache for better performance on multiple calls
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
   ->entityCondition('bundle', 'erpal_task')
   ->propertyCondition('status', 1);  
   //@TODO maybe add access control to query
+  
+  if ($ignore_permissions) {
+    $query->addMetaData('account', user_load(1));
+  }
   
   if ($project_nid) {
     $query->fieldCondition('field_project_ref', 'target_id', $project_nid);

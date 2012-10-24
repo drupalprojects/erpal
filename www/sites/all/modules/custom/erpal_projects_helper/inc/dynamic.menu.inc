@@ -168,7 +168,7 @@ function _erpal_projects_helper_ticket_links(&$data, $ticket_node, $router_item=
   if (user_access('use quick timetracking')) {
     $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($ticket_node->nid);
     $data['actions']['output'][] = array(
-      '#markup' => $timetracking_button,
+      '#markup' => '<li>'.$timetracking_button.'</li>',
     );    
   }
 }

@@ -153,25 +153,22 @@ h1 {
 	background-color: #dddddd;
 	color: #525252;
 }
-.region-sidebar-left .pane-entity-field h2.pane-title {
+.panel-display .pane-entity-field h2.pane-title {
     color: #525252;
 }
-.region-sidebar-left .tabs-processed  .ui-widget-header{
-	border: none;
-}
-#mini-panel-task_content_panel .ui-tabs .ui-tabs-panel{
+.panel-display .ui-tabs .ui-tabs-panel{
 	background-color: #EEEEEE;
 }
-#mini-panel-task_content_panel .ui-state-active{
+.panel-display .ui-state-active{
 	background-color: #F6F6F6 !important;
 }
-#mini-panel-task_content_panel .ui-state-active a{
+.panel-display .ui-state-active a{
 	color: #525252 !important;
 }
-#mini-panel-task_content_panel .ui-widget-content a {
+.panel-display .ui-widget-content a {
     color: #888888;
 }
-#mini-panel-task_content_panel .ui-state-default{
+.panel-display .ui-state-default{
 	background-image: none;
 	background-color: #dedede;
 	border: 1px solid #eeeeee;
@@ -190,4 +187,19 @@ h1 {
 }
 .ctools-collapsible-processed .panel-separator{
 	border-bottom: 1px solid #EEEEEE;
+}
+.block-content .view-content .views-table td{
+	border-bottom: 1px solid #E5E5E5;
+}
+.view-filters .rel-register-build{
+	background-color: #EEEEEE;
+
+}
+.block-content .view-content .views-table th{
+	background-color: #AFAFAF;
+}
+.block-content .view-content .views-table tr.info, 
+.block-content .view-content .views-table tr.even, 
+.block-content .view-content .views-table tr:nth-child(2n+2) {
+    background-color: #ffffff;
 }
