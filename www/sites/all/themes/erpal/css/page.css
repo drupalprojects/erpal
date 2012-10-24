@@ -141,7 +141,6 @@ body.panels-ipe{
 }
 .panels-flexible-erpal_panel_layout-middle {
     margin-left: 150px;
-    min-width: 440px;
 }
 .panels-flexible-erpal_panel_layout {
     height: 100%;
@@ -233,6 +232,7 @@ body.panels-ipe{
 }
 .panel-display .tabs-processed  .ui-widget-header{
 	padding-left: 0;
+	padding-top: 0;
 	background: none;
 	border: none;
 }
@@ -321,6 +321,9 @@ body.panels-ipe{
 .ctools-collapsible-container .no-title{
 	padding-left: 10px;
 }
+.panel-display .ui-corner-all{
+	padding-top: 0;
+}
 /*
  *  table
  */
@@ -364,19 +367,32 @@ body.panels-ipe{
 .local_tasks{
 	margin: 0px;
 }
+.pane-page-title.no-title{
+	 display: none;
+}
 /*--------------------------------for erpal task view row layout------------------------------------------*/
-.erpal-task-view-row-layout .region-sidebar-left{
-	width: 70%;
+.erpal-task-view-row-layout .region-sidebar-first-left,
+.erpal-task-view-row-layout .region-sidebar-second-left,
+.erpal-task-view-row-layout .region-sidebar-third-left {
+	width: 60%;
 	float: left;
+	min-width: 360px;
 }
-.erpal-task-view-row-layout .region-sidebar-right{
+.erpal-task-view-row-layout .region-sidebar-first-right,
+.erpal-task-view-row-layout .region-sidebar-second-right,
+.erpal-task-view-row-layout .region-sidebar-third-right {
     margin-left: 20px;
-    width: 28%;
+    max-width: 250px;
+    min-width: 250px;
 	float: left;
 }
+
 .erpal-task-view-row-layout .content-inner{
 	margin-bottom: 20px;
 	clear: both;
-	max-width: 1100px;
-	min-width: 1100px;
+	max-width: 1070px;
+	min-width: 660px;
+}
+.pane-pane-messages{
+	margin-bottom: 0px;
 }
