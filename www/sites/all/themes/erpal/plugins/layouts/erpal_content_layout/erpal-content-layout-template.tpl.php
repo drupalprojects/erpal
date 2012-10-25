@@ -5,7 +5,7 @@
       <div id="content-column" role="main">
         <div class="content-inner">
             <?php if (!empty($content['sidebar_first_left'])): ?>
-				<div class="region region-sidebar-left">
+				<div class="region region-sidebar-left<?php if (empty($content['sidebar_first_right'])): ?> single-row<?php endif; ?>">
 				  <?php print render($content['sidebar_first_left']); ?>
 				</div>
           <?php endif; ?>
@@ -17,7 +17,7 @@
         </div>
 		<div class="content-inner">
             <?php if (!empty($content['sidebar_second_left'])): ?>
-				<div class="region region-sidebar-left">
+				<div class="region region-sidebar-left<?php if (empty($content['sidebar_second_right'])): ?> single-row<?php endif; ?>">
 				  <?php print render($content['sidebar_second_left']); ?>
 				</div>
           <?php endif; ?>

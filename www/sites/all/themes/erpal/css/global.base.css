@@ -464,7 +464,7 @@ textarea {
 table {
   border: 1px solid;
   border-spacing: 0;
-  border-collapse: collapse;
+  border-collapse: separate;
   font-size: inherit;
   font: 100%;
 }
@@ -610,15 +610,13 @@ header[role=banner],
 .element-hidden {
   display: none;
 }
-h2.pane-title {
+.pane-page-title h2.pane-title {
 	margin: 0;
     font-size: 36px;
     font-weight: normal;
-    line-height: 1.1em;
+    line-height: 0.8em;
 }
-.form-text{
-	width: 100%;
-}
-.form-autocomplete{
-	width: 95%;
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected{
+	padding-bottom: 0;
 }

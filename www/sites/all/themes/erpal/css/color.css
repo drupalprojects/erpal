@@ -203,3 +203,26 @@ h1 {
 .block-content .view-content .views-table tr:nth-child(2n+2) {
     background-color: #ffffff;
 }
+
+/*---------------ticket details-----------*/
+.field-name-task-title .field-item a{
+	color: #222222;
+}
+.node-erpal-task .columns-inner{
+	background-color: #ffffff;
+}
+#tabs-tasks_by_project_panel-middle-3  #content-column .content-inner,
+#tabs-tickets_by_project_panel-middle-3 #content-column .content-inner{
+	border-bottom: 1px solid #E5E5E5;
+}
+
+.item-list .pager {
+    background: #AFAFAF;
+}
+ul.pager li a {
+	color: #525252 !important;
+}
+#tabs-tasks_by_project_panel-middle-1 th a{
+	color: #525252;
+}
+

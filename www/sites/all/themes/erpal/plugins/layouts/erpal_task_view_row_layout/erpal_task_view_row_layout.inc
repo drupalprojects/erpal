@@ -10,8 +10,7 @@ $plugin = array(
 	'sidebar_first_right'  => t('First right row'),
 	'sidebar_second_left'  => t('Second left row'),
 	'sidebar_second_right'  => t('Second right row'),
-	'sidebar_third_left'  => t('Third left row'),
-  'sidebar_third_right'  => t('Third right row'),
+	'sidebar_second_right2'  => t('Second right row2'),
   ),
 );
 

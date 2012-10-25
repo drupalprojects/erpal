@@ -84,6 +84,9 @@ body.panels-ipe{
 .pane-search-form{
 	margin-bottom: 12px;
 }
+.ui-tabs .ui-tabs-nav li {
+	margin: 0px;
+}
 /*-----------------Search Block-------------------------------*/
 #search-block-form .form-text{
 	margin-left: 5px;
@@ -141,6 +144,7 @@ body.panels-ipe{
 }
 .panels-flexible-erpal_panel_layout-middle {
     margin-left: 150px;
+    min-width: 440px;
 }
 .panels-flexible-erpal_panel_layout {
     height: 100%;
@@ -232,7 +236,6 @@ body.panels-ipe{
 }
 .panel-display .tabs-processed  .ui-widget-header{
 	padding-left: 0;
-	padding-top: 0;
 	background: none;
 	border: none;
 }
@@ -254,6 +257,7 @@ body.panels-ipe{
     text-decoration: none;
 	font-size: 12px;
 	font-weight: bold;
+	min-width: 100px;
 }
 
 .ctools-collapsible-container .ctools-collapsible-handle {
@@ -321,9 +325,6 @@ body.panels-ipe{
 .ctools-collapsible-container .no-title{
 	padding-left: 10px;
 }
-.panel-display .ui-corner-all{
-	padding-top: 0;
-}
 /*
  *  table
  */
@@ -349,7 +350,7 @@ body.panels-ipe{
 .view-filters .rel-register-build .views-exposed-widgets{
 	margin-bottom: 0px;
 }
-.block-content .view-content .views-table .views-field-title,
+.block-content .view-content .views-table .views-field-title a,
 .block-content .view-content .views-table .views-field-field-customer-ref{
 	text-decoration: underline;
 }
@@ -367,32 +368,117 @@ body.panels-ipe{
 .local_tasks{
 	margin: 0px;
 }
-.pane-page-title.no-title{
-	 display: none;
-}
 /*--------------------------------for erpal task view row layout------------------------------------------*/
-.erpal-task-view-row-layout .region-sidebar-first-left,
-.erpal-task-view-row-layout .region-sidebar-second-left,
-.erpal-task-view-row-layout .region-sidebar-third-left {
-	width: 60%;
+.erpal-task-view-row-layout .region-sidebar-left{
+	width: 70%;
 	float: left;
-	min-width: 360px;
 }
-.erpal-task-view-row-layout .region-sidebar-first-right,
-.erpal-task-view-row-layout .region-sidebar-second-right,
-.erpal-task-view-row-layout .region-sidebar-third-right {
+.erpal-task-view-row-layout .region-sidebar-right{
     margin-left: 20px;
-    max-width: 250px;
-    min-width: 250px;
+    width: 28%;
 	float: left;
 }
-
 .erpal-task-view-row-layout .content-inner{
 	margin-bottom: 20px;
 	clear: both;
-	max-width: 1070px;
-	min-width: 660px;
+	max-width: 1100px;
+	min-width: 1100px;
 }
-.pane-pane-messages{
-	margin-bottom: 0px;
+
+/*---------------ticket details-----------*/
+.field-name-task-title .field-item a{
+	font-weight: bold;
 }
+.node-erpal-task .columns-inner{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+#tabs-tasks_by_project_panel-middle ul.field-items{
+	padding: 0px;
+	margin: 0px;
+}
+#tabs-tasks_by_project_panel-middle-3  .view-content .item-list ul li,
+#tabs-tickets_by_project_panel-middle-3  .view-content .item-list ul li {
+	margin: 12px 0 0;
+}
+#tabs-tasks_by_project_panel-middle-1,
+#tabs-tasks_by_project_panel-middle-2,
+#tabs-tasks_by_project_panel-middle-3,
+#tabs-tickets_by_project_panel-middle-1,
+#tabs-tickets_by_project_panel-middle-3,
+#tabs-tickets_by_project_panel-middle-2 {
+    background: transparent;
+    border-radius: 0 0 0 0;
+    padding: 0;
+}
+#tabs-tasks_by_project_panel-middle-3  #content-column .content-inner,
+#tabs-tickets_by_project_panel-middle-3 #content-column .content-inner{
+	padding: 15px;
+	overflow: hidden;
+}
+#tabs-tasks_by_project_panel-middle-3  #content-column .content-inner .field-label,
+#tabs-tasks_by_project_panel-middle-3  #content-column .content-inner .field-items,
+#tabs-tasks_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node div,
+#tabs-tickets_by_project_panel-middle-3 #content-column .content-inner .field-label,
+#tabs-tickets_by_project_panel-middle-3 #content-column .content-inner .field-items,
+#tabs-tickets_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node div {
+	float: left;
+}
+#tabs-tasks_by_project_panel-middle-3 .region-sidebar-right .field-label-above,
+#tabs-tickets_by_project_panel-middle-3 .region-sidebar-right .field-label-above{
+	width: 100%;
+}
+#tabs-tasks_by_project_panel-middle-3 .field-label, 
+#tabs-tickets_by_project_panel-middle-3 .field-label{
+    margin: 0px !important;
+}
+#tabs-tasks_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node div,
+#tabs-tickets_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node div {
+	font-weight: bold;
+}
+#tabs-tasks_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node .field_customer a,
+#tabs-tasks_by_project_panel-middle-3 .region-sidebar-right .field-label-above .field-items a,
+#tabs-tickets_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node .field_customer a,
+#tabs-tickets_by_project_panel-middle-3 .region-sidebar-right .field-label-above .field-items a {
+	font-weight: normal;
+	text-decoration: underline;
+}
+#tabs-tasks_by_project_panel-middle-3 .region-sidebar-right .field .field-label,
+#tabs-tasks_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node div,
+#tabs-tickets_by_project_panel-middle-3 .region-sidebar-right .field .field-label,
+#tabs-tickets_by_project_panel-middle-3 .region-sidebar-right .field-name-task-customer-node div {
+	padding-right: 5px;
+}
+#tabs-tasks_by_project_panel-middle-3 section.field,
+#tabs-tickets_by_project_panel-middle-3 section.field{
+	padding: 5px 0;
+    clear: both;
+	overflow: hidden;
+}
+#tabs-tasks_by_project_panel-middle-3 .view-content .item-list ul li.field-item,
+#tabs-tickets_by_project_panel-middle-3 .view-content .item-list ul li.field-item{
+	margin: 0px;
+}
+#tabs-tasks_by_project_panel-middle-3  .item-list ul,
+#tabs-tickets_by_project_panel-middle-3  .view-content ul{
+	margin: 0px;
+	padding: 0px;
+}
+#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-container,
+#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-container {
+    background-color: transparent;
+    border: none;
+}
+#tabs-tasks_by_project_panel-middle-3 .field-type-taxonomy-term-reference,
+#tabs-tickets_by_project_panel-middle-3 .field-type-taxonomy-term-reference {
+	margin: 0px;
+}
+#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-content,
+#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-content{
+	padding-top: 0px;
+}
+.erpal-content-layout-template .single-row{
+	max-width: 100%;
+}
+

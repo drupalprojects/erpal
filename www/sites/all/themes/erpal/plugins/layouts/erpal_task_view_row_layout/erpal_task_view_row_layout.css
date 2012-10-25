@@ -18,12 +18,8 @@
   padding: 0;
 }
 #panels-dnd-main  #content-column,
-#panels-dnd-main .region-sidebar-first-left,
-#panels-dnd-main .region-sidebar-first-right,
-#panels-dnd-main .region-sidebar-second-left,
-#panels-dnd-main .region-sidebar-second-right,
-#panels-dnd-main .region-sidebar-third-left,
-#panels-dnd-main .region-sidebar-third-right{
+#panels-dnd-main .region-sidebar-left,
+#panels-dnd-main .region-sidebar-right {
   float: left;
 }
 #panels-dnd-main  #content-column {
@@ -33,15 +29,11 @@
 #panels-dnd-main #content-column .content-inner  {
   clear: both;
 }
-#panels-dnd-main .region-sidebar-first-left,
-#panels-dnd-main .region-sidebar-second-left,
-#panels-dnd-main .region-sidebar-third-left{
+#panels-dnd-main .region-sidebar-left{
 	margin-right: 30px;
 	width: 24.5%;
 }
-#panels-dnd-main .region-sidebar-first-right,
-#panels-dnd-main .region-sidebar-third-right,
-#panels-dnd-main .region-sidebar-second-right{
+#panels-dnd-main .region-sidebar-right{
 	width: 24.5%;
 }
 #panels-dnd-main #content-column .content-inner {

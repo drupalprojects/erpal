@@ -77,11 +77,12 @@
 
   ; ie_scripts[lte IE 8][] = js/my-script.js
 
+
 ;----------// Regions
 
   ;regions[sidebar_first]      = Sidebar first
   ;regions[sidebar_second]     = Sidebar second
-  regions[content]            = Main Content
+  ;regions[content]            = Main Content
   ;regions[highlighted]        = Highlighted
   ;regions[content_aside]      = Aside
   ;regions[secondary_content]  = Secondary
