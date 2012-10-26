@@ -105,6 +105,8 @@ function _erpal_projects_helper_projects_links(&$data) {
   $query = array('destination' => $_GET['q']);
   erpal_make_action($data, t('Create a new project'), 'node/add/erpal-project', $query);
   
+  erpal_make_local_tab($data, t('Project list'), 'projects/projects');
+  
 }
 
 /**
