@@ -52,7 +52,7 @@ function erpal_make_action(&$data, $title, $path, $query = array()) {
   $item = erpal_make_local_link($data, $title, $path, $query);
   
   if (array_key_exists('access', $item) && $item['access']) {
-  dpm($data);
+  
     $data['actions']['output'][] = array(
       '#theme' => 'menu_local_action',
       '#link' => $item,
@@ -68,9 +68,9 @@ function erpal_make_local_tab(&$data, $title, $path, $query = array()) {
   $item = erpal_make_local_link($data, $title, $path, $query);
  
   if (array_key_exists('access', $item) && $item['access']) {
-    $data['actions']['output'][] = array(
-      '#theme' => 'menu_local_action',
+    $data['tabs']['output'][] = array(
       '#link' => $item,
+      '#markup' => 'link',
     );
   }
 }
