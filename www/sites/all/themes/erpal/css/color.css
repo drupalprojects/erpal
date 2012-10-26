@@ -225,4 +225,6 @@ ul.pager li a {
 #tabs-tasks_by_project_panel-middle-1 th a{
 	color: #525252;
 }
-
+.to_much_time{
+	color: red;
+}
