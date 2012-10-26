@@ -1,0 +1,23 @@
+<?php
+/**
+* @file
+* Code for the erpal_hacks_helper module.
+*/
+
+/**
+* Implements hook_node_form_alter
+*/
+function erpal_hacks_helper_form_alter(&$form, &$form_state, $form_id) {
+  _erpal_hacks_fix_editablefields_problem($form);
+}
+
+/**
+* Editable fields seams not to work, when the submit button with ajax processing inserted by editbale fields module is in subarray [actions] it will not be rendered (after that it will be removed by editable fields ajax, but submithandler will stay), so we just move it to another subarray
+*/
+function _erpal_hacks_fix_editablefields_problem(&$form) {
+  if (isset($form['#form_id']) && $form['#form_id'] && strpos($form['#form_id'], 'editablefields_form') !== false) {
+    //this is a editbale fields form
+    $form['actions_hack_editable'] = $form['actions'];
+    unset($form['actions']);
+  }
+}

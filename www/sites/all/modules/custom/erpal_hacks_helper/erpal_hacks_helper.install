@@ -1,0 +1,16 @@
+<?php
+
+/**
+* @file
+* Installation hooks for erpal_hacks_helper module.
+*/
+
+function erpal_hacks_helper_enable() {
+  //set module weight heigh so it will be executed after all the other modules
+  db_update('system')
+  ->fields(array(
+    'weight' => 100,
+  ))
+  ->condition('name', 'erpal_hacks_helper')
+  ->execute();
+}
