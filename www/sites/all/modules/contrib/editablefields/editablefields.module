@@ -359,6 +359,7 @@ function editablefields_form($form, &$form_state, $entity_type, $entity, $field,
       '#submit' => array('editablefields_form_submit'),
       '#limit_validation_errors' => array($form['#parents']),
     );
+    
   }
   else {
     $edit_style = isset($display['settings']['click_to_edit_style']) ? $display['settings']['click_to_edit_style'] : 'button';

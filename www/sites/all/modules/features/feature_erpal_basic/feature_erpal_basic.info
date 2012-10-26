@@ -19,6 +19,7 @@ dependencies[] = entity_token
 dependencies[] = entityreference
 dependencies[] = entityreference_prepopulate
 dependencies[] = erpal_basic_helper
+dependencies[] = erpal_hacks_helper
 dependencies[] = fe_block
 dependencies[] = feature_erpal_docs
 dependencies[] = features
