@@ -40,6 +40,39 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_status_information|node|erpal_task|view_row_details';
+  $field_group->group_name = 'group_status_information';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'erpal_task';
+  $field_group->mode = 'view_row_details';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Status information',
+    'weight' => '6',
+    'children' => array(
+      0 => 'field_progress_percent',
+      1 => 'field_task_status_term',
+      2 => 'field_priority_term',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Status information',
+      'instance_settings' => array(
+        'classes' => 'inline_fields',
+        'description' => '',
+        'show_label' => '0',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'none',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_status_information|node|erpal_task|view_row_details'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_task_time_group|node|erpal_task|form';
   $field_group->group_name = 'group_task_time_group';
   $field_group->entity_type = 'node';
@@ -64,6 +97,38 @@ function feature_erpal_project_basic_field_group_info() {
     ),
   );
   $export['group_task_time_group|node|erpal_task|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_time_information|node|erpal_task|view_row_details';
+  $field_group->group_name = 'group_time_information';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'erpal_task';
+  $field_group->mode = 'view_row_details';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Time information',
+    'weight' => '5',
+    'children' => array(
+      0 => 'field_date',
+      1 => 'field_estimated_time',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Time information',
+      'instance_settings' => array(
+        'classes' => 'inline_fields',
+        'description' => '',
+        'show_label' => '0',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'none',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_time_information|node|erpal_task|view_row_details'] = $field_group;
 
   return $export;
 }

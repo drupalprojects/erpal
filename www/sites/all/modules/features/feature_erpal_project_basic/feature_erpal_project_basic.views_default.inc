@@ -4676,6 +4676,12 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'subject_id';
   $handler->display->display_options['fields']['title']['label'] = 'Subject';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'User';
   /* Field: Timetracking: Delete Link */
   $handler->display->display_options['fields']['delete_timetracking']['id'] = 'delete_timetracking';
   $handler->display->display_options['fields']['delete_timetracking']['table'] = 'timetracking';
@@ -4684,12 +4690,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['edit_timetracking']['id'] = 'edit_timetracking';
   $handler->display->display_options['fields']['edit_timetracking']['table'] = 'timetracking';
   $handler->display->display_options['fields']['edit_timetracking']['field'] = 'edit_timetracking';
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'User';
   /* Field: Content: Timetracking button */
   $handler->display->display_options['fields']['field_timetracking_button']['id'] = 'field_timetracking_button';
   $handler->display->display_options['fields']['field_timetracking_button']['table'] = 'field_data_field_timetracking_button';

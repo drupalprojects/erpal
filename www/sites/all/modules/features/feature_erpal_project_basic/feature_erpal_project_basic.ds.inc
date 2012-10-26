@@ -78,7 +78,7 @@ function feature_erpal_project_basic_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'view_row_details';
   $ds_fieldsetting->settings = array(
     'comment_count' => array(
-      'weight' => '0',
+      'weight' => '14',
       'label' => 'hidden',
       'format' => 'default',
       'formatter_settings' => array(
@@ -89,7 +89,7 @@ function feature_erpal_project_basic_ds_field_settings_info() {
       ),
     ),
     'files_count' => array(
-      'weight' => '0',
+      'weight' => '13',
       'label' => 'hidden',
       'format' => 'default',
       'formatter_settings' => array(
@@ -100,7 +100,7 @@ function feature_erpal_project_basic_ds_field_settings_info() {
       ),
     ),
     'task_customer_node' => array(
-      'weight' => '3',
+      'weight' => '2',
       'label' => 'hidden',
       'format' => 'default',
       'formatter_settings' => array(
@@ -122,12 +122,12 @@ function feature_erpal_project_basic_ds_field_settings_info() {
       ),
     ),
     'author' => array(
-      'weight' => '9',
+      'weight' => '10',
       'label' => 'above',
       'format' => 'author_linked',
     ),
     'post_date' => array(
-      'weight' => '10',
+      'weight' => '11',
       'label' => 'above',
       'format' => 'ds_post_date_short',
     ),
@@ -589,26 +589,26 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
     'hide_empty_regions' => 0,
     'hide_sidebars' => 0,
     'regions' => array(
-      'sidebar_third_right' => array(
-        0 => 'comment_count',
-        1 => 'files_count',
-      ),
       'sidebar_first_left' => array(
         0 => 'task_title',
-      ),
-      'sidebar_second_left' => array(
-        0 => 'field_parent',
-        1 => 'field_estimated_time',
-        2 => 'field_date',
-        3 => 'field_task_assigned_users',
-        4 => 'field_task_status_term',
-        5 => 'field_priority_term',
-        6 => 'author',
-        7 => 'post_date',
       ),
       'sidebar_first_right' => array(
         0 => 'field_project_ref',
         1 => 'task_customer_node',
+      ),
+      'sidebar_second_left' => array(
+        0 => 'field_parent',
+        1 => 'group_submitted_information',
+        2 => 'group_time_information',
+        3 => 'group_status_information',
+        4 => 'field_date',
+        5 => 'field_estimated_time',
+        6 => 'field_task_assigned_users',
+        7 => 'field_progress_percent',
+        8 => 'field_task_status_term',
+        9 => 'author',
+        10 => 'field_priority_term',
+        11 => 'post_date',
       ),
       'sidebar_second_right' => array(
         0 => 'body',
@@ -616,23 +616,31 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'sidebar_third_left' => array(
         0 => 'field_pricing',
       ),
+      'sidebar_third_right' => array(
+        0 => 'files_count',
+        1 => 'comment_count',
+      ),
     ),
     'fields' => array(
-      'comment_count' => 'sidebar_third_right',
       'task_title' => 'sidebar_first_left',
-      'files_count' => 'sidebar_third_right',
-      'field_parent' => 'sidebar_second_left',
       'field_project_ref' => 'sidebar_first_right',
       'task_customer_node' => 'sidebar_first_right',
-      'field_estimated_time' => 'sidebar_second_left',
+      'field_parent' => 'sidebar_second_left',
+      'group_submitted_information' => 'sidebar_second_left',
+      'group_time_information' => 'sidebar_second_left',
+      'group_status_information' => 'sidebar_second_left',
       'field_date' => 'sidebar_second_left',
+      'field_estimated_time' => 'sidebar_second_left',
       'field_task_assigned_users' => 'sidebar_second_left',
+      'field_progress_percent' => 'sidebar_second_left',
       'field_task_status_term' => 'sidebar_second_left',
-      'field_priority_term' => 'sidebar_second_left',
       'author' => 'sidebar_second_left',
-      'post_date' => 'sidebar_second_left',
+      'field_priority_term' => 'sidebar_second_left',
       'body' => 'sidebar_second_right',
+      'post_date' => 'sidebar_second_left',
       'field_pricing' => 'sidebar_third_left',
+      'files_count' => 'sidebar_third_right',
+      'comment_count' => 'sidebar_third_right',
     ),
     'classes' => array(),
   );
