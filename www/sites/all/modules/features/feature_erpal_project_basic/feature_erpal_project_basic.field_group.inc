@@ -73,6 +73,38 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_submitted_information|node|erpal_task|view_row_details';
+  $field_group->group_name = 'group_submitted_information';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'erpal_task';
+  $field_group->mode = 'view_row_details';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Submitted information',
+    'weight' => '4',
+    'children' => array(
+      0 => 'author',
+      1 => 'post_date',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Submitted information',
+      'instance_settings' => array(
+        'classes' => 'inline_fields',
+        'description' => '',
+        'show_label' => '0',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'none',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_submitted_information|node|erpal_task|view_row_details'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_task_time_group|node|erpal_task|form';
   $field_group->group_name = 'group_task_time_group';
   $field_group->entity_type = 'node';

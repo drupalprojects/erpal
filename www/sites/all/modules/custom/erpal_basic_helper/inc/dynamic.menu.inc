@@ -48,6 +48,37 @@ function _erpal_basic_helper_get_contexts($router_item = false) {
 * Returns a local action item to path if user has access
 */
 function erpal_make_action(&$data, $title, $path, $query = array()) {
+  
+  $item = erpal_make_local_link($data, $title, $path, $query);
+  
+  if (array_key_exists('access', $item) && $item['access']) {
+  dpm($data);
+    $data['actions']['output'][] = array(
+      '#theme' => 'menu_local_action',
+      '#link' => $item,
+    );
+  }
+}
+
+/**
+* Returns a local action item to path if user has access
+*/
+function erpal_make_local_tab(&$data, $title, $path, $query = array()) {
+  
+  $item = erpal_make_local_link($data, $title, $path, $query);
+ 
+  if (array_key_exists('access', $item) && $item['access']) {
+    $data['actions']['output'][] = array(
+      '#theme' => 'menu_local_action',
+      '#link' => $item,
+    );
+  }
+}
+
+/**
+* Basic processing for local menu links, should not be called directely by other modules
+*/
+function erpal_make_local_link(&$data, $title, $path, $query = array()) {
   $item = menu_get_item($path);
   $item['title'] = $title;
   // The add new content page would redirect to the new event
@@ -61,10 +92,6 @@ function erpal_make_action(&$data, $title, $path, $query = array()) {
     $item['localized_options']['query'] += $query;
     
   $item['localized_options']['query'] += drupal_get_destination();
-  if (array_key_exists('access', $item) && $item['access']) {
-    $data['actions']['output'][] = array(
-      '#theme' => 'menu_local_action',
-      '#link' => $item,
-    );
-  }
+  
+  return $item;
 }
