@@ -308,6 +308,10 @@ function editablefields_form($form, &$form_state, $entity_type, $entity, $field,
   if (!isset($form_state['editablefields_entities'][$entity_type][$id])) {
     $form_state['editablefields_entities'][$entity_type][$id] = $entity;
   }
+  else {
+    // Use updated entity if already updated once.
+    $entity = $form_state['editablefields_entities'][$entity_type][$id];
+  }
 
   // Set the IDs of the entity.
   $info = entity_get_info($entity_type);
@@ -520,7 +524,10 @@ function editablefields_form_submit(&$form, &$form_state) {
     $element = &$element[$parent];
   }
   _editablefields_set_edit_mode($form_state, FALSE, $parents);
-  $entity = $form_state['editablefields_entities'][$element['#entity_type']][$element['#entity_id']];
+  // Re-load the entity so that changes from multiple editable fields will be
+  // saved correctly.
+  $entity = entity_load($element['#entity_type'], array($element['#entity_id']));
+  $entity = reset($entity);
 
   entity_form_submit_build_entity($element['#entity_type'], $entity, $element, $form_state);
 
@@ -528,9 +535,8 @@ function editablefields_form_submit(&$form, &$form_state) {
   entity_save($element['#entity_type'], $entity);
   $form_state['rebuild'] = TRUE;
 
-  // Re-load the entity so that fields can act on the new value.
-  $entity = entity_load($element['#entity_type'], array($element['#entity_id']));
-  $form_state['editablefields_entities'][$element['#entity_type']][$element['#entity_id']] = reset($entity);
+  // Put back the updated entity for used during form rebuild.
+  $form_state['editablefields_entities'][$element['#entity_type']][$element['#entity_id']] = $entity;
 }
 
 /**
