@@ -24,8 +24,10 @@ function erpal_docs_helper_files_count_content_type_render($subtype, $conf, $arg
 
   $node = $context->data;
 
-  if (isset($node->field_asset_files[LANGUAGE_NONE])) {
-    $files_count = count($node->field_asset_files[LANGUAGE_NONE]);
+  if (isset($node->field_asset_files)) {
+    $files_count = 0;
+    if (isset($node->field_asset_files[LANGUAGE_NONE]))
+      $files_count = count($node->field_asset_files[LANGUAGE_NONE]);
     $module = 'erpal_docs_helper';
     $block = new stdClass();
     $block->module = $module;
