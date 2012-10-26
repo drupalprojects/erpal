@@ -4,7 +4,8 @@
 */
 
 //define some contexts
-define('ERPAL_CONTEXT_PROJECTS', 'projects');
+define('ERPAL_CONTEXT_PROJECTS', 'projects'); //projects list
+define('ERPAL_CONTEXT_PROJECTS_GLOBAL', 'projects_global'); //we are in projects view or in a tab that belongs to the projects
 define('ERPAL_CONTEXT_PROJECT', 'project');
 define('ERPAL_CONTEXT_TASKS', 'tasks');
 define('ERPAL_CONTEXT_TICKETS', 'tickets');
@@ -25,7 +26,7 @@ function erpal_projects_helper_erpal_contexts($router_item) {
     
     switch ($node->type) {
       case 'erpal_project':
-        $contexts[ERPAL_CONTEXT_PROJECT] = true;
+        $contexts[ERPAL_CONTEXT_PROJECT] = true;  
         break;
       case 'erpal_task':
         //task or ticket?
@@ -38,7 +39,12 @@ function erpal_projects_helper_erpal_contexts($router_item) {
     }
   }
 
-  //CHECK PROJECTS CONTEXT
+  //CHECK PROJECTS Global CONTEXT
+  if (drupal_match_path($path, 'projects/*')) {        
+    $contexts[ERPAL_CONTEXT_PROJECTS_GLOBAL] = true;      
+  }
+  
+  //CHECK PROJECTS list CONTEXT
   if ($path == 'projects/projects') {        
     $contexts[ERPAL_CONTEXT_PROJECTS] = true;      
   }
@@ -57,13 +63,29 @@ function erpal_projects_helper_erpal_contexts($router_item) {
 }
 
 /**
+* returns the menu parents for a given router item, according to its context
+*/
+function _erpal_projects_helper_get_menu_parents($router_item) {
+  $projects_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS_GLOBAL, $router_item);
+  
+  if ($projects_global) {
+    return 'projects/projects';
+  }
+}
+
+/**
 * Returns all dynamic contextual menu items, @see erpal_projects_helper.module
 */
 function _erpal_projects_helper_dynamic_menu_items(&$data, $router_item, $root_path) {
 
-  //projects context
+  //projects list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS, $router_item)) {    
     _erpal_projects_helper_projects_links($data);       
+  } 
+  
+  //projects global context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS_GLOBAL, $router_item)) {    
+    _erpal_projects_helper_projects_global_links($data);       
   } 
   
   //project context
@@ -104,9 +126,16 @@ function _erpal_projects_helper_projects_links(&$data) {
   //single project context
   $query = array('destination' => $_GET['q']);
   erpal_make_action($data, t('Create a new project'), 'node/add/erpal-project', $query);
-  
+}
+
+/**
+* Adds all projects global context links
+*/
+function _erpal_projects_helper_projects_global_links(&$data) {
+  //single project context
   erpal_make_local_tab($data, t('Project list'), 'projects/projects');
-  
+  erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp');
+  erpal_make_local_tab($data, t('Booked timetrackings'), 'projects/timetrackings');  
 }
 
 /**

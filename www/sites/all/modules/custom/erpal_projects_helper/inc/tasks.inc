@@ -194,18 +194,19 @@ function _erpal_projects_helper_get_tasks($project_nid=false, $for_options=false
     
   $result = $query->execute();
 
-  $task_nodes = array();
-  if (isset($result['node'])) {
+  $task_nids = array();
+  if (isset($result['node']) && count($result['node'])) {
     $task_nids = array_keys($result['node']);
-  }
+  
 
-  //now we have task nids, now execute a query to get nid, title pairs
-  $result = db_select('node', 'n')
-    ->fields('n', array('nid', 'title'))
-    ->condition('nid', $task_nids, 'IN')
-    ->orderBy('title', 'ASC')//ORDER BY created
-    ->execute()
-    ->fetchAll();
+    //now we have task nids, now execute a query to get nid, title pairs
+    $result = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('nid', $task_nids, 'IN')
+      ->orderBy('title', 'ASC')//ORDER BY created
+      ->execute()
+      ->fetchAll();
+  }
     
   $ret = array();
   if ($for_options) {

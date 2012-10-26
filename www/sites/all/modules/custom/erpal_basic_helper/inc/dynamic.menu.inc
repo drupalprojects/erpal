@@ -68,11 +68,46 @@ function erpal_make_local_tab(&$data, $title, $path, $query = array()) {
   $item = erpal_make_local_link($data, $title, $path, $query);
  
   if (array_key_exists('access', $item) && $item['access']) {
-    $data['tabs']['output'][] = array(
-      '#link' => $item,
-      '#markup' => 'link',
+    $data['tabs'][0]['output'][] = array(
+      '#theme' => 'menu_local_task',
+      '#link' => $item
     );
+    $data['tabs'][0]['count'] = count($data['tabs'][0]['output']);
   }
+}
+
+/**
+* sets a current menu item active
+* Called by @see erpal_basic_helper_preprocess_menu_link
+*/
+function erpal_set_menu_item_active(&$menu_item) {
+  static $current_menu_item_cache = false;
+  
+  if ($current_menu_item_cache)
+    $current_menu_item = $current_menu_item_cache;
+  else {
+    $current_menu_item = menu_get_item();
+    //now cache it
+    $current_menu_item_cache = $current_menu_item;
+  }
+ 
+  $menu_parent_path = erpal_get_menu_parents($current_menu_item);
+  
+  if (in_array($menu_item['element']['#href'], $menu_parent_path)) {
+    //its a menu item that should be set active
+    $menu_item['element']['#attributes']['class'][] = 'active-trail';
+    $menu_item['element']['#attributes']['class'][] = 'active';
+    
+  }
+}
+
+/**
+* Returns the menu parent of a path
+*/
+function erpal_get_menu_parents($router_item) {
+  $parents = module_invoke_all('erpal_menu_parents', $router_item);
+  
+  return $parents;
 }
 
 /**

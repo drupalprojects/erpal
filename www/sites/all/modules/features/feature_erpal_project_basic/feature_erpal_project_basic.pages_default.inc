@@ -958,7 +958,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     'logic' => 'and',
   );
   $page->menu = array(
-    'type' => 'tab',
+    'type' => 'none',
     'title' => 'Timetracking',
     'name' => 'navigation',
     'weight' => '0',

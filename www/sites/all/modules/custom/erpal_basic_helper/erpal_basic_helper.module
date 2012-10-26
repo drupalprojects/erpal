@@ -178,6 +178,17 @@ function _erpal_basic_helper_create_contact_link($q_arg = false, $query_arr = ar
 }
 
 /**
+* Implements function to alter theming of menu_link. We set some active trails here.
+*/
+function erpal_basic_helper_preprocess_menu_link(&$variables) {
+  
+  if (isset($variables['element'])) {
+    erpal_set_menu_item_active($variables);
+    dpm($variables);
+  }
+}
+
+/**
 * Returns all contacts for autocomplete (first used in settings to choose "my Company"
 */
 function _erpal_basic_helper_contacts_autocomplete($string){

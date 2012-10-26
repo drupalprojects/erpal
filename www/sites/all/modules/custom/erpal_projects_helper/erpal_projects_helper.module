@@ -74,6 +74,13 @@ function erpal_projects_helper_menu(){
 }
 
 /**
+* Implements hook_erpal_menu_parents provided by erpal_basic_helper
+*/
+function erpal_projects_helper_erpal_menu_parents($router_item) {
+  return _erpal_projects_helper_get_menu_parents($router_item);
+}
+
+/**
 * Implements hook_entity_update
 */
 function erpal_projects_helper_entity_update($entity, $type) {
