@@ -391,7 +391,6 @@ function quicktabs_quicktabs_renderers() {
       'class' => 'QuickQuicktabs',
     ),
   );
-  
   $info['ui_tabs'] = array(
     'path' => $path,
     'handler' => array(
