@@ -142,11 +142,15 @@ function _erpal_projects_helper_summed_project_estimation($project_node) {
   //is it static cached?
   if (isset($sums[$project_node->nid]))
     return $sums[$project_node->nid];
-  
+    
+  $estimation = 0;
   //get all tasks of project
   $task_nids = _erpal_projects_helper_get_tasks($project_node->nid, true, false);
   $task_nids = array_keys($task_nids);
   
+  if (!is_array($task_nids) || !count($task_nids))
+    return 0;
+    
   //now get the sum of estimations of these tasks
   //get table for timetracking field_estimated_time
   $field_info = field_info_field('field_estimated_time');
@@ -160,7 +164,7 @@ function _erpal_projects_helper_summed_project_estimation($project_node) {
   $query->condition('e.entity_id', $task_nids);
   $query->addExpression("SUM(".$value_field_estimation.")", 'time');
   $res = $query->execute()->fetchAssoc();
-
+  
   $estimation = $res['time'];
   
   $sums[$project_node->nid] = $estimation; //cache it static
