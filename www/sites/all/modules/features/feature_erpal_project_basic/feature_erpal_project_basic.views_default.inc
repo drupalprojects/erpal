@@ -433,29 +433,15 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['exposed_form']['options']['bef'] = array(
-    'field_task_status_value' => array(
+    'field_task_type_term_tid' => array(
       'bef_format' => 'default',
       'more_options' => array(
         'bef_select_all_none' => 0,
-        'bef_collapsible' => 1,
+        'bef_collapsible' => 0,
         'bef_filter_description' => '',
       ),
     ),
-    'field_task_type_value' => array(
-      'bef_format' => 'default',
-      'more_options' => array(
-        'bef_select_all_none' => 0,
-        'bef_collapsible' => 1,
-        'bef_filter_description' => '',
-      ),
-    ),
-    'date_filter' => array(
-      'bef_format' => 'bef_datepicker',
-      'more_options' => array(
-        'bef_filter_description' => '',
-      ),
-    ),
-    'field_project_ref_target_id' => array(
+    'field_task_status_term_tid' => array(
       'bef_format' => 'default',
       'more_options' => array(
         'bef_select_all_none' => 0,
@@ -468,6 +454,19 @@ function feature_erpal_project_basic_views_default_views() {
       'more_options' => array(
         'bef_select_all_none' => 0,
         'bef_collapsible' => 0,
+        'bef_filter_description' => '',
+      ),
+    ),
+    'field_priority_term_tid' => array(
+      'bef_format' => 'default',
+      'more_options' => array(
+        'bef_select_all_none' => 0,
+        'bef_collapsible' => 0,
+        'bef_filter_description' => '',
+      ),
+    ),
+    'title' => array(
+      'more_options' => array(
         'bef_filter_description' => '',
       ),
     ),
@@ -691,117 +690,6 @@ function feature_erpal_project_basic_views_default_views() {
     6 => 0,
     5 => 0,
   );
-
-  /* Display: Tasks */
-  $handler = $view->new_display('page', 'Tasks', 'page');
-  $handler->display->display_options['enabled'] = FALSE;
-  $handler->display->display_options['display_description'] = 'A simple List with Tasks and task filters';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
-    'field_project_ref' => 'field_project_ref',
-    'field_task_type_term' => 'field_task_type_term',
-    'field_task_status_term' => 'field_task_status_term',
-    'field_priority_term' => 'field_priority_term',
-    'field_estimated_time' => 'field_estimated_time',
-    'field_parent_1' => 'field_parent_1',
-    'edit_node' => 'edit_node',
-    'nid' => 'nid',
-    'field_parent' => 'field_parent',
-    'field_weight' => 'field_weight',
-    'type' => 'type',
-  );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_project_ref' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_task_type_term' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_task_status_term' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_priority_term' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_estimated_time' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_parent_1' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'edit_node' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'nid' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_parent' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_weight' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'type' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['path'] = 'projects/tasks';
 
   /* Display: Task by project pane tree */
   $handler = $view->new_display('panel_pane', 'Task by project pane tree', 'panel_pane_1');
@@ -2149,10 +2037,19 @@ function feature_erpal_project_basic_views_default_views() {
     6 => 0,
     5 => 0,
   );
+  $handler->display->display_options['allow']['use_pager'] = 0;
+  $handler->display->display_options['allow']['items_per_page'] = 0;
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 'path_override';
+  $handler->display->display_options['allow']['title_override'] = 0;
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
   $handler->display->display_options['argument_input'] = array(
     'field_project_ref_target_id' => array(
-      'type' => 'panel',
-      'context' => 'entity:billable.billable-id',
+      'type' => 'wildcard',
+      'context' => 'entity:comment.node',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',

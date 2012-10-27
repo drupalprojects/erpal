@@ -9,6 +9,7 @@
 */
 function erpal_hacks_helper_form_alter(&$form, &$form_state, $form_id) {
   _erpal_hacks_fix_editablefields_problem($form);
+  _erpal_hacks_fix_quick_tabs_exposed_filter_form_action($form);
 }
 
 /**
@@ -19,5 +20,17 @@ function _erpal_hacks_fix_editablefields_problem(&$form) {
     //this is a editbale fields form
     $form['actions_hack_editable'] = $form['actions'];
     unset($form['actions']);
+  }
+}
+
+/**
+* If we have views (pane or block) with exposed filter embedded in quicktabs and these quicktabs in a panel, the action of the filter form is not set which redirects to the frontpage after submitting a views exposed filter form. So we set the action to the current page here
+*/
+function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form) {
+  if (isset($form['#form_id']) && $form['#form_id'] == 'views_exposed_form') {
+    //only form task views
+    if (in_array('views_exposed_form__tasks', $form['#theme'])) {
+      $form['#action'] = '/'.$_GET['q'];
+    }
   }
 }

@@ -18,6 +18,32 @@ function erpal_basic_helper_init() {
   _erpal_basic_helper_warnings();
 }
 
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_basic_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'erpal_basic_helper' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+} 
+
+/**
+ * Implements hook_quicktabs_renderers().
+ */
+function erpal_basic_helper_quicktabs_renderers() {
+  $info = array();
+
+  $path = drupal_get_path('module', 'erpal_basic_helper') . '/plugins/renderer';
+  $info['erpal_no_js_tabs'] = array(
+    'path' => $path,
+    'handler' => array(
+      'file' => 'ErpalNoJsTabs.inc',
+      'class' => 'ErpalNoJsTabs',
+    ),
+  );
+  
+  return $info;
+}
 
 /**
 * Implements hook_menu

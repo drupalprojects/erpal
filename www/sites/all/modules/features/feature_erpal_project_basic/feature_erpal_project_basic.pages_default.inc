@@ -422,13 +422,13 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-12';
     $pane->panel = 'sidebar_second_left';
-    $pane->type = 'panels_mini';
-    $pane->subtype = 'task_content_panel';
+    $pane->type = 'block';
+    $pane->subtype = 'quicktabs-task_content_tabs';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => '<none>',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -887,16 +887,13 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     $pane = new stdClass();
     $pane->pid = 'new-4';
     $pane->panel = 'sidebar_second_left';
-    $pane->type = 'panels_mini';
-    $pane->subtype = 'tasks_by_project_panel';
+    $pane->type = 'block';
+    $pane->subtype = 'quicktabs-tasks_by_project_tabs';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'context' => array(
-        0 => 'argument_entity_id:node_1',
-      ),
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => '<none>',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -1483,16 +1480,13 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     $pane = new stdClass();
     $pane->pid = 'new-15';
     $pane->panel = 'sidebar_second_left';
-    $pane->type = 'panels_mini';
-    $pane->subtype = 'tickets_by_project_panel';
+    $pane->type = 'block';
+    $pane->subtype = 'quicktabs-tickets_by_project_tabs';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'context' => array(
-        0 => 'argument_entity_id:node_1',
-      ),
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => '<none>',
     );
     $pane->cache = array();
     $pane->style = array(
