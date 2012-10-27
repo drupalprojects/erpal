@@ -42,7 +42,8 @@ body.panels-ipe{
     list-style-type: none;
 }
 .pane-menu-menu-erpal-menu ul li ul li.last,
-.pane-menu-menu-erpal-menu ul li.expanded.active-trail ul li a {
+.pane-menu-menu-erpal-menu ul li.expanded.active-trail ul li a,
+.pane-menu-menu-erpal-menu ul li.expanded.active-trail{
 	border-bottom: none;
 }
 .pane-menu-menu-erpal-menu ul li ul li a {

@@ -60,15 +60,17 @@ ul.primary a.active, ul.primary a.active:hover {
 .pane-system-user-menu li a:hover{
 	color: #fdf8f4;
 }
-.pane-menu-menu-erpal-menu ul li a.active,
-.pane-menu-menu-erpal-menu ul li a.active:hover,
-.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail{
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail{
 	background: url("../images/arrow.png") no-repeat 100% 0 #ffa800;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail{
 	color: #000000;
 }
 .pane-menu-menu-erpal-menu ul li a.active,
 .pane-menu-menu-erpal-menu ul li a.active:hover,
-.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail {
+.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail,
+.pane-menu-menu-erpal-menu ul li.expanded.active-trail a.active-trail,
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
 	border-top: 2px solid #fd8300;
 	border-bottom: 2px solid #fd8300;
 }
