@@ -184,7 +184,6 @@ function erpal_basic_helper_preprocess_menu_link(&$variables) {
   
   if (isset($variables['element'])) {
     erpal_set_menu_item_active($variables);
-    dpm($variables);
   }
 }
 

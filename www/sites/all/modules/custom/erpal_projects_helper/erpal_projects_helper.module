@@ -291,6 +291,8 @@ function erpal_projects_helper_views_pre_render(&$view) {
   if ($view->name == 'timetracking_entities') {
     _erpal_projects_helper_view_timetracking_entites_post_execute($view);
   }
+  
+  dpm($view->name);
 }
 
 /**
