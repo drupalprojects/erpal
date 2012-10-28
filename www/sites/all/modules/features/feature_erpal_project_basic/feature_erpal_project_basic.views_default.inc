@@ -590,7 +590,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['label'] = 'Type';
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['operator'] = 'field_task_type_term_tid_op';
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['identifier'] = 'field_task_type_term_tid';
-  $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -598,6 +597,7 @@ function feature_erpal_project_basic_views_default_views() {
     4 => 0,
     6 => 0,
     5 => 0,
+    7 => 0,
   );
   $handler->display->display_options['filters']['field_task_type_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_task_type_term_tid']['vocabulary'] = 'task_type_terms';
@@ -611,7 +611,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['operator'] = 'field_task_status_term_tid_op';
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['identifier'] = 'field_task_status_term_tid';
-  $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -619,6 +618,7 @@ function feature_erpal_project_basic_views_default_views() {
     4 => 0,
     6 => 0,
     5 => 0,
+    7 => 0,
   );
   $handler->display->display_options['filters']['field_task_status_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_task_status_term_tid']['vocabulary'] = 'task_status_terms';
@@ -660,7 +660,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
-  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -668,6 +667,7 @@ function feature_erpal_project_basic_views_default_views() {
     4 => 0,
     6 => 0,
     5 => 0,
+    7 => 0,
   );
   $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
@@ -1271,7 +1271,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'jstree';
   $handler->display->display_options['style_options']['id_field'] = 'nid';
   $handler->display->display_options['style_options']['results_id'] = 1;
-  $handler->display->display_options['style_options']['parent_field'] = 'field_parent_1';
+  $handler->display->display_options['style_options']['parent_field'] = 'field_parent';
   $handler->display->display_options['style_options']['weight_field'] = 'field_weight';
   $handler->display->display_options['style_options']['type_field'] = 'type';
   $handler->display->display_options['style_options']['ajax_child_view'] = 0;
@@ -1279,6 +1279,7 @@ function feature_erpal_project_basic_views_default_views() {
     'erpal_contact' => 0,
     'erpal_book' => 0,
     'erpal_book_page' => 0,
+    'erpal_date' => 0,
     'erpal_contract' => 0,
     'erpal_crm_activity' => 0,
     'erpal_file' => 0,
@@ -1286,8 +1287,8 @@ function feature_erpal_project_basic_views_default_views() {
     'erpal_project' => 0,
     'erpal_task' => 0,
     'erpal_timetracking' => 0,
-    'article' => 0,
     'erpal_space' => 0,
+    'article' => 0,
     'page' => 0,
   );
   $handler->display->display_options['style_options']['context_menu'] = array(

@@ -30,7 +30,12 @@ function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form) {
   if (isset($form['#form_id']) && $form['#form_id'] == 'views_exposed_form') {
     //only form task views
     if (in_array('views_exposed_form__tasks', $form['#theme'])) {
-      $form['#action'] = '/'.$_GET['q'];
+      $url = $_GET['q'];
+      //dpm(request_path());
+      $form['#action'] = '/'.$_GET['q'].'?qt-tasks_by_project_tabs=2';
+      
+      //$query = drupal_get_query_parameters(NULL, array("qt-$qt_name", 'q', 'page'));
+      //dpm($query);
     }
   }
 }

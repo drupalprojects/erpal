@@ -118,7 +118,7 @@ class ErpalNoJsTabs extends QuickQuicktabs {
         'id' => $id,
       ),
       'query' => $query,
-      'fragment' => 'qt-' . $qt_name,
+      //'fragment' => 'qt-' . $qt_name,
     );
     return $link_options;
   }

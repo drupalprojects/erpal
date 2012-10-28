@@ -312,10 +312,13 @@ function views_jstree_load_children($view_name, $parent_id) {
     $by_id_view = views_get_view($view_name);
 
     $by_id_display = _views_jstree_get_by_id_display($by_id_view);
+
     if ($by_id_display) {  //if there is no view display for selecting nodes by id skip this process!
       $id_args = array(implode('+', $all_children_flat));
 
-      //set filter
+      //set filter  
+      unset($filter_values['qt-tasks_by_project_tabs']);
+     
       $by_id_view->set_exposed_input($filter_values);
       $by_id_view->preview($by_id_display->id, $id_args);
       $filtered_result = $by_id_view->result;
