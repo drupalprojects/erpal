@@ -317,8 +317,6 @@ function views_jstree_load_children($view_name, $parent_id) {
       $id_args = array(implode('+', $all_children_flat));
 
       //set filter  
-      unset($filter_values['qt-tasks_by_project_tabs']);
-     
       $by_id_view->set_exposed_input($filter_values);
       $by_id_view->preview($by_id_display->id, $id_args);
       $filtered_result = $by_id_view->result;

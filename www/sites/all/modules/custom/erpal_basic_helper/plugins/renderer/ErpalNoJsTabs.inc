@@ -9,7 +9,7 @@ class ErpalNoJsTabs extends QuickQuicktabs {
   public function render() {
     //we will always only render the current active tab in this render handler    
     $quickset = $this->quickset;
-    
+
     $render_array = array();
 
     $active_tab = $quickset->getActiveTab();

@@ -2454,7 +2454,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['label'] = 'Type';
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['operator'] = 'field_task_type_term_tid_op';
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['identifier'] = 'field_task_type_term_tid';
-  $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_task_type_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -2462,6 +2461,7 @@ function feature_erpal_project_basic_views_default_views() {
     4 => 0,
     6 => 0,
     5 => 0,
+    7 => 0,
   );
   $handler->display->display_options['filters']['field_task_type_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_task_type_term_tid']['vocabulary'] = 'task_type_terms';
@@ -2475,7 +2475,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['operator'] = 'field_task_status_term_tid_op';
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['identifier'] = 'field_task_status_term_tid';
-  $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_task_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -2483,6 +2482,7 @@ function feature_erpal_project_basic_views_default_views() {
     4 => 0,
     6 => 0,
     5 => 0,
+    7 => 0,
   );
   $handler->display->display_options['filters']['field_task_status_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_task_status_term_tid']['vocabulary'] = 'task_status_terms';
@@ -2524,7 +2524,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
-  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -2532,6 +2531,7 @@ function feature_erpal_project_basic_views_default_views() {
     4 => 0,
     6 => 0,
     5 => 0,
+    7 => 0,
   );
   $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';

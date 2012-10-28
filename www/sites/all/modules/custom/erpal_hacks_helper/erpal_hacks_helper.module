@@ -29,13 +29,29 @@ function _erpal_hacks_fix_editablefields_problem(&$form) {
 function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form) {
   if (isset($form['#form_id']) && $form['#form_id'] == 'views_exposed_form') {
     //only form task views
-    if (in_array('views_exposed_form__tasks', $form['#theme'])) {
+    if (in_array('views_exposed_form__tasks', $form['#theme']) || in_array('views_exposed_form__tickets', $form['#theme'])) {
       $url = $_GET['q'];
       //dpm(request_path());
-      $form['#action'] = '/'.$_GET['q'].'?qt-tasks_by_project_tabs=2';
-      
-      //$query = drupal_get_query_parameters(NULL, array("qt-$qt_name", 'q', 'page'));
-      //dpm($query);
+      $form['#action'] = '/'.$_GET['q'];
+
+      _erpal_hacks_helper_add_qt_parameters_to_exposed_form($form);
+    }
+  }
+}
+
+/**
+* Adds the quicktabs current tab values to the filter, so they are kept persistent in the url during exposed filter submit
+*/
+function _erpal_hacks_helper_add_qt_parameters_to_exposed_form(&$form) {
+  
+  foreach ($_GET as $name => $value) {
+    $pos = strpos($name, 'qt-');
+    if ($pos === 0) {
+      //this is a qucick tab current-tab parameter
+      $form[$name] = array(
+        '#type' => 'hidden',
+        '#default_value' => $value,
+      );
     }
   }
 }
