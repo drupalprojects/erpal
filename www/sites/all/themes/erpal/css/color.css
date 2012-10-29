@@ -161,19 +161,24 @@ h1 {
 .panel-display .ui-tabs .ui-tabs-panel{
 	background-color: #EEEEEE;
 }
-.panel-display .ui-state-active{
+ul.quicktabs-tabs li.active{
 	background-color: #F6F6F6 !important;
 }
-.panel-display .ui-state-active a{
+ul.quicktabs-tabs li.active a{
 	color: #525252 !important;
+	
 }
-.panel-display .ui-widget-content a {
+ul.quicktabs-tabs a {
     color: #888888;
 }
-.panel-display .ui-state-default{
+ul.quicktabs-tabs li{
 	background-image: none;
 	background-color: #dedede;
-	border: 1px solid #eeeeee;
+	border-top: 1px solid #eeeeee;
+	border-left: 1px solid #eeeeee;
+}
+ul.quicktabs-tabs li.last{
+	border-right: 1px solid #eeeeee;
 }
 .ctools-collapsible-container {
 	background-color: #DEDEDE;
