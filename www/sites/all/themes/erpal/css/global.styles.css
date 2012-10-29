@@ -37,8 +37,8 @@ body {
   font-size: 12px;
   font-family: Arial,Helvetica,sans-serif;
   min-width: 1020px;
-  height: 100%;
   min-height: 100%;
+  position: relative;
 }
 
 /* =============================================================================

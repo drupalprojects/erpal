@@ -80,6 +80,7 @@ body.panels-ipe{
 }
 .panels-flexible-erpal_panel_layout-left{
 	float: left;
+	position: absolute;
 }
 .pane-search-form{
 	margin-bottom: 12px;
