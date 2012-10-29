@@ -22,7 +22,8 @@ function computed_field_field_timetracking_button_compute(&$entity_field, $entit
 function erpal_projects_helper_summed_timetracking($node) {
   if ($node->type != 'erpal_task' && $node->type != 'erpal_project')
     return;
-    
+  
+  $nids = array();
   if ($node->type == 'erpal_task') {
     $nids = array($node->nid);
   }  
@@ -31,6 +32,9 @@ function erpal_projects_helper_summed_timetracking($node) {
     $task_nids = _erpal_projects_helper_get_tasks($node->nid, true, true);
     $nids = array_keys($task_nids);
   }
+  
+  if (!count($nids))
+    return;
     
   //get table for timetracking field_timetracking_duration
   $field_info = field_info_field('field_timetracking_duration');
