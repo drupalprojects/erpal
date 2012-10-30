@@ -242,9 +242,17 @@ function erpal_projects_helper_permission(){
       'title' => t('Access timetrackings view'), 
       'description' => t('Allows the user to access the timetrackings view'),
     ),
-    'access tasks tree' => array(
+    'access tasks details' => array(
       'title' => t('Access tasks tree view'), 
       'description' => t('Allows the user to access the task tree view'),
+    ),
+    'access tickets details' => array(
+      'title' => t('Access tickets details view'), 
+      'description' => t('Allows the user to access the tickets details view'),
+    ),
+    'access tasks tree' => array(
+      'title' => t('Access tasks details view'), 
+      'description' => t('Allows the user to access the task details view'),
     ),
     'access tickets tree' => array(
       'title' => t('Access tickets tree view'), 
