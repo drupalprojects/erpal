@@ -1130,13 +1130,13 @@ function node_save($node) {
     $function = "field_attach_$op";
     $function('node', $node);
 
-    module_invoke_all('node_' . $op, $node);
-    module_invoke_all('entity_' . $op, $node, 'node');
-
     // Update the node access table for this node. There's no need to delete
     // existing records if the node is new.
     $delete = $op == 'update';
     node_access_acquire_grants($node, $delete);
+
+    module_invoke_all('node_' . $op, $node);
+    module_invoke_all('entity_' . $op, $node, 'node');
 
     // Clear internal properties.
     unset($node->is_new);
