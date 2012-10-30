@@ -145,10 +145,10 @@ if (is_array($billables)) {
     $row[] = array('data' => $billable['subject'],
         "class" => "left");
     // price
-    $row[] = array('data' => $billable['single_price'],
+    $row[] = array('data' => number_format($billable['single_price'], 2, ',', '.'),
         "class" => "right");
     // total
-    $row[] = array('data' => $billable['total_price'],
+    $row[] = array('data' => number_format($billable['total_price'], 2, ',', '.'),
         "class" => "right");
 
     // Add the Row to the array:
@@ -161,7 +161,7 @@ if (is_array($billables)) {
           0 => '',
           1 => '',
           2 => array('data' => t("Sum excl. VAT"), 'class' => 'right', 'colspan' => 2),
-          3 => array('data' => $total_excl_vat . $curr, 'class' => 'right'),
+          3 => array('data' => number_format($total_excl_vat, 2, ',', '.') . $curr, 'class' => 'right'),
       ),
       'class' => array('sumrow', 'bordertop'),
   );
@@ -175,7 +175,7 @@ if (is_array($billables)) {
               0 => '',
               1 => '',
               2 => array('data' => t("!vat_rate% VAT", array("!vat_rate" => $vatposition['vat_rate'])), 'class' => 'right', 'colspan' => 2),
-              3 => array('data' => $vatposition['vat_value']. $curr, 'class' => 'right'),
+              3 => array('data' => number_format($vatposition['vat_value'], 2, ',', '.'). $curr, 'class' => 'right'),
           ),
           'class' => array('sumrow'),
       );
@@ -187,7 +187,7 @@ if (is_array($billables)) {
           0 => '',
           1 => '',
           2 => array('data' => t("Sum incl. VAT"), 'class' => 'right', 'colspan' => 2),
-          3 => array('data' => $total . $curr, 'class' => 'right'),
+          3 => array('data' => number_format($total, 2, ',', '.') . $curr, 'class' => 'right'),
       ),
       'class' => array('sumrow'),
   );
