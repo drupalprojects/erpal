@@ -63,6 +63,13 @@
 <?php print $styles; ?>
 <?php print $scripts; ?>
 <?php print $polyfills; ?>
+<script type="text/javascript">
+	   function checkMyHeight()
+	   {
+		  document.getElementById('frame').style.height = "auto";
+		  document.getElementById('frame').style.height = this.document.body.offsetHeight + "px";
+	   }
+	</script>
 </head>
 <body class="<?php print $classes; ?>"<?php print $attributes; ?>>
   <div id="skip-link">

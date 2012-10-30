@@ -60,15 +60,17 @@ ul.primary a.active, ul.primary a.active:hover {
 .pane-system-user-menu li a:hover{
 	color: #fdf8f4;
 }
-.pane-menu-menu-erpal-menu ul li a.active,
-.pane-menu-menu-erpal-menu ul li a.active:hover,
-.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail{
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail{
 	background: url("../images/arrow.png") no-repeat 100% 0 #ffa800;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail{
 	color: #000000;
 }
 .pane-menu-menu-erpal-menu ul li a.active,
 .pane-menu-menu-erpal-menu ul li a.active:hover,
-.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail {
+.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail,
+.pane-menu-menu-erpal-menu ul li.expanded.active-trail a.active-trail,
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
 	border-top: 2px solid #fd8300;
 	border-bottom: 2px solid #fd8300;
 }
@@ -159,19 +161,24 @@ h1 {
 .panel-display .ui-tabs .ui-tabs-panel{
 	background-color: #EEEEEE;
 }
-.panel-display .ui-state-active{
+ul.quicktabs-tabs li.active{
 	background-color: #F6F6F6 !important;
 }
-.panel-display .ui-state-active a{
+ul.quicktabs-tabs li.active a{
 	color: #525252 !important;
+	
 }
-.panel-display .ui-widget-content a {
+ul.quicktabs-tabs a {
     color: #888888;
 }
-.panel-display .ui-state-default{
+ul.quicktabs-tabs li{
 	background-image: none;
 	background-color: #dedede;
-	border: 1px solid #eeeeee;
+	border-top: 1px solid #eeeeee;
+	border-left: 1px solid #eeeeee;
+}
+ul.quicktabs-tabs li.last{
+	border-right: 1px solid #eeeeee;
 }
 .ctools-collapsible-container {
 	background-color: #DEDEDE;
