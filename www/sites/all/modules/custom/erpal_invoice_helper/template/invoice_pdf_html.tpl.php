@@ -122,13 +122,13 @@ $data['header'] = array(
     'total' => array('data' => t("Total (%curr)", array('%curr' => $currency)), "class" => "right total"),
 );
 
+$curr = ' ' . $currency;
+
 // Billables-Table
 if (is_array($billables)) {
 
   $rows = array();
-  foreach ($billables as $billable) {
-
-    $curr = ' ' . $currency;
+  foreach ($billables as $billable) {    
 
     $row = array();
 
@@ -175,7 +175,7 @@ if (is_array($billables)) {
               0 => '',
               1 => '',
               2 => array('data' => t("!vat_rate% VAT", array("!vat_rate" => $vatposition['vat_rate'])), 'class' => 'right', 'colspan' => 2),
-              3 => array('data' => $vatposition['vat_value'], 'class' => 'right'),
+              3 => array('data' => $vatposition['vat_value']. $curr, 'class' => 'right'),
           ),
           'class' => array('sumrow'),
       );
