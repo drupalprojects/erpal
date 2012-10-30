@@ -203,6 +203,8 @@ function _erpal_projects_helper_task_links(&$data, $task_node, $router_item=fals
    
   $query = array('field_timetracking_subject' => $task_node->nid);  
   erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query); 
+  
+  erpal_make_action($data, t('Print'), 'projects/project/task/'.$task_node->nid.'/print'); 
    
   erpal_make_local_tab($data, t('Tasks'), 'node/'.$project_nid.'/tasks');   
 

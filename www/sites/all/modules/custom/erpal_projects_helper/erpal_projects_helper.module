@@ -15,6 +15,7 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/config');
 module_load_include('inc', 'erpal_projects_helper', 'inc/rules');
 module_load_include('inc', 'erpal_projects_helper', 'inc/field_access');
 module_load_include('inc', 'erpal_projects_helper', 'inc/dynamic.menu');
+module_load_include('inc', 'erpal_projects_helper', 'inc/print');
 
  
 /**
@@ -66,6 +67,13 @@ function erpal_projects_helper_menu(){
   $items['projects/tasks/autocomplete'] = array(
     'page callback' => '_erpal_projects_helper_tasks_autocomplete',
     'access callback' => '_erpal_projects_helper_tasks_autocomplete_access',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['projects/project/task/%node/print'] = array(
+    'page callback' => '_erpal_projects_helper_task_print',
+    'page arguments' => array(3),
+    'access arguments' => array('_erpal_projects_helper_task_print_access'),
     'type' => MENU_CALLBACK,
   );
   
@@ -126,6 +134,10 @@ function erpal_projects_helper_theme() {
       'variables' => array('node' => NULL, 'pdf_object' => NULL, 'options' => array(), 'counter' => 0),
       'template' => 'template/budget_usage',
     ),    
+    'erpal_task_print' => array(
+      'variables' => array('node' => NULL),
+      'template' => 'template/task_print',
+    ),
   );
 }
 
@@ -271,6 +283,10 @@ function erpal_projects_helper_permission(){
       'title' => t('Access sub tasks and tickets tree view'), 
       'description' => t('Allows the user to access the sub tasks and tickets tree view'),
     ),
+    'erpal print tasks' => array(
+      'title' => t('Print erpal tasks'), 
+      'description' => t('Allows the user to print erpal tasks'),
+    )
     
   );
   
