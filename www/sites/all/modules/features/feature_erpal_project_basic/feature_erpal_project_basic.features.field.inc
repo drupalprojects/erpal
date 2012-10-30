@@ -4059,8 +4059,8 @@ function feature_erpal_project_basic_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'Use not as default',
+          1 => 'Use as default',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -4123,8 +4123,8 @@ function feature_erpal_project_basic_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'Use not as default',
+          1 => 'Use as default',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -4246,8 +4246,8 @@ function feature_erpal_project_basic_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'Use not as default',
+          1 => 'Use as default',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
@@ -4369,8 +4369,8 @@ function feature_erpal_project_basic_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'Use not as default',
+          1 => 'Use as default',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
