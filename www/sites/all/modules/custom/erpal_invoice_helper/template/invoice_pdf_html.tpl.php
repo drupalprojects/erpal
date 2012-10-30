@@ -142,7 +142,7 @@ if (is_array($billables)) {
 //        $row[] = array('data' => $billable['article_nr'],
 //                      "class" => "left");
     // Description
-    $row[] = array('data' => $billable['subject'],
+    $row[] = array('data' => trim($billable['subject']),
         "class" => "left");
     // price
     $row[] = array('data' => number_format($billable['single_price'], 2, ',', '.'),
