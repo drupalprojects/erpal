@@ -40,7 +40,7 @@
 "Unsere Auftragsnummer: echo $order_numbers_intern"
 -->
 <table>
-  <tr><td style="height:1.0cm;">&nbsp;</td></tr>
+  <tr><td style="height:1.5cm;">&nbsp;</td></tr>
 </table>
 <table id="head_table">
   <tr>
@@ -62,7 +62,7 @@
   <tr>
     <td>      
       <table>
-        <tr><td style="height:0.8cm;">&nbsp;</td></tr>
+        <tr><td style="height:1.5cm;">&nbsp;</td></tr>
       </table>
       <table id="rechnungsdaten">
         <tr>
