@@ -732,7 +732,7 @@ ul.menu li.last {}
 
 ul.pager {
   clear: both;
-  margin: 15px 0 0 0;
+  margin: 13px 0 0 0;
   text-align: center;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px; 
@@ -1783,4 +1783,7 @@ a.button:active {
 
 .panel-flexible .panel-separator {
     margin: 0 0 0.6em;
+}
+.item-list ul li{
+	margin: 0;
 }

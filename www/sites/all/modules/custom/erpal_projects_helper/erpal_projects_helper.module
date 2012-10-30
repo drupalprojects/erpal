@@ -230,6 +230,7 @@ function erpal_projects_helper_permission(){
       'title' => t('Access projects view'), 
       'description' => t('Allows the user to access the projects view'),
     ),
+    //LIST VIEWS
     'access tasks view' => array(
       'title' => t('Access tasks view'), 
       'description' => t('Allows the user to access the tasks view'),
@@ -238,18 +239,39 @@ function erpal_projects_helper_permission(){
       'title' => t('Access tickets view'), 
       'description' => t('Allows the user to access the tickets view'),
     ),
+    'access sub tasks and tickets view' => array(
+      'title' => t('Access sub tasks and tickets view'), 
+      'description' => t('Allows the user to access the sub tasks and tickets view'),
+    ),
     'access timetrackings view' => array(
       'title' => t('Access timetrackings view'), 
       'description' => t('Allows the user to access the timetrackings view'),
     ),
-    'access tasks tree' => array(
+    'access tasks details' => array(
       'title' => t('Access tasks tree view'), 
       'description' => t('Allows the user to access the task tree view'),
+    ),
+    'access tickets details' => array(
+      'title' => t('Access tickets details view'), 
+      'description' => t('Allows the user to access the tickets details view'),
+    ),
+    'access sub tasks and tickets details view' => array(
+      'title' => t('Access sub tasks and tickets details view'), 
+      'description' => t('Allows the user to access the sub tasks and tickets details view'),
+    ),
+    'access tasks tree' => array(
+      'title' => t('Access tasks details view'), 
+      'description' => t('Allows the user to access the task details view'),
     ),
     'access tickets tree' => array(
       'title' => t('Access tickets tree view'), 
       'description' => t('Allows the user to access the tickets tree view'),
     ),
+    'access sub tasks and tickets tree view' => array(
+      'title' => t('Access sub tasks and tickets tree view'), 
+      'description' => t('Allows the user to access the sub tasks and tickets tree view'),
+    ),
+    
   );
   
   $field_access_permissions = _erpal_projects_helper_field_access_permissions();

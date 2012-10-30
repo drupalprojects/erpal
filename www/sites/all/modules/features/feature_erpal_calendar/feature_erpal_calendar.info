@@ -6,6 +6,7 @@ php = 5.2.4
 version = 7.x-1.0-dev
 project = feature_erpal_calendar
 dependencies[] = calendar
+dependencies[] = erpal_calendar_helper
 dependencies[] = feature_erpal_basic
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
