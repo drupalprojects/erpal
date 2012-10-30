@@ -11,6 +11,8 @@ define('ERPAL_CONTEXT_TASKS', 'tasks');
 define('ERPAL_CONTEXT_TICKETS', 'tickets');
 define('ERPAL_CONTEXT_TASK', 'task');
 define('ERPAL_CONTEXT_TICKET', 'ticket');
+define('ERPAL_CONTEXT_NODE_TIMETRACKINGS', 'node_timetrackings');
+
 
 /**
 * Implement hook_erpal_contexts definied in erpal_basic_helper module
@@ -45,6 +47,11 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   //CHECK PROJECTS Global CONTEXT
   if (drupal_match_path($path, 'projects/*')) {        
     $contexts[ERPAL_CONTEXT_PROJECTS_GLOBAL] = true;      
+  }
+  
+  //CHECK NODE TIMETRACKINGS CONTEXT
+  if ($path == 'node/%/timetracking') {        
+    $contexts[ERPAL_CONTEXT_NODE_TIMETRACKINGS] = true;      
   }
   
   //CHECK PROJECTS list CONTEXT
@@ -91,6 +98,12 @@ function _erpal_projects_helper_dynamic_menu_items(&$data, $router_item, $root_p
     _erpal_projects_helper_projects_global_links($data);       
   } 
   
+  //Node Timetracking Context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_NODE_TIMETRACKINGS, $router_item)) {
+    $node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
+    _erpal_projects_helper_node_timetrackings_links($data, $node); 
+  }
+  
   //project context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECT, $router_item)) {    
     $project_node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
@@ -132,13 +145,21 @@ function _erpal_projects_helper_projects_links(&$data) {
 }
 
 /**
+* Show all Links on timetrackings list of a node
+*/
+function _erpal_projects_helper_node_timetrackings_links(&$data, $node) {
+  $query = array('field_timetracking_subject' => $node->nid);  
+  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query); 
+}
+
+/**
 * Adds all projects global context links
 */
 function _erpal_projects_helper_projects_global_links(&$data) {
   //single project context
   erpal_make_local_tab($data, t('Project list'), 'projects/projects');
   erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp');
-  erpal_make_local_tab($data, t('Booked timetrackings'), 'projects/timetrackings');  
+  erpal_make_local_tab($data, t('Timetrackings'), 'projects/timetrackings');  
 }
 
 /**
@@ -166,7 +187,7 @@ function _erpal_projects_helper_tickets_links(&$data, $project_node, $router_ite
 */
 function _erpal_projects_helper_project_links(&$data, $project_node, $router_item=false) {
 
-  erpal_make_action($data, t('Edit this project'), 'node/'.$project_node->nid.'/edit');
+  erpal_make_action($data, t('Edit this project'), 'node/'.$project_node->nid.'/edit');  
 }
 
 /**
@@ -179,6 +200,9 @@ function _erpal_projects_helper_task_links(&$data, $task_node, $router_item=fals
   $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id']; 
   $query = array('field_parent' => $task_node->nid, 'field_project_ref' => $project_nid);  
   erpal_make_action($data, t('Create a subtask'), 'node/add/erpal-task', $query);
+   
+  $query = array('field_timetracking_subject' => $task_node->nid);  
+  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query); 
    
   if (user_access('use quick timetracking')) {
     $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($task_node->nid);
@@ -198,6 +222,9 @@ function _erpal_projects_helper_ticket_links(&$data, $ticket_node, $router_item=
   $project_nid = $ticket_node->field_project_ref[LANGUAGE_NONE][0]['target_id']; 
   $query = array('field_parent' => $ticket_node->nid, 'field_project_ref' => $project_nid, 'field_is_ticket' => 1);  
   erpal_make_action($data, t('Create a subticket'), 'node/add/erpal-task', $query);
+   
+  $query = array('field_timetracking_subject' => $ticket_node->nid);  
+  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query); 
    
   if (user_access('use quick timetracking')) {
     $timetracking_button = _erpal_projects_helper_render_timetracking_button_field($ticket_node->nid);
