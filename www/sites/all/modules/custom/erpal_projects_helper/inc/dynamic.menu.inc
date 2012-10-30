@@ -22,7 +22,10 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   
   //CHECK PROJECT CONTEXT
   if ($path == 'node/%') {
-    $node = $router_item['map'][1];
+    $node = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
+    
+    if (!$node)
+      return $contexts;
     
     switch ($node->type) {
       case 'erpal_project':
