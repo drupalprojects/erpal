@@ -492,9 +492,10 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
   //now get the date values first for start, end and all repeating dates for each delta and add all date_items that are actually not available
   foreach ($field_data[LANGUAGE_NONE] as $delta=>$date_arr) {
 
-    $date_from = _date_item_as_unix_timestamp($date_arr['value'], $date_arr['timezone']);
+    $timezone = isset($date_arr['timezone']) && $date_arr['timezone'] ? $date_arr['timezone'] : '';
+    $date_from = _date_item_as_unix_timestamp($date_arr['value'], $timezone);
     $date_arr['value2'] = isset($date_arr['value2']) ? $date_arr['value2'] : $date_arr['value'];
-    $date_till = _date_item_as_unix_timestamp($date_arr['value2'], $date_arr['timezone']);
+    $date_till = _date_item_as_unix_timestamp($date_arr['value2'], $timezone);
 
     if (!$date_from && !$date_till)
       continue;

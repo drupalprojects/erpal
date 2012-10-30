@@ -201,7 +201,11 @@ function erpal_book_helper_field_attach_view_alter (&$output, $context) {
 function _erpal_book_helper_get_contact($node) {
   if ($node->type == 'erpal_book_page') {
     //get the parent book at top most level because contact information are stored there
-    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+    $book_nid = isset($node->field_book_ref[LANGUAGE_NONE][0]['target_id']) ? $node->field_book_ref[LANGUAGE_NONE][0]['target_id'] : false;
+    
+    if (!$book_nid)
+      return array();
+    
     $node = node_load($book_nid);
   }
   
