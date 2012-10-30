@@ -410,12 +410,14 @@ function _erpal_invoice_helper_confirm_delete_invoice_submit($form, $form_state)
 */
 function _erpal_invoice_helper_field_customer_ref_alter($field) {
 
-  $field[LANGUAGE_NONE][0]['target_id']['#ajax'] = array(
-    'callback' => '_erpal_invoice_helper_ajax_invoice_preselect_addresses',
-    'wrapper' => 'invoice_address_wrapper',
-    'method' => 'replace',
-    'effect' => 'fade',
-  );
+  if (isset($field[LANGUAGE_NONE][0]['target_id'])) {
+    $field[LANGUAGE_NONE][0]['target_id']['#ajax'] = array(
+      'callback' => '_erpal_invoice_helper_ajax_invoice_preselect_addresses',
+      'wrapper' => 'invoice_address_wrapper',
+      'method' => 'replace',
+      'effect' => 'fade',
+    );
+  }
   
   return $field;
 }
