@@ -193,7 +193,7 @@ function _erpal_projects_helper_ticket_links(&$data, $ticket_node, $router_item=
   erpal_make_action($data, t('Edit this ticket'), 'node/'.$ticket_node->nid.'/edit');
    
   $project_nid = $ticket_node->field_project_ref[LANGUAGE_NONE][0]['target_id']; 
-  $query = array('field_parent' => $ticket_node->nid, 'field_project_ref' => $project_nid);  
+  $query = array('field_parent' => $ticket_node->nid, 'field_project_ref' => $project_nid, 'field_is_ticket' => 1);  
   erpal_make_action($data, t('Create a subticket'), 'node/add/erpal-task', $query);
    
   if (user_access('use quick timetracking')) {
