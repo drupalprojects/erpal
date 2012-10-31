@@ -587,22 +587,30 @@ function erpal_invoice_helper_node_presave($node) {
     _erpal_invoice_helper_replace_order_number_tokens($node);
     
     //replace token for invoice pattern and save the last invoice 
+    $set_new_invoice_number = false;
+    $current_invoice_number = isset($node->field_invoice_number[LANGUAGE_NONE][0]['value']) ? $node->field_invoice_number[LANGUAGE_NONE][0]['value'] : false;
     $invoice_number_numeric = _erpal_invoice_helper_get_next_invoice_number();
     $pattern = $node->field_invoice_number[LANGUAGE_NONE][0]['value'];
     $invoice_number = token_replace($pattern, array('invoice_number' => $invoice_number_numeric));
-    $node->field_invoice_number[LANGUAGE_NONE][0]['value'] = $invoice_number;
-    //replace title token again because we use the invoice number for auto title which was generated here.
+    $set_new_invoice_number = $current_invoice_number != $invoice_number;
 
+    if ($set_new_invoice_number)
+      $node->field_invoice_number[LANGUAGE_NONE][0]['value'] = $invoice_number;
+    
+    //replace title token again because we use the invoice number for auto title which was generated here.
     if (isset($node->title))
       $node->title = _auto_nodetitle_patternprocessor($node->title, $node);
     
-    if (!isset($node->invoice_number_incremented) || (isset($node->invoice_number_incremented) && !$node->invoice_number_incremented)) {
-      //do this only for invoice where contractor is the own company!
-      $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
-      if (_erpal_basic_helper_is_own_company($contractor_nid))
-        _erpal_invoice_helper_set_last_invoice_number($node, $invoice_number_numeric);     
-    }
-    $node->invoice_number_incremented = true;    
+    //try to save the new invoice number only, if we set a new one replaced with a token.
+    if ($set_new_invoice_number) {      
+      if (!isset($node->invoice_number_incremented) || (isset($node->invoice_number_incremented) && !$node->invoice_number_incremented)) {
+        //do this only for invoice where contractor is the own company!
+        $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+        if (_erpal_basic_helper_is_own_company($contractor_nid))
+          _erpal_invoice_helper_set_last_invoice_number($node, $invoice_number_numeric);     
+      }
+      $node->invoice_number_incremented = true; 
+    }      
   }
 } 
 
