@@ -180,21 +180,25 @@ function _erpal_contract_helper_contract_node_validate($node, $form, &$form_stat
     
   if ($field_cancelation_period) {
     if ($field_contract_duration && $field_cancelation_period > $field_contract_duration) {
-      form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract duration'));
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract duration'));
     }    
     
     if ($field_repeating_duration && $field_cancelation_period > $field_repeating_duration) {
-      form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract repeating duration'));
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract repeating duration'));
     } 
   }
   
   if ($field_cancelation_period_con) {
     if ($field_contract_duration && $field_cancelation_period_con > $field_contract_duration) {
-      form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract duration'));
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract duration'));
     }
     
     if ($field_repeating_duration && $field_cancelation_period_con > $field_repeating_duration) {
-      form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract repeating duration'));
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract repeating duration'));
     } 
   }
 }
