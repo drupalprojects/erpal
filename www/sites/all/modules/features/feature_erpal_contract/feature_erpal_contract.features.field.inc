@@ -1283,6 +1283,113 @@ If not set, budget will not expire',
     ),
   );
 
+  // Exported field: 'node-erpal_contract-field_activity_ref'.
+  $fields['node-erpal_contract-field_activity_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_activity_ref',
+      'foreign keys' => array(
+        'node' => array(
+          'columns' => array(
+            'target_id' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'target_entity' => array(
+          0 => 'target_id',
+        ),
+        'target_id' => array(
+          0 => 'target_id',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'entityreference',
+      'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 1,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'erpal_crm_activity' => 'erpal_crm_activity',
+          ),
+        ),
+        'handler_submit' => 'Change handler',
+        'profile2_private' => FALSE,
+        'target_type' => 'node',
+      ),
+      'translatable' => '0',
+      'type' => 'entityreference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contract',
+      'default_value' => NULL,
+      'default_value_function' => 'entityreference_prepopulate_field_default_value',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => 11,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_activity_ref',
+      'label' => 'CRM activity',
+      'required' => 0,
+      'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'action' => 'none',
+            'fallback' => 'none',
+            'skip_perm' => '0',
+            'status' => 1,
+          ),
+        ),
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 0,
+          'references_dialog_search' => 0,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
+        'weight' => '3',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_contract-field_asset_files'.
   $fields['node-erpal_contract-field_asset_files'] = array(
     'field_config' => array(
@@ -1689,7 +1796,7 @@ If not set, budget will not expire',
         'max' => '',
         'min' => '',
         'prefix' => '',
-        'suffix' => '',
+        'suffix' => 'month',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -1926,7 +2033,7 @@ If not set, budget will not expire',
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1982,7 +2089,7 @@ If not set, budget will not expire',
         'max' => '',
         'min' => '',
         'prefix' => '',
-        'suffix' => '',
+        'suffix' => 'month',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -2003,6 +2110,7 @@ If not set, budget will not expire',
   t('Budget hours');
   t('Budget period');
   t('Budgets');
+  t('CRM activity');
   t('Cancelation period');
   t('Cancelation period contractor');
   t('Cancelation period especially for the contractor. If not set, its the same as cancelation period.');

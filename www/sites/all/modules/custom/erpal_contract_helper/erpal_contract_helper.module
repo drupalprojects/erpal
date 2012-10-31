@@ -155,6 +155,20 @@ function erpal_contract_helper_node_validate($node, $form, &$form_state) {
 }
 
 /**
+* Returns the activity referenced by the contract
+*/
+function _erpal_contract_helper_get_activity_by_contract($contract_node) {
+  $activity_node = false;
+  if (isset($contract_node->field_activity_ref[LANGUAGE_NONE][0])) {
+    $activity_nid = $contract_node->field_activity_ref[LANGUAGE_NONE][0]['target_id'];
+    $activity_node = node_load($activity_nid);
+  }
+  
+  return $activity_node;
+  
+}
+
+/**
 * Validate a contract node
 */
 function _erpal_contract_helper_contract_node_validate($node, $form, &$form_state) {
@@ -223,12 +237,46 @@ function erpal_contract_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_contract_node_form') {    
     _erpal_contract_helper_set_default_pricing($form, $form_state, $form_id);
     _erpal_contract_helper_manage_form_elements($form, $form_state, $form_id);
+    _erpal_contract_helper_contract_node_form_alter($form, $form_state);
   } 
   elseif ($form_id == 'erpal_calendar_helper_config_form') {
     _erpal_contract_helper_alter_calendar_config_form($form, $form_state);
   }
   
 }
+
+
+/**
+* Alters the project node form
+*/
+function _erpal_contract_helper_contract_node_form_alter(&$form, &$form_state) {
+  //if form is filled by entityreference prepopulate, the crm activity is already prefilled.
+  //with the activity we can preselect the customer, because it may be the same as in activity and contract
+  //in most cases
+  $nid = $form['nid']['#value'];
+  //if node already exists, do nothing here
+  if ($nid)
+    return;
+  
+  $activity_nid = $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+  $activity_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($activity_nid);
+
+  if (!empty($activity_nid) && is_numeric($activity_nid)) {
+    $activity_node = node_load($activity_nid);
+    $customer_nid = false;
+
+    if (isset($activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $customer_nid = $activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
+    }
+
+    if ($customer_nid) {
+      $customer_node = node_load($customer_nid);
+      dpm($form);
+      $form['field_contract_payment'][LANGUAGE_NONE][0]['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_node->title." (".$customer_nid.")";
+    }
+  }
+}
+
 
 /**
 * Manage form elements that we dont manage by display suite and renderable elements
