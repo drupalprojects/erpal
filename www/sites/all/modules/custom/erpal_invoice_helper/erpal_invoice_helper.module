@@ -368,6 +368,11 @@ function _erpal_invoice_helper_invoice_node_handle_removed_billables($node) {
     //may be delete the billable
     if (!$keep_billable) {
       billable_delete_multiple(array($billable_id));
+    } else {
+      //set the billable unbilled, so it can be billed again
+      $billable = billable_load($billable_id);
+      $billable->set_billed(false);
+      $billable->save();
     }
   }
   
