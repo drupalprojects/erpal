@@ -60,7 +60,7 @@ function erpal_invoice_helper_token_info() {
   
   
   //if module erpal project basic is active, add tokens for 
-  if (module_exists('feature_erpal_project_basic')) {
+  if (module_exists('feature_erpal_project_basic') || module_exists('feature_erpal_contract')) {
     $referenced_data['order_numbers_intern'] = array(
       'name' => t("Internal order numbers"),
       'description' => t("Your internal numbers of orders related to the invoice items"),

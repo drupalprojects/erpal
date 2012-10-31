@@ -899,7 +899,7 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
     'extern' => array(),
   );
 
-  if (module_exists('feature_erpal_project_basic')) {
+  if (module_exists('feature_erpal_project_basic') || module_exists('feature_erpal_contract')) {
     $line_items = $invoice_node->field_billables_ref[LANGUAGE_NONE];
 
     foreach ($line_items as $line_item) {
@@ -927,8 +927,13 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
         //then proceed as if we have a task or a project...
       }
   
-      if ($subject_node->type == 'erpal_task' || $subject_node->type == 'erpal_project') {
-        $activity_node = _erpal_projects_helper_get_activity($subject_node);       
+      if ($subject_node->type == 'erpal_task' || $subject_node->type == 'erpal_project' || $subject_node->type == 'erpal_contract') {
+      
+        if ($subject_node->type == 'erpal_contract')
+          $activity_node = _erpal_contract_helper_get_activity($subject_node);
+        else
+          $activity_node = _erpal_projects_helper_get_activity($subject_node);       
+ 
         if ($activity_node) {
           //get the order numbers intern and extern and add it to the $numbers array
           if (isset($activity_node->field_order_number_intern[LANGUAGE_NONE][0]['value'])) {
@@ -942,7 +947,6 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
           }
         }
       }
-
     }
   }
 
