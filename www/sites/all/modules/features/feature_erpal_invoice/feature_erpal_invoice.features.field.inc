@@ -2084,6 +2084,73 @@ function feature_erpal_invoice_field_default_fields() {
     ),
   );
 
+  // Exported field: 'taxonomy_term-countries-field_vat_rate'.
+  $fields['taxonomy_term-countries-field_vat_rate'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'bundle' => 'field_pricing',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'description' => 'Add a reference to a specification to erpal_tasks node type',
+      'entity_type' => 'field_collection_item',
+      'entity_types' => array(),
+      'field_instance' => array(
+        'widget' => array(
+          'module' => 'options',
+          'settings' => array(),
+          'type' => 'options_select',
+          'weight' => '3',
+        ),
+      ),
+      'field_name' => 'field_vat_rate',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'label' => 'VAT',
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(),
+        'allowed_values_function' => 'erpal_billable_field_vat_rate_allowed_values',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'countries',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_vat_rate',
+      'label' => 'Default VAT rate',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Add some hintes for your invoice. There will be added some automated notes, too');
@@ -2095,6 +2162,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Credit period');
   t('Currency');
   t('Customer');
+  t('Default VAT rate');
   t('Discount percent');
   t('Exported');
   t('Here you can enter further address information');

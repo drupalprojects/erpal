@@ -91,7 +91,7 @@ function erpal_invoice_helper_init() {
     if (isset($_POST['field_customer_ref'][LANGUAGE_NONE]))
       if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]))
         if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'])) {
-          $customer_nid = $_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'];
+          $customer_nid = intval($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id']);
           $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);
           _erpal_invoice_helper_cache('erpal_ajax_adresses', $customer_nid);
         }
@@ -158,6 +158,30 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+* Returns the preselected customer node from the invoice form
+*/
+function _erpal_invoice_helper_get_customer_form_invoice($form, $form_state) {
+  
+  $customer_nid = isset($form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
+  
+  //if we still have no customer, get it from the request
+  if (!$customer_nid || !$customer_nid['#default_value']) {
+    $customer_nid = isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
+    $customer_nid = check_plain($customer_nid);    
+  }
+
+  if ($customer_nid) {        
+    
+    $customer_string = is_array($customer_nid) && isset($customer_nid['#default_value']) ? $customer_nid['#default_value'] : $customer_nid;
+
+    $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_string); 
+
+    return node_load($customer_nid);
+  } else
+    return false;
+}
+
+/**
 * Function altering the erpal_invoice node form
 */
 function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
@@ -168,33 +192,40 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   
   $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);  
 
+  //if customer is preselected, options are empty, put the addresses in the address select field and fill the default vat value for the country of the customer
+  $customer_node = _erpal_invoice_helper_get_customer_form_invoice($form, $form_state);
+  $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options']; 
+
+  if ($customer_node) {      
+    if (count($options) == 1) {    
+        
+      $option_keys = array_keys($options);
+      $first_option = isset($option_keys[0]) ? $option_keys[0] : false;
+      if (!is_numeric($first_option) || !$first_option) {                 
+        $addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);        
+        //now add addresses to options, just merging will not keep the index of the array with the id of the address
+        foreach ($addresses as $address_id=>$address_str) {
+          $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$address_id] = $address_str;
+        }
+      }   
+    }
+
+  }
+    
   //if address has only one option, make this option the default value
   $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];  
-  
-  $default_id = false;
-  if (count($options) == 2) {
+
+  $default_id = false; 
+  if (count($options) == 2) {    
     //get the one that is not "_none" and delete it!    
     foreach ($options as $id=>$value) {
-      if (!is_numeric($id))
+      if (!is_numeric($id)) {
         unset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$id]);
+      } else
+        $default_id = $id;
     }
   }
-  
-  //if customer is preselected, options are empty, put the addresses in the address select field
-  if (count($options) == 1) {
-    $customer_nid = isset($form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
-    if ($customer_nid) {      
-      $option_keys = array_keys($options);
-      $first_option = $option_keys[0];
-      if (!is_numeric($first_option)) {
-        $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid['#default_value']);   
-        $customer_node = node_load($customer_nid);
-        $addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);
-        $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'] = array_merge($options, $addresses);
-      }
-    }
-  }
-  
+    
   if ($default_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
   }
@@ -474,7 +505,7 @@ function erpal_invoice_helper_menu(){
     'page arguments' => array('erpal_invoice_helper_contact_invoice_default_form', 1),
     'access callback' => '_erpal_invoice_helper_invoice_defaults_menu_access',
     'access arguments' => array(1),
-    'type' => MENU_LOCAL_ACTION,
+    'type' => MENU_LOCAL_TASK,
   );
   
   require_once 'inc/config.inc';
@@ -849,7 +880,6 @@ function erpal_invoice_helper_vat_rates() {
 * assigned in feature_erpal_invoice
 */
 function _erpal_invoice_helper_ajax_invoice_preselect_addresses($form, $form_state) {  
-    
   return $form['field_invoice_address_id'][LANGUAGE_NONE];  //form has already been processed, so just return the elements
 }
 
@@ -1068,7 +1098,7 @@ function erpal_invoice_helper_contact_invoice_default_form($form, $form_state, $
   
   drupal_set_title(t('Invoice defaults of !contact_name', array('!contact_name' => $contact_node->title)));
   
-  $defaults = _erpal_invoice_helper_get_customer_defaults($contact_node->nid);
+  $defaults = _erpal_invoice_helper_get_customer_defaults($contact_node);
   
   //save the id of the customer in form
   $form['customer_nid'] = array(
@@ -1154,4 +1184,74 @@ function _erpal_invoice_helper_convert_default_form_to_array($values) {
   );
   
   return $defaults;
+}
+
+/**
+* Returns the default values for a customer
+* @param $customer_nid the nid of the node we want to have the defaults for
+* @return an array withy keys: address_id, credit_period, notes
+*/
+function _erpal_invoice_helper_get_customer_defaults($customer_node) {
+  $customer_nid = $customer_node->nid;
+  $defaults = array(
+    'address_id' => 0,
+    'credit_period' => 14,
+    'skonto_period' => '',
+    'skonto_percent' => '',
+    'notes' => _erpal_invoice_helper_get_manuall_notes(),
+    'address_addition' => '',
+    'vat_rate' => _erpal_invoice_helper_get_default_vat_rate(),
+  );
+
+  //Start a query over the erpal_invoice_defaults table
+  $query = db_select('erpal_invoice_defaults', 'd');
+  // Select rows that match the string within type erpal_contact
+  $return = $query
+    ->fields('d', array('customer_nid', 'address_id', 'credit_period', 'notes', 'skonto_period', 'skonto_percent', 'address_addition'))
+    ->condition('d.customer_nid', $customer_nid, '=')
+    ->execute();
+  
+  // add matches to $matches  
+  foreach ($return as $row) {
+    
+    //now, if we have a default invoice address, get the country and the countries default vat rate
+    $address_id = $row->address_id;
+    if ($address_id) {
+      //load it
+      $default_vat_rate = _erpal_invoice_helper_get_vat_rate_by_address($address_id);        
+      $row->vat_rate = isset($default_vat_rate) ? $default_vat_rate : $defaults['vat_rate'];          
+    }
+    
+    if (!isset($row->vat_rate)) {
+      $row->vat_rate = $defaults['vat_rate'];
+    }
+
+    return (array)$row; //we have only one default, so return it!
+  }
+  
+  return $defaults;
+}
+
+/**
+* Returns the default vat of an address
+*/
+function _erpal_invoice_helper_get_vat_rate_by_address($address_id) {
+  if (!$address_id) {
+    return false;
+  } elseif (is_object($address_id))
+    $address_entity = $address_id;
+  else {
+    $address_entity = entity_load('field_collection_item', array($address_id));
+    $address_entity = $address_entity[$address_id];
+  }  
+  
+  $country_tid = isset($address_entity->field_country_term[LANGUAGE_NONE][0]) ? $address_entity->field_country_term[LANGUAGE_NONE][0]['tid'] : false;
+  
+  $default_vat_rate = false;
+  if ($country_tid) {
+    $country_term = taxonomy_term_load($country_tid);    
+    $default_vat_rate = isset($country_term->field_vat_rate[LANGUAGE_NONE][0]) ? $country_term->field_vat_rate[LANGUAGE_NONE][0]['value'] : NULL; 
+  }
+
+  return $default_vat_rate;
 }
