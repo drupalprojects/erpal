@@ -184,7 +184,6 @@ body.panels-ipe{
 	min-width: 360px;
     width: 100%;
 }
-
 /* =============================================================================
  *   Projects
  * ========================================================================== */
@@ -401,6 +400,9 @@ ul.quicktabs-tabs li{
 	font-weight: bold;
 	font-size: 16px;
 }
+.field-name-task-title .field-item p{
+	margin-bottom: 0px;
+}
 .node-erpal-task .columns-inner{
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
@@ -459,7 +461,6 @@ ul.quicktabs-tabs li{
 }
 #quicktabs-tabpage-tickets_by_project_tabs-2 section.field,
 #quicktabs-tabpage-tasks_by_project_tabs-2 section.field{
-	padding: 5px 0;
 	overflow: hidden;
 	clear: both;
 }
@@ -496,9 +497,8 @@ ul.quicktabs-tabs li{
 ul.pager li a, ul.pager li.pager-current {
     font-size: 1.2em;
 }
-#quicktabs-tabpage-tasks_by_project_tabs-2 .columns-inner,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .columns-inner{
-	padding: 15px 15px 5px;
+.quicktabs-tabpage  .article.view-mode-view_row_details .columns-inner{
+	padding: 15px;
 }
 #quicktabs-tabpage-tasks_by_project_tabs-2 .item-list ul li,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .item-list ul li{
@@ -509,3 +509,15 @@ ul.pager li a, ul.pager li.pager-current {
 	padding: 15px 15px 15px 10px;
 	background-color: #FFFFFF;
 }
+.view-mode-view_row_details .content-inner{
+	padding-bottom: 0px;
+}
+.pane-node-body{
+	padding: 30px;
+	min-height: 350px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+
+
