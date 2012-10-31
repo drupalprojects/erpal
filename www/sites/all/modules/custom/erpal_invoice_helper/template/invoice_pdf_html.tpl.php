@@ -115,9 +115,9 @@ $table = array();
 
 $data['header'] = array(
     'executed' => array('data' => t("Executed"), "class" => "left executed"),
-    'amount' => array('data' => t("Quantity"), "class" => "left amount"),
+    'amount' => array('data' => t("Quantity"), "class" => "left amount quantity"),
     //'article'   => array('data' => t("Article nr."), "class" => "left article"),
-    'description' => array('data' => t("Description"), "class" => "left description"),
+    'description' => array('data' => t("Description"), "class" => "left description subject"),
     'price' => array('data' => t("Single price (%curr)", array('%curr' => $currency)), "class" => "right price"),
     'total' => array('data' => t("Total (%curr)", array('%curr' => $currency)), "class" => "right total"),
 );
@@ -137,13 +137,14 @@ if (is_array($billables)) {
         "class" => "left");
     // Amount
     $row[] = array('data' => $billable['quantity'],
-        "class" => "left");
+        "class" => "left quantity");
 //       // Article number
 //        $row[] = array('data' => $billable['article_nr'],
 //                      "class" => "left");
     // Description
+    
     $row[] = array('data' => trim($billable['subject']),
-        "class" => "left");
+        "class" => "left subject");
     // price
     $row[] = array('data' => number_format($billable['single_price'], 2, ',', '.'),
         "class" => "right");
