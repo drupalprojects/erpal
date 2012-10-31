@@ -149,3 +149,21 @@ function node_test_node_update($node) {
     }
   }
 }
+
+/**
+ * Implements hook_node_insert().
+ *
+ * This tests saving a node on node insert.
+ *
+ * @see NodeSaveTest::testNodeSaveOnInsert()
+ */
+function node_test_node_insert($node) {
+  // Set the node title to the node ID and save.
+  if ($node->title == 'new') {
+    $node->title = 'Node '. $node->nid;
+    // Remove the is_new flag, so that the node is updated and not inserted
+    // again.
+    unset($node->is_new);
+    node_save($node);
+  }
+}

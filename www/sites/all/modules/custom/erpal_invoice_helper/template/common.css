@@ -6,13 +6,13 @@
         Purpose of the stylesheet follows.
 */
   * {
-    font-size:8pt;
+    font-size:10pt;
   }
   table#head_table {
     width:100%;
   }
   div#absender {
-    font-size:0.7em;
+    font-size:0.8em;
   }
 
   div#rechnungsdaten_top {

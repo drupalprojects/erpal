@@ -168,8 +168,10 @@ function feature_erpal_basic_field_default_fields() {
         'allowed_values' => array(
           'DE' => 'Germany',
           'AT' => 'Austria',
+          'CH' => 'Switzerland',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_text',
