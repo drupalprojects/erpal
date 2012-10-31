@@ -8,6 +8,7 @@ module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.pdf');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/billables.elements');
 
@@ -549,11 +550,21 @@ function erpal_invoice_helper_node_update($node) {
  //it must be an invoice node
   $type = node_type_get_type($node);
 
-  if ($type->type == 'erpal_invoice') {
-    if (!isset($node->nid) || (isset($node->nid) && !$node->nid))
-      _erpal_invoice_helper_caclulate_invoice($node);
+  if ($type->type == 'erpal_invoice') {    
+    //_erpal_invoice_helper_caclulate_invoice($node);
+    _erpal_invice_helper_add_invoice_pdf_on_save($node);
   }
+}
 
+/**
+* Attach invoice on invoice node save
+*/
+function _erpal_invice_helper_add_invoice_pdf_on_save($invoice_node) {
+  $documents = _erpal_invoice_helper_invoice_document_options();
+  _erpal_invoice_helper_invoice_pdf($invoice_node, $documents, true, false, true);
+  
+  //now only save the fields, not the node itself
+  field_attach_update('node', $invoice_node);
 }
 
 /**
@@ -570,8 +581,7 @@ function erpal_invoice_helper_node_presave($node) {
     if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
     //that is because the vat entity will be saved to a node that does not exist!
       _erpal_invoice_helper_caclulate_invoice($node);
-      _erpal_invoice_helper_invoice_node_handle_removed_billables($node);
-      
+      _erpal_invoice_helper_invoice_node_handle_removed_billables($node);      
     }
     
     _erpal_invoice_helper_replace_order_number_tokens($node);
@@ -592,10 +602,26 @@ function erpal_invoice_helper_node_presave($node) {
       if (_erpal_basic_helper_is_own_company($contractor_nid))
         _erpal_invoice_helper_set_last_invoice_number($node, $invoice_number_numeric);     
     }
-    $node->invoice_number_incremented = true;
+    $node->invoice_number_incremented = true;    
   }
 } 
 
+/**
+* Creates a pdf from the invoice and adds this PDF to the given invoice node
+*/
+function _erpal_invoice_helper_add_pdf_to_invoice($invoice_node) {
+  
+  //create the invoice PDF only, if "my company" created it
+  $contractor_nid = $invoice_node->field_contractor_ref[LANGUAGE_NONE][0]['target_id']; //invoice MUST always have a contractor so dont check with isset so we will realise if there is something wrong
+  
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  if ($my_company_nid != $contractor_nid)
+    return;
+  
+  $documents = _erpal_invoice_helper_invoice_document_options(); //on automatic invoice create, we want to have all possible documents included
+  _erpal_invoice_helper_invoice_pdf($invoice_node, $documents, true, false, true);
+  
+}
 
 /**
 * Implements hook_node_insert
@@ -605,7 +631,8 @@ function erpal_invoice_helper_node_insert($node) {
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice') {
-    _erpal_invoice_helper_caclulate_invoice($node);    
+    _erpal_invoice_helper_caclulate_invoice($node); 
+    _erpal_invice_helper_add_invoice_pdf_on_save($node);    
   }
 }
 
@@ -741,8 +768,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $total_excl_vat = $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'];
   $payment_date = $invoice->field_payment_date[LANGUAGE_NONE][0]['value'];
   $currency = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
-  $order_numbers_intern = isset($invoice->field_order_number_intern[LANGUAGE_NONE]) ? $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'] : false;
-  $order_numbers_extern = isset($invoice->field_order_number_extern[LANGUAGE_NONE]) ? $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'] : false;
+  $order_numbers_intern = isset($invoice->field_order_number_intern[LANGUAGE_NONE][0]) ? $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'] : false;
+  $order_numbers_extern = isset($invoice->field_order_number_extern[LANGUAGE_NONE][0]) ? $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'] : false;
   
   $notes = '';
   if (isset($invoice->field_note[LANGUAGE_NONE]))

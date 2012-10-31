@@ -98,7 +98,7 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
           $replacements[$original] = $invoice->field_credit_period[LANGUAGE_NONE][0]['value'];
         break;
         case 'total':
-          $replacements[$original] = $invoice->field_invoice_total[LANGUAGE_NONE][0]['value'];
+          $replacements[$original] = number_format($invoice->field_invoice_total[LANGUAGE_NONE][0]['value'], 2, ',', '.');
         break;
         case 'invoice_date':
           $replacements[$original] = date($date_form_date, $invoice->field_invoice_date[LANGUAGE_NONE][0]['value']);
