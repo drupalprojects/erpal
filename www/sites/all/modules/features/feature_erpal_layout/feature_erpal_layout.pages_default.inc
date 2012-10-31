@@ -20,7 +20,7 @@ function feature_erpal_layout_default_page_manager_handlers() {
   $handler->weight = 0;
   $handler->conf = array(
     'title' => 'Defaul page',
-    'no_blocks' => 0,
+    'no_blocks' => 1,
     'pipeline' => 'ipe',
     'body_classes_to_remove' => '',
     'body_classes_to_add' => '',

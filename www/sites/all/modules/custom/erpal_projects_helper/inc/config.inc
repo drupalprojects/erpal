@@ -44,6 +44,14 @@ function erpal_projects_helper_config_form($form, &$form_state) {
     '#default_value' => _erpal_projects_helper_budget_usage_warn(),
   );
   
+  $print_options = array('html' => t('HTML output'), 'pdf' => t('As PDF'));
+  $form['erpal_task_print_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('How to print tasks'),
+    '#options' => $print_options,
+    '#default_value' => _erpal_projects_helper_task_print_type(),
+  );
+  
   $form['status_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit project status terms'), 'admin/structure/taxonomy/project_status_terms'),
@@ -95,8 +103,18 @@ function erpal_projects_helper_config_form_validate($form, $form_state) {
 function erpal_projects_helper_config_form_submit($form, $form_state) {
   $values = $form_state['values'];
   $budget_usage_warn = trim($values['budget_usage_warn']);
+  $erpal_task_print_type = $values['erpal_task_print_type'];
   
   variable_set('erpal_projects_budget_usage_warn', $budget_usage_warn);
+  variable_set('erpal_task_print_type', $erpal_task_print_type);
+  
+}
+
+/**
+* Returns the task print type
+*/
+function _erpal_projects_helper_task_print_type() {
+  return variable_get('erpal_task_print_type', 'html');
 }
 
 /**
