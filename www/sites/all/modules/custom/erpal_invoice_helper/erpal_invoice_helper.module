@@ -706,13 +706,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
     'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
     'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
     'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
-    'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+    'country' => _erpal_basic_helper_field_country_term_as_string($address_entity)
   );
-  
-  //show displayable value of country instead of the database value
-  $field_country = field_info_field('field_country');
-  if (isset($company_arr['country']) && $company_arr['country'])
-    $company_arr['country'] = $field_country['settings']['allowed_values'][$company_arr['country']];
     
   //get the customer
   $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
@@ -730,13 +725,9 @@ function template_preprocess_invoice_pdf_html(&$variables) {
     'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
     'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
     'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
-    'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+    'country' => _erpal_basic_helper_field_country_term_as_string($address_entity),
     'address_additionals' => isset($invoice->field_addition_to_address[LANGUAGE_NONE][0]['value']) ? $invoice->field_addition_to_address[LANGUAGE_NONE][0]['value'] : false,
   );
-  
-  //show country value to display, not the value, stored in the 
-  if (isset($customer_arr['country']) && $customer_arr['country'])
-    $customer_arr['country'] = $field_country['settings']['allowed_values'][$customer_arr['country']];
   
   $invoice_number = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
   $invoice_date = $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'];

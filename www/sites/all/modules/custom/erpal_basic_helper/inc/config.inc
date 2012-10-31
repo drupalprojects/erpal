@@ -114,6 +114,11 @@ function erpal_basic_helper_config_form($form, &$form_state){
     );
   }
   
+  $form['country_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit country terms'), 'admin/structure/taxonomy/countries'),
+  );
+  
   $form['date_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Date settings'),
