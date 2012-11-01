@@ -166,9 +166,11 @@ body.panels-ipe{
 /* =============================================================================
  *   erpal_content_layout
  * ========================================================================== */
-.erpal-content-layout-template .region-sidebar-left,
-.erpal-content-layout-template .region-sidebar-right{
+.erpal-content-layout-template .region-sidebar-left{
 	float: left;
+}
+.erpal-content-layout-template .region-sidebar-right{
+	float: right;
 }
 .erpal-content-layout-template .region-sidebar-right{
     margin: 0 0 0 20px;
