@@ -228,7 +228,9 @@ function _erpal_projects_helper_ticket_links(&$data, $ticket_node, $router_item=
   erpal_make_action($data, t('Create a subticket'), 'node/add/erpal-task', $query);
    
   $query = array('field_timetracking_subject' => $ticket_node->nid);  
-  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query); 
+  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query);
+  
+  erpal_make_action($data, t('Print'), 'projects/project/task/'.$ticket_node->nid.'/print'); 
    
   erpal_make_local_tab($data, t('Tickets'), 'node/'.$project_nid.'/tickets');    
    
