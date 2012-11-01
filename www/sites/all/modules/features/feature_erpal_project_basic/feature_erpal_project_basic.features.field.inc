@@ -861,7 +861,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'handler_settings' => array(
           'behaviors' => array(
             'views-select-list' => array(
-              'status' => 0,
+              'status' => 1,
             ),
           ),
           'sort' => array(
@@ -947,8 +947,8 @@ function feature_erpal_project_basic_field_default_fields() {
           'match_operator' => 'CONTAINS',
           'path' => '',
           'references_dialog_add' => 0,
-          'references_dialog_edit' => 0,
-          'references_dialog_search' => 0,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),

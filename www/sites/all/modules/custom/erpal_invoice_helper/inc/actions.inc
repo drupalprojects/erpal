@@ -185,7 +185,7 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
   
   $form = array();
 
-  $defaults = _erpal_invoice_helper_get_customer_defaults($customer_node->nid);
+  $defaults = _erpal_invoice_helper_get_customer_defaults($customer_node);
   $default_address = $defaults['address_id'];
   //if we have a default credit period by this customer, use it, otherwise use the system default
   $default_credit_period = $defaults['credit_period'] ? $defaults['credit_period'] : _erpal_invoice_helper_get_default_credit_period();
@@ -380,34 +380,3 @@ function _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults) {
   ->execute();
 }
 
-/**
-* Returns the default values for a customer
-* @param $customer_nid the nid of the node we want to have the defaults for
-* @return an array withy keys: address_id, credit_period, notes
-*/
-function _erpal_invoice_helper_get_customer_defaults($customer_nid) {
-  
-  $defaults = array(
-    'address_id' => 0,
-    'credit_period' => 14,
-    'skonto_period' => '',
-    'skonto_percent' => '',
-    'notes' => _erpal_invoice_helper_get_manuall_notes(),
-    'address_addition' => '',
-  );
-
-  //Start a query over the erpal_invoice_defaults table
-  $query = db_select('erpal_invoice_defaults', 'd');
-  // Select rows that match the string within type erpal_contact
-  $return = $query
-    ->fields('d', array('customer_nid', 'address_id', 'credit_period', 'notes', 'skonto_period', 'skonto_percent', 'address_addition'))
-    ->condition('d.customer_nid', $customer_nid, '=')
-    ->execute();
-  
-  // add matches to $matches  
-  foreach ($return as $row) {
-    return (array)$row; //we have only one default, so return it!
-  }
-  
-  return $defaults;
-}

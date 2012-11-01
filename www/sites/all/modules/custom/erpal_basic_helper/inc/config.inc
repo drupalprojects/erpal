@@ -114,6 +114,11 @@ function erpal_basic_helper_config_form($form, &$form_state){
     );
   }
   
+  $form['country_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit country terms'), 'admin/structure/taxonomy/countries'),
+  );
+  
   $form['date_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Date settings'),
@@ -218,12 +223,13 @@ function _erpal_basic_helper_get_nid_from_autocomplete_string($autocomplete_stri
   preg_match('/^(?:\s*|(.*) )?\[\s*nid\s*:\s*(\d+)\s*\]$/', $autocomplete_string, $matches);
   $nid = 0;
   if (!empty($matches)) {
-    //try with [nid]
+    //try with [nid]    
     $nid = $matches[2];
   } else {
     //try with (nid)
     preg_match('/^(?:\s*|(.*) )?\(\s*(\d+)\s*\)$/', $autocomplete_string, $matches);
     $nid = 0;
+
     if (!empty($matches)) {
       //try with [nid]
       $nid = $matches[2];
