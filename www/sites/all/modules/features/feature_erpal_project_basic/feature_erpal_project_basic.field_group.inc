@@ -48,7 +48,7 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Status information',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_progress_percent',
       1 => 'field_task_status_term',
@@ -81,7 +81,7 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Submitted information',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'author',
       1 => 'post_date',
@@ -141,7 +141,7 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Time information',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_date',
       1 => 'field_estimated_time',
