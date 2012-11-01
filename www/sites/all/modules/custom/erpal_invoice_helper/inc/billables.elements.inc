@@ -251,7 +251,7 @@ function _billable_element_process($element, &$form_state, $complete_form) {
 
     if ($customer_node) {
       $customer_defaults = _erpal_invoice_helper_get_customer_defaults($customer_node);
-      $default_vat_rate = $customer_defaults['vat_rate'];    
+      $default_vat_rate = $customer_defaults['vat_rate'];
     } else {
       $default_vat_rate = _erpal_invoice_helper_get_default_vat_rate();
     }

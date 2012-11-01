@@ -118,7 +118,7 @@ function erpal_invoice_helper_invoice_from_billables_action_submit($form, &$form
   $values = $form_state['values'];
 
   //save default invoice values für this customer!
-  $defaults = $defaults = _erpal_invoice_helper_convert_default_form_to_array($values);
+  $defaults = _erpal_invoice_helper_convert_default_form_to_array($values);
   
   $customer_nid = $values['customer_nid'];
   if ($values['save_defaults'])
@@ -355,28 +355,3 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
   
   return $form;
 }
-
-/**
-* Saves invoice parameters as invoice defaults
-* @param $defaults an array with keys: address_id, credit_period, notes
-*/
-function _erpal_invoice_helper_set_customer_defaults($customer_nid, $defaults) {
-  //first delete all defaults for the customer
-  db_delete('erpal_invoice_defaults')
-  ->condition('customer_nid', $customer_nid)
-  ->execute();
-
-  //now insert new default values
-  db_insert('erpal_invoice_defaults')
-  ->fields(array(
-    'customer_nid' => $customer_nid,
-    'address_id' => $defaults['address_id'] ? $defaults['address_id'] : 0,
-    'credit_period' => $defaults['credit_period'] ? $defaults['credit_period'] : 0,
-    'notes' => $defaults['notes'] ? $defaults['notes'] : '',
-    'skonto_period' => $defaults['skonto_period'] ? $defaults['skonto_period'] : 0,
-    'skonto_percent' => $defaults['skonto_percent'] ? $defaults['skonto_percent'] : 0,
-    'address_addition' => $defaults['address_addition'] ? $defaults['address_addition'] : '',
-  ))
-  ->execute();
-}
-
