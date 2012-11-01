@@ -325,19 +325,32 @@ function _erpal_basic_helper_get_field_values($field_name, $contact_node, $for_o
 }
 
 /**
+* Returns the term name of field_country_term as string
+*/
+function _erpal_basic_helper_field_country_term_as_string($entity) {
+  $tid = isset($entity->field_country_term[LANGUAGE_NONE][0]) ? $entity->field_country_term[LANGUAGE_NONE][0]['tid'] : false;
+  
+  if (!$tid)
+    return '';
+    
+  $term = taxonomy_term_load($tid);
+  return $term->name;
+}
+
+/**
 * Implements hook_entity_as_string provided by erpal_basic_helper module to get a string representation of all entities provided
 * in this module or in features which depend on that module
 */
 function erpal_basic_helper_entity_as_string($entity) {
   if ($entity->field_name == 'field_addresses') {
-    $street = isset($entity->field_street[LANGUAGE_NONE]) ? $entity->field_street[LANGUAGE_NONE][0]['value'] : '';
-    $zip_code = isset($entity->field_zip_code[LANGUAGE_NONE]) ? $entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '';
-    $country = isset($entity->field_country[LANGUAGE_NONE]) ? $entity->field_country[LANGUAGE_NONE][0]['value'] : '';
-    $city = isset($entity->field_city[LANGUAGE_NONE]) ? $entity->field_city[LANGUAGE_NONE][0]['value'] : '';
+    $street = isset($entity->field_street[LANGUAGE_NONE][0]) ? $entity->field_street[LANGUAGE_NONE][0]['value'] : '';
+    $zip_code = isset($entity->field_zip_code[LANGUAGE_NONE][0]) ? $entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '';
+    $country = _erpal_basic_helper_field_country_term_as_string($entity);
+    $city = isset($entity->field_city[LANGUAGE_NONE][0]) ? $entity->field_city[LANGUAGE_NONE][0]['value'] : '';
     
     $terms = _erpal_basic_helper_term_references_terms($entity->field_address_type_terms);
     $address_types = implode(',', $terms);
-    $entity_string = $street." - ".$zip_code." - ".$city." (".$address_types.")";
+    $entity_string = $street." - ".$zip_code." - ".$city." - ".$country." (".$address_types.")";
   } elseif ($entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
 

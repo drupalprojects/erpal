@@ -8,6 +8,7 @@ module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.pdf');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/billables.elements');
 
@@ -90,7 +91,7 @@ function erpal_invoice_helper_init() {
     if (isset($_POST['field_customer_ref'][LANGUAGE_NONE]))
       if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]))
         if (isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'])) {
-          $customer_nid = $_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'];
+          $customer_nid = intval($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id']);
           $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);
           _erpal_invoice_helper_cache('erpal_ajax_adresses', $customer_nid);
         }
@@ -157,6 +158,30 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+* Returns the preselected customer node from the invoice form
+*/
+function _erpal_invoice_helper_get_customer_form_invoice($form, $form_state) {
+  
+  $customer_nid = isset($form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
+  
+  //if we still have no customer, get it from the request
+  if (!$customer_nid || !$customer_nid['#default_value']) {
+    $customer_nid = isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
+    $customer_nid = check_plain($customer_nid);    
+  }
+
+  if ($customer_nid) {        
+    
+    $customer_string = is_array($customer_nid) && isset($customer_nid['#default_value']) ? $customer_nid['#default_value'] : $customer_nid;
+
+    $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_string); 
+
+    return node_load($customer_nid);
+  } else
+    return false;
+}
+
+/**
 * Function altering the erpal_invoice node form
 */
 function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
@@ -167,33 +192,40 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   
   $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);  
 
+  //if customer is preselected, options are empty, put the addresses in the address select field and fill the default vat value for the country of the customer
+  $customer_node = _erpal_invoice_helper_get_customer_form_invoice($form, $form_state);
+  $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options']; 
+
+  if ($customer_node) {      
+    if (count($options) == 1) {    
+        
+      $option_keys = array_keys($options);
+      $first_option = isset($option_keys[0]) ? $option_keys[0] : false;
+      if (!is_numeric($first_option) || !$first_option) {                 
+        $addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);        
+        //now add addresses to options, just merging will not keep the index of the array with the id of the address
+        foreach ($addresses as $address_id=>$address_str) {
+          $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$address_id] = $address_str;
+        }
+      }   
+    }
+
+  }
+    
   //if address has only one option, make this option the default value
   $options = $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'];  
-  
-  $default_id = false;
-  if (count($options) == 2) {
+
+  $default_id = false; 
+  if (count($options) == 2) {    
     //get the one that is not "_none" and delete it!    
     foreach ($options as $id=>$value) {
-      if (!is_numeric($id))
+      if (!is_numeric($id)) {
         unset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'][$id]);
+      } else
+        $default_id = $id;
     }
   }
-  
-  //if customer is preselected, options are empty, put the addresses in the address select field
-  if (count($options) == 1) {
-    $customer_nid = isset($form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
-    if ($customer_nid) {      
-      $option_keys = array_keys($options);
-      $first_option = $option_keys[0];
-      if (!is_numeric($first_option)) {
-        $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid['#default_value']);   
-        $customer_node = node_load($customer_nid);
-        $addresses = _erpal_basic_helper_get_contact_adresses($customer_node, true);
-        $form['field_invoice_address_id'][LANGUAGE_NONE]['#options'] = array_merge($options, $addresses);
-      }
-    }
-  }
-  
+    
   if ($default_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
   }
@@ -336,6 +368,11 @@ function _erpal_invoice_helper_invoice_node_handle_removed_billables($node) {
     //may be delete the billable
     if (!$keep_billable) {
       billable_delete_multiple(array($billable_id));
+    } else {
+      //set the billable unbilled, so it can be billed again
+      $billable = billable_load($billable_id);
+      $billable->set_billed(false);
+      $billable->save();
     }
   }
   
@@ -473,7 +510,7 @@ function erpal_invoice_helper_menu(){
     'page arguments' => array('erpal_invoice_helper_contact_invoice_default_form', 1),
     'access callback' => '_erpal_invoice_helper_invoice_defaults_menu_access',
     'access arguments' => array(1),
-    'type' => MENU_LOCAL_ACTION,
+    'type' => MENU_LOCAL_TASK,
   );
   
   require_once 'inc/config.inc';
@@ -549,11 +586,21 @@ function erpal_invoice_helper_node_update($node) {
  //it must be an invoice node
   $type = node_type_get_type($node);
 
-  if ($type->type == 'erpal_invoice') {
-    if (!isset($node->nid) || (isset($node->nid) && !$node->nid))
-      _erpal_invoice_helper_caclulate_invoice($node);
+  if ($type->type == 'erpal_invoice') {    
+    //_erpal_invoice_helper_caclulate_invoice($node);
+    _erpal_invice_helper_add_invoice_pdf_on_save($node);
   }
+}
 
+/**
+* Attach invoice on invoice node save
+*/
+function _erpal_invice_helper_add_invoice_pdf_on_save($invoice_node) {
+  $documents = _erpal_invoice_helper_invoice_document_options();
+  _erpal_invoice_helper_invoice_pdf($invoice_node, $documents, true, false, true);
+  
+  //now only save the fields, not the node itself
+  field_attach_update('node', $invoice_node);
 }
 
 /**
@@ -570,32 +617,55 @@ function erpal_invoice_helper_node_presave($node) {
     if (isset($node->nid) && $node->nid) {  //@todo otherwise it doesn't work....it throws an exception on node save if node is new!
     //that is because the vat entity will be saved to a node that does not exist!
       _erpal_invoice_helper_caclulate_invoice($node);
-      _erpal_invoice_helper_invoice_node_handle_removed_billables($node);
-      
+      _erpal_invoice_helper_invoice_node_handle_removed_billables($node);      
     }
     
     _erpal_invoice_helper_replace_order_number_tokens($node);
     
     //replace token for invoice pattern and save the last invoice 
+    $set_new_invoice_number = false;
+    $current_invoice_number = isset($node->field_invoice_number[LANGUAGE_NONE][0]['value']) ? $node->field_invoice_number[LANGUAGE_NONE][0]['value'] : false;
     $invoice_number_numeric = _erpal_invoice_helper_get_next_invoice_number();
     $pattern = $node->field_invoice_number[LANGUAGE_NONE][0]['value'];
     $invoice_number = token_replace($pattern, array('invoice_number' => $invoice_number_numeric));
-    $node->field_invoice_number[LANGUAGE_NONE][0]['value'] = $invoice_number;
-    //replace title token again because we use the invoice number for auto title which was generated here.
+    $set_new_invoice_number = $current_invoice_number != $invoice_number;
 
+    if ($set_new_invoice_number)
+      $node->field_invoice_number[LANGUAGE_NONE][0]['value'] = $invoice_number;
+    
+    //replace title token again because we use the invoice number for auto title which was generated here.
     if (isset($node->title))
       $node->title = _auto_nodetitle_patternprocessor($node->title, $node);
     
-    if (!isset($node->invoice_number_incremented) || (isset($node->invoice_number_incremented) && !$node->invoice_number_incremented)) {
-      //do this only for invoice where contractor is the own company!
-      $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
-      if (_erpal_basic_helper_is_own_company($contractor_nid))
-        _erpal_invoice_helper_set_last_invoice_number($node, $invoice_number_numeric);     
-    }
-    $node->invoice_number_incremented = true;
+    //try to save the new invoice number only, if we set a new one replaced with a token.
+    if ($set_new_invoice_number) {      
+      if (!isset($node->invoice_number_incremented) || (isset($node->invoice_number_incremented) && !$node->invoice_number_incremented)) {
+        //do this only for invoice where contractor is the own company!
+        $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+        if (_erpal_basic_helper_is_own_company($contractor_nid))
+          _erpal_invoice_helper_set_last_invoice_number($node, $invoice_number_numeric);     
+      }
+      $node->invoice_number_incremented = true; 
+    }      
   }
 } 
 
+/**
+* Creates a pdf from the invoice and adds this PDF to the given invoice node
+*/
+function _erpal_invoice_helper_add_pdf_to_invoice($invoice_node) {
+  
+  //create the invoice PDF only, if "my company" created it
+  $contractor_nid = $invoice_node->field_contractor_ref[LANGUAGE_NONE][0]['target_id']; //invoice MUST always have a contractor so dont check with isset so we will realise if there is something wrong
+  
+  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+  if ($my_company_nid != $contractor_nid)
+    return;
+  
+  $documents = _erpal_invoice_helper_invoice_document_options(); //on automatic invoice create, we want to have all possible documents included
+  _erpal_invoice_helper_invoice_pdf($invoice_node, $documents, true, false, true);
+  
+}
 
 /**
 * Implements hook_node_insert
@@ -605,7 +675,8 @@ function erpal_invoice_helper_node_insert($node) {
   $type = node_type_get_type($node);
 
   if ($type->type == 'erpal_invoice') {
-    _erpal_invoice_helper_caclulate_invoice($node);    
+    _erpal_invoice_helper_caclulate_invoice($node); 
+    _erpal_invice_helper_add_invoice_pdf_on_save($node);    
   }
 }
 
@@ -679,13 +750,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
     'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
     'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
     'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
-    'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+    'country' => _erpal_basic_helper_field_country_term_as_string($address_entity)
   );
-  
-  //show displayable value of country instead of the database value
-  $field_country = field_info_field('field_country');
-  if (isset($company_arr['country']) && $company_arr['country'])
-    $company_arr['country'] = $field_country['settings']['allowed_values'][$company_arr['country']];
     
   //get the customer
   $customer_nid = $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
@@ -703,13 +769,9 @@ function template_preprocess_invoice_pdf_html(&$variables) {
     'street' => isset($address_entity->field_street[LANGUAGE_NONE]) ? $address_entity->field_street[LANGUAGE_NONE][0]['value'] : '',
     'city' => isset($address_entity->field_city[LANGUAGE_NONE]) ? $address_entity->field_city[LANGUAGE_NONE][0]['value'] : '',
     'zip' => isset($address_entity->field_zip_code[LANGUAGE_NONE]) ? $address_entity->field_zip_code[LANGUAGE_NONE][0]['value'] : '',
-    'country' => isset($address_entity->field_country[LANGUAGE_NONE]) ? $address_entity->field_country[LANGUAGE_NONE][0]['value'] : '',
+    'country' => _erpal_basic_helper_field_country_term_as_string($address_entity),
     'address_additionals' => isset($invoice->field_addition_to_address[LANGUAGE_NONE][0]['value']) ? $invoice->field_addition_to_address[LANGUAGE_NONE][0]['value'] : false,
   );
-  
-  //show country value to display, not the value, stored in the 
-  if (isset($customer_arr['country']) && $customer_arr['country'])
-    $customer_arr['country'] = $field_country['settings']['allowed_values'][$customer_arr['country']];
   
   $invoice_number = $invoice->field_invoice_number[LANGUAGE_NONE][0]['value'];
   $invoice_date = $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'];
@@ -741,8 +803,8 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $total_excl_vat = $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'];
   $payment_date = $invoice->field_payment_date[LANGUAGE_NONE][0]['value'];
   $currency = $invoice->field_currency[LANGUAGE_NONE][0]['value'];
-  $order_numbers_intern = isset($invoice->field_order_number_intern[LANGUAGE_NONE]) ? $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'] : false;
-  $order_numbers_extern = isset($invoice->field_order_number_extern[LANGUAGE_NONE]) ? $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'] : false;
+  $order_numbers_intern = isset($invoice->field_order_number_intern[LANGUAGE_NONE][0]) ? $invoice->field_order_number_intern[LANGUAGE_NONE][0]['value'] : false;
+  $order_numbers_extern = isset($invoice->field_order_number_extern[LANGUAGE_NONE][0]) ? $invoice->field_order_number_extern[LANGUAGE_NONE][0]['value'] : false;
   
   $notes = '';
   if (isset($invoice->field_note[LANGUAGE_NONE]))
@@ -823,7 +885,6 @@ function erpal_invoice_helper_vat_rates() {
 * assigned in feature_erpal_invoice
 */
 function _erpal_invoice_helper_ajax_invoice_preselect_addresses($form, $form_state) {  
-    
   return $form['field_invoice_address_id'][LANGUAGE_NONE];  //form has already been processed, so just return the elements
 }
 
@@ -899,7 +960,7 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
     'extern' => array(),
   );
 
-  if (module_exists('feature_erpal_project_basic')) {
+  if (module_exists('feature_erpal_project_basic') || module_exists('feature_erpal_contract')) {
     $line_items = $invoice_node->field_billables_ref[LANGUAGE_NONE];
 
     foreach ($line_items as $line_item) {
@@ -927,8 +988,13 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
         //then proceed as if we have a task or a project...
       }
   
-      if ($subject_node->type == 'erpal_task' || $subject_node->type == 'erpal_project') {
-        $activity_node = _erpal_projects_helper_get_activity($subject_node);       
+      if ($subject_node->type == 'erpal_task' || $subject_node->type == 'erpal_project' || $subject_node->type == 'erpal_contract') {
+      
+        if ($subject_node->type == 'erpal_contract')
+          $activity_node = _erpal_contract_helper_get_activity($subject_node);
+        else
+          $activity_node = _erpal_projects_helper_get_activity($subject_node);       
+ 
         if ($activity_node) {
           //get the order numbers intern and extern and add it to the $numbers array
           if (isset($activity_node->field_order_number_intern[LANGUAGE_NONE][0]['value'])) {
@@ -942,7 +1008,6 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
           }
         }
       }
-
     }
   }
 
@@ -1038,7 +1103,7 @@ function erpal_invoice_helper_contact_invoice_default_form($form, $form_state, $
   
   drupal_set_title(t('Invoice defaults of !contact_name', array('!contact_name' => $contact_node->title)));
   
-  $defaults = _erpal_invoice_helper_get_customer_defaults($contact_node->nid);
+  $defaults = _erpal_invoice_helper_get_customer_defaults($contact_node);
   
   //save the id of the customer in form
   $form['customer_nid'] = array(
@@ -1124,4 +1189,74 @@ function _erpal_invoice_helper_convert_default_form_to_array($values) {
   );
   
   return $defaults;
+}
+
+/**
+* Returns the default values for a customer
+* @param $customer_nid the nid of the node we want to have the defaults for
+* @return an array withy keys: address_id, credit_period, notes
+*/
+function _erpal_invoice_helper_get_customer_defaults($customer_node) {
+  $customer_nid = $customer_node->nid;
+  $defaults = array(
+    'address_id' => 0,
+    'credit_period' => 14,
+    'skonto_period' => '',
+    'skonto_percent' => '',
+    'notes' => _erpal_invoice_helper_get_manuall_notes(),
+    'address_addition' => '',
+    'vat_rate' => _erpal_invoice_helper_get_default_vat_rate(),
+  );
+
+  //Start a query over the erpal_invoice_defaults table
+  $query = db_select('erpal_invoice_defaults', 'd');
+  // Select rows that match the string within type erpal_contact
+  $return = $query
+    ->fields('d', array('customer_nid', 'address_id', 'credit_period', 'notes', 'skonto_period', 'skonto_percent', 'address_addition'))
+    ->condition('d.customer_nid', $customer_nid, '=')
+    ->execute();
+  
+  // add matches to $matches  
+  foreach ($return as $row) {
+    
+    //now, if we have a default invoice address, get the country and the countries default vat rate
+    $address_id = $row->address_id;
+    if ($address_id) {
+      //load it
+      $default_vat_rate = _erpal_invoice_helper_get_vat_rate_by_address($address_id);        
+      $row->vat_rate = isset($default_vat_rate) ? $default_vat_rate : $defaults['vat_rate'];          
+    }
+    
+    if (!isset($row->vat_rate)) {
+      $row->vat_rate = $defaults['vat_rate'];
+    }
+
+    return (array)$row; //we have only one default, so return it!
+  }
+  
+  return $defaults;
+}
+
+/**
+* Returns the default vat of an address
+*/
+function _erpal_invoice_helper_get_vat_rate_by_address($address_id) {
+  if (!$address_id) {
+    return false;
+  } elseif (is_object($address_id))
+    $address_entity = $address_id;
+  else {
+    $address_entity = entity_load('field_collection_item', array($address_id));
+    $address_entity = $address_entity[$address_id];
+  }  
+  
+  $country_tid = isset($address_entity->field_country_term[LANGUAGE_NONE][0]) ? $address_entity->field_country_term[LANGUAGE_NONE][0]['tid'] : false;
+  
+  $default_vat_rate = false;
+  if ($country_tid) {
+    $country_term = taxonomy_term_load($country_tid);    
+    $default_vat_rate = isset($country_term->field_vat_rate[LANGUAGE_NONE][0]) ? $country_term->field_vat_rate[LANGUAGE_NONE][0]['value'] : NULL; 
+  }
+
+  return $default_vat_rate;
 }

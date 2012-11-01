@@ -30,6 +30,13 @@
   table.rechnungstabelle td {
     line-height:1.5em;
   }
+  .subject {
+    width: 4cm;
+  }
+  .quantity {
+    width: 2cm;
+  }
+
   .bordertop td {
     border-top:0.5pt solid #000;
     line-height:2em;
