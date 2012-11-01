@@ -310,7 +310,7 @@ function _erpal_projects_billable_set_customer_invoice_defaults(&$form) {
     $billable_price_modes = _erpal_projects_billable_billable_price_modes();
     //add none as billable price mode because it may be billable depending on the parent settings
     $billable_price_modes[] = 'none';
- dpm($billable_information);
+
     if ($billable_information && in_array($billable_information['price_mode'], $billable_price_modes)) {
       $customer_defaults['vat_rate'] = $billable_information['vat_rate'];
       $customer_defaults['currency'] = $billable_information['currency'];
