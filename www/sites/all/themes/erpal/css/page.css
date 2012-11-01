@@ -61,11 +61,11 @@ body.panels-ipe{
 }
 .pane-system-user-menu li{
 	padding: 0;
-	float: left;
+	float: right;
 	width: 74px;
 	text-align: center;
 }
-.pane-system-user-menu li.first{
+.pane-system-user-menu li.last{
 	border-right: 1px solid #847C76;
 }
 .panels-flexible-erpal_panel_layout-inside,
