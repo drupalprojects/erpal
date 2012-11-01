@@ -360,6 +360,12 @@ function _erpal_project_billable_save_billable($subject_title, $customer_nid, $s
   return true;
 }
 
+/**
+* Returns all price modes that are billable in generel
+*/
+function _erpal_projects_billable_billable_price_modes() {
+  return array('fixed_price', 'per_hour', 'budget');
+}
 
 /**
 * Function that checks if a given subject is billable

@@ -328,6 +328,11 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
       }
 
+      //now get pricing informatio from parent (node or project and preset vat_rate and currency with these information
+      //@TODO move to erpal_projects_billable module but make sure the hook processing order is correct, this one here has to be executed first to have a correct parent value set
+      _erpal_projects_helper_set_customer_invoice_defaults($form);      
+      //@TODO move till here, see above
+      
       //parent is not required here and it is already set as default value
       $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
       $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#required'] = false;
