@@ -214,72 +214,6 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_addresses-field_country_term'.
-  $fields['field_collection_item-field_addresses-field_country_term'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_country_term',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'countries',
-            'parent' => '0',
-          ),
-        ),
-        'profile2_private' => FALSE,
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'field_addresses',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'taxonomy',
-          'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 7,
-        ),
-      ),
-      'entity_type' => 'field_collection_item',
-      'field_name' => 'field_country_term',
-      'label' => 'Country',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '5',
-      ),
-    ),
-  );
-
   // Exported field: 'field_collection_item-field_addresses-field_street'.
   $fields['field_collection_item-field_addresses-field_street'] = array(
     'field_config' => array(
@@ -2632,6 +2566,242 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'relation-works_at-endpoints'.
+  $fields['relation-works_at-endpoints'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'endpoints',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'relation' => array(
+          0 => 'entity_type',
+          1 => 'entity_id',
+          2 => 'r_index',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'relation_endpoint',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'relation_endpoint',
+    ),
+    'field_instance' => array(
+      'bundle' => 'works_at',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'relation_endpoint',
+          'settings' => array(
+            'view_modes' => array(
+              'billable' => 'default',
+              'budget' => 'default',
+              'comment' => 'default',
+              'field_collection_item' => 'default',
+              'file' => 'default',
+              'node' => 'default',
+              'profile2' => 'default',
+              'profile2_type' => 'default',
+              'relation' => 'default',
+              'taxonomy_term' => 'default',
+              'taxonomy_vocabulary' => 'default',
+              'user' => 'default',
+            ),
+          ),
+          'type' => 'relation_endpoint',
+          'weight' => 0,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'endpoints',
+      'label' => 'endpoints',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'relation_endpoint',
+        'settings' => array(),
+        'type' => 'relation_endpoint',
+        'weight' => '0',
+      ),
+    ),
+  );
+
+  // Exported field: 'relation-works_at-field_date'.
+  $fields['relation-works_at-field_date'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_date',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'date',
+      'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
+        'granularity' => array(
+          'day' => 'day',
+          'hour' => 0,
+          'minute' => 0,
+          'month' => 'month',
+          'second' => 0,
+          'year' => 'year',
+        ),
+        'profile2_private' => FALSE,
+        'repeat' => 0,
+        'timezone_db' => '',
+        'todate' => 'optional',
+        'tz_handling' => 'none',
+      ),
+      'translatable' => '0',
+      'type' => 'datetime',
+    ),
+    'field_instance' => array(
+      'bundle' => 'works_at',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+            'show_repeat_rule' => 'show',
+          ),
+          'type' => 'date_default',
+          'weight' => 1,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'field_date',
+      'label' => 'Period',
+      'required' => 0,
+      'settings' => array(
+        'default_value' => 'blank',
+        'default_value2' => 'blank',
+        'default_value_code' => '',
+        'default_value_code2' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'date',
+        'settings' => array(
+          'increment' => '15',
+          'input_format' => 'm/d/Y - H:i:s',
+          'input_format_custom' => '',
+          'label_position' => 'above',
+          'repeat_collapsed' => 0,
+          'text_parts' => array(),
+          'year_range' => '-3:+3',
+        ),
+        'type' => 'date_popup',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'relation-works_at-field_work_at_rel_tags'.
+  $fields['relation-works_at-field_work_at_rel_tags'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_work_at_rel_tags',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'company_relation_tags',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'works_at',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 2,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'relation',
+      'field_name' => 'field_work_at_rel_tags',
+      'label' => 'Relation Tags',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Account number');
@@ -2660,7 +2830,9 @@ function feature_erpal_basic_field_default_fields() {
   t('Number');
   t('Number Type');
   t('Other legal information');
+  t('Period');
   t('Phone Numbers');
+  t('Relation Tags');
   t('Relation add');
   t('SWIFT');
   t('Street');
@@ -2670,6 +2842,7 @@ function feature_erpal_basic_field_default_fields() {
   t('Website');
   t('XING');
   t('ZIP Code');
+  t('endpoints');
 
   return $fields;
 }
