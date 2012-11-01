@@ -393,3 +393,10 @@ function erpal_projects_helper_erpal_clone_node_postprocess_alter($node, $args) 
     }
   }
 }
+
+/**
+* Returs true if panes in the right side bar of task view should be invisible
+*/
+function _erpal_projects_helper_hide_task_right_panes() {
+  return isset($_GET['qt-task_content_tabs']) && $_GET['qt-task_content_tabs'];
+}

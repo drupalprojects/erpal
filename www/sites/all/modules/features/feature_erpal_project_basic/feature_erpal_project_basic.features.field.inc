@@ -932,7 +932,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'none',
+            'action' => 'disable',
             'fallback' => 'none',
             'skip_perm' => '0',
             'status' => 1,

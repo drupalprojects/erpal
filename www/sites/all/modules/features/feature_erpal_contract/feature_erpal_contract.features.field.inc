@@ -1364,7 +1364,7 @@ If not set, budget will not expire',
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'none',
+            'action' => 'disable',
             'fallback' => 'none',
             'skip_perm' => '0',
             'status' => 1,

@@ -444,22 +444,33 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->pid = 'new-13';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'panels_mini';
-    $pane->subtype = 'task_general_fields';
+    $pane->subtype = 'task_right_sidebar_pane';
     $pane->shown = TRUE;
-    $pane->access = array();
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'php',
+          'settings' => array(
+            'description' => 'Hide on quicktab active',
+            'php' => 'if (function_exists(\'_erpal_projects_helper_hide_task_right_panes\')) {
+  return !_erpal_projects_helper_hide_task_right_panes();
+}
+return TRUE;',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+    );
     $pane->configuration = array(
       'context' => array(
         0 => 'argument_entity_id:node_1',
       ),
-      'override_title' => 1,
-      'override_title_text' => 'Generel',
+      'override_title' => 0,
+      'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => array(
-        'pane_collapsed' => 0,
-      ),
-      'style' => 'collapsible',
+      'settings' => NULL,
     );
     $pane->css = array();
     $pane->extras = array();
@@ -467,104 +478,6 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-13'] = $pane;
     $display->panels['sidebar_second_right'][0] = 'new-13';
-    $pane = new stdClass();
-    $pane->pid = 'new-14';
-    $pane->panel = 'sidebar_second_right';
-    $pane->type = 'panels_mini';
-    $pane->subtype = 'time_information';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'context' => array(
-        0 => 'argument_entity_id:node_1',
-      ),
-      'override_title' => 1,
-      'override_title_text' => 'Time information',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => array(
-        'pane_collapsed' => 0,
-      ),
-      'style' => 'collapsible',
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
-    $pane->locks = array();
-    $display->content['new-14'] = $pane;
-    $display->panels['sidebar_second_right'][1] = 'new-14';
-    $pane = new stdClass();
-    $pane->pid = 'new-15';
-    $pane->panel = 'sidebar_second_right';
-    $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_pricing';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'label' => 'title',
-      'formatter' => 'field_collection_fields',
-      'delta_limit' => 0,
-      'delta_offset' => '0',
-      'delta_reversed' => FALSE,
-      'formatter_settings' => array(
-        'edit' => '',
-        'delete' => '',
-        'add' => '',
-        'description' => 1,
-        'view_mode' => 'in_pane',
-        'empty' => 1,
-      ),
-      'context' => 'argument_entity_id:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => array(
-        'pane_collapsed' => 0,
-      ),
-      'style' => 'collapsible',
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 2;
-    $pane->locks = array();
-    $display->content['new-15'] = $pane;
-    $display->panels['sidebar_second_right'][2] = 'new-15';
-    $pane = new stdClass();
-    $pane->pid = 'new-16';
-    $pane->panel = 'sidebar_second_right';
-    $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_asset_files';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'label' => 'title',
-      'formatter' => 'entityreference_label',
-      'delta_limit' => '0',
-      'delta_offset' => '0',
-      'delta_reversed' => 0,
-      'formatter_settings' => array(
-        'link' => 1,
-      ),
-      'context' => 'argument_entity_id:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => array(
-        'pane_collapsed' => 0,
-      ),
-      'style' => 'collapsible',
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 3;
-    $pane->locks = array();
-    $display->content['new-16'] = $pane;
-    $display->panels['sidebar_second_right'][3] = 'new-16';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

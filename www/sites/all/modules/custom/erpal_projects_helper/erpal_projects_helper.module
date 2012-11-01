@@ -1149,4 +1149,3 @@ function _erpal_projects_helper_can_delete($node, $check_children, &$messages) {
   return true;
 }
 
-
