@@ -175,6 +175,7 @@ function erpal_projects_billable_erpal_clone_node_alter($node, $args) {
   
 }
 
+
 /**
 * Implements hook_clone_book_action_form_alter
 * Form to set parameter to clone tasks in book clone process
@@ -291,6 +292,65 @@ function erpal_projects_billable_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+* If node is new (no nid) and customer is already set, fill the currency and the default vat rate for the customer
+*/
+function _erpal_projects_billable_set_customer_invoice_defaults(&$form) {
+  $nid = $form['nid']['#value'];
+  
+  //if node already exists, do nothing here
+  if ($nid)
+    return;
+  
+  $type = $form['type']['#value'];
+  if ($type == 'erpal_task') {
+    $parent_node = _erpal_project_task_parent_from_form($form);
+    $billable_information = _erpal_projects_billable_subject_billable_information_subject($parent_node, true);
+    $customer_node = $billable_information['customer'];
+    //may be we already have vat_rate and currency in the billing information
+    $billable_price_modes = _erpal_projects_billable_billable_price_modes();
+    //add none as billable price mode because it may be billable depending on the parent settings
+    $billable_price_modes[] = 'none';
+ dpm($billable_information);
+    if ($billable_information && in_array($billable_information['price_mode'], $billable_price_modes)) {
+      $customer_defaults['vat_rate'] = $billable_information['vat_rate'];
+      $customer_defaults['currency'] = $billable_information['currency'];
+    } else {
+      //we have the customer, so we load the defaults later.
+      $customer_defaults = false;
+    }
+    
+  } elseif ($type == 'erpal_project') {
+    $customer_nid = isset($form['field_customer_ref'][LANGUAGE_NONE][0]) ? $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
+    $customer_defaults = false;
+  }
+      
+  if (isset($customer_nid) && $customer_nid) {
+    $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);
+    $customer_node = node_load($customer_nid);      
+  }
+  
+  if ($customer_node && !$customer_defaults) {
+    $customer_defaults = _erpal_invoice_helper_get_customer_defaults($customer_node, true);  
+  }
+  
+  $default_currency = isset($customer_defaults['currency']) ? $customer_defaults['currency'] : _erpal_invoice_helper_get_default_currency();
+
+  $default_vat_rate = isset($customer_defaults['vat_rate']) ? $customer_defaults['vat_rate'] : _erpal_invoice_helper_get_default_vat_rate();
+  
+  //now set the values
+  $form['field_pricing'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#default_value'] = $default_vat_rate;
+  $form['field_pricing'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
+}
+
+/**
+* Implements hook_task_form_after_project_alter privded by erpal_projects_helper-
+* This form altering hook is called after erpal_projects_helper form alter hook set some values in task form
+*/
+function erpal_projects_helper_task_form_after_project_alter(&$form) {
+  _erpal_projects_billable_set_customer_invoice_defaults($form); 
+}
+
+/**
 * Set default vat and currency if not set
 */
 function _erpal_projects_billable_set_default_pricing(&$form, &$form_state, $form_id) {
@@ -303,6 +363,7 @@ function _erpal_projects_billable_set_default_pricing(&$form, &$form_state, $for
     $form['field_pricing'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
   }
 }
+
 
 /**
 * Returns pricing preset values for a task according to its referenced node (parent task or project)

@@ -12,7 +12,6 @@ function _erpal_projects_helper_project_node_form_alter(&$form, &$form_state) {
   //with the activity we can preselect the customer, because it may be the same as in activity and project
   //in most cases  
   _erpal_projects_helper_set_customer_if_project_from_activity($form);
-  _erpal_projects_helper_set_customer_invoice_defaults($form);
 }
 
 
