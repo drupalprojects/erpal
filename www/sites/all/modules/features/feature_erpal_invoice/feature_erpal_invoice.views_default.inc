@@ -625,6 +625,13 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_payed']['id'] = 'field_payed';
   $handler->display->display_options['fields']['field_payed']['table'] = 'field_data_field_payed';
   $handler->display->display_options['fields']['field_payed']['field'] = 'field_payed';
+  $handler->display->display_options['fields']['field_payed']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_payed']['settings'] = array(
+    'click_to_edit' => 1,
+    'click_to_edit_style' => 'hover',
+    'empty_text' => '',
+    'fallback_format' => 'list_default',
+  );
   /* Field: Content: Payment date */
   $handler->display->display_options['fields']['field_payment_date']['id'] = 'field_payment_date';
   $handler->display->display_options['fields']['field_payment_date']['table'] = 'field_data_field_payment_date';
