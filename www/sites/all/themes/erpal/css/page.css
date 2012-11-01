@@ -61,11 +61,11 @@ body.panels-ipe{
 }
 .pane-system-user-menu li{
 	padding: 0;
-	float: left;
+	float: right;
 	width: 74px;
 	text-align: center;
 }
-.pane-system-user-menu li.first{
+.pane-system-user-menu li.last{
 	border-right: 1px solid #847C76;
 }
 .panels-flexible-erpal_panel_layout-inside,
@@ -82,6 +82,7 @@ body.panels-ipe{
 .panels-flexible-erpal_panel_layout-left{
 	float: left;
 	position: absolute;
+	left: 0;
 }
 .pane-search-form{
 	margin-bottom: 12px;
@@ -426,20 +427,20 @@ ul.quicktabs-tabs li{
 #quicktabs-tabpage-tasks_by_project_tabs-2 #content-column .content-inner{
 	overflow: hidden;
 }
-#quicktabs-tabpage-tickets_by_project_tabs-2  #content-column .content-inner .field-label,
-#quicktabs-tabpage-tickets_by_project_tabs-2  #content-column .content-inner .field-items,
+.quicktabs-tabpage .view-mode-view_row_details .field-label,
+.quicktabs-tabpage .view-mode-view_row_details .field-items,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 #content-column .content-inner .field-label,
-#quicktabs-tabpage-tasks_by_project_tabs-2 #content-column .content-inner .field-items,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div, 
+.quicktabs-tabpage .field-collection-item-field-pricing .field-label, 
+.quicktabs-tabpage .field-collection-item-field-pricing .field-items{
+
 	float: left;
 }
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above{
 	width: 100%;
 }
-#quicktabs-tabpage-tickets_by_project_tabs-2 .field-label,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .field-label{
+.quicktabs-tabpage .field-label{
     margin: 0px !important;
 }
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
@@ -459,7 +460,7 @@ ul.quicktabs-tabs li{
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
 	padding-right: 5px;
 }
-#quicktabs-tabpage-tickets_by_project_tabs-2 section.field,
+.quicktabs-tabpage .field-group-format section.field,
 #quicktabs-tabpage-tasks_by_project_tabs-2 section.field{
 	overflow: hidden;
 	clear: both;
@@ -493,6 +494,9 @@ ul.quicktabs-tabs li{
 	margin-right: 50px;
 	clear: none !important;
 	float: left;
+}
+.inline_fields{
+	clear: both;
 }
 ul.pager li a, ul.pager li.pager-current {
     font-size: 1.2em;
