@@ -326,14 +326,11 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($project_nid);
 
         $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#required'] = false;  //will be automatically set @see _erpal_projects_helper_task_set_project in task.inc again
-       
       }
-    //if project is already set, hide the parent field
-    //if (isset($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']))
-      //if ($form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
-        $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
-        $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#required'] = false;
-      //}
+
+      //parent is not required here and it is already set as default value
+      $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
+      $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#required'] = false;
   } else {
     //hide parent and project ref anyway!
     $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';

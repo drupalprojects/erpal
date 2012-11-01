@@ -1205,7 +1205,7 @@ function feature_erpal_invoice_field_default_fields() {
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'none',
+            'action' => 'disable',
             'fallback' => 'none',
             'skip_perm' => '0',
             'status' => 1,
@@ -1885,7 +1885,7 @@ function feature_erpal_invoice_field_default_fields() {
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_buttons',
+        'type' => 'options_select',
         'weight' => '8',
       ),
     ),

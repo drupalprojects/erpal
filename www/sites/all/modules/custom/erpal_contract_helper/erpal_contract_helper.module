@@ -234,10 +234,8 @@ function erpal_contract_helper_cron() {
 * implements hook_form_alter
 */
 function erpal_contract_helper_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'erpal_contract_node_form') {    
-    _erpal_contract_helper_set_default_pricing($form, $form_state, $form_id);
-    _erpal_contract_helper_manage_form_elements($form, $form_state, $form_id);
-    _erpal_contract_helper_contract_node_form_alter($form, $form_state);
+  if ($form_id == 'erpal_contract_node_form') {        
+    _erpal_contract_helper_contract_node_form_alter($form, $form_state);    
   } 
   elseif ($form_id == 'erpal_calendar_helper_config_form') {
     _erpal_contract_helper_alter_calendar_config_form($form, $form_state);
@@ -253,6 +251,8 @@ function _erpal_contract_helper_contract_node_form_alter(&$form, &$form_state) {
   //if form is filled by entityreference prepopulate, the crm activity is already prefilled.
   //with the activity we can preselect the customer, because it may be the same as in activity and contract
   //in most cases
+  _erpal_contract_helper_manage_form_elements($form, $form_state);    
+  
   $nid = $form['nid']['#value'];
   //if node already exists, do nothing here
   if ($nid)
@@ -274,28 +274,42 @@ function _erpal_contract_helper_contract_node_form_alter(&$form, &$form_state) {
       $form['field_contract_payment'][LANGUAGE_NONE][0]['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_node->title." (".$customer_nid.")";
     }
   }
+  
+  _erpal_contract_helper_set_default_pricing($form, $form_state);
 }
 
 
 /**
 * Manage form elements that we dont manage by display suite and renderable elements
 */
-function _erpal_contract_helper_manage_form_elements(&$form, &$form_state, $form_id) {
+function _erpal_contract_helper_manage_form_elements(&$form, &$form_state) {
   unset($form['field_budget_booking'][LANGUAGE_NONE][0]['field_budgets']);
 }
 
 /**
-* Set default contractor, vat rate and currency if not set
+* Set default contractor, vat rate and currency if not set or if customer has invoice defaults, use these if a customer is preselected
 */
-function _erpal_contract_helper_set_default_pricing(&$form, &$form_state, $form_id) {
+function _erpal_contract_helper_set_default_pricing(&$form, &$form_state) {
   //set only for new node
   $nid = $form['nid']['#value'];
   if (!$nid) {
     $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
     $form['field_contract_payment'][LANGUAGE_NONE][0]['field_contractor_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($my_company_nid);
     
-    $default_currency = _erpal_invoice_helper_get_default_currency();
-    $default_vat_rate = _erpal_invoice_helper_get_default_vat_rate();
+    $contract_payment = $form['field_contract_payment'][LANGUAGE_NONE][0];
+
+    $customer_nid = isset($contract_payment['field_customer_ref'][LANGUAGE_NONE][0]) ? $contract_payment['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
+    
+    $customer_defaults = false;
+    if ($customer_nid) {
+      $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);
+      $customer_node = node_load($customer_nid);
+      $customer_defaults = _erpal_invoice_helper_get_customer_defaults($customer_node, true);
+    }
+
+    $default_currency = isset($customer_defaults['currency']) ? $customer_defaults['currency'] : _erpal_invoice_helper_get_default_currency();
+
+    $default_vat_rate = isset($customer_defaults['vat_rate']) ? $customer_defaults['vat_rate'] : _erpal_invoice_helper_get_default_vat_rate();
     $form['field_contract_payment'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#default_value'] = $default_vat_rate;
     $form['field_contract_payment'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
   }
