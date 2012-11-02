@@ -20,6 +20,7 @@
   stylesheets[screen][] = css/color.css
   stylesheets[screen][] = css/tabs.css
   stylesheets[screen][] = css/page.css
+  stylesheets[screen][] = css/tree.css
 
   ; Print - uncomment to load basic print styles.
   ; stylesheets[print][] = css/print.css
