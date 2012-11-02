@@ -9,6 +9,7 @@ core = 7.x
 dependencies[] = content_access
 dependencies[] = private_files_download_permission
 ; Administration
+dependencies[] = toolbar
 ; Chaos tool suite
 dependencies[] = ctools
 dependencies[] = page_manager

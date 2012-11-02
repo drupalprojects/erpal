@@ -33,67 +33,64 @@ function erpal_install() {
     ->condition('type', 'theme')
     ->condition('name', $admin_theme)
     ->execute();
+  // $admin_theme als admin theme setzen
   variable_set('admin_theme', $admin_theme);
-  //Vorher muss panels site template aktiviert werden
-  //variable_set('theme_default', $default_theme);
-
-
-  variable_set('node_admin_theme', '1');
-  $blocks = array(
-    array(
-      'module' => 'system',
-      'delta' => 'main',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'content',
-      'pages' => '',
-      'cache' => -1,
-    ),
-    array(
-      'module' => 'user',
-      'delta' => 'login',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'sidebar_first',
-      'pages' => '',
-      'cache' => -1,
-    ),
-    array(
-      'module' => 'system',
-      'delta' => 'help',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => -10,
-      'region' => 'content',
-      'pages' => '',
-      'cache' => -1,
-    ),
-    array(
-      'module' => 'system',
-      'delta' => 'main',
-      'theme' => $admin_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'content',
-      'pages' => '',
-      'cache' => -1,
-    ),
-    array(
-      'module' => 'system',
-      'delta' => 'help',
-      'theme' => $admin_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'help',
-      'pages' => '',
-      'cache' => -1,
-    ),
-  );
-
+  // $default_theme als default
+  variable_set('theme_default', $default_theme);
+  
   // revert features
   features_revert($features = array());
+  
+  //rebuild content access permissions
+  node_access_rebuild();
+  
+  
+  
+  //  Create taxonomy
+  $task_type_vocabulary = (object) array(
+    'name' => st('Task type'),
+    'description' => st('The type of the task, such as task, bug or feature.'),
+    'machine_name' => 'task_types',
+    'help' => st('Select the type of the task.'),
+  ); 
+  $task_type_terms = array('task', 'bug', 'feature',);
+  taxonomy_add($task_type_vocabulary, $task_type_terms);
+  
+
+  
+  
+  $project_status_vocabulary = (object) array(
+    'name' => st('Project status'),
+    'description' => st('The status of the project, such as inserted, in progress or completed.'),
+    'machine_name' => 'project_status',
+    'help' => st('Select the status of the project.'),
+  );
+  $project_status_terms = array('inserted', 'on hold', 'in progress', 'aborted', 'completed',);
+  taxonomy_add($project_status_vocabulary, $project_status_terms);
+
+  
+  
+  
+  $task_status_vocabulary = (object) array(
+    'name' => st('Task status'),
+    'description' => st('The status of the task, such as inserted, on hold or completed'),
+    'machine_name' => 'task_status',
+    'help' => st('Select the status of the task'),
+  );
+  $task_status_terms = array('inserted', 'unclear', 'buggy', 'tested', 'ready to test', 'in progress', 'aborted', 'completed',);
+  taxonomy_add($task_status_vocabulary, $task_status_terms);    
+    
+    
+    
+  $priority_vocabulary = (object) array(
+    'name' => st('Priority'),
+    'description' => st('The priority of the task'),
+    'machine_name' => 'priority',
+    'help' => st('Select the priority'), 
+  );
+  $priority_terms = array('low', 'middle', 'high',);
+  taxonomy_add($priority_vocabulary, $priority_terms);
+
 
 
 
@@ -112,4 +109,19 @@ function erpal_install() {
   // Enable default permissions for system roles.
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content'));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content'));
+}
+/**
+ * Function that adds a new vocabulary and fills it with terms
+ * 
+ */
+function taxonomy_add($vocabulary, $names){
+  taxonomy_vocabulary_save($vocabulary); 
+  $vocabulary = taxonomy_vocabulary_machine_name_load($vocabulary->machine_name);
+  foreach($names as $name){
+    $term = (object) array(
+      'name' => $name,
+      'vid' => $vocabulary->vid,
+    );  
+    taxonomy_term_save($term);
+  }
 }
