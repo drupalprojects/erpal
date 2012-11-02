@@ -12,9 +12,4 @@
 <?php 
   if ($duration) echo 'Duration: '.$duration;
 ?></div>
-<div>
-<?php
-  if ($nid) echo 'ID: '.$nid;
-?>
-</div>
 </p>

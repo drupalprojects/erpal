@@ -74,7 +74,7 @@ function _erpal_project_task_parent($node) {
 }
 
 /**
-* Fallows the same logic as _erpal_project_task_parent but uses a task edit form with prepopulated project or if there is a
+* Fallows the same logic as @see _erpal_project_task_parent but uses a task edit form with prepopulated project or if there is a
 * prepopulate paremter in the url (e.g. ?field_project_ref=1682)
 */
 function _erpal_project_task_parent_from_form($form) {

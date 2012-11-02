@@ -1,0 +1,161 @@
+name = Erpal
+description = Installiere Erpal
+version = VERSION
+core = 7.x
+; ----------
+; Dependencies
+; ----------
+; Access control
+dependencies[] = content_access
+dependencies[] = private_files_download_permission
+; Administration
+dependencies[] = toolbar
+; Chaos tool suite
+dependencies[] = ctools
+dependencies[] = page_manager
+dependencies[] = views_content
+; Core
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = dblog
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = filter
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = php
+dependencies[] = rdf
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = system
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = update
+dependencies[] = user
+; Date Item
+dependencies[] = date_item
+; Date/Time
+dependencies[] = calendar
+dependencies[] = date
+dependencies[] = date_api
+dependencies[] = date_popup
+dependencies[] = date_repeat
+dependencies[] = date_repeat_field
+dependencies[] = date_views
+; Display suite
+dependencies[] = ds
+dependencies[] = ds_forms
+; ERPAL
+dependencies[] = erpal_basic_helper
+dependencies[] = erpal_contract_helper
+dependencies[] = erpal_hacks_helper
+dependencies[] = erpal_invoice_helper
+dependencies[] = erpal_layout_helper
+dependencies[] = erpal_profile_helper
+dependencies[] = fileedit
+dependencies[] = post_hooks
+; ERPAL Book Helper
+dependencies[] = erpal_book_helper
+; ERPAL CRM
+dependencies[] = erpal_crm_activity_queue
+dependencies[] = erpal_crm_helper
+; ERPAL Calendar
+dependencies[] = erpal_calendar_helper
+; ERPAL DOCS
+dependencies[] = erpal_docs_helper
+; ERPAL Features
+dependencies[] = feature_erpal_basic
+dependencies[] = feature_erpal_book
+dependencies[] = feature_erpal_calendar
+dependencies[] = feature_erpal_crm
+dependencies[] = feature_erpal_docs
+dependencies[] = feature_erpal_invoice
+dependencies[] = feature_erpal_layout
+dependencies[] = feature_erpal_profile
+dependencies[] = feature_erpal_project_basic
+dependencies[] = feature_erpal_spaces
+; ERPAL Print
+dependencies[] = erpal_print
+; ERPAL Projects
+dependencies[] = erpal_projects_billable
+dependencies[] = erpal_projects_helper
+; ERPAL Resources
+dependencies[] = erpal_resource_helper
+; ERPAL SPACES
+dependencies[] = erpal_spaces_helper
+; ERPAL Services
+dependencies[] = erpal_projects_service
+; ERPAL features
+dependencies[] = feature_erpal_contract
+; Features extra
+dependencies[] = fe_block
+; Fields
+dependencies[] = computed_field
+dependencies[] = conditional_fields
+dependencies[] = editablefields
+dependencies[] = entityreference
+dependencies[] = entityreference_prepopulate
+dependencies[] = field_collection
+dependencies[] = field_group
+dependencies[] = link
+dependencies[] = references_dialog
+; Organic groups
+dependencies[] = og
+dependencies[] = og_access
+dependencies[] = og_ui
+; Other
+dependencies[] = auto_nodetitle
+dependencies[] = billable
+dependencies[] = budget
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = features_plumber
+dependencies[] = field_collection_table
+dependencies[] = libraries
+dependencies[] = module_filter
+dependencies[] = pathauto
+dependencies[] = profile2
+dependencies[] = profile2_page
+dependencies[] = quicktabs
+dependencies[] = rel
+dependencies[] = strongarm
+dependencies[] = timetracking
+dependencies[] = token
+; Panels
+dependencies[] = panels
+dependencies[] = panels_everywhere
+dependencies[] = panels_mini
+; Panels style plugins
+dependencies[] = panels_style_collapsible
+; Relation
+dependencies[] = relation
+dependencies[] = relation_add
+dependencies[] = relation_dummy_field
+dependencies[] = relation_endpoint
+dependencies[] = relation_ui
+; Services
+dependencies[] = services
+; Services - servers
+dependencies[] = rest_server
+; Views
+dependencies[] = better_exposed_filters
+dependencies[] = views
+dependencies[] = views_bulk_operations
+dependencies[] = views_jstree
+dependencies[] = views_ui
+; Features
+dependencies[] = features
+
+
+

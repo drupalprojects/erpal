@@ -29,6 +29,18 @@ function _erpal_basic_helper_alter_local_tasks_output(&$data) {
 }
 
 /**
+* Implements hook_menu_local_tasks_alter()
+*/
+function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_path) {  
+  
+  //allow other modules to add dynamic menu items
+  drupal_alter('dynamic_menu_items', $data, $router_item, $root_path);  
+
+  //finally at the end...
+  _erpal_basic_helper_alter_local_tasks_output($data); //to correct markup
+}
+
+/**
 * Module determines the context(s) of the current page
 */
 function _erpal_basic_helper_get_contexts($router_item = false) {

@@ -56,6 +56,7 @@ features[field][] = field_collection_item-field_contract_payment-field_payment_t
 features[field][] = field_collection_item-field_contract_payment-field_price
 features[field][] = field_collection_item-field_contract_payment-field_vat_rate
 features[field][] = node-erpal_contract-body
+features[field][] = node-erpal_contract-field_activity_ref
 features[field][] = node-erpal_contract-field_asset_files
 features[field][] = node-erpal_contract-field_budget_booking
 features[field][] = node-erpal_contract-field_cancelation_period

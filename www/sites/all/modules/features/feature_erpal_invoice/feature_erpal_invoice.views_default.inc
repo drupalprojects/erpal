@@ -170,10 +170,18 @@ echo _erpal_invoice_helper_view_billables_header_content();
   $handler->display->display_options['fields']['billable_id']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['billable_id']['alter']['path'] = 'billable/[billable_id]/view';
   $handler->display->display_options['fields']['billable_id']['separator'] = '';
+  /* Field: Billable: Subject_nid */
+  $handler->display->display_options['fields']['subject_nid']['id'] = 'subject_nid';
+  $handler->display->display_options['fields']['subject_nid']['table'] = 'billable';
+  $handler->display->display_options['fields']['subject_nid']['field'] = 'subject_nid';
+  $handler->display->display_options['fields']['subject_nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['subject_nid']['separator'] = '';
   /* Field: Billable: Subject */
   $handler->display->display_options['fields']['subject']['id'] = 'subject';
   $handler->display->display_options['fields']['subject']['table'] = 'billable';
   $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['subject']['alter']['text'] = '<a href="/node/[subject_nid]">[subject]</a>';
   /* Field: Billable: Billed */
   $handler->display->display_options['fields']['billed']['id'] = 'billed';
   $handler->display->display_options['fields']['billed']['table'] = 'billable';
@@ -617,6 +625,13 @@ echo _erpal_invoice_helper_view_invoices_header_content();
   $handler->display->display_options['fields']['field_payed']['id'] = 'field_payed';
   $handler->display->display_options['fields']['field_payed']['table'] = 'field_data_field_payed';
   $handler->display->display_options['fields']['field_payed']['field'] = 'field_payed';
+  $handler->display->display_options['fields']['field_payed']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_payed']['settings'] = array(
+    'click_to_edit' => 1,
+    'click_to_edit_style' => 'hover',
+    'empty_text' => '',
+    'fallback_format' => 'list_default',
+  );
   /* Field: Content: Payment date */
   $handler->display->display_options['fields']['field_payment_date']['id'] = 'field_payment_date';
   $handler->display->display_options['fields']['field_payment_date']['table'] = 'field_data_field_payment_date';

@@ -113,9 +113,7 @@ function erpal_basic_helper_tokens($type, $tokens, array $data = array(), array 
           $replacements[$original] = $city;
         break;
         case 'country':
-          $country = '';
-          if (isset($address_entity->field_country[LANGUAGE_NONE][0]['value']))
-            $country = $address_entity->field_country[LANGUAGE_NONE][0]['value'];
+          $country = _erpal_basic_helper_field_country_term_as_string($address_entity);          
           $replacements[$original] = $country;
         break;
         case 'company_name':
