@@ -26,12 +26,12 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   if (drupal_match_path($path, 'node/%*') ) {
     $node = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
     
-    //may be we have a ctools context
-    if (get_class($node) == 'ctools_context')
-      $node = $node->data;
-      
     if (!$node)
       return $contexts;
+    
+    //may be we have a ctools context
+    if (get_class($node) == 'ctools_context')
+      $node = $node->data;    
     
     switch ($node->type) {
       case 'erpal_project':
