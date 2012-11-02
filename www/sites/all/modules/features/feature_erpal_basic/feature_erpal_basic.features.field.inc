@@ -148,33 +148,40 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_addresses-field_country'.
-  $fields['field_collection_item-field_addresses-field_country'] = array(
+  // Exported field: 'field_collection_item-field_addresses-field_country_term'.
+  $fields['field_collection_item-field_addresses-field_country_term'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_country',
-      'foreign keys' => array(),
+      'field_name' => 'field_country_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
       'indexes' => array(
-        'value' => array(
-          0 => 'value',
+        'tid' => array(
+          0 => 'tid',
         ),
       ),
       'locked' => '0',
-      'module' => 'list',
+      'module' => 'taxonomy',
       'settings' => array(
         'allowed_values' => array(
-          'DE' => 'Germany',
-          'AT' => 'Austria',
-          'CH' => 'Switzerland',
+          0 => array(
+            'vocabulary' => 'countries',
+            'parent' => '0',
+          ),
         ),
-        'allowed_values_function' => '',
         'profile2_private' => FALSE,
       ),
       'translatable' => '0',
-      'type' => 'list_text',
+      'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
       'bundle' => 'field_addresses',
@@ -184,21 +191,14 @@ function feature_erpal_basic_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 3,
-        ),
-        'entityreference_view_widget' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '0',
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 7,
         ),
       ),
       'entity_type' => 'field_collection_item',
-      'field_name' => 'field_country',
+      'field_name' => 'field_country_term',
       'label' => 'Country',
       'required' => 0,
       'settings' => array(
@@ -209,7 +209,7 @@ function feature_erpal_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -2127,6 +2127,75 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_contact-field_relation_add'.
+  $fields['node-erpal_contact-field_relation_add'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_relation_add',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'relation_add',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'relation_add',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contact',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'relation_add',
+          'settings' => array(),
+          'type' => 'relation_add_endpoints_and_fields',
+          'weight' => 23,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_relation_add',
+      'label' => 'Relation add',
+      'required' => 0,
+      'settings' => array(
+        'relation_type' => array(
+          'works_at' => 'works_at',
+          'works_at:reverse' => 'works_at:reverse',
+        ),
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'relation_add',
+        'settings' => array(
+          'relation_endpoint_custom_label' => '',
+          'relation_endpoint_label' => 'none',
+          'relation_endpoint_label_delta' => 0,
+        ),
+        'type' => 'relation_add',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_contact-field_twitter'.
   $fields['node-erpal_contact-field_twitter'] = array(
     'field_config' => array(
@@ -2515,7 +2584,9 @@ function feature_erpal_basic_field_default_fields() {
       ),
       'locked' => '0',
       'module' => 'relation_endpoint',
-      'settings' => array(),
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
       'type' => 'relation_endpoint',
     ),
@@ -2762,6 +2833,7 @@ function feature_erpal_basic_field_default_fields() {
   t('Period');
   t('Phone Numbers');
   t('Relation Tags');
+  t('Relation add');
   t('SWIFT');
   t('Street');
   t('Twitter');

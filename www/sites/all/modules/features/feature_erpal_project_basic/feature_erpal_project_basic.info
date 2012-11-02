@@ -142,6 +142,7 @@ features[page_manager_pages][] = projects_list
 features[page_manager_pages][] = tickets
 features[panels_mini][] = project_general_fields
 features[panels_mini][] = task_general_fields
+features[panels_mini][] = task_right_sidebar_pane
 features[panels_mini][] = task_status_panel
 features[panels_mini][] = time_information
 features[quicktabs][] = task_content_tabs

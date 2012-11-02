@@ -280,7 +280,9 @@ function views_jstree_load_children($view_name, $parent_id) {
   */  
 
   unset($filter_values['operation']);  //if not removed, this will disturb our filtering "if-statement"
-  if (/*true || */$filter_values && is_array($filter_values) && count($filter_values)) {  //only neccessary if we have a filter set
+  
+  //What is done in this if-section? So we have a tree. If we filter with exposed filters, users will get filtered nodes in the tree. But they will see nodes that dont match the filter if these nodes are parent nodes of filter-matching children. If these non-filter-matching parent nodes would not be shown, even the matching children would not be visible. At first try, I thougth it is enough to execute this section only if exposed form was submitted because of Performance reasons, BUT: in ERPAL for example we filter tickets and tasks (the same node type with a flag). So a ticket ca be parent of a task and a task can be the parent of a ticket. So here we have to show parents that dont match the filter (task or ticket) even if no exposed form was submitted.
+  if (true || $filter_values && is_array($filter_values) && count($filter_values)) {  
     $filter = $children_display->handler->view->filter;
 
     if (isset($filter['type']->options['value']))
@@ -321,15 +323,15 @@ function views_jstree_load_children($view_name, $parent_id) {
       $by_id_view->preview($by_id_display->id, $id_args);
       $filtered_result = $by_id_view->result;
 
-      //now go through the grouped array of all results and eleminate nodes from deep search that are no more part of the filtered result set.
-      
+      //now go through the grouped array of all results and eleminate nodes from deep search that are no more part of the filtered result set.      
+      $non_filter_matching_nids = array();
       foreach ($children_by_root as $parent_nid=>$children_nids) {        
         foreach ($children_nids as $delta=>$child_nid) {
           $in_filtered_result = false;
           foreach ($filtered_result as $filtered_obj) {
+            //check children
             if ($filtered_obj->nid == $child_nid) {
               $in_filtered_result = true;
-              break;
             }
           }
           
@@ -355,13 +357,22 @@ function views_jstree_load_children($view_name, $parent_id) {
           }
         }
       }
-  
-      //now delete the nodes in filtered_result
+
+      //now delete the nodes in total_result and mark non filter-matching nodes
       foreach ($total_result as $delta=>$result_obj) {
-        //if (!in_array($result_obj->nid, $children_by_root))  {
+        
         if (!isset($children_by_root[$result_obj->nid])) {
           unset($total_result[$delta]);
         }
+        if (isset($total_result[$delta])) {
+          //mark the result if it doesn't match the filter
+          $result_obj->filter_matching = false;
+          foreach ($filtered_result as $filtered_obj) {
+            if ($result_obj->nid == $filtered_obj->nid)
+              $result_obj->filter_matching = true;
+          }          
+        }
+          
       }
     }
   }
@@ -393,8 +404,11 @@ function views_jstree_load_children($view_name, $parent_id) {
     if (isset($row->field_field_task_status_term[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
       $status = " ".$row->field_field_task_status_term[0]['raw']['value'];
       
+    $filter_matching_class = $row->filter_matching ? 'filter_matching' : 'no_filter_matching';
     $output[] = array(
-      "attr" => array("id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, 'entity_id' => $row->nid, 'class' => $row->node_type.$status), 
+      "attr" => array(
+        "id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, "entity_id" => $row->nid, "class" => $row->node_type." ".$status." ".$filter_matching_class
+      ), 
       "data" => $row->node_title,
       "state" => $hasChildren ? "closed" : '', //or '' if no Children!
       'context_menu' => _views_jstree_get_context_menu($view, $children_display, $row->node_type, $row->nid, $row, $parent_id),

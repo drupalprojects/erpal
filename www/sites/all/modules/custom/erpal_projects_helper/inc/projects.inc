@@ -5,6 +5,46 @@
 */
 
 /**
+* Alters the project node form
+*/
+function _erpal_projects_helper_project_node_form_alter(&$form, &$form_state) {
+  //if form is filled by entityreference prepopulate, the crm activity is already prefilled.
+  //with the activity we can preselect the customer, because it may be the same as in activity and project
+  //in most cases  
+  _erpal_projects_helper_set_customer_if_project_from_activity($form);
+}
+
+
+/**
+* If the project is create from an activity (preset and node not already created), set the customer assigned to that activity
+*/
+function _erpal_projects_helper_set_customer_if_project_from_activity(&$form) {
+  $nid = $form['nid']['#value'];
+  
+  //if node already exists, do nothing here
+  if ($nid)
+    return;
+  
+  $activity_nid = $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+  $activity_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($activity_nid);
+
+  if (!empty($activity_nid) && is_numeric($activity_nid)) {
+    $activity_node = node_load($activity_nid);
+    $customer_nid = false;
+
+    if (isset($activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $customer_nid = $activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
+    }
+
+    if ($customer_nid) {
+      $customer_node = node_load($customer_nid);
+      $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_node->title." (".$customer_nid.")";
+    }
+  }
+}
+
+
+/**
 * Function returns a list of projects respecting the given params as filter. 
 *
 * @param array $task_states array of all states tasks are returned with.

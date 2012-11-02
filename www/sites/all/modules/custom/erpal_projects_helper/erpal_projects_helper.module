@@ -610,14 +610,6 @@ function _erpal_projects_helper_ensure_task_settings_form_element(&$form) {
   }
 }
 
-/**
-* Implements hook_menu_local_tasks_alter()
-*/
-function erpal_projects_helper_menu_local_tasks_alter(&$data, $router_item, $root_path) {  
-  _erpal_projects_helper_dynamic_menu_items($data, $router_item, $root_path);
-  _erpal_basic_helper_alter_local_tasks_output($data); //to correct markup
-}
-
 
 /**
 * Implements hook_form_alter
@@ -628,10 +620,12 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
     _erpal_projects_helper_task_node_form_alter($form, $form_state);
     _erpal_project_helper_field_type_term_set_default($form);
     _erpal_project_helper_field_task_status_term_set_default($form);
-    _erpal_project_helper_field_prority_term_set_default($form);
+    _erpal_project_helper_field_prority_term_set_default($form);    
     
-    _erpal_basic_helper_warn_semantic_not_covered_by_terms('task_status_terms', 'field_simple_process_status');   
     _erpal_projects_helper_task_edit_form_prepopulate($form);
+    _erpal_basic_helper_warn_semantic_not_covered_by_terms('task_status_terms', 'field_simple_process_status'); 
+
+    _erpal_projects_helper_call_form_alter_hook($form); //let other modules alter after this module does   
   }
   
   if ($form_id == 'erpal_books_helper_pdf_form') {
@@ -641,9 +635,11 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_project_node_form') {
     _erpal_projects_helper_project_node_form_alter($form, $form_state);
     _erpal_project_helper_field_project_status_term_set_default($form);
-    _erpal_project_helper_field_prority_term_set_default($form);
+    _erpal_project_helper_field_prority_term_set_default($form);    
     
     _erpal_basic_helper_warn_semantic_not_covered_by_terms('project_status_terms', 'field_simple_process_status');
+    
+    _erpal_projects_helper_call_form_alter_hook($form);  //let other modules alter after this module does
   }
  
   if ($form_id == 'node_delete_confirm') {
@@ -656,6 +652,19 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
   
   if ($form_id == 'timetracking_quick_form') {
     _erpal_projects_helper_alter_timetracking_quick_form($form, $form_state);
+  }
+}
+
+/**
+* function calls hook to let other modules alter form after this module has
+*/
+function _erpal_projects_helper_call_form_alter_hook(&$form) {
+  //now get pricing informatio from parent (node or project and preset vat_rate and currency with these information
+  //give other module the chance to alter task form after this module set some values like project and parent
+  // Iterate through the modules calling their cron handlers (if any):
+  foreach (module_implements('task_form_after_project_alter') as $module) {
+    $function = $module.'_task_form_after_project_alter';
+    $function($form); //need to to this because we need to give $form variable as reference    
   }
 }
 
@@ -865,37 +874,6 @@ function _erpal_projects_helper_project_delete_confirm_validate($form, $form_sta
     if (!$delete_children) {
       form_set_error('delete_children', t('Please submit checkbox to delete all tasks'));
     }        
-  }
-}
-
-/**
-* Alters the project node form
-*/
-function _erpal_projects_helper_project_node_form_alter(&$form, &$form_state) {
-  //if form is filled by entityreference prepopulate, the crm activity is already prefilled.
-  //with the activity we can preselect the customer, because it may be the same as in activity and project
-  //in most cases
-  $nid = $form['nid']['#value'];
-  
-  //if node already exists, do nothing here
-  if ($nid)
-    return;
-  
-  $activity_nid = $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
-  $activity_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($activity_nid);
-
-  if (!empty($activity_nid) && is_numeric($activity_nid)) {
-    $activity_node = node_load($activity_nid);
-    $customer_nid = false;
-
-    if (isset($activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'])) {
-      $customer_nid = $activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
-    }
-
-    if ($customer_nid) {
-      $customer_node = node_load($customer_nid);
-      $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_node->title." (".$customer_nid.")";
-    }
   }
 }
 
@@ -1128,5 +1106,4 @@ function _erpal_projects_helper_can_delete($node, $check_children, &$messages) {
 
   return true;
 }
-
 

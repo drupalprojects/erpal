@@ -78,7 +78,7 @@ function feature_erpal_project_basic_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'view_row_details';
   $ds_fieldsetting->settings = array(
     'comment_count' => array(
-      'weight' => '14',
+      'weight' => '12',
       'label' => 'hidden',
       'format' => 'default',
       'formatter_settings' => array(
@@ -89,7 +89,7 @@ function feature_erpal_project_basic_ds_field_settings_info() {
       ),
     ),
     'files_count' => array(
-      'weight' => '13',
+      'weight' => '11',
       'label' => 'hidden',
       'format' => 'default',
       'formatter_settings' => array(
@@ -595,13 +595,14 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'sidebar_first_right' => array(
         0 => 'field_project_ref',
         1 => 'task_customer_node',
+        2 => 'field_project_tags',
       ),
       'sidebar_second_left' => array(
         0 => 'field_parent',
         1 => 'group_submitted_information',
         2 => 'group_time_information',
-        3 => 'group_status_information',
-        4 => 'field_date',
+        3 => 'field_date',
+        4 => 'group_status_information',
         5 => 'field_estimated_time',
         6 => 'field_task_assigned_users',
         7 => 'field_progress_percent',
@@ -625,21 +626,22 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
       'task_title' => 'sidebar_first_left',
       'field_project_ref' => 'sidebar_first_right',
       'task_customer_node' => 'sidebar_first_right',
+      'field_project_tags' => 'sidebar_first_right',
       'field_parent' => 'sidebar_second_left',
       'group_submitted_information' => 'sidebar_second_left',
       'group_time_information' => 'sidebar_second_left',
-      'group_status_information' => 'sidebar_second_left',
       'field_date' => 'sidebar_second_left',
+      'group_status_information' => 'sidebar_second_left',
       'field_estimated_time' => 'sidebar_second_left',
       'field_task_assigned_users' => 'sidebar_second_left',
       'field_progress_percent' => 'sidebar_second_left',
       'field_task_status_term' => 'sidebar_second_left',
+      'body' => 'sidebar_second_right',
       'author' => 'sidebar_second_left',
       'field_priority_term' => 'sidebar_second_left',
-      'body' => 'sidebar_second_right',
-      'post_date' => 'sidebar_second_left',
       'field_pricing' => 'sidebar_third_left',
       'files_count' => 'sidebar_third_right',
+      'post_date' => 'sidebar_second_left',
       'comment_count' => 'sidebar_third_right',
     ),
     'classes' => array(),

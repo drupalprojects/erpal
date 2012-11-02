@@ -107,3 +107,10 @@ function erpal_invoice_helper_update_7002() {
 function erpal_invoice_helper_update_7003() {
   db_add_field('erpal_invoice_defaults', 'address_addition', array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => '', 'description' => 'Add customer address additions'));
 }
+
+/**
+* Add field for currency to customer defaults
+*/
+function erpal_invoice_helper_update_7004() {
+  db_add_field('erpal_invoice_defaults', 'currency', array('type' => 'varchar', 'length' => 10, 'not null' => TRUE, 'default' => '', 'description' => 'Add customer currency'));
+}

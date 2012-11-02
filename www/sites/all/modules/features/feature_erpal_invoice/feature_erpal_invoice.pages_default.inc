@@ -591,6 +591,37 @@ function feature_erpal_invoice_default_page_manager_handlers() {
     $pane->pid = 'new-19';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_credit_period';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'title',
+      'formatter' => 'number_integer',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(
+        'thousand_separator' => '',
+        'prefix_suffix' => 1,
+      ),
+      'context' => 'argument_entity_id:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $display->content['new-19'] = $pane;
+    $display->panels['right'][2] = 'new-19';
+    $pane = new stdClass();
+    $pane->pid = 'new-20';
+    $pane->panel = 'right';
+    $pane->type = 'entity_field';
     $pane->subtype = 'node:field_payment_date';
     $pane->shown = TRUE;
     $pane->access = array();
@@ -617,12 +648,12 @@ function feature_erpal_invoice_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-19'] = $pane;
-    $display->panels['right'][2] = 'new-19';
+    $display->content['new-20'] = $pane;
+    $display->panels['right'][3] = 'new-20';
     $pane = new stdClass();
-    $pane->pid = 'new-20';
+    $pane->pid = 'new-21';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_payed';
@@ -630,11 +661,16 @@ function feature_erpal_invoice_default_page_manager_handlers() {
     $pane->access = array();
     $pane->configuration = array(
       'label' => 'title',
-      'formatter' => 'list_default',
+      'formatter' => 'editable',
       'delta_limit' => 0,
       'delta_offset' => '0',
       'delta_reversed' => FALSE,
-      'formatter_settings' => array(),
+      'formatter_settings' => array(
+        'fallback_format' => 'list_default',
+        'click_to_edit' => 0,
+        'click_to_edit_style' => 'button',
+        'empty_text' => '',
+      ),
       'context' => 'argument_entity_id:node_1',
       'override_title' => 0,
       'override_title_text' => '',
@@ -645,10 +681,10 @@ function feature_erpal_invoice_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 3;
+    $pane->position = 4;
     $pane->locks = array();
-    $display->content['new-20'] = $pane;
-    $display->panels['right'][3] = 'new-20';
+    $display->content['new-21'] = $pane;
+    $display->panels['right'][4] = 'new-21';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-1';
   $handler->conf['display'] = $display;

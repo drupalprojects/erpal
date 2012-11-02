@@ -422,7 +422,6 @@ function entity_metadata_field_property_set($entity, $name, $value, $langcode, $
   $columns = array_keys($field['columns']);
   $langcode = entity_metadata_field_get_language($entity_type, $entity, $field, $langcode);
   $values = $field['cardinality'] == 1 ? array($value) : (array) $value;
-
   $items = array();
   foreach ($values as $delta => $value) {
     if (isset($value)) {
@@ -483,7 +482,7 @@ function entity_metadata_field_verbatim_get($entity, array $options, $name, $ent
  */
 function entity_metadata_field_verbatim_set($entity, $name, $items, $langcode, $entity_type) {
   $field = field_info_field($name);
-  $langcode = entity_metadata_field_get_language($entity_type, $entity, $entity_type, $langcode);
+  $langcode = entity_metadata_field_get_language($entity_type, $entity, $field, $langcode);
   $value = $field['cardinality'] == 1 ? array($items) : (array) $items;
   // Filter out any items set to NULL.
   $entity->{$name}[$langcode] = array_filter($value);
@@ -509,7 +508,7 @@ function entity_metadata_field_verbatim_set($entity, $name, $items, $langcode, $
 function entity_metadata_field_get_language($entity_type, $entity, $field, $langcode = LANGUAGE_NONE, $fallback = FALSE) {
   // Try to figure out the default language used by the entity.
   // @todo: Update once http://drupal.org/node/1260640 has been fixed.
-  $default_langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+  $default_langcode = !empty($entity->language) ? $entity->language : LANGUAGE_NONE;
 
   // Determine the right language to use.
   if ($default_langcode != LANGUAGE_NONE && field_is_translatable($entity_type, $field)) {

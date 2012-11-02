@@ -63,6 +63,7 @@ features[field][] = node-erpal_invoice-field_payed
 features[field][] = node-erpal_invoice-field_payment_date
 features[field][] = node-erpal_invoice-field_price_no_vat
 features[field][] = node-erpal_invoice-field_skonto
+features[field][] = taxonomy_term-countries-field_vat_rate
 features[field_group][] = group_notes|node|erpal_invoice|form
 features[field_group][] = group_order_numbers|node|erpal_invoice|form
 features[field_group][] = group_purchasing|field_collection_item|field_pricing|form

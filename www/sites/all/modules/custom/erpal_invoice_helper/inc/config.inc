@@ -76,7 +76,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#type' => 'textfield',
     '#title' => t('Invoice number offset'),
     '#default_value' => _erpal_invoice_helper_get_next_invoice_number(),    
-    '#description' => t('This offset definies the last invoice number, next increment will be this +1'),
+    '#description' => t('This offset definies the next invoice number'),
   );
   
   //Tokens for invoice pattern

@@ -23,23 +23,36 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   $contexts = array();
   
   //CHECK PROJECT CONTEXT
-  if ($path == 'node/%') {
+  if (drupal_match_path($path, 'node/%*') ) {
     $node = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
     
+    //may be we have a ctools context
+    if (get_class($node) == 'ctools_context')
+      $node = $node->data;
+      
     if (!$node)
       return $contexts;
     
     switch ($node->type) {
       case 'erpal_project':
         $contexts[ERPAL_CONTEXT_PROJECT] = true;  
+        $contexts[ERPAL_CONTEXT_PROJECTS_GLOBAL] = true;
+        
         break;
       case 'erpal_task':
         //task or ticket?
         $is_ticket = _erpal_projects_helper_is_ticket($node);
-        if ($is_ticket)
-          $contexts[ERPAL_CONTEXT_TICKET] = true;    
-        else
+        if ($is_ticket) {
+          $contexts[ERPAL_CONTEXT_TICKET] = true;  
+          $contexts[ERPAL_CONTEXT_PROJECTS_GLOBAL] = true;
+        }  
+        else {
           $contexts[ERPAL_CONTEXT_TASK] = true;  
+          $contexts[ERPAL_CONTEXT_PROJECTS_GLOBAL] = true;
+        }
+        break;
+      case 'erpal_timetrscking':
+        $contexts[ERPAL_CONTEXT_PROJECTS_GLOBAL] = true;
         break;
     }
   }
@@ -68,7 +81,7 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   if ($path == 'node/%/tickets') {        
     $contexts[ERPAL_CONTEXT_TICKETS] = true;      
   }
-  
+
   return $contexts;  
 }
 
@@ -77,6 +90,7 @@ function erpal_projects_helper_erpal_contexts($router_item) {
 */
 function _erpal_projects_helper_get_menu_parents($router_item) {
   $projects_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS_GLOBAL, $router_item);
+  $project = _erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECT, $router_item);
   
   if ($projects_global) {
     return 'projects/projects';
@@ -84,9 +98,10 @@ function _erpal_projects_helper_get_menu_parents($router_item) {
 }
 
 /**
+* Implements hook_dynamic_menu_items provided by erpal_basic_helper
 * Returns all dynamic contextual menu items, @see erpal_projects_helper.module
 */
-function _erpal_projects_helper_dynamic_menu_items(&$data, $router_item, $root_path) {
+function erpal_projects_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
 
   //projects list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS, $router_item)) {    
@@ -95,7 +110,7 @@ function _erpal_projects_helper_dynamic_menu_items(&$data, $router_item, $root_p
   
   //projects global context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS_GLOBAL, $router_item)) {    
-    _erpal_projects_helper_projects_global_links($data);       
+    _erpal_projects_helper_projects_global_links($data, $router_item);       
   } 
   
   //Node Timetracking Context
@@ -133,6 +148,7 @@ function _erpal_projects_helper_dynamic_menu_items(&$data, $router_item, $root_p
     $ticket_node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
     _erpal_projects_helper_ticket_links($data, $ticket_node, $router_item);       
   } 
+  
 }
 
 /**
@@ -155,11 +171,14 @@ function _erpal_projects_helper_node_timetrackings_links(&$data, $node) {
 /**
 * Adds all projects global context links
 */
-function _erpal_projects_helper_projects_global_links(&$data) {
+function _erpal_projects_helper_projects_global_links(&$data, $router_item) {
   //single project context
   erpal_make_local_tab($data, t('Project list'), 'projects/projects');
-  erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp');
-  erpal_make_local_tab($data, t('Timetrackings'), 'projects/timetrackings');  
+  
+  if (!_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECT, $router_item)) {
+    erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp');
+    erpal_make_local_tab($data, t('Timetrackings'), 'projects/timetrackings');  
+  }
 }
 
 /**
@@ -228,7 +247,9 @@ function _erpal_projects_helper_ticket_links(&$data, $ticket_node, $router_item=
   erpal_make_action($data, t('Create a subticket'), 'node/add/erpal-task', $query);
    
   $query = array('field_timetracking_subject' => $ticket_node->nid);  
-  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query); 
+  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query);
+  
+  erpal_make_action($data, t('Print'), 'projects/project/task/'.$ticket_node->nid.'/print'); 
    
   erpal_make_local_tab($data, t('Tickets'), 'node/'.$project_nid.'/tickets');    
    

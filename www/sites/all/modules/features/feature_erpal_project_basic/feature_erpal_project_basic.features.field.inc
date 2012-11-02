@@ -861,7 +861,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'handler_settings' => array(
           'behaviors' => array(
             'views-select-list' => array(
-              'status' => 0,
+              'status' => 1,
             ),
           ),
           'sort' => array(
@@ -932,7 +932,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'none',
+            'action' => 'disable',
             'fallback' => 'none',
             'skip_perm' => '0',
             'status' => 1,
@@ -947,8 +947,8 @@ function feature_erpal_project_basic_field_default_fields() {
           'match_operator' => 'CONTAINS',
           'path' => '',
           'references_dialog_add' => 0,
-          'references_dialog_edit' => 0,
-          'references_dialog_search' => 0,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),
@@ -1805,7 +1805,7 @@ function feature_erpal_project_basic_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_project_tags',
-      'label' => 'Project tags',
+      'label' => 'Categories',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -1894,7 +1894,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'trim_length' => '200',
           ),
           'type' => 'text_trimmed',
-          'weight' => '11',
+          'weight' => '9',
         ),
       ),
       'entity_type' => 'node',
@@ -1995,7 +1995,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '28',
+          'weight' => '25',
         ),
       ),
       'entity_type' => 'node',
@@ -2426,7 +2426,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '3',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'node',
@@ -2527,7 +2527,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'view_mode' => 'full',
           ),
           'type' => 'field_collection_fields',
-          'weight' => '12',
+          'weight' => '10',
         ),
       ),
       'entity_type' => 'node',
@@ -2921,14 +2921,15 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
         'view_row_details' => array(
           'label' => 'above',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '23',
+          'type' => 'taxonomy_term_reference_plain',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_project_tags',
-      'label' => 'Project tags',
+      'label' => 'Categories',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -3036,7 +3037,7 @@ function feature_erpal_project_basic_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '7',
+          'weight' => '8',
         ),
       ),
       'entity_type' => 'node',
@@ -3299,7 +3300,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '26',
+          'weight' => '23',
         ),
       ),
       'entity_type' => 'node',
@@ -3378,7 +3379,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '27',
+          'weight' => '24',
         ),
       ),
       'entity_type' => 'node',
@@ -3448,7 +3449,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '29',
+          'weight' => '26',
         ),
       ),
       'entity_type' => 'node',
@@ -4424,6 +4425,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Budget time billing');
   t('Budgets');
   t('CRM activity');
+  t('Categories');
   t('Check this checkbox if this is e ticket');
   t('Check, if this is the default value on fields where to select on of the terms in this vocabulary');
   t('Choose contacts that are involved in this project');
@@ -4449,7 +4451,6 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Priority');
   t('Progress');
   t('Project');
-  t('Project tags');
   t('Role in project');
   t('Semantic process');
   t('Specification');
