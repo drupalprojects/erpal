@@ -9,7 +9,7 @@ core = 7.x
 dependencies[] = content_access
 dependencies[] = private_files_download_permission
 ; Administration
-dependencies[] = admin_menu
+dependencies[] = toolbar
 ; Chaos tool suite
 dependencies[] = ctools
 dependencies[] = page_manager
@@ -136,7 +136,6 @@ dependencies[] = token
 dependencies[] = panels
 dependencies[] = panels_everywhere
 dependencies[] = panels_mini
-dependencies[] = panels_tabs
 ; Panels style plugins
 dependencies[] = panels_style_collapsible
 ; Relation

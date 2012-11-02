@@ -130,13 +130,11 @@ input.form-submit:focus {
 	border-top: 1px solid #756c65;
 }
 .pane-menu-menu-erpal-menu ul li.last ul li.last a, 
-.pane-menu-menu-erpal-menu ul li.active-trail.active,
 .pane-menu-menu-erpal-menu ul li.last a{
 	border-bottom: 1px solid #908984;
 }
 .pane-menu-menu-erpal-menu ul li.last ul li.last a.active-trail, 
 .pane-menu-menu-erpal-menu ul li.last a.active-trail.active, 
-.pane-menu-menu-erpal-menu ul li.active-trail.active,
 .pane-menu-menu-erpal-menu ul li.expanded a.active-trail.active{
 	border-bottom: 2px solid #fd8300;
 }
