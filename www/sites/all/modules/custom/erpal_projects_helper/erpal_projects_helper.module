@@ -610,16 +610,6 @@ function _erpal_projects_helper_ensure_task_settings_form_element(&$form) {
   }
 }
 
-/**
-* Implements hook_menu_local_tasks_alter()
-*/
-function erpal_projects_helper_menu_local_tasks_alter(&$data, $router_item, $root_path) {  
-  _erpal_projects_helper_dynamic_menu_items($data, $router_item, $root_path);  
-  
-  //finally at the end...
-  _erpal_basic_helper_alter_local_tasks_output($data); //to correct markup
-}
-
 
 /**
 * Implements hook_form_alter

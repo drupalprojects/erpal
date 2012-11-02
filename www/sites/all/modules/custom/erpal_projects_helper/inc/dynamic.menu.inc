@@ -101,7 +101,7 @@ function _erpal_projects_helper_get_menu_parents($router_item) {
 * Implements hook_dynamic_menu_items provided by erpal_basic_helper
 * Returns all dynamic contextual menu items, @see erpal_projects_helper.module
 */
-function erpal_projects_helper_dynamic_menu_items(&$data, $router_item, $root_path) {
+function erpal_projects_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
 
   //projects list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS, $router_item)) {    
