@@ -493,6 +493,26 @@ function _erpal_invoice_helper_confirm_delete_invoice_submit($form, $form_state)
 }
 
 /**
+* Implements hook_node_delete
+*/
+function erpal_invoice_helper_node_delete($node) {
+  if ($node->type == 'erpal_invoice') {
+    _erpal_invoice_helper_delete_invoice_attached_files($node);
+  }
+}
+
+/**
+* Delete to invoice attached files
+*/
+function _erpal_invoice_helper_delete_invoice_attached_files($invoice_node) {
+
+  if (isset($invoice_node->field_asset_files[LANGUAGE_NONE][0]['target_id'])) {
+    $file_nid = $invoice_node->field_asset_files[LANGUAGE_NONE][0]['target_id'];
+    node_delete($file_nid);
+  }
+}
+
+/**
 * Alters the field customer ref to have an ajax callback to change the addresses after changing
 */
 function _erpal_invoice_helper_field_customer_ref_alter($field) {

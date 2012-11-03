@@ -96,6 +96,22 @@ function erpal_docs_helper_permission() {
 } 
  
 /**
+* Implements hook_node_delete
+*/ 
+function erpal_docs_helper_node_delete($node) {
+  if ($node->type == 'erpal_file') {
+    _erpal_docs_helper_delete_file_of_file_node($node);
+  }
+}
+
+/**
+* Deletes the file of a file node and all its revisions
+*/
+function _erpal_docs_helper_delete_file_of_file_node($file_node) {
+  //We dont need to delete the file any more because drupal will delete all unused files if node is deleted.
+}
+ 
+/**
 * This function is called in header area of documents view
 */
 function _erpal_docs_helper_view_documents_header_content()
