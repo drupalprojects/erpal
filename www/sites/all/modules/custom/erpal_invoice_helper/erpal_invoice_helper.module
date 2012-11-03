@@ -698,22 +698,6 @@ function erpal_invoice_helper_node_presave($node) {
   }
 } 
 
-/**
-* Creates a pdf from the invoice and adds this PDF to the given invoice node
-*/
-function _erpal_invoice_helper_add_pdf_to_invoice($invoice_node) {
-  
-  //create the invoice PDF only, if "my company" created it
-  $contractor_nid = $invoice_node->field_contractor_ref[LANGUAGE_NONE][0]['target_id']; //invoice MUST always have a contractor so dont check with isset so we will realise if there is something wrong
-  
-  $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
-  if ($my_company_nid != $contractor_nid)
-    return;
-  
-  $documents = _erpal_invoice_helper_invoice_document_options(); //on automatic invoice create, we want to have all possible documents included
-  _erpal_invoice_helper_invoice_pdf($invoice_node, $documents, true, false, true);
-  
-}
 
 /**
 * Implements hook_node_insert

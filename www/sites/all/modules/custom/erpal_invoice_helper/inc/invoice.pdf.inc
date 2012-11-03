@@ -89,7 +89,7 @@ function erpal_invoice_helper_invoice_pdf_form_submit($form, $form_state) {
   $invoice_nid = $values['invoice_nid'];
   $attach = $values['attach'];
   $mark_copied = $values['mark_copied'];
-  
+
   $invoice = _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach, $mark_copied);
   drupal_set_message(t('The invoice was created successfully and attached to this invoice.'));
   drupal_goto('node/'.$invoice->nid);
@@ -131,8 +131,10 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
   //set invoice as exported!
   $invoice->field_invoice_exported[LANGUAGE_NONE][0]['value'] = 1;
   
-  if (!$skip_save_invoice)
-    node_save($invoice);
+  if (!$skip_save_invoice) {
+    //save fields only without saving the node itself!
+    field_attach_update('node', $invoice);
+  }
   
   $destination = false;
   if ($attach) {
@@ -194,7 +196,7 @@ function _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied=f
   $params = array(
     'mark_copied' => $mark_copied,
   );
- 
+
   if (isset($documents['invoice']) && $documents['invoice'])
     $invoice_html = theme('invoice_pdf_html', array('invoice' => $invoice, 'params' => $params));
  

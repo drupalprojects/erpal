@@ -197,7 +197,7 @@ function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_
   }
   
   if (!$skip_save_parent) {
-    node_save($node);
+    field_attach_update('node', $node);
   }
 
   return $file_node;

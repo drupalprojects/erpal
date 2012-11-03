@@ -53,10 +53,10 @@ foreach ($billables as $billable) {
       $row[] = array('data' => $reduced_billable->subject,
           "class" => "left");
       // price
-      $row[] = array('data' => $reduced_billable->single_price,
+      $row[] = array('data' => number_format($reduced_billable->single_price, 2, ',', '.'),
           "class" => "right");
       // total
-      $row[] = array('data' => $reduced_billable->total_price,
+      $row[] = array('data' => number_format($reduced_billable->total_price, 2, ',', '.'),
           "class" => "right");
 
       // Add the Row to the array:
@@ -69,14 +69,14 @@ foreach ($billables as $billable) {
             0 => '',
             1 => '',
             2 => array('data' => t("Sum excl. VAT"), 'class' => 'right', 'colspan' => 2),
-            3 => array('data' => $billable->total_price_no_vat .' '. $billable->currency, 'class' => 'right'),
+            3 => array('data' => number_format($billable->total_price_no_vat, 2, ',', '.') .' '. $billable->currency, 'class' => 'right'),
         ),
         'class' => array('sumrow', 'bordertop'),
     );
     $totalvatstring = "";
     // VAT
     $vatvalues = array(
-        "!vat_value" => $billable->total_vat,
+        "!vat_value" => number_format($billable->total_vat, 2, ',', '.'),
         "!currency" => $billable->currency
     );
     $totalvatstring .= t("!vat_value !currency", $vatvalues) . " <br />";
@@ -94,7 +94,7 @@ foreach ($billables as $billable) {
             0 => '',
             1 => '',
             2 => array('data' => t("Sum incl. VAT"), 'class' => 'right', 'colspan' => 2),
-            3 => array('data' => $billable->total_price .' '. $billable->currency, 'class' => 'right'),
+            3 => array('data' => number_format($billable->total_price, 2, ',', '.') .' '. $billable->currency, 'class' => 'right'),
         ),
         'class' => array('sumrow'),
     );
