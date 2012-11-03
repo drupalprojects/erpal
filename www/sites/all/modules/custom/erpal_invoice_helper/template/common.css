@@ -30,6 +30,10 @@
   table.rechnungstabelle td {
     line-height:1.5em;
   }
+  div.invoice_notes {
+    margin-top: 4cm;
+  }
+  
   .subject {
     width: 4cm;
   }
@@ -41,8 +45,7 @@
     border-top:0.5pt solid #000;
     line-height:2em;
   }
-
-
+  
   .left {
     text-align:left;
   }
