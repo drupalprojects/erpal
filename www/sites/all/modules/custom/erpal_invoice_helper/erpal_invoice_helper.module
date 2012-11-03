@@ -1274,7 +1274,7 @@ function _erpal_invoice_helper_convert_default_form_to_array($values) {
       'order_numbers_intern' => isset($values['field_order_number_intern'][LANGUAGE_NONE][0]) ? $values['field_order_number_intern'][LANGUAGE_NONE][0]['value'] : '',
       'order_numbers_extern' => isset($values['field_order_number_extern'][LANGUAGE_NONE][0]) ? $values['field_order_number_extern'][LANGUAGE_NONE][0]['value'] : '',
       'address_addition' => isset($values['field_addition_to_address'][LANGUAGE_NONE][0]) ? $values['field_addition_to_address'][LANGUAGE_NONE][0]['value'] : '',
-      //currency is not set when invoice is created in node add form because the currency is set on billables
+      'currency' => $values['field_currency'][LANGUAGE_NONE][0]['value'] ? $values['field_currency'][LANGUAGE_NONE][0]['value'] : false,
     );
   } else {  
     $defaults = array(
