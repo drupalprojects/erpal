@@ -168,10 +168,10 @@ function _erpal_invoice_helper_get_customer_form_invoice($form, $form_state) {
   
   //if we still have no customer, get it from the request
   if (!$customer_nid || !$customer_nid['#default_value']) {
-    $customer_nid = isset($_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $_POST['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
+    $customer_nid = isset($form_state['input']['field_customer_ref'][LANGUAGE_NONE][0]['target_id']) ? $form_state['input']['field_customer_ref'][LANGUAGE_NONE][0]['target_id'] : false;
     $customer_nid = check_plain($customer_nid);    
   }
-
+  
   if ($customer_nid) {        
     
     $customer_string = is_array($customer_nid) && isset($customer_nid['#default_value']) ? $customer_nid['#default_value'] : $customer_nid;
@@ -1358,7 +1358,7 @@ function _erpal_invoice_helper_get_vat_rate_by_address($address_id) {
   
   $country_tid = isset($address_entity->field_country_term[LANGUAGE_NONE][0]) ? $address_entity->field_country_term[LANGUAGE_NONE][0]['tid'] : false;
   
-  $default_vat_rate = false;
+  $default_vat_rate = NULL;
   if ($country_tid) {
     $country_term = taxonomy_term_load($country_tid);    
     $default_vat_rate = isset($country_term->field_vat_rate[LANGUAGE_NONE][0]) ? $country_term->field_vat_rate[LANGUAGE_NONE][0]['value'] : NULL; 
