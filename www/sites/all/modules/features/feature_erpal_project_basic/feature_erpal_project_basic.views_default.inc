@@ -481,6 +481,14 @@ function feature_erpal_project_basic_views_default_views() {
         'bef_filter_description' => '',
       ),
     ),
+    'field_project_tags_tid' => array(
+      'bef_format' => 'default',
+      'more_options' => array(
+        'bef_select_all_none' => 0,
+        'bef_collapsible' => 0,
+        'bef_filter_description' => '',
+      ),
+    ),
   );
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -496,6 +504,10 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['relationships']['field_parent_target_id']['id'] = 'field_parent_target_id';
   $handler->display->display_options['relationships']['field_parent_target_id']['table'] = 'field_data_field_parent';
   $handler->display->display_options['relationships']['field_parent_target_id']['field'] = 'field_parent_target_id';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -1832,6 +1844,11 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '#';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -1854,6 +1871,37 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_priority_term']['table'] = 'field_data_field_priority_term';
   $handler->display->display_options['fields']['field_priority_term']['field'] = 'field_priority_term';
   $handler->display->display_options['fields']['field_priority_term']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Submitted';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Last update';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  /* Field: Field: Period */
+  $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
+  $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
+  $handler->display->display_options['fields']['field_date']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'value2',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Author';
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
@@ -1943,6 +1991,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
   $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
   $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['group'] = 1;
   $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
@@ -1959,11 +2008,34 @@ function feature_erpal_project_basic_views_default_views() {
   );
   $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
+  /* Filter criterion: Field: Categories (field_project_tags) */
+  $handler->display->display_options['filters']['field_project_tags_tid']['id'] = 'field_project_tags_tid';
+  $handler->display->display_options['filters']['field_project_tags_tid']['table'] = 'field_data_field_project_tags';
+  $handler->display->display_options['filters']['field_project_tags_tid']['field'] = 'field_project_tags_tid';
+  $handler->display->display_options['filters']['field_project_tags_tid']['value'] = '';
+  $handler->display->display_options['filters']['field_project_tags_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_project_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator_id'] = 'field_project_tags_tid_op';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['label'] = 'Categories';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator'] = 'field_project_tags_tid_op';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['identifier'] = 'field_project_tags_tid';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
   $handler->display->display_options['filters']['title']['field'] = 'title';
   $handler->display->display_options['filters']['title']['operator'] = 'word';
+  $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
@@ -1985,26 +2057,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_is_ticket_value']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Field: Categories (field_project_tags) */
-  $handler->display->display_options['filters']['field_project_tags_tid']['id'] = 'field_project_tags_tid';
-  $handler->display->display_options['filters']['field_project_tags_tid']['table'] = 'field_data_field_project_tags';
-  $handler->display->display_options['filters']['field_project_tags_tid']['field'] = 'field_project_tags_tid';
-  $handler->display->display_options['filters']['field_project_tags_tid']['value'] = '';
-  $handler->display->display_options['filters']['field_project_tags_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator_id'] = 'field_project_tags_tid_op';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['label'] = 'Categories';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator'] = 'field_project_tags_tid_op';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['identifier'] = 'field_project_tags_tid';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-  );
-  $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
+  $handler->display->display_options['filters']['field_is_ticket_value']['group'] = 1;
   $handler->display->display_options['argument_input'] = array(
     'field_parent_target_id' => array(
       'type' => 'panel',
@@ -2373,6 +2426,12 @@ function feature_erpal_project_basic_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Author';
   /* Field: Content: Parent */
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
@@ -2463,6 +2522,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
   $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
   $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['group'] = 1;
   $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
   $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
@@ -2487,11 +2547,34 @@ function feature_erpal_project_basic_views_default_views() {
   );
   $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
+  /* Filter criterion: Field: Categories (field_project_tags) */
+  $handler->display->display_options['filters']['field_project_tags_tid']['id'] = 'field_project_tags_tid';
+  $handler->display->display_options['filters']['field_project_tags_tid']['table'] = 'field_data_field_project_tags';
+  $handler->display->display_options['filters']['field_project_tags_tid']['field'] = 'field_project_tags_tid';
+  $handler->display->display_options['filters']['field_project_tags_tid']['value'] = '';
+  $handler->display->display_options['filters']['field_project_tags_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_project_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator_id'] = 'field_project_tags_tid_op';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['label'] = 'Categories';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator'] = 'field_project_tags_tid_op';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['identifier'] = 'field_project_tags_tid';
+  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
   $handler->display->display_options['filters']['title']['field'] = 'title';
   $handler->display->display_options['filters']['title']['operator'] = 'word';
+  $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
@@ -2513,26 +2596,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['field_is_ticket_value']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Field: Categories (field_project_tags) */
-  $handler->display->display_options['filters']['field_project_tags_tid']['id'] = 'field_project_tags_tid';
-  $handler->display->display_options['filters']['field_project_tags_tid']['table'] = 'field_data_field_project_tags';
-  $handler->display->display_options['filters']['field_project_tags_tid']['field'] = 'field_project_tags_tid';
-  $handler->display->display_options['filters']['field_project_tags_tid']['value'] = '';
-  $handler->display->display_options['filters']['field_project_tags_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator_id'] = 'field_project_tags_tid_op';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['label'] = 'Categories';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['operator'] = 'field_project_tags_tid_op';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['identifier'] = 'field_project_tags_tid';
-  $handler->display->display_options['filters']['field_project_tags_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-  );
-  $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
+  $handler->display->display_options['filters']['field_is_ticket_value']['group'] = 1;
   $handler->display->display_options['allow']['use_pager'] = 0;
   $handler->display->display_options['allow']['items_per_page'] = 0;
   $handler->display->display_options['allow']['offset'] = 0;
