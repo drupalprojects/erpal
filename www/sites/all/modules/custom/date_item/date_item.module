@@ -1005,7 +1005,7 @@ function date_item_date_items_page($entity_type, $entity) {
 * So we can make the user change the date format by changing this variable 
 */
 function _date_item_get_date_format($time = true){
-  if (module_exists('erpal_invoice_helper')) {
+  if (module_exists('erpal_basic_helper')) {
     if (!$time)
       return _erpal_basic_helper_date_format_date_only();
     else

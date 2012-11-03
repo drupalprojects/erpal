@@ -22,7 +22,6 @@ function feature_erpal_invoice_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Billables';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access billables view';
@@ -306,6 +305,7 @@ echo _erpal_invoice_helper_view_billables_header_content();
 
   /* Display: Billables */
   $handler = $view->new_display('page', 'Billables', 'page');
+  $handler->display->display_options['enabled'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'invoice/billables';
 
@@ -546,6 +546,11 @@ echo _erpal_invoice_helper_view_billables_header_content();
       'label' => 'Billable: Subject_nid',
     ),
   );
+
+  /* Display: billables pane */
+  $handler = $view->new_display('panel_pane', 'billables pane', 'panel_pane_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $export['billables'] = $view;
 
   $view = new view();
@@ -560,7 +565,6 @@ echo _erpal_invoice_helper_view_billables_header_content();
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Invoices';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access invoices view';
@@ -770,6 +774,7 @@ echo _erpal_invoice_helper_view_invoices_header_content();
 
   /* Display: Invoices */
   $handler = $view->new_display('page', 'Invoices', 'page');
+  $handler->display->display_options['enabled'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'invoice/invoices';
 
@@ -854,6 +859,10 @@ echo _erpal_invoice_helper_view_invoices_header_content();
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+
+  /* Display: Invoices pane */
+  $handler = $view->new_display('panel_pane', 'Invoices pane', 'panel_pane_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $export['invoices'] = $view;
 
   return $export;

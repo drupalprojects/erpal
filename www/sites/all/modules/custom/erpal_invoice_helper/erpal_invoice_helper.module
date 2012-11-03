@@ -61,6 +61,87 @@ function erpal_invoice_helper_field_formatter_info() {
 }
 
 /**
+ * Implements hook_block_info().
+ */
+function erpal_invoice_helper_block_info() {
+  return array(
+    'invoices_date_block' => array(
+      'info' => t('Invoices date'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function erpal_invoice_helper_block_view($delta) {
+  if ($delta == 'invoices_date_block') {
+    $block['subject'] = t('Invoices date');
+    $block['content'] = drupal_get_form('erpal_invoice_helper_invoices_date_form');
+    return $block;
+  }  
+}
+
+/**
+* Form to let user select the date for todays invoices
+*/
+function erpal_invoice_helper_invoices_date_form($form, $form_state) {
+  $form = array();
+  
+  $format = _erpal_basic_helper_date_format_date_only();
+  $invoices_date_set = _erpal_invoice_helper_get_todays_invoices_date();
+
+  $invoices_date = $invoices_date_set ? $invoices_date_set : time();
+
+  $form['invoices_date'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => $format,
+    '#description' => t('This date is used for all invoices that you create today'),
+    '#default_value' => date('Y-m-d', $invoices_date),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'submit',
+  );
+  
+  return $form;
+}
+
+/**
+* Submit handler for invoices date block
+*/
+function erpal_invoice_helper_invoices_date_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $invoices_date = $values['invoices_date'];
+  
+  //now set the date for today
+  if ($invoices_date) {
+    $unix_time = erpal_date_as_unix_timestamp($invoices_date);
+    $invoices_date = array('for_date' => date('Ymd'), 'date' => $unix_time);
+    $invoices_date = serialize($invoices_date);
+    variable_set('erpal_invoices_date', $invoices_date);
+  }
+}
+
+/**
+* Returns the current set invoices date, if no date is set, return false
+*/
+function _erpal_invoice_helper_get_todays_invoices_date() {
+  
+  $invoices_date = variable_get('erpal_invoices_date', false);
+  
+  if (!$invoices_date)
+    return false;
+  
+  $invoices_date = unserialize($invoices_date);
+
+  if ($invoices_date['for_date'] == date('Ymd'))
+    return $invoices_date['date'];
+  else
+    return false;
+}
+
+/**
  * Implements hook_field_formatter_view().
  */
 function erpal_invoice_helper_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
@@ -350,6 +431,10 @@ function _erpal_invoice_helper_set_invoice_form_defaults(&$form, &$form_state) {
   $form['field_note'][LANGUAGE_NONE][0]['value']['#default_value'] = $manual_notes;  
 
   $form['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
+  
+  //and now set the date if invoices_date is set
+  $invoices_date = _erpal_invoice_helper_get_todays_invoices_date();
+  $form['field_invoice_date'][LANGUAGE_NONE][0]['#default_value']['value'] = $invoices_date;
 }
 
 /**
