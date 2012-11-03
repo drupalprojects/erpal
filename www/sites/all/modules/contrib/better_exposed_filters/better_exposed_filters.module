@@ -48,6 +48,11 @@ function better_exposed_filters_theme($existing, $type, $theme, $path) {
       'render element' => 'element',
       'file' => 'better_exposed_filters.theme',
     ),
+    'secondary_exposed_elements' => array(
+      'function' => 'theme_secondary_exposed_elements',
+      'render element' => 'element',
+      'file' => 'better_exposed_filters.theme',
+    ),
   );
 }
 
