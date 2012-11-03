@@ -1,0 +1,14 @@
+name = Notifications Team UI
+description = Notifications UI for subscribing other users to content.
+core = 7.x
+package = "Notifications"
+dependencies[] = notifications_content
+dependencies[] = views
+files[] = notifications_team.test
+
+; Information added by drupal.org packaging script on 2012-05-06
+version = "7.x-3.x-dev"
+core = "7.x"
+project = "notifications_team"
+datestamp = "1336265239"
+
