@@ -5,6 +5,7 @@ package = BS
 php = 5.2.4
 version = 7.x-1.0-dev
 project = feature_bs_erpal
+dependencies[] = admin_menu
 dependencies[] = diff
 dependencies[] = masquerade
 dependencies[] = smtp
