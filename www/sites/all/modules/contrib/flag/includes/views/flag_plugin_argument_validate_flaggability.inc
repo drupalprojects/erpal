@@ -26,6 +26,11 @@ class flag_plugin_argument_validate_flaggability extends views_plugin_argument_v
   }
 
   function options_form(&$form, &$form_state) {
+    // If there are no flag relationships set, skip this form of validation.
+    $flags = flag_get_flags($this->flag_type);
+    if (!$flags) {
+      return array();
+    }
     $options = $this->flags_options();
 
     $form[$this->_option_name('flag_name')] = array(
@@ -140,7 +145,7 @@ class flag_plugin_argument_validate_flaggability extends views_plugin_argument_v
         // Note: we can't do $handler->field, because the relationship handler's init() may overwrite it.
         if (strpos($handler->options['field'], 'flag') !== FALSE && !empty($handler->options['flag'])) {
           $flag = flag_get_flag($handler->options['flag']);
-          if ($flag && $flag->content_type == $this->flag_type) {
+          if ($flag && $flag->entity_type == $this->flag_type) {
             return $flag;
           }
         }
@@ -201,31 +206,31 @@ class flag_plugin_argument_validate_flaggability extends views_plugin_argument_v
   //
 
   function test_flaggable($ids, $flag) {
-    return array_filter($ids, array($flag, 'applies_to_content_id'));
+    return array_filter($ids, array($flag, 'applies_to_entity_id'));
   }
 
   function test_flagged($ids, $flag) {
     // view_break_phrase() is guaranteed to return only integers, so this is SQL safe.
     $flattened_ids = implode(',', $ids);
-    return $this->_test_by_sql("SELECT content_id FROM {flag_counts} WHERE fid = :fid AND content_id IN ($flattened_ids) AND count > 0", array(':fid' => $flag->fid));
+    return $this->_test_by_sql("SELECT entity_id FROM {flag_counts} WHERE fid = :fid AND entity_id IN ($flattened_ids) AND count > 0", array(':fid' => $flag->fid));
   }
 
   function test_flagged_by_current_user($ids, $flag) {
     global $user;
     if (!$user->uid) {
       // Anonymous user
-      return FALSE;
+      return array();
     }
     $flattened_ids = implode(',', $ids);
-    return $this->_test_by_sql("SELECT content_id FROM {flag_content} WHERE fid = :fid AND content_id IN ($flattened_ids) AND uid = :uid", array(':fid' => $flag->fid, ':uid' => $user->uid));
+    return $this->_test_by_sql("SELECT entity_id FROM {flagging} WHERE fid = :fid AND entity_id IN ($flattened_ids) AND uid = :uid", array(':fid' => $flag->fid, ':uid' => $user->uid));
   }
 
-  // Helper: executes an SQL query and returns all the content_id's.
+  // Helper: executes an SQL query and returns all the entity_id's.
   function _test_by_sql($sql, $args) {
     $passed = array();
     $result = db_query($sql, $args);
     foreach ($result as $row) {
-      $passed[] = $row->content_id;
+      $passed[] = $row->entity_id;
     }
     return $passed;
   }
