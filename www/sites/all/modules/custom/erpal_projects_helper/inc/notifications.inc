@@ -137,7 +137,8 @@ function _erpal_projects_helper_notify_users($users, $message) {
   $mails = array();
   foreach ($users as $uid) {
     $a_user = user_load($uid);
-    $mails[] = $a_user->mail;
+    if ($a_user->status)  //dont send to inactive users
+      $mails[] = $a_user->mail;    
   }
   $mails = implode(',', $mails);
   $site_name = variable_get('site_name', 'ERPAL');
