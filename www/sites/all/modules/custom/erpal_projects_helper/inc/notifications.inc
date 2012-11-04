@@ -127,7 +127,7 @@ function _erpal_projects_helper_notify_users($users, $message) {
   
   $subject = $message['subject'];
   $message = $message['message'];
-  dpm($users);
+
   if (!count($users))
     return;  //no mail if no users
   
@@ -146,11 +146,10 @@ function _erpal_projects_helper_notify_users($users, $message) {
   $params = array('message' => $message, 'subject' => $subject);
   $message = drupal_mail('erpal_projects_helper', 'task_notifications', $mails, user_preferred_language($user), $params, $sender);
   
-  dpm($message);
   if ($message['result']) {
-    drupal_set_message(t('!count users have been notified', array('!count' => count($users))));
+    drupal_set_message(t('!count user(s) have been notified', array('!count' => count($users))));
   } else {
-    drupal_set_message(t('!count users could NOT be notified because of mail sending error', array('!count' => count($users))));
+    drupal_set_message(t('!count user(s) could NOT be notified because of mail sending error', array('!count' => count($users))), 'error');
   }
 }
 
@@ -179,5 +178,5 @@ function _erpal_projects_helper_delete_users_no_access($users, $entity, $entity_
 */
 function _erpal_projects_helper_task_notification_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];
-  $message['body'] = $params['message']."--";
+  $message['body'][] = $params['message'];
 }
