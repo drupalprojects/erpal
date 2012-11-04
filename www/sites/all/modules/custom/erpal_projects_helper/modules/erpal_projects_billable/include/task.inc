@@ -94,9 +94,12 @@ function _erpal_project_task_parent_from_form($form) {
     $project_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($project_nid);
   } else {
     //may be get from URL
-    $project_nid = $_GET['field_project_ref'];
+    $project_nid = isset($_GET['field_project_ref']) ? $_GET['field_project_ref'] : false;
   }
 
+  if (!$project_nid)
+    return false;
+  
   $parent_nid = isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
 
   if (!$parent_nid) {

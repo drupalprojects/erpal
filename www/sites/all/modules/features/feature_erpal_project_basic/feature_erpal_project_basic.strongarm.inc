@@ -21,7 +21,7 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_erpal_task';
-  $strongarm->value = 'edit-workflow';
+  $strongarm->value = 'edit-notifications';
   $export['additional_settings__active_tab_erpal_task'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -293,88 +293,88 @@ function feature_erpal_project_basic_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '0',
+          'weight' => '1',
         ),
         'additional_settings' => array(
-          'weight' => '39',
-        ),
-        'revision_information' => array(
-          'weight' => '35',
-        ),
-        'revision' => array(
-          'weight' => '24',
-        ),
-        'log' => array(
-          'weight' => '26',
-        ),
-        'author' => array(
-          'weight' => '37',
-        ),
-        'name' => array(
-          'weight' => '18',
-        ),
-        'date' => array(
-          'weight' => '23',
-        ),
-        'options' => array(
-          'weight' => '38',
-        ),
-        'status' => array(
-          'weight' => '12',
-        ),
-        'promote' => array(
-          'weight' => '27',
-        ),
-        'sticky' => array(
-          'weight' => '31',
-        ),
-        'actions' => array(
           'weight' => '40',
         ),
-        'submit' => array(
-          'weight' => '15',
-        ),
-        'preview' => array(
-          'weight' => '33',
-        ),
-        'delete' => array(
-          'weight' => '16',
-        ),
-        'preview_changes' => array(
-          'weight' => '34',
-        ),
-        'comment_settings' => array(
+        'revision_information' => array(
           'weight' => '36',
         ),
-        'comment' => array(
-          'weight' => '22',
-        ),
-        'menu' => array(
-          'weight' => '17',
-        ),
-        'enabled' => array(
-          'weight' => '19',
-        ),
-        'link' => array(
-          'weight' => '29',
-        ),
-        'link_title' => array(
+        'revision' => array(
           'weight' => '25',
         ),
-        'description' => array(
+        'log' => array(
+          'weight' => '27',
+        ),
+        'author' => array(
+          'weight' => '38',
+        ),
+        'name' => array(
+          'weight' => '19',
+        ),
+        'date' => array(
+          'weight' => '24',
+        ),
+        'options' => array(
+          'weight' => '39',
+        ),
+        'status' => array(
+          'weight' => '13',
+        ),
+        'promote' => array(
           'weight' => '28',
         ),
-        'parent' => array(
-          'weight' => '30',
-        ),
-        'weight' => array(
+        'sticky' => array(
           'weight' => '32',
         ),
-        'path' => array(
+        'actions' => array(
+          'weight' => '0',
+        ),
+        'submit' => array(
+          'weight' => '16',
+        ),
+        'preview' => array(
+          'weight' => '34',
+        ),
+        'delete' => array(
+          'weight' => '17',
+        ),
+        'preview_changes' => array(
+          'weight' => '35',
+        ),
+        'comment_settings' => array(
+          'weight' => '37',
+        ),
+        'comment' => array(
+          'weight' => '23',
+        ),
+        'menu' => array(
+          'weight' => '18',
+        ),
+        'enabled' => array(
           'weight' => '20',
         ),
-        'alias' => array(
+        'link' => array(
+          'weight' => '30',
+        ),
+        'link_title' => array(
+          'weight' => '26',
+        ),
+        'description' => array(
+          'weight' => '29',
+        ),
+        'parent' => array(
+          'weight' => '31',
+        ),
+        'weight' => array(
+          'weight' => '33',
+        ),
+        'path' => array(
           'weight' => '21',
+        ),
+        'alias' => array(
+          'weight' => '22',
         ),
       ),
       'display' => array(),

@@ -229,12 +229,12 @@ function _erpal_invoice_helper_customer_defaults_form($customer_node, $contracto
   );
   
   $format = _billable_get_date_format(false);
-  $popup_default_format = 'Y-m-d H:i:s';
+  $default_date = _erpal_invoice_helper_get_todays_invoices_date();
   $form['invoice_date'] = array(
     '#type' => 'date_popup',
     '#date_format' => $format,
     '#title' => t('Invoice date'),
-    '#default_value' => date('Y-m-d'),  //set today as default
+    '#default_value' => $default_date ? date('Y-m-d', $default_date) : date('Y-m-d'),  //set today as default
     '#required' => TRUE,
   );
   

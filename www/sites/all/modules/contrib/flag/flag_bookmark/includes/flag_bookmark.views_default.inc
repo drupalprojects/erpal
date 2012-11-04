@@ -6,14 +6,14 @@
  */
 
 /**
- * Implementation of hook_views_default_views().
+ * Implements hook_views_default_views().
  */
-function flag_views_default_views() {
+function flag_bookmark_views_default_views() {
   // Only setup views for the "bookmarks" flag.
   // If it's been deleted, don't create any views.
   $flag = flag_get_flag('bookmarks');
   if (!$flag) {
-    return;
+    return array();
   }
 
   // Set up properties that are used for both views.
@@ -109,9 +109,8 @@ function flag_views_default_views() {
   );
 
   $access = array(
-    'type' => 'role',
-    'role' => drupal_map_assoc($flag->roles['flag']),
-    'perm' => '',
+    'type' => 'perm',
+    'perm' => 'flag bookmarks',
   );
 
   // Additional fields and style options if comment exists.
@@ -147,8 +146,6 @@ function flag_views_default_views() {
     );
   }
 
-  $views = array();
-
   /* Individual users user/%/bookmarks tab. */
 
   // Additional relationship for this view.
@@ -159,7 +156,7 @@ function flag_views_default_views() {
       'label' => 'bookmarks_user',
       'required' => 1,
       'id' => 'uid',
-      'table' => 'flag_content',
+      'table' => 'flagging',
       'field' => 'uid',
       'relationship' => 'flag_content_rel',
     ),
@@ -241,14 +238,14 @@ function flag_views_default_views() {
     'ops' => array(
       'label' => 'Ops',
       'id' => 'ops',
-      'table' => 'flag_content',
+      'table' => 'flagging',
       'field' => 'ops',
       'relationship' => 'flag_content_rel',
     ),
   );
 
   $view = new view;
-  $view->name = 'flag_'. $flag->name;
+  $view->name = 'flag_' . $flag->name;
   $view->description = 'A page listing the current user\'s bookmarks at /bookmarks.';
   $view->tag = 'flag';
   $view->view_php = '';
@@ -264,7 +261,7 @@ function flag_views_default_views() {
   $handler->override_option('title', t('My bookmarks'));
   $handler->override_option('items_per_page', '25');
   $handler->override_option('use_pager', TRUE);
-  $handler->override_option('empty', 'You have not yet bookmarked any content. Click the "'. $flag->flag_short .'" link when viewing a piece of content to add it to this list.');
+  $handler->override_option('empty', 'You have not yet bookmarked any content. Click the "' . $flag->flag_short . '" link when viewing a piece of content to add it to this list.');
   $handler->override_option('empty_format', filter_fallback_format());
   $handler->override_option('style_plugin', 'table');
   $handler->override_option('style_options', $style_options);

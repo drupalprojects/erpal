@@ -302,21 +302,26 @@ function _erpal_projects_billable_set_customer_invoice_defaults(&$form) {
     return;
   
   $type = $form['type']['#value'];
+  $customer_defaults = false;
+  $customer_node = false;
   if ($type == 'erpal_task') {
     $parent_node = _erpal_project_task_parent_from_form($form);
-    $billable_information = _erpal_projects_billable_subject_billable_information_subject($parent_node, true);
-    $customer_node = $billable_information['customer'];
-    //may be we already have vat_rate and currency in the billing information
-    $billable_price_modes = _erpal_projects_billable_billable_price_modes();
-    //add none as billable price mode because it may be billable depending on the parent settings
-    $billable_price_modes[] = 'none';
 
-    if ($billable_information && in_array($billable_information['price_mode'], $billable_price_modes)) {
-      $customer_defaults['vat_rate'] = $billable_information['vat_rate'];
-      $customer_defaults['currency'] = $billable_information['currency'];
-    } else {
-      //we have the customer, so we load the defaults later.
-      $customer_defaults = false;
+    if ($parent_node) {
+      $billable_information = _erpal_projects_billable_subject_billable_information_subject($parent_node, true);
+      $customer_node = $billable_information['customer'];
+      //may be we already have vat_rate and currency in the billing information
+      $billable_price_modes = _erpal_projects_billable_billable_price_modes();
+      //add none as billable price mode because it may be billable depending on the parent settings
+      $billable_price_modes[] = 'none';
+
+      if ($billable_information && in_array($billable_information['price_mode'], $billable_price_modes)) {
+        $customer_defaults['vat_rate'] = $billable_information['vat_rate'];
+        $customer_defaults['currency'] = $billable_information['currency'];
+      } else {
+        //we have the customer, so we load the defaults later.
+        $customer_defaults = false;
+      }
     }
     
   } elseif ($type == 'erpal_project') {

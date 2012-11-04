@@ -202,6 +202,7 @@ if (is_array($billables)) {
   print $table;
 }
 ?>
+<div class="invoice_notes">
 <table id="rechnungshinweis">
   <tr>
     <td>
@@ -209,14 +210,15 @@ if (is_array($billables)) {
 //show skonto if set
 if ($skonto_text)
   print $skonto_text."<br />";
-
+  
 if (is_array($auto_notes)) {
 print implode("<br />\n", $auto_notes);
 }
 
-print "<br />\n" . nl2br($notes);
+print "<br />" . nl2br($notes);
 print "\n";
 ?>
     </td>
   </tr>
 </table>
+</div>

@@ -8,9 +8,9 @@ files[] = better_exposed_filters.module
 files[] = better_exposed_filters.views.inc
 files[] = better_exposed_filters_exposed_form_plugin.inc
 files[] = better_exposed_filters.theme
-; Information added by drupal.org packaging script on 2011-08-02
-version = "7.x-3.0-beta1"
+; Information added by drupal.org packaging script on 2012-10-03
+version = "7.x-3.0-beta3"
 core = "7.x"
 project = "better_exposed_filters"
-datestamp = "1312327014"
+datestamp = "1349281866"
 

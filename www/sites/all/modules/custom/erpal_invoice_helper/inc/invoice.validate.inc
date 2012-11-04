@@ -115,6 +115,17 @@ function _erpal_invoice_helper_invoice_validate_billables($invoice) {
         $errors['field_billables_ref]['.LANGUAGE_NONE.']['.$j.'][target_id'][] = t('Duplicate invoice item %title', array('%title' => $billable->subject));
       }
     }
+    
+    //check that no delivery date of a billable is greater than the invoice date
+    $date_delivery = $billable->date_delivery;
+    $invoice_date = isset($invoice->field_invoice_date[LANGUAGE_NONE][0]) ? $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'] : false;
+
+    if ($invoice_date && $date_delivery) {
+      if ($invoice_date < $date_delivery) {
+        $errors['field_billables_ref]['.LANGUAGE_NONE.']['.$j.'][target_id'][] = t('Delivery date of "%title" must be less than invoice date', array('%title' => $billable->subject));
+      }
+    }
+
   }
   
   if (count($currencies) > 1) {

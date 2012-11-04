@@ -13,6 +13,7 @@ function theme_select_as_checkboxes_fieldset($vars) {
     array(
       '#bef_title' => '',
       '#bef_description' => '',
+      '#bef_operator' => array(),
     ),
     $vars['element']
   );
@@ -33,10 +34,20 @@ function theme_select_as_checkboxes_fieldset($vars) {
     $fieldset['#attributes']['class'][] = 'collapsed';
   }
 
-  // Description is rendered as part of the fieldset, don't render it twice.
-  unset($element['#description']);
+  // We rendered the description as part of the fieldset element, don't render
+  // it again along with the checkboxes
+  unset($element['#bef_description']);
 
-  $fieldset['#children'] = theme('select_as_checkboxes', array('element' => $element));
+  $children = '';
+  if (!empty($element['#bef_operator'])) {
+    // Put an exposed operator inside the fieldset
+    $children = drupal_render($element['#bef_operator']);
+  }
+
+  // Render the checkboxes
+  $children .= theme('select_as_checkboxes', array('element' => $element));
+
+  $fieldset['#children'] = $children;
   return theme('fieldset', array('element' => $fieldset));
 }
 
@@ -63,9 +74,8 @@ function theme_select_as_checkboxes($vars) {
 
   // Grab exposed filter description.  We'll put it under the label where it makes more sense.
   $description = '';
-  if (!empty($element['#description'])) {
-    $description = '<div class="description">'. $element['#description'] .'</div>';
-    unset($element['#description']);
+  if (!empty($element['#bef_description'])) {
+    $description = '<div class="description">'. $element['#bef_description'] .'</div>';
   }
 
   $output = '<div class="bef-checkboxes">';
@@ -78,7 +88,8 @@ function theme_select_as_checkboxes($vars) {
 
     // Check for Taxonomy-based filters
     if (is_object($elem)) {
-      list($option, $elem) = each(array_slice($elem->option, 0, 1, TRUE));
+      $slice = array_slice($elem->option, 0, 1, TRUE);
+      list($option, $elem) = each($slice);
     }
 
     /*
@@ -135,14 +146,15 @@ function theme_select_as_hidden($vars) {
   $selected_options = empty($element['#value']) ? $element['#default_value'] : $element['#value'];
   $properties = array(
     'title' => isset($element['#title']) ? $element['#title'] : '',
-    'description' => isset($element['#description']) ? $element['#description'] : '',
+    'description' => isset($element['#bef_description']) ? $element['#bef_description'] : '',
     'required' => FALSE,
   );
 
   foreach ($element['#options'] as $option => $elem) {
     // Check for Taxonomy-based filters
     if (is_object($elem)) {
-      list($option, $elem) = each(array_slice($elem->option, 0, 1, TRUE));
+      $slice = array_slice($elem->option, 0, 1, TRUE);
+      list($option, $elem) = each($slice);
     }
 
     /*
@@ -158,7 +170,6 @@ function theme_select_as_hidden($vars) {
     }
 
     foreach ($element_set as $key => $value) {
-
       // Only render fields for selected values -- no selected values renders zero fields
       if (array_search($key, $selected_options) !== FALSE) {
         // Custom ID for each hidden field based on the <select>'s original ID
@@ -166,7 +177,7 @@ function theme_select_as_hidden($vars) {
 
         // Very similar to theme_hidden (http://api.drupal.org/api/function/theme_hidden/6)
         $hidden = '<input type="hidden" '
-          . 'name="'. $element['#name'] .'[]" '    // brackets are key -- just like select
+          . 'name="'. filter_xss($element['#name']) .'[]" '    // brackets are key -- just like select
           . 'id="'. $id .'" '
           . 'value="'. check_plain($key) .'" '
           . drupal_attributes($element['#attributes']) .' />';
@@ -191,13 +202,15 @@ function theme_select_as_radios_fieldset($vars) {
     array(
       '#bef_title' => '',
       '#bef_description' => '',
+      '#bef_operator' => array(),
     ),
     $vars['element']
   );
 
   // The "all" option is the first in the list. If the selected radio button is the all
   // option, then leave the fieldset collapsed.  Otherwise, render it opened.
-  $all = array_shift(array_keys($element['#options']));
+  $keys = array_keys($element['#options']);
+  $all = array_shift($keys);
 
   $fieldset = array(
     '#title' => $element['#bef_title'],
@@ -215,7 +228,20 @@ function theme_select_as_radios_fieldset($vars) {
     $fieldset['#attributes']['class'][] = 'collapsed';
   }
 
-  $fieldset['#children'] = theme('select_as_radios', $element);
+  // We rendered the description as part of the fieldset element, don't render
+  // it again along with the checkboxes
+  unset($element['#bef_description']);
+
+  $children = '';
+  if (!empty($element['#bef_operator'])) {
+    // Put an exposed operator inside the fieldset
+    $children = drupal_render($element['#bef_operator']);
+  }
+
+  // Render the radio buttons
+  $children .= theme('select_as_radios', $element);
+
+  $fieldset['#children'] = $children;
   return theme('fieldset', array('element' => $fieldset));
 }
 
@@ -234,22 +260,14 @@ function theme_select_as_radios($vars) {
     return theme('select_as_tree', $vars);
   }
 
-  $attributes = array();
-  if (isset($element['#id'])) {
-    $attributes['id'] = $element['#id'];
-  }
-  $attributes['class'] = array('bef-select-as-radios form-radios');
-  if (!empty($element['#attributes']['class'])) {
-    $attributes['class'] = array_merge($attributes['class'], $element['#attributes']['class']);
-  }
-
   $output = '';
   foreach (element_children($element) as $key) {
     $element[$key]['#default_value'] = NULL;
     $element[$key]['#children'] = theme('radio', array('element' => $element[$key]));
     $output .= theme('form_element', array('element' => $element[$key]));
   }
-  return '<div' . drupal_attributes($attributes) . '>' . $output . '</div>';
+
+  return $output;
 }
 
 /**
@@ -275,7 +293,8 @@ function theme_select_as_tree($vars) {
 
     // Check for Taxonomy-based filters
     if (is_object($option_label)) {
-      list($option_value, $option_label) = each(array_slice($option_label->option, 0, 1, TRUE));
+      $slice = array_slice($option_label->option, 0, 1, TRUE);
+      list($option_value, $option_label) = each($slice);
     }
 
     // Check for optgroups -- which is basically a two-level deep tree
@@ -284,8 +303,14 @@ function theme_select_as_tree($vars) {
     }
     else {
       // Build hierarchy based on prefixed '-' on the element label
-      preg_match('/^(-*).*$/', $option_label, $matches);
-      $depth = strlen($matches[1]);
+      if (t('- Any -') == $option_label) {
+        $depth = 0;
+      }
+      else {
+        preg_match('/^(-*).*$/', $option_label, $matches);
+        $depth = strlen($matches[1]);
+        $option_label = ltrim($option_label, '-');
+      }
 
       // Build either checkboxes or radio buttons, depending on Views' settings
       $html = '';
@@ -293,12 +318,14 @@ function theme_select_as_tree($vars) {
         $html = bef_checkbox(
           $element,
           $option_value,
-          ltrim($option_label, '-'),              // Remove prefixed '-' characters
+          $option_label,
           (array_search($option_value, $selected_options) !== FALSE)
         );
       }
       else {
-        $html = theme('radio', array('element' => $element[$option_value]));
+        $element[$option_value]['#title'] = $option_label;
+        $element[$option_value]['#children'] = theme('radio', array('element' => $element[$option_value]));
+        $html .= theme('form_element', array('element' => $element[$option_value]));
       }
 
       if ($depth > $curr_depth) {
@@ -345,8 +372,8 @@ function theme_select_as_tree($vars) {
 
   // Add exposed filter description
   $description = '';
-  if (!empty($element['#description'])) {
-    $description = '<div class="description">'. $element['#description'] .'</div>';
+  if (!empty($element['#bef_description'])) {
+    $description = '<div class="description">'. $element['#bef_description'] .'</div>';
   }
 
   // Add the select all/none option, if needed
@@ -407,11 +434,23 @@ function theme_select_as_links($vars) {
     }
   }
 
+  // Clean incoming values to prevent XSS attacks
+  if (is_array($element['#value'])) {
+    foreach($element['#value'] as $index => $item) {
+      unset($element['#value'][$index]);
+      $element['#value'][filter_xss($index)] = filter_xss($item);
+    }
+  }
+  else if (is_string($element['#value'])) {
+    $element['#value'] = filter_xss($element['#value']);
+  }
+
   // Go through each filter option and build the appropriate link or plain text
   foreach ($element['#options'] as $option => $elem) {
     // Check for Taxonomy-based filters
     if (is_object($elem)) {
-      list($option, $elem) = each(array_slice($elem->option, 0, 1, TRUE));
+      $slice = array_slice($elem->option, 0, 1, TRUE);
+      list($option, $elem) = each($slice);
     }
 
     /*
@@ -432,31 +471,62 @@ function theme_select_as_links($vars) {
     foreach ($element_set as $key => $value) {
       // Custom ID for each link based on the <select>'s original ID
       $id = drupal_html_id($element['#id'] . '-' . $key);
+      $elem = array(
+        '#id' => $id,
+        '#markup' => '',
+        '#type' => 'bef-link',
+        '#name' => $id,
+      );
       if (array_search($key, $selected_options) === FALSE) {
-        $link = l($value, bef_replace_query_string_arg($name, $key, $multiple));
-        $output .= theme('form_element', array('element' => array('#id' => $id, '#children' => $link, '#markup' => '')));
-      } else {
-        // Selected value is output without a link
-        // TODO: add link to remove this option from the filter?
-        $elem = array(
-          '#id' => $id,
-          '#children' => $value,
-          '#markup' => ''
-        );
-        _form_set_class($elem, array('bef-select-as-links-selected'));
+        $elem['#children'] = l($value, bef_replace_query_string_arg($name, $key, $multiple));
         $output .= theme('form_element', array('element' => $elem));
+      } else {
+        $elem['#children'] = l($value, bef_replace_query_string_arg($name, $key, $multiple, true));
+        _form_set_class($elem, array('bef-select-as-links-selected'));
+        $output .= str_replace('form-item', 'form-item selected', theme('form_element', array('element' => $elem)));
       }
     }
   }
 
   $properties = array(
-    '#description' => isset($element['#description']) ? $element['#description'] : '',
+    '#description' => isset($element['#bef_description']) ? $element['#bef_description'] : '',
     '#children' => $output,
   );
 
-  return '<div class="bef-select-as-links">'
-    . theme('form_element', array('element' => $properties))
-    . '</div>';
+  $output = '<div class="bef-select-as-links">';
+  $output .= theme('form_element', array('element' => $properties));
+  if (!empty($element['#value'])) {
+    if (is_array($element['#value'])) {
+      foreach ($element['#value'] as $value) {
+        $output .= '<input type="hidden" name="' . $name . '[]" value="' . $value . '" />';
+      }
+    }
+    else {
+      $output .= '<input type="hidden" name="' . $name . '" value="' . $element['#value'] . '" />';
+    }
+  }
+  $output .= '</div>';
+
+  return $output;
+}
+
+/**
+ * Themes some exposed form elements in a collapsible fieldset
+ *
+ * @param array $vars - An array of arrays, the 'element' item holds the
+ *        properties of the element.
+ * @return HTML
+ */
+function theme_secondary_exposed_elements($vars) {
+  $element = $vars['element'];
+
+  $output = '<div class="bef-secondary-options">';
+  foreach(element_children($element) as $id) {
+    $output .= drupal_render($element[$id]);
+  }
+  $output .= '</div>';
+
+  return $output;
 }
 
 
@@ -482,6 +552,8 @@ function bef_checkbox($element, $value, $label, $selected) {
   $properties = array(
     '#required' => FALSE,
     '#id' => $id,
+    '#type' => 'bef-checkbox',
+    '#name' => $id,
   );
 
   // Prevent the select-all-none class from cascading to all checkboxes
@@ -490,8 +562,11 @@ function bef_checkbox($element, $value, $label, $selected) {
     unset($element['#attributes']['class'][$key]);
   }
 
+  // Unset the name attribute as we are setting it manually.
+  unset($element['#attributes']['name']);
+
   $checkbox = '<input type="checkbox" '
-    . 'name="' . $element['#name'] . '[]" '    // brackets are key -- just like select
+   . 'name="' . $element['#name'] . '[]" '    // brackets are key -- just like select
     . 'id="' . $id . '" '
     . 'value="' . $value . '" '
     . ($selected ? 'checked="checked" ' : '')
@@ -507,8 +582,9 @@ function bef_checkbox($element, $value, $label, $selected) {
  * @param string $key query string key (argument)
  * @param string $value query string value
  * @param bool $multiple TRUE if this key/value pair allows multiple values
+ * @param bool $remove TRUE if this key/value should be a link to remove/unset the filter
  */
-function bef_replace_query_string_arg($key, $value, $multiple = FALSE) {
+function bef_replace_query_string_arg($key, $value, $multiple = FALSE, $remove = FALSE) {
   $path = arg();
 
   // Prevents us from having to check for each index from parse_url that we may use
@@ -519,14 +595,17 @@ function bef_replace_query_string_arg($key, $value, $multiple = FALSE) {
   parse_str(urldecode($urllist['query']), $query);
   if (isset($query[$key]) && is_array($query[$key])) {
     // multiple values allowed for this existing key
-    $query[$key][] = $value;
+    if ($remove && ($key_remove = array_search($value, $query[$key])) !== false)
+      unset($query[$key][$key_remove]);
+    else
+      $query[$key][] = $value;
   }
   else {
     // Create a new key
-    if ($multiple) {
+    if ($multiple && !$remove) {
       $query[$key] = array($value);
     }
-    else {
+    elseif (!$remove) {
       $query[$key] = $value;
     }
   }

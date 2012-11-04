@@ -25,6 +25,7 @@ function better_exposed_filters_views_plugins() {
         'uses row plugin' => FALSE,
         'uses fields' => TRUE,
         'uses options' => TRUE,
+        'help topic' => 'exposed-form-basic',
         'type' => 'normal',
         'parent' => 'basic',
       ),

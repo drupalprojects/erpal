@@ -236,16 +236,22 @@ function _billable_element_process($element, &$form_state, $complete_form) {
   //set vat default for customer
   //for new nodes set the default vat rate of the first billable entity form widget   
   $address_id = isset($complete_form['field_invoice_address_id'][LANGUAGE_NONE][0]) ? $complete_form['field_invoice_address_id'][LANGUAGE_NONE][0]['value'] : false;
+  
+  //may be in default values?
+  if (!$address_id) {
+    $address_id = isset($complete_form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value']) ? $complete_form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] : false;
+  }
 
   //if there is no address_id in the form set, it may be set in the $_POST variable
   if (!$address_id) {
-    $address_id = isset($_POST['field_invoice_address_id'][LANGUAGE_NONE]) ? $_POST['field_invoice_address_id'][LANGUAGE_NONE] : false;
+    $address_id = isset($form_state['input']['field_invoice_address_id'][LANGUAGE_NONE]) ? $form_state['input']['field_invoice_address_id'][LANGUAGE_NONE] : false;
     $address_id = check_plain($address_id);    
   }
 
+
   $default_vat_rate = _erpal_invoice_helper_get_vat_rate_by_address($address_id);
-  
-  if (!$default_vat_rate) {
+
+  if (!empty($default_vat_rate)) {
     //if we dont have a vat rate, the altering of the form is not processed in first run and so we have no address_nid yet. So get the customer and if it has only one address, use this, otherwise take the default address
     $customer_node = _erpal_invoice_helper_get_customer_form_invoice($complete_form, $form_state);    
 

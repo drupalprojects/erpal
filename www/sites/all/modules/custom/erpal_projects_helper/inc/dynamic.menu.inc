@@ -26,10 +26,11 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   if (drupal_match_path($path, 'node/%*') ) {
     $node = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
     
-    if (!$node)
+    if (!$node || !is_object($node))
       return $contexts;
     
     //may be we have a ctools context
+    
     if (get_class($node) == 'ctools_context')
       $node = $node->data;    
     
@@ -186,7 +187,7 @@ function _erpal_projects_helper_projects_global_links(&$data, $router_item) {
 */
 function _erpal_projects_helper_tasks_links(&$data, $project_node, $router_item=false) {
   
-  $query = array('field_project_ref' => $project_node->nid, 'destination' => $_GET['q'], 'field_is_ticket' => 1);
+  $query = array('field_project_ref' => $project_node->nid, 'destination' => $_GET['q']);
   erpal_make_action($data, t('Add a task'), 'node/add/erpal-task', $query);
   
 }

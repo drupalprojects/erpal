@@ -52,6 +52,37 @@ function erpal_projects_helper_config_form($form, &$form_state) {
     '#default_value' => _erpal_projects_helper_task_print_type(),
   );
   
+  $form['task_notifications'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Task notifications'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  
+  $form['task_notifications']['erpal_task_update_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Message subject'),    
+    '#default_value' => _erpal_projects_helper_task_update_subject(),
+  );
+  
+  $form['task_notifications']['erpal_task_update_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message text'),    
+    '#default_value' => _erpal_projects_helper_task_update_message(),
+  );
+  
+  //add available tokens to the form
+  //show available Tokens  
+  if (module_exists('token')) {
+    $form['task_notifications']['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_project_notifications'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  
   $form['status_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit project status terms'), 'admin/structure/taxonomy/project_status_terms'),
@@ -65,6 +96,11 @@ function erpal_projects_helper_config_form($form, &$form_state) {
   $form['task_status_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit task status terms'), 'admin/structure/taxonomy/task_status_terms'),
+  );
+  
+  $form['project_tags_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit project / task category terms'), 'admin/structure/taxonomy/project_tags'),
   );
   
   $form['priority_terms_edit_link'] = array(
@@ -104,9 +140,15 @@ function erpal_projects_helper_config_form_submit($form, $form_state) {
   $values = $form_state['values'];
   $budget_usage_warn = trim($values['budget_usage_warn']);
   $erpal_task_print_type = $values['erpal_task_print_type'];
+  $erpal_task_update_subject = $values['erpal_task_update_subject'];
+  $erpal_task_update_message = $values['erpal_task_update_message'];
   
   variable_set('erpal_projects_budget_usage_warn', $budget_usage_warn);
   variable_set('erpal_task_print_type', $erpal_task_print_type);
+  
+  //notification messages
+  variable_set('erpal_task_update_subject', $erpal_task_update_subject);
+  variable_set('erpal_task_update_message', $erpal_task_update_message);
   
 }
 
@@ -122,4 +164,18 @@ function _erpal_projects_helper_task_print_type() {
 */
 function _erpal_projects_helper_budget_usage_warn() {
   return variable_get('erpal_projects_budget_usage_warn', 90);
+}
+
+/**
+* Returns the message text for task update notifications
+*/
+function _erpal_projects_helper_task_update_message() {
+  return variable_get('erpal_task_update_message', false);
+}
+
+/**
+* Returns the message subject for task update notifications
+*/
+function _erpal_projects_helper_task_update_subject() {
+  return variable_get('erpal_task_update_subject', false);
 }

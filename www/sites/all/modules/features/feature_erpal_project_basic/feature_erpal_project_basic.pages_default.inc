@@ -141,6 +141,30 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-4';
     $pane->panel = 'sidebar_second_right';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Project notifications flag',
+      'title' => '',
+      'body' => '<?php print flag_create_link(\'project_subscriptions\', %node:nid); ?>',
+      'format' => 'php_code',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-4'] = $pane;
+    $display->panels['sidebar_second_right'][0] = 'new-4';
+    $pane = new stdClass();
+    $pane->pid = 'new-5';
+    $pane->panel = 'sidebar_second_right';
     $pane->type = 'panels_mini';
     $pane->subtype = 'project_general_fields';
     $pane->shown = TRUE;
@@ -161,12 +185,12 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['sidebar_second_right'][0] = 'new-4';
+    $display->content['new-5'] = $pane;
+    $display->panels['sidebar_second_right'][1] = 'new-5';
     $pane = new stdClass();
-    $pane->pid = 'new-5';
+    $pane->pid = 'new-6';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'panels_mini';
     $pane->subtype = 'time_information';
@@ -188,12 +212,12 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-5'] = $pane;
-    $display->panels['sidebar_second_right'][1] = 'new-5';
+    $display->content['new-6'] = $pane;
+    $display->panels['sidebar_second_right'][2] = 'new-6';
     $pane = new stdClass();
-    $pane->pid = 'new-6';
+    $pane->pid = 'new-7';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_pricing';
@@ -221,12 +245,12 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['sidebar_second_right'][2] = 'new-6';
+    $display->content['new-7'] = $pane;
+    $display->panels['sidebar_second_right'][3] = 'new-7';
     $pane = new stdClass();
-    $pane->pid = 'new-7';
+    $pane->pid = 'new-8';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_books_ref';
@@ -254,12 +278,12 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 3;
+    $pane->position = 4;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['sidebar_second_right'][3] = 'new-7';
+    $display->content['new-8'] = $pane;
+    $display->panels['sidebar_second_right'][4] = 'new-8';
     $pane = new stdClass();
-    $pane->pid = 'new-8';
+    $pane->pid = 'new-9';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_asset_files';
@@ -287,10 +311,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 4;
+    $pane->position = 5;
     $pane->locks = array();
-    $display->content['new-8'] = $pane;
-    $display->panels['sidebar_second_right'][4] = 'new-8';
+    $display->content['new-9'] = $pane;
+    $display->panels['sidebar_second_right'][5] = 'new-9';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -354,7 +378,7 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-9';
+    $pane->pid = 'new-10';
     $pane->panel = 'sidebar_first_left';
     $pane->type = 'page_title';
     $pane->subtype = 'page_title';
@@ -375,10 +399,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-9'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-9';
+    $display->content['new-10'] = $pane;
+    $display->panels['sidebar_first_left'][0] = 'new-10';
     $pane = new stdClass();
-    $pane->pid = 'new-10';
+    $pane->pid = 'new-11';
     $pane->panel = 'sidebar_first_left';
     $pane->type = 'panels_mini';
     $pane->subtype = 'task_status_panel';
@@ -399,10 +423,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-10'] = $pane;
-    $display->panels['sidebar_first_left'][1] = 'new-10';
+    $display->content['new-11'] = $pane;
+    $display->panels['sidebar_first_left'][1] = 'new-11';
     $pane = new stdClass();
-    $pane->pid = 'new-11';
+    $pane->pid = 'new-12';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -417,10 +441,10 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-11';
+    $display->content['new-12'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-12';
     $pane = new stdClass();
-    $pane->pid = 'new-12';
+    $pane->pid = 'new-13';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'block';
     $pane->subtype = 'quicktabs-task_content_tabs';
@@ -438,10 +462,34 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-12';
+    $display->content['new-13'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-13';
     $pane = new stdClass();
-    $pane->pid = 'new-13';
+    $pane->pid = 'new-14';
+    $pane->panel = 'sidebar_second_right';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Task notifications flag',
+      'title' => '',
+      'body' => '<?php print flag_create_link(\'task_subscriptions\', %node:nid); ?>',
+      'format' => 'php_code',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-14'] = $pane;
+    $display->panels['sidebar_second_right'][0] = 'new-14';
+    $pane = new stdClass();
+    $pane->pid = 'new-15';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'panels_mini';
     $pane->subtype = 'task_right_sidebar_pane';
@@ -474,10 +522,10 @@ return TRUE;',
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['sidebar_second_right'][0] = 'new-13';
+    $display->content['new-15'] = $pane;
+    $display->panels['sidebar_second_right'][1] = 'new-15';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

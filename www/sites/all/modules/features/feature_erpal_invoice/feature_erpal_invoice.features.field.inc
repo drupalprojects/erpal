@@ -1205,7 +1205,7 @@ function feature_erpal_invoice_field_default_fields() {
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'disable',
+            'action' => 'none',
             'fallback' => 'none',
             'skip_perm' => '0',
             'status' => 1,

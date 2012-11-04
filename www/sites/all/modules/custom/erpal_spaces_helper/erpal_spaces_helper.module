@@ -195,7 +195,7 @@ function _erpal_spaces_helper_handle_asset_file_to_group($entity) {
 */
 function _erpal_spaces_helper_ensure_group_audience_task_presave($node) {
   global $user;
-  
+
   $field = field_info_field('group_audience');
   if (!field_access('edit', $field, 'node', $node, $user) && !$node->nid) {
     //if user has no permission to access the field, and the node is new, we set the group to the group of the parent if one is set if there is a group set

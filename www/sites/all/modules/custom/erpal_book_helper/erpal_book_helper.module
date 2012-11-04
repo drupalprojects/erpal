@@ -400,7 +400,8 @@ function _erpal_book_helper_reorganize_tree($node) {
 * Implements hook_form_alter
 */
 function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'erpal_book_page_node_form') {
+
+ if ($form_id == 'erpal_book_page_node_form') {
     _erpal_book_helper_form_redirect_orphan_book_page($form);
     _erpal_book_helper_show_tokens_at_body($form, $form_state);
   }

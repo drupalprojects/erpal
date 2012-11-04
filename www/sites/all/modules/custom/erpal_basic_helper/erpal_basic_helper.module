@@ -915,3 +915,28 @@ function _erpal_basic_helper_nids_for_form_select($nids) {
   
   return $matches;
 }
+
+/**
+* Return the date always as unix timestamp. But that depends on the field type, so may be convert it
+*/
+function erpal_date_as_unix_timestamp($value, $tz_string=NULL) {
+
+  if (!$value)
+    return false;
+
+  if(is_numeric($value) && (int)$value == $value) {
+    return $value; //then it is already a unix timestamp
+  }
+  
+  if ($tz_string)
+    $tz = new DateTimeZone($tz_string);
+  else
+    $tz = date_default_timezone_object();
+    
+  $date = new DateObject($value, $tz);
+  $date->setTimezone($tz);
+  $date_arr = $date->toArray();
+  //now convert as unix date!
+  $unix_time = mktime($date_arr['hour'], $date_arr['minute'], $date_arr['second'], $date_arr['month'], $date_arr['day'], $date_arr['year']);
+  return $unix_time;
+}

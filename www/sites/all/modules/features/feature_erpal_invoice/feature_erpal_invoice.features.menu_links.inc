@@ -15,7 +15,7 @@ function feature_erpal_invoice_menu_default_menu_links() {
     'menu_name' => 'menu-erpal-menu',
     'link_path' => 'invoice/billables',
     'router_path' => 'invoice/billables',
-    'link_title' => 'Billables',
+    'link_title' => 'Billbles',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -26,7 +26,7 @@ function feature_erpal_invoice_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '0',
+    'weight' => '-50',
     'parent_path' => 'invoice/invoices',
   );
   // Exported menu link: menu-erpal-menu:invoice/invoices
@@ -43,13 +43,13 @@ function feature_erpal_invoice_menu_default_menu_links() {
     'module' => 'menu',
     'hidden' => '0',
     'external' => '0',
-    'has_children' => '0',
+    'has_children' => '1',
     'expanded' => '0',
     'weight' => '-45',
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('Billables');
+  t('Billbles');
   t('Invoices');
 
 
