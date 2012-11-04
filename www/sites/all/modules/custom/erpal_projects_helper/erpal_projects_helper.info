@@ -16,3 +16,5 @@ files[] = inc/projects.inc
 files[] = inc/rules.inc
 files[] = inc/tasks.inc
 files[] = inc/timetracking.inc
+files[] = inc/notifications.inc
+files[] = inc/token.inc

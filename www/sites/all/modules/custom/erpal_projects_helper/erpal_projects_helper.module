@@ -16,6 +16,8 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/rules');
 module_load_include('inc', 'erpal_projects_helper', 'inc/field_access');
 module_load_include('inc', 'erpal_projects_helper', 'inc/dynamic.menu');
 module_load_include('inc', 'erpal_projects_helper', 'inc/print');
+module_load_include('inc', 'erpal_projects_helper', 'inc/notifications');
+module_load_include('inc', 'erpal_projects_helper', 'inc/token');
 
  
 /**
@@ -54,7 +56,7 @@ function erpal_projects_helper_action_info() {
   ); 
 } 
  
-/**
+/*
 * Implements hook_menu
 */ 
 function erpal_projects_helper_menu(){
@@ -111,6 +113,29 @@ function erpal_projects_helper_entity_update($entity, $type) {
       _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, array($entity->budget_id));
     }
   }
+  
+  //check if we want to send some notifications
+  _erpal_projects_helper_handle_notifications_on_subscribers($entity, $type, 'update');
+}
+
+/**
+* Implements hook_mail
+*/
+function erpal_projects_helper_mail($key, &$message, $params) {
+   
+  switch($key) {
+    case 'task_notifications':
+      _erpal_projects_helper_task_notification_mail($key, $message, $params);
+      break;
+  }
+}
+
+/**
+* Implements hook_entity_insert
+*/
+function erpal_projects_helper_entity_insert($entity, $type) {
+  //check if we want to send some notifications
+  _erpal_projects_helper_handle_notifications_on_subscribers($entity, $type, 'insert');
 }
 
 /**
