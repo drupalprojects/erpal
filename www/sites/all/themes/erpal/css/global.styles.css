@@ -1294,8 +1294,11 @@ ul.action-links li {}
 
 .node .node-title {
   margin: 0;
+  line-height: 50px;
 }
-
+h2.pane-title {
+    line-height: 40px;
+}
 .node .user-picture {}
 
 .node .submitted {}
