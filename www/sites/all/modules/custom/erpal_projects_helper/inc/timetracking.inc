@@ -24,7 +24,11 @@ function _erpal_projects_helper_timetracking_node_form_alter(&$form, $form_state
     $target_string = $form['field_timetracking_subject'][LANGUAGE_NONE][0]['target_id']['#default_value'];
   
     //prefil the title
-    $form['title']['#default_value'] = t('Work on "!target"', array('!target' => $target_string));
+    $nid = _erpal_basic_helper_get_nid_from_autocomplete_string($target_string);
+    $subject_node = node_load($nid);
+    $default_title = _erpal_projects_helper_get_timetracking_default_title();
+    $default_title = token_replace($default_title, array('subject' => $subject_node));
+    $form['title']['#default_value'] = $default_title;
   }
 }
 
