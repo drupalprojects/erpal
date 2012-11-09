@@ -22,7 +22,6 @@ function feature_erpal_basic_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Contacts';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access contact view';
@@ -30,6 +29,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -39,45 +39,42 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
     'field_contact_type' => 'field_contact_type',
-    'edit_node' => 'edit_node',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'title' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_contact_type' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'edit_node' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
   );
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<?php
-echo _erpal_basic_helper_view_contacts_header_content();
-?>';
-  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['content'] = 'There are no contacts available';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  /* Field: Content: Image */
+  $handler->display->display_options['fields']['field_contact_image']['id'] = 'field_contact_image';
+  $handler->display->display_options['fields']['field_contact_image']['table'] = 'field_data_field_contact_image';
+  $handler->display->display_options['fields']['field_contact_image']['field'] = 'field_contact_image';
+  $handler->display->display_options['fields']['field_contact_image']['label'] = '';
+  $handler->display->display_options['fields']['field_contact_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_contact_image']['empty'] = '<div class="no_contact_image"></div>';
+  $handler->display->display_options['fields']['field_contact_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_contact_image']['settings'] = array(
+    'image_style' => 'thumbnail',
+    'image_link' => 'content',
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -89,23 +86,36 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['fields']['field_contact_type']['id'] = 'field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['table'] = 'field_data_field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
-  /* Field: Content: Edit link */
-  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
-  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = '';
-  $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Search: Search Terms */
+  $handler->display->display_options['filters']['keys']['id'] = 'keys';
+  $handler->display->display_options['filters']['keys']['table'] = 'search_index';
+  $handler->display->display_options['filters']['keys']['field'] = 'keys';
+  $handler->display->display_options['filters']['keys']['group'] = 1;
+  $handler->display->display_options['filters']['keys']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['keys']['expose']['operator_id'] = 'keys_op';
+  $handler->display->display_options['filters']['keys']['expose']['label'] = 'Search terms';
+  $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
+  $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keys';
+  $handler->display->display_options['filters']['keys']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -114,6 +124,7 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_contact' => 'erpal_contact',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
   $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
@@ -122,37 +133,25 @@ echo _erpal_basic_helper_view_contacts_header_content();
   $handler->display->display_options['filters']['field_contact_type_value']['id'] = 'field_contact_type_value';
   $handler->display->display_options['filters']['field_contact_type_value']['table'] = 'field_data_field_contact_type';
   $handler->display->display_options['filters']['field_contact_type_value']['field'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['value'] = array(
-    'person' => 'person',
-    'company' => 'company',
-  );
+  $handler->display->display_options['filters']['field_contact_type_value']['group'] = 1;
   $handler->display->display_options['filters']['field_contact_type_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator_id'] = 'field_contact_type_value_op';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Type';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['multiple'] = TRUE;
-  /* Filter criterion: Content: Title */
-  $handler->display->display_options['filters']['title']['id'] = 'title';
-  $handler->display->display_options['filters']['title']['table'] = 'node';
-  $handler->display->display_options['filters']['title']['field'] = 'title';
-  $handler->display->display_options['filters']['title']['operator'] = 'word';
-  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['label'] = 'Name';
-  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
-  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
 
-  /* Display: Contacts */
-  $handler = $view->new_display('page', 'Contacts', 'page');
-  $handler->display->display_options['display_description'] = 'List of all contacts';
+  /* Display: Contacts pane */
+  $handler = $view->new_display('panel_pane', 'Contacts pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'crm/contacts';
-  $handler->display->display_options['menu']['title'] = 'CRM';
-  $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'main-menu';
 
   /* Display: Contact Reference Project */
   $handler = $view->new_display('entityreference_view_widget', 'Contact Reference Project', 'entityreference_view_widget_2');

@@ -84,6 +84,7 @@ function feature_erpal_basic_field_group_info() {
       1 => 'field_twitter',
       2 => 'field_website',
       3 => 'field_xing',
+      4 => 'field_google_plus',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
