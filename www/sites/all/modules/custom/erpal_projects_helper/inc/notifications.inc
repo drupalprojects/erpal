@@ -60,19 +60,17 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
     }
   }
   
-  if ($task_node) {
-    module_load_include('inc', 'flag', 'flag.rules'); //incloude flag rules integration
-   
+  if ($task_node) {   
     //get the project of the task
     $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
 
     $project_node = node_load($project_nid);
-    $project_subscriptions_flag = flag_get_flag('project_subscriptions');
-    $project_subscribers = flag_rules_action_fetch_users($project_subscriptions_flag, $project_node);    
+    $project_subscriptions_flag = flag_get_flag('project_subscriptions');    
+    $project_subscribers = _erpal_projects_helper_get_subscribers($project_subscriptions_flag, $project_node);    
     
     $task_subscriptions_flag = flag_get_flag('task_subscriptions');
-    $task_subscribers = flag_rules_action_fetch_users($task_subscriptions_flag, $task_node);
-    
+    $task_subscribers = _erpal_projects_helper_get_subscribers($task_subscriptions_flag, $task_node);
+
     //now merge the users to have a unique array and no user will get douplicate notifications
     $subscribers = array();
     foreach ($project_subscribers['users'] as $uid) {
@@ -94,6 +92,21 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
   }
   
   return $users;
+}
+
+/**
+ * Fetch users who flagged an entity.
+ */
+function _erpal_projects_helper_get_subscribers($flag, $entity) {
+  $result = db_select('flagging', 'fc')
+    ->fields('fc', array('uid'))
+    ->condition('entity_type', $flag->entity_type)
+    ->condition('entity_id', $flag->get_entity_id($entity))
+    ->condition('fid', $flag->fid)
+    ->execute();
+  $uids = $result->fetchCol();
+  // Filter out anonymous users.
+  return array('users' => array_filter($uids));
 }
 
 /**
