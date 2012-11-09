@@ -646,6 +646,10 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
     _erpal_projects_helper_call_form_alter_hook($form); //let other modules alter after this module does   
   }
   
+  if ($form_id == 'erpal_timetracking_node_form') {
+    _erpal_projects_helper_timetracking_node_form_alter($form, $form_state);
+  }
+  
   if ($form_id == 'erpal_books_helper_pdf_form') {
     _erpal_projects_helper_book_pdf_form_alter($form, $form_state);
   }

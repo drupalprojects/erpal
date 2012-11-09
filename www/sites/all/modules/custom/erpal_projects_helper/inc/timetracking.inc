@@ -17,6 +17,18 @@ function computed_field_field_timetracking_button_compute(&$entity_field, $entit
 }
 
 /**
+* Alter the timetracking node form
+*/
+function _erpal_projects_helper_timetracking_node_form_alter(&$form, $form_state) {
+  if (isset($form['field_timetracking_subject'][LANGUAGE_NONE][0]['target_id'])) {
+    $target_string = $form['field_timetracking_subject'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+  
+    //prefil the title
+    $form['title']['#default_value'] = t('Work on "!target"', array('!target' => $target_string));
+  }
+}
+
+/**
 * Get the sum of timetracking, @TODO even calculate for projects, actually only for tasks
 */
 function erpal_projects_helper_summed_timetracking($node) {
