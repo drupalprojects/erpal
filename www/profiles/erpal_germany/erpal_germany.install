@@ -1,0 +1,85 @@
+<?php
+/** 
+ * @file
+ * Install, update and uninstall functions for the erpal install profile.
+ */
+include('erpal_germany_taxonomy.inc');
+
+/**
+ * Implements hook_install().
+ *
+ * Performs actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function erpal_germany_install() {
+  // adaptivetheme und theme erpal anschalten und auf default setzen
+  // TODO: Themes sind angeschaltet aber nicht auch default... Fehler?
+  $default_theme = 'erpal';
+  $admin_theme = 'adaptivetheme_admin';
+  // alle themes deaktivieren
+  db_update('system')
+    ->fields(array('status' => 0))
+    ->condition('type', 'theme')
+    ->execute();
+  // $default_theme aktivieren
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', $default_theme)
+    ->execute();
+  // $admin_theme aktivieren
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', $admin_theme)
+    ->execute();
+  // $admin_theme als admin theme setzen
+  variable_set('admin_theme', $admin_theme);
+  // $default_theme als default
+  variable_set('theme_default', $default_theme);
+  
+  // revert features
+  features_revert($features = array());
+  //rebuild content access permissions
+  node_access_rebuild();
+  // create taxonomy
+  erpal_germany_create_taxonomy();
+  // create default user roles
+  erpal_germany_create_roles();  
+  
+  //set default vat-rate for erpal invoice
+  variable_set('erpal_invoice_vat_rates_string', '7#7%\n19#19%\n0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.');
+  variable_set('erpal_invoice_default_vat_rate', '19#19%'); 
+}
+  
+function erpal_germany_create_roles(){
+  $userRoles = array(
+    'customer' => array(
+      // Add permissions here
+      ), 
+    'internal developer' => array(
+      // Add permissions here
+      ), 
+    'external developer' => array(
+      // Add permissions here
+      ),   
+    'financial user' => array(
+      // Add permissions here
+      ), 
+    );
+  erpal_germany_add_role_and_permissions($userRoles);
+}
+
+/**
+ * Function that creates userroles and permissions
+ * @param $roles: array('role-name' => array('permission1', 'permission2',...)
+ */
+function erpal_germany_add_role_and_permissions($roles){
+  foreach($roles as $name => $permissions){
+    $role = new stdClass();
+    $role->name = $name;
+    user_role_save($role);   
+    user_role_grant_permissions($role->rid, $permissions); 
+  }
+}
