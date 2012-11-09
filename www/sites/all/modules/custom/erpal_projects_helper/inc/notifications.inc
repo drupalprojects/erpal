@@ -61,15 +61,29 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
   }
   
   if ($task_node) {   
+  
+    //get parents until and collect all users that want to be notified
+    $parent_nodes = _erpal_projects_helper_get_parent_tasks($task_node);
+
+    //now get all subscribers of the parent nodes
+    $parent_nodes[] = $task_node;
+    $task_subscribers = array();
+    foreach ($parent_nodes as $parent_node) {
+      $task_subscriptions_flag = flag_get_flag('task_subscriptions');
+      $task_subscribers_new = _erpal_projects_helper_get_subscribers($task_subscriptions_flag, $parent_node);
+      $task_subscribers_new = $task_subscribers_new['users'];
+      $task_subscribers = array_merge($task_subscribers, $task_subscribers_new);      
+    }     
+    $task_subscribers = array(
+      'users' => $task_subscribers,
+    );
+
     //get the project of the task
     $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
 
     $project_node = node_load($project_nid);
     $project_subscriptions_flag = flag_get_flag('project_subscriptions');    
     $project_subscribers = _erpal_projects_helper_get_subscribers($project_subscriptions_flag, $project_node);    
-    
-    $task_subscriptions_flag = flag_get_flag('task_subscriptions');
-    $task_subscribers = _erpal_projects_helper_get_subscribers($task_subscriptions_flag, $task_node);
 
     //now merge the users to have a unique array and no user will get douplicate notifications
     $subscribers = array();
