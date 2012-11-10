@@ -293,7 +293,7 @@ function feature_erpal_project_basic_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '1',
+          'weight' => '0',
         ),
         'additional_settings' => array(
           'weight' => '40',
@@ -320,7 +320,7 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '39',
         ),
         'status' => array(
-          'weight' => '13',
+          'weight' => '12',
         ),
         'promote' => array(
           'weight' => '28',
@@ -329,16 +329,16 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '32',
         ),
         'actions' => array(
-          'weight' => '0',
+          'weight' => '17',
         ),
         'submit' => array(
-          'weight' => '16',
+          'weight' => '15',
         ),
         'preview' => array(
           'weight' => '34',
         ),
         'delete' => array(
-          'weight' => '17',
+          'weight' => '16',
         ),
         'preview_changes' => array(
           'weight' => '35',
@@ -642,13 +642,6 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm->name = 'node_submitted_erpal_timetracking';
   $strongarm->value = 1;
   $export['node_submitted_erpal_timetracking'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'og_group_content_type_erpal_project';
-  $strongarm->value = 'omitted';
-  $export['og_group_content_type_erpal_project'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

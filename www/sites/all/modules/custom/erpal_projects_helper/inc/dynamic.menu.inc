@@ -181,7 +181,12 @@ function _erpal_projects_helper_projects_global_links(&$data, $router_item) {
   //single project context
   erpal_make_local_tab($data, t('Project list'), 'projects/projects');
   
-  if (!_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECT, $router_item)) {
+  $has_node = isset($router_item['map'][1]->data) && is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : false;
+  
+  if (!$has_node)
+    $has_node = isset($router_item['map'][1]) && is_object($router_item['map'][1]) ? $router_item['map'][1] : false;
+  
+  if (!$has_node) {
     erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp');
     erpal_make_local_tab($data, t('Timetrackings'), 'projects/timetrackings');  
   }
