@@ -75,7 +75,7 @@ function erpal_projects_helper_menu(){
   $items['projects/project/task/%node/print'] = array(
     'page callback' => '_erpal_projects_helper_task_print',
     'page arguments' => array(3),
-    'access arguments' => array('_erpal_projects_helper_task_print_access'),
+    'access callback' => array('_erpal_projects_helper_task_print_access'),
     'type' => MENU_CALLBACK,
   );
   

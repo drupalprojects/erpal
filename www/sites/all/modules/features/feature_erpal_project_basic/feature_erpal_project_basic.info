@@ -151,6 +151,7 @@ features[panels_mini][] = task_status_panel
 features[panels_mini][] = time_information
 features[quicktabs][] = task_content_tabs
 features[quicktabs][] = tasks_by_project_tabs
+features[quicktabs][] = ticket_content_tabs
 features[quicktabs][] = tickets_by_project_tabs
 features[rel_builds][] = erpal_project_node_form
 features[rel_builds][] = erpal_task_node_form

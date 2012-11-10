@@ -1126,6 +1126,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['filters']['field_project_tags_tid']['error_message'] = FALSE;
 
@@ -1337,6 +1338,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['filters']['field_project_tags_tid']['error_message'] = FALSE;
 
@@ -1514,6 +1516,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['filters']['field_project_tags_tid']['error_message'] = FALSE;
   $handler->display->display_options['argument_input'] = array(
@@ -2270,6 +2273,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['filters']['field_project_tags_tid']['error_message'] = FALSE;
   $handler->display->display_options['argument_input'] = array(
@@ -3565,6 +3569,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
 
   /* Display: Tickets child view AJAX TOP */
@@ -3775,10 +3780,11 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
 
-  /* Display: Subtasks Tree */
-  $handler = $view->new_display('panel_pane', 'Subtasks Tree', 'panel_pane_4');
+  /* Display: Subtickets Tree */
+  $handler = $view->new_display('panel_pane', 'Subtickets Tree', 'panel_pane_4');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Subtickets (tree)';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
@@ -3951,6 +3957,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['argument_input'] = array(
     'field_parent_target_id' => array(
@@ -3964,8 +3971,8 @@ function feature_erpal_project_basic_views_default_views() {
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
 
-  /* Display: Tasks by ID */
-  $handler = $view->new_display('panel_pane', 'Tasks by ID', 'panel_pane_6');
+  /* Display: Tickets by ID */
+  $handler = $view->new_display('panel_pane', 'Tickets by ID', 'panel_pane_6');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
@@ -4306,6 +4313,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['argument_input'] = array(
     'field_parent_target_id' => array(
@@ -4512,6 +4520,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['argument_input'] = array(
     'field_parent_target_id' => array(
