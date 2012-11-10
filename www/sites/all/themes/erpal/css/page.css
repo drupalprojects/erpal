@@ -76,6 +76,10 @@ body.panels-ipe{
 .left-region .panels-flexible-row-inside {
 	height: 100%
 } 
+.panels-flexible-column-inside-first{
+	padding-right: 0;
+	box-shadow: 2px 2px 2px #888888;
+}
 .tabs-region .block {
 	margin-bottom: 0px;
 }
@@ -211,9 +215,7 @@ body.panels-ipe{
 	border-radius: 11px;
 }
 .panel-display .pane-entity-field h2.pane-title {
-	margin-top: 11px;
 	padding-right: 5px;
-	float: left;
 	font-size: 14px;
     font-weight: bold;
 }

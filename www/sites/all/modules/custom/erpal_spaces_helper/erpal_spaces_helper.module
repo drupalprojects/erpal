@@ -4,6 +4,8 @@
  * Code for the erpal_spaces_helper module.
 */
 
+define('ERPAL_OG_GROUP_FIELD', 'og_group_ref');
+
 /**
 * Implements hook_permission
 */
@@ -105,39 +107,26 @@ function _erpal_spaces_helper_file_group_handling_widget_alter(&$element, $node_
       '#value' => true,
     );
   }
-  
-  
-  
- 
-}
 
-/**
-* For a tasks, if the form for inserting a new tasks is shown, we preselect the group to the group of the parent.
-*/ 
-function _erpal_spaces_helper_preset_parent_group_task(&$form, &$form_state) {
-
-  $nid = $form['nid']['#value'];
-  if ($nid) {  //only if node is new, preselect the group audience
-    return;
-  }
-  
-  $parent_node = _erpal_project_task_parent_from_form($form);
-  
-  //now prepopulate with the groups of the parent
-  $group_audience = array();
-  if (isset($parent_node->group_audience[LANGUAGE_NONE])) {
-    foreach ($parent_node->group_audience[LANGUAGE_NONE] as $delta=>$group_arr) {
-      $group_audience[$group_arr['gid']] = $group_arr['gid'];
-    }
-  }
-  
-  $form['group_audience'][LANGUAGE_NONE]['#default_value'] = $group_audience;
 }
 
 /**
 * Implements hook_node_presave
 */
-function erpal_spaces_helper_node_presave($node) {
+function erpal_spaces_helper_node_insert($node) {
+  if ($node->type == 'erpal_task') {
+    _erpal_spaces_helper_ensure_group_audience_task_presave($node);
+    _erpal_spaces_helper_handle_asset_file_to_group($node);
+  }
+  if ($node->type == 'erpal_project') {
+    _erpal_spaces_helper_handle_asset_file_to_group($node);
+  }
+}
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_spaces_helper_node_update($node) {
   if ($node->type == 'erpal_task') {
     _erpal_spaces_helper_ensure_group_audience_task_presave($node);
     _erpal_spaces_helper_handle_asset_file_to_group($node);
@@ -176,39 +165,64 @@ function _erpal_spaces_helper_handle_asset_file_to_group($entity) {
           $host_node = $entity;
         } else
           return; //unknown host entity
-          
-        $groups = $host_node->group_audience[LANGUAGE_NONE];
-        //MERGE THE GROUPS because ther could be other groups at the file that should stay!
+         
+        $gids = og_get_entity_groups('node', $host_node);
+        $gids = $gids['node'];
+     
         $file_node = node_load($nid);
-        foreach ($groups as $delta=>$gid) {
-          $file_node->group_audience[LANGUAGE_NONE][] = array('gid' => $gid['gid']);
+
+        //now add the file to group
+        //Set the values
+        $values = array(
+          'entity_type' => 'node',
+          'entity' => $file_node,
+          'state' => OG_STATE_ACTIVE,
+        );
+       
+        //Add this node to the groups
+        foreach ($gids as $gid) {        
+          $result = og_group('node', $gid, $values);
         }
-        
-        node_save($file_node);
       }
     }
   }
 }
 
 /**
-* Make sure, that if a user that has not the permnission to change the group_audience field saves a node and the field is empty, the task will be placed in the group, where the tasks parent is placed
+* Make sure, that if a user that has not the permnission to change the ERPAL_OG_GROUP_FIELD field saves a node and the field is empty, the task will be placed in the group, where the tasks parent is placed
 */
 function _erpal_spaces_helper_ensure_group_audience_task_presave($node) {
   global $user;
 
-  $field = field_info_field('group_audience');
-  if (!field_access('edit', $field, 'node', $node, $user) && !$node->nid) {
+  $field = field_info_field(ERPAL_OG_GROUP_FIELD);
+
+  if (!field_access('edit', $field, 'node', $node, $user) && isset($node->is_new) && $node->is_new) {
     //if user has no permission to access the field, and the node is new, we set the group to the group of the parent if one is set if there is a group set
     
     //first check if task has a parent task
     $parent_node = _erpal_project_task_parent($node);  //the parent may be a task or a project
-    
+
     if ($parent_node) {
       //get the group(s) of the project
-      $project_groups = $parent_node->group_audience[LANGUAGE_NONE];
-      $node->group_audience[LANGUAGE_NONE] = $project_groups;
+      $project_groups = $parent_node->{ERPAL_OG_GROUP_FIELD}[LANGUAGE_NONE];
+      
+      //Set the values
+      $values = array(
+        'entity_type' => 'node',
+        'entity' => $node,
+        'state' => OG_STATE_ACTIVE,
+      );
+     
+      //Add this node to the groups
+      foreach ($project_groups as $group) {
+        $gid = $group['target_id'];
+        $result = og_group('node', $gid, $values);
+        
+      }
     }
+   
   }
+
 }
 
 
@@ -216,10 +230,11 @@ function _erpal_spaces_helper_ensure_group_audience_task_presave($node) {
 * Implements hook field access
 */
 function erpal_spaces_helper_field_access($op, $field, $entity_type, $entity, $account) {
-  //Task
+  
   if (is_object($entity) && $entity_type == 'node') {
+    //Task
     if ($entity->type == 'erpal_task') {
-      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+      if ($op == 'edit' && $field['field_name'] == ERPAL_OG_GROUP_FIELD) {        
         return user_access('change group audience task');
       }
       
@@ -230,7 +245,7 @@ function erpal_spaces_helper_field_access($op, $field, $entity_type, $entity, $a
     
     //Project
     if ($entity->type == 'erpal_project') {
-      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+      if ($op == 'edit' && $field['field_name'] == ERPAL_OG_GROUP_FIELD) {
         return user_access('change group audience project');
       }
       
@@ -241,7 +256,7 @@ function erpal_spaces_helper_field_access($op, $field, $entity_type, $entity, $a
     
     //file
     if ($entity->type == 'erpal_file') {
-      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+      if ($op == 'edit' && $field['field_name'] == ERPAL_OG_GROUP_FIELD) {
         return user_access('change group audience file');
       }
       
@@ -252,7 +267,7 @@ function erpal_spaces_helper_field_access($op, $field, $entity_type, $entity, $a
     
     //timetracking
     if ($entity->type == 'erpal_timetracking') {
-      if ($op == 'edit' && $field['field_name'] == 'group_audience') {
+      if ($op == 'edit' && $field['field_name'] == ERPAL_OG_GROUP_FIELD) {
         return user_access('change group audience timetracking');
       }
       
