@@ -81,11 +81,11 @@ function feature_erpal_project_basic_flag_default_flags() {
     'show_on_page' => 1,
     'show_on_teaser' => 1,
     'i18n' => 0,
-    'api_version' => 3,
     'module' => 'feature_erpal_project_basic',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 3,
   );
   // Exported flag: "Task subscriptions".
   $flags['task_subscriptions'] = array(
@@ -110,11 +110,11 @@ function feature_erpal_project_basic_flag_default_flags() {
     'show_on_page' => 1,
     'show_on_teaser' => 1,
     'i18n' => 0,
-    'api_version' => 3,
     'module' => 'feature_erpal_project_basic',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 3,
   );
   return $flags;
 

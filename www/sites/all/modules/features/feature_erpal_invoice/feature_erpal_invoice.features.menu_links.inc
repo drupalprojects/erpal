@@ -45,7 +45,7 @@ function feature_erpal_invoice_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '1',
     'expanded' => '0',
-    'weight' => '-45',
+    'weight' => '-44',
   );
   // Translatables
   // Included for use with string extractors like potx.

@@ -395,3 +395,27 @@ function erpal_projects_helper_erpal_clone_node_postprocess_alter($node, $args) 
 function _erpal_projects_helper_hide_task_right_panes() {
   return isset($_GET['qt-task_content_tabs']) && $_GET['qt-task_content_tabs'];
 }
+
+/**
+* Returns all parent tasks of a given task
+*/
+function _erpal_projects_helper_get_parent_tasks($task_node, $parent_nodes = array()) {
+  
+  if (!is_object($task_node))
+    $task_node = node_load($task_node);
+  
+  $parent_nid = isset($task_node->field_parent[LANGUAGE_NONE][0]) ? $task_node->field_parent[LANGUAGE_NONE][0]['target_id'] : false;
+  
+  if (!$parent_nid)
+    return $parent_nodes;
+    
+  $parent_node = node_load($parent_nid);
+  $parent_nodes[] = $parent_node;
+    
+  $further_parent_nodes = _erpal_projects_helper_get_parent_tasks($parent_node);
+  
+  //get further parents
+  $parent_nodes = array_merge($parent_nodes, $further_parent_nodes);
+  
+  return $parent_nodes;
+}

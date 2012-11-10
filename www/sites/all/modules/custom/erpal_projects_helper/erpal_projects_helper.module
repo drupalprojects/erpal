@@ -84,13 +84,6 @@ function erpal_projects_helper_menu(){
 }
 
 /**
-* Implements hook_erpal_menu_parents provided by erpal_basic_helper
-*/
-function erpal_projects_helper_erpal_menu_parents($router_item) {
-  return _erpal_projects_helper_get_menu_parents($router_item);
-}
-
-/**
 * Implements hook_entity_update
 */
 function erpal_projects_helper_entity_update($entity, $type) {
@@ -651,6 +644,10 @@ function erpal_projects_helper_form_alter(&$form, &$form_state, $form_id) {
     _erpal_basic_helper_warn_semantic_not_covered_by_terms('task_status_terms', 'field_simple_process_status'); 
 
     _erpal_projects_helper_call_form_alter_hook($form); //let other modules alter after this module does   
+  }
+  
+  if ($form_id == 'erpal_timetracking_node_form') {
+    _erpal_projects_helper_timetracking_node_form_alter($form, $form_state);
   }
   
   if ($form_id == 'erpal_books_helper_pdf_form') {

@@ -9,6 +9,12 @@ function erpal_projects_helper_token_info() {
     'description' => t("Tokens for project notifications."),
     'needs-data' => 'erpal_task',
   );
+  
+  $types['erpal_task'] = array(
+    'name' => t("Erpal task token"),
+    'description' => t("Tokens for tasks."),
+    'needs-data' => 'erpal_task',
+  );
 
   $notify['content_url'] = array(
     'name' => t("Content URL"),
@@ -23,11 +29,22 @@ function erpal_projects_helper_token_info() {
     'description' => t("The label of the updated content"),
   );
   
+  $task['title'] = array(
+    'name' => t("Title"),
+    'description' => t("Title of the task"),
+  );
+  
+  $task['nid'] = array(
+    'name' => t("Nid"),
+    'description' => t("Nid of the task"),
+  );
+  
   
   return array(
     'types' => $types,
     'tokens' => array(
       'erpal_project_notifications' => $notify,
+      'erpal_task' => $task,
     ),
   );
 }
@@ -59,6 +76,19 @@ function erpal_projects_helper_tokens($type, $tokens, array $data = array(), arr
           $replacements[$original] = $label;
         break;
           
+      }
+    }
+  }
+  elseif ($type == 'erpal_task') {
+    $subject_node = isset($data['subject']) ? $data['subject'] : false;
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'title':
+          $replacements[$original] = $subject_node->title;
+        break;
+        case 'nid':
+          $replacements[$original] = $subject_node->nid;
+        break;                  
       }
     }
   }

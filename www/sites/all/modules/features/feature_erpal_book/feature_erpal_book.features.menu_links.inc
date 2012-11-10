@@ -26,7 +26,7 @@ function feature_erpal_book_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '1',
     'expanded' => '0',
-    'weight' => '-48',
+    'weight' => '-47',
   );
   // Exported menu link: menu-erpal-menu:books/templates
   $menu_links['menu-erpal-menu:books/templates'] = array(

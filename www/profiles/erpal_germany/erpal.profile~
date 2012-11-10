@@ -44,27 +44,42 @@ function erpal_install_tasks(){
 function company_info(){
   $node_type = 'erpal_contact';
   $form_id = $node_type . '_node_form';
-  
+  // Node anlegen
   $node = new stdClass();
   $node->type = $node_type;
   global $user;
   $node->uid = $user->uid;
   $node->name = (isset($user->name) ? $user->name : '');  
-  
   // Formular erzeugen
   $form = drupal_get_form($form_id, $node);
+  drupal_set_message('fuck you');
   $form['field_relation_add']['#access'] = FALSE;  
+  //unset($form['field_relation_add']);
   $form['#submit'][] = 'company_info_submit';
-  node_object_prepare($node);
+  $form['#validate'][] = 'company_info_validate';
+
+  //node_object_prepare($form);
   // Formular rendern
   return drupal_render($form);
   
-  //return $form;
+  return $form;
 }
-function company_info_submit($form, &$form_state) {
+
+function company_info_validate($form, &$form_state){
+  drupal_set_message('company_info_validate()');
+
+}
+
+
+function company_info_submit($form, &$form_state){
+  // Save the new contact as "My Company"
+  drupal_set_message('company_info_submit()');
+  $nid = $form_state['values']['nid'];
+  variable_set('erpal_config_my_company_nid', $nid);
+  
   $form_state['rebuild'] = TRUE;
   $form_state['redirect'] = url('admin', array('absolute' => true));
-
+  
 }
 
 /**
