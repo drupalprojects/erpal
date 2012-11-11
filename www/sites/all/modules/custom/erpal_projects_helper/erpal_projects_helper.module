@@ -84,6 +84,17 @@ function erpal_projects_helper_menu(){
 }
 
 /**
+* Implements hook_custom_node_content_block_content to provide content for the custom content block. Hook is provided by erpal_basic_helper
+*/
+function erpal_projects_helper_custom_node_content_block_content($node) {  
+  $notify_element = _erpal_projects_helper_get_notify_flag_link_element($node);
+  
+  return array(
+    $notify_element,
+  );
+}
+
+/**
 * Implements hook_entity_update
 */
 function erpal_projects_helper_entity_update($entity, $type) {

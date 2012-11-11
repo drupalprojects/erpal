@@ -217,6 +217,27 @@ function feature_erpal_docs_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-7'] = $pane;
     $display->panels['right'][1] = 'new-7';
+    $pane = new stdClass();
+    $pane->pid = 'new-8';
+    $pane->panel = 'top';
+    $pane->type = 'custom_node_content';
+    $pane->subtype = 'custom_node_content';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'types' => array(),
+      'field_name' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-8'] = $pane;
+    $display->panels['top'][0] = 'new-8';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-3';
   $handler->conf['display'] = $display;
