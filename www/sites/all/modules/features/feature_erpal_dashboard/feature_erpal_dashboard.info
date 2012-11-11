@@ -1,0 +1,15 @@
+name = feature_erpal_dashboard
+description = Provides a dashboard
+core = 7.x
+package = ERPAL Features
+php = 5.2.4
+version = 7.x-1.0-dev
+project = feature_erpal_dashboard
+dependencies[] = erpal_dashboard_helper
+dependencies[] = front_page
+dependencies[] = homebox
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[homebox][] = user_dashboard
+features[variable][] = front_page_enable
