@@ -22,7 +22,7 @@ function feature_erpal_project_basic_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Assigned tasks';
+  $handler->display->display_options['title'] = 'Assigned open tasks';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access tasks view';
@@ -32,10 +32,21 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['style_plugin'] = 'table';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No tasks available';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_task_assigned_users_target_id']['id'] = 'field_task_assigned_users_target_id';
   $handler->display->display_options['relationships']['field_task_assigned_users_target_id']['table'] = 'field_data_field_task_assigned_users';
   $handler->display->display_options['relationships']['field_task_assigned_users_target_id']['field'] = 'field_task_assigned_users_target_id';
+  /* Relationship: Content: Status (field_task_status_term) */
+  $handler->display->display_options['relationships']['field_task_status_term_tid']['id'] = 'field_task_status_term_tid';
+  $handler->display->display_options['relationships']['field_task_status_term_tid']['table'] = 'field_data_field_task_status_term';
+  $handler->display->display_options['relationships']['field_task_status_term_tid']['field'] = 'field_task_status_term_tid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -95,6 +106,14 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'field_task_assigned_users_target_id';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
+  /* Filter criterion: Taxonomy term: Semantic process (field_simple_process_status) */
+  $handler->display->display_options['filters']['field_simple_process_status_value']['id'] = 'field_simple_process_status_value';
+  $handler->display->display_options['filters']['field_simple_process_status_value']['table'] = 'field_data_field_simple_process_status';
+  $handler->display->display_options['filters']['field_simple_process_status_value']['field'] = 'field_simple_process_status_value';
+  $handler->display->display_options['filters']['field_simple_process_status_value']['relationship'] = 'field_task_status_term_tid';
+  $handler->display->display_options['filters']['field_simple_process_status_value']['value'] = array(
+    'in_progress' => 'in_progress',
+  );
 
   /* Display: Assigned tasks page */
   $handler = $view->new_display('page', 'Assigned tasks page', 'page');
@@ -122,7 +141,13 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_task_status_term']['id'] = 'field_task_status_term';
   $handler->display->display_options['fields']['field_task_status_term']['table'] = 'field_data_field_task_status_term';
   $handler->display->display_options['fields']['field_task_status_term']['field'] = 'field_task_status_term';
-  $handler->display->display_options['fields']['field_task_status_term']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_task_status_term']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_task_status_term']['settings'] = array(
+    'click_to_edit' => 1,
+    'click_to_edit_style' => 'hover',
+    'empty_text' => '',
+    'fallback_format' => 'taxonomy_term_reference_plain',
+  );
   /* Field: Content: Progress */
   $handler->display->display_options['fields']['field_progress_percent']['id'] = 'field_progress_percent';
   $handler->display->display_options['fields']['field_progress_percent']['table'] = 'field_data_field_progress_percent';
