@@ -35,6 +35,18 @@ function feature_erpal_dashboard_homebox() {
     ),
     'blocks' => 
     array (
+      'views_assigned_tasks-block' => 
+      array (
+        'module' => 'views',
+        'delta' => 'assigned_tasks-block',
+        'region' => 2,
+        'movable' => 1,
+        'status' => 1,
+        'open' => 1,
+        'closable' => 1,
+        'title' => '',
+        'weight' => -24,
+      ),
       'views_bookmarks-block' => 
       array (
         'module' => 'views',
@@ -59,11 +71,11 @@ function feature_erpal_dashboard_homebox() {
         'title' => '',
         'weight' => -23,
       ),
-      'views_assigned_tasks-block' => 
+      'timetracking_block' => 
       array (
-        'module' => 'views',
-        'delta' => 'assigned_tasks-block',
-        'region' => 2,
+        'module' => 'timetracking',
+        'delta' => 'block',
+        'region' => 1,
         'movable' => 1,
         'status' => 1,
         'open' => 1,
