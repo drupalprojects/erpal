@@ -199,8 +199,8 @@ function homebox_forms($form_id, $args) {
     case 'homebox_admin_new_page':
       return array('homebox_admin_new_page' => array('callback' => 'homebox_admin_page'));
 
-    case isset($args[1]) && is_object($args[1]) ? 'homebox_block_edit_' . $args[1]->module . '_' . $args[1]->delta . '_form' : NULL:
-      return array($form_id => array('callback' => 'homebox_block_edit_form_builder'));
+    case isset($args[1]) && is_object($args[1]) && isset($args[1]->module) && isset($args[1]->delta) ? 'homebox_block_edit_' . $args[1]->module . '_' . $args[1]->delta . '_form' : NULL:
+       return array($form_id => array('callback' => 'homebox_block_edit_form_builder'));
   }
 }
 
