@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * @file
  * Install, update and uninstall functions for the erpal install profile.
  */
@@ -41,31 +41,39 @@ function erpal_germany_install() {
   
   // revert features
   features_revert($features = array());
-  //rebuild content access permissions
-  node_access_rebuild();
-  // create taxonomy
+  
+   // create taxonomy
   erpal_germany_create_taxonomy();
+  
   // create default user roles
   erpal_germany_create_roles();  
   
   //set default vat-rate for erpal invoice
-  variable_set('erpal_invoice_vat_rates_string', '7#7%\n19#19%\n0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.');
-  variable_set('erpal_invoice_default_vat_rate', '19#19%'); 
+  //~ $vatRates = '7#7%' . PHP_EOL . '19#19%' . PHP_EOL . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
+  //~ variable_set('erpal_invoice_vat_rates_string', $vatRates);
+  //~ variable_set('erpal_invoice_default_vat_rate', '19#19%'); 
+  
+  //rebuild content access permissions
+  node_access_rebuild();
 }
   
 function erpal_germany_create_roles(){
   $userRoles = array(
     'customer' => array(
       // Add permissions here
+      'access content',
       ), 
     'internal developer' => array(
       // Add permissions here
+      'access content',
       ), 
     'external developer' => array(
       // Add permissions here
+      'access content',
       ),   
     'financial user' => array(
       // Add permissions here
+      'access content',
       ), 
     );
   erpal_germany_add_role_and_permissions($userRoles);

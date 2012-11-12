@@ -15,7 +15,7 @@ function erpal_germany_create_taxonomy(){
     ),
     array(
       'name' => 'bug', 
-      'default' => 0, 
+      'default' => 0,  
     ),
     array(
       'name' => 'feature', 
@@ -138,7 +138,7 @@ function erpal_germany_create_taxonomy(){
   $countries_vocabulary->name = 'Countries';
   $countries_vocabulary->machine_name = 'countries';
   $countries_vocabulary->help = t('Select the country');
-  $countries_names = array(
+  $countries_terms = array(
     array(
       'name' => 'Belgium',
       'vat_rates' => array('21','12','6'),
@@ -248,7 +248,7 @@ function erpal_germany_create_taxonomy(){
       'vat_rates' => array('',),
     ),
   );
-  erpal_germany_taxonomy_add($countries_vocabulary, $priority_names);
+  erpal_germany_taxonomy_add($countries_vocabulary, $countries_terms);
   
   $project_vocabulary = new stdClass();
   $project_vocabulary->name = 'Project Tags';

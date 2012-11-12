@@ -55,7 +55,7 @@ dependencies[] = date_repeat_field
 dependencies[] = date_views
 ; Development 
 dependencies[] = devel 
-; Display suite
+; Display suite 
 dependencies[] = ds
 dependencies[] = ds_forms
 ; ERPAL
