@@ -202,6 +202,23 @@ function _erpal_projects_helper_delete_users_no_access($users, $entity, $entity_
 }
 
 /**
+* Returns renderable element with nnotifiy flag link
+*/
+function _erpal_projects_helper_get_notify_flag_link_element($node) {
+  $flag_link = flag_create_link('project_subscriptions', $node->nid);
+  
+  if (!$flag_link)
+    return;  //will be false if this node type is not notifiable
+    
+  $element = array(
+    '#markup' => $flag_link,
+    '#weight' => 1,
+  );
+  
+  return $element;
+}
+
+/**
 * Function to set message for sending mail. Called by erpal_projects_helper_mail
 */
 function _erpal_projects_helper_task_notification_mail($key, &$message, $params) {

@@ -232,6 +232,7 @@ features[variable][] = show_diff_inline_erpal_timetracking
 features[variable][] = show_preview_changes_erpal_project
 features[variable][] = show_preview_changes_erpal_task
 features[variable][] = show_preview_changes_erpal_timetracking
+features[views_view][] = assigned_tasks
 features[views_view][] = projects
 features[views_view][] = tasks
 features[views_view][] = tickets

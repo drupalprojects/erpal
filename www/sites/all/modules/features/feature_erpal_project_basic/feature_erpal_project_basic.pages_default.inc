@@ -141,20 +141,20 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-4';
     $pane->panel = 'sidebar_second_right';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
+    $pane->type = 'custom_node_content';
+    $pane->subtype = 'custom_node_content';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'admin_title' => 'Project notifications flag',
-      'title' => '',
-      'body' => '<?php print flag_create_link(\'project_subscriptions\', %node:nid); ?>',
-      'format' => 'php_code',
-      'substitute' => 1,
+      'types' => array(),
+      'field_name' => '',
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_collapsed' => 0,
+      ),
+      'style' => 'collapsible',
     );
     $pane->css = array();
     $pane->extras = array();
@@ -524,16 +524,13 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-15';
     $pane->panel = 'sidebar_second_right';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
+    $pane->type = 'custom_node_content';
+    $pane->subtype = 'custom_node_content';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'admin_title' => 'Task notifications flag',
-      'title' => '',
-      'body' => '<?php print flag_create_link(\'task_subscriptions\', %node:nid); ?>',
-      'format' => 'php_code',
-      'substitute' => 1,
+      'types' => array(),
+      'field_name' => '',
     );
     $pane->cache = array();
     $pane->style = array(

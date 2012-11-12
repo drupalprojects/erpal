@@ -685,6 +685,27 @@ function feature_erpal_invoice_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-21'] = $pane;
     $display->panels['right'][4] = 'new-21';
+    $pane = new stdClass();
+    $pane->pid = 'new-22';
+    $pane->panel = 'top';
+    $pane->type = 'custom_node_content';
+    $pane->subtype = 'custom_node_content';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'types' => array(),
+      'field_name' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-22'] = $pane;
+    $display->panels['top'][0] = 'new-22';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-1';
   $handler->conf['display'] = $display;
