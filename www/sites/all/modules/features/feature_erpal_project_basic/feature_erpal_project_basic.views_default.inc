@@ -5686,6 +5686,11 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_timetracking_button']['relationship'] = 'subject_id';
   $handler->display->display_options['fields']['field_timetracking_button']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
+  /* Field: Timetracking: Description */
+  $handler->display->display_options['fields']['description']['id'] = 'description';
+  $handler->display->display_options['fields']['description']['table'] = 'timetracking';
+  $handler->display->display_options['fields']['description']['field'] = 'description';
+  $handler->display->display_options['fields']['description']['exclude'] = TRUE;
   $export['timetracking_entities'] = $view;
 
   $view = new view();
