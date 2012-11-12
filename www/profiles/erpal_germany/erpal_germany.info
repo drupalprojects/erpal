@@ -3,7 +3,7 @@ description = Install Erpal
 version = VERSION
 core = 7.x
 ; ----------
-; Dependencies
+; Dependencies 
 ; ----------
 ; Access control
 dependencies[] = content_access

@@ -32,7 +32,7 @@ function erpal_germany_file_private_path_submit($form, $form_state){
 }
 
 /**
- * Zusaetzliche installationsaufgaben definieren
+ * Zusaetzliche installationsaufgaben definieren 
  */
 function erpal_germany_install_tasks(){
   return array(

@@ -29,7 +29,7 @@ function erpal_germany_create_taxonomy(){
   $priority_vocabulary->name = 'Priority terms';
   $priority_vocabulary->description = st('The priority of the task');
   $priority_vocabulary->machine_name = 'priority_terms';
-  $priority_vocabulary->help = st('Select the priority');
+  $priority_vocabulary->help = st('Select the priority'); 
   $priority_terms = array(
     array(
       'name' => 'low', 

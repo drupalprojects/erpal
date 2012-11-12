@@ -69,7 +69,7 @@ function erpal_germany_create_roles(){
       ), 
     'external developer' => array(
       // Add permissions here
-      'access content',
+      'access content', 
       ),   
     'financial user' => array(
       // Add permissions here
