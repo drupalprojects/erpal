@@ -7,6 +7,6 @@
 /**
 * Update routine for migrating OG to 7.2
 */
-function erpal_spaces_helper_update_7001() {
+function erpal_spaces_helper_update_7204() {
   db_query("UPDATE {og_role} SET group_type='node', group_bundle='erpal_space'");
 }
