@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_dashboard_helper module.
+ */
+
+/**
+ * Implements hook_user_login
+ */
+function erpal_dashboard_helper_user_login(&$edit, $account) {
+  if (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset') {
+    // Check if $_GET['destination'] should overwrite us
+    if (!isset($_GET['destination'])) {
+      $_GET['destination'] = 'dashboard'; //redirect to dashboard
+    }
+  }
+}
