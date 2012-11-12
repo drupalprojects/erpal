@@ -60,19 +60,31 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
     }
   }
   
-  if ($task_node) {
-    module_load_include('inc', 'flag', 'flag.rules'); //incloude flag rules integration
-   
+  if ($task_node) {   
+  
+    //get parents until and collect all users that want to be notified
+    $parent_nodes = _erpal_projects_helper_get_parent_tasks($task_node);
+
+    //now get all subscribers of the parent nodes
+    $parent_nodes[] = $task_node;
+    $task_subscribers = array();
+    foreach ($parent_nodes as $parent_node) {
+      $task_subscriptions_flag = flag_get_flag('task_subscriptions');
+      $task_subscribers_new = _erpal_projects_helper_get_subscribers($task_subscriptions_flag, $parent_node);
+      $task_subscribers_new = $task_subscribers_new['users'];
+      $task_subscribers = array_merge($task_subscribers, $task_subscribers_new);      
+    }     
+    $task_subscribers = array(
+      'users' => $task_subscribers,
+    );
+
     //get the project of the task
     $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
 
     $project_node = node_load($project_nid);
-    $project_subscriptions_flag = flag_get_flag('project_subscriptions');
-    $project_subscribers = flag_rules_action_fetch_users($project_subscriptions_flag, $project_node);    
-    
-    $task_subscriptions_flag = flag_get_flag('task_subscriptions');
-    $task_subscribers = flag_rules_action_fetch_users($task_subscriptions_flag, $task_node);
-    
+    $project_subscriptions_flag = flag_get_flag('project_subscriptions');    
+    $project_subscribers = _erpal_projects_helper_get_subscribers($project_subscriptions_flag, $project_node);    
+
     //now merge the users to have a unique array and no user will get douplicate notifications
     $subscribers = array();
     foreach ($project_subscribers['users'] as $uid) {
@@ -94,6 +106,21 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
   }
   
   return $users;
+}
+
+/**
+ * Fetch users who flagged an entity.
+ */
+function _erpal_projects_helper_get_subscribers($flag, $entity) {
+  $result = db_select('flagging', 'fc')
+    ->fields('fc', array('uid'))
+    ->condition('entity_type', $flag->entity_type)
+    ->condition('entity_id', $flag->get_entity_id($entity))
+    ->condition('fid', $flag->fid)
+    ->execute();
+  $uids = $result->fetchCol();
+  // Filter out anonymous users.
+  return array('users' => array_filter($uids));
 }
 
 /**
@@ -137,7 +164,8 @@ function _erpal_projects_helper_notify_users($users, $message) {
   $mails = array();
   foreach ($users as $uid) {
     $a_user = user_load($uid);
-    $mails[] = $a_user->mail;
+    if ($a_user->status)  //dont send to inactive users
+      $mails[] = $a_user->mail;    
   }
   $mails = implode(',', $mails);
   $site_name = variable_get('site_name', 'ERPAL');
@@ -171,6 +199,23 @@ function _erpal_projects_helper_delete_users_no_access($users, $entity, $entity_
   }
   
   return $new_users;
+}
+
+/**
+* Returns renderable element with nnotifiy flag link
+*/
+function _erpal_projects_helper_get_notify_flag_link_element($node) {
+  $flag_link = flag_create_link('project_subscriptions', $node->nid);
+  
+  if (!$flag_link)
+    return;  //will be false if this node type is not notifiable
+    
+  $element = array(
+    '#markup' => $flag_link,
+    '#weight' => 1,
+  );
+  
+  return $element;
 }
 
 /**

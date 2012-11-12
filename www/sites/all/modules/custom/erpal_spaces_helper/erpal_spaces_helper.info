@@ -7,3 +7,4 @@ project = "erpal_spaces_helper"
 version = "7.x-1.0-dev"
 
 files[] = erpal_spaces_helper.module
+files[] = erpal_spaces_helper.install

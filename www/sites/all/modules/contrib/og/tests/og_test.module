@@ -1,19 +1,16 @@
 <?php
 
-
 /**
  * @file
- * Test module for Organic groups.
+ * Test module for OG.
  */
 
 /**
- * Implements hook_node_access().
+ * Implements hook_node_presave().
  */
-function og_test_node_access($node, $op, $account) {
-  $return = NODE_ACCESS_IGNORE;
-
-  if ($op == 'update' && $node->title == 'deny access') {
-    $return = NODE_ACCESS_DENY;
+function og_node_presave($node) {
+  if (!empty($node->nid) && !empty($node->og_group_on_save)) {
+    $values = $node->og_group_on_save;
+    og_group($values['group_type'], $values['gid'], array('entity_type' => 'node', 'entity' => $node));
   }
-  return $return;
 }

@@ -370,7 +370,8 @@ function views_jstree_load_children($view_name, $parent_id) {
           foreach ($filtered_result as $filtered_obj) {
             if ($result_obj->nid == $filtered_obj->nid)
               $result_obj->filter_matching = true;
-          }          
+          } 
+
         }
           
       }
@@ -404,6 +405,10 @@ function views_jstree_load_children($view_name, $parent_id) {
     if (isset($row->field_field_task_status_term[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
       $status = " ".$row->field_field_task_status_term[0]['raw']['value'];
       
+    //if filter matching is not set, there may be no filter...!
+    if (!isset($row->filter_matching))
+      $row->filter_matching = true;
+    
     $filter_matching_class = $row->filter_matching ? 'filter_matching' : 'no_filter_matching';
     $output[] = array(
       "attr" => array(

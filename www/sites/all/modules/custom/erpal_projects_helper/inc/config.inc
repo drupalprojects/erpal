@@ -83,6 +83,33 @@ function erpal_projects_helper_config_form($form, &$form_state) {
     );
   }
   
+  $form['timetracking'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Timetracking'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  
+  $form['timetracking']['timetracking_default_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Timetracking default title'),
+    '#description' => t('This text will be used as default timetracking title on a task as subject'),
+    '#default_value' => _erpal_projects_helper_get_timetracking_default_title(),
+  );
+  
+  //add available tokens to the form
+  //show available Tokens  
+  if (module_exists('token')) {
+    $form['timetracking']['token_tree'] = array(
+      '#theme' => 'token_tree',   
+      '#token_types' => array('erpal_task'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  
+  
   $form['status_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit project status terms'), 'admin/structure/taxonomy/project_status_terms'),
@@ -119,6 +146,13 @@ function erpal_projects_helper_config_form($form, &$form_state) {
 }
 
 /**
+* returns the default timetracking title with subject tokens
+*/
+function _erpal_projects_helper_get_timetracking_default_title() {
+  return variable_get('timetracking_default_title', t('Work on task "[erpal_task:title]"'));
+}
+
+/**
 * Validation callback of projects config form
 */
 function erpal_projects_helper_config_form_validate($form, $form_state) {
@@ -142,6 +176,7 @@ function erpal_projects_helper_config_form_submit($form, $form_state) {
   $erpal_task_print_type = $values['erpal_task_print_type'];
   $erpal_task_update_subject = $values['erpal_task_update_subject'];
   $erpal_task_update_message = $values['erpal_task_update_message'];
+  $timetracking_default_title = $values['timetracking_default_title'];
   
   variable_set('erpal_projects_budget_usage_warn', $budget_usage_warn);
   variable_set('erpal_task_print_type', $erpal_task_print_type);
@@ -149,6 +184,9 @@ function erpal_projects_helper_config_form_submit($form, $form_state) {
   //notification messages
   variable_set('erpal_task_update_subject', $erpal_task_update_subject);
   variable_set('erpal_task_update_message', $erpal_task_update_message);
+  
+  //Timetracking
+  variable_set('timetracking_default_title', $timetracking_default_title);
   
 }
 

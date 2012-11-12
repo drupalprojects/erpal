@@ -107,6 +107,27 @@ function feature_erpal_contract_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-2'] = $pane;
     $display->panels['sidebar_second_left'][0] = 'new-2';
+    $pane = new stdClass();
+    $pane->pid = 'new-3';
+    $pane->panel = 'sidebar_second_right';
+    $pane->type = 'custom_node_content';
+    $pane->subtype = 'custom_node_content';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'types' => array(),
+      'field_name' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-3'] = $pane;
+    $display->panels['sidebar_second_right'][0] = 'new-3';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-1';
   $handler->conf['display'] = $display;

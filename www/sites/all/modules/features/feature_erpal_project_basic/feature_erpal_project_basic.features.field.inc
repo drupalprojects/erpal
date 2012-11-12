@@ -825,7 +825,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '2',
+        'weight' => '1',
       ),
     ),
   );
@@ -953,7 +953,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '9',
+        'weight' => '8',
       ),
     ),
   );
@@ -1059,7 +1059,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '3',
+        'weight' => '2',
       ),
     ),
   );
@@ -1169,7 +1169,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '12',
+        'weight' => '11',
       ),
     ),
   );
@@ -1296,7 +1296,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '8',
+        'weight' => '7',
       ),
     ),
   );
@@ -1415,7 +1415,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '4',
+        'weight' => '3',
       ),
     ),
   );
@@ -1507,7 +1507,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '11',
+        'weight' => '10',
       ),
     ),
   );
@@ -1585,7 +1585,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '6',
+        'weight' => '5',
       ),
     ),
   );
@@ -1657,7 +1657,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'relation_dummy_field',
         'settings' => array(),
         'type' => 'relation_default',
-        'weight' => '7',
+        'weight' => '6',
       ),
     ),
   );
@@ -1736,7 +1736,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '5',
+        'weight' => '4',
       ),
     ),
   );
@@ -1819,7 +1819,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'autocomplete_deluxe_taxonomy',
-        'weight' => '10',
+        'weight' => '9',
       ),
     ),
   );
@@ -3475,79 +3475,6 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_timetracking-body'.
-  $fields['node-erpal_timetracking-body'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(
-        0 => 'node',
-      ),
-      'field_name' => 'body',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'text',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'text_with_summary',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_timetracking',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(
-            'trim_length' => 600,
-          ),
-          'type' => 'text_summary_or_trimmed',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'body',
-      'label' => 'Body',
-      'required' => FALSE,
-      'settings' => array(
-        'display_summary' => TRUE,
-        'text_processing' => 1,
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'module' => 'text',
-        'settings' => array(
-          'rows' => 20,
-          'summary_rows' => 5,
-        ),
-        'type' => 'text_textarea_with_summary',
-        'weight' => '-4',
-      ),
-    ),
-  );
-
   // Exported field: 'node-erpal_timetracking-field_billing_duration'.
   $fields['node-erpal_timetracking-field_billing_duration'] = array(
     'field_config' => array(
@@ -3610,7 +3537,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '-1',
+        'weight' => '3',
       ),
     ),
   );
@@ -3712,7 +3639,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '1',
+        'weight' => '4',
       ),
     ),
   );
@@ -3796,7 +3723,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '-3',
+        'weight' => '2',
       ),
     ),
   );
@@ -3862,7 +3789,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '-2',
+        'weight' => '3',
       ),
     ),
   );
@@ -3951,7 +3878,7 @@ function feature_erpal_project_basic_field_default_fields() {
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'hide',
+            'action' => 'disable',
             'fallback' => 'none',
             'skip_perm' => '0',
             'status' => 1,
@@ -3972,7 +3899,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '0',
+        'weight' => '1',
       ),
     ),
   );

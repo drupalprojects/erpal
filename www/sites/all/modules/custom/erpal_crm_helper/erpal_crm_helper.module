@@ -5,6 +5,8 @@
  * This is needed by the feature_erpal_crm
  */
 
+module_load_include('inc', 'erpal_crm_helper', 'inc/dynamic.menu');
+ 
 /**
 * Implements hook_menu
 */ 
@@ -112,40 +114,6 @@ function _erpal_crm_helper_crm_activity_validate($node, $form, $form_state) {
   }
 }
 
-/** 
-* Implements hook_view_contacts_header_content called by module erpal_basic_helper
-*/
-function erpal_crm_helper_view_contacts_header_content(){
-  
-  //link for creating an activity
-  $add_erpal_activity =  _erpal_crm_helper_create_activity_link();
-  
-  return array(
-    $add_erpal_activity,
-  );
-}
-
-
-function _erpal_crm_helper_view_activities_header_content(){
-
-  $add_erpal_activity =  _erpal_crm_helper_create_activity_link();
-  
-  $my_content = array(
-    $add_erpal_activity,
-  );
-  
-  //ask all other modules for content in the header area of the view
-  $other_module_content = module_invoke_all('view_activities_header_content');
-  
-  $all_content = array_merge($other_module_content, $my_content);
-  
-  $content = '';
-  foreach ($all_content as $a_content) {
-    $content .= '<br>'.$a_content;
-  }
-  
-  return $content;
-}
 
 /**
 * Helper function to create new activity link

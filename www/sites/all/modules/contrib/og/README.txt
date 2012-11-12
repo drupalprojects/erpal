@@ -95,49 +95,45 @@ provide a quick way to get started with Organic groups.
 
 DEVELOPERS & SITE BUILDERS
 ----------------------------------------------
-- Views integration: There are some default views that ship with the module. 
-  Follow those views configuration in terms of best practice (e.g. adding a 
+- Views integration: There are some default views that ship with the module.
+  Follow those views configuration in terms of best practice (e.g. adding a
   relationship to the group-membership entity instead of querying directly the
   group-audience field).
-- Token integration: Enable the entity-tokens module that ships with Entity API 
+- Token integration: Enable the entity-tokens module that ships with Entity API
   module.
 - Rules integration: Organic groups is shipped with a Rules configuration that
-  allows simple notification. You can disable it or clone and change its 
+  allows simple notification. You can disable it or clone and change its
   behaviour.
-- Devel generate integration: Enable devel-generate module to create dummy 
+- Devel generate integration: Enable devel-generate module to create dummy
   groups and groups content.
-- You may craft your own URLs which produce useful behavior. For example,
-  node/add/group-content?gids_node[]=4 will add a select the group with node ID
-  4, in the node form. The prefixed entity can change to indicate other entity
-  types allowing crafting the URL and you can have multiple variables, for
-  example, node/add/group-content?gids_node[]=4&gids_user[]=3&gids_group[]=5,6,7
-  The above URL will select the group with node ID 4, and the group with user ID
-  3, and the groups with the unique group ID 5, 6 and 7.
-  Note that the actual entity of group ID 5, 6 and 7 can be any entity (e.g.
-  nodes or users).
-  
+- You may craft your own URLs to prepopulate the group-audience fields
+  (e.g. node/add/post?field_group_audience=1 to prepopulate reference to
+  node ID 1), using the "Entity reference prepopulate" module
+  http://drupal.org/project/entityreference_prepopulate
+  and configuring the correct settings in the field UI. Read more about
+  it in Entity reference prepopulate's README file.
+
 FAQ
 ----
 Q: How should I update from Drupal 6?
-A: Run update.php; Enable the og-migrate module and execute all the migration 
+A: Run update.php; Enable the og-migrate module and execute all the migration
    plugins.
-     
-Q: How should I update from a previous Drupal 7 release (e.g. 7.x-1.0 to 
+
+Q: How should I update from a previous Drupal 7 release (e.g. 7.x-1.0 to
    7.x-1.1)?
-A: Same as updating from Drupal 6 -- Run update.php; If requested enable the 
-    og-migrate module and execute all the migration. 
-     plugins.  
-  
+A: Same as updating from Drupal 6 -- Run update.php; If requested enable the
+    og-migrate module and execute all the migration plugins.
+
 Q: How do I use OG tokens with pathauto module to craft the url alias.
-A: After enabling entity-tokens module you will have some tokens exposes by 
-   Organic groups. However you are not able to do something like 
-   [node:og_membership(1):group:label]. 
+A: After enabling entity-tokens module you will have some tokens exposes by
+   Organic groups. However you are not able to do something like
+   [node:og_membership(1):group:label].
    See http://drupal.org/node/1088538#comment-4376910
-   
+
 Q: Must I use Panels module along with Organic groups?
-A: No. However note that the maintainer of the module highliy recommends using 
+A: No. However note that the maintainer of the module highly recommends using
    it, and considers it as good practice.
-   
+
 CREDITS
 ----------------------------
 - Organic groups for Drupal 5 and 6 authored by Moshe Weitzman -

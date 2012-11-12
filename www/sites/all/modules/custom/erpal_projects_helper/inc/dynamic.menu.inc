@@ -2,7 +2,6 @@
 /**
 * @file provides all functions to have dynamic local actions on pages
 */
-
 //define some contexts
 define('ERPAL_CONTEXT_PROJECTS', 'projects'); //projects list
 define('ERPAL_CONTEXT_PROJECTS_GLOBAL', 'projects_global'); //we are in projects view or in a tab that belongs to the projects
@@ -87,11 +86,17 @@ function erpal_projects_helper_erpal_contexts($router_item) {
 }
 
 /**
+* Implements hook_erpal_menu_parents provided by erpal_basic_helper
+*/
+function erpal_projects_helper_erpal_menu_parents($router_item) {
+  return _erpal_projects_helper_get_menu_parents($router_item);
+}
+
+/**
 * returns the menu parents for a given router item, according to its context
 */
 function _erpal_projects_helper_get_menu_parents($router_item) {
   $projects_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS_GLOBAL, $router_item);
-  $project = _erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECT, $router_item);
   
   if ($projects_global) {
     return 'projects/projects';
@@ -100,7 +105,7 @@ function _erpal_projects_helper_get_menu_parents($router_item) {
 
 /**
 * Implements hook_dynamic_menu_items provided by erpal_basic_helper
-* Returns all dynamic contextual menu items, @see erpal_projects_helper.module
+* Returns all dynamic contextual menu items, @see erpal_basic_helper.module
 */
 function erpal_projects_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
 
@@ -176,7 +181,12 @@ function _erpal_projects_helper_projects_global_links(&$data, $router_item) {
   //single project context
   erpal_make_local_tab($data, t('Project list'), 'projects/projects');
   
-  if (!_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECT, $router_item)) {
+  $has_node = isset($router_item['map'][1]->data) && is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : false;
+  
+  if (!$has_node)
+    $has_node = isset($router_item['map'][1]) && is_object($router_item['map'][1]) ? $router_item['map'][1] : false;
+  
+  if (!$has_node) {
     erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp');
     erpal_make_local_tab($data, t('Timetrackings'), 'projects/timetrackings');  
   }
