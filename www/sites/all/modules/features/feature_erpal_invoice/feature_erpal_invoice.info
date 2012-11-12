@@ -67,7 +67,6 @@ features[field][] = taxonomy_term-countries-field_vat_rate
 features[field_group][] = group_notes|node|erpal_invoice|form
 features[field_group][] = group_order_numbers|node|erpal_invoice|form
 features[field_group][] = group_purchasing|field_collection_item|field_pricing|form
-features[menu_links][] = menu-erpal-menu:invoice/billables
 features[menu_links][] = menu-erpal-menu:invoice/invoices
 features[node][] = erpal_invoice
 features[page_manager_handlers][] = node_view_panel_context_4
