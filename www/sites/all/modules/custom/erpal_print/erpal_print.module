@@ -132,22 +132,15 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
   
   if (!$pdf_object)
     return false;
-	
-  $html = $pdf_object->css.$html;
   
   $parts = _erpal_print_split_pages($html);
   foreach ($parts as $part_html) {
-	$pdf_object->AddPage();
-	$pdf_object->writeHTML($part_html, true, false, false, false, '');
+    $pdf_object->AddPage();
+    $pdf_object->writeHTML($part_html, true, false, false, false, '');
   }
   
- 
-  if ($print_toc) {
+  if ($print_toc)
     _erpal_print_create_toc($pdf_object);
-	}
-	
-
-	
    
   //if there are front pages add them and move them at first page (before table of contents)
   //because we go this way we have to iterate trhough the array starting at the bottom
@@ -158,7 +151,7 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
     $part_html = $frontpages[0];
     
     $pdf_object->AddPage();
-    $pdf_object->writeHTML($pdf_object->css.$part_html, true, false, false, false, '');
+    $pdf_object->writeHTML($part_html, true, false, false, false, '');
     $inserted_page_no = $pdf_object->PageNo();
     $pdf_object->movePage($inserted_page_no, 1);
   }
