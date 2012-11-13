@@ -70,6 +70,7 @@ features[field_group][] = group_purchasing|field_collection_item|field_pricing|f
 features[menu_links][] = menu-erpal-menu:invoice/invoices
 features[node][] = erpal_invoice
 features[page_manager_handlers][] = node_view_panel_context_4
+features[page_manager_pages][] = billables
 features[page_manager_pages][] = billables_pane
 features[page_manager_pages][] = invoices
 features[page_manager_pages][] = invoices_
