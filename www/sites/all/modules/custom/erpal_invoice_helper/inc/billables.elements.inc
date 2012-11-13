@@ -77,19 +77,6 @@ function erpal_invoice_helper_field_widget_form(&$form, &$form_state, $field, $i
 }
 
 
-function _erpal_invoice_helper_remove_billable_submit($form, &$form_state) {
-/*
-  $delta = 0;
-  $form_state['hallo'];
-  form_set_value($form['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['mark_remove'], true, $form_state);
-  $form_state['rebuild'] = TRUE;
-  $my_values = array('ff' => 'ggg');
-  $new_element = array('#parents' => array('field_billables_ref_values', LANGUAGE_NONE, $delta, 'lalala'));
-  form_set_value($new_element, $my_values, $form_state);
-  */
-}
-
-
 /**
 * AJAX Callback to remove a billable from the invoice form
 */
@@ -134,30 +121,8 @@ function _erpal_invoice_helper_ajax_remove_billable_from_invoice($form, &$form_s
     '#name' => 'removed_billables['.$delta.']',
     '#checked' => true,
   );
- 
-  /*$field_billables_ref_new['remove_group']['mark_remove']['#type']= 'checkbox';
-  $field_billables_ref_new['remove_group']['mark_remove']['#checked']= true;
-  $field_billables_ref_new['remove_group']['mark_remove']['#title']= t('remove');
-  $form_state['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['mark_remove'] = true;
-  $form_state['rebuild'] = TRUE;*/
   
   return $field_billables_ref_new;
-  //add invisible form element to save the billable deltas to remove
-  /*
-  $form['keep_billable_arr']['keep_billable_deltas'][$delta] = array(    
-    '#type' => 'hidden',  //@TODO @see _erpal_invoice_helper_handle_deleted_billables_from_form is not the best way but i dont get it with hiddn field, it will not be submitted in form submit form_state...:-(
-    '#name' => 'keep_billable_deltas['.$delta.']',
-    '#value' => $keep_billable ? 'keep' : 'delete',
-  );
-  
-  $form['keep_billable_arr']['remove_info'][$delta] = array(    
-    '#type' => 'item',
-    '#markup' => t('Will be removed on form submit'),
-  );
-  */
-  //$form_state['rebuild'] = TRUE;
- 
-  return $form['keep_billable_arr'];
 }
 
 
@@ -233,10 +198,12 @@ function _billable_element_process($element, &$form_state, $complete_form) {
     '#default_value' => isset($billable) ? $billable->single_price : '',
   );
 
+  //_erpal_invoice_helper_preselect_address_form($complete_form, $form_state);  //this function will set the invoice address id. To make sure it is set for default invoice calculation, set here.
+  
   //set vat default for customer
   //for new nodes set the default vat rate of the first billable entity form widget   
   $address_id = isset($complete_form['field_invoice_address_id'][LANGUAGE_NONE][0]) ? $complete_form['field_invoice_address_id'][LANGUAGE_NONE][0]['value'] : false;
-  
+
   //may be in default values?
   if (!$address_id) {
     $address_id = isset($complete_form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value']) ? $complete_form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] : false;
@@ -247,11 +214,10 @@ function _billable_element_process($element, &$form_state, $complete_form) {
     $address_id = isset($form_state['input']['field_invoice_address_id'][LANGUAGE_NONE]) ? $form_state['input']['field_invoice_address_id'][LANGUAGE_NONE] : false;
     $address_id = check_plain($address_id);    
   }
-
-
+  
   $default_vat_rate = _erpal_invoice_helper_get_vat_rate_by_address($address_id);
 
-  if (!empty($default_vat_rate)) {
+  if (!isset($default_vat_rate)) {
     //if we dont have a vat rate, the altering of the form is not processed in first run and so we have no address_nid yet. So get the customer and if it has only one address, use this, otherwise take the default address
     $customer_node = _erpal_invoice_helper_get_customer_form_invoice($complete_form, $form_state);    
 
@@ -262,7 +228,6 @@ function _billable_element_process($element, &$form_state, $complete_form) {
       $default_vat_rate = _erpal_invoice_helper_get_default_vat_rate();
     }
   }
-
   $element['vat_rate'] =  array(
     '#title' => t('vat rate'),
     '#type' => 'select', 
