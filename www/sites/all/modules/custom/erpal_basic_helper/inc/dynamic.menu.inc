@@ -35,7 +35,22 @@ function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_p
   
   //allow other modules to add dynamic menu items
   drupal_alter('dynamic_menu_items', $data, $router_item, $root_path);  
-
+  
+  //allways remove the node/%/edit link from local tasks
+  foreach ($data['tabs'] as $delta=>$output) {
+    foreach ($output['output'] as $inner_delta=>$a_output) {
+      $path = $a_output['#link']['path'];
+      if ($path == 'node/%/edit') {
+        unset($data['tabs'][$delta]['output'][$inner_delta]);
+      }
+      
+      //and if this is the view button, rename it
+      if ($path == 'node/%/view') {
+        $data['tabs'][$delta]['output'][$inner_delta]['#link']['title'] = t('Summary');
+      }
+    }
+  }
+  
   //finally at the end...
   _erpal_basic_helper_alter_local_tasks_output($data); //to correct markup
 }

@@ -9,6 +9,7 @@ module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.pdf');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/dynamic.menu');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/billables.elements');
 
