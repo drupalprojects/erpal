@@ -3,7 +3,6 @@
  * @file
  * Code for the erpal_invoice_helper module.
  */
-module_load_include('inc', 'erpal_invoice_helper', 'inc/views_links');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
