@@ -3,7 +3,7 @@ description = Install Erpal
 version = VERSION
 core = 7.x
 ; ----------
-; Dependencies
+; Dependencies 
 ; ----------
 ; Access control
 dependencies[] = content_access
@@ -55,7 +55,7 @@ dependencies[] = date_repeat_field
 dependencies[] = date_views
 ; Development 
 dependencies[] = devel 
-; Display suite
+; Display suite 
 dependencies[] = ds
 dependencies[] = ds_forms
 ; ERPAL
