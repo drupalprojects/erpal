@@ -235,9 +235,29 @@ ul.pager li a {
 #tabs-tasks_by_project_panel-middle-1 th a{
 	color: #525252;
 }
-.to_much_time{
+
+.alert .field .field_item .field-name-field-task-status-term,
+.alert .field .field_item .field-name-field-date,
+.alert .field_item,
+.alert  td.views-field-field-date, 
+.alert  td.views-field-field-next-contact, 
+.alert  td.views-field-field-task-status-term, 
+.alert  td.views-field-field-project-status-term,
+.alert  td.views-field-field-activity-status-term {
 	color: red;
 }
+
+.completed .field .field_item .field-name-field-task-status-term,
+.completed .field .field_item .field-name-field-completed,
+.completed .field_item,
+.completed  td.views-field-field-date, 
+.completed  td.views-field-field-next-contact, 
+.completed  td.views-field-field-task-status-term, 
+.completed  td.views-field-field-project-status-term,
+.completed  td.views-field-field-activity-status-term {
+	color: grey;
+}
+
 .pane-node-body{
 	background-color: #ffffff;
 }
