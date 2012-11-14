@@ -936,12 +936,12 @@ function feature_erpal_project_basic_default_panels_mini() {
         'multiple_number' => '',
         'multiple_from' => '',
         'multiple_to' => '',
-        'fromto' => 'both',
+        'fromto' => 'value2',
         'show_repeat_rule' => 'show',
       ),
       'context' => 'requiredcontext_entity:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => 'Deadline',
     );
     $pane->cache = array();
     $pane->style = array(

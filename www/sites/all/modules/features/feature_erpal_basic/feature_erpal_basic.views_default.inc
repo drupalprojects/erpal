@@ -29,6 +29,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Filter';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
@@ -91,17 +92,37 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Search: Search Terms */
-  $handler->display->display_options['filters']['keys']['id'] = 'keys';
-  $handler->display->display_options['filters']['keys']['table'] = 'search_index';
-  $handler->display->display_options['filters']['keys']['field'] = 'keys';
-  $handler->display->display_options['filters']['keys']['group'] = 1;
-  $handler->display->display_options['filters']['keys']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['keys']['expose']['operator_id'] = 'keys_op';
-  $handler->display->display_options['filters']['keys']['expose']['label'] = 'Search terms';
-  $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
-  $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keys';
-  $handler->display->display_options['filters']['keys']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Search Terms';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Contact Type (field_contact_type) */
+  $handler->display->display_options['filters']['field_contact_type_value']['id'] = 'field_contact_type_value';
+  $handler->display->display_options['filters']['field_contact_type_value']['table'] = 'field_data_field_contact_type';
+  $handler->display->display_options['filters']['field_contact_type_value']['field'] = 'field_contact_type_value';
+  $handler->display->display_options['filters']['field_contact_type_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_contact_type_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator_id'] = 'field_contact_type_value_op';
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Type';
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -129,25 +150,6 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
   $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
-  /* Filter criterion: Content: Contact Type (field_contact_type) */
-  $handler->display->display_options['filters']['field_contact_type_value']['id'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['table'] = 'field_data_field_contact_type';
-  $handler->display->display_options['filters']['field_contact_type_value']['field'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_contact_type_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator_id'] = 'field_contact_type_value_op';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Type';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
-  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-  );
 
   /* Display: Contacts pane */
   $handler = $view->new_display('panel_pane', 'Contacts pane', 'panel_pane_1');

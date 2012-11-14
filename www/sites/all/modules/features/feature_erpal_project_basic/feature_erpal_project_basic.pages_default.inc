@@ -527,7 +527,21 @@ function feature_erpal_project_basic_default_page_manager_handlers() {
     $pane->type = 'custom_node_content';
     $pane->subtype = 'custom_node_content';
     $pane->shown = TRUE;
-    $pane->access = array();
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'php',
+          'settings' => array(
+            'description' => 'Hide on quicktab active',
+            'php' => 'if (function_exists(\'_erpal_projects_helper_hide_task_right_panes\')) {
+  return !_erpal_projects_helper_hide_task_right_panes();
+}
+return TRUE;',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+    );
     $pane->configuration = array(
       'types' => array(),
       'field_name' => '',
@@ -691,7 +705,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
           'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
+      'logic' => 'or',
     ),
   );
   $display = new panels_display();

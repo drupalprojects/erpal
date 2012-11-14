@@ -456,7 +456,7 @@ function timetracking_theme() {
   $themes = _timetracking_entity_theme();
   
   $themes['timetracking_button'] = array(
-    'variables' => array('entity_type' => false, 'entity_id' => array(), 'state' => false, 'duration' => false),
+    'variables' => array('entity_type' => false, 'entity_id' => array(), 'state' => false, 'duration' => false, 'start_label' => false, 'stop_label' => false),
     'template' => 'template/timetracking_button',
   );
   
@@ -595,6 +595,12 @@ function template_preprocess_timetracking_button(&$variables) {
   
   $start_text = t('Start');
   $stop_text = t('Stop');
+  if ($variables['start_label'])
+    $start_text = $variables['start_label'];
+    
+  if ($variables['stop_label'])
+    $stop_text = $variables['stop_label'];
+    
   if ($state=='on') {
     $image = $path_stop;
     $linktext = $stop_text;

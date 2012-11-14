@@ -276,7 +276,7 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
   $form['#submit'] = array_merge(array('_erpal_invoice_helper_invoice_form_submit'), $form['#submit']);  
 
   _erpal_invoice_helper_preselect_address_form($form, $form_state);
-  
+
   //if has no nid copy notes from defaults in admin settings if erpal_invoice
   if (!$form['nid']['#value']) {
     //and now set all the other defaults
@@ -390,7 +390,14 @@ function _erpal_invoice_helper_preselect_address_form(&$form, &$form_state) {
       $default_id = $defaults['address_id'];
     }
   }
-  
+ 
+  //if we have only one default_id set this one as default_value
+  if (isset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']) && count($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'])) {
+    $keys = array_keys($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']);
+    $default_id = $keys[0];
+
+  }
+ 
   if ($default_id) {
     $form['field_invoice_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
   }
