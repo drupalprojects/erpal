@@ -41,16 +41,16 @@ function erpal_germany_file_private_path_submit($form, $form_state){
  */
 function erpal_germany_install_tasks(){
   return array(
-    'erpal_germany_contact_information_form' => array(
-      'display_name' => st('Contact Information'),
-      'display' => TRUE,
-      'type' => 'form',
-      ),
-    'erpal_germany_config_form' => array(
-      'display_name' => st('Configure Erpal'),
-      'display' => TRUE,
-      'type' => 'form',
-      ),
+    //~ 'erpal_germany_contact_information_form' => array(
+      //~ 'display_name' => st('Contact Information'),
+      //~ 'display' => TRUE,
+      //~ 'type' => 'form',
+      //~ ),
+    //~ 'erpal_germany_config_form' => array(
+      //~ 'display_name' => st('Configure Erpal'),
+      //~ 'display' => TRUE,
+      //~ 'type' => 'form',
+      //~ ),
     //~ 'erpal_germany_calendar_config_form' => array(
       //~ 'display_name' => st('Configure Calendar'),
       //~ 'display' => TRUE,
@@ -73,9 +73,9 @@ function erpal_germany_contact_information_form($form, &$form_state){
   drupal_set_title(st('Contact information'));
   $form = array();  
   $form['contact_name'] = array(
-        '#type' => 'fieldset',
-        '#title' => st('My Company'),
-      );
+    '#type' => 'fieldset',
+    '#title' => st('My Company'),
+  );
   
   $form['contact_name']['company_name'] = array(
     '#type' => 'textfield',    
@@ -322,7 +322,7 @@ function erpal_germany_calendar_config_form(){
   $form = array();
   
   $form = array(
-    'type' => 'textfield'
+    'type' => 'textfield',
     'title' => st('Set tags for '),
   );
   
