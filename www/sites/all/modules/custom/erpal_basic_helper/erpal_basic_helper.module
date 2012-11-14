@@ -3,6 +3,9 @@
  * @file
  * Code for the erpal_basic_helper module.
  */
+define('ERPAL_STATUS_ALERT', 'alert');
+define('ERPAL_STATUS_NONE', 'none');
+define('ERPAL_STATUS_COMPLETED', 'completed');
 
 module_load_include('inc', 'erpal_basic_helper', 'inc/config');
 module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
@@ -776,7 +779,7 @@ function _erpal_basic_helper_relation_add_link($node) {
 
 /**
 * Returns the semantic status of a term reference field of a given node, a status of the allowed values of field_simple_process_status
-* @param the node where the field with the status term is attached to
+* @param $node the node where the field with the status term is attached to
 * @param $field_name the name if the field that contains the term id of the status term we want to analyse the semantic meaning
 * @return boolean value
 */
@@ -786,10 +789,24 @@ function _erpal_basic_helper_get_tid_semantic($node, $field_name) {
   if ($status_tid) {
     $term = taxonomy_term_load($status_tid);
     //get the semantic field
-    $semantic_status = isset($term->field_simple_process_status[LANGUAGE_NONE][0]['value']) ? $term->field_simple_process_status[LANGUAGE_NONE][0]['value'] : false;
+    $semantic_status = _erpal_basic_helper_get_term_semantic($term);
     return $semantic_status;
   } else
     return false;
+}
+
+/**
+* Returns the semantic status of a term object, a status of the allowed values of field_simple_process_status
+* @param $term the node where the field with the status term is attached to
+* @return boolean value
+*/
+function _erpal_basic_helper_get_term_semantic($term) {
+  if (!$term)
+    return false;
+
+  //get the semantic field
+  $semantic_status = isset($term->field_simple_process_status[LANGUAGE_NONE][0]['value']) ? $term->field_simple_process_status[LANGUAGE_NONE][0]['value'] : false;
+  return $semantic_status;
 }
 
 /**

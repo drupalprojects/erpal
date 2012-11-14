@@ -18,6 +18,7 @@ module_load_include('inc', 'erpal_projects_helper', 'inc/dynamic.menu');
 module_load_include('inc', 'erpal_projects_helper', 'inc/print');
 module_load_include('inc', 'erpal_projects_helper', 'inc/notifications');
 module_load_include('inc', 'erpal_projects_helper', 'inc/token');
+module_load_include('inc', 'erpal_projects_helper', 'inc/theme');
 
  
 /**
@@ -82,6 +83,7 @@ function erpal_projects_helper_menu(){
   $items = array_merge($items, $config_items);
   return $items;
 }
+
 
 /**
 * Implements hook_custom_node_content_block_content to provide content for the custom content block. Hook is provided by erpal_basic_helper
@@ -152,6 +154,54 @@ function erpal_projects_helper_help($path, $arg) {
       if ($vocab_name == 'project_status_terms' || $vocab_name == 'task_status_terms')
         _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, 'field_simple_process_status');     
   }
+}
+
+function erpal_projects_helper_preprocess_field(&$variables) {
+  _erpal_projects_helper_preprocess_field_warnings($variables);
+}
+
+
+/**
+* alter fields so they display warning colors
+*/
+function _erpal_projects_helper_preprocess_field_warnings(&$variables) {
+  $element = $variables['element'];
+  $object = isset($element['#object']) ? $element['#object'] : false;
+  
+  if (!$object)
+    return;
+
+  if ($element['#field_name'] == 'field_project_status_term' || $element['#field_name'] == 'field_date' || $element['#field_name'] == 'field_task_status_term') {    
+  
+    //if semantic meaning is "in progress" and deadline is over current date, make red    
+    if (isset($object->type) && ($object->type == 'erpal_project' || $object->type == 'erpal_task')) {
+      $node = $object;
+      //get the status field name
+      $status_field_name = _erpal_projects_helper_get_status_field_name($node);
+      $deadline = isset($node->field_date[LANGUAGE_NONE][0]) ? $node->field_date[LANGUAGE_NONE][0]['value2'] : false;
+      
+      if ($deadline)
+        $deadline_unix = erpal_date_as_unix_timestamp($deadline);   
+      else
+        $deadline_unix = false;
+        
+      $status = _erpal_crm_helper_get_date_status_state($deadline_unix, false, $node, $status_field_name);
+      $variables['classes_array'][] = $status;
+    }
+  }
+}
+
+
+
+/**
+* Returns the name of the status field on a given task or project node
+*/
+function _erpal_projects_helper_get_status_field_name($node) {
+  if ($node->type == 'erpal_project')
+    return 'field_project_status_term';
+    
+  if ($node->type == 'erpal_task')
+    return 'field_task_status_term';
 }
 
 /**
@@ -347,18 +397,6 @@ function erpal_projects_helper_cron_queue_info() {
   );
   
   return $queues;
-}
-
-
-/**
-* Implements hook_views_post_execute(&$view)
-*/
-//function erpal_projects_helper_views_post_execute(&$view) {
-function erpal_projects_helper_views_pre_render(&$view) {
-  if ($view->name == 'timetracking_entities') {
-    _erpal_projects_helper_view_timetracking_entites_post_execute($view);
-  }
-
 }
 
 /**
