@@ -127,7 +127,7 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
   }
   
   $html = _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied);
-
+  
   //set invoice as exported!
   $invoice->field_invoice_exported[LANGUAGE_NONE][0]['value'] = 1;
   
@@ -184,6 +184,7 @@ function _erpal_invoice_get_file_by_path($uri) {
 
 /**
 * Render one invoice as HTML
+* 
 */
 function _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied=false) {
 
@@ -191,7 +192,9 @@ function _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied=f
   $invoice_html = '';
   $output = '';
  
+  $notes = isset($invoice->field_note[LANGUAGE_NONE][0]['value']) ? $invoice->field_note[LANGUAGE_NONE][0]['value'] : '';  //we save the notes. Otherwise if tokens are replaced, they are also replaced on the invoice object and will be saved. We dont want that because if some variables change in the invoice, the tokeniced values won't change!
   _erpal_invoice_helper_replace_all_tokens($invoice, 'pdf');
+ 
  
   $params = array(
     'mark_copied' => $mark_copied,
@@ -218,6 +221,10 @@ function _erpal_invoice_helper_invoice_html($invoice, $documents, $mark_copied=f
       $output .= PDF_PAGE_BREAK;
     $output .= $attachment_html;    
   }
+ 
+  //finally set the invoice notes the the version without replaced tokens, so if values change, the tokenized values change again!
+  if ($notes)
+    $invoice->field_note[LANGUAGE_NONE][0]['value'] = $notes;
  
   return $output;
 }

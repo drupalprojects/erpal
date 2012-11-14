@@ -315,7 +315,7 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
   $nid = $form['nid']['#value'];
   if (!$nid) {
     //if parent is already set, hide the project field, but preset it so pricing information can be reloaded!
-    if (isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']))
+    if (isset($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'])) {
       if ($form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value']) {
         $parent_nid = $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'];
         $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
@@ -331,6 +331,14 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
       //parent is not required here and it is already set as default value
       $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
       $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#required'] = false;
+    }
+    
+    //if we create a task of with field_is_ticket set, change the title of the node add form
+    if (isset($_GET['field_is_ticket']) && $_GET['field_is_ticket']) {
+      drupal_set_title(t('Create a ticket'));
+    } else {
+      drupal_set_title(t('Create a task'));
+    }
   } else {
     //hide parent and project ref anyway!
     $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
@@ -395,11 +403,11 @@ function erpal_projects_helper_erpal_clone_node_postprocess_alter($node, $args) 
 function _erpal_projects_helper_hide_task_right_panes() {
   $task_tab_page = isset($_GET['qt-task_content_tabs']) && $_GET['qt-task_content_tabs'] ? $_GET['qt-task_content_tabs'] : false;
   $ticket_tab_page = isset($_GET['qt-ticket_content_tabs']) && $_GET['qt-ticket_content_tabs'] ? $_GET['qt-ticket_content_tabs'] : false;
-  if ($task_tab_page == 3) {
+  if ($task_tab_page == 3 || $task_tab_page == 2 || $task_tab_page == 1) {
     return true;
   }
   
-  if ($ticket_tab_page == 3) {
+  if ($ticket_tab_page == 3 || $ticket_tab_page == 2 || $ticket_tab_page == 1) {
     return true;
   }
   

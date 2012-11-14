@@ -2676,7 +2676,7 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'Work progress of field',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -4394,7 +4394,6 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Type');
   t('Weight');
   t('When will the project be developed? Only for planing purpose.');
-  t('Work progress of field');
 
   return $fields;
 }

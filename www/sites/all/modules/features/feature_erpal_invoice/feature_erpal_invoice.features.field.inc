@@ -1257,6 +1257,7 @@ function feature_erpal_invoice_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'erpal_invoice',
       'default_value' => NULL,
+      'default_value_function' => '_erpal_invoice_helper_get_default_invoice_address_id',
       'deleted' => '0',
       'description' => 'The address of the customer the invoice will be related to',
       'display' => array(

@@ -157,7 +157,7 @@ function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $co
 /**
 * Renders the html code for timetracking button on tasks
 */
-function _erpal_projects_helper_render_timetracking_button_field($nid) {
+function _erpal_projects_helper_render_timetracking_button_field($nid, $start_label=false, $stop_label=false) {
   if (!is_numeric($nid)) {  //it could be an MD5 has
     //we have no subject but timetracking can be started without subject!
     $node_type = false;
@@ -172,7 +172,7 @@ function _erpal_projects_helper_render_timetracking_button_field($nid) {
     $has_timetracking_active = _erpal_projects_helper_task_has_timetracking_entity_active($nid, $tracked_time);
     $has_timetracking_active_str = $has_timetracking_active ? 'on' : 'off';
 
-    $timetracking_button = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$nid, 'state' => $has_timetracking_active_str, 'duration' => $tracked_time));
+    $timetracking_button = theme('timetracking_button', array('entity_type' => 'node', 'entity_id' =>$nid, 'state' => $has_timetracking_active_str, 'duration' => $tracked_time, 'start_label' => $start_label, 'stop_label' => $stop_label));
     
     return $timetracking_button;
   }

@@ -99,7 +99,6 @@ features[field][] = node-erpal_contact-field_google_plus
 features[field][] = node-erpal_contact-field_lastname
 features[field][] = node-erpal_contact-field_legal_other
 features[field][] = node-erpal_contact-field_phone
-features[field][] = node-erpal_contact-field_relation_add
 features[field][] = node-erpal_contact-field_twitter
 features[field][] = node-erpal_contact-field_vat_number
 features[field][] = node-erpal_contact-field_website
