@@ -15,7 +15,7 @@ function feature_erpal_project_basic_quicktabs_default_quicktabs() {
   $quicktabs->api_version = 1;
   $quicktabs->machine_name = 'task_content_tabs';
   $quicktabs->ajax = 0;
-  $quicktabs->hide_empty_tabs = TRUE;
+  $quicktabs->hide_empty_tabs = FALSE;
   $quicktabs->default_tab = 0;
   $quicktabs->title = 'Task content tabs';
   $quicktabs->tabs = array(
@@ -70,7 +70,7 @@ function feature_erpal_project_basic_quicktabs_default_quicktabs() {
   $quicktabs->api_version = 1;
   $quicktabs->machine_name = 'tasks_by_project_tabs';
   $quicktabs->ajax = 0;
-  $quicktabs->hide_empty_tabs = TRUE;
+  $quicktabs->hide_empty_tabs = FALSE;
   $quicktabs->default_tab = 0;
   $quicktabs->title = 'Tasks by project tabs';
   $quicktabs->tabs = array(
