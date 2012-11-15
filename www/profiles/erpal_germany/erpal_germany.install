@@ -39,8 +39,11 @@ function erpal_germany_install() {
   // $default_theme als default
   variable_set('theme_default', $default_theme);
   
-  // revert features
-  features_revert($features = array());
+  // revert features 
+  features_revert();
+  
+  //rebuild content access permissions
+  node_access_rebuild(); 
   
    // create taxonomy
   erpal_germany_create_taxonomy();
@@ -49,12 +52,11 @@ function erpal_germany_install() {
   erpal_germany_create_roles();  
   
   //set default vat-rate for erpal invoice
-  //~ $vatRates = '7#7%' . PHP_EOL . '19#19%' . PHP_EOL . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
-  //~ variable_set('erpal_invoice_vat_rates_string', $vatRates);
-  //~ variable_set('erpal_invoice_default_vat_rate', '19#19%'); 
+  $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
+  variable_set('erpal_invoice_vat_rates_string', $vatRates);
+  variable_set('erpal_invoice_default_vat_rate', '19#19%'); 
   
-  //rebuild content access permissions
-  node_access_rebuild();
+
 }
   
 function erpal_germany_create_roles(){
@@ -73,8 +75,20 @@ function erpal_germany_create_roles(){
       ),   
     'financial user' => array(
       // Add permissions here
-      'access content',
+      'access content', 
       ), 
+    'controller' => array(
+      // Add permissions here
+      'access content',
+      ),
+    'account manager' => array(
+      // Add permissions here
+      'access content',
+      ),
+    'project manager' => array(
+      // Add permissions here
+      'access content',
+      ),
     );
   erpal_germany_add_role_and_permissions($userRoles);
 }
