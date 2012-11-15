@@ -236,7 +236,7 @@ ul.pager li a {
 	color: #525252;
 }
 
-.alert,
+
 tr.odd.alert,
 tr.even.alert {
 	background-color: #FFDFE4 !important;
@@ -259,7 +259,7 @@ tr.even.alert .active {
 	color: #CC000C;
 }
 
-.completed,
+
 tr.odd.completed,
 tr.even.completed {
 	background-color: #EEEEEE !important;
