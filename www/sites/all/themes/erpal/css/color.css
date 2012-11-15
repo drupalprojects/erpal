@@ -236,6 +236,7 @@ ul.pager li a {
 	color: #525252;
 }
 
+/* hightlight of different states of tasks/projects */
 
 tr.odd.alert,
 tr.even.alert {
@@ -258,7 +259,6 @@ tr.even.alert .active {
 .alert  td.views-field-field-activity-status-term {
 	color: #CC000C;
 }
-
 
 tr.odd.completed,
 tr.even.completed {
