@@ -5,15 +5,6 @@ core = 7.x
 ; ----------
 ; Dependencies 
 ; ----------
-; Access control
-dependencies[] = content_access
-dependencies[] = private_files_download_permission
-; Administration
-dependencies[] = toolbar
-; Chaos tool suite
-dependencies[] = ctools
-dependencies[] = page_manager
-dependencies[] = views_content
 ; Core
 dependencies[] = block
 dependencies[] = color
@@ -43,6 +34,17 @@ dependencies[] = taxonomy
 dependencies[] = text
 dependencies[] = update
 dependencies[] = user
+
+; Access control
+dependencies[] = content_access
+dependencies[] = private_files_download_permission
+; Administration
+dependencies[] = toolbar 
+; Chaos tool suite
+dependencies[] = ctools
+dependencies[] = page_manager
+dependencies[] = views_content
+
 ; Date Item
 dependencies[] = date_item
 ; Date/Time
@@ -131,7 +133,7 @@ dependencies[] = profile2
 dependencies[] = profile2_page
 dependencies[] = quicktabs
 dependencies[] = rel
-dependencies[] = strongarm
+dependencies[] = strongarm 
 dependencies[] = timetracking
 dependencies[] = token
 ; Panels

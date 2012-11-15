@@ -6,6 +6,7 @@
  */
 
 module_load_include('inc', 'erpal_crm_helper', 'inc/dynamic.menu');
+module_load_include('inc', 'erpal_crm_helper', 'inc/theme');
  
 /**
 * Implements hook_menu
@@ -135,4 +136,35 @@ function _erpal_crm_helper_create_activity_link($q_arg = false, $query_arr = arr
   );
 }
 
+/**
+* Return the status field name for a activity
+*/
+function _erpal_crm_helper_get_status_field_name() {
+  return 'field_activity_status_term';
+}
+
+/**
+* Returns the status of a field combination, e.g. status and deadline of task or project
+*/
+function _erpal_crm_helper_get_date_status_state($date_unix, $status_term, $node=false, $field_name=false) {
+  
+  //get the term from the node.
+  if ($node && $field_name) {
+    $semantic_status = _erpal_basic_helper_get_tid_semantic($node, $field_name);
+  } else {  
+    $semantic_status = _erpal_basic_helper_get_term_semantic($status_term);
+  }
+
+  //date and state are set
+  if ($semantic_status == 'in_progress' && time() > $date_unix && $date_unix) {
+    return ERPAL_STATUS_ALERT;
+  }
+  
+  //only the state is set, NO date end
+  if ($semantic_status == 'completed') {
+    return ERPAL_STATUS_COMPLETED;
+  }
+  
+  return ERPAL_STATUS_NONE;
+}
 

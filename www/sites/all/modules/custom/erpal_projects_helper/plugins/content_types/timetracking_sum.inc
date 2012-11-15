@@ -42,7 +42,7 @@ function erpal_projects_helper_timetracking_sum_content_type_render($subtype, $c
   
   if ($estimated_time) {
     if ($summed_time > $estimated_time)
-      $class_string = 'to_much_time';
+      $class_string = 'field_alert';
   }
 
   $module = 'erpal_projects_helper';

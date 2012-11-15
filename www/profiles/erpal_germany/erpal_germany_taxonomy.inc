@@ -21,7 +21,7 @@ function erpal_germany_create_taxonomy(){
       'name' => 'feature', 
       'default' => 0,
     ),
-  );
+  );  
   erpal_germany_taxonomy_add($task_type_vocabulary, $task_type_terms);
     
 

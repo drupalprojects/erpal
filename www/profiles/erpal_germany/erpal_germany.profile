@@ -12,9 +12,12 @@
 function erpal_germany_form_install_configure_form_alter(&$form, $form_state) {
   // Pre-populate the site name with the server name.
   $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
+  
+  // Add textfield for private filesystem settings
+   
   $form['filesystem_settings'] = array(
-    '#type' => 'fieldset',
     '#title' => st('Filesystem settings'),
+    '#type' => 'fieldset',
   );
   $form['filesystem_settings']['file_private_path'] = array(
     '#type' => 'textfield', 
@@ -23,31 +26,28 @@ function erpal_germany_form_install_configure_form_alter(&$form, $form_state) {
     '#maxlength' => 255, 
     '#description' => st('An existing local file system path for storing private files. It should be writable by Drupal and not accessible over the web. See the online handbook for <a href="@handbook">more information about securing private files</a>.', array('@handbook' => 'http://drupal.org/documentation/modules/file')), 
     '#after_build' => array('system_check_directory'),
+    '#required' => TRUE, 
   );
   $form['#submit'][] = 'erpal_germany_file_private_path_submit';
 }
+
 
 function erpal_germany_file_private_path_submit($form, $form_state){
   variable_set('file_private_path', $form_state['values']['file_private_path']);
 }
 
-/**
+/** 
  * Zusaetzliche installationsaufgaben definieren 
  */
 function erpal_germany_install_tasks(){
   return array(
-    'erpal_germany_contact_information_form' => array(
-      'display_name' => st('Contact Information'),
-      'display' => TRUE,
-      'type' => 'form',
-      ),
-    'erpal_germany_config_form' => array(
-      'display_name' => st('Configure Erpal'),
-      'display' => TRUE,
-      'type' => 'form',
-      ),
-    //~ 'erpal_germany_invoice_config_form' => array(
-      //~ 'display_name' => st('Configure Invoice'),
+    //~ 'erpal_germany_contact_information_form' => array(
+      //~ 'display_name' => st('Contact Information'),
+      //~ 'display' => TRUE,
+      //~ 'type' => 'form',
+      //~ ),
+    //~ 'erpal_germany_config_form' => array(
+      //~ 'display_name' => st('Configure Erpal'),
       //~ 'display' => TRUE,
       //~ 'type' => 'form',
       //~ ),
@@ -55,7 +55,13 @@ function erpal_germany_install_tasks(){
       //~ 'display_name' => st('Configure Calendar'),
       //~ 'display' => TRUE,
       //~ 'type' => 'form',
+     //~ ), 
+    //~ 'erpal_germany_invoice_config_form' => array(
+      //~ 'display_name' => st('Configure Invoice'),
+      //~ 'display' => TRUE,
+      //~ 'type' => 'form',
       //~ ),
+      //~ 
     );
 }
 
@@ -63,16 +69,18 @@ function erpal_germany_install_tasks(){
  * Installation task "Contact information"
  * 
  */
-function erpal_germany_contact_information_form(){
+function erpal_germany_contact_information_form($form, &$form_state){
   drupal_set_title(st('Contact information'));
-  $form = array();
-  $form['company_settings'] = array(
+  $form = array();  
+  $form['contact_name'] = array(
     '#type' => 'fieldset',
     '#title' => st('My Company'),
   );
-  $form['company_settings']['company_name'] = array(
+  
+  $form['contact_name']['company_name'] = array(
     '#type' => 'textfield',    
     '#title' => st('Company name:'),
+    '#required' => TRUE,
   );
   $form['company_address'] = array(
     '#type' => 'fieldset',
@@ -80,28 +88,52 @@ function erpal_germany_contact_information_form(){
   );
   $form['company_address']['street'] = array(
     '#title' => st('Street:'),
-    '#type' => 'textfield',
+    '#type' => 'textfield', 
+    '#required' => TRUE,     
   );
   $form['company_address']['zip_code'] = array(
     '#title' => st('ZIP-Code:'),
     '#type' => 'textfield',
+    '#required' => TRUE,
   );
   $form['company_address']['city'] = array(
     '#title' => st('City:'),
     '#type' => 'textfield',
+    '#required' => TRUE,
   );
-  //~ $form['company_address']['country'] = array(
-    //~ '#title' => st('Country'),
-    //~ '#type' => 'select',
-    //~ 
-  //~ );
-  $form['company_address']['phone_number'] = array(
+  
+  
+  $countries_vid = erpal_germany_get_vocabulary_by_name('Countries');
+  $countries_terms = taxonomy_get_tree($countries_vid->vid, 0);
+  $countries = array();
+  foreach($countries_terms as $term){
+    $countries[$term->tid] = $term->name;
+  }  
+  
+  
+  
+  $form['company_address']['country'] = array(
+    '#title' => st('Country'),
+    '#type' => 'select',
+    '#options' => $countries,
+    '#default_value' => array_search('Germany', $countries),
+  );
+  
+    
+  $form['contact_information'] = array(
+    '#type' => 'fieldset',
+    '#title' => st('Contact information'),
+  );
+  $form['contact_information']['phone_number'] = array(
     '#title' => st('Phone number:'),
     '#type' => 'textfield',
+    '#required' => TRUE,
   );
-  $form['company_address']['email_address'] = array(
+  $form['contact_information']['email_address'] = array(
     '#title' => st('Email:'),
     '#type' => 'textfield',
+    '#required' => TRUE,
+  
   );
   $form['submit'] = array(
     '#value' => st('Save and continue'),
@@ -113,11 +145,25 @@ function erpal_germany_contact_information_form(){
 }
 
 function erpal_germany_contact_information_form_validate($form, $form_state){
+  $values = $form_state['values'];
 
-    
+
+
+  if(!is_numeric($values['zip_code']))
+    form_set_error('zip_code', 'Please enter only numbers as a zip-code.');
+  
+  if(!is_numeric($values['phone_number']))
+    form_set_error('phone_number', 'Please enter only numbers as phone number.');
+  
+  if(!valid_email_address($values['email_address']))
+    form_set_error('email_address', 'The Email-address is not valid.');
 }
 
+
 function erpal_germany_contact_information_form_submit($form, $form_state){
+  
+  $values = $form_state['values'];
+  $company_name = $values['company_name'];
   global $user;
   $node_type = 'erpal_contact';
   $node = (object) array(
@@ -125,48 +171,49 @@ function erpal_germany_contact_information_form_submit($form, $form_state){
     'name' => (isset($user->name)) ? $user->name : '',
     'type' => $node_type,
     'language' => LANGUAGE_NONE,  
-    'title' => $form_state['values']['company_name'],
+    'title' => $company_name,
     'field_company_name' => array(
-      'und' => array(
+      LANGUAGE_NONE => array(
         0 => array(
-          'value' => $form_state['values']['company_name'],
+          'value' => $company_name,
           'format' => NULL,
-          'save_value' => $form_state['values']['company_name'],
+          'save_value' => $company_name,
         ),
       ),
     ),
     'field_contact_type' => array(
-      'und' => array(
+      LANGUAGE_NONE => array(
         0 => array('value' => 'company',),
       ),
     ),
     'field_email' => array(
-      'und' => array(
+      LANGUAGE_NONE => array(
         0 => array(
-          'value' => $form_state['values']['email_address'],
+          'value' => $values['email_address'],
         ),
       ),
     ),
   );
-  node_object_prepare($node);
-  node_save($node);
+  node_object_prepare($node); 
+  //node_save($node);
 
   $address = entity_create('field_collection_item', array('field_name' => 'field_addresses'));
   $address->setHostEntity('node', $node);
-  $address->field_street[LANGUAGE_NONE][0]['value'] = $form_state['values']['street'];
-  $address->field_zip_code[LANGUAGE_NONE][0]['value'] = $form_state['values']['zip_code'];
-  $address->field_city[LANGUAGE_NONE][0]['value'] = $form_state['values']['city'];
+  $address->field_street[LANGUAGE_NONE][0]['value'] = $values['street'];
+  $address->field_zip_code[LANGUAGE_NONE][0]['value'] = $values['zip_code'];
+  $address->field_city[LANGUAGE_NONE][0]['value'] = $values['city'];
+  $address->field_country_term[LANGUAGE_NONE][0]['value'] = $values['country']->tid;
   $address->save();
   
   $phone_number = entity_create('field_collection_item', array('field_name' => 'field_phone'));
   $phone_number->setHostEntity('node', $node);
-  $phone_number->field_phone_number[LANGUAGE_NONE][0]['value'] = $form_state['values']['phone_number'];
+  $phone_number->field_phone_number[LANGUAGE_NONE][0]['value'] = $values['phone_number'];
   $phone_number->save();
   
   variable_set('erpal_config_my_company_nid', $node->nid);
   variable_set('my_field_addresses', 0);  //set field 0 as default
   variable_set('my_field_phone', 0);  //      ""  
-  variable_set('my_field_email', $form_state['values']['email_address']);  //save email address
+  variable_set('my_field_email', $values['email_address']);  //save email address
 }
 
 function erpal_germany_config_form(){
@@ -199,12 +246,9 @@ function erpal_germany_config_form(){
     '#type' => 'checkbox',
     '#title' => st('Skip header logo in pdf frontpage'),
     '#description' => st('If checked, the logo of a pdf document will not be shown on pdfs first page (frontpage)'),
-  
   );
   
 
-  
-  
   $form['erpal_docs'] = array(
     '#type' => 'fieldset',
     '#title' => 'Erpal Docs',
@@ -215,14 +259,26 @@ function erpal_germany_config_form(){
     '#value' => 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml',
   );
   
+  $form['erpal_contract'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Erpal Contract'
+  );
   
-
+  $form['erpal_contract']['precalculation_range'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Precalculation range contract duration'),
+    '#description' => t('Number of month the date items for contract calculation are precalculated.'),
+    '#default_value' => _erpal_contract_helper_cancelation_precalculate_range(),
+  );
+  
+  
   $form['advanced_configuration'] = array(
     '#type' => 'fieldset',
     '#title' => st('Advanced configuration'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
+  
   $form['advanced_configuration']['debug_mode'] = array(
     '#type' => 'checkbox',
     '#title' => st('Run ERPAL in debug mode'),
@@ -235,18 +291,17 @@ function erpal_germany_config_form(){
   );
   return $form;
 }
-
-function erpal_germany_config_form_validate($form, $form_state){
-
-}
-
 function erpal_germany_config_form_submit($form, $form_state){
-  variable_set('erpal_docs_doc_file_extensions', $form_state['values']['doc_file_extensions']);
-  variable_set('erpal_date_format_date_only', $form_state['values']['date_only']);
-  variable_set('erpal_date_format_date_time', $form_state['values']['date_time']);
-  variable_set('erpal_debug', $form_state['values']['debug_mode']);
-  variable_set('erpal_book_skip_pdf_header_frontpage', $form_state['values']['skip_logo']);
+  $values = $form_state['values'];
+  variable_set('erpal_docs_doc_file_extensions', $values['doc_file_extensions']);
+  variable_set('erpal_date_format_date_only', $values['date_only']);
+  variable_set('erpal_date_format_date_time', $values['date_time']);
+  variable_set('erpal_debug', $values['debug_mode']);
+  variable_set('erpal_book_skip_pdf_header_frontpage', $values['skip_logo']);
+  $cancelation_precalculate_range = intval($values['cancelation_precalculate_range']);
+  variable_set('cancelation_precalculate_range', $cancelation_precalculate_range);
 }
+
 
 function erpal_germany_invoice_config_form(){
   drupal_set_title(st('Erpal Invoice configuration'));
@@ -257,11 +312,6 @@ function erpal_germany_invoice_config_form(){
   );
   return $form;
 }
-
-function erpal_germany_invoice_config_form_validate($form, $form_state){
-
-}
-
 function erpal_germany_invoice_config_form_submit($form, $form_state){
   
 }
@@ -271,6 +321,11 @@ function erpal_germany_calendar_config_form(){
   drupal_set_title(st('Erpal Calendar configuration'));
   $form = array();
   
+  $form = array(
+    'type' => 'textfield',
+    'title' => st('Set tags for '),
+  );
+  
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => st('Save and continue'), 
@@ -278,11 +333,6 @@ function erpal_germany_calendar_config_form(){
   return $form;
   
 }
-
-function erpal_germany_calendar_config_form_validate($form, $form_state){
-  
-}
-
 function erpal_germany_calendar_config_form_submit($form, $form_state){
   
 

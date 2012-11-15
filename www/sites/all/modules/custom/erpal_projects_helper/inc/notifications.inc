@@ -205,7 +205,11 @@ function _erpal_projects_helper_delete_users_no_access($users, $entity, $entity_
 * Returns renderable element with nnotifiy flag link
 */
 function _erpal_projects_helper_get_notify_flag_link_element($node) {
-  $flag_link = flag_create_link('project_subscriptions', $node->nid);
+  
+  if ($node->type == 'erpal_task')
+    $flag_link = flag_create_link('task_subscriptions', $node->nid);
+  elseif ($node->type == 'erpal_project')
+    $flag_link = flag_create_link('project_subscriptions', $node->nid);
   
   if (!$flag_link)
     return;  //will be false if this node type is not notifiable

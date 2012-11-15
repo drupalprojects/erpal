@@ -2097,99 +2097,83 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'nid' => 'nid',
     'title' => 'title',
-    'field_project_ref' => 'field_project_ref',
-    'field_task_type_term' => 'field_task_type_term',
     'field_task_status_term' => 'field_task_status_term',
     'field_priority_term' => 'field_priority_term',
-    'field_estimated_time' => 'field_estimated_time',
-    'field_parent_1' => 'field_parent_1',
+    'field_task_type_term' => 'field_task_type_term',
+    'created' => 'created',
+    'changed' => 'changed',
+    'field_date' => 'field_date',
+    'name' => 'name',
     'edit_node' => 'edit_node',
-    'nid' => 'nid',
-    'field_parent' => 'field_parent',
-    'field_weight' => 'field_weight',
-    'type' => 'type',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'nid' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_project_ref' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_task_type_term' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_task_status_term' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_priority_term' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_estimated_time' => array(
-      'sortable' => 0,
+    'field_task_type_term' => array(
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_parent_1' => array(
-      'sortable' => 0,
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'edit_node' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'nid' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_parent' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_weight' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'type' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -2695,12 +2679,13 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'nid_1' => 'nid_1',
     'title' => 'title',
-    'field_task_type_term' => 'field_task_type_term',
     'field_task_status_term' => 'field_task_status_term',
     'field_priority_term' => 'field_priority_term',
+    'field_task_type_term' => 'field_task_type_term',
     'created' => 'created',
     'changed' => 'changed',
     'field_date' => 'field_date',
+    'name' => 'name',
     'field_parent' => 'field_parent',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
@@ -2719,13 +2704,6 @@ function feature_erpal_project_basic_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_task_type_term' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'field_task_status_term' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -2734,6 +2712,13 @@ function feature_erpal_project_basic_views_default_views() {
       'empty_column' => 0,
     ),
     'field_priority_term' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_task_type_term' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -2755,6 +2740,13 @@ function feature_erpal_project_basic_views_default_views() {
       'empty_column' => 0,
     ),
     'field_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -3429,6 +3421,10 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['relationships']['field_parent_target_id']['id'] = 'field_parent_target_id';
   $handler->display->display_options['relationships']['field_parent_target_id']['table'] = 'field_data_field_parent';
   $handler->display->display_options['relationships']['field_parent_target_id']['field'] = 'field_parent_target_id';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -4580,65 +4576,77 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'nid' => 'nid',
     'title' => 'title',
-    'field_project_ref' => 'field_project_ref',
-    'field_task_type_term' => 'field_task_type_term',
     'field_task_status_term' => 'field_task_status_term',
     'field_priority_term' => 'field_priority_term',
-    'field_estimated_time' => 'field_estimated_time',
-    'field_parent_1' => 'field_parent_1',
+    'field_task_type_term' => 'field_task_type_term',
+    'created' => 'created',
+    'changed' => 'changed',
+    'field_date' => 'field_date',
+    'name' => 'name',
     'edit_node' => 'edit_node',
-    'nid' => 'nid',
-    'field_parent' => 'field_parent',
-    'field_weight' => 'field_weight',
-    'type' => 'type',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'nid' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_project_ref' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_task_type_term' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_task_status_term' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_priority_term' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_estimated_time' => array(
-      'sortable' => 0,
+    'field_task_type_term' => array(
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_parent_1' => array(
-      'sortable' => 0,
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -4649,51 +4657,23 @@ function feature_erpal_project_basic_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'nid' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_parent' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_weight' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'type' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
   );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '#';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['label'] = 'Ticket title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Type */
-  $handler->display->display_options['fields']['field_task_type_term']['id'] = 'field_task_type_term';
-  $handler->display->display_options['fields']['field_task_type_term']['table'] = 'field_data_field_task_type_term';
-  $handler->display->display_options['fields']['field_task_type_term']['field'] = 'field_task_type_term';
-  $handler->display->display_options['fields']['field_task_type_term']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_task_status_term']['id'] = 'field_task_status_term';
   $handler->display->display_options['fields']['field_task_status_term']['table'] = 'field_data_field_task_status_term';
@@ -4704,6 +4684,42 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_priority_term']['table'] = 'field_data_field_priority_term';
   $handler->display->display_options['fields']['field_priority_term']['field'] = 'field_priority_term';
   $handler->display->display_options['fields']['field_priority_term']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['field_task_type_term']['id'] = 'field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['table'] = 'field_data_field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['field'] = 'field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Submitted';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Last update';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  /* Field: Field: Period */
+  $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
+  $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
+  $handler->display->display_options['fields']['field_date']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'value2',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Author';
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
@@ -5229,11 +5245,6 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Ticket title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Type */
-  $handler->display->display_options['fields']['field_task_type_term']['id'] = 'field_task_type_term';
-  $handler->display->display_options['fields']['field_task_type_term']['table'] = 'field_data_field_task_type_term';
-  $handler->display->display_options['fields']['field_task_type_term']['field'] = 'field_task_type_term';
-  $handler->display->display_options['fields']['field_task_type_term']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Status */
   $handler->display->display_options['fields']['field_task_status_term']['id'] = 'field_task_status_term';
   $handler->display->display_options['fields']['field_task_status_term']['table'] = 'field_data_field_task_status_term';
@@ -5244,6 +5255,11 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_priority_term']['table'] = 'field_data_field_priority_term';
   $handler->display->display_options['fields']['field_priority_term']['field'] = 'field_priority_term';
   $handler->display->display_options['fields']['field_priority_term']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['field_task_type_term']['id'] = 'field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['table'] = 'field_data_field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['field'] = 'field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -5269,6 +5285,12 @@ function feature_erpal_project_basic_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Author';
   /* Field: Content: Parent */
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
