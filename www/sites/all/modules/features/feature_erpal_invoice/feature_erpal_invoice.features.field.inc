@@ -742,7 +742,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '14',
+        'weight' => '13',
       ),
     ),
   );
@@ -810,7 +810,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '42',
+        'weight' => '7',
       ),
     ),
   );
@@ -885,7 +885,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'erpal_invoice_helper',
         'settings' => array(),
         'type' => 'field_billable_inline',
-        'weight' => '10',
+        'weight' => '1',
       ),
     ),
   );
@@ -1129,7 +1129,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '12',
+        'weight' => '3',
       ),
     ),
   );
@@ -1432,7 +1432,7 @@ function feature_erpal_invoice_field_default_fields() {
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
-        'weight' => '15',
+        'weight' => '14',
       ),
     ),
   );
@@ -1562,7 +1562,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '40',
+        'weight' => '5',
       ),
     ),
   );
@@ -1616,7 +1616,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '41',
+        'weight' => '6',
       ),
     ),
   );
@@ -2026,7 +2026,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '43',
+        'weight' => '8',
       ),
     ),
   );
@@ -2080,7 +2080,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '11',
+        'weight' => '2',
       ),
     ),
   );
