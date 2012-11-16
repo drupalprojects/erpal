@@ -584,7 +584,7 @@ function _erpal_basic_helper_bulk_delete($nids, $redirect) {
    
   batch_set($batch);
 
-  batch_process($redirect); //return to the parent
+  batch_process($redirect); //return to the given redirect
 }
 
 /**

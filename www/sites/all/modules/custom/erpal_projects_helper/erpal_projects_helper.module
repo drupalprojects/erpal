@@ -742,7 +742,7 @@ function _erpal_projects_helper_call_form_alter_hook(&$form) {
 /**
 * Alter delete form
 */
-function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
+function _erpal_projects_helper_node_delete_confirm_alter(&$form, &$form_state) {
   $delete_nid = $form['nid']['#value'];
   $delete_node = node_load($delete_nid);  
   
@@ -811,10 +811,9 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
       ),
     ); 
 
-    
     //add project_nid and parent_nid as hidden values bevor node will be deleted
     $project_nid = $delete_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
-    $parent_nid = $delete_node->field_parent[LANGUAGE_NONE][0]['target_id'];
+    $parent_nid = isset($delete_node->field_parent[LANGUAGE_NONE][0]['target_id']) ? $delete_node->field_parent[LANGUAGE_NONE][0]['target_id'] : false;
     
     $form['delete_node'] = array(
       '#type' => 'value',
@@ -828,11 +827,12 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
     
     $form['parent_node'] = array(
       '#type' => 'value',
-      '#value' => node_load($parent_nid),
+      '#value' => $parent_nid ? node_load($parent_nid) : false,
     );
     
     $form['#submit'][] = '_erpal_projects_helper_task_delete_confirm_submit';
     $form['#validate'][] = '_erpal_projects_helper_check_budget_validate_on_delete';
+    
   }
 }
 
@@ -846,6 +846,18 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
   $parent_node = $values['parent_node'];
   $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
 
+  //if there is no destination, go back to the tasks or tickets view of the project
+  $destination = drupal_get_destination();
+  $node_delete_uri = entity_uri('node', $delete_node);
+  $node_delete_path = $node_delete_uri['path'];
+  $redirect = false;
+  if ($destination['destination'] == $_GET['q'] || $destination['destination'] == $node_delete_path) {
+    //no destination set, so set one    
+    $is_ticket = isset($delete_node->field_is_ticket[LANGUAGE_NONE][0]['value']) ? $delete_node->field_is_ticket[LANGUAGE_NONE][0]['value'] : false;
+    $type = $is_ticket ? 'tickets' : 'tasks';
+    $redirect = 'node/'.$project_nid.'/'.$type;
+  }
+
   if ($delete_children == 'parent') {
     //add all nodes to parent node
     $options = array();
@@ -853,9 +865,9 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
     //get all nodes that reference the delete node using the field_parent
     $child_nids = _erpal_projects_helper_get_tasks_child_nodes($delete_node, $options, true);
     $callback_function = '_erpal_projects_helper_bulk_update_callback';
-    $args['parent_nid'] = $parent_node->nid;
+    $args['parent_nid'] = is_object($parent_node) ? $parent_node->nid : false;
     
-    _erpal_basic_helper_bulk_update($child_nids, $callback_function, $args, 'node/'.$project_nid);
+    _erpal_basic_helper_bulk_update($child_nids, $callback_function, $args, $redirect);
    
   } elseif ($delete_children == 'delete') {
     //delete all sub tasks.
@@ -878,9 +890,7 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
     if (count($child_nids) > 0)
       $nids['node'] = $child_nids;
    
-    //billables will be automatically deleted if they are not billed
-    
-    $redirect = 'node/'.$project_nid;
+    //billables will be automatically deleted if they are not billed            
     _erpal_basic_helper_bulk_delete($nids, $redirect);    
   }
 }
@@ -891,7 +901,8 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
 function _erpal_projects_helper_bulk_update_callback($node, $args) {
   $parent_nid = $args['parent_nid'];
   
-  $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
+  if ($parent_nid)
+    $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
 }
 
 /**
