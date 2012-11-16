@@ -595,10 +595,10 @@ function template_preprocess_timetracking_button(&$variables) {
   
   $start_text = t('Start');
   $stop_text = t('Stop');
-  if ($variables['start_label'])
+  if (isset($variables['start_label']) && $variables['start_label'])
     $start_text = $variables['start_label'];
     
-  if ($variables['stop_label'])
+  if (isset($variables['stop_label']) && $variables['stop_label'])
     $stop_text = $variables['stop_label'];
     
   if ($state=='on') {
