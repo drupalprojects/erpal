@@ -1,0 +1,144 @@
+/****************************
+	General
+****************************/
+
+.group-left,
+.group-right,
+.group-advanced-left,
+.group-advanced-right
+{
+  background-color: #EEEEEE;
+  padding: 10px;
+}
+
+#erpal-project-node-form,
+#erpal-task-node-form {
+  max-width: 1070px;
+  margin-top: 20px;
+}
+/****************************
+	Group top
+****************************/
+
+.group-left {
+  min-width: 360px;
+  max-width: 780px;
+  width: 100%;
+  float: left;
+
+}
+
+.group-right {
+  width: 230px;
+  float: right;
+  margin-left: 20px;
+}
+
+/* fields in group left */
+.group-left .form-item-title {
+  margin-top: 0px;
+}
+
+.group-left #edit-title {
+  min-width: 360px;
+  max-width: 770px;
+  width: 100%;
+  
+}
+
+/* fields in group right */
+
+.form-item-group-content-access-und {
+  margin-top: 0px;
+}
+
+.group-right select,
+.group-right input:not([type='checkbox']),
+.group-advanced-right select,
+.group-advanced-right input:not([type='checkbox']){
+  width: 100%;
+}
+
+.edit-field-customer-ref-und-0-target-id ul.references-dialog-links li a {
+  display: block;
+}
+/****************************
+	Group advanced
+****************************/
+
+.group-advanced {
+  clear: both;
+}
+
+.group-advanced h3 {
+  border-bottom: 1px solid #525252;
+  padding: 20px 5px 10px;
+}
+
+.group-advanced h3 a{
+  background: url(../images/forms-advanced-arrow-open.png) no-repeat 2px 50%;
+  padding-left: 15px;
+}
+.group-advanced.collapsed h3 a{
+  background: url(../images/forms-advanced-arrow-collapsed.png) no-repeat 2px 50%;
+  padding-left: 15px;
+}
+
+.group-advanced-left {
+  min-width: 360px;
+  max-width: 780px;
+  float: left;
+  width: 100%;
+}
+
+.group-advanced-right {
+  width: 230px;
+  float: right;
+  margin-left: 20px;
+}
+
+
+/* fields in group left */
+
+
+
+/* fields in group right */
+
+
+
+
+
+/* only visible for admin */
+
+.vertical-tabs {
+  clear: both;
+}
+
+/****************************
+	Invoices
+****************************/
+
+/*** Group left ***/
+
+.group-invoice-left {
+  width: 50%;
+  float: left;
+}
+
+/*** Group right ***/
+
+.group-invoice-right {
+  width: 50%;
+  float: right;
+}
+
+/*** Group bottom ***/
+
+.group-invoice-bottom {
+	clear: both;
+}
+
+.group-invoice-sonstiges {
+	clear: both;
+	display: none;
+}
