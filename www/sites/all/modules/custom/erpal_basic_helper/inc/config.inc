@@ -143,7 +143,7 @@ function erpal_basic_helper_config_form($form, &$form_state){
   
   $form['date_settings']['hint'] = array(
     '#type' => 'item',
-    '#markup' => t('You can add more date types in !config_link', array('!config_link' => l(t('date time configuration'), 'admin/config/regional/date-time'))),
+    '#markup' => t('You can add more date formats in !config_link', array('!config_link' => l(t('date time configuration'), 'admin/config/regional/date-time/formats'))),
   );
   
   $form['submit'] = array(

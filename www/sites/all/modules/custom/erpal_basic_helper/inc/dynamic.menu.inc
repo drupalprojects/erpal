@@ -158,8 +158,6 @@ function erpal_make_local_link(&$data, $title, $path, $query = array()) {
   $item['localized_options'] += array('query' => array());
   if (count($query))
     $item['localized_options']['query'] += $query;
-    
-  $item['localized_options']['query'] += drupal_get_destination();
   
   return $item;
 }

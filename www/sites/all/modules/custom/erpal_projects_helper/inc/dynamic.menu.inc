@@ -10,6 +10,7 @@ define('ERPAL_CONTEXT_TASKS', 'tasks');
 define('ERPAL_CONTEXT_TICKETS', 'tickets');
 define('ERPAL_CONTEXT_TASK', 'task');
 define('ERPAL_CONTEXT_TASK_ADD', 'task_add');
+define('ERPAL_CONTEXT_TIMETRACKING_ADD', 'task_add');
 define('ERPAL_CONTEXT_TICKET', 'ticket');
 define('ERPAL_CONTEXT_NODE_TIMETRACKINGS', 'node_timetrackings');
 
@@ -26,6 +27,13 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   if (drupal_match_path($path, 'node/add/erpal-task*')) {
     $contexts[ERPAL_CONTEXT_TASK_ADD] = true;  
   }
+  
+  //do we have node add form of tasks, show the same navigation as in single task view
+  if (drupal_match_path($path, 'node/add/erpal-timetracking*')) {
+    $contexts[ERPAL_CONTEXT_TIMETRACKING_ADD] = true;  
+  }
+  
+  
   
   //CHECK PROJECT CONTEXT
   if (drupal_match_path($path, 'node/%*') ) {
@@ -109,10 +117,12 @@ function _erpal_projects_helper_get_menu_parents($router_item) {
   }
   
   $task_add = _erpal_basic_helper_has_context(ERPAL_CONTEXT_TASK_ADD, $router_item);
+  $timetracking_add = _erpal_basic_helper_has_context(ERPAL_CONTEXT_TIMETRACKING_ADD, $router_item);
   
-  if ($task_add) {
+  if ($task_add || $timetracking_add) {
     return 'projects/projects';
   }
+
 }
 
 /**
@@ -167,13 +177,33 @@ function erpal_projects_helper_dynamic_menu_items_alter(&$data, $router_item, $r
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_TICKET, $router_item)) {    
     $ticket_node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
     _erpal_projects_helper_ticket_links($data, $ticket_node);       
-  } 
+  }   
   
-  
-  //node add context
+  //node add task context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_TASK_ADD, $router_item)) {    
     _erpal_projects_helper_task_add_links($data);       
   } 
+  
+  //node add timetracking context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_TIMETRACKING_ADD, $router_item)) {    
+    _erpal_projects_helper_timetracking_add_links($data);       
+  } 
+}
+
+/**
+* Functions displays the top navigation in timetracking add / edit form
+*/
+function _erpal_projects_helper_timetracking_add_links(&$data) {
+  //the task should already be referenced in the  url. Get it and show the navigation of project view
+  $task_nid = isset($_GET['field_timetracking_subject']) ? $_GET['field_timetracking_subject'] : false;
+  
+  if (!$task_nid)
+    return;
+  
+  //get the project of the task to set context menu items
+  $task_node = node_load($task_nid);
+  $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+  _erpal_projects_helper_node_add_links_project_context($data, $project_nid, $task_nid);
 }
 
 /**
@@ -186,22 +216,35 @@ function _erpal_projects_helper_task_add_links(&$data) {
   if (!$project_nid)
     return;
     
-  if (isset($_GET['field_is_ticket']) && $_GET['field_is_ticket']) {
+  _erpal_projects_helper_node_add_links_project_context($data, $project_nid);
+  
+}
+
+/**
+* General navigation element on node add forms in project context
+*/
+function _erpal_projects_helper_node_add_links_project_context(&$data, $project_nid, $task_nid=false) {
+  
+  $subject_is_ticket = false;
+  if ($task_nid) {
+    $task_node = node_load($task_nid);
+    $subject_is_ticket = isset($task_node->field_is_ticket[LANGUAGE_NONE][0]) ? $task_node->field_is_ticket[LANGUAGE_NONE][0]['value'] : false;
+  }
+  
+  if (isset($_GET['field_is_ticket']) && $_GET['field_is_ticket'] || $subject_is_ticket) {
     $tasks_tab_active = false;
     $tickets_tab_active = true;
   } else {
     $tasks_tab_active = true;
     $tickets_tab_active = false;
   }
-    
+  
   erpal_make_local_tab($data, t('Summary'), 'node/'.$project_nid);
   erpal_make_local_tab($data, t('Pricing'), 'node/'.$project_nid.'/pricing');  
   erpal_make_local_tab($data, t('Relations'), 'node/'.$project_nid.'/relations');  
   erpal_make_local_tab($data, t('Tasks'), 'node/'.$project_nid.'/tasks', array(), $tasks_tab_active);  
   erpal_make_local_tab($data, t('Tickets'), 'node/'.$project_nid.'/tickets', array(), $tickets_tab_active);
   erpal_make_local_tab($data, t('Timetrackings'), 'node/'.$project_nid.'/timetracking');
-  
-  
 }
 
 /**
@@ -218,8 +261,7 @@ function _erpal_projects_helper_projects_links(&$data) {
 * Show all Links on timetrackings list of a node
 */
 function _erpal_projects_helper_node_timetrackings_links(&$data, $node) {
-  $query = array('field_timetracking_subject' => $node->nid);  
-  erpal_make_action($data, t('Add a timetracking'), 'node/add/erpal-timetracking', $query); 
+  //may be add links here. But no timetracking, because timetrackings need a task, not only a project
 }
 
 /**
