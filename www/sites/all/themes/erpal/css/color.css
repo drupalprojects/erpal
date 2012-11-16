@@ -236,26 +236,45 @@ ul.pager li a {
 	color: #525252;
 }
 
+/* hightlight of different states of tasks/projects */
+
+tr.odd.alert,
+tr.even.alert {
+	background-color: #FFDFE4 !important;
+}
+
+tr.odd.alert .active,
+tr.even.alert .active {
+	background-color:#eed0d5 !important;
+}
+
 .alert .field .field_item .field-name-field-task-status-term,
 .alert .field .field_item .field-name-field-date,
-.alert .field_item,
-.alert  td.views-field-field-date, 
+.alert .field-item,
+.pane-quicktabs-tasks-by-project-tabs .alert td.views-field-field-date,
+.alert  td.views-field-field-date-1, 
 .alert  td.views-field-field-next-contact, 
 .alert  td.views-field-field-task-status-term, 
 .alert  td.views-field-field-project-status-term,
 .alert  td.views-field-field-activity-status-term {
-	color: red;
+	color: #CC000C;
+}
+
+tr.odd.completed,
+tr.even.completed {
+	background-color: #EEEEEE !important;
 }
 
 .completed .field .field_item .field-name-field-task-status-term,
 .completed .field .field_item .field-name-field-completed,
-.completed .field_item,
-.completed  td.views-field-field-date, 
+.completed .field-item,
+.pane-quicktabs-tasks-by-project-tabs .completed  td.views-field-field-date,
+.completed  td.views-field-field-date-1, 
 .completed  td.views-field-field-next-contact, 
 .completed  td.views-field-field-task-status-term, 
 .completed  td.views-field-field-project-status-term,
 .completed  td.views-field-field-activity-status-term {
-	color: grey;
+	color: #088A58;
 }
 
 .pane-node-body{
