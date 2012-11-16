@@ -5,6 +5,15 @@ core = 7.x
 ; ----------
 ; Dependencies 
 ; ----------
+dependencies[] = content_access
+dependencies[] = nodetype_access
+dependencies[] = private_files_download_permission
+; Administration
+dependencies[] = front_page
+; Chaos tool suite
+dependencies[] = ctools
+dependencies[] = page_manager
+dependencies[] = views_content
 ; Core
 dependencies[] = block
 dependencies[] = color
@@ -32,19 +41,9 @@ dependencies[] = shortcut
 dependencies[] = system
 dependencies[] = taxonomy
 dependencies[] = text
+dependencies[] = toolbar
 dependencies[] = update
 dependencies[] = user
-
-; Access control
-dependencies[] = content_access
-dependencies[] = private_files_download_permission
-; Administration
-dependencies[] = toolbar 
-; Chaos tool suite
-dependencies[] = ctools
-dependencies[] = page_manager
-dependencies[] = views_content
-
 ; Date Item
 dependencies[] = date_item
 ; Date/Time
@@ -55,14 +54,14 @@ dependencies[] = date_popup
 dependencies[] = date_repeat
 dependencies[] = date_repeat_field
 dependencies[] = date_views
-; Development 
-dependencies[] = devel 
-; Display suite 
+; Display suite
 dependencies[] = ds
 dependencies[] = ds_forms
 ; ERPAL
 dependencies[] = erpal_basic_helper
+dependencies[] = erpal_bookmark_helper
 dependencies[] = erpal_contract_helper
+dependencies[] = erpal_dashboard_helper
 dependencies[] = erpal_hacks_helper
 dependencies[] = erpal_invoice_helper
 dependencies[] = erpal_layout_helper
@@ -81,8 +80,10 @@ dependencies[] = erpal_docs_helper
 ; ERPAL Features
 dependencies[] = feature_erpal_basic
 dependencies[] = feature_erpal_book
+dependencies[] = feature_erpal_bookmark
 dependencies[] = feature_erpal_calendar
 dependencies[] = feature_erpal_crm
+dependencies[] = feature_erpal_dashboard
 dependencies[] = feature_erpal_docs
 dependencies[] = feature_erpal_invoice
 dependencies[] = feature_erpal_layout
@@ -114,6 +115,10 @@ dependencies[] = field_collection
 dependencies[] = field_group
 dependencies[] = link
 dependencies[] = references_dialog
+; Flags
+dependencies[] = flag
+; Homebox
+dependencies[] = homebox
 ; Organic groups
 dependencies[] = og
 dependencies[] = og_access
@@ -133,7 +138,7 @@ dependencies[] = profile2
 dependencies[] = profile2_page
 dependencies[] = quicktabs
 dependencies[] = rel
-dependencies[] = strongarm 
+dependencies[] = strongarm
 dependencies[] = timetracking
 dependencies[] = token
 ; Panels
@@ -152,6 +157,8 @@ dependencies[] = relation_ui
 dependencies[] = services
 ; Services - servers
 dependencies[] = rest_server
+; User interface
+dependencies[] = autocomplete_deluxe
 ; Views
 dependencies[] = better_exposed_filters
 dependencies[] = views
@@ -160,6 +167,7 @@ dependencies[] = views_jstree
 dependencies[] = views_ui
 ; Features
 dependencies[] = features
+dependencies[] = erpal_germany_permissions
 
 
 
