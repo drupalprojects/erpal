@@ -300,19 +300,7 @@ function erpal_germany_config_form_submit($form, $form_state){
 function erpal_germany_invoice_config_form(){
   drupal_set_title(st('Erpal Invoice configuration'));
   
-  //set default vat-rate for erpal invoice
-  $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
-  variable_set('erpal_invoice_vat_rates_string', $vatRates);
-  variable_set('erpal_invoice_default_vat_rate', '19'); 
-  
-  $manualNote = 'Thanks for your order. Please pay the amount of [erpal_invoice:total]'
-    . '[erpal_invoice:currency] till [erpal_invoice:invoice_date].'
-    . "\r\n" 
-    . "\r\n" 
-    . 'Best regards';
-  variable_set('erpal_invoice_manuall_notes', $manualNote);
-  $skontoText = '[erpal_invoice_skonto:skonto_rate]% skonto if you pay within [erpal_invoice_skonto:skonto_period] days.';
-  variable_set('erpal_invoice_skonto_text', $skontoText);
+ 
   
   $form = drupal_get_form('erpal_invoice_helper_config_form');
   return $form;

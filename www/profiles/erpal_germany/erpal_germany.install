@@ -135,7 +135,6 @@ function erpal_germany_invoice_config(){
   $skontoText = '[erpal_invoice_skonto:skonto_rate]% skonto if you pay within [erpal_invoice_skonto:skonto_period] days.';
   variable_set('erpal_invoice_skonto_text', $skontoText);  
   
-  
 }
 
   
