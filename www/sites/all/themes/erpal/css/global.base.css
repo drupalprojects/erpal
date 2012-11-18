@@ -611,8 +611,8 @@ header[role=banner],
 .element-hidden {
   display: none;
 }
-.pane-page-title h2.pane-title {
-	margin: 0;
+h2.pane-title.block-title {
+	margin: 0 0 20px;
     font-size: 36px;
     font-weight: normal;
     line-height: 0.8em;
