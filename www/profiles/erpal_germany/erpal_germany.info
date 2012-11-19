@@ -5,16 +5,6 @@ core = 7.x
 ; ----------
 ; Dependencies 
 ; ----------
-dependencies[] = content_access
-dependencies[] = nodetype_access
-dependencies[] = private_files_download_permission
-; Administration
-dependencies[] = front_page
-; Chaos tool suite
-dependencies[] = ctools
-dependencies[] = page_manager
-dependencies[] = views_content
-; Core
 dependencies[] = block
 dependencies[] = color
 dependencies[] = comment
@@ -44,6 +34,17 @@ dependencies[] = text
 dependencies[] = toolbar
 dependencies[] = update
 dependencies[] = user
+
+dependencies[] = content_access
+dependencies[] = nodetype_access
+dependencies[] = private_files_download_permission
+; Administration
+dependencies[] = front_page
+; Chaos tool suite
+dependencies[] = ctools
+dependencies[] = page_manager
+dependencies[] = views_content
+; Core
 ; Date Item
 dependencies[] = date_item
 ; Date/Time
@@ -149,7 +150,6 @@ dependencies[] = panels_mini
 dependencies[] = panels_style_collapsible
 ; Relation
 dependencies[] = relation
-dependencies[] = relation_add
 dependencies[] = relation_dummy_field
 dependencies[] = relation_endpoint
 dependencies[] = relation_ui
