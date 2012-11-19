@@ -110,7 +110,7 @@ function feature_erpal_invoice_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '3',
+          'weight' => '19',
         ),
         'additional_settings' => array(
           'weight' => '46',
@@ -191,7 +191,7 @@ function feature_erpal_invoice_strongarm() {
           'weight' => '34',
         ),
         'path' => array(
-          'weight' => '4',
+          'weight' => '38',
         ),
         'alias' => array(
           'weight' => '23',
