@@ -150,18 +150,18 @@ h1 {
  */
 .region-sidebar-right .pane-page-actions li a{
 	color: #525252;
-	background-image: linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
-	background-image: -o-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
-	background-image: -moz-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
-	background-image: -webkit-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
-	background-image: -ms-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
+	background-image: linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
+	background-image: -o-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF7 2%);
+	background-image: -moz-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
+	background-image: -webkit-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
+	background-image: -ms-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
 
 	background-image: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
-		color-stop(0.44, #EFEFEF),
-		color-stop(0.72, #E6E6E6)
+		color-stop(0.44, #E6E6E6),
+		color-stop(0.72, #EFEFEF)
 	);
 }
 
