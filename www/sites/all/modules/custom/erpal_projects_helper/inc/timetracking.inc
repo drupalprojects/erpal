@@ -78,17 +78,28 @@ function erpal_projects_helper_summed_timetracking($node) {
 }
 
 /**
+* Preprocess timetracking view fields
+*/
+function erpal_projects_helper_views_post_execute(&$view) {
+  _erpal_projects_helper_view_timetracking_entites_post_execute($view);
+}
+
+/**
 * Post execute handles timetracking view so we can replace an empty timetracking button computed field the timetracking button using the md5 checksum of the description
 */
 function _erpal_projects_helper_view_timetracking_entites_post_execute(&$view) {
+
+  if ($view->name != 'timetracking_entities')
+    return;
 
   foreach ($view->result as $delta=>$result_obj) {
     if (!$result_obj->field_field_timetracking_button) {
       //if we have a subject, use this, otherwise use the md5 of the subject.
       $subject_nid = $result_obj->node_timetracking_nid;
       $description = $result_obj->timetracking_description;
+      
       if (!$subject_nid) {
-        $subject_nid = md5($description);
+        $subject_nid = md5($description);        
       }  
       $display_output = _erpal_projects_helper_render_timetracking_button_field($subject_nid);
       $result_obj->field_field_timetracking_button[0] = array(
@@ -103,7 +114,7 @@ function _erpal_projects_helper_view_timetracking_entites_post_execute(&$view) {
 
 
 /**
-* Implements callback for display funciton for timetracking_button as computed field
+* Implements callback for display function for timetracking_button as computed field
 */
 function computed_field_field_timetracking_button_display($field, $entity_field_item, $entity_lang, $langcode) {
   $nid = $entity_field_item['value'];
@@ -158,7 +169,7 @@ function erpal_projects_helper_timetracking_finalise_action(&$timetrackings, $co
 * Renders the html code for timetracking button on tasks
 */
 function _erpal_projects_helper_render_timetracking_button_field($nid, $start_label=false, $stop_label=false) {
-  if (!is_numeric($nid)) {  //it could be an MD5 has
+  if (!is_numeric($nid)) {  //it could be an MD5 hash
     //we have no subject but timetracking can be started without subject!
     $node_type = false;
     $node = false;
@@ -166,9 +177,10 @@ function _erpal_projects_helper_render_timetracking_button_field($nid, $start_la
     $node = node_load($nid);
     $node_type = $node->type;
   }
-  
+
   if ($node_type == 'erpal_task' || !$node_type) {
     //add field to show the timetracking toggle button   
+    $tracked_time = 0;
     $has_timetracking_active = _erpal_projects_helper_task_has_timetracking_entity_active($nid, $tracked_time);
     $has_timetracking_active_str = $has_timetracking_active ? 'on' : 'off';
 
@@ -181,19 +193,23 @@ function _erpal_projects_helper_render_timetracking_button_field($nid, $start_la
 
 /**
 * Checks if there are timetracking entity (temporary) that have the given node as subject_id and have no duration set
+* @param $nid can be a numeric nid or a md5 string of the description of the timetracking, if timetracking has no subject, yet
 * @return false if no timetracking entities are running, otherwise true
 */
 function _erpal_projects_helper_task_has_timetracking_entity_active($nid, &$tracked_time) {
   global $user;
   
-  if (!$nid) { //timetrackings without subject
+  if (!is_numeric($nid)) { //timetrackings without subject but md5 subject
     $timetracking_ids = _timetrackings_by_user($user->uid, false);
     //check if there is one timetracking without subject
     $timetracking_ids_no_subject = array();
     foreach ($timetracking_ids as $timetracking_id) {
       $timetracking = timetracking_load($timetracking_id);
-      if (!$timetracking->subject_id)
+      $equal_description = $nid == md5($timetracking->description);
+      if (!$timetracking->subject_id && $equal_description) {  //it has no subject node but it must match the md5 description, otherwise the timetrcking was for another subject text.
+      
         $timetracking_ids_no_subject[] = $timetracking_id;
+      }
     }
     
     $timetracking_ids = $timetracking_ids_no_subject;
@@ -202,6 +218,7 @@ function _erpal_projects_helper_task_has_timetracking_entity_active($nid, &$trac
   
   //load all entities and calculate the total time.
   $timetrackings = timetracking_load_multiple($timetracking_ids);
+  
   $total = 0;
   $has_running = false;
   foreach ($timetrackings as $timetracking) {
