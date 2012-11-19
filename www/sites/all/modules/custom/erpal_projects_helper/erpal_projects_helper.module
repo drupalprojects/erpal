@@ -99,29 +99,32 @@ function erpal_projects_helper_custom_node_content_block_content($node) {
 /**
 * Implements hook_entity_update
 */
-function erpal_projects_helper_entity_update($entity, $type) {
+function erpal_projects_helper_entity_update($entity, $entity_type) {
 
-  if ($type == 'budget') {
-    //if budget has no timetrackings yet, enque this budget and its host node to timetracking refactoring queue
-    $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($entity->budget_id);
-    if (!count($timetracking_nids)) {
-      //get the field-collection that referenecs this budget entity
-      $pricing_field_collection = _erpal_projects_helper_pricing_entities_with_budget($entity->budget_id);
-      if (!isset($pricing_field_collection[0]))
-        return;
+  if ($entity_type == 'budget') {
+    $skip_refactoring = isset($entity->skip_refactoring) && $entity->skip_refactoring ? $entity->skip_refactoring : false;
+    if (!$skip_refactoring) {
+      //if budget has no timetrackings yet, enque this budget and its host node to timetracking refactoring queue
+      $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($entity->budget_id);
+      if (!count($timetracking_nids)) {
+        //get the field-collection that referenecs this budget entity
+        $pricing_field_collection = _erpal_projects_helper_pricing_entities_with_budget($entity->budget_id);
+        if (!isset($pricing_field_collection[0]))
+          return;
+          
+        $pricing_field_collection_id = $pricing_field_collection[0];
+        $pricing_field_collection = entity_load('field_collection_item', array($pricing_field_collection_id));
+        $pricing_field_collection = $pricing_field_collection[$pricing_field_collection_id];
         
-      $pricing_field_collection_id = $pricing_field_collection[0];
-      $pricing_field_collection = entity_load('field_collection_item', array($pricing_field_collection_id));
-      $pricing_field_collection = $pricing_field_collection[$pricing_field_collection_id];
-      
-      //get the host node of the budget
-      $budget_host_node = $pricing_field_collection->hostEntity();
-      _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, array($entity->budget_id));
+        //get the host node of the budget
+        $budget_host_node = $pricing_field_collection->hostEntity();
+        _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, array($entity->budget_id));
+      }
     }
   }
   
   //check if we want to send some notifications
-  _erpal_projects_helper_handle_notifications_on_subscribers($entity, $type, 'update');
+  _erpal_projects_helper_handle_notifications_on_subscribers($entity, $entity_type, 'update');
 }
 
 /**
@@ -393,7 +396,7 @@ function erpal_projects_helper_cron_queue_info() {
   $queues = array();
   $queues['reorganize_timetrackings'] = array(
     'worker callback' => '_erpal_projects_helper_reorganize_timetrackings_queue_run', // This is the callback function for each queue item.
-    'time' => 30, // This is the max run time per cron run in seconds.
+    'time' => 60, // This is the max run time per cron run in seconds.
   );
   
   return $queues;

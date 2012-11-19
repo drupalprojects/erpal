@@ -728,7 +728,6 @@ function _erpal_billable_update_billable($node, $op) {
   }
   
   $is_timetracking = $subject_node->type == 'erpal_timetracking';
-
   $billable_information = _erpal_projects_billable_subject_billable_information_subject($node, $is_timetracking);  
 
   //if we have timetracking and budget per hour price mode, preprocess the timetracking
