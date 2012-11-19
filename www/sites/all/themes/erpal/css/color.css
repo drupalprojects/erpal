@@ -150,24 +150,23 @@ h1 {
  */
 .region-sidebar-right .pane-page-actions li a{
 	color: #525252;
-	background-image: linear-gradient(bottom, rgb(234,234,234) 42%, rgb(236,236,236) 71%, rgb(237,237,237) 86%);
-	background-image: -o-linear-gradient(bottom, rgb(234,234,234) 42%, rgb(236,236,236) 71%, rgb(237,237,237) 86%);
-	background-image: -moz-linear-gradient(bottom, rgb(234,234,234) 42%, rgb(236,236,236) 71%, rgb(237,237,237) 86%);
-	background-image: -webkit-linear-gradient(bottom, rgb(234,234,234) 42%, rgb(236,236,236) 71%, rgb(237,237,237) 86%);
-	background-image: -ms-linear-gradient(bottom, rgb(234,234,234) 42%, rgb(236,236,236) 71%, rgb(237,237,237) 86%);
+	background-image: linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
+	background-image: -o-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
+	background-image: -moz-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
+	background-image: -webkit-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
+	background-image: -ms-linear-gradient(bottom, #EFEFEF 44%, #E6E6E6 72%);
 
 	background-image: -webkit-gradient(
-	linear,
-	left bottom,
-	left top,
-	color-stop(0.42, rgb(234,234,234)),
-	color-stop(0.71, rgb(236,236,236)),
-	color-stop(0.86, rgb(237,237,237))
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.44, #EFEFEF),
+		color-stop(0.72, #E6E6E6)
 	);
 }
 
 #mini-panel-task_status_panel{
-	background-color: #dddddd;
+	background-color: #eeeeee;
 	color: #525252;
 }
 .panel-display .pane-entity-field h2.pane-title {
