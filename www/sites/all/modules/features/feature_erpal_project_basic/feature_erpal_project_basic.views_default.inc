@@ -230,6 +230,37 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_timetracking_button']['field'] = 'field_timetracking_button';
   $handler->display->display_options['fields']['field_timetracking_button']['label'] = 'Timetracking';
   $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
+  $translatables['assigned_tasks'] = array(
+    t('Master'),
+    t('Assigned open tasks'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No tasks available'),
+    t('User entity referenced from field_task_assigned_users'),
+    t('term from field_task_status_term'),
+    t('Title'),
+    t('Project'),
+    t('Priority'),
+    t('Deadline'),
+    t('Timetracking button'),
+    t('Assigned tasks page'),
+    t('Status'),
+    t('Progress'),
+    t('Parent'),
+    t('Timetracking'),
+    t('Assigned tasks block'),
+  );
   $export['assigned_tasks'] = $view;
 
   $view = new view();
@@ -650,6 +681,39 @@ function feature_erpal_project_basic_views_default_views() {
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['projects'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No projects found'),
+    t('Title'),
+    t('Customer'),
+    t('Status'),
+    t('Priority'),
+    t('Project starts'),
+    t('Project ends'),
+    t('Projects by activity pane'),
+    t('All'),
+    t('View panes'),
+    t('Projects and tasks reference dialog search'),
+    t('Projects and tasks'),
+    t('Content entity referenced from field_project_ref'),
+    t('Type'),
+    t('Tasks by project'),
+    t('Projects pane'),
+    t('Search Terms'),
+  );
   $export['projects'] = $view;
 
   $view = new view();
@@ -3297,6 +3361,63 @@ function feature_erpal_project_basic_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['tasks'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('No tasks available'),
+    t('Content entity referenced from field_parent'),
+    t('author'),
+    t('Project'),
+    t('Type'),
+    t('Status'),
+    t('Priority'),
+    t('Time'),
+    t('[field_estimated_time] h'),
+    t('Parent'),
+    t('Edit'),
+    t('Nid'),
+    t('Weight'),
+    t('Assigned'),
+    t('Title'),
+    t('Categories'),
+    t('Task by project pane tree'),
+    t('Tree'),
+    t('All'),
+    t('ID'),
+    t('Priority (field_priority_term)'),
+    t('View panes'),
+    t('Task child view AJAX'),
+    t('Task child view AJAX TOP'),
+    t('Subtasks Tree'),
+    t('Subtasks (tree)'),
+    t('Tasks by ID'),
+    t('Subtasks List'),
+    t('Subtasks (list)'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('#'),
+    t('Task title'),
+    t('Submitted'),
+    t('Last update'),
+    t('Deadline'),
+    t('Author'),
+    t('Subtasks Details'),
+    t('Subtasks (details)'),
+    t('Tasks by project pane list'),
+    t('List'),
+    t('Tasks by project pane details'),
+    t('Details'),
+  );
   $export['tasks'] = $view;
 
   $view = new view();
@@ -5754,6 +5875,63 @@ function feature_erpal_project_basic_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['tickets'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('No tasks available'),
+    t('Content entity referenced from field_parent'),
+    t('author'),
+    t('Project'),
+    t('Type'),
+    t('Status'),
+    t('Priority'),
+    t('Time'),
+    t('[field_estimated_time] h'),
+    t('Parent'),
+    t('Edit'),
+    t('Nid'),
+    t('Weight'),
+    t('Assigned'),
+    t('Title'),
+    t('Categories'),
+    t('ID'),
+    t('Tickets by project pane tree'),
+    t('Tree'),
+    t('All'),
+    t('Priority (field_priority_term)'),
+    t('View panes'),
+    t('Tickets child view AJAX'),
+    t('Tickets child view AJAX TOP'),
+    t('Subtickets Tree'),
+    t('Subtickets (tree)'),
+    t('Tickets by ID'),
+    t('Subtickets List'),
+    t('Subtickets (list)'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('#'),
+    t('Ticket title'),
+    t('Submitted'),
+    t('Last update'),
+    t('Deadline'),
+    t('Author'),
+    t('Subtickets Details'),
+    t('Subtasks (details)'),
+    t('Tickets by project pane list'),
+    t('List'),
+    t('Tickets by project pane details'),
+    t('Details'),
+  );
   $export['tickets'] = $view;
 
   $view = new view();
@@ -6019,6 +6197,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['description']['id'] = 'description';
   $handler->display->display_options['fields']['description']['table'] = 'timetracking';
   $handler->display->display_options['fields']['description']['field'] = 'description';
+  $handler->display->display_options['fields']['description']['label'] = 'Artikelbezeichnung';
   /* Field: Timetracking: Time_start */
   $handler->display->display_options['fields']['time_start']['id'] = 'time_start';
   $handler->display->display_options['fields']['time_start']['table'] = 'timetracking';
@@ -6063,6 +6242,11 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_timetracking_button']['relationship'] = 'subject_id';
   $handler->display->display_options['fields']['field_timetracking_button']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
+  /* Sort criterion: Timetracking: Time_start */
+  $handler->display->display_options['sorts']['time_start']['id'] = 'time_start';
+  $handler->display->display_options['sorts']['time_start']['table'] = 'timetracking';
+  $handler->display->display_options['sorts']['time_start']['field'] = 'time_start';
+  $handler->display->display_options['sorts']['time_start']['order'] = 'DESC';
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
@@ -6122,7 +6306,37 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['description']['id'] = 'description';
   $handler->display->display_options['fields']['description']['table'] = 'timetracking';
   $handler->display->display_options['fields']['description']['field'] = 'description';
+  $handler->display->display_options['fields']['description']['label'] = 'Artikelbezeichnung';
   $handler->display->display_options['fields']['description']['exclude'] = TRUE;
+  $translatables['timetracking_entities'] = array(
+    t('Master'),
+    t('My unbooked timetrackings'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('No timetrackings available'),
+    t('Timetracking subject'),
+    t('Timetracking user'),
+    t('Timetracking'),
+    t('Timetracking ID'),
+    t('.'),
+    t(','),
+    t('Changed'),
+    t('Artikelbezeichnung'),
+    t('start'),
+    t('end'),
+    t('Duration'),
+    t('Subject'),
+    t('User'),
+    t('Delete Link'),
+    t('Edit Link'),
+    t('Timetracking button'),
+    t('My timetracking entites'),
+    t('My Timetrackings block'),
+  );
   $export['timetracking_entities'] = $view;
 
   $view = new view();
@@ -6752,6 +6966,41 @@ function feature_erpal_project_basic_views_default_views() {
       'fixed' => '',
       'label' => 'Budget: Budget ID',
     ),
+  );
+  $translatables['timetrackings'] = array(
+    t('Master'),
+    t('Timetrackings'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No timetrackings available'),
+    t('author'),
+    t('field_timetracking_subject'),
+    t('Date'),
+    t('Duration'),
+    t('Billing Duration'),
+    t('Task'),
+    t('Project'),
+    t('User'),
+    t('All'),
+    t('Search Terms'),
+    t('field_project_ref'),
+    t('Timetrackings by task'),
+    t('View panes'),
+    t('Timetracking by project pane'),
+    t('Timetracking title'),
+    t('Budget timetrackings pane'),
+    t('budget entity referenced from field_budget'),
   );
   $export['timetrackings'] = $view;
 

@@ -214,7 +214,6 @@ features[variable][] = node_preview_erpal_timetracking
 features[variable][] = node_submitted_erpal_project
 features[variable][] = node_submitted_erpal_task
 features[variable][] = node_submitted_erpal_timetracking
-features[variable][] = og_group_type_erpal_task
 features[variable][] = pathauto_node_erpal_project_pattern
 features[variable][] = pathauto_node_erpal_task_pattern
 features[variable][] = pathauto_node_erpal_timetracking_pattern
