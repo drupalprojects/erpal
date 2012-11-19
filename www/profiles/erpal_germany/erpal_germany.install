@@ -14,6 +14,7 @@ include('erpal_germany_relations.inc');
  * @see system_install()
  */
 function erpal_germany_install() {
+  
   // adaptivetheme und theme erpal anschalten und auf default setzen
   $default_theme = 'erpal';
   $admin_theme = 'adaptivetheme_admin';
@@ -38,7 +39,6 @@ function erpal_germany_install() {
   variable_set('admin_theme', $admin_theme);
   // $default_theme als default
   variable_set('theme_default', $default_theme);
-  
   
   // Add text formats.
   $filtered_html_format = array(
@@ -93,32 +93,38 @@ function erpal_germany_install() {
       ),
     ),
   );
+  
   $full_html_format = (object) $full_html_format;
   filter_format_save($full_html_format);
   
   // revert features 
-  //features_revert();
+  features_revert();
   
   //rebuild content access permissions
   node_access_rebuild(); 
+
   
   // create taxonomy
   erpal_germany_create_taxonomy();
+
     
   erpal_germany_create_relations();
+
   
   erpal_germany_invoice_config();
   
-  //erpal_germany_calendar_config();
+    
+  erpal_germany_calendar_config();
+  
 }
 
-//~ function erpal_germany_calendar_config(){
-  //~ _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
-  //~ _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', '');
-  //~ _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', '');
-  //~ _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', '');
-  //~ _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
-//~ }
+function erpal_germany_calendar_config(){
+  _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
+  _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
+}
 
 function erpal_germany_invoice_config(){
   //set default vat-rate for erpal invoice

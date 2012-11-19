@@ -269,6 +269,9 @@ function erpal_germany_create_taxonomy(){
  
  $activity_vocabulary = new stdClass();
  $activity_vocabulary->name = 'Activity status terms';
+ $activity_vocabulary->description = st('The status of the activity');
+ $activity_vocabulary->machine_name = 'activity_status_terms';
+ $activity_vocabulary->help = st('Select the status of the activity');
  $activity_terms = array(
   array(
     'name' => 'other',
