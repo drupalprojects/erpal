@@ -113,6 +113,7 @@ features[field][] = node-erpal_task-field_task_status_term
 features[field][] = node-erpal_task-field_task_type_term
 features[field][] = node-erpal_task-field_timetracking_button
 features[field][] = node-erpal_task-field_weight
+features[field][] = node-erpal_timetracking-body
 features[field][] = node-erpal_timetracking-field_billing_duration
 features[field][] = node-erpal_timetracking-field_budget
 features[field][] = node-erpal_timetracking-field_date_time
