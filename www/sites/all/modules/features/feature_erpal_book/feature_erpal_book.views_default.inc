@@ -335,7 +335,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['date_format'] = 'int_date_time';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -588,7 +588,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['date_format'] = 'int_date_time';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -630,13 +630,24 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['filters']['field_is_template_value']['id'] = 'field_is_template_value';
   $handler->display->display_options['filters']['field_is_template_value']['table'] = 'field_data_field_is_template';
   $handler->display->display_options['filters']['field_is_template_value']['field'] = 'field_is_template_value';
-  $handler->display->display_options['filters']['field_is_template_value']['operator'] = 'in';
+  $handler->display->display_options['filters']['field_is_template_value']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['filters']['field_is_template_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_is_template_value']['expose']['operator_id'] = 'field_is_template_value_op';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['label'] = 'Is template';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['operator'] = 'field_is_template_value_op';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['identifier'] = 'field_is_template_value';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_is_template_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   $handler->display->display_options['path'] = 'books/clonetemplates/%';
   $export['books'] = $view;
 

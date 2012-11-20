@@ -115,6 +115,7 @@ function timetracking_quick_form($form, $form_state) {
   $with_subject = $grouped_trackings['with_subject'];
   $without_subject = $grouped_trackings['without_subject'];
   $with_subject_for_list = array();
+
   foreach ($with_subject as $subject_id=>$data) {
     $subject = $data['subject'];
 
@@ -241,7 +242,7 @@ function _timetracking_calculate_current_timetrackings() {
 
     $init_data = array('total_duration'=>0, 'state'=>'off', 'subject'=>false); //initialise data array
     $duration = $timetracking->time_end ? $timetracking->duration : (time() - $timetracking->time_start) / (60*60);
-    if ($subject_id) {
+    if ($subject_id && is_numeric($subject_id)) {
       $subject = node_load($subject_id);//@TODO make this compatible with all entitys and save the entity type into the datebase of timetrackings, 
       //group them by subject
       if (isset($with_subject[$subject_id]) && $with_subject[$subject_id]) {

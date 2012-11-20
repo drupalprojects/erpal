@@ -40,6 +40,7 @@ dependencies[] = timetracking
 dependencies[] = views
 dependencies[] = views_content
 features[conditional_fields][] = field_collection_item:field_pricing
+features[ctools][] = ds:ds:1
 features[ctools][] = features_plumber:features_plumber_records:1
 features[ctools][] = field_group:field_group:1
 features[ctools][] = page_manager:pages_default:1

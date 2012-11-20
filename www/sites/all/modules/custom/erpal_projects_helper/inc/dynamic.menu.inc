@@ -5,6 +5,8 @@
 //define some contexts
 define('ERPAL_CONTEXT_PROJECTS', 'projects'); //projects list
 define('ERPAL_CONTEXT_PROJECTS_GLOBAL', 'projects_global'); //we are in projects view or in a tab that belongs to the projects
+define('ERPAL_CONTEXT_PROJECT_EDIT', 'project_edit');
+define('ERPAL_CONTEXT_PROJECT_ADD', 'project_add');
 define('ERPAL_CONTEXT_PROJECT', 'project');
 define('ERPAL_CONTEXT_TASKS', 'tasks');
 define('ERPAL_CONTEXT_TICKETS', 'tickets');
@@ -35,7 +37,11 @@ function erpal_projects_helper_erpal_contexts($router_item) {
   }
   
   if ($path == 'node/%/edit') {
-    $contexts[ERPAL_CONTEXT_TASK_EDIT] = true;
+    $node = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
+    if ($node->type == 'erpal_task')
+      $contexts[ERPAL_CONTEXT_TASK_EDIT] = true;
+    elseif ($node->type == 'erpal_project') 
+      $contexts[ERPAL_CONTEXT_PROJECT_EDIT] = true;
   }
   
   //do we have node add form of tasks, show the same navigation as in single task view

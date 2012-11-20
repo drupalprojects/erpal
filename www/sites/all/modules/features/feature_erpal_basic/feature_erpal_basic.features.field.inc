@@ -943,7 +943,7 @@ function feature_erpal_basic_field_default_fields() {
             'link' => FALSE,
           ),
           'type' => 'entityreference_label',
-          'weight' => 24,
+          'weight' => '24',
         ),
         'full' => array(
           'label' => 'above',
@@ -1108,7 +1108,7 @@ function feature_erpal_basic_field_default_fields() {
           'label' => 'above',
           'module' => 'date',
           'settings' => array(
-            'format_type' => 'long',
+            'format_type' => 'erpal_date',
             'fromto' => 'both',
             'multiple_from' => '',
             'multiple_number' => '',
@@ -2034,7 +2034,7 @@ function feature_erpal_basic_field_default_fields() {
           'module' => 'link',
           'settings' => array(),
           'type' => 'link_default',
-          'weight' => 25,
+          'weight' => '25',
         ),
         'full' => array(
           'label' => 'above',
