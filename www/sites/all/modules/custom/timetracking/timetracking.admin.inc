@@ -252,7 +252,6 @@ function timetracking_edit_form_validate(&$form, &$form_state) {
     $calculated_duration = round(($time_end - $time_start) / (60*60), 2);
 
   //allow only numbers in total_hours field
-  dpm($duration ."--". $calculated_duration);
   if ($duration && $calculated_duration && $duration != $calculated_duration) {
     form_set_error('duration', t('Duration is not equal with difference of start and end time'));
   }
