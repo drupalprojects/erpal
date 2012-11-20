@@ -299,7 +299,7 @@ function _erpal_contract_helper_set_default_pricing(&$form, &$form_state) {
     $contract_payment = $form['field_contract_payment'][LANGUAGE_NONE][0];
 
     $customer_nid = isset($contract_payment['field_customer_ref'][LANGUAGE_NONE][0]) ? $contract_payment['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
-    
+
     $customer_defaults = false;
     if ($customer_nid) {
       $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);

@@ -144,6 +144,7 @@ function _erpal_crm_helper_contact_links(&$data, $router_item, $contact_node) {
   $query = array('field_customer_ref' => $contact_node->nid, 'destination' => $_GET['q']);
   erpal_make_action($data, t('Create a new activity for this contact'), 'node/add/erpal-crm-activity', $query);
   erpal_make_action($data, t('Create a new invoice for this contact'), 'node/add/erpal-invoice', $query);
+  erpal_make_action($data, t('Create a new contract for this contact'), 'node/add/erpal-contract', $query);
   
   erpal_make_local_tab($data, t('Contacts'), 'crm/contacts');
 }
