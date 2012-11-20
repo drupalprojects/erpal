@@ -138,6 +138,7 @@ features[node][] = erpal_project
 features[node][] = erpal_task
 features[node][] = erpal_timetracking
 features[page_manager_handlers][] = node_view_panel_context
+features[page_manager_handlers][] = node_view_panel_context_10
 features[page_manager_handlers][] = node_view_panel_context_2
 features[page_manager_pages][] = page_budgets
 features[page_manager_pages][] = project_tasks
