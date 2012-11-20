@@ -120,7 +120,7 @@ function _erpal_projects_service_get_task($id, $return_real_node=true) {
 function _erpal_projects_service_task_out($task_node) {
 
   //get task type
-  $type_tid = isset($task_node->field_task_type_term[LANGUAGE_NONE][0]['tid']) ? $task_node->field_task_type_term[LANGUAGE_NONE][0]['tid'] : false,
+  $type_tid = isset($task_node->field_task_type_term[LANGUAGE_NONE][0]['tid']) ? $task_node->field_task_type_term[LANGUAGE_NONE][0]['tid'] : false;
   
   $task_type = '';
   if ($type_tid) {

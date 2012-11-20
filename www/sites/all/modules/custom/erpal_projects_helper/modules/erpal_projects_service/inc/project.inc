@@ -112,7 +112,7 @@ function _erpal_projects_service_project_out($project_node) {
   }
 
   //get project status term
-  $status_tid = isset($project_node->field_project_status_term[LANGUAGE_NONE][0]['tid']) ? $project_node->field_project_status_term[LANGUAGE_NONE][0]['tid'] : false,
+  $status_tid = isset($project_node->field_project_status_term[LANGUAGE_NONE][0]['tid']) ? $project_node->field_project_status_term[LANGUAGE_NONE][0]['tid'] : false;
   
   $status = '';
   if ($status_tid) {
