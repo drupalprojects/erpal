@@ -1443,7 +1443,7 @@ function _erpal_invoice_helper_get_customer_defaults($customer_node, $false_on_e
 * Returns the default vat of an address
 */
 function _erpal_invoice_helper_get_vat_rate_by_address($address_id) {
-  if (!$address_id) {
+  if (!$address_id || intval($address_id)."" != $address_id."") {
     return false;
   } elseif (is_object($address_id))
     $address_entity = $address_id;

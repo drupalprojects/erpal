@@ -7,5 +7,6 @@ project = "erpal_basic_helper"
 version = "7.x-1.0-dev"
 
 files[] = erpal_basic_helper.module
+files[] = erpal_basic_helper.install
 files[] = inc/config.inc
 files[] = inc/token.inc

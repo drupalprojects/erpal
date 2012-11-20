@@ -101,10 +101,9 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
       }
     }
     
-    //now check that all users really have access to the node. Users that dont have access are not notified.
+    //now check that all users really have access to the node. Users that don't have access are not notified.
     $users = _erpal_projects_helper_delete_users_no_access($subscribers, $task_node, 'node'); 
   }
-  
   return $users;
 }
 

@@ -207,8 +207,11 @@ function erpal_basic_helper_config_form_submit($form, $form_state){
   variable_set('my_field_addresses', $address_id);  //save address
   variable_set('my_field_phone', $phone_id);  //save phone number
   variable_set('my_field_email', $email);  //save email address
-  variable_set('erpal_date_format_date_only', $format_date_only);  //save phone number
-  variable_set('erpal_date_format_date_time', $format_date_time);  //save email address
+  
+  variable_set('date_format_erpal_date', $format_date_only);
+  variable_set('date_format_erpal_date_time', $format_date_time);
+  //variable_set('erpal_date_format_date_only', $format_date_only);
+  //variable_set('erpal_date_format_date_time', $format_date_time);
   
 }
 

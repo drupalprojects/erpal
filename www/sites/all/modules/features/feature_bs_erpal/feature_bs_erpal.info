@@ -1,0 +1,12 @@
+name = feature_bs_erpal
+description = Feature that has all module for BS ERPAL functions
+core = 7.x
+package = BS
+php = 5.2.4
+version = 7.x-1.0-dev
+project = feature_bs_erpal
+dependencies[] = admin_menu
+dependencies[] = diff
+dependencies[] = masquerade
+dependencies[] = smtp
+features[features_api][] = api:1

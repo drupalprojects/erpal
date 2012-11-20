@@ -500,14 +500,16 @@ function _erpal_basic_helper_private_file_path() {
 * returns the date format for displaying date only
 */
 function _erpal_basic_helper_date_format_date_only() {
-  return variable_get('erpal_date_format_date_only', 'short');
+  return variable_get('date_format_erpal_date', 'Y-m-d');
+  //return variable_get('erpal_date_format_date_only', 'short');
 }
 
 /**
 * returns the date format for displaying date only
 */
 function _erpal_basic_helper_date_format_date_time() {
-  return variable_get('erpal_date_format_date_time', 'short');
+  return variable_get('date_format_erpal_date_time', 'Y-m-d H:i');
+  //return variable_get('erpal_date_format_date_time', 'short');
 }
 
 /**

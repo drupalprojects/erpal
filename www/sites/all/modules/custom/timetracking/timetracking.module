@@ -125,7 +125,8 @@ function timetracking_quick_form($form, $form_state) {
   
   $without_subject_for_list = array();
   foreach ($without_subject as $description=>$data) {    
-    $duration = round($data['total_duration'],2);
+    $duration = round($data['total_duration'],2);  
+
     $without_subject_for_list[] = $description.theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => md5($description), 'state' => $data['state'], 'duration' => $duration));
   }
 
@@ -622,10 +623,10 @@ function template_preprocess_timetracking_button(&$variables) {
       'togglepath' => url('timetracking/toggle/'.$entity_type.'/', array('absolute' => true)),
     ),
   );
-  
+
   $variables['image'] = $image;
   $variables['linktext'] = $linktext;
-  
+
   static $js_added = false;
   if (!$js_added) {
     drupal_add_js(array('timetracking' => $togglevalues), 'setting');
