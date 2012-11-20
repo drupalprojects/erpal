@@ -249,11 +249,6 @@ function budget_edit_form_validate(&$form, &$form_state) {
   
   $values = $form_state['values'];
   $total_hours = $values['total_hours'];
-  $available_hours = $values['available_hours'];
-  
-  //Validate that available_hours is not bigger than total budget
-  if ($available_hours > $total_hours)
-    form_set_error('available_hours', t('Available hours must be less or equal than total hours'));
 
   //allow only numbers in total_hours field
   if ($total_hours && !is_numeric($total_hours)) {
@@ -279,6 +274,11 @@ function budget_edit_form_submit(&$form, &$form_state) {
     $budget->created = time();
     
     //set available budget to total budget if node is new
+    $budget->available_hours = $budget->total_hours;
+  }
+  
+  //ensure that available_hours is not bigger than total budget, otherwise, if available hours is bigger than total hours, set available hours to total hours
+  if ($budget->available_hours > $budget->total_hours) {
     $budget->available_hours = $budget->total_hours;
   }
   
