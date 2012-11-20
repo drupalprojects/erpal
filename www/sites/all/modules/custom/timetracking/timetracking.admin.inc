@@ -185,10 +185,10 @@ function timetracking_edit_form($form, &$form_state, $timetracking) {
   $form['description'] = array(
     '#type' => 'textfield',
     '#title' => t('Description'),
-    '#default_value' => isset($timetracking->duration) and $timetracking->duration ? $timetracking->duration : '',
+    '#default_value' => isset($timetracking->description) && $timetracking->description ? $timetracking->description : '',
     '#required' => TRUE,
   );
-  
+
   $form['data']['#tree'] = TRUE;
 
   // Add the field related form elements.
@@ -252,6 +252,7 @@ function timetracking_edit_form_validate(&$form, &$form_state) {
     $calculated_duration = round(($time_end - $time_start) / (60*60), 2);
 
   //allow only numbers in total_hours field
+  dpm($duration ."--". $calculated_duration);
   if ($duration && $calculated_duration && $duration != $calculated_duration) {
     form_set_error('duration', t('Duration is not equal with difference of start and end time'));
   }

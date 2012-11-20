@@ -115,7 +115,6 @@ function timetracking_quick_form($form, $form_state) {
   $with_subject = $grouped_trackings['with_subject'];
   $without_subject = $grouped_trackings['without_subject'];
   $with_subject_for_list = array();
-
   foreach ($with_subject as $subject_id=>$data) {
     $subject = $data['subject'];
 
@@ -126,8 +125,7 @@ function timetracking_quick_form($form, $form_state) {
   
   $without_subject_for_list = array();
   foreach ($without_subject as $description=>$data) {    
-    $duration = round($data['total_duration'],2);  
-
+    $duration = round($data['total_duration'],2);
     $without_subject_for_list[] = $description.theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => md5($description), 'state' => $data['state'], 'duration' => $duration));
   }
 
@@ -242,7 +240,7 @@ function _timetracking_calculate_current_timetrackings() {
 
     $init_data = array('total_duration'=>0, 'state'=>'off', 'subject'=>false); //initialise data array
     $duration = $timetracking->time_end ? $timetracking->duration : (time() - $timetracking->time_start) / (60*60);
-    if ($subject_id && is_numeric($subject_id)) {
+    if ($subject_id) {
       $subject = node_load($subject_id);//@TODO make this compatible with all entitys and save the entity type into the datebase of timetrackings, 
       //group them by subject
       if (isset($with_subject[$subject_id]) && $with_subject[$subject_id]) {
@@ -624,10 +622,10 @@ function template_preprocess_timetracking_button(&$variables) {
       'togglepath' => url('timetracking/toggle/'.$entity_type.'/', array('absolute' => true)),
     ),
   );
-
+  
   $variables['image'] = $image;
   $variables['linktext'] = $linktext;
-
+  
   static $js_added = false;
   if (!$js_added) {
     drupal_add_js(array('timetracking' => $togglevalues), 'setting');
