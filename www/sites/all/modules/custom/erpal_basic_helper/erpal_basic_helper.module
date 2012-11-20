@@ -12,7 +12,7 @@ module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
 module_load_include('inc', 'erpal_basic_helper', 'inc/token');
 module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
 module_load_include('inc', 'erpal_basic_helper', 'inc/dynamic.menu');
-
+module_load_include('inc', 'erpal_basic_helper', 'inc/notifications');
  
 /**
 * Implements hok_init
@@ -393,6 +393,31 @@ function _erpal_basic_helper_get_bank_accounts($contact, $for_options) {
   }
   
   return $accounts;
+}
+
+/**
+* Implements hook_cron_queue_info ()
+*/
+function erpal_basic_helper_cron_queue_info() {
+  $queues = array();
+  $queues['notifications'] = array(
+    'worker callback' => '_erpal_basic_helper_notifications_queue_run', // This is the callback function for each queue item.
+    'time' => 60, // This is the max run time per cron run in seconds.
+  );
+ 
+  return $queues;
+}
+
+/**
+* Implements hook_mail
+*/
+function erpal_basic_helper_mail($key, &$message, $params) {
+   
+  switch($key) {
+    case 'notifications':
+      _erpal_basic_helper_notification_mail($key, $message, $params);
+      break;
+  }
 }
 
 /**

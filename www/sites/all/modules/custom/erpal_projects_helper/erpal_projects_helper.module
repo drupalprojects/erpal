@@ -128,18 +128,6 @@ function erpal_projects_helper_entity_update($entity, $entity_type) {
 }
 
 /**
-* Implements hook_mail
-*/
-function erpal_projects_helper_mail($key, &$message, $params) {
-   
-  switch($key) {
-    case 'task_notifications':
-      _erpal_projects_helper_task_notification_mail($key, $message, $params);
-      break;
-  }
-}
-
-/**
 * Implements hook_entity_insert
 */
 function erpal_projects_helper_entity_insert($entity, $type) {
@@ -398,7 +386,7 @@ function erpal_projects_helper_cron_queue_info() {
     'worker callback' => '_erpal_projects_helper_reorganize_timetrackings_queue_run', // This is the callback function for each queue item.
     'time' => 60, // This is the max run time per cron run in seconds.
   );
-  
+ 
   return $queues;
 }
 
