@@ -261,6 +261,7 @@ tr.even.alert .active {
 
 .alert .field .field_item .field-name-field-task-status-term,
 .alert .field .field_item .field-name-field-date,
+.alert .views-field-field-date,
 .alert .field-item,
 .pane-quicktabs-tasks-by-project-tabs .alert td.views-field-field-date,
 .alert  td.views-field-field-date-1, 
