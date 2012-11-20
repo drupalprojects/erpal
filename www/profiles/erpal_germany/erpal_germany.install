@@ -4,6 +4,7 @@
  * Install, update and uninstall functions for the erpal install profile.
  */
 include('erpal_germany_taxonomy.inc');
+include('erpal_germany_relations.inc');
 
 /**
  * Implements hook_install().
@@ -13,8 +14,8 @@ include('erpal_germany_taxonomy.inc');
  * @see system_install()
  */
 function erpal_germany_install() {
+  
   // adaptivetheme und theme erpal anschalten und auf default setzen
-  // TODO: Themes sind angeschaltet aber nicht auch default... Fehler?
   $default_theme = 'erpal';
   $admin_theme = 'adaptivetheme_admin';
   // alle themes deaktivieren
@@ -39,69 +40,108 @@ function erpal_germany_install() {
   // $default_theme als default
   variable_set('theme_default', $default_theme);
   
+  // Add text formats.
+  $filtered_html_format = array(
+    'format' => 'filtered_html',
+    'name' => 'Filtered HTML',
+    'weight' => 0,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // HTML filter.
+      'filter_html' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $filtered_html_format = (object) $filtered_html_format;
+  filter_format_save($filtered_html_format);
+
+  $full_html_format = array(
+    'format' => 'full_html',
+    'name' => 'Full HTML',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  
+  $full_html_format = (object) $full_html_format;
+  filter_format_save($full_html_format);
+  
   // revert features 
   features_revert();
   
   //rebuild content access permissions
   node_access_rebuild(); 
+
   
-   // create taxonomy
+  // create taxonomy
   erpal_germany_create_taxonomy();
+
+    
+  erpal_germany_create_relations();
+
   
-  // create default user roles
-  erpal_germany_create_roles();  
+  erpal_germany_invoice_config();
   
+    
+  erpal_germany_calendar_config();
+  
+}
+
+function erpal_germany_calendar_config(){
+  _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
+  _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
+}
+
+function erpal_germany_invoice_config(){
   //set default vat-rate for erpal invoice
   $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
   variable_set('erpal_invoice_vat_rates_string', $vatRates);
-  variable_set('erpal_invoice_default_vat_rate', '19#19%'); 
+  variable_set('erpal_invoice_default_vat_rate', '19'); 
   
-
-}
+  $manualNote = 'Thanks for your order. Please pay the amount of [erpal_invoice:total]'
+    . '[erpal_invoice:currency] till [erpal_invoice:invoice_date].'
+    . "\r\n" 
+    . "\r\n" 
+    . 'Best regards';
+  variable_set('erpal_invoice_manuall_notes', $manualNote);
+  $skontoText = '[erpal_invoice_skonto:skonto_rate]% skonto if you pay within [erpal_invoice_skonto:skonto_period] days.';
+  variable_set('erpal_invoice_skonto_text', $skontoText);  
   
-function erpal_germany_create_roles(){
-  $userRoles = array(
-    'customer' => array(
-      // Add permissions here
-      'access content',
-      ), 
-    'internal developer' => array(
-      // Add permissions here
-      'access content',
-      ), 
-    'external developer' => array(
-      // Add permissions here
-      'access content', 
-      ),   
-    'financial user' => array(
-      // Add permissions here
-      'access content', 
-      ), 
-    'controller' => array(
-      // Add permissions here
-      'access content',
-      ),
-    'account manager' => array(
-      // Add permissions here
-      'access content',
-      ),
-    'project manager' => array(
-      // Add permissions here
-      'access content',
-      ),
-    );
-  erpal_germany_add_role_and_permissions($userRoles);
 }
 
-/**
- * Function that creates userroles and permissions
- * @param $roles: array('role-name' => array('permission1', 'permission2',...)
- */
-function erpal_germany_add_role_and_permissions($roles){
-  foreach($roles as $name => $permissions){
-    $role = new stdClass();
-    $role->name = $name;
-    user_role_save($role);   
-    user_role_grant_permissions($role->rid, $permissions); 
-  }
-}
+  
+

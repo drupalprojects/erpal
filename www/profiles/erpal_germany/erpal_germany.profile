@@ -37,31 +37,31 @@ function erpal_germany_file_private_path_submit($form, $form_state){
 }
 
 /** 
- * Zusaetzliche installationsaufgaben definieren 
+ * Add additional install tasks 
  */
 function erpal_germany_install_tasks(){
   return array(
-    //~ 'erpal_germany_contact_information_form' => array(
-      //~ 'display_name' => st('Contact Information'),
-      //~ 'display' => TRUE,
-      //~ 'type' => 'form',
-      //~ ),
-    //~ 'erpal_germany_config_form' => array(
-      //~ 'display_name' => st('Configure Erpal'),
-      //~ 'display' => TRUE,
-      //~ 'type' => 'form',
-      //~ ),
-    //~ 'erpal_germany_calendar_config_form' => array(
-      //~ 'display_name' => st('Configure Calendar'),
-      //~ 'display' => TRUE,
-      //~ 'type' => 'form',
-     //~ ), 
-    //~ 'erpal_germany_invoice_config_form' => array(
-      //~ 'display_name' => st('Configure Invoice'),
-      //~ 'display' => TRUE,
-      //~ 'type' => 'form',
-      //~ ),
-      //~ 
+    'erpal_germany_contact_information_form' => array(
+      'display_name' => st('Contact Information'),
+      'display' => TRUE,
+      'type' => 'form',
+      ),
+    'erpal_germany_config_form' => array(
+      'display_name' => st('Configure Erpal'),
+      'display' => TRUE,
+      'type' => 'form',
+      ),
+    'erpal_germany_calendar_config_form' => array(
+      'display_name' => st('Configure Calendar'),
+      'display' => TRUE,
+      'type' => 'form',
+     ), 
+    'erpal_germany_invoice_config_form' => array(
+      'display_name' => st('Configure Invoice'),
+      'display' => TRUE,
+      'type' => 'form',
+      ),
+      
     );
 }
 
@@ -109,9 +109,6 @@ function erpal_germany_contact_information_form($form, &$form_state){
   foreach($countries_terms as $term){
     $countries[$term->tid] = $term->name;
   }  
-  
-  
-  
   $form['company_address']['country'] = array(
     '#title' => st('Country'),
     '#type' => 'select',
@@ -135,6 +132,8 @@ function erpal_germany_contact_information_form($form, &$form_state){
     '#required' => TRUE,
   
   );
+  
+  
   $form['submit'] = array(
     '#value' => st('Save and continue'),
     '#type' => 'submit',
@@ -146,8 +145,6 @@ function erpal_germany_contact_information_form($form, &$form_state){
 
 function erpal_germany_contact_information_form_validate($form, $form_state){
   $values = $form_state['values'];
-
-
 
   if(!is_numeric($values['zip_code']))
     form_set_error('zip_code', 'Please enter only numbers as a zip-code.');
@@ -195,14 +192,14 @@ function erpal_germany_contact_information_form_submit($form, $form_state){
     ),
   );
   node_object_prepare($node); 
-  //node_save($node);
+  node_save($node);
 
   $address = entity_create('field_collection_item', array('field_name' => 'field_addresses'));
   $address->setHostEntity('node', $node);
   $address->field_street[LANGUAGE_NONE][0]['value'] = $values['street'];
   $address->field_zip_code[LANGUAGE_NONE][0]['value'] = $values['zip_code'];
   $address->field_city[LANGUAGE_NONE][0]['value'] = $values['city'];
-  $address->field_country_term[LANGUAGE_NONE][0]['value'] = $values['country']->tid;
+  //$address->field_country_term[LANGUAGE_NONE][0]['value'] = $values['country']->tid;
   $address->save();
   
   $phone_number = entity_create('field_collection_item', array('field_name' => 'field_phone'));
@@ -248,7 +245,6 @@ function erpal_germany_config_form(){
     '#description' => st('If checked, the logo of a pdf document will not be shown on pdfs first page (frontpage)'),
   );
   
-
   $form['erpal_docs'] = array(
     '#type' => 'fieldset',
     '#title' => 'Erpal Docs',
@@ -261,7 +257,7 @@ function erpal_germany_config_form(){
   
   $form['erpal_contract'] = array(
     '#type' => 'fieldset',
-    '#title' => 'Erpal Contract'
+    '#title' => 'Erpal Contract',
   );
   
   $form['erpal_contract']['precalculation_range'] = array(
@@ -270,7 +266,6 @@ function erpal_germany_config_form(){
     '#description' => t('Number of month the date items for contract calculation are precalculated.'),
     '#default_value' => _erpal_contract_helper_cancelation_precalculate_range(),
   );
-  
   
   $form['advanced_configuration'] = array(
     '#type' => 'fieldset',
@@ -284,58 +279,43 @@ function erpal_germany_config_form(){
     '#title' => st('Run ERPAL in debug mode'),
   );
   
-
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => st('Save and continue'),
   );
   return $form;
 }
+
 function erpal_germany_config_form_submit($form, $form_state){
-  $values = $form_state['values'];
+  $values = $form_state['values']; 
   variable_set('erpal_docs_doc_file_extensions', $values['doc_file_extensions']);
   variable_set('erpal_date_format_date_only', $values['date_only']);
   variable_set('erpal_date_format_date_time', $values['date_time']);
   variable_set('erpal_debug', $values['debug_mode']);
   variable_set('erpal_book_skip_pdf_header_frontpage', $values['skip_logo']);
-  $cancelation_precalculate_range = intval($values['cancelation_precalculate_range']);
+  $cancelation_precalculate_range = intval($values['precalculation_range']);
   variable_set('cancelation_precalculate_range', $cancelation_precalculate_range);
 }
 
-
 function erpal_germany_invoice_config_form(){
   drupal_set_title(st('Erpal Invoice configuration'));
-  $form = array();
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => st('Save and continue'),
-  );
+  
+ 
+  
+  $form = drupal_get_form('erpal_invoice_helper_config_form');
   return $form;
 }
 function erpal_germany_invoice_config_form_submit($form, $form_state){
-  
-}
 
+}
 
 function erpal_germany_calendar_config_form(){
+  
   drupal_set_title(st('Erpal Calendar configuration'));
-  $form = array();
   
-  $form = array(
-    'type' => 'textfield',
-    'title' => st('Set tags for '),
-  );
-  
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => st('Save and continue'), 
-  );
-  return $form;
-  
-}
-function erpal_germany_calendar_config_form_submit($form, $form_state){
-  
+  $form = drupal_get_form('erpal_calendar_helper_config_form');
 
+  return $form;
 }
 
 

@@ -78,7 +78,7 @@ body.panels-ipe{
 } 
 .panels-flexible-column-inside-first{
 	padding-right: 0;
-	box-shadow: 2px 2px 2px #888888;
+	box-shadow: 1px 2px 2px #888888;
 }
 .tabs-region .block {
 	margin-bottom: 0px;
@@ -191,6 +191,9 @@ body.panels-ipe{
 	min-width: 360px;
     width: 100%;
 }
+.pane-page-title.block{
+	margin-bottom: 0;
+}
 /* =============================================================================
  *   Projects
  * ========================================================================== */
@@ -204,9 +207,12 @@ body.panels-ipe{
 	-webkit-border-radius: 11px;
 	-moz-border-radius: 11px; 
 	border-radius: 11px;
-	box-shadow: 2px 2px 2px #888888;
+	-webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+	box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
 	text-align: center;
 	font-size: 1.1em;
+	font-weight: bold;
 }
 #mini-panel-task_status_panel{
 	padding: 10px 20px;
@@ -294,13 +300,16 @@ ul.quicktabs-tabs li{
 .ctools-collapsible-processed .ctools-collapsible-content{
 	padding-top: 10px;
 }
+.ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
+	margin: 0;
+}
 .ctools-collapsible-container .block-content a{
 	text-decoration: underline;
 }
-.ctools-collapsible-processed section{
+.ctools-collapsible-processed section,
+.ctools-collapsible-processed .field-name-field-books-ref{
 	margin-bottom: 10px;
 	padding-left: 10px;
-	
 }
 .ctools-collapsible-processed .panel-separator{
 	height: 1px;
@@ -315,6 +324,17 @@ ul.quicktabs-tabs li{
 }
 .ctools-collapsible-processed .field-type-taxonomy-term-reference{
 	margin: 0;
+}
+.ctools-collapsible-processed .field-name-field-asset-files{
+	margin-bottom: 10px;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item{
+    margin-left: 20px;
+	display: list-item;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item a,
+.ctools-collapsible-processed .field-name-field-books-ref a{
+    text-decoration: underline;
 }
 #mini-panel-task_status_panel .panel-separator{
 	display: none;
@@ -347,7 +367,7 @@ ul.quicktabs-tabs li{
 	font-size: 14px;
 }
 .block-content .view-content .views-table td, .block-content .view-content .views-table th{
-	padding: 15px;
+	padding: 15px 15px 15px 12px;
 }
 .block-content .view-content .views-table{
 	margin-top: 0;
@@ -365,8 +385,8 @@ ul.quicktabs-tabs li{
 .view-filters .rel-register-build .views-exposed-widgets{
 	margin-bottom: 0px;
 }
-.block-content .view-content .views-table .views-field-title a,
-.block-content .view-content .views-table .views-field-field-customer-ref{
+.block-content .view-content .views-table td.views-field-title a,
+.block-content .view-content .views-table td.views-field-field-customer-ref{
 	text-decoration: underline;
 }
 .view-filters .rel-register-build  .views-exposed-widget .rel-register-link{
@@ -382,6 +402,31 @@ ul.quicktabs-tabs li{
 }
 .local_tasks{
 	margin: 0px;
+}
+.quicktabs-tabpage .views-table .views-field-title{
+	 width: 115px;
+}
+.quicktabs-tabpage .views-field-field-task-status-term{
+	width: 70px;
+}
+.page-projects .views-field-title{
+	width: 200px;
+}
+.page-projects .views-field-field-customer-ref{
+	width: 200px;
+}
+.page-projects .views-field-field-project-status-term, 
+.page-projects .views-field-field-priority-term{
+	width: 100px;
+}
+.page-projects #edit-field-customer-ref-target-id-wrapper{
+	margin-left: 45px;
+}
+.page-projects #edit-field-project-status-term-tid-wrapper{
+	margin-left: 23px;
+}
+.page-projects #edit-field-project-status-term-tid-wrapper{
+
 }
 /*--------------------------------for erpal task view row layout------------------------------------------*/
 .erpal-task-view-row-layout .region-sidebar-left{
@@ -521,11 +566,104 @@ ul.pager li a, ul.pager li.pager-current {
 	padding-bottom: 0px;
 }
 .pane-node-body{
-	padding: 30px;
+	padding: 20px;
 	min-height: 350px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
-
-
+#block-panels-mini-body-and-comments article.comment{
+	padding: 20px;
+	min-height: 350px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+.pane-node-body p,
+#block-panels-mini-body-and-comments article.comment .field-name-comment-body p{
+	font-size: 16px;
+}
+.quicktabs-tabpage  #edit-nid{
+	width: 50px;
+}
+.quicktabs-tabpage  #edit-title{
+	width: 120px;
+}
+.quicktabs-tabpage #edit-field-priority-term-tid{
+	width: 75px;
+}
+.quicktabs-tabpage #edit-field-task-type-term-tid{
+	width: 60px;
+}
+.page-projects-timetrackings #edit-field-date-time-value-wrapper{
+	margin-left: 45px;
+}
+.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper{
+	margin-left: 440px;
+}
+.page-projects-timetrackings #edit-field-project-ref-target-id{
+	width: 120px;
+}
+.page-projects-timetrackings .views-field-field-date-time{
+	width: 140px;
+}
+.page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2{
+	 width: 120px;
+}
+.page-projects-timetrackings #edit-uid{
+	width: 90px;
+}
+.page-projects-timetrackings .views-submit-button{
+	clear: both;
+}
+.page-projects-timetrackings #edit-uid-wrapper{
+	width: 140px;
+}
+.page-projects-timetrackings #edit-uid-wrapper .description{
+	line-height: 12px;
+}
+.page-node-edit div.autocomplete-deluxe-multiple{
+	width: auto;
+}
+/*---------------------------------dashboard styles-----------------------------------------*/
+#homebox .portlet-content {
+    padding: 0px;
+}
+#homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
+    border: none;
+}
+#homebox .more-link {
+    padding: 4px 10px;
+}
+#homebox .homebox-column{
+	margin: 0;
+	padding: 0;
+}
+#homebox .homebox-column-wrapper-1{
+	margin-right: 20px;
+}
+#homebox .homebox-column-wrapper {
+    float: left;
+    width: 48% !important;
+}
+#homebox .homebox-column-wrapper-1 {
+    margin-right: 25px;
+}
+#homebox .homebox-column-wrapper {
+    width: 48% !important;
+}
+#homebox .portlet-header{
+	font-weight: normal;
+}
+#homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption{
+	padding-left: 12px;
+}
+#homebox .form-submit{
+	margin-left: 12px;
+}
+#homebox .homebox-portlet .portlet-header .portlet-title {
+    padding-left: 8px;
+}
+#homebox .homebox-portlet .portlet-header{
+	border: none;
+}
