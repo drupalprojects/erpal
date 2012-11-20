@@ -370,7 +370,7 @@ function _erpal_contract_helper_check_payments() {
   //get all contracts that have to be billed
   $contract_nodes = _erpal_contract_helper_get_contracts_to_bill();
 
-  //create billables$ and set last and next payment date in field collection
+  //create billables and set last and next payment date in field collection
   foreach ($contract_nodes as $contract_node) {
     $payment_entity = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['entity'];
     $subject_title = t('Contract')." ".$contract_node->title;
@@ -417,7 +417,7 @@ function _erpal_contract_helper_check_budgets() {
     $date_till = false;
     if ($expire_period) {
       $date_till = date('Y-m-d 00:00:00', $date_from);
-      $date_till = strtotime($date_till.' +'.$expire_period.'month');
+      $date_till = strtotime($date_till.' +'.$expire_period.'month -1 second');
     }
 
     //now create a budget entity        
