@@ -1159,6 +1159,9 @@ function feature_erpal_invoice_field_default_fields() {
             ),
           ),
           'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -1301,6 +1304,8 @@ function feature_erpal_invoice_field_default_fields() {
       'locked' => '0',
       'module' => 'date',
       'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
         'granularity' => array(
           'day' => 'day',
           'hour' => 0,
@@ -1309,6 +1314,7 @@ function feature_erpal_invoice_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
+        'profile2_private' => FALSE,
         'repeat' => 0,
         'timezone_db' => '',
         'todate' => '',
@@ -1319,6 +1325,11 @@ function feature_erpal_invoice_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_invoice',
+      'date_item' => array(
+        'create_date_item' => 0,
+        'date_item_type' => 'simple_date',
+        'handle_range' => 'range',
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -1338,7 +1349,7 @@ function feature_erpal_invoice_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_invoice_date',
       'label' => 'Invoice Date',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'default_value' => 'now',
         'default_value2' => 'same',
