@@ -62,6 +62,25 @@ function feature_erpal_spaces_views_default_views() {
   $handler = $view->new_display('page', 'Work-Spaces', 'page');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'spaces/spaces';
+  $translatables['spaces'] = array(
+    t('Master'),
+    t('Spaces'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Title'),
+    t('Work-Spaces'),
+  );
   $export['spaces'] = $view;
 
   return $export;

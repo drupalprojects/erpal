@@ -128,7 +128,6 @@ function _erpal_projects_helper_handle_removed_book_nodes($project_node, $old_pr
     if ($a_node->type == 'erpal_task' && $task_project_nid == $project_node->nid) {
       unset($a_node->field_parent[LANGUAGE_NONE]);
       node_save($a_node);
-      dpm($a_node);
     }
   }
   

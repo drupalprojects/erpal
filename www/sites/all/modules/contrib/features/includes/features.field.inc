@@ -212,7 +212,15 @@ function features_field_load($identifier) {
     unset($field_info['id']);
     unset($field_info['bundles']);
     unset($instance_info['id']);
-    unset($instance_info['field_id']);
+    unset($instance_info['field_id']);    
+    // Fix weights that FieldAPI seems to store sometimes as integers and
+    // sometimes as strings. This prevents the feature incorrectly reporting
+    // as overridden and 'feature ping-pong'.
+    $instance_info['widget']['weight'] = (int) $instance_info['widget']['weight'];
+    foreach ($instance_info['display'] as &$view_mode_settings) {
+      $view_mode_settings['weight'] = (int) $view_mode_settings['weight'];
+    }
+
     return array(
       'field_config' => $field_info,
       'field_instance' => $instance_info,

@@ -222,7 +222,7 @@ function feature_erpal_basic_default_panels_mini() {
       'delta_offset' => '0',
       'delta_reversed' => FALSE,
       'formatter_settings' => array(
-        'format_type' => 'short',
+        'format_type' => 'erpal_date',
         'multiple_number' => '',
         'multiple_from' => '',
         'multiple_to' => '',

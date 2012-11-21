@@ -4,6 +4,7 @@
  * Install, update and uninstall functions for the erpal install profile.
  */
 include('erpal_germany_taxonomy.inc');
+include('erpal_germany_relations.inc');
 
 /**
  * Implements hook_install().
@@ -13,8 +14,8 @@ include('erpal_germany_taxonomy.inc');
  * @see system_install()
  */
 function erpal_germany_install() {
+   
   // adaptivetheme und theme erpal anschalten und auf default setzen
-  // TODO: Themes sind angeschaltet aber nicht auch default... Fehler?
   $default_theme = 'erpal';
   $admin_theme = 'adaptivetheme_admin';
   // alle themes deaktivieren
@@ -39,55 +40,140 @@ function erpal_germany_install() {
   // $default_theme als default
   variable_set('theme_default', $default_theme);
   
-  // revert features
-  features_revert($features = array());
+  // Add text formats.
+  $filtered_html_format = array(
+    'format' => 'filtered_html',
+    'name' => 'Filtered HTML',
+    'weight' => 0,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // HTML filter.
+      'filter_html' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $filtered_html_format = (object) $filtered_html_format;
+  filter_format_save($filtered_html_format);
+
+  $full_html_format = array(
+    'format' => 'full_html',
+    'name' => 'Full HTML',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
   
-   // create taxonomy
-  erpal_germany_create_taxonomy();
+  $full_html_format = (object) $full_html_format;
+  filter_format_save($full_html_format);
   
-  // create default user roles
-  erpal_germany_create_roles();  
-  
-  //set default vat-rate for erpal invoice
-  //~ $vatRates = '7#7%' . PHP_EOL . '19#19%' . PHP_EOL . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
-  //~ variable_set('erpal_invoice_vat_rates_string', $vatRates);
-  //~ variable_set('erpal_invoice_default_vat_rate', '19#19%'); 
+  // revert features 
+  features_revert();
   
   //rebuild content access permissions
-  node_access_rebuild();
+  node_access_rebuild(); 
+
+  // create taxonomy
+  erpal_germany_create_taxonomy();
+
+  erpal_germany_create_relations();
+
+  erpal_germany_various_settings();
+  erpal_germany_invoice_config();
+  erpal_germany_calendar_config();
+  erpal_germany_projects_config();
 }
-  
-function erpal_germany_create_roles(){
-  $userRoles = array(
-    'customer' => array(
-      // Add permissions here
-      'access content',
-      ), 
-    'internal developer' => array(
-      // Add permissions here
-      'access content',
-      ), 
-    'external developer' => array(
-      // Add permissions here
-      'access content', 
-      ),   
-    'financial user' => array(
-      // Add permissions here
-      'access content',
-      ), 
-    );
-  erpal_germany_add_role_and_permissions($userRoles);
+
+
+function erpal_germany_various_settings(){
+  variable_set('date_format_erpal_date', 'd.m.Y - H:i');
+  variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');  
+  variable_set('erpal_docs_doc_file_extensions', 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml');
 }
 
 /**
- * Function that creates userroles and permissions
- * @param $roles: array('role-name' => array('permission1', 'permission2',...)
+ * Erpal-Projects basic settings
  */
-function erpal_germany_add_role_and_permissions($roles){
-  foreach($roles as $name => $permissions){
-    $role = new stdClass();
-    $role->name = $name;
-    user_role_save($role);   
-    user_role_grant_permissions($role->rid, $permissions); 
-  }
+function erpal_germany_projects_config(){
+  // Set Erpal-Project notification message
+  $erpal_task_update_subject = 'ERPAL - Notification: [erpal_project_notifications:content_label]';
+  $erpal_task_update_message = 
+    'Hello,'
+    . "\r\n"
+    . "\r\n"
+    . 'New content available: [erpal_project_notifications:content_label] -> [erpal_project_notifications:content_url]'
+    . "\r\n"
+    . "\r\n"
+    . 'Best regards'
+    . "\r\n"
+    . "\r\n"
+    . 'ERPAL';
+  variable_set('erpal_task_update_subject', $erpal_task_update_subject);
+  variable_set('erpal_task_update_message', $erpal_task_update_message);
 }
+
+
+/**
+ * Erpal-Calendar basic settings
+ */
+function erpal_germany_calendar_config(){
+  _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
+  _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
+}
+
+
+/**
+ * ERPAL-Invoice basic Settings 
+ */
+function erpal_germany_invoice_config(){
+  //set default vat-rate for erpal invoice
+  $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
+  variable_set('erpal_invoice_vat_rates_string', $vatRates);
+  variable_set('erpal_invoice_default_vat_rate', '19'); 
+  
+  $manualNote = 'Thanks for your order. Please pay the amount of [erpal_invoice:total]'
+    . '[erpal_invoice:currency] till [erpal_invoice:invoice_date].'
+    . "\r\n" 
+    . "\r\n" 
+    . 'Best regards';
+  variable_set('erpal_invoice_manuall_notes', $manualNote);
+  $skontoText = '[erpal_invoice_skonto:skonto_rate]% skonto if you pay within [erpal_invoice_skonto:skonto_period] days.';
+  variable_set('erpal_invoice_skonto_text', $skontoText);  
+  
+}
+
+  
+

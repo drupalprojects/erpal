@@ -182,6 +182,34 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['attach'] = array(
     0 => 'node:field_customer_ref:erpal_project',
   );
+  $translatables['contacts'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('There are no contacts available'),
+    t('<div class="no_contact_image"></div>'),
+    t('Name'),
+    t('Contact Type'),
+    t('Search Terms'),
+    t('Type'),
+    t('Contacts pane'),
+    t('View panes'),
+    t('Contact Reference Project'),
+    t('Contact Dialog Search Project'),
+    t('Choose a contact'),
+    t('Search a customer for a project'),
+  );
   $export['contacts'] = $view;
 
   $view = new view();
@@ -234,12 +262,17 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node_revision';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Content revision: Content */
+  $handler->display->display_options['relationships']['vid']['id'] = 'vid';
+  $handler->display->display_options['relationships']['vid']['table'] = 'node_revision';
+  $handler->display->display_options['relationships']['vid']['field'] = 'vid';
   /* Field: Content revision: Updated date */
   $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['table'] = 'node_revision';
   $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['timestamp']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'erpal_date_time';
   /* Field: Content revision: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node_revision';
@@ -263,6 +296,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'vid';
   $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
   $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
@@ -272,6 +306,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['relationship'] = 'vid';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
@@ -289,7 +324,185 @@ function feature_erpal_basic_views_default_views() {
       'label' => 'Content: Nid',
     ),
   );
+  $translatables['node_revisions'] = array(
+    t('Master'),
+    t('Revisions'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('revision user'),
+    t('Get the actual content from a content revision.'),
+    t('Updated date'),
+    t('User'),
+    t('All'),
+    t('Pane node revisions'),
+    t('View panes'),
+  );
   $export['node_revisions'] = $view;
+
+  $view = new view();
+  $view->name = 'notifications';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Notifications';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Task notifications';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'title' => 'title',
+    'ops' => 'ops',
+    'changed' => 'changed',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'ops' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Relationship: Flags: task_subscriptions */
+  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['label'] = 'flagged task';
+  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'task_subscriptions';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
+  $handler->display->display_options['relationships']['field_project_ref_target_id']['table'] = 'field_data_field_project_ref';
+  $handler->display->display_options['relationships']['field_project_ref_target_id']['field'] = 'field_project_ref_target_id';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Task title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'field_project_ref_target_id';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Project';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
+  /* Field: Flags: Flag link */
+  $handler->display->display_options['fields']['ops']['id'] = 'ops';
+  $handler->display->display_options['fields']['ops']['table'] = 'flagging';
+  $handler->display->display_options['fields']['ops']['field'] = 'ops';
+  $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['ops']['label'] = 'Notification';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+
+  /* Display: Task notifications */
+  $handler = $view->new_display('panel_pane', 'Task notifications', 'panel_pane_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+
+  /* Display: Project notifications */
+  $handler = $view->new_display('panel_pane', 'Project notifications', 'panel_pane_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Flags: project_subscriptions */
+  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'project_subscriptions';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Project title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
+  /* Field: Flags: Flag link */
+  $handler->display->display_options['fields']['ops']['id'] = 'ops';
+  $handler->display->display_options['fields']['ops']['table'] = 'flagging';
+  $handler->display->display_options['fields']['ops']['field'] = 'ops';
+  $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['ops']['label'] = 'Notification';
+  $translatables['notifications'] = array(
+    t('Master'),
+    t('Task notifications'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('flagged task'),
+    t('Content entity referenced from field_project_ref'),
+    t('Task title'),
+    t('Project'),
+    t('Updated date'),
+    t('Notification'),
+    t('View panes'),
+    t('Project notifications'),
+    t('flag'),
+    t('Project title'),
+  );
+  $export['notifications'] = $view;
 
   $view = new view();
   $view->name = 'relations_view';
@@ -390,24 +603,25 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date_1']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date_1']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date_1']['settings'] = array(
-    'format_type' => 'int_date_only',
+    'format_type' => 'erpal_date',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Relation: Change Date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'relation';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['label'] = 'Changed';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'int_date_time';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Relation: Create Date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'relation';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Created';
-  $handler->display->display_options['fields']['created']['date_format'] = 'int_date_time';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   /* Field: Relation: Relation Tags */
   $handler->display->display_options['fields']['field_work_at_rel_tags']['id'] = 'field_work_at_rel_tags';
   $handler->display->display_options['fields']['field_work_at_rel_tags']['table'] = 'field_data_field_work_at_rel_tags';
@@ -445,6 +659,33 @@ function feature_erpal_basic_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['relations_view'] = array(
+    t('Master'),
+    t('Relations by node'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No relations available'),
+    t('Rendered Relation'),
+    t('All'),
+    t('Relation type'),
+    t('Period'),
+    t('Changed'),
+    t('Created'),
+    t('Tags'),
+    t('Role in project'),
+    t('View panes'),
+  );
   $export['relations_view'] = $view;
 
   return $export;

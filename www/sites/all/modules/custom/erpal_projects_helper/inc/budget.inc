@@ -231,9 +231,21 @@ function _erpal_projects_helper_warn_items_in_queue_billing() {
 * Function that is called if the reorganize_timetrackings queue definied in erpal_projects_helper_cron_queue_info is processed
 * @param $nid a nid of a timetracking node that needs to be reorganized
 */
-function _erpal_projects_helper_reorganize_timetrackings_queue_run($nid) {
+function _erpal_projects_helper_reorganize_timetrackings_queue_run($nid) {  
+  //ensure this process is executed as user 1. Otherwise there may be problems executing the timetrackings refactoring because user that executes the queue has noch permissions to view some referenced nodes....
+  //the queue api forces anonymous user...but we need the admin to refactore datasets.
+  // Prevent session information from being saved while cron is running.
+  global $user;
+  $original_user = $user;
+  $old_state = drupal_save_session();
+  drupal_save_session(FALSE);
+  $user = user_load(1);
   
   _erpal_projects_helper_process_queue_item_timetracking($nid);  
+  
+  $user = $original_user;
+  drupal_save_session($old_state);
+  drupal_save_session(TRUE);
 }
 
 /**
@@ -241,7 +253,8 @@ function _erpal_projects_helper_reorganize_timetrackings_queue_run($nid) {
 */
 function _erpal_projects_helper_process_queue_item_timetracking($nid) {
   //delete billables if not billed and save the timetracking again  
-  $node = node_load($nid);
+  $node = node_load($nid, NULL, true); //IMPORTANT to clear node cache, otherwise the subject will be missing!
+
   if ($node->type != 'erpal_timetracking')
     return;
     
@@ -455,6 +468,7 @@ function _erpal_projects_billable_book_timetracking_to_budget($timetracking_node
       //book the complete timetracking node to this budget
       //reduce the budget entity
       $budget_entity->add_hours(-1 * $billing_duration, $allow_negative);
+      $budget_entity->skip_refactoring = true; //if we dont set this, the host node will be added to the queue to refactore timetracking nodes and budgets
       $budget_entity->save();
       
       _erpal_projects_helper_check_budget_usage($pricing_node, $booking_date, true);

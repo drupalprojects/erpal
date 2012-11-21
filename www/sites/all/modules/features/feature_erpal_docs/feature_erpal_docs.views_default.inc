@@ -62,7 +62,7 @@ function feature_erpal_docs_views_default_views() {
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
@@ -171,7 +171,7 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Content: Tags */
   $handler->display->display_options['fields']['field_tags']['id'] = 'field_tags';
   $handler->display->display_options['fields']['field_tags']['table'] = 'field_data_field_tags';
@@ -227,6 +227,37 @@ echo _erpal_docs_helper_view_documents_header_content();
       'fixed' => '',
       'label' => 'Content: Invoice PDF (field_asset_files:target_id)',
     ),
+  );
+  $translatables['documents'] = array(
+    t('Master'),
+    t('Documents'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('File tags'),
+    t('Updated date'),
+    t('<?php
+echo _erpal_docs_helper_view_documents_header_content();
+?>'),
+    t('Title'),
+    t('Reference Dialog Search'),
+    t('Tags'),
+    t('File usage pane'),
+    t('This file is used at'),
+    t('Pane showing nodes referencing the file'),
+    t('Type'),
+    t('All'),
+    t('View panes'),
   );
   $export['documents'] = $view;
 
@@ -323,6 +354,28 @@ echo _erpal_docs_helper_view_documents_header_content();
       'fixed' => '',
       'label' => 'Field: Files (field_asset_files)',
     ),
+  );
+  $translatables['documents_usage_comments'] = array(
+    t('Master'),
+    t('Used at comments'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Content'),
+    t('Comment'),
+    t('All'),
+    t('Comments by asset'),
+    t('View panes'),
   );
   $export['documents_usage_comments'] = $view;
 

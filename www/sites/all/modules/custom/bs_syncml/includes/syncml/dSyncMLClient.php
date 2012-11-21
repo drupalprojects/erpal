@@ -401,7 +401,7 @@ class dSyncMLClient
 		// Parse response
 		try
 		{
-      dpm($http->getBody());
+      //dpm($http->getBody());
 			$xml = new SimpleXMLElement($http->getBody());
 
 			// Get the message package id

@@ -143,7 +143,7 @@ function erpal_basic_helper_config_form($form, &$form_state){
   
   $form['date_settings']['hint'] = array(
     '#type' => 'item',
-    '#markup' => t('You can add more date types in !config_link', array('!config_link' => l(t('date time configuration'), 'admin/config/regional/date-time'))),
+    '#markup' => t('You can add more date formats in !config_link', array('!config_link' => l(t('date time configuration'), 'admin/config/regional/date-time/formats'))),
   );
   
   $form['submit'] = array(
@@ -207,8 +207,11 @@ function erpal_basic_helper_config_form_submit($form, $form_state){
   variable_set('my_field_addresses', $address_id);  //save address
   variable_set('my_field_phone', $phone_id);  //save phone number
   variable_set('my_field_email', $email);  //save email address
-  variable_set('erpal_date_format_date_only', $format_date_only);  //save phone number
-  variable_set('erpal_date_format_date_time', $format_date_time);  //save email address
+  
+  variable_set('date_format_erpal_date', $format_date_only);
+  variable_set('date_format_erpal_date_time', $format_date_time);
+  //variable_set('erpal_date_format_date_only', $format_date_only);
+  //variable_set('erpal_date_format_date_time', $format_date_time);
   
 }
 

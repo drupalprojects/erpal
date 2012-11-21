@@ -646,13 +646,6 @@ function feature_erpal_project_basic_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'og_group_type_erpal_task';
-  $strongarm->value = 'omitted';
-  $export['og_group_type_erpal_task'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_erpal_project_pattern';
   $strongarm->value = 'projects/project/[node:nid]';
   $export['pathauto_node_erpal_project_pattern'] = $strongarm;

@@ -47,7 +47,7 @@ function feature_erpal_contract_views_default_views() {
   $handler->display->display_options['fields']['date_from']['table'] = 'date_item';
   $handler->display->display_options['fields']['date_from']['field'] = 'date_from';
   $handler->display->display_options['fields']['date_from']['label'] = 'Next cancelation deadline';
-  $handler->display->display_options['fields']['date_from']['date_format'] = 'short';
+  $handler->display->display_options['fields']['date_from']['date_format'] = 'erpal_date';
   /* Field: date item: Date tags */
   $handler->display->display_options['fields']['field_date_item_tags']['id'] = 'field_date_item_tags';
   $handler->display->display_options['fields']['field_date_item_tags']['table'] = 'field_data_field_date_item_tags';
@@ -58,6 +58,26 @@ function feature_erpal_contract_views_default_views() {
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $translatables['cancelations_by_contract'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Next cancelation deadline'),
+    t('Category'),
+    t('Content pane'),
+    t('View panes'),
+  );
   $export['cancelations_by_contract'] = $view;
 
   $view = new view();
@@ -151,11 +171,12 @@ echo _erpal_contract_helper_view_contracts_header_content();
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Field collection item: Payment period */
   $handler->display->display_options['fields']['field_payment_period']['id'] = 'field_payment_period';
@@ -346,6 +367,51 @@ echo _erpal_contract_helper_view_contracts_header_content();
       'fixed' => '',
       'label' => 'Content: Nid',
     ),
+  );
+  $translatables['contracts'] = array(
+    t('Master'),
+    t('Contracts'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('<?php
+echo _erpal_contract_helper_view_contracts_header_content();
+?>'),
+    t('No contract available'),
+    t('field collection item from field_contract_payment'),
+    t('Contractor'),
+    t('Customer'),
+    t('Contract type'),
+    t('Period'),
+    t('Payment period'),
+    t('Payment type'),
+    t('Price per month'),
+    t('Edit'),
+    t('Budgets by contract pane'),
+    t('Budgets'),
+    t('No budget available'),
+    t('field collection item from field_budget_booking'),
+    t('budget entity referenced from field_budgets'),
+    t('Budget ID'),
+    t('.'),
+    t('Created'),
+    t('Total hours'),
+    t(','),
+    t('Available hours'),
+    t('Date from'),
+    t('Date till'),
+    t('All'),
+    t('View panes'),
   );
   $export['contracts'] = $view;
 

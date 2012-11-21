@@ -110,6 +110,11 @@ function erpal_projects_helper_config_form($form, &$form_state) {
   }
   
   
+  $form['task_category_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit task and project category terms'), 'admin/structure/taxonomy/project_tags'),
+  );
+  
   $form['status_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit project status terms'), 'admin/structure/taxonomy/project_status_terms'),

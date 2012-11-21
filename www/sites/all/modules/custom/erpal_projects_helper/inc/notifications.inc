@@ -39,7 +39,7 @@ function _erpal_projects_helper_handle_entity_notification($entity, $entity_type
   
   //send a notification to these users
   $message = _erpal_projects_helper_get_project_notify_message($entity, $entity_type, $op);
-  _erpal_projects_helper_notify_users($users, $message);
+  _erpal_basic_helper_notify_users($users, $message);
 }
 
 /**
@@ -101,10 +101,9 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
       }
     }
     
-    //now check that all users really have access to the node. Users that dont have access are not notified.
+    //now check that all users really have access to the node. Users that don't have access are not notified.
     $users = _erpal_projects_helper_delete_users_no_access($subscribers, $task_node, 'node'); 
   }
-  
   return $users;
 }
 
@@ -144,44 +143,6 @@ function _erpal_projects_helper_get_project_notify_message($entity, $entity_type
 }
 
 /**
-* Sends a message to the users. 
-* @param $users an array with user IDs to send the message to 
-* @param $message the message to send to the users
-* @TODO handle this with the messaging module to be more abstract in notification method
-*/
-function _erpal_projects_helper_notify_users($users, $message) {
-  global $user;
-  
-  $subject = $message['subject'];
-  $message = $message['message'];
-
-  if (!count($users))
-    return;  //no mail if no users
-  
-  //now send mail to users
-  //@TODO integrate with messaging module
-  //get the mails of the users
-  $mails = array();
-  foreach ($users as $uid) {
-    $a_user = user_load($uid);
-    if ($a_user->status)  //dont send to inactive users
-      $mails[] = $a_user->mail;    
-  }
-  $mails = implode(',', $mails);
-  $site_name = variable_get('site_name', 'ERPAL');
-  $site_mail = variable_get('site_mail', ini_get('sendmail_from'));
-  $sender = $site_name.' <'.$site_mail.'>';
-  $params = array('message' => $message, 'subject' => $subject);
-  $message = drupal_mail('erpal_projects_helper', 'task_notifications', $mails, user_preferred_language($user), $params, $sender);
-  
-  if ($message['result']) {
-    drupal_set_message(t('!count user(s) have been notified', array('!count' => count($users))));
-  } else {
-    drupal_set_message(t('!count user(s) could NOT be notified because of mail sending error', array('!count' => count($users))), 'error');
-  }
-}
-
-/**
 * Returns an array with user IDs only of users that have the permission to view the entity
 */
 function _erpal_projects_helper_delete_users_no_access($users, $entity, $entity_type) {
@@ -206,6 +167,7 @@ function _erpal_projects_helper_delete_users_no_access($users, $entity, $entity_
 */
 function _erpal_projects_helper_get_notify_flag_link_element($node) {
   $flag_link = false;
+  $flag_link = false;
   if ($node->type == 'erpal_task')
     $flag_link = flag_create_link('task_subscriptions', $node->nid);
   elseif ($node->type == 'erpal_project')
@@ -220,12 +182,4 @@ function _erpal_projects_helper_get_notify_flag_link_element($node) {
   );
   
   return $element;
-}
-
-/**
-* Function to set message for sending mail. Called by erpal_projects_helper_mail
-*/
-function _erpal_projects_helper_task_notification_mail($key, &$message, $params) {
-  $message['subject'] = $params['subject'];
-  $message['body'][] = $params['message'];
 }

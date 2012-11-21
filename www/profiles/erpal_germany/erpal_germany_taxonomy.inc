@@ -21,7 +21,7 @@ function erpal_germany_create_taxonomy(){
       'name' => 'feature', 
       'default' => 0,
     ),
-  );
+  );  
   erpal_germany_taxonomy_add($task_type_vocabulary, $task_type_terms);
     
 
@@ -140,112 +140,120 @@ function erpal_germany_create_taxonomy(){
   $countries_vocabulary->help = t('Select the country');
   $countries_terms = array(
     array(
+      'name' => 'Austria',
+      'vat_rates' => '19',
+    ),
+    array(
       'name' => 'Belgium',
-      'vat_rates' => array('21','12','6'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Bulgaria',
-      'vat_rates' => array('20','9'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Czeck Republic',
-      'vat_rates' => array('20','14'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Denmark',
-      'vat_rates' => array('25',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Estonia',
-      'vat_rates' => array('20','9'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Germany',
-      'vat_rates' => array('19','7'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Greece',
-      'vat_rates' => array('23','13','6.5'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Spain',
-      'vat_rates' => array('18','8'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'France',
-      'vat_rates' => array('19.6','7','5.5'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Ireland',
-      'vat_rates' => array('23','13.5','9'),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Italy',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Cyprus',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Latvia',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Lithuania',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Luxembourg',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Hungary',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Malta',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Netherlands',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Austria',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Poland',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Portugal',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Romania',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Slovenia',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Slovakia',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
+    ),
+    array(
+      'name' => 'Swizerland',
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Finland',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'Sweden',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
     array(
       'name' => 'United Kingdom',
-      'vat_rates' => array('',),
+      'vat_rates' => '19',
     ),
   );
   erpal_germany_taxonomy_add($countries_vocabulary, $countries_terms);
@@ -268,7 +276,10 @@ function erpal_germany_create_taxonomy(){
 
  
  $activity_vocabulary = new stdClass();
- $activity_vocabulary->name = 'Activity status terms';
+ $activity_vocabulary->name = 'Activity status terms'; 
+ $activity_vocabulary->description = st('The status of the activity');
+ $activity_vocabulary->machine_name = 'activity_status_terms';
+ $activity_vocabulary->help = st('Select the status of the activity');
  $activity_terms = array(
   array(
     'name' => 'other',
@@ -339,6 +350,12 @@ function erpal_germany_taxonomy_add($vocabulary, $names){
         $term->field_is_default_term = array(
           'und' => array(
             0 => array('value' => $name['default'])
+          )
+        );
+      if(array_key_exists('vat_rates', $name))
+        $term->field_vat_rate = array(
+          'und' => array(
+            0 => array('value' => $name['vat_rates'])
           )
         );
       taxonomy_term_save($term);

@@ -66,7 +66,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '7',
+        'weight' => 7,
       ),
     ),
   );
@@ -133,7 +133,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '6',
+        'weight' => 6,
       ),
     ),
   );
@@ -194,7 +194,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '4',
+        'weight' => 4,
       ),
     ),
   );
@@ -255,7 +255,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '3',
+        'weight' => 3,
       ),
     ),
   );
@@ -313,7 +313,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => 1,
       ),
     ),
   );
@@ -374,7 +374,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );
@@ -443,7 +443,7 @@ function feature_erpal_profile_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '9',
+        'weight' => 9,
       ),
     ),
   );
@@ -489,7 +489,7 @@ function feature_erpal_profile_field_default_fields() {
           'label' => 'above',
           'module' => 'date',
           'settings' => array(
-            'format_type' => 'long',
+            'format_type' => 'erpal_date',
             'fromto' => 'both',
             'multiple_from' => '',
             'multiple_number' => '',
@@ -524,7 +524,7 @@ function feature_erpal_profile_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '0',
+        'weight' => 0,
       ),
     ),
   );
@@ -591,7 +591,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '5',
+        'weight' => 5,
       ),
     ),
   );
@@ -647,7 +647,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );
@@ -790,7 +790,7 @@ function feature_erpal_profile_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );

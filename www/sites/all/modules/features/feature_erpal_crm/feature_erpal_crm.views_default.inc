@@ -110,11 +110,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['field'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date_time',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Sort criterion: Content: Updated/commented date */
   $handler->display->display_options['sorts']['last_updated']['id'] = 'last_updated';
@@ -463,11 +464,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['field'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date_time',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Field: Contacts (field_contacts_ref) */
@@ -568,11 +570,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['field'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date_time',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
@@ -644,6 +647,44 @@ function feature_erpal_crm_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  $translatables['crm_activities'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('This contact has no activities'),
+    t('customer'),
+    t('Activity title'),
+    t('Customer'),
+    t('Status'),
+    t('Next Contact'),
+    t('All'),
+    t('Title'),
+    t('Activities by customer'),
+    t('CRM activities as customer'),
+    t('View panes'),
+    t('Next activities pane'),
+    t('Next activities'),
+    t('No activities'),
+    t('Missed activities pane'),
+    t('Missed activities'),
+    t('Search Terms'),
+    t('activities view pane'),
+    t('Activities by contact'),
+    t('CRM activities involved'),
+    t('Content entity referenced from field_contacts_ref'),
+    t('CRM Activities Pane'),
+  );
   $export['crm_activities'] = $view;
 
   return $export;

@@ -99,41 +99,32 @@ function erpal_projects_helper_custom_node_content_block_content($node) {
 /**
 * Implements hook_entity_update
 */
-function erpal_projects_helper_entity_update($entity, $type) {
+function erpal_projects_helper_entity_update($entity, $entity_type) {
 
-  if ($type == 'budget') {
-    //if budget has no timetrackings yet, enque this budget and its host node to timetracking refactoring queue
-    $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($entity->budget_id);
-    if (!count($timetracking_nids)) {
-      //get the field-collection that referenecs this budget entity
-      $pricing_field_collection = _erpal_projects_helper_pricing_entities_with_budget($entity->budget_id);
-      if (!isset($pricing_field_collection[0]))
-        return;
+  if ($entity_type == 'budget') {
+    $skip_refactoring = isset($entity->skip_refactoring) && $entity->skip_refactoring ? $entity->skip_refactoring : false;
+    if (!$skip_refactoring) {
+      //if budget has no timetrackings yet, enque this budget and its host node to timetracking refactoring queue
+      $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_budget($entity->budget_id);
+      if (!count($timetracking_nids)) {
+        //get the field-collection that referenecs this budget entity
+        $pricing_field_collection = _erpal_projects_helper_pricing_entities_with_budget($entity->budget_id);
+        if (!isset($pricing_field_collection[0]))
+          return;
+          
+        $pricing_field_collection_id = $pricing_field_collection[0];
+        $pricing_field_collection = entity_load('field_collection_item', array($pricing_field_collection_id));
+        $pricing_field_collection = $pricing_field_collection[$pricing_field_collection_id];
         
-      $pricing_field_collection_id = $pricing_field_collection[0];
-      $pricing_field_collection = entity_load('field_collection_item', array($pricing_field_collection_id));
-      $pricing_field_collection = $pricing_field_collection[$pricing_field_collection_id];
-      
-      //get the host node of the budget
-      $budget_host_node = $pricing_field_collection->hostEntity();
-      _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, array($entity->budget_id));
+        //get the host node of the budget
+        $budget_host_node = $pricing_field_collection->hostEntity();
+        _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($budget_host_node, array($entity->budget_id));
+      }
     }
   }
   
   //check if we want to send some notifications
-  _erpal_projects_helper_handle_notifications_on_subscribers($entity, $type, 'update');
-}
-
-/**
-* Implements hook_mail
-*/
-function erpal_projects_helper_mail($key, &$message, $params) {
-   
-  switch($key) {
-    case 'task_notifications':
-      _erpal_projects_helper_task_notification_mail($key, $message, $params);
-      break;
-  }
+  _erpal_projects_helper_handle_notifications_on_subscribers($entity, $entity_type, 'update');
 }
 
 /**
@@ -393,9 +384,9 @@ function erpal_projects_helper_cron_queue_info() {
   $queues = array();
   $queues['reorganize_timetrackings'] = array(
     'worker callback' => '_erpal_projects_helper_reorganize_timetrackings_queue_run', // This is the callback function for each queue item.
-    'time' => 30, // This is the max run time per cron run in seconds.
+    'time' => 60, // This is the max run time per cron run in seconds.
   );
-  
+ 
   return $queues;
 }
 
@@ -742,7 +733,7 @@ function _erpal_projects_helper_call_form_alter_hook(&$form) {
 /**
 * Alter delete form
 */
-function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
+function _erpal_projects_helper_node_delete_confirm_alter(&$form, &$form_state) {
   $delete_nid = $form['nid']['#value'];
   $delete_node = node_load($delete_nid);  
   
@@ -811,10 +802,9 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
       ),
     ); 
 
-    
     //add project_nid and parent_nid as hidden values bevor node will be deleted
     $project_nid = $delete_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
-    $parent_nid = $delete_node->field_parent[LANGUAGE_NONE][0]['target_id'];
+    $parent_nid = isset($delete_node->field_parent[LANGUAGE_NONE][0]['target_id']) ? $delete_node->field_parent[LANGUAGE_NONE][0]['target_id'] : false;
     
     $form['delete_node'] = array(
       '#type' => 'value',
@@ -828,11 +818,12 @@ function _erpal_projects_helper_node_delete_confirm_alter(&$form, $form_state) {
     
     $form['parent_node'] = array(
       '#type' => 'value',
-      '#value' => node_load($parent_nid),
+      '#value' => $parent_nid ? node_load($parent_nid) : false,
     );
     
     $form['#submit'][] = '_erpal_projects_helper_task_delete_confirm_submit';
     $form['#validate'][] = '_erpal_projects_helper_check_budget_validate_on_delete';
+    
   }
 }
 
@@ -846,6 +837,18 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
   $parent_node = $values['parent_node'];
   $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
 
+  //if there is no destination, go back to the tasks or tickets view of the project
+  $destination = drupal_get_destination();
+  $node_delete_uri = entity_uri('node', $delete_node);
+  $node_delete_path = $node_delete_uri['path'];
+  $redirect = false;
+  if ($destination['destination'] == $_GET['q'] || $destination['destination'] == $node_delete_path) {
+    //no destination set, so set one    
+    $is_ticket = isset($delete_node->field_is_ticket[LANGUAGE_NONE][0]['value']) ? $delete_node->field_is_ticket[LANGUAGE_NONE][0]['value'] : false;
+    $type = $is_ticket ? 'tickets' : 'tasks';
+    $redirect = 'node/'.$project_nid.'/'.$type;
+  }
+
   if ($delete_children == 'parent') {
     //add all nodes to parent node
     $options = array();
@@ -853,9 +856,9 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
     //get all nodes that reference the delete node using the field_parent
     $child_nids = _erpal_projects_helper_get_tasks_child_nodes($delete_node, $options, true);
     $callback_function = '_erpal_projects_helper_bulk_update_callback';
-    $args['parent_nid'] = $parent_node->nid;
+    $args['parent_nid'] = is_object($parent_node) ? $parent_node->nid : false;
     
-    _erpal_basic_helper_bulk_update($child_nids, $callback_function, $args, 'node/'.$project_nid);
+    _erpal_basic_helper_bulk_update($child_nids, $callback_function, $args, $redirect);
    
   } elseif ($delete_children == 'delete') {
     //delete all sub tasks.
@@ -878,9 +881,7 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
     if (count($child_nids) > 0)
       $nids['node'] = $child_nids;
    
-    //billables will be automatically deleted if they are not billed
-    
-    $redirect = 'node/'.$project_nid;
+    //billables will be automatically deleted if they are not billed            
     _erpal_basic_helper_bulk_delete($nids, $redirect);    
   }
 }
@@ -891,7 +892,8 @@ function _erpal_projects_helper_task_delete_confirm_submit($form, $form_state) {
 function _erpal_projects_helper_bulk_update_callback($node, $args) {
   $parent_nid = $args['parent_nid'];
   
-  $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
+  if ($parent_nid)
+    $node->field_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
 }
 
 /**

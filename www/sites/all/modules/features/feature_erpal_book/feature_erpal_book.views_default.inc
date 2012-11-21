@@ -279,6 +279,34 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
       'label' => 'Content: Parent (field_parent)',
     ),
   );
+  $translatables['book_children'] = array(
+    t('Master'),
+    t('All child pages'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Edit'),
+    t('Nid'),
+    t('Parent'),
+    t('Type'),
+    t('Weight'),
+    t('All'),
+    t('Child nodes'),
+    t('Dispalys all nodes that have parent nid set to contextual filter'),
+    t('View panes'),
+    t('Child nodes AJAX'),
+    t('Load all nodes that have parent nid set to contextual filter'),
+  );
   $export['book_children'] = $view;
 
   $view = new view();
@@ -335,7 +363,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['date_format'] = 'int_date_time';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -588,7 +616,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['date_format'] = 'int_date_time';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -630,14 +658,51 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['filters']['field_is_template_value']['id'] = 'field_is_template_value';
   $handler->display->display_options['filters']['field_is_template_value']['table'] = 'field_data_field_is_template';
   $handler->display->display_options['filters']['field_is_template_value']['field'] = 'field_is_template_value';
-  $handler->display->display_options['filters']['field_is_template_value']['operator'] = 'in';
+  $handler->display->display_options['filters']['field_is_template_value']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['filters']['field_is_template_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_is_template_value']['expose']['operator_id'] = 'field_is_template_value_op';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['label'] = 'Is template';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['operator'] = 'field_is_template_value_op';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['identifier'] = 'field_is_template_value';
   $handler->display->display_options['filters']['field_is_template_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_is_template_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   $handler->display->display_options['path'] = 'books/clonetemplates/%';
+  $translatables['books'] = array(
+    t('Master'),
+    t('Books'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('<?php return _erpal_book_helper_view_contacts_header_content(); ?>'),
+    t('Post date'),
+    t('Title'),
+    t('Tags'),
+    t('Book templates'),
+    t('Book templates to clone'),
+    t('Lists all template pages with bulk op to clone to book given in argument'),
+    t('Select'),
+    t('Is template'),
+  );
   $export['books'] = $view;
 
   return $export;

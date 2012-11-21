@@ -69,8 +69,8 @@ class BsSyncMlClientBackend implements dISyncMLClientBackend {
    */
   public function saveSyncMLItem($id, $string) {
     
-    dpm("receiving item");
-    dpm($string);
+    //dpm("receiving item");
+    //dpm($string);
     
     return $id;
   }
@@ -129,12 +129,12 @@ class BsSyncMlClientBackend implements dISyncMLClientBackend {
             // We've successfully sent an item to the server. Mark this in the database and update the lasttime.	
             //dpm("synced item $id ... $timestamp");
             $timestamp = date("d.m.Y H:i", $timestamp);
-            dpm("syncing item $id ... $timestamp\n");
+            //dpm("syncing item $id ... $timestamp\n");
         }
         if ($event == dSyncMLClient::EVENT_SYNCITEMFAILED) {
             // A synchronisation failed. We dont care.
             //drupal_set_message(t("Synching of node $id has failed, maybe try again later"));
-            dpm("Synching of node $id has failed, maybe try again later\n"); ob_flush();
+            //dpm("Synching of node $id has failed, maybe try again later\n"); ob_flush();
         }
         if ($event == dSyncMLClient::EVENT_SYNCITEMDELETE) {
             //delete sync item received - this is very nice but deleteSyncMLItem() handles this
@@ -143,7 +143,7 @@ class BsSyncMlClientBackend implements dISyncMLClientBackend {
         if ($event == dSyncMLClient::EVENT_SYNCDONE) {
             /* SYNC WAS SUCCESSFUL */
             
-          dpm("Sync Successful");
+          //dpm("Sync Successful");
         }
   }
 
