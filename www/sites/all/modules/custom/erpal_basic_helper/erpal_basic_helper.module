@@ -12,7 +12,7 @@ module_load_include('inc', 'erpal_basic_helper', 'inc/relation');
 module_load_include('inc', 'erpal_basic_helper', 'inc/token');
 module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
 module_load_include('inc', 'erpal_basic_helper', 'inc/dynamic.menu');
-
+module_load_include('inc', 'erpal_basic_helper', 'inc/notifications');
  
 /**
 * Implements hok_init
@@ -75,6 +75,33 @@ function erpal_basic_helper_menu(){
   $items = array_merge($items, $config_items);
   return $items;
 } 
+
+/**
+* Implements hook_date_combo_process_alter providet by date module
+*/
+function erpal_basic_helper_date_combo_process_alter(&$element, &$form_state, $context) {  
+  _erpal_basic_helper_date_combo_process_alter($element, $form_state, $context);
+  
+}
+
+/**
+* Alter date_popup element to show the correct date format, user has set in ERPAL config
+*/
+function _erpal_basic_helper_date_combo_process_alter(&$element, &$form_state, $context) {
+  $granularity = date_format_order($element['value']['#date_format']);
+  $time_granularity = array_intersect($granularity, array('hour', 'minute', 'second'));
+  
+  if (count($time_granularity)) {
+    //use the ERAPL date time format
+    $element['value']['#date_format'] = _erpal_basic_helper_date_format_date_time();
+    $element['value2']['#date_format'] = _erpal_basic_helper_date_format_date_time();
+  } else {
+    //use the ERPAL date only format
+    $element['value']['#date_format'] = _erpal_basic_helper_date_format_date_only();
+    $element['value2']['#date_format'] = _erpal_basic_helper_date_format_date_only();
+  }
+}
+
 
 /**
 * Implements hook_form_alter
@@ -396,6 +423,31 @@ function _erpal_basic_helper_get_bank_accounts($contact, $for_options) {
 }
 
 /**
+* Implements hook_cron_queue_info ()
+*/
+function erpal_basic_helper_cron_queue_info() {
+  $queues = array();
+  $queues['notifications'] = array(
+    'worker callback' => '_erpal_basic_helper_notifications_queue_run', // This is the callback function for each queue item.
+    'time' => 60, // This is the max run time per cron run in seconds.
+  );
+ 
+  return $queues;
+}
+
+/**
+* Implements hook_mail
+*/
+function erpal_basic_helper_mail($key, &$message, $params) {
+   
+  switch($key) {
+    case 'notifications':
+      _erpal_basic_helper_notification_mail($key, $message, $params);
+      break;
+  }
+}
+
+/**
 * Function returns the email address entity which has been selected in erpal_basic_helper config for "my email"
 */
 function _erpal_basic_helper_get_my_email_entity() {
@@ -500,14 +552,16 @@ function _erpal_basic_helper_private_file_path() {
 * returns the date format for displaying date only
 */
 function _erpal_basic_helper_date_format_date_only() {
-  return variable_get('erpal_date_format_date_only', 'short');
+  return variable_get('date_format_erpal_date', 'Y-m-d');
+  //return variable_get('erpal_date_format_date_only', 'short');
 }
 
 /**
 * returns the date format for displaying date only
 */
 function _erpal_basic_helper_date_format_date_time() {
-  return variable_get('erpal_date_format_date_time', 'short');
+  return variable_get('date_format_erpal_date_time', 'Y-m-d H:i');
+  //return variable_get('erpal_date_format_date_time', 'short');
 }
 
 /**

@@ -188,7 +188,7 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'format' => 'short',
+      'format' => 'erpal_date_time',
       'context' => 'requiredcontext_entity:node_1',
       'override_title' => 0,
       'override_title_text' => '',
@@ -503,7 +503,7 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'format' => 'short',
+      'format' => 'erpal_date_time',
       'context' => 'requiredcontext_entity:node_1',
       'override_title' => 1,
       'override_title_text' => 'Submitted',
@@ -960,7 +960,7 @@ function feature_erpal_project_basic_default_panels_mini() {
       'delta_offset' => '0',
       'delta_reversed' => FALSE,
       'formatter_settings' => array(
-        'format_type' => 'short',
+        'format_type' => 'erpal_date',
         'multiple_number' => '',
         'multiple_from' => '',
         'multiple_to' => '',

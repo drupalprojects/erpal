@@ -110,11 +110,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['field'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date_time',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Sort criterion: Content: Updated/commented date */
   $handler->display->display_options['sorts']['last_updated']['id'] = 'last_updated';
@@ -463,11 +464,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['field'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date_time',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Field: Contacts (field_contacts_ref) */
@@ -568,11 +570,12 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['fields']['field_next_contact']['table'] = 'field_data_field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['field'] = 'field_next_contact';
   $handler->display->display_options['fields']['field_next_contact']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date_time',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;

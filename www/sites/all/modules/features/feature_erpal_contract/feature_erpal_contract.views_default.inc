@@ -47,7 +47,7 @@ function feature_erpal_contract_views_default_views() {
   $handler->display->display_options['fields']['date_from']['table'] = 'date_item';
   $handler->display->display_options['fields']['date_from']['field'] = 'date_from';
   $handler->display->display_options['fields']['date_from']['label'] = 'Next cancelation deadline';
-  $handler->display->display_options['fields']['date_from']['date_format'] = 'short';
+  $handler->display->display_options['fields']['date_from']['date_format'] = 'erpal_date';
   /* Field: date item: Date tags */
   $handler->display->display_options['fields']['field_date_item_tags']['id'] = 'field_date_item_tags';
   $handler->display->display_options['fields']['field_date_item_tags']['table'] = 'field_data_field_date_item_tags';
@@ -151,11 +151,12 @@ echo _erpal_contract_helper_view_contracts_header_content();
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Field collection item: Payment period */
   $handler->display->display_options['fields']['field_payment_period']['id'] = 'field_payment_period';

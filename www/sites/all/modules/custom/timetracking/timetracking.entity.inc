@@ -152,7 +152,7 @@ class timetracking extends Entity {
     $duration = $this->duration;
     if ($this->duration && $this->time_start && !$this->time_end) {
       //calculate the end time
-      $this->time_end = $this->time_start + ($this->duration * 60 * 60);
+      $this->time_end = round($this->time_start + ($this->duration * 60 * 60), 2);
     } elseif (!$this->duration && $this->time_start && $this->time_end) {
       //calculate duration
       $duration = ($this->time_end - $this->time_start) / (60 * 60);

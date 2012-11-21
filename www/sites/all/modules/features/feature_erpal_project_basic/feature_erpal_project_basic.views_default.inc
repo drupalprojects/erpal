@@ -158,7 +158,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -217,7 +217,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -346,11 +346,12 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Project starts';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Field: Period */
   $handler->display->display_options['fields']['field_date_1']['id'] = 'field_date_1';
@@ -358,11 +359,12 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date_1']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date_1']['label'] = 'Project ends';
   $handler->display->display_options['fields']['field_date_1']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
@@ -2215,20 +2217,20 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Submitted';
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['label'] = 'Last update';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Field: Period */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -2797,20 +2799,20 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Submitted';
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['label'] = 'Last update';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Field: Period */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -4694,20 +4696,20 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Submitted';
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['label'] = 'Last update';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Field: Period */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -5265,20 +5267,20 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Submitted';
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['date_format'] = 'erpal_date_time';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['label'] = 'Last update';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Field: Period */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -6014,23 +6016,24 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'timetracking';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
   /* Field: Timetracking: Description */
   $handler->display->display_options['fields']['description']['id'] = 'description';
   $handler->display->display_options['fields']['description']['table'] = 'timetracking';
   $handler->display->display_options['fields']['description']['field'] = 'description';
+  $handler->display->display_options['fields']['description']['label'] = 'Artikelbezeichnung';
   /* Field: Timetracking: Time_start */
   $handler->display->display_options['fields']['time_start']['id'] = 'time_start';
   $handler->display->display_options['fields']['time_start']['table'] = 'timetracking';
   $handler->display->display_options['fields']['time_start']['field'] = 'time_start';
   $handler->display->display_options['fields']['time_start']['label'] = 'start';
-  $handler->display->display_options['fields']['time_start']['date_format'] = 'short';
+  $handler->display->display_options['fields']['time_start']['date_format'] = 'erpal_date_time';
   /* Field: Timetracking: Time_end */
   $handler->display->display_options['fields']['time_end']['id'] = 'time_end';
   $handler->display->display_options['fields']['time_end']['table'] = 'timetracking';
   $handler->display->display_options['fields']['time_end']['field'] = 'time_end';
   $handler->display->display_options['fields']['time_end']['label'] = 'end';
-  $handler->display->display_options['fields']['time_end']['date_format'] = 'short';
+  $handler->display->display_options['fields']['time_end']['date_format'] = 'erpal_date_time';
   /* Field: Timetracking: Duration */
   $handler->display->display_options['fields']['duration']['id'] = 'duration';
   $handler->display->display_options['fields']['duration']['table'] = 'timetracking';
@@ -6063,6 +6066,11 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_timetracking_button']['relationship'] = 'subject_id';
   $handler->display->display_options['fields']['field_timetracking_button']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
+  /* Sort criterion: Timetracking: Time_start */
+  $handler->display->display_options['sorts']['time_start']['id'] = 'time_start';
+  $handler->display->display_options['sorts']['time_start']['table'] = 'timetracking';
+  $handler->display->display_options['sorts']['time_start']['field'] = 'time_start';
+  $handler->display->display_options['sorts']['time_start']['order'] = 'DESC';
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
@@ -6093,7 +6101,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['time_start']['table'] = 'timetracking';
   $handler->display->display_options['fields']['time_start']['field'] = 'time_start';
   $handler->display->display_options['fields']['time_start']['label'] = 'start';
-  $handler->display->display_options['fields']['time_start']['date_format'] = 'short';
+  $handler->display->display_options['fields']['time_start']['date_format'] = 'erpal_date_time';
   /* Field: Timetracking: Duration */
   $handler->display->display_options['fields']['duration']['id'] = 'duration';
   $handler->display->display_options['fields']['duration']['table'] = 'timetracking';
@@ -6122,6 +6130,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['description']['id'] = 'description';
   $handler->display->display_options['fields']['description']['table'] = 'timetracking';
   $handler->display->display_options['fields']['description']['field'] = 'description';
+  $handler->display->display_options['fields']['description']['label'] = 'Artikelbezeichnung';
   $handler->display->display_options['fields']['description']['exclude'] = TRUE;
   $export['timetracking_entities'] = $view;
 
@@ -6191,11 +6200,12 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date_time']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['fields']['field_date_time']['field'] = 'field_date_time';
   $handler->display->display_options['fields']['field_date_time']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
+    'format_type' => 'erpal_date',
+    'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Content: Duration */
   $handler->display->display_options['fields']['field_timetracking_duration']['id'] = 'field_timetracking_duration';
@@ -6390,11 +6400,12 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date_time']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['fields']['field_date_time']['field'] = 'field_date_time';
   $handler->display->display_options['fields']['field_date_time']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
+    'format_type' => 'erpal_date',
+    'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Content: Duration */
   $handler->display->display_options['fields']['field_timetracking_duration']['id'] = 'field_timetracking_duration';
@@ -6533,11 +6544,12 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_date_time']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['fields']['field_date_time']['field'] = 'field_date_time';
   $handler->display->display_options['fields']['field_date_time']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
+    'format_type' => 'erpal_date',
+    'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Content: Duration */
   $handler->display->display_options['fields']['field_timetracking_duration']['id'] = 'field_timetracking_duration';

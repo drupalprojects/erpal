@@ -181,7 +181,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['date_delivery']['table'] = 'billable';
   $handler->display->display_options['fields']['date_delivery']['field'] = 'date_delivery';
   $handler->display->display_options['fields']['date_delivery']['label'] = 'Date delivery';
-  $handler->display->display_options['fields']['date_delivery']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['date_delivery']['date_format'] = 'erpal_date';
   $handler->display->display_options['fields']['date_delivery']['custom_date_format'] = 'Y-m-d';
   /* Field: Billable: Quantity */
   $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
@@ -294,12 +294,6 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['parent_billable']['value']['value'] = '0';
   $handler->display->display_options['filters']['parent_billable']['group'] = 0;
 
-  /* Display: Billables */
-  $handler = $view->new_display('page', 'Billables', 'page');
-  $handler->display->display_options['enabled'] = FALSE;
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'invoice/billables';
-
   /* Display: Billables by invoice pane */
   $handler = $view->new_display('panel_pane', 'Billables by invoice pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
@@ -333,7 +327,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['date_delivery']['table'] = 'billable';
   $handler->display->display_options['fields']['date_delivery']['field'] = 'date_delivery';
   $handler->display->display_options['fields']['date_delivery']['label'] = 'Date delivery';
-  $handler->display->display_options['fields']['date_delivery']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['date_delivery']['date_format'] = 'erpal_date';
   $handler->display->display_options['fields']['date_delivery']['custom_date_format'] = 'Y-m-d';
   /* Field: Billable: Quantity */
   $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
@@ -440,7 +434,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['date_delivery']['table'] = 'billable';
   $handler->display->display_options['fields']['date_delivery']['field'] = 'date_delivery';
   $handler->display->display_options['fields']['date_delivery']['label'] = 'Date delivery';
-  $handler->display->display_options['fields']['date_delivery']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['date_delivery']['date_format'] = 'erpal_date';
   $handler->display->display_options['fields']['date_delivery']['custom_date_format'] = 'Y-m-d';
   /* Field: Billable: Quantity */
   $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
@@ -597,11 +591,12 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['field_invoice_date']['table'] = 'field_data_field_invoice_date';
   $handler->display->display_options['fields']['field_invoice_date']['field'] = 'field_invoice_date';
   $handler->display->display_options['fields']['field_invoice_date']['settings'] = array(
-    'format_type' => 'long',
+    'format_type' => 'erpal_date',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Content: Invoice Number */
   $handler->display->display_options['fields']['field_invoice_number']['id'] = 'field_invoice_number';
@@ -622,13 +617,13 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['field_payment_date']['id'] = 'field_payment_date';
   $handler->display->display_options['fields']['field_payment_date']['table'] = 'field_data_field_payment_date';
   $handler->display->display_options['fields']['field_payment_date']['field'] = 'field_payment_date';
-  $handler->display->display_options['fields']['field_payment_date']['type'] = 'format_interval';
   $handler->display->display_options['fields']['field_payment_date']['settings'] = array(
-    'format_type' => 'long',
+    'format_type' => 'erpal_date',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Content: Total excl. VAT */
   $handler->display->display_options['fields']['field_price_no_vat']['id'] = 'field_price_no_vat';
@@ -753,12 +748,6 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
-
-  /* Display: Invoices */
-  $handler = $view->new_display('page', 'Invoices', 'page');
-  $handler->display->display_options['enabled'] = FALSE;
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'invoice/invoices';
 
   /* Display: Invoices to contact pane */
   $handler = $view->new_display('panel_pane', 'Invoices to contact pane', 'panel_pane_1');

@@ -185,10 +185,10 @@ function timetracking_edit_form($form, &$form_state, $timetracking) {
   $form['description'] = array(
     '#type' => 'textfield',
     '#title' => t('Description'),
-    '#default_value' => isset($timetracking->duration) and $timetracking->duration ? $timetracking->duration : '',
+    '#default_value' => isset($timetracking->description) && $timetracking->description ? $timetracking->description : '',
     '#required' => TRUE,
   );
-  
+
   $form['data']['#tree'] = TRUE;
 
   // Add the field related form elements.
