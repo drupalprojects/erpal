@@ -153,7 +153,7 @@ function feature_erpal_docs_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '1',
+        'weight' => 1,
       ),
     ),
   );
@@ -228,7 +228,7 @@ function feature_erpal_docs_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );

@@ -349,6 +349,28 @@ function feature_erpal_calendar_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
     'date_item.date_from' => 'date_item.date_from',
   );
+  $translatables['calendar'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('relation author'),
+    t('Date Item'),
+    t('Date tags'),
+    t('Categories'),
+    t('User'),
+    t('Month'),
+    t('All'),
+    t('Week'),
+    t('Day'),
+    t('Year'),
+    t('Block'),
+    t('Upcoming'),
+    t('Upcoming events block'),
+  );
   $export['calendar'] = $view;
 
   return $export;
