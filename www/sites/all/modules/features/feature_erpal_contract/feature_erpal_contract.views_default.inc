@@ -151,11 +151,12 @@ echo _erpal_contract_helper_view_contracts_header_content();
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'erpal_date',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_repeat_rule' => 'show',
   );
   /* Field: Field collection item: Payment period */
   $handler->display->display_options['fields']['field_payment_period']['id'] = 'field_payment_period';
