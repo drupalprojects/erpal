@@ -63,7 +63,7 @@ function erpal_germany_install_tasks(){
       'type' => 'form',
       ),
   );
-  if(false){
+  if(true){
     $tasks['erpal_germany_config_form'] = array(
       'display_name' => st('Configure Erpal'),
       'display' => TRUE,
@@ -232,6 +232,9 @@ function erpal_germany_contact_information_form_submit($form, $form_state){
   variable_set('my_field_email', $values['email_address']);  //save email address
 }
 
+/**
+ * Basic settings form 
+ */
 function erpal_germany_config_form(){
   drupal_set_title(st('Erpal configuration'));
   $form = array();
@@ -270,8 +273,9 @@ function erpal_germany_config_form(){
   );
   $form['erpal_docs']['doc_file_extensions'] = array(
     '#type' => 'textfield',
-    '#title' => st('Allowed doc file extensions'),
-    '#value' => 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml',
+    '#title' => t('Allowed doc file extensions'),
+    '#description' => t('These extensions are allowed when uploading a file to the asset management. Separate them by spaces.'),
+    '#default_value' => _erpal_docs_helper_doc_extensions(),
   );
   
   $form['erpal_contract'] = array(
@@ -297,7 +301,7 @@ function erpal_germany_config_form(){
     '#type' => 'checkbox',
     '#title' => st('Run ERPAL in debug mode'),
   );
-  
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => st('Save and continue'),
@@ -308,31 +312,24 @@ function erpal_germany_config_form(){
 function erpal_germany_config_form_submit($form, $form_state){
   $values = $form_state['values']; 
   variable_set('erpal_docs_doc_file_extensions', $values['doc_file_extensions']);
-  variable_set('erpal_date_format_date_only', $values['date_only']);
-  variable_set('erpal_date_format_date_time', $values['date_time']);
+  variable_set('date_format_erpal_date', $values['date_only']);
+  variable_set('date_format_erpal_date_time', $values['date_time']);
   variable_set('erpal_debug', $values['debug_mode']);
   variable_set('erpal_book_skip_pdf_header_frontpage', $values['skip_logo']);
   $cancelation_precalculate_range = intval($values['precalculation_range']);
   variable_set('cancelation_precalculate_range', $cancelation_precalculate_range);
+  dpm($values['date_only']);
+  dpm($values['date_time']);
 }
 
 function erpal_germany_invoice_config_form(){
   drupal_set_title(st('Erpal Invoice configuration'));
-  
- 
-  
   $form = drupal_get_form('erpal_invoice_helper_config_form');
   return $form;
 }
-function erpal_germany_invoice_config_form_submit($form, $form_state){
-
-}
 
 function erpal_germany_calendar_config_form(){
-  
   drupal_set_title(st('Erpal Calendar configuration'));
-  
   $form = drupal_get_form('erpal_calendar_helper_config_form');
-
   return $form;
 }

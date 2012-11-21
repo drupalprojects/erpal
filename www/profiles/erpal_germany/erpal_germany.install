@@ -108,12 +108,19 @@ function erpal_germany_install() {
 
   erpal_germany_create_relations();
 
+  erpal_germany_various_settings();
   erpal_germany_invoice_config();
-  
   erpal_germany_calendar_config();
-  
   erpal_germany_projects_config();
 }
+
+
+function erpal_germany_various_settings(){
+  variable_set('date_format_erpal_date', 'd.m.Y - H:i');
+  variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');  
+  variable_set('erpal_docs_doc_file_extensions', 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml');
+}
+
 /**
  * Erpal-Projects basic settings
  */
