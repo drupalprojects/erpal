@@ -24,45 +24,64 @@ function erpal_germany_form_install_configure_form_alter(&$form, $form_state) {
     '#title' => st('Private file system path'), 
     '#default_value' => variable_get('file_private_path', ''), 
     '#maxlength' => 255, 
-    '#description' => st('An existing local file system path for storing private files. It should be writable by Drupal and not accessible over the web. See the online handbook for <a href="@handbook">more information about securing private files</a>.', array('@handbook' => 'http://drupal.org/documentation/modules/file')), 
-    '#after_build' => array('system_check_directory'),
+    '#default_value' => 'private/',
     '#required' => TRUE, 
   );
+
+  $form['#validate'][] = 'erpal_germany_file_private_path_validate';
   $form['#submit'][] = 'erpal_germany_file_private_path_submit';
 }
+
+function erpal_germany_file_private_path_validate($form, $form_state){ 
+  $dir = $form_state['values']['file_private_path'];
+  if(!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)){
+    if(is_dir($dir)){
+      form_set_error('file_private_path', 'The private filesystem path is not writable. Drupal needs write permissions to ' . $dir);
+    }else{
+      form_set_error('file_private_path', 'The private filesystem folder does not exist and can not be created. Please set the permissions, or create the folder manually.');
+    }
+  }
+}
+
 
 
 function erpal_germany_file_private_path_submit($form, $form_state){
   variable_set('file_private_path', $form_state['values']['file_private_path']);
+  global $advanced;
+
 }
 
 /** 
  * Add additional install tasks 
  */
 function erpal_germany_install_tasks(){
-  return array(
+  global $advanced;
+  $tasks = array(
     'erpal_germany_contact_information_form' => array(
       'display_name' => st('Contact Information'),
       'display' => TRUE,
       'type' => 'form',
       ),
-    'erpal_germany_config_form' => array(
+  );
+  if(FALSE){
+    $tasks['erpal_germany_config_form'] = array(
       'display_name' => st('Configure Erpal'),
       'display' => TRUE,
       'type' => 'form',
-      ),
-    'erpal_germany_calendar_config_form' => array(
+    );
+    $tasks['erpal_germany_calendar_config_form'] = array(
       'display_name' => st('Configure Calendar'),
       'display' => TRUE,
       'type' => 'form',
-     ), 
-    'erpal_germany_invoice_config_form' => array(
+    );
+    $tasks['erpal_germany_invoice_config_form'] = array(
       'display_name' => st('Configure Invoice'),
       'display' => TRUE,
       'type' => 'form',
-      ),
-      
     );
+  }
+  
+  return $tasks;
 }
 
 /**
@@ -213,6 +232,9 @@ function erpal_germany_contact_information_form_submit($form, $form_state){
   variable_set('my_field_email', $values['email_address']);  //save email address
 }
 
+/**
+ * Basic settings form 
+ */
 function erpal_germany_config_form(){
   drupal_set_title(st('Erpal configuration'));
   $form = array();
@@ -251,8 +273,9 @@ function erpal_germany_config_form(){
   );
   $form['erpal_docs']['doc_file_extensions'] = array(
     '#type' => 'textfield',
-    '#title' => st('Allowed doc file extensions'),
-    '#value' => 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml',
+    '#title' => t('Allowed doc file extensions'),
+    '#description' => t('These extensions are allowed when uploading a file to the asset management. Separate them by spaces.'),
+    '#default_value' => _erpal_docs_helper_doc_extensions(),
   );
   
   $form['erpal_contract'] = array(
@@ -278,7 +301,7 @@ function erpal_germany_config_form(){
     '#type' => 'checkbox',
     '#title' => st('Run ERPAL in debug mode'),
   );
-  
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => st('Save and continue'),
@@ -289,38 +312,24 @@ function erpal_germany_config_form(){
 function erpal_germany_config_form_submit($form, $form_state){
   $values = $form_state['values']; 
   variable_set('erpal_docs_doc_file_extensions', $values['doc_file_extensions']);
-  variable_set('erpal_date_format_date_only', $values['date_only']);
-  variable_set('erpal_date_format_date_time', $values['date_time']);
+  variable_set('date_format_erpal_date', $values['date_only']);
+  variable_set('date_format_erpal_date_time', $values['date_time']);
   variable_set('erpal_debug', $values['debug_mode']);
   variable_set('erpal_book_skip_pdf_header_frontpage', $values['skip_logo']);
   $cancelation_precalculate_range = intval($values['precalculation_range']);
   variable_set('cancelation_precalculate_range', $cancelation_precalculate_range);
+  dpm($values['date_only']);
+  dpm($values['date_time']);
 }
 
 function erpal_germany_invoice_config_form(){
   drupal_set_title(st('Erpal Invoice configuration'));
-  
- 
-  
   $form = drupal_get_form('erpal_invoice_helper_config_form');
   return $form;
 }
-function erpal_germany_invoice_config_form_submit($form, $form_state){
-
-}
 
 function erpal_germany_calendar_config_form(){
-  
   drupal_set_title(st('Erpal Calendar configuration'));
-  
   $form = drupal_get_form('erpal_calendar_helper_config_form');
-
   return $form;
 }
-
-
-
-
-
-
-
