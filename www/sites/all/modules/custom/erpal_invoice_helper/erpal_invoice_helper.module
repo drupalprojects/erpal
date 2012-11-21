@@ -629,7 +629,7 @@ function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'erpal_invoice') {
     
     $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
-    $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+    $contractor_nid = isset($node->field_contractor_ref[LANGUAGE_NONE][0]) ? $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'] : false;
     if ($my_company_nid == $contractor_nid) {  //only if this is an invoice from us to a customer
       $links[] = array(  //@TODO this will move to local tasks
         'href' => 'invoice/'.$node->nid."/pdf",
