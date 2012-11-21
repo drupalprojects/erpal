@@ -24,45 +24,64 @@ function erpal_germany_form_install_configure_form_alter(&$form, $form_state) {
     '#title' => st('Private file system path'), 
     '#default_value' => variable_get('file_private_path', ''), 
     '#maxlength' => 255, 
-    '#description' => st('An existing local file system path for storing private files. It should be writable by Drupal and not accessible over the web. See the online handbook for <a href="@handbook">more information about securing private files</a>.', array('@handbook' => 'http://drupal.org/documentation/modules/file')), 
-    '#after_build' => array('system_check_directory'),
+    '#default_value' => 'private/',
     '#required' => TRUE, 
   );
+
+  $form['#validate'][] = 'erpal_germany_file_private_path_validate';
   $form['#submit'][] = 'erpal_germany_file_private_path_submit';
 }
+
+function erpal_germany_file_private_path_validate($form, $form_state){ 
+  $dir = $form_state['values']['file_private_path'];
+  if(!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)){
+    if(is_dir($dir)){
+      form_set_error('file_private_path', 'The private filesystem path is not writable. Drupal needs write permissions to ' . $dir);
+    }else{
+      form_set_error('file_private_path', 'The private filesystem folder does not exist and can not be created. Please set the permissions, or create the folder manually.');
+    }
+  }
+}
+
 
 
 function erpal_germany_file_private_path_submit($form, $form_state){
   variable_set('file_private_path', $form_state['values']['file_private_path']);
+  global $advanced;
+
 }
 
 /** 
  * Add additional install tasks 
  */
 function erpal_germany_install_tasks(){
-  return array(
+  global $advanced;
+  $tasks = array(
     'erpal_germany_contact_information_form' => array(
       'display_name' => st('Contact Information'),
       'display' => TRUE,
       'type' => 'form',
       ),
-    'erpal_germany_config_form' => array(
+  );
+  if(false){
+    $tasks['erpal_germany_config_form'] = array(
       'display_name' => st('Configure Erpal'),
       'display' => TRUE,
       'type' => 'form',
-      ),
-    'erpal_germany_calendar_config_form' => array(
+    );
+    $tasks['erpal_germany_calendar_config_form'] = array(
       'display_name' => st('Configure Calendar'),
       'display' => TRUE,
       'type' => 'form',
-     ), 
-    'erpal_germany_invoice_config_form' => array(
+    );
+    $tasks['erpal_germany_invoice_config_form'] = array(
       'display_name' => st('Configure Invoice'),
       'display' => TRUE,
       'type' => 'form',
-      ),
-      
     );
+  }
+  
+  return $tasks;
 }
 
 /**
@@ -317,10 +336,3 @@ function erpal_germany_calendar_config_form(){
 
   return $form;
 }
-
-
-
-
-
-
-

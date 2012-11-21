@@ -14,7 +14,7 @@ include('erpal_germany_relations.inc');
  * @see system_install()
  */
 function erpal_germany_install() {
-  
+   
   // adaptivetheme und theme erpal anschalten und auf default setzen
   $default_theme = 'erpal';
   $admin_theme = 'adaptivetheme_admin';
@@ -103,21 +103,42 @@ function erpal_germany_install() {
   //rebuild content access permissions
   node_access_rebuild(); 
 
-  
   // create taxonomy
   erpal_germany_create_taxonomy();
 
-    
   erpal_germany_create_relations();
 
-  
   erpal_germany_invoice_config();
   
-    
   erpal_germany_calendar_config();
   
+  erpal_germany_projects_config();
+}
+/**
+ * Erpal-Projects basic settings
+ */
+function erpal_germany_projects_config(){
+  // Set Erpal-Project notification message
+  $erpal_task_update_subject = 'ERPAL - Notification: [erpal_project_notifications:content_label]';
+  $erpal_task_update_message = 
+    'Hello,'
+    . "\r\n"
+    . "\r\n"
+    . 'New content available: [erpal_project_notifications:content_label] -> [erpal_project_notifications:content_url]'
+    . "\r\n"
+    . "\r\n"
+    . 'Best regards'
+    . "\r\n"
+    . "\r\n"
+    . 'ERPAL';
+  variable_set('erpal_task_update_subject', $erpal_task_update_subject);
+  variable_set('erpal_task_update_message', $erpal_task_update_message);
 }
 
+
+/**
+ * Erpal-Calendar basic settings
+ */
 function erpal_germany_calendar_config(){
   _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
@@ -126,6 +147,10 @@ function erpal_germany_calendar_config(){
   _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
 }
 
+
+/**
+ * ERPAL-Invoice basic Settings 
+ */
 function erpal_germany_invoice_config(){
   //set default vat-rate for erpal invoice
   $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
