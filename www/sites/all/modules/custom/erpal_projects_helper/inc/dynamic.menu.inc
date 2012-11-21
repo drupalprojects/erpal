@@ -350,6 +350,7 @@ function _erpal_projects_helper_projects_global_links(&$data, $router_item) {
   if (!$has_node) {
     erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp');
     erpal_make_local_tab($data, t('Timetrackings'), 'projects/timetrackings');  
+    erpal_make_local_tab($data, t('Fixed price items'), 'projects/pricing/fixed');  
   }
 }
 
