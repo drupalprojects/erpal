@@ -87,13 +87,12 @@ function erpal_crm_helper_dynamic_menu_items_alter(&$data, $router_item, $root_p
   }
 
   
-  //Node Timetracking Context
-  /*
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_NODE_TIMETRACKINGS, $router_item)) {
+  //Node Activity Context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_ACTIVITY, $router_item)) {
     $node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
-    _erpal_projects_helper_node_timetrackings_links($data, $node); 
+    _erpal_projects_helper_node_activity_links($data, $router_item, $node); 
   }
-  */
+  
 }
 
 /**
@@ -129,19 +128,33 @@ function _erpal_crm_helper_get_menu_parents($router_item) {
 * Adds all activities context links
 */
 function _erpal_crm_helper_contacts_links(&$data) {
-  //single project context
+  //contacts list context
   $query = array('destination' => $_GET['q']);
   erpal_make_action($data, t('Create a new contact'), 'node/add/erpal-contact', $query);
+}
+
+/**
+* Adds all activity contact links
+*/
+function _erpal_projects_helper_node_activity_links(&$data, $router_item, $activity_node) {
+  //single activity context
+  $query = array();
+  erpal_make_action($data, t('Edit this activity'), 'node/'.$activity_node->nid.'/edit', $query);
+  $query = array('field_activity_ref' => $activity_node->nid, 'destination' => $_GET['q']);
+  erpal_make_action($data, t('Create a new project from this activity'), 'node/add/erpal-project', $query);
+  erpal_make_action($data, t('Create a new contract from this activity'), 'node/add/erpal-contract', $query);
+  
+  erpal_make_local_tab($data, t('Contacts'), 'crm/contacts');
 }
 
 /**
 * Adds all contact context links
 */
 function _erpal_crm_helper_contact_links(&$data, $router_item, $contact_node) {
-  //single project context
+  //single contact context
   $query = array();
   erpal_make_action($data, t('Edit this contact'), 'node/'.$contact_node->nid.'/edit', $query);
-  $query = array('field_customer_ref' => $contact_node->nid, 'destination' => $_GET['q']);
+  $query = array('field_customer_ref' => $contact_node->nid);
   erpal_make_action($data, t('Create a new activity for this contact'), 'node/add/erpal-crm-activity', $query);
   erpal_make_action($data, t('Create a new invoice for this contact'), 'node/add/erpal-invoice', $query);
   erpal_make_action($data, t('Create a new contract for this contact'), 'node/add/erpal-contract', $query);

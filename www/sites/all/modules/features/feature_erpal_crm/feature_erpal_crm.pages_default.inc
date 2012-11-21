@@ -570,20 +570,11 @@ function feature_erpal_crm_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-17';
     $pane->panel = 'sidebar_first_right';
-    $pane->type = 'node_prepopulate';
-    $pane->subtype = 'node_prepopulate';
+    $pane->type = 'page_actions';
+    $pane->subtype = 'page_actions';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array(
-      'types' => array(
-        'erpal_contract' => 'erpal_contract',
-        'erpal_project' => 'erpal_project',
-      ),
-      'field_name' => 'field_activity_ref',
-      'context' => 'argument_entity_id:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
+    $pane->configuration = array();
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
@@ -709,7 +700,7 @@ function feature_erpal_crm_default_page_manager_handlers() {
     $display->content['new-22'] = $pane;
     $display->panels['sidebar_second_right'][0] = 'new-22';
   $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-17';
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $export['node_view_panel_context_8'] = $handler;
 
