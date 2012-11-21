@@ -63,7 +63,7 @@ function erpal_germany_install_tasks(){
       'type' => 'form',
       ),
   );
-  if(true){
+  if(FALSE){
     $tasks['erpal_germany_config_form'] = array(
       'display_name' => st('Configure Erpal'),
       'display' => TRUE,
