@@ -120,7 +120,9 @@ function erpal_invoice_helper_invoices_date_form_submit($form, $form_state) {
     $invoices_date = array('for_date' => date('Ymd'), 'date' => $unix_time);
     $invoices_date = serialize($invoices_date);
     variable_set('erpal_invoices_date', $invoices_date);
+    drupal_set_message(t('Todays invoices date is set to !date.', array('!date' => erpal_date_formatted($unix_time))));
   }
+  
 }
 
 /**
@@ -131,14 +133,14 @@ function _erpal_invoice_helper_get_todays_invoices_date() {
   $invoices_date = variable_get('erpal_invoices_date', false);
   
   if (!$invoices_date)
-    return false;
+    return time();
   
   $invoices_date = unserialize($invoices_date);
 
   if ($invoices_date['for_date'] == date('Ymd'))
     return $invoices_date['date'];
-  else
-    return false;
+  else    
+    return time();
 }
 
 /**
@@ -390,9 +392,9 @@ function _erpal_invoice_helper_preselect_address_form(&$form, &$form_state) {
       $default_id = $defaults['address_id'];
     }
   }
- 
+
   //if we have only one default_id set this one as default_value
-  if (isset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']) && count($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'])) {
+  if (isset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']) && count($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']) == 1) {
     $keys = array_keys($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']);
     $default_id = $keys[0];
 
@@ -923,7 +925,6 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   //get the billables in an array
   $billable_entity_ids = $invoice->field_billables_ref[LANGUAGE_NONE];
   $billables = array();
-  $date_form_date = _erpal_basic_helper_date_format_date_only();
 
   foreach ($billable_entity_ids as $billable_id) {
     $billable_id = $billable_id['target_id'];
@@ -931,7 +932,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
 
     $billables[$billable_id] = array(
       'subject' => $billable->subject,
-      'date_delivery' => date($date_form_date, $billable->date_delivery),
+      'date_delivery' => erpal_date_formatted($billable->date_delivery),
       'subject_nid' => $billable->subject_nid,
       'quantity' => $billable->quantity,
       'single_price' => $billable->single_price,
@@ -984,7 +985,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['company_node'] = $company;
   $variables['customer'] = $customer_arr;
   $variables['invoice_number'] = $invoice_number;
-  $variables['invoice_date'] = date($date_form_date, $invoice_date);
+  $variables['invoice_date'] = erpal_date_formatted($invoice_date);
   $variables['billables'] = $billables;
   $variables['total'] = $total;
   $variables['currency'] = $currency;
@@ -992,7 +993,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['order_numbers_extern'] = $order_numbers_extern;
   $variables['total_excl_vat'] = $total_excl_vat;
   $variables['total_vat'] = $total_vats;
-  $variables['payment_date'] = date($date_form_date, $payment_date);
+  $variables['payment_date'] = erpal_date_formatted($payment_date);
   $variables['notes'] = $invoice->field_note[LANGUAGE_NONE][0]['value'];
   $variables['auto_notes'] = $flat_auto_notes;
   

@@ -85,6 +85,30 @@ function erpal_basic_helper_date_combo_process_alter(&$element, &$form_state, $c
 }
 
 /**
+* Format with short date
+* @value can be any date formated value in common formats
+*/
+function erpal_date_formatted($value, $tz_string=false) {
+  $unix_time = erpal_date_as_unix_timestamp($value, $tz_string);
+  
+  $format = _erpal_basic_helper_date_format_date_only();
+  
+  return date($format, $unix_time);
+}
+
+/**
+* Format with date time format
+* @value can be any date formated value in common formats
+*/
+function erpal_date_time_formatted($value, $tz_string=false) {
+  $unix_time = erpal_date_as_unix_timestamp($value, $tz_string);
+  
+  $format = _erpal_basic_helper_date_format_date_time();
+  
+  return date($format, $unix_time);
+}
+
+/**
 * Alter date_popup element to show the correct date format, user has set in ERPAL config
 */
 function _erpal_basic_helper_date_combo_process_alter(&$element, &$form_state, $context) {
