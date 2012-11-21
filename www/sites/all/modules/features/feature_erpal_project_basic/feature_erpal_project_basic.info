@@ -27,6 +27,7 @@ dependencies[] = field_collection
 dependencies[] = field_group
 dependencies[] = flag
 dependencies[] = list
+dependencies[] = nodeaccess_userreference
 dependencies[] = number
 dependencies[] = og
 dependencies[] = options

@@ -2984,9 +2984,6 @@ function feature_erpal_project_basic_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'direction' => 'ASC',
-            'field' => '',
-            'property' => 'uid',
             'type' => 'none',
           ),
           'target_bundles' => array(),
@@ -3049,10 +3046,50 @@ function feature_erpal_project_basic_field_default_fields() {
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'none',
-            'fallback' => 'none',
-            'skip_perm' => '0',
             'status' => 0,
+          ),
+        ),
+        'nodeaccess_userreference' => array(
+          'all' => array(
+            'view' => 0,
+          ),
+          'all_published' => '0',
+          'author' => array(
+            'delete' => 'delete',
+            'update' => 'update',
+            'view' => 'view',
+          ),
+          'author_published' => '0',
+          'create' => array(
+            'article' => 0,
+            'erpal_book' => 0,
+            'erpal_book_page' => 0,
+            'erpal_contact' => 0,
+            'erpal_contract' => 0,
+            'erpal_crm_activity' => 0,
+            'erpal_date' => 0,
+            'erpal_file' => 0,
+            'erpal_invoice' => 0,
+            'erpal_project' => 0,
+            'erpal_space' => 0,
+            'erpal_task' => 0,
+            'erpal_timetracking' => 0,
+            'page' => 0,
+          ),
+          'priority' => '0',
+          'referenced' => array(
+            'delete' => 0,
+            'deny_delete' => 0,
+            'deny_update' => 0,
+            'deny_view' => 0,
+            'update' => 'update',
+            'view' => 'view',
+          ),
+          'referenced_published' => '0',
+          'unused' => '0',
+          'views' => array(
+            'view' => '',
+            'view_args' => '',
           ),
         ),
         'user_register_form' => FALSE,
