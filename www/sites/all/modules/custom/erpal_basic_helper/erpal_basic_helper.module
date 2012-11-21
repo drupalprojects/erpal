@@ -77,6 +77,33 @@ function erpal_basic_helper_menu(){
 } 
 
 /**
+* Implements hook_date_combo_process_alter providet by date module
+*/
+function erpal_basic_helper_date_combo_process_alter(&$element, &$form_state, $context) {  
+  _erpal_basic_helper_date_combo_process_alter($element, $form_state, $context);
+  
+}
+
+/**
+* Alter date_popup element to show the correct date format, user has set in ERPAL config
+*/
+function _erpal_basic_helper_date_combo_process_alter(&$element, &$form_state, $context) {
+  $granularity = date_format_order($element['value']['#date_format']);
+  $time_granularity = array_intersect($granularity, array('hour', 'minute', 'second'));
+  
+  if (count($time_granularity)) {
+    //use the ERAPL date time format
+    $element['value']['#date_format'] = _erpal_basic_helper_date_format_date_time();
+    $element['value2']['#date_format'] = _erpal_basic_helper_date_format_date_time();
+  } else {
+    //use the ERPAL date only format
+    $element['value']['#date_format'] = _erpal_basic_helper_date_format_date_only();
+    $element['value2']['#date_format'] = _erpal_basic_helper_date_format_date_only();
+  }
+}
+
+
+/**
 * Implements hook_form_alter
 */
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
