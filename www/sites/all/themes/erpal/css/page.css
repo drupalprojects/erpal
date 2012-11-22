@@ -185,6 +185,7 @@ body.panels-ipe{
 	clear: both;
 	max-width: 1100px;
 	min-width: 1100px;
+	overflow: hidden;
 }
 .erpal-content-layout-template .region-sidebar-left{
 	max-width: 800px;
@@ -472,8 +473,8 @@ ul.quicktabs-tabs li{
     border-radius: 0 0 0 0;
     padding: 0;
 }
-#quicktabs-tabpage-tickets_by_project_tabs-2  #content-column .content-inner,
-#quicktabs-tabpage-tasks_by_project_tabs-2 #content-column .content-inner{
+#quicktabs-tabpage-tickets_by_project_tabs-2  .content-column .content-inner,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner{
 	overflow: hidden;
 }
 .quicktabs-tabpage .view-mode-view_row_details .field-label,
