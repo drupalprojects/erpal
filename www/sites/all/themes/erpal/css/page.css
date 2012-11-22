@@ -533,6 +533,9 @@ ul.quicktabs-tabs li{
 .page-node-tasks .region-sidebar-right{
 	width: 400px;
 }
+.page-node-tasks a{
+	text-decoration: underline;
+}
 #quicktabs-tabpage-tickets_by_project_tabs-2 .view-content .item-list ul li.field-item,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .view-content .item-list ul li.field-item{
 	margin: 0px;
