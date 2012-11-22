@@ -177,7 +177,7 @@ body.panels-ipe{
 	float: right;
 }
 .erpal-content-layout-template .region-sidebar-right{
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
     width: 250px;
 }
 .erpal-content-layout-template .content-inner{
@@ -513,6 +513,19 @@ ul.quicktabs-tabs li{
 #quicktabs-tabpage-tasks_by_project_tabs-2 section.field{
 	overflow: hidden;
 	clear: both;
+}
+.page-node-tasks ul li{
+	list-style-type: none;
+}
+.page-node-tasks .quicktabs-tabpage .article.view-mode-view_row_details .columns-inner{
+	padding: 0;
+}
+.page-node-tasks .content-inner{
+	border-bottom: 1px solid #e5e5e5;
+}
+.page-node-tasks .region-sidebar-left, 
+.page-node-tasks .region-sidebar-right{
+	padding: 10px;
 }
 #quicktabs-tabpage-tickets_by_project_tabs-2 .view-content .item-list ul li.field-item,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .view-content .item-list ul li.field-item{
