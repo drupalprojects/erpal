@@ -1,5 +1,5 @@
 www/sites/default/settings.php
 www/sites/all/modules/development
 www/sites/*/files
-www/sites/*/libraries
+www/sites/*/libraries*
 www/nbproject
