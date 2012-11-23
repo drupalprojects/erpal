@@ -242,47 +242,49 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
  
   $contract_datas = array();
   $contract_datas_date = array();
-  foreach ($contract->field_contract_data[LANGUAGE_NONE] as $delta=>$contract_id) {
-    $contract_id = $contract_id['value'];
-    
-    //load the field collection entity
-    $contract_data_entity = entity_load('field_collection_item', array($contract_id));
-    $contract_data_entity = $contract_data_entity[$contract_id];
-    
-    //check the date
-    $contract_date_since = $contract_data_entity->field_valid_since[LANGUAGE_NONE][0]['value'];
-
-    if ($date_match && $date_since != $contract_date_since)
-      continue;  //do not add this entity
-    
-    if ($date_since && $contract_date_since > $date_since)
-      continue;  //this contract is not active, because it is not bevore date_since!
-    
-    //check project tags
-    if (count($project_tag_tids) > 0) {
-      $tag_ids = $contract_data_entity->field_project_tags[LANGUAGE_NONE];
-      $has_matching_term = false;
-      foreach ($tag_ids as $id) {
-        $tid = $id['tid'];
-
-        if (in_array($tid, $project_tag_tids))
-          $has_matching_term = true;        
-      }
-            
-      if (!$has_matching_term)
-        continue;
-    }
-    
-    if ($contract_id) {
-      $contract_datas_date[$contract_date_since] = $contract_id;
+  if (isset($contract->field_contract_data[LANGUAGE_NONE]) && is_array($contract->field_contract_data[LANGUAGE_NONE])) {
+    foreach ($contract->field_contract_data[LANGUAGE_NONE] as $delta=>$contract_id) {
+      $contract_id = $contract_id['value'];
       
-      //add the contractor nid, it is always usefull with the contractor. Add the uid, too
-      $contract_data_entity->uid = $uid;
-      $contract_data_entity->contractor_nid = $contractor_nid;
-      $contract_datas[$contract_id] = $contract_data_entity;
+      //load the field collection entity
+      $contract_data_entity = entity_load('field_collection_item', array($contract_id));
+      $contract_data_entity = $contract_data_entity[$contract_id];
+      
+      //check the date
+      $contract_date_since = $contract_data_entity->field_valid_since[LANGUAGE_NONE][0]['value'];
+
+      if ($date_match && $date_since != $contract_date_since)
+        continue;  //do not add this entity
+      
+      if ($date_since && $contract_date_since > $date_since)
+        continue;  //this contract is not active, because it is not bevore date_since!
+      
+      //check project tags
+      if (count($project_tag_tids) > 0) {
+        $tag_ids = $contract_data_entity->field_project_tags[LANGUAGE_NONE];
+        $has_matching_term = false;
+        foreach ($tag_ids as $id) {
+          $tid = $id['tid'];
+
+          if (in_array($tid, $project_tag_tids))
+            $has_matching_term = true;        
+        }
+              
+        if (!$has_matching_term)
+          continue;
+      }
+      
+      if ($contract_id) {
+        $contract_datas_date[$contract_date_since] = $contract_id;
+        
+        //add the contractor nid, it is always usefull with the contractor. Add the uid, too
+        $contract_data_entity->uid = $uid;
+        $contract_data_entity->contractor_nid = $contractor_nid;
+        $contract_datas[$contract_id] = $contract_data_entity;
+      }
     }
   }
- 
+  
   //now return only the current contract if param is set
   if ($only_current) {
     if (count($contract_datas) >= 0)
