@@ -597,7 +597,6 @@ ul.pager li a, ul.pager li.pager-current {
 }
 #block-panels-mini-body-and-comments article.comment{
 	padding: 20px;
-	min-height: 350px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
