@@ -1,8 +1,8 @@
 <div<?php print isset($css_id) && $css_id ? " id=\"$css_id\"" : ''; ?> class="<?php print $classes; ?>">
 
- <div id="columns">
+ <div class="columns">
     <div class="columns-inner clearfix">
-      <div id="content-column" role="main">
+      <div class="content-column" role="main">
         <div class="content-inner">
             <?php if (!empty($content['sidebar_first_left'])): ?>
 				<div class="region region-sidebar-left">
