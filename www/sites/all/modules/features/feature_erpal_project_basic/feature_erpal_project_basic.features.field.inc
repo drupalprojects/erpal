@@ -3512,6 +3512,103 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_task-group_group'.
+  $fields['node-erpal_task-group_group'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'group_group',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Not a group',
+          1 => 'Group',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'default_value' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Determine if this is an OG group.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'og_ui',
+          'settings' => array(
+            'field_name' => FALSE,
+          ),
+          'type' => 'og_group_subscribe',
+          'weight' => 30,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'view_row_details' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'display_label' => 1,
+      'entity_type' => 'node',
+      'field_name' => 'group_group',
+      'label' => 'Group',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'view modes' => array(
+        'full' => array(
+          'custom settings' => FALSE,
+          'label' => 'Full',
+          'type' => 'og_group_subscribe',
+        ),
+        'teaser' => array(
+          'custom settings' => FALSE,
+          'label' => 'Teaser',
+          'type' => 'og_group_subscribe',
+        ),
+      ),
+      'widget' => array(
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+          'og_hide' => TRUE,
+        ),
+        'type' => 'options_onoff',
+        'weight' => 0,
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_timetracking-field_billing_duration'.
   $fields['node-erpal_timetracking-field_billing_duration'] = array(
     'field_config' => array(
@@ -4402,10 +4499,12 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Customer of the project');
   t('Date');
   t('Description');
+  t('Determine if this is an OG group.');
   t('Duration');
   t('Estimated time');
   t('Exclude from');
   t('Files');
+  t('Group');
   t('How long did you work?');
   t('Is default');
   t('Is ticket');

@@ -157,6 +157,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -176,6 +177,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -247,6 +250,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -266,6 +270,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -285,6 +290,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -359,6 +366,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Search Terms';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -378,6 +386,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -397,6 +406,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -504,6 +515,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -602,6 +615,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -621,6 +635,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
