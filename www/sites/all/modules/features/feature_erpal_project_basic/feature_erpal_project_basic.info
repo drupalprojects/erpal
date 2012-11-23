@@ -5,7 +5,6 @@ package = ERPAL Features
 php = 5.2.4
 version = 7.x-1.2-dev
 project = feature_erpal_project_basic
-dependencies[] = autocomplete_deluxe
 dependencies[] = better_exposed_filters
 dependencies[] = budget
 dependencies[] = computed_field
