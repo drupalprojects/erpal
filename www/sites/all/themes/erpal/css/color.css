@@ -226,9 +226,6 @@ ul.quicktabs-tabs li.last{
 }
 
 /*---------------ticket details-----------*/
-.field-name-task-title .field-item a{
-	color: #222222;
-}
 .node-erpal-task .columns-inner{
 	background-color: #ffffff;
 }
