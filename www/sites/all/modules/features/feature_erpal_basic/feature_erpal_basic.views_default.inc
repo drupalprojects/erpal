@@ -103,6 +103,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Search Terms';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -122,6 +123,8 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Type';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,

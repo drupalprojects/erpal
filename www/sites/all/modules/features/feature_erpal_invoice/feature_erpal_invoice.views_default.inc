@@ -29,6 +29,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -187,6 +188,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
   $handler->display->display_options['fields']['quantity']['table'] = 'billable';
   $handler->display->display_options['fields']['quantity']['field'] = 'quantity';
+  $handler->display->display_options['fields']['quantity']['label'] = 'Menge';
   $handler->display->display_options['fields']['quantity']['precision'] = '0';
   /* Field: Billable: Single_price */
   $handler->display->display_options['fields']['single_price']['id'] = 'single_price';
@@ -199,27 +201,28 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['total_price_no_vat']['id'] = 'total_price_no_vat';
   $handler->display->display_options['fields']['total_price_no_vat']['table'] = 'billable';
   $handler->display->display_options['fields']['total_price_no_vat']['field'] = 'total_price_no_vat';
-  $handler->display->display_options['fields']['total_price_no_vat']['label'] = 'Total excl. VAT';
+  $handler->display->display_options['fields']['total_price_no_vat']['label'] = 'Summe Netto';
   $handler->display->display_options['fields']['total_price_no_vat']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_price_no_vat']['precision'] = '2';
   /* Field: Billable: Total_vat */
   $handler->display->display_options['fields']['total_vat']['id'] = 'total_vat';
   $handler->display->display_options['fields']['total_vat']['table'] = 'billable';
   $handler->display->display_options['fields']['total_vat']['field'] = 'total_vat';
-  $handler->display->display_options['fields']['total_vat']['label'] = 'Total VAT';
+  $handler->display->display_options['fields']['total_vat']['label'] = 'Summe Brutto';
   $handler->display->display_options['fields']['total_vat']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_vat']['precision'] = '2';
   /* Field: Billable: Total_price */
   $handler->display->display_options['fields']['total_price']['id'] = 'total_price';
   $handler->display->display_options['fields']['total_price']['table'] = 'billable';
   $handler->display->display_options['fields']['total_price']['field'] = 'total_price';
-  $handler->display->display_options['fields']['total_price']['label'] = 'Total';
+  $handler->display->display_options['fields']['total_price']['label'] = 'Summe';
   $handler->display->display_options['fields']['total_price']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_price']['precision'] = '2';
   /* Field: Billable: Currency */
   $handler->display->display_options['fields']['currency']['id'] = 'currency';
   $handler->display->display_options['fields']['currency']['table'] = 'billable';
   $handler->display->display_options['fields']['currency']['field'] = 'currency';
+  $handler->display->display_options['fields']['currency']['label'] = 'Währung';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -253,6 +256,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['contractor_nid']['expose']['label'] = 'Contractor';
   $handler->display->display_options['filters']['contractor_nid']['expose']['operator'] = 'contractor_nid_op';
   $handler->display->display_options['filters']['contractor_nid']['expose']['identifier'] = 'contractor_nid';
+  $handler->display->display_options['filters']['contractor_nid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['contractor_nid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Billable: Customer_nid */
   $handler->display->display_options['filters']['customer_nid']['id'] = 'customer_nid';
   $handler->display->display_options['filters']['customer_nid']['table'] = 'billable';
@@ -263,6 +276,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['customer_nid']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['customer_nid']['expose']['operator'] = 'customer_nid_op';
   $handler->display->display_options['filters']['customer_nid']['expose']['identifier'] = 'customer_nid';
+  $handler->display->display_options['filters']['customer_nid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['customer_nid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Billable: Billed */
   $handler->display->display_options['filters']['billed']['id'] = 'billed';
   $handler->display->display_options['filters']['billed']['table'] = 'billable';
@@ -275,6 +298,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['billed']['expose']['operator'] = 'billed_op';
   $handler->display->display_options['filters']['billed']['expose']['identifier'] = 'billed';
   $handler->display->display_options['filters']['billed']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['billed']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['billed']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Billable: Date_delivery */
   $handler->display->display_options['filters']['date_delivery']['id'] = 'date_delivery';
   $handler->display->display_options['filters']['date_delivery']['table'] = 'billable';
@@ -333,6 +366,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
   $handler->display->display_options['fields']['quantity']['table'] = 'billable';
   $handler->display->display_options['fields']['quantity']['field'] = 'quantity';
+  $handler->display->display_options['fields']['quantity']['label'] = 'Menge';
   $handler->display->display_options['fields']['quantity']['precision'] = '0';
   /* Field: Billable: Single_price */
   $handler->display->display_options['fields']['single_price']['id'] = 'single_price';
@@ -345,32 +379,33 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['total_price_no_vat']['id'] = 'total_price_no_vat';
   $handler->display->display_options['fields']['total_price_no_vat']['table'] = 'billable';
   $handler->display->display_options['fields']['total_price_no_vat']['field'] = 'total_price_no_vat';
-  $handler->display->display_options['fields']['total_price_no_vat']['label'] = 'Total excl. VAT';
+  $handler->display->display_options['fields']['total_price_no_vat']['label'] = 'Summe Netto';
   $handler->display->display_options['fields']['total_price_no_vat']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_price_no_vat']['precision'] = '2';
   /* Field: Billable: Vat_rate */
   $handler->display->display_options['fields']['vat_rate']['id'] = 'vat_rate';
   $handler->display->display_options['fields']['vat_rate']['table'] = 'billable';
   $handler->display->display_options['fields']['vat_rate']['field'] = 'vat_rate';
-  $handler->display->display_options['fields']['vat_rate']['label'] = 'VAT rate';
+  $handler->display->display_options['fields']['vat_rate']['label'] = 'gesetzl. MwSt,';
   /* Field: Billable: Total_vat */
   $handler->display->display_options['fields']['total_vat']['id'] = 'total_vat';
   $handler->display->display_options['fields']['total_vat']['table'] = 'billable';
   $handler->display->display_options['fields']['total_vat']['field'] = 'total_vat';
-  $handler->display->display_options['fields']['total_vat']['label'] = 'Total VAT';
+  $handler->display->display_options['fields']['total_vat']['label'] = 'Summe Brutto';
   $handler->display->display_options['fields']['total_vat']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_vat']['precision'] = '2';
   /* Field: Billable: Total_price */
   $handler->display->display_options['fields']['total_price']['id'] = 'total_price';
   $handler->display->display_options['fields']['total_price']['table'] = 'billable';
   $handler->display->display_options['fields']['total_price']['field'] = 'total_price';
-  $handler->display->display_options['fields']['total_price']['label'] = 'Total';
+  $handler->display->display_options['fields']['total_price']['label'] = 'Summe';
   $handler->display->display_options['fields']['total_price']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_price']['precision'] = '2';
   /* Field: Billable: Currency */
   $handler->display->display_options['fields']['currency']['id'] = 'currency';
   $handler->display->display_options['fields']['currency']['table'] = 'billable';
   $handler->display->display_options['fields']['currency']['field'] = 'currency';
+  $handler->display->display_options['fields']['currency']['label'] = 'Währung';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Billable: Date_delivery */
   $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
@@ -440,6 +475,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
   $handler->display->display_options['fields']['quantity']['table'] = 'billable';
   $handler->display->display_options['fields']['quantity']['field'] = 'quantity';
+  $handler->display->display_options['fields']['quantity']['label'] = 'Menge';
   $handler->display->display_options['fields']['quantity']['precision'] = '0';
   /* Field: Billable: Single_price */
   $handler->display->display_options['fields']['single_price']['id'] = 'single_price';
@@ -452,27 +488,28 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['total_price_no_vat']['id'] = 'total_price_no_vat';
   $handler->display->display_options['fields']['total_price_no_vat']['table'] = 'billable';
   $handler->display->display_options['fields']['total_price_no_vat']['field'] = 'total_price_no_vat';
-  $handler->display->display_options['fields']['total_price_no_vat']['label'] = 'Total excl. VAT';
+  $handler->display->display_options['fields']['total_price_no_vat']['label'] = 'Summe Netto';
   $handler->display->display_options['fields']['total_price_no_vat']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_price_no_vat']['precision'] = '2';
   /* Field: Billable: Total_vat */
   $handler->display->display_options['fields']['total_vat']['id'] = 'total_vat';
   $handler->display->display_options['fields']['total_vat']['table'] = 'billable';
   $handler->display->display_options['fields']['total_vat']['field'] = 'total_vat';
-  $handler->display->display_options['fields']['total_vat']['label'] = 'Total VAT';
+  $handler->display->display_options['fields']['total_vat']['label'] = 'Summe Brutto';
   $handler->display->display_options['fields']['total_vat']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_vat']['precision'] = '2';
   /* Field: Billable: Total_price */
   $handler->display->display_options['fields']['total_price']['id'] = 'total_price';
   $handler->display->display_options['fields']['total_price']['table'] = 'billable';
   $handler->display->display_options['fields']['total_price']['field'] = 'total_price';
-  $handler->display->display_options['fields']['total_price']['label'] = 'Total';
+  $handler->display->display_options['fields']['total_price']['label'] = 'Summe';
   $handler->display->display_options['fields']['total_price']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_price']['precision'] = '2';
   /* Field: Billable: Currency */
   $handler->display->display_options['fields']['currency']['id'] = 'currency';
   $handler->display->display_options['fields']['currency']['table'] = 'billable';
   $handler->display->display_options['fields']['currency']['field'] = 'currency';
+  $handler->display->display_options['fields']['currency']['label'] = 'Währung';
   /* Field: Billable: Edit Link */
   $handler->display->display_options['fields']['edit_billable']['id'] = 'edit_billable';
   $handler->display->display_options['fields']['edit_billable']['table'] = 'billable';
@@ -503,6 +540,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['billed']['expose']['operator'] = 'billed_op';
   $handler->display->display_options['filters']['billed']['expose']['identifier'] = 'billed';
   $handler->display->display_options['filters']['billed']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['billed']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['billed']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Billable: Date_delivery */
   $handler->display->display_options['filters']['date_delivery']['id'] = 'date_delivery';
   $handler->display->display_options['filters']['date_delivery']['table'] = 'billable';
@@ -536,6 +583,48 @@ function feature_erpal_invoice_views_default_views() {
   $handler = $view->new_display('panel_pane', 'billables pane', 'panel_pane_3');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['billables'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No billable available'),
+    t('Contractor'),
+    t('Customer'),
+    t('Billable subject'),
+    t('Billable ID'),
+    t('.'),
+    t('Subject_nid'),
+    t('Subject'),
+    t('<a href="/node/[subject_nid]">[subject]</a>'),
+    t('Billed'),
+    t('Date delivery'),
+    t('Menge'),
+    t(','),
+    t('Single price'),
+    t('Summe Netto'),
+    t('Summe Brutto'),
+    t('Summe'),
+    t('Währung'),
+    t('Delivery'),
+    t('Billables by invoice pane'),
+    t('Content referencing Billable from field_billables_ref'),
+    t('gesetzl. MwSt,'),
+    t('All'),
+    t('View panes'),
+    t('Billables by contract pane'),
+    t('billables pane'),
+  );
   $export['billables'] = $view;
 
   $view = new view();
@@ -557,6 +646,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -629,6 +719,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['field_price_no_vat']['id'] = 'field_price_no_vat';
   $handler->display->display_options['fields']['field_price_no_vat']['table'] = 'field_data_field_price_no_vat';
   $handler->display->display_options['fields']['field_price_no_vat']['field'] = 'field_price_no_vat';
+  $handler->display->display_options['fields']['field_price_no_vat']['label'] = 'Summe Netto';
   $handler->display->display_options['fields']['field_price_no_vat']['settings'] = array(
     'thousand_separator' => ' ',
     'decimal_separator' => '.',
@@ -649,6 +740,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['field_currency']['id'] = 'field_currency';
   $handler->display->display_options['fields']['field_currency']['table'] = 'field_data_field_currency';
   $handler->display->display_options['fields']['field_currency']['field'] = 'field_currency';
+  $handler->display->display_options['fields']['field_currency']['label'] = 'Währung';
   /* Field: Field: Contractor */
   $handler->display->display_options['fields']['field_contractor_ref']['id'] = 'field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['table'] = 'field_data_field_contractor_ref';
@@ -682,6 +774,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_payed_value']['expose']['label'] = 'Payed';
   $handler->display->display_options['filters']['field_payed_value']['expose']['operator'] = 'field_payed_value_op';
   $handler->display->display_options['filters']['field_payed_value']['expose']['identifier'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_payed_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Content: Invoice Date (field_invoice_date) */
   $handler->display->display_options['filters']['field_invoice_date_value']['id'] = 'field_invoice_date_value';
   $handler->display->display_options['filters']['field_invoice_date_value']['table'] = 'field_data_field_invoice_date';
@@ -692,6 +794,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_invoice_date_value']['expose']['label'] = 'Invoice Date';
   $handler->display->display_options['filters']['field_invoice_date_value']['expose']['operator'] = 'field_invoice_date_value_op';
   $handler->display->display_options['filters']['field_invoice_date_value']['expose']['identifier'] = 'field_invoice_date_value';
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_date_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   $handler->display->display_options['filters']['field_invoice_date_value']['form_type'] = 'date_popup';
   /* Filter criterion: Content: Invoice Number (field_invoice_number) */
   $handler->display->display_options['filters']['field_invoice_number_value']['id'] = 'field_invoice_number_value';
@@ -703,6 +815,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_invoice_number_value']['expose']['label'] = 'Invoice Number';
   $handler->display->display_options['filters']['field_invoice_number_value']['expose']['operator'] = 'field_invoice_number_value_op';
   $handler->display->display_options['filters']['field_invoice_number_value']['expose']['identifier'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -728,6 +850,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['label'] = 'Exported';
   $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator'] = 'field_invoice_exported_value_op';
   $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['identifier'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Field: Contractor (field_contractor_ref) */
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['id'] = 'field_contractor_ref_target_id';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['table'] = 'field_data_field_contractor_ref';
@@ -738,6 +870,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['label'] = 'Contractor';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['operator'] = 'field_contractor_ref_target_id_op';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['identifier'] = 'field_contractor_ref_target_id';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Field: Customer (field_customer_ref) */
   $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
@@ -748,6 +890,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
 
   /* Display: Invoices to contact pane */
   $handler = $view->new_display('panel_pane', 'Invoices to contact pane', 'panel_pane_1');
@@ -774,6 +926,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_payed_value']['expose']['label'] = 'Payed';
   $handler->display->display_options['filters']['field_payed_value']['expose']['operator'] = 'field_payed_value_op';
   $handler->display->display_options['filters']['field_payed_value']['expose']['identifier'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_payed_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Content: Invoice Date (field_invoice_date) */
   $handler->display->display_options['filters']['field_invoice_date_value']['id'] = 'field_invoice_date_value';
   $handler->display->display_options['filters']['field_invoice_date_value']['table'] = 'field_data_field_invoice_date';
@@ -795,6 +957,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_invoice_number_value']['expose']['label'] = 'Invoice Number';
   $handler->display->display_options['filters']['field_invoice_number_value']['expose']['operator'] = 'field_invoice_number_value_op';
   $handler->display->display_options['filters']['field_invoice_number_value']['expose']['identifier'] = 'field_invoice_number_value';
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_number_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -819,6 +991,16 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['label'] = 'Exported';
   $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['operator'] = 'field_invoice_exported_value_op';
   $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['identifier'] = 'field_invoice_exported_value';
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_invoice_exported_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   $handler->display->display_options['argument_input'] = array(
     'field_customer_ref_target_id' => array(
       'type' => 'panel',
@@ -834,6 +1016,38 @@ function feature_erpal_invoice_views_default_views() {
   /* Display: Invoices pane */
   $handler = $view->new_display('panel_pane', 'Invoices pane', 'panel_pane_2');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $translatables['invoices'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No invoices available'),
+    t('Invoice Date'),
+    t('Invoice Number'),
+    t('Paid'),
+    t('Payment date'),
+    t('Summe Netto'),
+    t('Total incl. VAT'),
+    t('Währung'),
+    t('Contractor'),
+    t('Customer'),
+    t('Exported'),
+    t('Payed'),
+    t('Invoices to contact pane'),
+    t('All'),
+    t('View panes'),
+    t('Invoices pane'),
+  );
   $export['invoices'] = $view;
 
   return $export;

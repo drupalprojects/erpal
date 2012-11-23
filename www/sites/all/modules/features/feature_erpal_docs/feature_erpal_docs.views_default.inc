@@ -30,6 +30,7 @@ function feature_erpal_docs_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -97,7 +98,19 @@ function feature_erpal_docs_views_default_views() {
   $handler->display->display_options['filters']['field_file_tags_tid']['expose']['label'] = 'File tags';
   $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator'] = 'field_file_tags_tid_op';
   $handler->display->display_options['filters']['field_file_tags_tid']['expose']['identifier'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   $handler->display->display_options['filters']['field_file_tags_tid']['vocabulary'] = 'file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['error_message'] = FALSE;
 
   /* Display: Documents */
   $handler = $view->new_display('page', 'Documents', 'page');
@@ -128,17 +141,6 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_file' => 'erpal_file',
   );
-  /* Filter criterion: Content: File tags (field_file_tags) */
-  $handler->display->display_options['filters']['field_file_tags_tid']['id'] = 'field_file_tags_tid';
-  $handler->display->display_options['filters']['field_file_tags_tid']['table'] = 'field_data_field_file_tags';
-  $handler->display->display_options['filters']['field_file_tags_tid']['field'] = 'field_file_tags_tid';
-  $handler->display->display_options['filters']['field_file_tags_tid']['value'] = '';
-  $handler->display->display_options['filters']['field_file_tags_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator_id'] = 'field_file_tags_tid_op';
-  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['label'] = 'File tags';
-  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator'] = 'field_file_tags_tid_op';
-  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['identifier'] = 'field_file_tags_tid';
-  $handler->display->display_options['filters']['field_file_tags_tid']['vocabulary'] = 'file_tags';
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
@@ -149,6 +151,29 @@ echo _erpal_docs_helper_view_documents_header_content();
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  /* Filter criterion: Content: File tags (field_file_tags) */
+  $handler->display->display_options['filters']['field_file_tags_tid']['id'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['table'] = 'field_data_field_file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['field'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator_id'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['label'] = 'File tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['identifier'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_file_tags_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_file_tags_tid']['vocabulary'] = 'file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['error_message'] = FALSE;
   $handler->display->display_options['path'] = 'documents';
 
   /* Display: Reference Dialog Search */
