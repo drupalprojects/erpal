@@ -33,9 +33,11 @@ function erpal_crm_helper_erpal_contexts($router_item) {
     
     switch ($node->type) {
       case 'erpal_crm_activity':
+        $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true; 
         $contexts[ERPAL_CONTEXT_ACTIVITY] = true;              
         break;
-      case 'erpal_contact':       
+      case 'erpal_contact':
+        $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true; 
         $contexts[ERPAL_CONTEXT_CONTACT] = true;    
         break;      
     }
@@ -43,7 +45,7 @@ function erpal_crm_helper_erpal_contexts($router_item) {
 
   //CHECK CRM Global CONTEXT
   if (drupal_match_path($path, 'crm/contacts') || drupal_match_path($path, 'crm/activities')) {        
-    $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;      
+    $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;    
   }
   
   
@@ -99,12 +101,18 @@ function erpal_crm_helper_dynamic_menu_items_alter(&$data, $router_item, $root_p
 * Adds all crm global context links
 */
 function _erpal_crm_helper_crm_global_links(&$data, $router_item) {
-  //single project context
+  $has_node = isset($router_item['map'][1]->data) && is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : false;
   
-  //hide the links if we are in a contact o
-  erpal_make_local_tab($data, t('Activities'), 'crm/activities');
-  erpal_make_local_tab($data, t('Contacts'), 'crm/contacts');
+  if (!$has_node)
+    $has_node = isset($router_item['map'][1]) && is_object($router_item['map'][1]) ? $router_item['map'][1] : false;
+  
+  if (!$has_node) {
+    //hide the links if we are in a contact o
+    erpal_make_local_tab($data, t('Activities'), 'crm/activities');
+    erpal_make_local_tab($data, t('Contacts'), 'crm/contacts');
+  }
 }
+
 
 /**
 * Implements hook_erpal_menu_parents provided by erpal_basic_helper
@@ -120,7 +128,7 @@ function _erpal_crm_helper_get_menu_parents($router_item) {
   $projects_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_CRM_GLOBAL, $router_item);
   
   if ($projects_global) {
-    return 'crm';
+    return 'crm/activities';
   }
 }
 
@@ -143,8 +151,8 @@ function _erpal_projects_helper_node_activity_links(&$data, $router_item, $activ
   $query = array('field_activity_ref' => $activity_node->nid, 'destination' => $_GET['q']);
   erpal_make_action($data, t('Create a new project from this activity'), 'node/add/erpal-project', $query);
   erpal_make_action($data, t('Create a new contract from this activity'), 'node/add/erpal-contract', $query);
-  
-  erpal_make_local_tab($data, t('Contacts'), 'crm/contacts');
+ 
+  erpal_make_local_tab($data, t('Activities'), 'crm/activities');
 }
 
 /**
