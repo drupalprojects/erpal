@@ -50,7 +50,7 @@ function erpal_crm_helper_erpal_contexts($router_item) {
   
   
   //CHECK ACTIVITIES list CONTEXT
-  if ($path == 'crm/activities') {        
+  if ($path == 'crm/activities' || $path == 'node/%/activities') { 
     $contexts[ERPAL_CONTEXT_ACTIVITIES] = true;       
   }
   
@@ -69,7 +69,8 @@ function erpal_crm_helper_erpal_contexts($router_item) {
 function erpal_crm_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
   //activities list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_ACTIVITIES, $router_item)) {        
-    _erpal_crm_helper_activities_links($data);       
+    $contact_node = isset($router_item['map'][1]->data) && is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
+    _erpal_crm_helper_activities_links($data, $contact_node);       
   }
   
   //CRM global context
@@ -85,14 +86,16 @@ function erpal_crm_helper_dynamic_menu_items_alter(&$data, $router_item, $root_p
   //CRM contacts context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTACT, $router_item)) {    
     $contact_node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
-    _erpal_crm_helper_contact_links($data, $router_item, $contact_node);       
+    $is_node_view = !isset($router_item['original_map'][2]) || $router_item['original_map'][2] == 'view'; 
+    _erpal_crm_helper_contact_links($data, $router_item, $contact_node, $is_node_view);       
   }
 
   
   //Node Activity Context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_ACTIVITY, $router_item)) {
     $node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
-    _erpal_projects_helper_node_activity_links($data, $router_item, $node); 
+    $is_node_view = !isset($router_item['original_map'][2]) || $router_item['original_map'][2] == 'view';    
+    _erpal_projects_helper_node_activity_links($data, $router_item, $node, $is_node_view); 
   }
   
 }
@@ -144,37 +147,48 @@ function _erpal_crm_helper_contacts_links(&$data) {
 /**
 * Adds all activity contact links
 */
-function _erpal_projects_helper_node_activity_links(&$data, $router_item, $activity_node) {
+function _erpal_projects_helper_node_activity_links(&$data, $router_item, $activity_node, $is_node_view=false) {
   //single activity context
-  $query = array();
-  erpal_make_action($data, t('Edit this activity'), 'node/'.$activity_node->nid.'/edit', $query);
-  $query = array('field_activity_ref' => $activity_node->nid, 'destination' => $_GET['q']);
-  erpal_make_action($data, t('Create a new project from this activity'), 'node/add/erpal-project', $query);
-  erpal_make_action($data, t('Create a new contract from this activity'), 'node/add/erpal-contract', $query);
- 
+  if ($is_node_view) {
+    $query = array();
+    erpal_make_action($data, t('Edit this activity'), 'node/'.$activity_node->nid.'/edit', $query);
+    $query = array('field_activity_ref' => $activity_node->nid, 'destination' => $_GET['q']);
+    erpal_make_action($data, t('Create a new project from this activity'), 'node/add/erpal-project', $query);
+    erpal_make_action($data, t('Create a new contract from this activity'), 'node/add/erpal-contract', $query);
+  }
+  
   erpal_make_local_tab($data, t('Activities'), 'crm/activities');
 }
 
 /**
 * Adds all contact context links
 */
-function _erpal_crm_helper_contact_links(&$data, $router_item, $contact_node) {
+function _erpal_crm_helper_contact_links(&$data, $router_item, $contact_node, $is_node_view=false) {
   //single contact context
-  $query = array();
-  erpal_make_action($data, t('Edit this contact'), 'node/'.$contact_node->nid.'/edit', $query);
-  $query = array('field_customer_ref' => $contact_node->nid);
-  erpal_make_action($data, t('Create a new activity for this contact'), 'node/add/erpal-crm-activity', $query);
-  erpal_make_action($data, t('Create a new invoice for this contact'), 'node/add/erpal-invoice', $query);
-  erpal_make_action($data, t('Create a new contract for this contact'), 'node/add/erpal-contract', $query);
-  
-  erpal_make_local_tab($data, t('Contacts'), 'crm/contacts');
+  if ($is_node_view) {
+    $query = array();
+    erpal_make_action($data, t('Edit this contact'), 'node/'.$contact_node->nid.'/edit', $query);
+    
+    $query = array('field_customer_ref' => $contact_node->nid);
+    erpal_make_action($data, t('Create a new activity'), 'node/add/erpal-crm-activity', $query);
+    erpal_make_action($data, t('Create a new invoice'), 'node/add/erpal-invoice', $query);
+    erpal_make_action($data, t('Create a new contract'), 'node/add/erpal-contract', $query);
+    
+    erpal_make_local_tab($data, t('Contacts'), 'crm/contacts');
+    $query = array('destination' => $_GET['q']);
+    erpal_make_action($data, t('Create a new relation'), 'node/'.$contact_node->nid.'/relations/add', $query);
+    
+  }
 }
 
 /**
 * Adds all activities context links
 */
-function _erpal_crm_helper_activities_links(&$data) {
+function _erpal_crm_helper_activities_links(&$data, $contact_node=false) {
   //single project context
   $query = array('destination' => $_GET['q']);
+  if (is_object($contact_node) && $contact_node)
+    $query['field_customer_ref'] = $contact_node->nid;
+  
   erpal_make_action($data, t('Create a new activity'), 'node/add/erpal-crm-activity', $query);
 }
