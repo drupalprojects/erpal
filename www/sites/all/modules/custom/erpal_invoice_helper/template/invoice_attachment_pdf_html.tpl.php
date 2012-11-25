@@ -25,7 +25,7 @@ foreach ($billables as $billable) {
   $data['header'] = array(
       'executed' => array('data' => t("Executed"), "class" => "left executed"),
       'amount' => array('data' => t("Quantity"), "class" => "left amount"),
-      'description' => array('data' => t("Description"), "class" => "left description"),
+      'description' => array('data' => t("Billable description"), "class" => "left description"),
       'price' => array('data' => t("Price p.P. (%curr)", array('%curr' => $billable->currency)), "class" => "right price"),
       'total' => array('data' => t("Total (%curr)", array('%curr' => $billable->currency)), "class" => "right total"),
   );
