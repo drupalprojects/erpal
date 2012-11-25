@@ -31,7 +31,7 @@ function cne_form_comment_form_alter(&$form, &$form_state) {
 		field_attach_form('node', $node, $form, $form_state, $node->language);
 		
 		//Get the weight of the author field
-		$weight = $form['author']['#weight']-1;
+		$weight = isset($form['author']['#weight']) ? $form['author']['#weight']-1 : 0;
 		
 		//Loop through the field instances
 		foreach (field_info_instances('node',$form['#bundle']) as $fieldname => $field_instance){
