@@ -1,0 +1,5 @@
+name = Comment Node Edit
+description = Edit nodes via Comments
+core = 7.x
+package = Node
+dependencies[] = comment

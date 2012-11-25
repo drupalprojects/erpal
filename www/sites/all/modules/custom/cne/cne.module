@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * Implements hook_form_alter
+	* Adds an instance option for making node fields editable by comment editable
+	*/
+function cne_form_field_ui_field_edit_form_alter(&$form, $form_state, $form_id) { 
+	$form['instance']['comment_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Editable by comments'),
+    '#description' => t('If checked, commenters will be able to edit the node when commenting.'),
+    '#default_value' => isset($form['#instance']['comment_enabled']) ? $form['#instance']['comment_enabled'] : FALSE,
+    '#weight' => $form['instance']['label']['#weight'] + 1,
+  );	
+}
+
+/**
+ * Implements hook_form_alter
+	* If user has commenting permissions, load the fields from the node and insert them into this form. Then unset any that are not "editable by comment"
+	*/
+function cne_form_comment_form_alter(&$form, &$form_state) {
+ $node = $form['#node'];
+	
+	//Check to see if it's a new comment (CID should be null), that user has 'post comments' permission, that commenting is open.
+  if (is_null ($form['cid']['#value']) &&
+						user_access('post comments') && 
+						$node->comment == COMMENT_NODE_OPEN && 
+						(variable_get('comment_form_location_' . $node->type, COMMENT_FORM_BELOW) == COMMENT_FORM_BELOW)) { 	
+		
+		//Attach the node's fields
+		field_attach_form('node', $node, $form, $form_state, $node->language);
+		
+		//Get the weight of the author field
+		$weight = $form['author']['#weight']-1;
+		
+		//Loop through the field instances
+		foreach (field_info_instances('node',$form['#bundle']) as $fieldname => $field_instance){
+				
+        //check if the filed is attached to the comment node, if this is the case, keept it there.
+        $is_comment_field = false;
+        foreach (field_info_instances('comment','comment_node_'.$node->type) as $comment_fieldname => $comment_field_instance){
+          if ($comment_fieldname == $fieldname)
+            $is_comment_field = true;
+        }
+        
+        if ($is_comment_field)
+          continue;
+        
+        //Check if the field is editable by comment
+				if(!isset($field_instance['comment_enabled']) || $field_instance['comment_enabled'] == 0){
+						//TODO if we do this, all other fields will be removed. But comments could have fields, so they need to be reattached or not initially removed.
+            unset($form[$fieldname]);
+				}else{
+						//place the field above the comment
+						$weight--;
+					 $form[$fieldname]['#weight'] = $weight;
+				}
+		}	 
+		
+		//Add the submit and validate handlers
+		array_push($form['#submit'],"cne_form_submit");
+		array_push($form['#validate'],"cne_form_validate");
+	}
+}
+
+/**
+ * Validates added fields 
+	*/
+function cne_form_validate($form, &$form_state) { 
+	field_attach_form_validate('node', $form['#node'], $form, $form_state);
+}
+
+/**
+ * Submiuts and saves added fields 
+	*/
+function  cne_form_submit($form, &$form_state) {
+	field_attach_submit('node', $form['#node'], $form, $form_state);
+  node_save($node = $form['#node']);
+	drupal_set_message($form['#node']->title . " updated by " . $form['author']['_author']['#markup'] . " via comment");
+}
