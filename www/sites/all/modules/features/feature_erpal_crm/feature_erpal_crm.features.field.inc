@@ -503,6 +503,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 1,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -672,12 +673,14 @@ function feature_erpal_crm_field_default_fields() {
           4 => 'MUST',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => 'The chance, you guess, the proposal will be contracted',
@@ -1044,9 +1047,11 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 1,
       'date_item' => array(
         'create_date_item' => 1,
         'date_item_type' => 'simple_date',
+        'handle_range' => 'range',
       ),
       'deleted' => '0',
       'description' => '',
@@ -1261,6 +1266,7 @@ function feature_erpal_crm_field_default_fields() {
       'settings' => array(
         'decimal_separator' => '.',
         'precision' => '10',
+        'profile2_private' => FALSE,
         'scale' => '2',
       ),
       'translatable' => '0',
@@ -1268,6 +1274,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => 'The volume for the activities proposal or the budget for the request',

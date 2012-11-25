@@ -5,6 +5,7 @@ package = ERPAL Features
 php = 5.2.4
 version = 7.x-1.31-dev
 project = feature_erpal_crm
+dependencies[] = cne
 dependencies[] = comment
 dependencies[] = conditional_fields
 dependencies[] = ctools

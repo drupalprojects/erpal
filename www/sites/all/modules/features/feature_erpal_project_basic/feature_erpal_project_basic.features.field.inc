@@ -2584,6 +2584,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'comment_enabled' => 1,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -2670,6 +2671,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'comment_enabled' => 1,
       'default_value' => array(
         0 => array(
           'value' => '0',
@@ -3225,6 +3227,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'comment_enabled' => 1,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -3311,6 +3314,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'comment_enabled' => 1,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
