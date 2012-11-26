@@ -291,15 +291,12 @@ ul.quicktabs-tabs li{
  */
  .ctools-collapsible-processed h2.pane-title {
     margin: 0;
-    padding: 3px 5px 0px 20px;
+    padding: 3px 5px 0px 30px;
 	font-size: 13px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
 	padding-left: 0;
 	color: #525252;
-}
-.ctools-collapsible-processed .ctools-collapsible-content{
-	padding-top: 10px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
 	margin: 0;
@@ -636,9 +633,6 @@ article.comment{
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
-.comment-form  .rel-register-link a{
-	padding-left: 0;
-}
 .quicktabs-tabpage  #edit-nid{
 	width: 50px;
 }
@@ -750,7 +744,7 @@ article.comment{
 	border: none;
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane table td{
-	padding: 5px 10px;
+	padding: 10px;
 }
 
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container{
@@ -778,4 +772,7 @@ article.comment{
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title{
 	font-size: 26px;
+}
+.region-sidebar-right .ctools-collapsible-container figure {
+    text-align: center;
 }
