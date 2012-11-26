@@ -114,3 +114,17 @@ function erpal_invoice_helper_update_7003() {
 function erpal_invoice_helper_update_7004() {
   db_add_field('erpal_invoice_defaults', 'currency', array('type' => 'varchar', 'length' => 10, 'not null' => TRUE, 'default' => '', 'description' => 'Add customer currency'));
 }
+
+/**
+* Add service category field instance to billables
+*/
+function erpal_invoice_helper_update_7005() {
+  $instance = array(
+    'field_name' => 'field_service_category_term',
+    'entity_type' => 'billable',
+    'bundle' => 'billable',
+    'label' => 'Service category',
+  );
+  
+  field_create_instance($instance);
+}

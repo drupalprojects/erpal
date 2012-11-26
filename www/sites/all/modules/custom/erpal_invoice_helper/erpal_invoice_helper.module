@@ -647,6 +647,41 @@ function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
   }
 }
 
+/**
+* implements hook_billable_group_subject 
+* provided by billable module in billable.reduce.inc here we definie the text that is used for the group where the billable is placed in.
+*/
+function erpal_invoice_helper_billable_group_subject($billable) {
+  $grouping_pattern = _erpal_invoice_helper_get_grouping_billable_text();
+  $subject_nid = $billable->subject_nid;
+  $subject_node = node_load($subject_nid);
+  $service_category_tid = isset($billable->field_service_category_term[LANGUAGE_NONE][0]) ? $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] : false;
+  
+  if ($service_category_tid)
+    $service_category = taxonomy_term_load($service_category_tid)->name;
+  else
+    $service_category = '';
+  $text = token_replace($grouping_pattern, array('subject' => $subject_node, 'service_category' => $service_category));
+
+  return $text;
+}
+
+/**
+* implements hook_billable_can_group called by billable.reduce.inc
+* Decides if a billable can be grouped with others of the same field value
+*/
+function erpal_invoice_helper_billable_can_group($billable, $field_name) {
+  if ($field_name == 'field_service_category_term') {
+    //load the term and check if it is groupable
+    $tid = isset($billable->field_service_category_term[LANGUAGE_NONE][0]) ? $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] : false;
+    if (!$tid)
+      return '';
+      
+    $term = taxonomy_term_load($tid);    
+    $allow_grouping = isset($term->field_allow_grouping[LANGUAGE_NONE][0]) ? $term->field_allow_grouping[LANGUAGE_NONE][0]['value'] : false;
+    return $allow_grouping;
+  }
+}
 
 /**
 * Implements hook_menu

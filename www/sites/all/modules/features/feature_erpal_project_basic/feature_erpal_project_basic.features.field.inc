@@ -442,7 +442,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 1,
+        'weight' => 3,
       ),
     ),
   );
@@ -647,7 +647,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => 3,
+        'weight' => 4,
       ),
     ),
   );
@@ -732,7 +732,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 0,
+        'weight' => 1,
       ),
     ),
   );
@@ -2978,17 +2978,18 @@ function feature_erpal_project_basic_field_default_fields() {
       'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
-        'handler' => 'base',
+        'handler' => 'views',
         'handler_settings' => array(
           'behaviors' => array(
             'views-select-list' => array(
               'status' => 1,
             ),
           ),
-          'sort' => array(
-            'type' => 'none',
+          'view' => array(
+            'args' => array(),
+            'display_name' => 'entityreference_1',
+            'view_name' => 'og_related_users',
           ),
-          'target_bundles' => array(),
         ),
         'handler_submit' => 'Change handler',
         'profile2_private' => FALSE,
@@ -2999,6 +3000,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'default_value_function' => '',
       'deleted' => '0',

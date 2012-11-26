@@ -173,6 +173,13 @@ class Billable extends Entity {
   * care about
   */
   function field_by_name($field_name) {
+    if (is_array($field_name)) {
+      $parents = $field_name['parents'];
+      $field_name_string = $field_name['field_name'];
+      $value = drupal_array_get_nested_value($this->{$field_name_string}, $parents);
+      return $value;
+    }
+    
     if ($field_name == 'customer') {
       return $this->customer_nid;
     } 

@@ -316,15 +316,23 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
     return $status;
   }
 
- 
-  if ($reduced)
-  {
+  if ($reduced) {
     //reduce all billables given and then create the bill with the reduced entities
     //Load files from the billable module
     module_load_include('inc', 'billable', 'billable.reduce');
     $group_by = array();
-    if (isset($params['group_by']))
-      $group_by = $params['group_by']; //may be there is the single_price field to group the billables by.
+    if (isset($params['group_by'])) {
+      if ($params['group_by'] == 'service_category') {
+        
+        //check if the term is groupable.
+        $groupable = false;        
+        
+        $group_by[] = array(          
+          'field_name' => 'field_service_category_term', 
+          'parents' => array(LANGUAGE_NONE, 0, 'tid')
+        ); //may be there is the service_category field to group the billables by.
+      }
+    }
     
     $billables = _billable_reduce($billable_ids, $group_by, true);
     $billable_ids = array_keys($billables);

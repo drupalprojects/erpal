@@ -1,0 +1,7 @@
+name = Organic Groups Relations
+description = Extends access control in users relations
+package = ERPAL
+core = 7.x
+files[] = og_relations.module
+files[] = og_relations_handler_filter_og_relations_filter.inc
+
