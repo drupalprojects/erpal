@@ -655,6 +655,14 @@ ul.pager li a, ul.pager li.pager-current {
 	padding-right: 10px !important;
 }
 
+.views-exposed-form button span:not(.ui-icon){
+	position: absolute;
+	overflow: hidden;
+	width: 105px !important;
+	height: 19px;
+	line-height: 13px;
+}
+
 #edit-field-task-status-term-tid-wrapper  button,
 #edit-field-priority-term-tid-wrapper button,
 #edit-field-task-type-term-tid-wrapper button,
