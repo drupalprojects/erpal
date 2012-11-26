@@ -94,8 +94,14 @@ function feature_erpal_invoice_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
+    'action::erpal_projects_helper_timetracking_finalise_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::billable_reduce_action' => array(
-      'selected' => 1,
+      'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
