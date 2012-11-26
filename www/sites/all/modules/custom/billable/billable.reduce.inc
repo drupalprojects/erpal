@@ -64,14 +64,18 @@ function _billable_group_for_reduce($billable_ids, $group_by=array(), $ignore_pa
 * If the current billable is the result of grouping some billables together, we can delete this billable and release the grouped billables. After that the billable set as argument will be deleted, if argument "delete" is set!
 */
 function _billable_ungroup($billable, $delete=false) {
+  
+  $had_reduced_billables = false;
   foreach($billable->reduced_billables as $billable_id) {
     $sub_billable = billable_load($billable_id->billable_id);
     
     $sub_billable->parent_billable = 0;
-    $sub_billable->save();    
+    $sub_billable->save(); 
+
+    $had_reduced_billables = true;
   }
   
-  if ($delete)
+  if ($delete && $had_reduced_billables)
     $billable->delete();
     
 }
