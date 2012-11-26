@@ -19,4 +19,5 @@
 <div class="billable_edit"><?php echo l(t('Edit'), 'billable/'.$billable->billable_id.'/edit'); ?></div>
 <?php if ($reduced_list): ?>
 <div class="billable_field" id="billable_reduced">Reduced entities: <?php echo $reduced_list ?></div>
+<div class="billable_ungroup"><?php echo l(t('Ungroup'), 'billable/'.$billable->billable_id.'/ungroup');?></div>
 <?php endif; ?>

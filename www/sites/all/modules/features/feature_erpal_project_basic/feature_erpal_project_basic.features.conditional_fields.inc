@@ -537,5 +537,121 @@ function feature_erpal_project_basic_conditional_fields_default_fields() {
     ),
   );
 
+  $items[] = array(
+    'entity' => 'field_collection_item',
+    'bundle' => 'field_pricing',
+    'dependent' => 'field_service_category_term',
+    'dependee' => 'field_price_mode',
+    'options' => array(
+      'state' => '!visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => '1',
+        2 => '2',
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => '1',
+          2 => '2',
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => '1',
+          2 => '2',
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => '1',
+          2 => '2',
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => '1',
+          2 => '2',
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        6 => array(
+          1 => '1',
+          2 => '2',
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        5 => array(
+          1 => '1',
+          2 => '2',
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        7 => array(
+          1 => '1',
+          2 => '2',
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => '1',
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => '1',
+          3 => 0,
+        ),
+        2 => array(
+          1 => '1',
+          3 => 0,
+        ),
+        3 => array(
+          1 => '1',
+          3 => 0,
+        ),
+        4 => array(
+          1 => '1',
+          3 => 0,
+        ),
+        6 => array(
+          1 => '1',
+          3 => 0,
+        ),
+        5 => array(
+          1 => '1',
+          3 => 0,
+        ),
+        7 => array(
+          1 => '1',
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => '3',
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'none',
+        1 => 'not_billable',
+      ),
+      'value' => array(),
+    ),
+  );
+
   return $items;
 }

@@ -234,6 +234,12 @@ function _billable_element_process($element, &$form_state, $complete_form) {
     '#options' => _erpal_invoice_helper_vat_rates_arr(),  
     '#default_value' => isset($billable) ? $billable->vat_rate : $default_vat_rate,
   );
+  
+  //attach other fields that are attached to a billable if there are some
+  if (!isset($billable) || (isset($billable) && !$billable))
+    $billable = billable_create();  //just create a dummy billable in order to have it for attaching form fields
+    
+  field_attach_form('billable', $billable, $element, $form_state);
 
   return $element;
 }
@@ -292,7 +298,8 @@ function _billable_element_validate(&$element, &$form_state) {
       
       //set the other values so we have them in invoice form submit handler, otherwise we have only the billable_id but no values of the widget
       if (!$has_error) {
-        $billable_values = array('subject' => $subject, 'quantity' => $quantity, 'single_price' => $single_price, 'date_delivery' => $date_delivery, 'vat_rate' => $vat_rate);
+        $service_category_tid = isset($element['field_service_category_term'][LANGUAGE_NONE]['#value']) ? $element['field_service_category_term'][LANGUAGE_NONE]['#value'] : false;
+        $billable_values = array('subject' => $subject, 'quantity' => $quantity, 'single_price' => $single_price, 'date_delivery' => $date_delivery, 'vat_rate' => $vat_rate, 'service_category_tid' => $service_category_tid);
         $new_element = array('#parents' => array('field_billables_ref_values', LANGUAGE_NONE, $delta, 'widget_values'));
         form_set_value($new_element, $billable_values, $form_state);
       }

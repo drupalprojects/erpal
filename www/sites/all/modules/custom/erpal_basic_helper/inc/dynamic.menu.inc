@@ -96,9 +96,10 @@ function erpal_make_local_tab(&$data, $title, $path, $query = array(), $active=f
  
   if (array_key_exists('access', $item) && $item['access']) {
     //may be make active
+    
     if ($active) {
       $item['localized_options']['attributes']['class'][] = 'active-trail';
-      $item['localized_options']['attributes']['class'][] = 'active';
+      $item['localized_options']['attributes']['class'][] = 'active';      
     }
     
     $data['tabs'][0]['output'][] = array(
@@ -128,7 +129,7 @@ function erpal_set_menu_item_active(&$menu_item) {
   $menu_parent_path = erpal_get_menu_parents($current_menu_item);
 
   if (in_array($menu_item['element']['#href'], $menu_parent_path)) {
-    //its a menu item that should be set active
+    //its a menu item that should be set active    
     $menu_item['element']['#attributes']['class'][] = 'active-trail';
     $menu_item['element']['#attributes']['class'][] = 'active';
     

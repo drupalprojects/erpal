@@ -809,7 +809,7 @@ function feature_erpal_project_basic_default_panels_mini() {
     $pane->locks = array();
     $display->content['new-23'] = $pane;
     $display->panels['middle'][2] = 'new-23';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-21';
   $mini->display = $display;
   $export['task_status_panel'] = $mini;

@@ -165,7 +165,8 @@ h1 {
 	);
 }
 
-#mini-panel-task_status_panel{
+#mini-panel-task_status_panel,
+#mini-panel-activity_status_panel{
 	background-color: #eeeeee;
 	color: #525252;
 }

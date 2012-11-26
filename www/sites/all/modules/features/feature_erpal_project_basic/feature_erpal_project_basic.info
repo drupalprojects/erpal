@@ -7,6 +7,7 @@ version = 7.x-1.2-dev
 project = feature_erpal_project_basic
 dependencies[] = better_exposed_filters
 dependencies[] = budget
+dependencies[] = cne
 dependencies[] = computed_field
 dependencies[] = conditional_fields
 dependencies[] = ctools

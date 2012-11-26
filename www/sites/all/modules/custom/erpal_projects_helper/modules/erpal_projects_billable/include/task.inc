@@ -47,7 +47,11 @@ function _erpal_projects_billable_update_task($node) {
 function _erpal_project_task_parent($node) {
   if ($node->type != 'erpal_task')
     return false; //only task have a parent
-    
+  
+  if (is_numeric($node) && !is_object($node)) {
+    $node = node_load($node);
+  }
+  
   //ok, this is a task
   //does it have a direct parent?
   $parent_nid = false;
