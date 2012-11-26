@@ -130,6 +130,43 @@ function billable_page_view($billable, $view_mode = 'full') {
   return $content;
 }
 
+/**
+* Page to ungroup a billable
+*/
+function billable_page_ungroup_form($form, $form_state, $billable) {
+
+  $form['billable_id'] = array(
+    '#type' => 'value',
+    '#value' => $billable->billable_id,
+  );
+  
+  $question = t('Do you really want all grouped billables to be ungrouped?');
+  $description = t('This grouping billable will be deleted. You will get the separate billable items that can be grouped againg in the invoice process.');
+  return confirm_form(
+    $form, 
+    $question, 
+    'billable/'.$billable->billable_id.'/view', 
+    $description, 
+    t('Delete'), 
+    t('Cancel')
+  );
+}
+
+/**
+* Submit callback for page ungroup form
+*/
+function billable_page_ungroup_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $billable_id = $values['billable_id'];
+  
+  $billable = billable_load($billable_id);
+  module_load_include('inc', 'billable', 'billable.reduce');
+  _billable_ungroup($billable, true);
+  drupal_set_message('Billables have successfully been ungrouped.');
+ 
+ //@TODO: thats not good, because the billables module doesn't know the invoice/billables URL. So this must be more flexible and lose coupled
+ drupal_goto('invoice/billables');
+}
 
 /**
 * @return

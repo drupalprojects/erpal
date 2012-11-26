@@ -198,6 +198,18 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
           '#default_value' => true,          
         );
         
+        $form['ungroup_billables'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Ungroup all grouped billables of this invoice'),
+          '#default_value' => true,          
+          '#states' => array(
+            // Show the settings only if the billables should be set to unbilled.
+            'visible' => array(
+              ':input[id="edit-unbill-billables"]' => array('checked' => TRUE),
+            ),
+          ),
+        );
+        
         //save the billable ids to modify in the form, because ofter submitting the confirm delete dialog, we cannot
         //load the invoice again to geht the billables
         $billables_id_arr = array();
@@ -579,10 +591,17 @@ function _erpal_invoice_helper_calculate_billables_ref_from_form($form, &$form_s
 function _erpal_invoice_helper_confirm_delete_invoice_submit($form, $form_state) {
   $values = $form_state['values'];
   $unbill_billables = $values['unbill_billables'];
+  $ungroup_billables = $values['ungroup_billables'];
   
   if ($unbill_billables) {    
     $billables_id_arr = unserialize($values['billable_ids']);    
     _erpal_invoice_helper_unbill_billables($billables_id_arr);
+    
+    //if billables will be ungrouped, the grouping billable will be delete and all other billables are unbilled. This can only be done if billables should be unbilled
+    if ($ungroup_billables) {    
+      $billables_id_arr = unserialize($values['billable_ids']);    
+      _erpal_invoice_helper_ungroup_billables($billables_id_arr);
+    }
   }
 }
 

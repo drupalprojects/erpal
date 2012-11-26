@@ -489,6 +489,17 @@ function _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced=fa
 /**
 * function sets all billable, the current invoce references, unbilled
 */
+function _erpal_invoice_helper_ungroup_billables($billables_id_arr) {
+  foreach($billables_id_arr as $delta=>$billable_id) {
+    $billable = billable_load($billable_id);
+    module_load_include('inc', 'billable', 'billable.reduce');
+    _billable_ungroup($billable, true);  //after that the billable is delete and doesn't exist any more
+  }
+}
+
+/**
+* Ungroups all billables in the given array
+*/
 function _erpal_invoice_helper_unbill_billables($billables_id_arr) {
   foreach($billables_id_arr as $delta=>$billable_id) {
     $billable = billable_load($billable_id);
@@ -496,4 +507,5 @@ function _erpal_invoice_helper_unbill_billables($billables_id_arr) {
     $billable->save();
   }
 }
+
 

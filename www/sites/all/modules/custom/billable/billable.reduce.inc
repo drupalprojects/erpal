@@ -61,6 +61,22 @@ function _billable_group_for_reduce($billable_ids, $group_by=array(), $ignore_pa
 }
 
 /**
+* If the current billable is the result of grouping some billables together, we can delete this billable and release the grouped billables. After that the billable set as argument will be deleted, if argument "delete" is set!
+*/
+function _billable_ungroup($billable, $delete=false) {
+  foreach($billable->reduced_billables as $billable_id) {
+    $sub_billable = billable_load($billable_id->billable_id);
+    
+    $sub_billable->parent_billable = 0;
+    $sub_billable->save();    
+  }
+  
+  if ($delete)
+    $billable->delete();
+    
+}
+
+/**
 * @see billable.entity.inc function reduce()
 * @param $entity_ids an array of ids of billables that should be reduces to a minimum
 * @param $group_by is an array of strings that identifys which fields must be equal to group
