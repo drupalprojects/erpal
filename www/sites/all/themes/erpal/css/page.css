@@ -662,7 +662,8 @@ ul.pager li a, ul.pager li.pager-current {
 #edit-field-task-assigned-users-target-id-wrapper button {
 	font-size: 11px;
 	height: 25px;
-	width: 120px !important;
+	width: 130px !important;
+	overflow: hidden;
 }
 
 #edit-field-task-status-term-tid-wrapper ,
@@ -670,9 +671,25 @@ ul.pager li a, ul.pager li.pager-current {
 #edit-field-task-type-term-tid-wrapper,
 #edit-field-project-tags-tid-wrapper,
 #edit-field-task-assigned-users-target-id-wrapper  {
-	width: 120px !important;
+	width: 130px !important;
 }
 
+.ui-multiselect-menu {
+	width: 200px !important;
+}
+
+.ui-helper-reset {
+	position: relative;
+}
+
+.ui-multiselect-close {
+	position: absolute;
+	right: 0;
+}
+
+.ui-multiselect-header {
+	padding: 3px 0;
+}
 /*---------------------------------dashboard styles-----------------------------------------*/
 #homebox .portlet-content {
     padding: 0px;
