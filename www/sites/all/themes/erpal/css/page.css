@@ -199,7 +199,7 @@ body.panels-ipe{
  *   Projects
  * ========================================================================== */
 .region-sidebar-right .pane-page-actions li{
-	margin: 0 0 7px;
+	margin: 0 2px 7px;
 	list-style-type: none;
 }
 .region-sidebar-right .pane-page-actions li a{
@@ -291,7 +291,7 @@ ul.quicktabs-tabs li{
  */
  .ctools-collapsible-processed h2.pane-title {
     margin: 0;
-    padding: 3px 5px 0px 40px;
+    padding: 3px 5px 0px 20px;
 	font-size: 13px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
@@ -311,6 +311,9 @@ ul.quicktabs-tabs li{
 .ctools-collapsible-processed .field-name-field-books-ref{
 	margin-bottom: 10px;
 	padding-left: 10px;
+}
+.ctools-collapsible-processed .field-name-field-task-assigned-users{
+	padding-left: 0px;
 }
 .ctools-collapsible-processed .panel-separator{
 	height: 1px;
@@ -361,6 +364,9 @@ ul.quicktabs-tabs li{
 .ctools-collapsible-container .no-title{
 	padding-left: 10px;
 }
+.ctools-collapsible-container .ctools-toggle{
+	background-position: 7px 10px;
+}
 /*
  *  table
  */
@@ -402,7 +408,7 @@ ul.quicktabs-tabs li{
 	padding: 15px;
 }
 .local_tasks{
-	margin: 0px;
+	margin: 2px 0 0;
 }
 .quicktabs-tabpage .views-table .views-field-title{
 	 width: 115px;
@@ -595,15 +601,43 @@ ul.pager li a, ul.pager li.pager-current {
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
-#block-panels-mini-body-and-comments article.comment{
-	padding: 20px;
+article.comment{
+	padding: 15px 0px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
+.comment .comment-header{
+	padding-right: 10px;
+	padding-left: 15px;
+	float: left;
+}
+.comment .comment-content,
+.comment ul.links{
+	padding-right: 15px;
+	padding-left: 15px !important;
+}
+.comment .comment-content{
+	padding-top: 15px;
+}
+.comment .submitted{
+	padding-right: 15px;
+}
+.comment .author-datetime{
+	margin-bottom: 12px;
+}
 .pane-node-body p,
-#block-panels-mini-body-and-comments article.comment .field-name-comment-body p{
+.comment .field-name-comment-body p{
 	font-size: 16px;
+}
+.comment-form{
+	padding: 15px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+.comment-form  .rel-register-link a{
+	padding-left: 0;
 }
 .quicktabs-tabpage  #edit-nid{
 	width: 50px;
@@ -688,4 +722,60 @@ ul.pager li a, ul.pager li.pager-current {
 }
 #homebox .homebox-portlet .portlet-header{
 	border: none;
+}
+/*-------------------------------------crm styles-------------------------------------*/
+.node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title{
+    margin-bottom: 7px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
+    margin: 0;
+    padding: 0;
+	border: medium none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th{
+	padding: 10px;
+	font-size: 14px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li{
+	list-style-type: none;
+	padding-right: 7px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul{
+	margin: 0;
+    padding: 0;
+	float: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane table{
+	margin: 0;
+	border: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane table td{
+	padding: 5px 10px;
+}
+
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container{
+	border: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a{
+	font-size: 1.2em;
+    text-decoration: underline;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item{
+	margin: 0px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li{
+	padding: 10px;
+	text-align: right;
+	-webkit-border-bottom-left-radius: 2px;
+	-moz-border-radius-bottomleft: 2px;
+	border-bottom-left-radius: 2px;
+	-webkit-border-bottom-right-radius: 2px;
+	-moz-border-radius-bottomright: 2px;
+	border-bottom-right-radius: 2px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference{
+	margin: 0px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title{
+	font-size: 26px;
 }

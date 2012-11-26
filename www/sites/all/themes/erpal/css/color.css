@@ -287,14 +287,28 @@ tr.even.completed {
 }
 
 .pane-node-body,
-#block-panels-mini-body-and-comments article.comment{
+article.comment{
 	background-color: #ffffff;
 }
-
+.comment .submitted {
+    border-bottom: 1px solid #F4F4F4;
+}
+.comment-form{
+	background-color: #eeeeee;
+}
 /*---------------------------------dashboard styles-----------------------------------------*/
 #homebox .homebox-column{
 	background: none;
 }
 #homebox .more-link, #homebox .portlet-title, #homebox .homebox-portlet .portlet-header {
     background-color: #F6F6F6;
+}
+
+/*-------------------------------------crm styles-------------------------------------*/
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th,
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li{
+	background-color: #AFAFAF;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td{
+	border-bottom: 1px solid #e7e7e7;
 }
