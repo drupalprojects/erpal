@@ -4,6 +4,7 @@
  * Code for the erpal_contract_helper module.
  */
 module_load_include('inc', 'erpal_contract_helper', 'inc/config');
+module_load_include('inc', 'erpal_contract_helper', 'inc/token');
  
  
 /**
@@ -240,6 +241,9 @@ function erpal_contract_helper_form_alter(&$form, &$form_state, $form_id) {
   elseif ($form_id == 'erpal_calendar_helper_config_form') {
     _erpal_contract_helper_alter_calendar_config_form($form, $form_state);
   }
+  if ($form_id == 'erpal_invoice_helper_config_form') {
+    _erpal_contract_helper_invoice_helper_config_form_alter($form, $form_state);
+  }
   
 }
 
@@ -373,7 +377,12 @@ function _erpal_contract_helper_check_payments() {
   //create billables and set last and next payment date in field collection
   foreach ($contract_nodes as $contract_node) {
     $payment_entity = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['entity'];
-    $subject_title = t('Contract')." ".$contract_node->title;
+    
+    $service_category_tid = isset($payment_entity->field_service_category_term[LANGUAGE_NONE][0]['tid']) ? $payment_entity->field_service_category_term[LANGUAGE_NONE][0]['tid'] : false;
+    $service_category_string = $service_category_tid ? taxonomy_term_load($service_category_tid)->name : '';
+    $subject_title = _erpal_contract_helper_get_billable_text();
+    $subject_title = token_replace($subject_title, array('subject' => $contract_node, 'service_category' => $service_category_string));
+    
     $customer_nid = $payment_entity->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
     $subject_nid = $contract_node->nid;
     $quantity = $payment_entity->field_payment_period[LANGUAGE_NONE][0]['value'];
@@ -382,7 +391,7 @@ function _erpal_contract_helper_check_payments() {
     $vat_rate = $payment_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
     $date_delivery = $payment_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
     $contractor_nid = $payment_entity->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
-    _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, false, $contractor_nid);
+    _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, false, $contractor_nid, $service_category_tid);
     
     //now set the nodes last payment and next payment date
     $payment_period = $payment_entity->field_payment_period[LANGUAGE_NONE][0]['value'];
