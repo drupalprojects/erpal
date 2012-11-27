@@ -429,7 +429,7 @@ function _erpal_invoice_helper_set_invoice_form_defaults(&$form, &$form_state) {
   $default_skonto_rate = _erpal_invoice_helper_get_skonto_rate();
   $default_skonto_period = _erpal_invoice_helper_get_skonto_period();
   $default_currency = _erpal_invoice_helper_get_default_currency();
-  
+  $address_addition = '';  
 
   //now set the other defaults if invoice not already exists
   $customer_node = _erpal_invoice_helper_get_customer_form_invoice($form, $form_state);
@@ -442,6 +442,7 @@ function _erpal_invoice_helper_set_invoice_form_defaults(&$form, &$form_state) {
       $default_skonto_rate = $defaults['skonto_percent']; 
       $default_skonto_period = $defaults['skonto_period'];
       $default_currency = $defaults['currency'];
+      $address_addition = $defaults['address_addition'];
     }
   }
   
@@ -456,6 +457,7 @@ function _erpal_invoice_helper_set_invoice_form_defaults(&$form, &$form_state) {
   //and now set the date if invoices_date is set
   $invoices_date = _erpal_invoice_helper_get_todays_invoices_date();
   $form['field_invoice_date'][LANGUAGE_NONE][0]['#default_value']['value'] = $invoices_date;
+  $form['field_addition_to_address'][LANGUAGE_NONE][0]['value']['#default_value'] = $address_addition;
 }
 
 /**

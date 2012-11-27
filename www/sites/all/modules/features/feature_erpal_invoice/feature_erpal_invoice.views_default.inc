@@ -617,6 +617,7 @@ function feature_erpal_invoice_views_default_views() {
       'label' => 'Billable: Subject_nid',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: billables pane */
   $handler = $view->new_display('panel_pane', 'billables pane', 'panel_pane_3');
@@ -1056,6 +1057,7 @@ function feature_erpal_invoice_views_default_views() {
   /* Display: Invoices pane */
   $handler = $view->new_display('panel_pane', 'Invoices pane', 'panel_pane_2');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['invoices'] = array(
     t('Master'),
     t('more'),
