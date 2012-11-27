@@ -34,6 +34,7 @@ features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
 features[ds_layout_settings][] = node|erpal_invoice|form
 features[features_api][] = api:1
+features[field][] = billable-billable-field_service_category_term
 features[field][] = field_collection_item-field_invoice_vat-field_vat_rate
 features[field][] = field_collection_item-field_invoice_vat-field_vat_total
 features[field][] = field_collection_item-field_pricing-field_buy_currency
