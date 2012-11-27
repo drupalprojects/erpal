@@ -19,8 +19,8 @@ function cne_form_field_ui_field_edit_form_alter(&$form, $form_state, $form_id) 
 	* If user has commenting permissions, load the fields from the node and insert them into this form. Then unset any that are not "editable by comment"
 	*/
 function cne_form_comment_form_alter(&$form, &$form_state) {
- $node = $form['#node'];
-	
+  $node = $form['#node'];
+
 	//Check to see if it's a new comment (CID should be null), that user has 'post comments' permission, that commenting is open.
   if (is_null ($form['cid']['#value']) &&
 						user_access('post comments') && 
@@ -28,14 +28,16 @@ function cne_form_comment_form_alter(&$form, &$form_state) {
 						(variable_get('comment_form_location_' . $node->type, COMMENT_FORM_BELOW) == COMMENT_FORM_BELOW)) { 	
 		
 		//Attach the node's fields
-		field_attach_form('node', $node, $form, $form_state, $node->language);
+    $new_form = array(); //if we attach all elements immideately, weights will get lost! So we keep the old form elements with old weights
+
+		field_attach_form('node', $node, $new_form, $form_state, $node->language);
 		
 		//Get the weight of the author field
 		$weight = isset($form['author']['#weight']) ? $form['author']['#weight']-1 : 0;
-		
+
+    $bundle = $node->type;
 		//Loop through the field instances
-		foreach (field_info_instances('node',$form['#bundle']) as $fieldname => $field_instance){
-				
+		foreach (field_info_instances('node',$bundle) as $fieldname => $field_instance){
         //check if the filed is attached to the comment node, if this is the case, keept it there.
         $is_comment_field = false;
         foreach (field_info_instances('comment','comment_node_'.$node->type) as $comment_fieldname => $comment_field_instance){
@@ -46,14 +48,16 @@ function cne_form_comment_form_alter(&$form, &$form_state) {
         if ($is_comment_field)
           continue;
         
+        //this field is not allready attached to comment field, so add it!
+        $form[$fieldname] = $new_form[$fieldname];
+        
         //Check if the field is editable by comment
 				if(!isset($field_instance['comment_enabled']) || $field_instance['comment_enabled'] == 0){
-						//TODO if we do this, all other fields will be removed. But comments could have fields, so they need to be reattached or not initially removed.
             unset($form[$fieldname]);
 				}else{
-						//place the field above the comment
-						$weight--;
-					 $form[$fieldname]['#weight'] = $weight;
+          //place the field above the comment					
+          $weight--;
+					$form[$fieldname]['#weight'] = $weight;
 				}
 		}	 
 		
