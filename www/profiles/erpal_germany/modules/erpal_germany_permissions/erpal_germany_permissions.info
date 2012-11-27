@@ -47,7 +47,6 @@ dependencies[] = panels_mini
 dependencies[] = path
 dependencies[] = pathauto
 dependencies[] = php
-dependencies[] = private_files_download_permission
 dependencies[] = profile2
 dependencies[] = quicktabs
 dependencies[] = rel

@@ -37,7 +37,6 @@ dependencies[] = user
 
 dependencies[] = content_access
 dependencies[] = nodetype_access
-dependencies[] = private_files_download_permission
 ; Administration
 dependencies[] = front_page
 ; Chaos tool suite
@@ -156,8 +155,6 @@ dependencies[] = relation_ui
 dependencies[] = services
 ; Services - servers
 dependencies[] = rest_server
-; User interface
-dependencies[] = autocomplete_deluxe
 ; Views
 dependencies[] = better_exposed_filters
 dependencies[] = views

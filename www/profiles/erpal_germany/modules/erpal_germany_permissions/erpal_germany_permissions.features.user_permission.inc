@@ -602,13 +602,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
-  // Exported permission: administer private files download permission.
-  $permissions['administer private files download permission'] = array(
-    'name' => 'administer private files download permission',
-    'roles' => array(),
-    'module' => 'private_files_download_permission',
-  );
-
   // Exported permission: administer profile types.
   $permissions['administer profile types'] = array(
     'name' => 'administer profile types',
@@ -1592,21 +1585,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'delete terms in 9',
     'roles' => array(),
     'module' => 'taxonomy',
-  );
-
-  // Exported permission: download private files.
-  $permissions['download private files'] = array(
-    'name' => 'download private files',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'customer',
-      4 => 'financial user',
-      5 => 'internal developer',
-      6 => 'project manager',
-    ),
-    'module' => 'private_files_download_permission',
   );
 
   // Exported permission: edit any billable.
