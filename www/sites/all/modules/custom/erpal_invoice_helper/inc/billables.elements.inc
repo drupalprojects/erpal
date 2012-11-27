@@ -76,6 +76,20 @@ function erpal_invoice_helper_field_widget_form(&$form, &$form_state, $field, $i
   return $element;
 }
 
+/**
+* Callback to remove billables from an invoice if "remove" button is clicked
+*/
+function _erpal_invoice_helper_remove_billable_submit($form, &$form_state) {
+/*
+  $delta = 0;
+  $form_state['hallo'];
+  form_set_value($form['field_billables_ref'][LANGUAGE_NONE][$delta]['remove_group']['mark_remove'], true, $form_state);
+  $form_state['rebuild'] = TRUE;
+  $my_values = array('ff' => 'ggg');
+  $new_element = array('#parents' => array('field_billables_ref_values', LANGUAGE_NONE, $delta, 'lalala'));
+  form_set_value($new_element, $my_values, $form_state);
+*/
+}
 
 /**
 * AJAX Callback to remove a billable from the invoice form

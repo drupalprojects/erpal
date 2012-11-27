@@ -62,7 +62,7 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
 function erpal_invoice_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
   //invoices list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICES, $router_item)) {  
-    $contact_node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
+    $contact_node = is_object($router_item['map'][1]) ? $router_item['map'][1]->data : false;
     _erpal_invoice_helper_invoices_links($data, $router_item, $contact_node);       
   }
   
