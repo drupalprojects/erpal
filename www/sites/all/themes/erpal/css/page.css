@@ -597,14 +597,8 @@ ul.pager li a, ul.pager li.pager-current {
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
-#block-panels-mini-body-and-comments article.comment{
-	padding: 20px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
-}
-.pane-node-body p,
-#block-panels-mini-body-and-comments article.comment .field-name-comment-body p{
+
+.pane-node-body p{
 	font-size: 16px;
 }
 .quicktabs-tabpage  #edit-nid{
@@ -632,7 +626,7 @@ ul.pager li a, ul.pager li.pager-current {
 	width: 140px;
 }
 .page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2{
-	 width: 120px;
+	width: 120px;
 }
 .page-projects-timetrackings #edit-uid{
 	width: 90px;
@@ -649,12 +643,84 @@ ul.pager li a, ul.pager li.pager-current {
 .page-node-edit div.autocomplete-deluxe-multiple{
 	width: auto;
 }
+/* crm */
 
+.field-type-datetime  fieldset .date-padding {
+	width: 260px;
+}
+.field-type-datetime  fieldset,
+.field-type-datetime  fieldset .date-padding {
+	padding: 0;
+	margin: 0;
+}
+.field-name-field-next-contact form{
+	width: 500px;
+}
+.field-name-field-next-contact form #edit-field-next-contact {
+	float: left;
+}
+
+.field-name-field-next-contact form .form-actions {
+	width: 70px;
+	float: left; 
+}
+
+/* comments */
+
+article.comment{
+	padding: 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+article.comment .field-name-comment-body p{
+	font-size: 16px;
+}
+#comment-form {
+	padding: 15px;
+	margin-top: 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+#comment-form .field-name-field-activity-status-term  {
+	width: 160px;
+	float: left;
+}
+#comment-form .field-type-datetime {
+	width: 300px;
+	float: left;
+}
+#comment-form #edit-author--2 {
+	clear: both;
+}
+#comment-form #edit-field-contacts-ref {
+	width: 350px;
+	float: left;
+	margin-right: 40px;
+}
+#comment-form #edit-field-asset-files {
+	width: 350px;
+	float: left;
+}
+#comment-form #edit-actions {
+	clear: both;
+}
+#comment-form .group-left .field-widget-options-select {
+	width: 100px;
+	float: left;
+}
+.comment-content section{
+	width: 250px;
+	float: left;
+}
+.comment nav {
+	clear: both;
+}
 /* multi select boxes */
 .views-exposed-form .views-exposed-widget {
 	padding-right: 10px !important;
 }
-
 .views-exposed-form button span:not(.ui-icon){
 	position: absolute;
 	overflow: hidden;
@@ -662,39 +728,30 @@ ul.pager li a, ul.pager li.pager-current {
 	height: 19px;
 	line-height: 13px;
 }
-
-#edit-field-task-status-term-tid-wrapper  button,
-#edit-field-priority-term-tid-wrapper button,
-#edit-field-task-type-term-tid-wrapper button,
-#edit-field-project-tags-tid-wrapper button,
-#edit-field-task-assigned-users-target-id-wrapper button {
+.views-exposed-form button {
 	font-size: 11px;
 	height: 25px;
 	width: 130px !important;
 	overflow: hidden;
 }
-
 #edit-field-task-status-term-tid-wrapper ,
+#edit-field-activity-status-term-tid-wrapper,
 #edit-field-priority-term-tid-wrapper,
 #edit-field-task-type-term-tid-wrapper,
 #edit-field-project-tags-tid-wrapper,
 #edit-field-task-assigned-users-target-id-wrapper  {
 	width: 130px !important;
 }
-
 .ui-multiselect-menu {
 	width: 200px !important;
 }
-
 .ui-helper-reset {
 	position: relative;
 }
-
 .ui-multiselect-close {
 	position: absolute;
 	right: 0;
 }
-
 .ui-multiselect-header {
 	padding: 3px 0;
 }
