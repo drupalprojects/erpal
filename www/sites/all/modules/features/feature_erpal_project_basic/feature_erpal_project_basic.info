@@ -30,6 +30,7 @@ dependencies[] = list
 dependencies[] = nodeaccess_userreference
 dependencies[] = number
 dependencies[] = og
+dependencies[] = og_relations
 dependencies[] = og_ui
 dependencies[] = options
 dependencies[] = page_manager
