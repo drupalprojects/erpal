@@ -440,6 +440,11 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['currency']['table'] = 'billable';
   $handler->display->display_options['fields']['currency']['field'] = 'currency';
   $handler->display->display_options['fields']['currency']['label'] = 'Währung';
+  /* Field: Field: Service category */
+  $handler->display->display_options['fields']['field_service_category_term']['id'] = 'field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['table'] = 'field_data_field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['field'] = 'field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Billable: Date_delivery */
   $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
