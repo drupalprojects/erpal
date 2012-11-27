@@ -73,7 +73,7 @@ function feature_erpal_crm_field_default_fields() {
           'rows' => 5,
         ),
         'type' => 'text_textarea',
-        'weight' => 3,
+        'weight' => 2,
       ),
     ),
   );
@@ -265,7 +265,7 @@ function feature_erpal_crm_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 2,
+        'weight' => 3,
       ),
     ),
   );
