@@ -119,6 +119,7 @@ function erpal_invoice_helper_update_7004() {
 * Add service category field instance to billables
 */
 function erpal_invoice_helper_update_7005() {
+  /*
   $instance = array(
     'field_name' => 'field_service_category_term',
     'entity_type' => 'billable',
@@ -127,4 +128,6 @@ function erpal_invoice_helper_update_7005() {
   );
   
   field_create_instance($instance);
+  */
+  //Field will be transported by feature now
 }

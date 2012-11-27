@@ -580,8 +580,10 @@ function _erpal_invoice_helper_calculate_billables_ref_from_form($form, &$form_s
       
       //now save the values of the attached fields
       $service_category_tid = $billables_values[$delta]['widget_values']['service_category_tid'];
-      $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] = $service_category_tid;
-      field_attach_update('billable', $billable);
+      if (is_numeric($service_category_tid)) {
+        $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] = $service_category_tid;
+        field_attach_update('billable', $billable);
+      }
       
       //and now set the value in the form field
       $new_element = array('#parents' => array('field_billables_ref', LANGUAGE_NONE, $delta, 'target_id'));
