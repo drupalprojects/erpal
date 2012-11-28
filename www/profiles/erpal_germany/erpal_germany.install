@@ -5,6 +5,8 @@
  */
 include('erpal_germany_taxonomy.inc');
 include('erpal_germany_relations.inc');
+ 
+
 
 /**
  * Implements hook_install().
@@ -97,34 +99,29 @@ function erpal_germany_install() {
   $full_html_format = (object) $full_html_format;
   filter_format_save($full_html_format);
   
-  // revert features 
-  features_revert();
-  
-  //rebuild content access permissions
-  node_access_rebuild(); 
-
-  // create taxonomy
-  erpal_germany_create_taxonomy();
-
-  erpal_germany_create_relations();
-
   erpal_germany_various_settings();
-  erpal_germany_invoice_config();
-  erpal_germany_calendar_config();
   erpal_germany_projects_config();
+  erpal_germany_calendar_config();
+  
+  erpal_germany_create_taxonomy();
+  erpal_germany_create_relations();
+   
 }
 
 
+
 function erpal_germany_various_settings(){
+
+  
   variable_set('date_format_erpal_date', 'd.m.Y - H:i');
   variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');  
   variable_set('erpal_docs_doc_file_extensions', 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml');
 }
 
-/**
- * Erpal-Projects basic settings
- */
+
+
 function erpal_germany_projects_config(){
+  
   // Set Erpal-Project notification message
   $erpal_task_update_subject = 'ERPAL - Notification: [erpal_project_notifications:content_label]';
   $erpal_task_update_message = 
@@ -143,22 +140,20 @@ function erpal_germany_projects_config(){
 }
 
 
-/**
- * Erpal-Calendar basic settings
- */
+
 function erpal_germany_calendar_config(){
+  
   _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
   _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
 }
+ 
 
 
-/**
- * ERPAL-Invoice basic Settings 
- */
 function erpal_germany_invoice_config(){
+  
   //set default vat-rate for erpal invoice
   $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
   variable_set('erpal_invoice_vat_rates_string', $vatRates);
@@ -174,6 +169,3 @@ function erpal_germany_invoice_config(){
   variable_set('erpal_invoice_skonto_text', $skontoText);  
   
 }
-
-  
-

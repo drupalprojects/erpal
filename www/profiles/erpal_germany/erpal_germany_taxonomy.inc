@@ -20,8 +20,8 @@ function erpal_germany_create_taxonomy(){
     array(
       'name' => 'feature', 
       'default' => 0,
-    ),
-  );  
+    ), 
+  );   
   erpal_germany_taxonomy_add($task_type_vocabulary, $task_type_terms);
     
 
@@ -274,46 +274,69 @@ function erpal_germany_create_taxonomy(){
   );
   erpal_germany_taxonomy_add($project_vocabulary, $project_terms);
 
+  $service_category_vocabulary = new stdClass();
+  $service_category_vocabulary->name = 'Service category';
+  $service_category_vocabulary->machine_name = 'service_category_terms';
+  $service_category_terms = array(
+    array(
+      'name' => 'Beratung',
+      'allow_grouping' => TRUE),
+    array(
+      'name' => 'Backend-Entwicklung',
+      'allow_grouping' => TRUE),
+    array(
+      'name' => 'Reisekosten',
+      'allow_grouping' => TRUE),
+    array(
+      'name' => 'Frontend-Entwicklung',
+      'allow_grouping' => TRUE),
+    array(
+      'name' => 'Schulung',
+      'allow_grouping' => TRUE),
+  );
+  erpal_germany_taxonomy_add($service_category_vocabulary, $service_category_terms);
+  
+
  
- $activity_vocabulary = new stdClass();
- $activity_vocabulary->name = 'Activity status terms'; 
- $activity_vocabulary->description = st('The status of the activity');
- $activity_vocabulary->machine_name = 'activity_status_terms';
- $activity_vocabulary->help = st('Select the status of the activity');
- $activity_terms = array(
-  array(
-    'name' => 'other',
-    'semantic_process' => 'in_progress',
-  ),
-  array(
-    'name' => 'customer request',
-    'semantic_process' => 'in_progress',
-  ),
-  array(
-    'name' => 'waiting for feedback',
-    'semantic_process' => 'in_progress',
-  ),
-  array(
-    'name' => 'quote submitted',
-    'semantic_process' => 'in_progress',
-  ),
-  array(
-    'name' => 'revise quote',
-    'semantic_process' => 'in_progress',
-  ),
-  array(
-    'name' => 'quote rejected',
-    'semantic_process' => 'aborted',
-  ),
-  array(
-    'name' => 'quote accepted',
-    'semantic_process' => 'completed',
-  ),
-  array(
-    'name' => 'aborted',
-    'semantic_process' => 'aborted',
-  ),
- );
+  $activity_vocabulary = new stdClass();
+  $activity_vocabulary->name = 'Activity status terms'; 
+  $activity_vocabulary->description = st('The status of the activity');
+  $activity_vocabulary->machine_name = 'activity_status_terms';
+  $activity_vocabulary->help = st('Select the status of the activity');
+  $activity_terms = array(
+    array(
+      'name' => 'other',
+      'semantic_process' => 'in_progress',
+    ),
+    array(
+      'name' => 'customer request',
+      'semantic_process' => 'in_progress',
+    ),
+    array(
+      'name' => 'waiting for feedback',
+      'semantic_process' => 'in_progress',
+    ),
+    array(
+      'name' => 'quote submitted',
+      'semantic_process' => 'in_progress',
+    ),
+    array(
+      'name' => 'revise quote',
+      'semantic_process' => 'in_progress',
+    ),
+    array(
+      'name' => 'quote rejected',
+      'semantic_process' => 'aborted',
+    ),
+    array(
+      'name' => 'quote accepted',
+      'semantic_process' => 'completed',
+    ),
+    array(
+      'name' => 'aborted',
+      'semantic_process' => 'aborted',
+    ),
+  );
  erpal_germany_taxonomy_add($activity_vocabulary, $activity_terms);
 }
 
@@ -336,28 +359,41 @@ function erpal_germany_taxonomy_add($vocabulary, $names){
     // If vocabulary already exists, use existing one
     $vocabulary = $existing_vocabulary;
   }
+  
+  $semantic_process = array_key_exists('semantic_process', reset($names));
+  $default = array_key_exists('default', reset($names));
+  $vat_rates = array_key_exists('vat_rates', reset($names));
+  $allow_grouping = array_key_exists('allow_grouping', reset($names));
+  
   foreach($names as $name){
       $term = new stdClass();
       $term->name = $name['name'];
       $term->vid = $vocabulary->vid;
-      if(array_key_exists('semantic_process', $name))
+      if($semantic_process)
         $term->field_simple_process_status = array(
-          'und' => array(
+          LANGUAGE_NONE => array(
             0 => array('value' => $name['semantic_process'])
           )
         );
-      if(array_key_exists('default', $name))
+      if($default)
         $term->field_is_default_term = array(
-          'und' => array(
+          LANGUAGE_NONE => array(
             0 => array('value' => $name['default'])
           )
         );
-      if(array_key_exists('vat_rates', $name))
+      if($vat_rates)
         $term->field_vat_rate = array(
-          'und' => array(
+          LANGUAGE_NONE => array(
             0 => array('value' => $name['vat_rates'])
           )
         );
+      if($allow_grouping)
+        $term->field_allow_grouping = array(
+          LANGUAGE_NONE => array(
+            0 => array('value' => $name['allow_grouping'])
+          )
+        );
+        
       taxonomy_term_save($term);
     }
 }

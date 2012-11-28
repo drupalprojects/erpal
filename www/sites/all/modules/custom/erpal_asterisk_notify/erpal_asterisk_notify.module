@@ -13,7 +13,10 @@ define("VIEWCONTENTTYPE", "erpal_contact");
 */
 function erpal_asterisk_notify_init() {
 	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );  
+	$my_phone_number = _erpal_basic_helper_return_my_value('field_phone');
+	//dpm($my_phone_number);
 	$js_settings = array(
+	  'client_phone_number' => $my_phone_number,
     'client_ip' => $_SERVER['REMOTE_ADDR'],
     'nodejs_host' => variable_get('asterisk_nodejs_host'),
     'nodejs_http_port' => variable_get('asterisk_nodejs_http_port'),

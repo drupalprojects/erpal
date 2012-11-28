@@ -19,8 +19,10 @@ $(document).ready(function() {
      }, 'fast');
   });
   
+  
   // if node.js server acknowledged connection, register the client
   socket.on('status', function (data) {
+    console.log(data);
     if(data.status == "ok") {
       registerClient();
     }
