@@ -561,7 +561,7 @@ function _erpal_basic_helper_warnings() {
   $private_path = _erpal_basic_helper_private_file_path();
   _erpal_basic_helper_private_file_path();
   if (!$private_path) {
-    drupal_set_message(t('To make ERPAL work with files please set your private files directory in !files_link', array('!files_link' => l(t('File system settings'), 'admin/config/media/file-system'))), 'warning');
+    drupal_set_message(t('To make ERPAL work with files please set your private files directory in !files_link', array('!files_link' => l(t('File system settings'), 'admin/config/media/file-system'))), 'warning', false); //no repeat
   }
 }
 
