@@ -205,7 +205,7 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'erpal',
+      'database' => 'install',
       'username' => 'root',
       'password' => 'hendrix',
       'host' => 'localhost',
@@ -246,7 +246,7 @@ $update_free_access = FALSE;
  *   $drupal_hash_salt = file_get_contents('/home/example/salt.txt');
  *
  */
-$drupal_hash_salt = 'b36AZUOkstaH4Rd1QBRdi6RQRP2R6cuOyMQyMyYFMtM';
+$drupal_hash_salt = '3-Z4_vxSe9vhwiH8XlTjZjMUJr8t4u5ZVxvqWEzU3bg';
 
 /**
  * Base URL (optional).
