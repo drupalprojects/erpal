@@ -117,7 +117,7 @@ $data['header'] = array(
     'executed' => array('data' => t("Executed"), "class" => "left executed"),
     'amount' => array('data' => t("Quantity"), "class" => "left amount quantity"),
     //'article'   => array('data' => t("Article nr."), "class" => "left article"),
-    'description' => array('data' => t("Description"), "class" => "left description subject"),
+    'description' => array('data' => t("Billable description"), "class" => "left description subject"),
     'price' => array('data' => t("Single price (%curr)", array('%curr' => $currency)), "class" => "right price"),
     'vat' => array('data' => t("VAT rate"), "class" => "right price"),
     'total' => array('data' => t("Total (%curr)", array('%curr' => $currency)), "class" => "right total"),

@@ -159,12 +159,12 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
    
   //now output the pdf
   if ($destination_uri) {
-    $destination_path = drupal_realpath($destination_uri."/".$basename);
+    $destination_path = drupal_realpath($destination_uri.$basename);
 
     //perhaps file must be renamed
     $destination_path = file_destination($destination_path, FILE_EXISTS_RENAME);
     $new_basename = basename($destination_path);
-    $destination_uri = $destination_uri.'/'.$new_basename;
+    $destination_uri = $destination_uri.$new_basename;
     $pdf_object->Output($destination_path, "F");
     
     // Begin building file object.

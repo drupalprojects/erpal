@@ -32,10 +32,25 @@ function erpal_invoice_helper_config_form($form, &$form_state){
 
   $form = array();
   
-  //@todo: Mehrwerteuersätze, zahlungsziele etc
   module_load_include('inc', 'erpal_basic_helper', 'inc/config');
   $company_nid = _erpal_basic_helper_get_own_company_nid(false);
   $company_string = l(t('Please select your company!'), 'admin/erpal/basic');
+  
+  $form['billable_texts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Billable texts'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#weight' => -3,
+  );
+  
+  $form['billable_texts']['erpal_billable_grouping_texts'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Grouping billable texts'),
+    '#description' => t('This text will be used as subject for grouped billables'),
+    '#default_value' => _erpal_invoice_helper_get_grouping_billable_text(),
+    '#maxlength' => 255,
+  );
   
   //fieldset for all company specific settings
   $form['company_settings'] = array(
@@ -43,6 +58,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#title' => t('Company settings'),
     '#collapsible' => true,
     '#collapsed' => $company_nid > 0,
+    '#weight' => -2,
   );
   
   if ($company_nid) {
@@ -50,6 +66,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     $company_node = node_load($company_nid);
     $company_string = l($company_node->title, 'node/'.$company_node->nid);
   }
+  
   //selected company
   $form['company_settings']['my_company'] = array(
     '#type' => 'item',
@@ -63,6 +80,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#title' => t('Invoice number'),
     '#collapsible' => true,
     '#collapsed' => true,
+    '#weight' => -1
   );
   
   $form['invoice_number']['erpal_invoice_number_pattern'] = array(
@@ -75,8 +93,8 @@ function erpal_invoice_helper_config_form($form, &$form_state){
   $form['invoice_number']['erpal_invoice_number_offset'] = array(
     '#type' => 'textfield',
     '#title' => t('Invoice number offset'),
-    '#default_value' => _erpal_invoice_helper_get_next_invoice_number(),    
-    '#description' => t('This offset definies the next invoice number'),
+    '#default_value' => variable_get('erpal_last_invoice_number', 1),    
+    '#description' => t('This offset definies current invoice number. Next invoice number will be this +1'),
   );
   
   //Tokens for invoice pattern
@@ -200,9 +218,15 @@ function erpal_invoice_helper_config_form($form, &$form_state){
     '#default_value' => _erpal_invoice_helper_get_invoice_copy_text(),
   );
   
+  $form['service_category_terms_edit_link'] = array(
+    '#type' => 'item',
+    '#markup' => l(t('Edit service category terms'), 'admin/structure/taxonomy/service_category_terms'),
+  );
+  
   $form['submit'] = array(
     '#value' => t('save'),
     '#type' => 'submit',
+    '#submit' => array('_erpal_invoice_helper_config_form_submit'),
   );
   
   return $form;
@@ -211,7 +235,7 @@ function erpal_invoice_helper_config_form($form, &$form_state){
 /**
 * submit handler of erpal basic config form
 */
-function erpal_invoice_helper_config_form_submit($form, $form_state){
+function _erpal_invoice_helper_config_form_submit($form, $form_state){
 
   $values = $form_state['values'];
 
@@ -230,6 +254,9 @@ function erpal_invoice_helper_config_form_submit($form, $form_state){
   variable_set('erpal_invoice_skonto_text', $values['erpal_invoice_skonto_text']);
   variable_set('erpal_invoice_skonto_period', $values['erpal_invoice_skonto_period']);
   variable_set('erpal_invoice_skonto_rate', $values['erpal_invoice_skonto_rate']);
+  
+  //
+  variable_set('erpal_billable_grouping_texts', $values['erpal_billable_grouping_texts']);
 }
 
 /**
@@ -242,6 +269,13 @@ function _erpal_invoice_helper_get_invoice_number_pattern() {
     $pattern = "[erpal_invoice:next_invoice_number]";
     
   return $pattern;
+}
+
+/**
+* returns the text that is used as subject for grouped billables
+*/
+function _erpal_invoice_helper_get_grouping_billable_text() {
+  return variable_get('erpal_billable_grouping_texts', 'Different work of service category "[erpal_projects_billable_subject:service_category]"'); 
 }
 
 /**

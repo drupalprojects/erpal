@@ -76,6 +76,14 @@ class BillableUIController extends EntityDefaultUIController {
       'type' => MENU_CALLBACK,
     );
     
+    $items['billable/%billable/ungroup'] = array(           
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('billable_page_ungroup_form', 1),
+      'access callback' => 'billable_access',
+      'access arguments' => array('edit', 1),
+      'type' => MENU_CALLBACK,
+    );
+    
     
     return $items;
   }

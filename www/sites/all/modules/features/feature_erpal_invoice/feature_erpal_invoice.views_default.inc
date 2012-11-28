@@ -94,8 +94,14 @@ function feature_erpal_invoice_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
+    'action::erpal_projects_helper_timetracking_finalise_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::billable_reduce_action' => array(
-      'selected' => 1,
+      'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
@@ -235,6 +241,11 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'customer_nid';
   $handler->display->display_options['fields']['title']['label'] = 'Customer';
+  /* Field: Field: Service category */
+  $handler->display->display_options['fields']['field_service_category_term']['id'] = 'field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['table'] = 'field_data_field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['field'] = 'field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Billable: Edit Link */
   $handler->display->display_options['fields']['edit_billable']['id'] = 'edit_billable';
   $handler->display->display_options['fields']['edit_billable']['table'] = 'billable';
@@ -326,6 +337,29 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['filters']['parent_billable']['field'] = 'parent_billable';
   $handler->display->display_options['filters']['parent_billable']['value']['value'] = '0';
   $handler->display->display_options['filters']['parent_billable']['group'] = 0;
+  /* Filter criterion: Field: Service category (field_service_category_term) */
+  $handler->display->display_options['filters']['field_service_category_term_tid']['id'] = 'field_service_category_term_tid';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['table'] = 'field_data_field_service_category_term';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['field'] = 'field_service_category_term_tid';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_service_category_term_tid']['expose']['operator_id'] = 'field_service_category_term_tid_op';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['expose']['label'] = 'Service category';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['expose']['operator'] = 'field_service_category_term_tid_op';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['expose']['identifier'] = 'field_service_category_term_tid';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_service_category_term_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_service_category_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_service_category_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['vocabulary'] = 'service_category_terms';
+  $handler->display->display_options['filters']['field_service_category_term_tid']['error_message'] = FALSE;
 
   /* Display: Billables by invoice pane */
   $handler = $view->new_display('panel_pane', 'Billables by invoice pane', 'panel_pane_1');
@@ -406,6 +440,11 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['currency']['table'] = 'billable';
   $handler->display->display_options['fields']['currency']['field'] = 'currency';
   $handler->display->display_options['fields']['currency']['label'] = 'Währung';
+  /* Field: Field: Service category */
+  $handler->display->display_options['fields']['field_service_category_term']['id'] = 'field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['table'] = 'field_data_field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['field'] = 'field_service_category_term';
+  $handler->display->display_options['fields']['field_service_category_term']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Billable: Date_delivery */
   $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
@@ -578,6 +617,7 @@ function feature_erpal_invoice_views_default_views() {
       'label' => 'Billable: Subject_nid',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: billables pane */
   $handler = $view->new_display('panel_pane', 'billables pane', 'panel_pane_3');
@@ -616,6 +656,7 @@ function feature_erpal_invoice_views_default_views() {
     t('Summe Brutto'),
     t('Summe'),
     t('Währung'),
+    t('Service category'),
     t('Delivery'),
     t('Billables by invoice pane'),
     t('Content referencing Billable from field_billables_ref'),
@@ -1016,6 +1057,7 @@ function feature_erpal_invoice_views_default_views() {
   /* Display: Invoices pane */
   $handler = $view->new_display('panel_pane', 'Invoices pane', 'panel_pane_2');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['invoices'] = array(
     t('Master'),
     t('more'),
