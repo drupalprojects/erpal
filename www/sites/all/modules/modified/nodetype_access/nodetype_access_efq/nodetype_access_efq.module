@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Implement EntityFieldQuery node access for Nodetype Access module.
+ */
+
+/**
+* Implements hook_entity_query_alter()
+*
+* This alters any incoming EntityFieldQuery concerning nodes with 'node_access' tag.
+* In contrary to hook_query_TAG_alter() this should work also for nosql backends.
+*/
+function nodetype_access_efq_entity_query_alter(EntityFieldQuery $query) {
+  global $user;
+
+  if (!in_array('node_access', $query->tags)) {
+    return;
+  }
+
+  // Return if the current user is able to bypass node access.
+  if (user_access('bypass node access')) {
+    return;
+  }
+  // Get node types that this user is able to view.
+  $types_any = nodetype_access_get_accessible_types(NODETYPE_ACCESS_ANY);
+  $types_own = nodetype_access_get_accessible_types(NODETYPE_ACCESS_OWN);
+
+  // If the current user is able to see any node from any node type then return.
+  if ($types_any == nodetype_access_get_all_types()) {
+    return;
+  }
+
+  // If a user is able to access any node from a type then is able to access
+  // also his own node of that type. Remove types from $types_own that are also
+  // in $types_any.
+  $types_own = array_diff($types_own, $types_any);
+
+  // The current user is not allowed to see any kind of nodes so alter the query
+  // to return an empty result set. Workaround (http://drupal.org/node/1426702)
+  // this should always be FALSE.
+  if (empty($types_any) && empty($types_own)) {
+    $query->entityCondition('bundle', '', '=');
+    return;
+  }
+
+  if ($types_any) {
+    $query->entityCondition('bundle', $types_any, 'IN');
+  }
+}
