@@ -21,7 +21,7 @@ function _erpal_germany_revert_features(&$context){
  * rebuilds content access 
  */
 function _erpal_germany_rebuild_content_access(&$context){
-  $context['message'] = st('Rebuilded content access permissions');
+  $context['message'] = st('Rebuilt content access permissions');
   node_access_rebuild(); 
 }
 
