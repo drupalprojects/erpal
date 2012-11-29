@@ -88,8 +88,6 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
   global $user;  
   
   $replacements = array();
-  
-  $date_form_date = _erpal_basic_helper_date_format_date_only();
   if ($type == 'erpal_invoice') {
     $invoice = isset($data['erpal_invoice']) ? $data['erpal_invoice'] : false;
     foreach ($tokens as $name => $original) {
@@ -101,10 +99,10 @@ function erpal_invoice_helper_tokens($type, $tokens, array $data = array(), arra
           $replacements[$original] = number_format($invoice->field_invoice_total[LANGUAGE_NONE][0]['value'], 2, ',', '.');
         break;
         case 'invoice_date':
-          $replacements[$original] = date($date_form_date, $invoice->field_invoice_date[LANGUAGE_NONE][0]['value']);
+          $replacements[$original] = erpal_date_formatted($invoice->field_invoice_date[LANGUAGE_NONE][0]['value']);
         break;
         case 'payment_date':
-          $replacements[$original] = date($date_form_date, $invoice->field_payment_date[LANGUAGE_NONE][0]['value']);
+          $replacements[$original] = erpal_date_formatted($invoice->field_payment_date[LANGUAGE_NONE][0]['value']);
         break;
         case 'currency':
           $replacements[$original] = $invoice->field_currency[LANGUAGE_NONE][0]['value'];

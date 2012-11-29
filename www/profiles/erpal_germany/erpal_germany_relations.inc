@@ -1,7 +1,7 @@
 <?php
 
 function erpal_germany_create_relations(){
-  
+    
   $relation_works_at = array(
     'relation_type' => 'works_at',
     'label' => 'Works at',

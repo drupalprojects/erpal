@@ -212,30 +212,29 @@ function timetracking_edit_form($form, &$form_state, $timetracking) {
   $form['actions']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save timetracking'),
-    '#submit' => $submit + array('timetracking_edit_form_submit'),
+    '#submit' => $submit + array('timetracking_form_submit_button_submit'),
+    '#validate' => array('timetracking_form_submit_button_validate'),
   );
   
   if (!empty($timetracking->timetracking_id)) {
+    $destination = drupal_get_destination();
+    $destination = $destination['destination'];
     $form['actions']['delete'] = array(
       '#type' => 'submit',
       '#value' => t('Delete timetracking'),
-      '#suffix' => l(t('Cancel'), 'admin/content/timetrackings'),
+      '#suffix' => l(t('Cancel'), $destination),
       '#submit' => $submit + array('timetracking_form_submit_delete'),
       '#weight' => 45,
     );
   }
 
-  // We append the validate handler to #validate in case a form callback_wrapper
-  // is used to add validate handlers earlier.
-  $form['#validate'][] = 'timetracking_edit_form_validate';
   return $form;
 }
-
 
 /**
  * Form API validate callback for the timetracking form
  */
-function timetracking_edit_form_validate(&$form, &$form_state) {
+function timetracking_form_submit_button_validate(&$form, &$form_state) {
   $timetracking = $form_state['timetracking'];
   
   $values = $form_state['values'];
@@ -265,7 +264,7 @@ function timetracking_edit_form_validate(&$form, &$form_state) {
  * Form API submit callback for the timetracking form.
  * 
  */
-function timetracking_edit_form_submit(&$form, &$form_state) {
+function timetracking_form_submit_button_submit(&$form, &$form_state) {
  
   $timetracking = entity_ui_controller('timetracking')->entityFormSubmitBuildEntity($form, $form_state);
   // Save the timetracking and go back to the list of timetrackings
@@ -278,6 +277,8 @@ function timetracking_edit_form_submit(&$form, &$form_state) {
   $timetracking->changed = time();
     
   $timetracking->save();
+  
+  drupal_set_message(t('The timetracking has been saved.'));
 }
 
 /**
@@ -287,6 +288,12 @@ function timetracking_edit_form_submit(&$form, &$form_state) {
  */
 function timetracking_form_submit_delete(&$form, &$form_state) {
   $timetracking = entity_ui_controller('timetracking')->entityFormSubmitBuildEntity($form, $form_state);
+  $destination = drupal_get_destination();
+  $destination = $destination['destination'];
+
+  $url = url('timetracking/'.$timetracking->timetracking_id.'/delete', array('query' => array('destination' => $destination)));
+  header('Location: ' . $url, TRUE, 302);
+  exit(0);
 }
 
 
@@ -322,10 +329,11 @@ function timetracking_delete_form_submit($form, &$form_state) {
   $timetracking = $form_state['timetracking'];
 
   $result = timetracking_delete($timetracking);
-  if ($result) {
-    drupal_set_message(t('The timetracking %subject has been deleted.', array('%subject' => $timetracking->defaultLabel())));
-    watchdog('timetracking', 'Deleted timetracking %subject.', array('%subject' => $timetracking->defaultLabel()));
-  }
+ 
+  drupal_set_message(t('The timetracking %subject has been deleted.', array('%subject' => $timetracking->defaultLabel())));
+  watchdog('timetracking', 'Deleted timetracking %subject.', array('%subject' => $timetracking->defaultLabel()));
+  
+  $form_state['redirect'] = '';
 }
 
 

@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * @file
+ * jquery_ui_multiselect_widget module.
+ */
+
+/**
+ * Initialization of jquery_ui_multiselect_widget (on each page).
+ */
+function jquery_ui_multiselect_widget_init() {
+  drupal_add_library('system', 'ui.core');
+  drupal_add_library('system', 'ui.widget');
+  drupal_add_library('system', 'ui.effects.core');
+
+  $module_path = drupal_get_path('module', 'jquery_ui_multiselect_widget');
+  $js_settings = _jquery_ui_multiselect_widget_get_settings();
+  // Add Settings
+  drupal_add_js(array('jquery_ui_multiselect_widget' => $js_settings),
+    'setting');
+  // Add required files
+  // TODO - Use http://drupal.org/documentation/modules/libraries module
+  // instead.
+  drupal_add_js(
+    $module_path . '/jquery-ui-multiselect-widget/src/jquery.multiselect.js');
+  drupal_add_js(
+    $module_path .
+       '/jquery-ui-multiselect-widget/src/jquery.multiselect.filter.js');
+  drupal_add_css(
+    $module_path . '/jquery-ui-multiselect-widget/jquery.multiselect.css');
+  drupal_add_css(
+    $module_path . '/jquery-ui-multiselect-widget/jquery.multiselect.filter.css');
+  // Module JS for init as set in config.
+  drupal_add_js($module_path . '/jquery_ui_multiselect_widget.js');
+  // Module CSS as default
+  drupal_add_css($module_path . '/jquery_ui_multiselect_widget.css');
+}
+
+/**
+ * Implements hook_help().
+ */
+function jquery_ui_multiselect_widget_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the block module
+    case 'admin/help#jquery_ui_multiselect_widget':
+    case 'admin/config/user-interface/jquery_ui_multiselect_widget':
+      return '<p>' .
+         t(
+          'Adds Eric Hynds jQuery UI MultiSelect Widget (!website) to select fields (optional multiselect only) in Drupal.
+        Replaces all selects with attribute "multiselect" by this better behaviour.',
+          array(
+            '!website' => l(
+              t('http://www.erichynds.com/jquery/jquery-ui-multiselect-widget/'),
+              'http://www.erichynds.com/jquery/jquery-ui-multiselect-widget/')));
+  }
+}
+
+/**
+ * Implements hook_load_menu().
+ */
+function jquery_ui_multiselect_widget_menu() {
+  $items['admin/config/user-interface/jquery_ui_multiselect_widget'] = array(
+    'title' => 'jQuery UI MultiSelect Widget',
+    'description' => 'Configure jQuery UI MultiSelect Widget settings.',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jquery_ui_multiselect_widget_settings_form'),
+    'file' => 'jquery_ui_multiselect_widget.admin.inc');
+  return $items;
+}
+
+/**
+ * Specifies the commerce_powl AJAX Settings.
+ *
+ * @return array Array of configuration variables to be made available in
+ *         JavaScript.
+ */
+function _jquery_ui_multiselect_widget_get_settings() {
+  $module_path = drupal_get_path('module', 'jquery_ui_multiselect_widget');
+  return array(
+    'module_path' => $module_path,
+    'multiple' => variable_get('jquery_ui_multiselect_widget_multiple', FALSE),
+    'filter' => variable_get('jquery_ui_multiselect_widget_filter', FALSE),
+    'subselector' => check_plain(
+      variable_get('jquery_ui_multiselect_widget_subselector', '')),
+    // Represents the default settings of the jquery module. TODO: Add them to
+    // admin configuration.
+    'selectedlist' => variable_get('jquery_ui_multiselect_widget_selectedlist',
+      4),
+    'multiple' => variable_get('jquery_ui_multiselect_widget_multiple', TRUE),
+    'autoOpen' => variable_get('jquery_ui_multiselect_widget_autoOpen', FALSE),
+    'header' => variable_get('jquery_ui_multiselect_widget_header', TRUE),
+    'height' => variable_get('jquery_ui_multiselect_widget_height', 175),
+    'classes' => variable_get('jquery_ui_multiselect_widget_classes', ''),
+    'filter_auto_reset' => variable_get('jquery_ui_multiselect_widget_filter_auto_reset', FALSE),
+    'filter_width' => variable_get('jquery_ui_multiselect_widget_filter_width', 100));
+}

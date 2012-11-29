@@ -157,6 +157,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -176,6 +177,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -209,6 +212,59 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'CRM activities as customer';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  /* Filter criterion: Content: Status (field_activity_status_term) */
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['id'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['table'] = 'field_data_field_activity_status_term';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['field'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator_id'] = 'field_activity_status_term_tid_op';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['vocabulary'] = 'activity_status_terms';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['error_message'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_crm_activity' => 'erpal_crm_activity',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['argument_input'] = array(
     'field_customer_ref_nid' => array(
       'type' => 'panel',
@@ -247,6 +303,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -266,6 +323,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -285,6 +343,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -359,6 +419,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Search Terms';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -378,6 +439,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -397,6 +459,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -504,6 +568,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -602,6 +668,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -621,6 +688,8 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['operator'] = 'field_activity_status_term_tid_op';
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['identifier'] = 'field_activity_status_term_tid';
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_activity_status_term_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -647,6 +716,44 @@ function feature_erpal_crm_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  $translatables['crm_activities'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('This contact has no activities'),
+    t('customer'),
+    t('Activity title'),
+    t('Customer'),
+    t('Status'),
+    t('Next Contact'),
+    t('All'),
+    t('Title'),
+    t('Activities by customer'),
+    t('CRM activities as customer'),
+    t('View panes'),
+    t('Next activities pane'),
+    t('Next activities'),
+    t('No activities'),
+    t('Missed activities pane'),
+    t('Missed activities'),
+    t('Search Terms'),
+    t('activities view pane'),
+    t('Activities by contact'),
+    t('CRM activities involved'),
+    t('Content entity referenced from field_contacts_ref'),
+    t('CRM Activities Pane'),
+  );
   $export['crm_activities'] = $view;
 
   return $export;

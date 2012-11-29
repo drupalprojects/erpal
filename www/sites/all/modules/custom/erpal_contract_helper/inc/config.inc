@@ -18,6 +18,46 @@ function _erpal_contract_helper_config_menu() {
 }
 
 /**
+* Alter invoice config form to add configuration options for contract billables
+*/
+function _erpal_contract_helper_invoice_helper_config_form_alter(&$form, &$form_state) {
+  $form['billable_texts']['contract_billable_texts'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Contract billable texts'),
+    '#description' => t('This text will be used as subject for billables in contract context.'),
+    '#default_value' => _erpal_contract_helper_get_billable_text(),
+    '#maxlength' => 255,
+    '#suffix' => theme('token_tree', array(
+        'token_types' => array('erpal_contract_billable_subject'),
+        'global_types' => FALSE,
+        'click_insert' => TRUE,
+      )      
+    ),//add available tokens to the form
+    '#weight' => 10, //show it at the end
+  );
+  
+  $form['submit']['#submit'][] = '_erpal_contract_helper_invoice_helper_config_form_submit';
+}
+
+/**
+* Additional submit handler for invoice helper config form to set variables for contract billables text
+*/
+function _erpal_contract_helper_invoice_helper_config_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $contract_billable_texts = $values['contract_billable_texts'];
+  variable_set('erpal_billable_text_erpal_contract', $contract_billable_texts);
+}
+
+/**
+* Return the text that is useed for billables subject text
+*/
+function _erpal_contract_helper_get_billable_text() {
+
+  $default_text = t('Payment for !service_category_token contract "!contract_title_token"', array('!service_category_token' => '[erpal_contract_billable_subject:service_category]', '!contract_title_token' => '[erpal_contract_billable_subject:contract_title]'));
+  return variable_get('erpal_billable_text_erpal_contract', $default_text);
+}
+
+/**
 * Config callback for erpal contract feature
 */
 function _erpal_contract_helper_config_basic() {

@@ -25,7 +25,7 @@ foreach ($billables as $billable) {
   $data['header'] = array(
       'executed' => array('data' => t("Executed"), "class" => "left executed"),
       'amount' => array('data' => t("Quantity"), "class" => "left amount"),
-      'description' => array('data' => t("Description"), "class" => "left description"),
+      'description' => array('data' => t("Billable description"), "class" => "left description"),
       'price' => array('data' => t("Price p.P. (%curr)", array('%curr' => $billable->currency)), "class" => "right price"),
       'total' => array('data' => t("Total (%curr)", array('%curr' => $billable->currency)), "class" => "right total"),
   );
@@ -41,7 +41,7 @@ foreach ($billables as $billable) {
       $row = array();
 
       // Executed
-      $row[] = array('data' => date(_erpal_basic_helper_date_format_date_only(), $reduced_billable->date_delivery),
+      $row[] = array('data' => erpal_date_formatted($reduced_billable->date_delivery),
           "class" => "left");
       // Amount
       $row[] = array('data' => $reduced_billable->quantity,

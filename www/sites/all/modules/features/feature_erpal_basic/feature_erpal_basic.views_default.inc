@@ -103,6 +103,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Search Terms';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -122,6 +123,8 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Type';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -181,6 +184,34 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
   $handler->display->display_options['attach'] = array(
     0 => 'node:field_customer_ref:erpal_project',
+  );
+  $translatables['contacts'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('There are no contacts available'),
+    t('<div class="no_contact_image"></div>'),
+    t('Name'),
+    t('Contact Type'),
+    t('Search Terms'),
+    t('Type'),
+    t('Contacts pane'),
+    t('View panes'),
+    t('Contact Reference Project'),
+    t('Contact Dialog Search Project'),
+    t('Choose a contact'),
+    t('Search a customer for a project'),
   );
   $export['contacts'] = $view;
 
@@ -295,6 +326,30 @@ function feature_erpal_basic_views_default_views() {
       'fixed' => '',
       'label' => 'Content: Nid',
     ),
+  );
+  $translatables['node_revisions'] = array(
+    t('Master'),
+    t('Revisions'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('revision user'),
+    t('Get the actual content from a content revision.'),
+    t('Updated date'),
+    t('User'),
+    t('All'),
+    t('Pane node revisions'),
+    t('View panes'),
   );
   $export['node_revisions'] = $view;
 
@@ -423,6 +478,33 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['fields']['ops']['field'] = 'ops';
   $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['fields']['ops']['label'] = 'Notification';
+  $translatables['notifications'] = array(
+    t('Master'),
+    t('Task notifications'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('flagged task'),
+    t('Content entity referenced from field_project_ref'),
+    t('Task title'),
+    t('Project'),
+    t('Updated date'),
+    t('Notification'),
+    t('View panes'),
+    t('Project notifications'),
+    t('flag'),
+    t('Project title'),
+  );
   $export['notifications'] = $view;
 
   $view = new view();
@@ -488,6 +570,16 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['relation_type']['expose']['label'] = 'Relation type';
   $handler->display->display_options['filters']['relation_type']['expose']['operator'] = 'relation_type_op';
   $handler->display->display_options['filters']['relation_type']['expose']['identifier'] = 'relation_type';
+  $handler->display->display_options['filters']['relation_type']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['relation_type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
 
   /* Display: Relations by node */
   $handler = $view->new_display('panel_pane', 'Relations by node', 'panel_pane_1');
@@ -572,7 +664,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['argument_input'] = array(
     'endpoints_entity_id' => array(
       'type' => 'panel',
-      'context' => 'entity:billable.billable-id',
+      'context' => 'entity:comment.node',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
@@ -580,6 +672,33 @@ function feature_erpal_basic_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['relations_view'] = array(
+    t('Master'),
+    t('Relations by node'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No relations available'),
+    t('Rendered Relation'),
+    t('All'),
+    t('Relation type'),
+    t('Period'),
+    t('Changed'),
+    t('Created'),
+    t('Tags'),
+    t('Role in project'),
+    t('View panes'),
+  );
   $export['relations_view'] = $view;
 
   return $export;

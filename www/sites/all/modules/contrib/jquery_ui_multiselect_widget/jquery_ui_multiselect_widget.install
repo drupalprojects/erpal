@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for jQuery UI MultiSelect Widget.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function jquery_ui_multiselect_widget_install() {
+  // Set general settings.
+  variable_set('jquery_ui_multiselect_widget_multiple', FALSE);
+  variable_set('jquery_ui_multiselect_widget_filter', FALSE);
+  variable_set('jquery_ui_multiselect_widget_subselector', '');
+  variable_set('jquery_ui_multiselect_widget_selectedlist', 4);
+  variable_set('jquery_ui_multiselect_widget_multiple', TRUE);
+  variable_set('jquery_ui_multiselect_widget_autoOpen', FALSE);
+  variable_set('jquery_ui_multiselect_widget_header', TRUE);
+  variable_set('jquery_ui_multiselect_widget_height', 175);
+  variable_set('jquery_ui_multiselect_widget_classes', '');
+  variable_set('jquery_ui_multiselect_widget_filter_width', 100);
+  variable_set('jquery_ui_multiselect_widget_filter_auto_reset', FALSE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function jquery_ui_multiselect_widget_uninstall() {
+  // Remove the general settings.
+  $result = db_query(
+    "SELECT name FROM {variable} WHERE name LIKE 'jquery_ui_multiselect_widget_%'");
+
+  // Exclude variables here!!
+  $exclude = array();
+  while ($var_name = $result->fetchAssoc()) {
+    if (! in_array($var_name['name'], $exclude)) {
+      variable_del($var_name['name']);
+    }
+  }
+}

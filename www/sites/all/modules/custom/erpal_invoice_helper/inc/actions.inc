@@ -17,13 +17,12 @@ function erpal_invoice_helper_invoice_from_billables_action_form($context, $form
     '#type' => 'radios',
     '#title' => 'Group billables',
     '#options' => array(
-      'minimal' => t('Group billables by customer, vat rate and currency'),
-      'single_price' => t('Group by single price (for work payed by time e.g.)'),
+      'service_category' => t('Group billables by service category'),
       'none' => t('No grouping'),
     ),
     '#required' => true,
-    '#default_value' => 'minimal',
-    '#description' => t('All billables will be grouped according to grouping fields as one billable'),
+    '#default_value' => 'service_category',
+    '#description' => t('Group billables in order not to have for example all timetrackings as invoice line items. Tey will be grouped'),
   );
 
   //get the Customer and the addresses, credit period, ADDITIONAL note
@@ -135,12 +134,10 @@ function erpal_invoice_helper_invoice_from_billables_action_submit($form, &$form
 function erpal_invoice_helper_invoice_from_billables_action(&$billables, $context) {
   module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc'); 
   $billable_ids = array_keys($billables);
-  $reduce_options = $context['reduce_billables'];
-  $reduce = $reduce_options['minimal'] || $reduce_options['single_price'];
-  $group_by_single_price = $reduce_options['single_price'];
+  $reduce = $context['reduce_billables'] != 'none';
 
-  if ($group_by_single_price)
-    $params['group_by'] = array('single_price');
+  if ($reduce)
+    $params['group_by'] = 'service_category';
   if (isset($context['contractor_nid']))
     $params['contractor_nid'] = $context['contractor_nid'];
   if (isset($context['credit_period']))

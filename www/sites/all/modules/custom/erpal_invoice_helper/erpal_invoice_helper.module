@@ -120,7 +120,9 @@ function erpal_invoice_helper_invoices_date_form_submit($form, $form_state) {
     $invoices_date = array('for_date' => date('Ymd'), 'date' => $unix_time);
     $invoices_date = serialize($invoices_date);
     variable_set('erpal_invoices_date', $invoices_date);
+    drupal_set_message(t('Todays invoices date is set to !date.', array('!date' => erpal_date_formatted($unix_time))));
   }
+  
 }
 
 /**
@@ -131,14 +133,14 @@ function _erpal_invoice_helper_get_todays_invoices_date() {
   $invoices_date = variable_get('erpal_invoices_date', false);
   
   if (!$invoices_date)
-    return false;
+    return time();
   
   $invoices_date = unserialize($invoices_date);
 
   if ($invoices_date['for_date'] == date('Ymd'))
     return $invoices_date['date'];
-  else
-    return false;
+  else    
+    return time();
 }
 
 /**
@@ -194,6 +196,18 @@ function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
           '#type' => 'checkbox',
           '#title' => t('Set all billables of this invoice to "not billed"'),
           '#default_value' => true,          
+        );
+        
+        $form['ungroup_billables'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Ungroup all grouped billables of this invoice'),
+          '#default_value' => true,          
+          '#states' => array(
+            // Show the settings only if the billables should be set to unbilled.
+            'visible' => array(
+              ':input[id="edit-unbill-billables"]' => array('checked' => TRUE),
+            ),
+          ),
         );
         
         //save the billable ids to modify in the form, because ofter submitting the confirm delete dialog, we cannot
@@ -390,9 +404,9 @@ function _erpal_invoice_helper_preselect_address_form(&$form, &$form_state) {
       $default_id = $defaults['address_id'];
     }
   }
- 
+
   //if we have only one default_id set this one as default_value
-  if (isset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']) && count($form['field_invoice_address_id'][LANGUAGE_NONE]['#options'])) {
+  if (isset($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']) && count($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']) == 1) {
     $keys = array_keys($form['field_invoice_address_id'][LANGUAGE_NONE]['#options']);
     $default_id = $keys[0];
 
@@ -415,7 +429,7 @@ function _erpal_invoice_helper_set_invoice_form_defaults(&$form, &$form_state) {
   $default_skonto_rate = _erpal_invoice_helper_get_skonto_rate();
   $default_skonto_period = _erpal_invoice_helper_get_skonto_period();
   $default_currency = _erpal_invoice_helper_get_default_currency();
-  
+  $address_addition = '';  
 
   //now set the other defaults if invoice not already exists
   $customer_node = _erpal_invoice_helper_get_customer_form_invoice($form, $form_state);
@@ -428,6 +442,7 @@ function _erpal_invoice_helper_set_invoice_form_defaults(&$form, &$form_state) {
       $default_skonto_rate = $defaults['skonto_percent']; 
       $default_skonto_period = $defaults['skonto_period'];
       $default_currency = $defaults['currency'];
+      $address_addition = $defaults['address_addition'];
     }
   }
   
@@ -442,6 +457,7 @@ function _erpal_invoice_helper_set_invoice_form_defaults(&$form, &$form_state) {
   //and now set the date if invoices_date is set
   $invoices_date = _erpal_invoice_helper_get_todays_invoices_date();
   $form['field_invoice_date'][LANGUAGE_NONE][0]['#default_value']['value'] = $invoices_date;
+  $form['field_addition_to_address'][LANGUAGE_NONE][0]['value']['#default_value'] = $address_addition;
 }
 
 /**
@@ -564,6 +580,13 @@ function _erpal_invoice_helper_calculate_billables_ref_from_form($form, &$form_s
       
       $billable->save();
       
+      //now save the values of the attached fields
+      $service_category_tid = $billables_values[$delta]['widget_values']['service_category_tid'];
+      if (is_numeric($service_category_tid)) {
+        $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] = $service_category_tid;
+        field_attach_update('billable', $billable);
+      }
+      
       //and now set the value in the form field
       $new_element = array('#parents' => array('field_billables_ref', LANGUAGE_NONE, $delta, 'target_id'));
       form_set_value($new_element, $billable->billable_id, $form_state);
@@ -577,10 +600,17 @@ function _erpal_invoice_helper_calculate_billables_ref_from_form($form, &$form_s
 function _erpal_invoice_helper_confirm_delete_invoice_submit($form, $form_state) {
   $values = $form_state['values'];
   $unbill_billables = $values['unbill_billables'];
+  $ungroup_billables = $values['ungroup_billables'];
   
   if ($unbill_billables) {    
     $billables_id_arr = unserialize($values['billable_ids']);    
     _erpal_invoice_helper_unbill_billables($billables_id_arr);
+    
+    //if billables will be ungrouped, the grouping billable will be delete and all other billables are unbilled. This can only be done if billables should be unbilled
+    if ($ungroup_billables) {    
+      $billables_id_arr = unserialize($values['billable_ids']);    
+      _erpal_invoice_helper_ungroup_billables($billables_id_arr);
+    }
   }
 }
 
@@ -629,7 +659,7 @@ function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'erpal_invoice') {
     
     $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
-    $contractor_nid = $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+    $contractor_nid = isset($node->field_contractor_ref[LANGUAGE_NONE][0]) ? $node->field_contractor_ref[LANGUAGE_NONE][0]['target_id'] : false;
     if ($my_company_nid == $contractor_nid) {  //only if this is an invoice from us to a customer
       $links[] = array(  //@TODO this will move to local tasks
         'href' => 'invoice/'.$node->nid."/pdf",
@@ -645,6 +675,41 @@ function erpal_invoice_helper_node_view($node, $view_mode, $langcode) {
   }
 }
 
+/**
+* implements hook_billable_group_subject 
+* provided by billable module in billable.reduce.inc here we definie the text that is used for the group where the billable is placed in.
+*/
+function erpal_invoice_helper_billable_group_subject($billable) {
+  $grouping_pattern = _erpal_invoice_helper_get_grouping_billable_text();
+  $subject_nid = $billable->subject_nid;
+  $subject_node = node_load($subject_nid);
+  $service_category_tid = isset($billable->field_service_category_term[LANGUAGE_NONE][0]) ? $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] : false;
+  
+  if ($service_category_tid)
+    $service_category = taxonomy_term_load($service_category_tid)->name;
+  else
+    $service_category = '';
+  $text = token_replace($grouping_pattern, array('subject' => $subject_node, 'service_category' => $service_category));
+
+  return $text;
+}
+
+/**
+* implements hook_billable_can_group called by billable.reduce.inc
+* Decides if a billable can be grouped with others of the same field value
+*/
+function erpal_invoice_helper_billable_can_group($billable, $field_name) {
+  if ($field_name == 'field_service_category_term') {
+    //load the term and check if it is groupable
+    $tid = isset($billable->field_service_category_term[LANGUAGE_NONE][0]) ? $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] : false;
+    if (!$tid)
+      return '';
+      
+    $term = taxonomy_term_load($tid);    
+    $allow_grouping = isset($term->field_allow_grouping[LANGUAGE_NONE][0]) ? $term->field_allow_grouping[LANGUAGE_NONE][0]['value'] : false;
+    return $allow_grouping;
+  }
+}
 
 /**
 * Implements hook_menu
@@ -923,7 +988,6 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   //get the billables in an array
   $billable_entity_ids = $invoice->field_billables_ref[LANGUAGE_NONE];
   $billables = array();
-  $date_form_date = _erpal_basic_helper_date_format_date_only();
 
   foreach ($billable_entity_ids as $billable_id) {
     $billable_id = $billable_id['target_id'];
@@ -931,7 +995,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
 
     $billables[$billable_id] = array(
       'subject' => $billable->subject,
-      'date_delivery' => date($date_form_date, $billable->date_delivery),
+      'date_delivery' => erpal_date_formatted($billable->date_delivery),
       'subject_nid' => $billable->subject_nid,
       'quantity' => $billable->quantity,
       'single_price' => $billable->single_price,
@@ -984,7 +1048,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['company_node'] = $company;
   $variables['customer'] = $customer_arr;
   $variables['invoice_number'] = $invoice_number;
-  $variables['invoice_date'] = date($date_form_date, $invoice_date);
+  $variables['invoice_date'] = erpal_date_formatted($invoice_date);
   $variables['billables'] = $billables;
   $variables['total'] = $total;
   $variables['currency'] = $currency;
@@ -992,7 +1056,7 @@ function template_preprocess_invoice_pdf_html(&$variables) {
   $variables['order_numbers_extern'] = $order_numbers_extern;
   $variables['total_excl_vat'] = $total_excl_vat;
   $variables['total_vat'] = $total_vats;
-  $variables['payment_date'] = date($date_form_date, $payment_date);
+  $variables['payment_date'] = erpal_date_formatted($payment_date);
   $variables['notes'] = $invoice->field_note[LANGUAGE_NONE][0]['value'];
   $variables['auto_notes'] = $flat_auto_notes;
   

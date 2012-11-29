@@ -1079,7 +1079,7 @@ function feature_erpal_invoice_default_page_manager_pages() {
     ),
   );
   $display = new panels_display();
-  $display->layout = 'onecol';
+  $display->layout = 'erpal_content_layout';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -1089,6 +1089,10 @@ function feature_erpal_invoice_default_page_manager_pages() {
       'right' => NULL,
       'bottom' => NULL,
       'middle' => NULL,
+      'sidebar_first_left' => NULL,
+      'sidebar_first_right' => NULL,
+      'sidebar_second_left' => NULL,
+      'sidebar_second_right' => NULL,
     ),
   );
   $display->cache = array();
@@ -1097,7 +1101,49 @@ function feature_erpal_invoice_default_page_manager_pages() {
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-6';
-    $pane->panel = 'middle';
+    $pane->panel = 'sidebar_first_left';
+    $pane->type = 'page_title';
+    $pane->subtype = 'page_title';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'markup' => 'h1',
+      'class' => '',
+      'id' => '',
+      'override_title' => 1,
+      'override_title_text' => 'Invoices by %node:title',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-6'] = $pane;
+    $display->panels['sidebar_first_left'][0] = 'new-6';
+    $pane = new stdClass();
+    $pane->pid = 'new-7';
+    $pane->panel = 'sidebar_first_right';
+    $pane->type = 'page_actions';
+    $pane->subtype = 'page_actions';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['new-7'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-7';
+    $pane = new stdClass();
+    $pane->pid = 'new-8';
+    $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'invoices-panel_pane_1';
     $pane->shown = TRUE;
@@ -1111,9 +1157,9 @@ function feature_erpal_invoice_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['middle'][0] = 'new-6';
-  $display->hide_title = PANELS_TITLE_FIXED;
+    $display->content['new-8'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-8';
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
@@ -1182,7 +1228,7 @@ function feature_erpal_invoice_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-7';
+    $pane->pid = 'new-9';
     $pane->panel = 'sidebar_first_left';
     $pane->type = 'page_title';
     $pane->subtype = 'page_title';
@@ -1203,10 +1249,10 @@ function feature_erpal_invoice_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-7';
+    $display->content['new-9'] = $pane;
+    $display->panels['sidebar_first_left'][0] = 'new-9';
     $pane = new stdClass();
-    $pane->pid = 'new-8';
+    $pane->pid = 'new-10';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -1221,10 +1267,10 @@ function feature_erpal_invoice_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-8'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-8';
+    $display->content['new-10'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-10';
     $pane = new stdClass();
-    $pane->pid = 'new-9';
+    $pane->pid = 'new-11';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'block';
     $pane->subtype = 'erpal_invoice_helper-invoices_date_block';
@@ -1242,10 +1288,10 @@ function feature_erpal_invoice_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-9'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-9';
+    $display->content['new-11'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-11';
     $pane = new stdClass();
-    $pane->pid = 'new-10';
+    $pane->pid = 'new-12';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'invoices-panel_pane_2';
@@ -1260,10 +1306,10 @@ function feature_erpal_invoice_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-10'] = $pane;
-    $display->panels['sidebar_second_left'][1] = 'new-10';
+    $display->content['new-12'] = $pane;
+    $display->panels['sidebar_second_left'][1] = 'new-12';
   $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-7';
+  $display->title_pane = 'new-9';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['invoices_'] = $page;

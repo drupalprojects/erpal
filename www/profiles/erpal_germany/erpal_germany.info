@@ -2,10 +2,8 @@ name = Erpal Germany
 description = Install Erpal
 version = VERSION
 core = 7.x
-; ----------
+
 ; Dependencies 
-; ----------
-  
 dependencies[] = feature_erpal_basic
 dependencies[] = feature_erpal_book
 dependencies[] = feature_erpal_bookmark
@@ -18,9 +16,8 @@ dependencies[] = feature_erpal_layout
 dependencies[] = feature_erpal_profile
 dependencies[] = feature_erpal_project_basic
 dependencies[] = feature_erpal_spaces
-dependencies[] = feature_erpal_contract
-dependencies[] = features_plumber
-dependencies[] = erpal_germany_permissions
-
+dependencies[] = feature_erpal_contract 
+dependencies[] = feature_erpal_germany_permissions
+ 
 
 

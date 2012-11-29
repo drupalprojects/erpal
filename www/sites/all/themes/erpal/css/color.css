@@ -165,7 +165,8 @@ h1 {
 	);
 }
 
-#mini-panel-task_status_panel{
+#mini-panel-task_status_panel,
+#mini-panel-activity_status_panel{
 	background-color: #eeeeee;
 	color: #525252;
 }
@@ -214,7 +215,6 @@ ul.quicktabs-tabs li.last{
 }
 .view-filters .rel-register-build{
 	background-color: #EEEEEE;
-
 }
 .block-content .view-content .views-table th{
 	background-color: #AFAFAF;
@@ -226,9 +226,6 @@ ul.quicktabs-tabs li.last{
 }
 
 /*---------------ticket details-----------*/
-.field-name-task-title .field-item a{
-	color: #222222;
-}
 .node-erpal-task .columns-inner{
 	background-color: #ffffff;
 }
@@ -290,10 +287,18 @@ tr.even.completed {
 }
 
 .pane-node-body,
-#block-panels-mini-body-and-comments article.comment{
+/*#block-panels-mini-body-and-comments */article.comment{
 	background-color: #ffffff;
 }
 
+/* crm activity */
+
+.field-type-datetime  fieldset {
+	border: none;
+}
+#comment-form {
+	border: 1px solid #AFAFAF;
+}
 /*---------------------------------dashboard styles-----------------------------------------*/
 #homebox .homebox-column{
 	background: none;

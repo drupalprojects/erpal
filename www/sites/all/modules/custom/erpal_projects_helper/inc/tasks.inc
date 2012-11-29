@@ -339,12 +339,57 @@ function _erpal_projects_helper_task_node_form_alter(&$form, &$form_state) {
     } else {
       drupal_set_title(t('Create a task'));
     }
+    
+    $parent_nid = isset($parent_nid) ? $parent_nid : false;
+    _erpal_projects_helper_task_preset_deadline($form, $parent_nid);
+    
   } else {
     //hide parent and project ref anyway!
     $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
     $form['field_parent'][LANGUAGE_NONE][0]['target_id']['#type'] = 'value';
   }
   
+}
+
+/**
+* If task has a parent (task or project) and this parent has a deadline set, we preset the deadline on the task. If there is no deadline, we dont preset any deadline
+*/
+function _erpal_projects_helper_task_preset_deadline(&$form, $parent_nid=false) {
+  $parent_nid = isset($parent_nid) && $parent_nid ? $parent_nid : $form['field_project_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+    if (!is_numeric($parent_nid))
+      $parent_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($parent_nid);
+    if ($parent_nid) {
+      $parent_node = node_load($parent_nid);
+      
+      $deadline = _erpal_projects_helper_parent_deadline($parent_node);
+      
+      if ($deadline) { 
+        //now preselect in the form
+        $form['field_date'][LANGUAGE_NONE][0]['#default_value']['value'] = $deadline;
+      }
+      
+    }
+}
+
+/**
+* Searchs up in the tree until a deadline is found
+*/
+function _erpal_projects_helper_parent_deadline($node) {
+  
+  $deadline = isset($node->field_date[LANGUAGE_NONE][0]['value2']) && 
+    $node->field_date[LANGUAGE_NONE][0]['value2'] ?
+    $node->field_date[LANGUAGE_NONE][0]['value2'] : false;
+  
+  if ($deadline)
+    return $deadline;
+
+  if ($node->type == 'erpal_project' && !$deadline)
+    return false;  //because a Project will not have a parent
+   
+  //here we have no deadline, so get the parent and check its deadline.
+  $parent_node = _erpal_project_task_parent($node);
+
+  return _erpal_projects_helper_parent_deadline($parent_node);
 }
 
 /**

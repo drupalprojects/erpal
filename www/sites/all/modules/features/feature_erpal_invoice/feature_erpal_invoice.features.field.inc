@@ -10,6 +10,71 @@
 function feature_erpal_invoice_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'billable-billable-field_service_category_term'.
+  $fields['billable-billable-field_service_category_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_service_category_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'service_category_terms',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'billable',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'billable',
+      'field_name' => 'field_service_category_term',
+      'label' => 'Service category',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 0,
+      ),
+    ),
+  );
+
   // Exported field: 'field_collection_item-field_invoice_vat-field_vat_rate'.
   $fields['field_collection_item-field_invoice_vat-field_vat_rate'] = array(
     'field_config' => array(
@@ -72,7 +137,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );
@@ -131,7 +196,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '3',
+        'weight' => 3,
       ),
     ),
   );
@@ -171,14 +236,14 @@ function feature_erpal_invoice_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '7',
+          'weight' => 7,
         ),
         'full' => array(
           'label' => 'above',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '7',
+          'weight' => 7,
         ),
         'in_pane' => array(
           'label' => 'above',
@@ -199,7 +264,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '10',
+        'weight' => 10,
       ),
     ),
   );
@@ -241,7 +306,7 @@ function feature_erpal_invoice_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '6',
+          'weight' => 6,
         ),
         'full' => array(
           'label' => 'above',
@@ -253,7 +318,7 @@ function feature_erpal_invoice_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '6',
+          'weight' => 6,
         ),
         'in_pane' => array(
           'label' => 'above',
@@ -278,7 +343,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '8',
+        'weight' => 8,
       ),
     ),
   );
@@ -318,14 +383,14 @@ function feature_erpal_invoice_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '4',
+          'weight' => 4,
         ),
         'full' => array(
           'label' => 'above',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '4',
+          'weight' => 4,
         ),
         'in_pane' => array(
           'label' => 'above',
@@ -346,7 +411,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '9',
+        'weight' => 9,
       ),
     ),
   );
@@ -415,7 +480,7 @@ function feature_erpal_invoice_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '5',
+          'weight' => 5,
         ),
         'full' => array(
           'label' => 'above',
@@ -424,7 +489,7 @@ function feature_erpal_invoice_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '5',
+          'weight' => 5,
         ),
         'in_pane' => array(
           'label' => 'above',
@@ -453,7 +518,74 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '7',
+        'weight' => 7,
+      ),
+    ),
+  );
+
+  // Exported field: 'field_collection_item-field_pricing-field_service_category_term'.
+  $fields['field_collection_item-field_pricing-field_service_category_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_service_category_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'service_category_terms',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_pricing',
+      'comment_enabled' => 0,
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 10,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_service_category_term',
+      'label' => 'Service category',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 5,
       ),
     ),
   );
@@ -511,7 +643,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );
@@ -572,7 +704,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '3',
+        'weight' => 3,
       ),
     ),
   );
@@ -642,7 +774,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );
@@ -672,9 +804,6 @@ function feature_erpal_invoice_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'direction' => 'ASC',
-            'field' => 'body:value',
-            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -742,7 +871,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '14',
+        'weight' => 14,
       ),
     ),
   );
@@ -786,7 +915,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '22',
+          'weight' => 22,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -810,7 +939,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '42',
+        'weight' => 42,
       ),
     ),
   );
@@ -885,7 +1014,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'erpal_invoice_helper',
         'settings' => array(),
         'type' => 'field_billable_inline',
-        'weight' => '10',
+        'weight' => 10,
       ),
     ),
   );
@@ -955,7 +1084,7 @@ function feature_erpal_invoice_field_default_fields() {
             'link' => TRUE,
           ),
           'type' => 'entityreference_label',
-          'weight' => '25',
+          'weight' => 25,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -995,7 +1124,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '0',
+        'weight' => 0,
       ),
     ),
   );
@@ -1028,7 +1157,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '14',
+          'weight' => 14,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1053,7 +1182,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '7',
+        'weight' => 7,
       ),
     ),
   );
@@ -1108,7 +1237,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '9',
+          'weight' => 9,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1129,7 +1258,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '12',
+        'weight' => 12,
       ),
     ),
   );
@@ -1159,6 +1288,9 @@ function feature_erpal_invoice_field_default_fields() {
             ),
           ),
           'sort' => array(
+            'direction' => 'ASC',
+            'field' => 'body:value',
+            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -1223,7 +1355,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '1',
+        'weight' => 1,
       ),
     ),
   );
@@ -1262,7 +1394,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '21',
+          'weight' => 21,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1283,7 +1415,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => 3,
       ),
     ),
   );
@@ -1301,6 +1433,8 @@ function feature_erpal_invoice_field_default_fields() {
       'locked' => '0',
       'module' => 'date',
       'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 0,
         'granularity' => array(
           'day' => 'day',
           'hour' => 0,
@@ -1309,6 +1443,7 @@ function feature_erpal_invoice_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
+        'profile2_private' => FALSE,
         'repeat' => 0,
         'timezone_db' => '',
         'todate' => '',
@@ -1319,6 +1454,11 @@ function feature_erpal_invoice_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_invoice',
+      'date_item' => array(
+        'create_date_item' => 0,
+        'date_item_type' => 'simple_date',
+        'handle_range' => 'range',
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -1326,7 +1466,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => 10,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1338,7 +1478,7 @@ function feature_erpal_invoice_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_invoice_date',
       'label' => 'Invoice Date',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'default_value' => 'now',
         'default_value2' => 'same',
@@ -1359,7 +1499,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '6',
+        'weight' => 6,
       ),
     ),
   );
@@ -1429,7 +1569,7 @@ function feature_erpal_invoice_field_default_fields() {
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
-        'weight' => '15',
+        'weight' => 15,
       ),
     ),
   );
@@ -1499,7 +1639,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '30',
         ),
         'type' => 'text_textfield',
-        'weight' => '5',
+        'weight' => 5,
       ),
     ),
   );
@@ -1534,7 +1674,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => 12,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1559,7 +1699,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '40',
+        'weight' => 40,
       ),
     ),
   );
@@ -1592,7 +1732,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '13',
+          'weight' => 13,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1613,7 +1753,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '41',
+        'weight' => 41,
       ),
     ),
   );
@@ -1657,7 +1797,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '16',
+          'weight' => 16,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1681,7 +1821,7 @@ function feature_erpal_invoice_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '12',
+        'weight' => 12,
       ),
     ),
   );
@@ -1725,7 +1865,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '23',
+          'weight' => 23,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1749,7 +1889,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '7',
+        'weight' => 7,
       ),
     ),
   );
@@ -1794,7 +1934,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '24',
+          'weight' => 24,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1817,7 +1957,7 @@ function feature_erpal_invoice_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'text_textfield',
-        'weight' => '8',
+        'weight' => 8,
       ),
     ),
   );
@@ -1863,7 +2003,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '17',
+          'weight' => 17,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1884,7 +2024,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '8',
+        'weight' => 8,
       ),
     ),
   );
@@ -1930,7 +2070,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '18',
+          'weight' => 18,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1963,7 +2103,7 @@ function feature_erpal_invoice_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '9',
+        'weight' => 9,
       ),
     ),
   );
@@ -1998,7 +2138,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '11',
+          'weight' => 11,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2023,7 +2163,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '43',
+        'weight' => 43,
       ),
     ),
   );
@@ -2056,7 +2196,7 @@ function feature_erpal_invoice_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '15',
+          'weight' => 15,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2077,7 +2217,7 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'field_collection_table',
         'settings' => array(),
         'type' => 'field_collection_table',
-        'weight' => '11',
+        'weight' => 11,
       ),
     ),
   );
@@ -2144,7 +2284,130 @@ function feature_erpal_invoice_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-service_category_terms-field_allow_grouping'.
+  $fields['taxonomy_term-service_category_terms-field_allow_grouping'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_allow_grouping',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Don\'t allow grouping in invoices',
+          1 => 'Allow grouping in invoices',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'service_category_terms',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 1,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_allow_grouping',
+      'label' => 'Allow grouping',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => 33,
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-service_category_terms-field_is_default_term'.
+  $fields['taxonomy_term-service_category_terms-field_is_default_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_is_default_term',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Use not as default',
+          1 => 'Use as default',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'service_category_terms',
+      'comment_enabled' => 0,
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_is_default_term',
+      'label' => 'Is default',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => 32,
       ),
     ),
   );
@@ -2154,6 +2417,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Add some hintes for your invoice. There will be added some automated notes, too');
   t('Addition to address');
   t('All order numbers the invoice is related to');
+  t('Allow grouping');
   t('Automated Notes');
   t('Contractor');
   t('Credit Period');
@@ -2170,6 +2434,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Invoice Number');
   t('Invoice PDF');
   t('Invoice items');
+  t('Is default');
   t('Note');
   t('Order numbers extern');
   t('Order numbers intern');
@@ -2179,6 +2444,7 @@ function feature_erpal_invoice_field_default_fields() {
   t('Purchase Price');
   t('Purchase VAT');
   t('Select a contact that has created the invoice. Leave blank, if your company is the contractor');
+  t('Service category');
   t('Skonto');
   t('The address of the customer the invoice will be related to');
   t('The contractor for the purchase');

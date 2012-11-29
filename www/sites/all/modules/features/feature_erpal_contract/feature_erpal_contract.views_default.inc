@@ -58,6 +58,26 @@ function feature_erpal_contract_views_default_views() {
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $translatables['cancelations_by_contract'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Next cancelation deadline'),
+    t('Category'),
+    t('Content pane'),
+    t('View panes'),
+  );
   $export['cancelations_by_contract'] = $view;
 
   $view = new view();
@@ -79,6 +99,7 @@ function feature_erpal_contract_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -203,26 +224,49 @@ echo _erpal_contract_helper_view_contracts_header_content();
   $handler->display->display_options['filters']['type']['value'] = array(
     'erpal_contract' => 'erpal_contract',
   );
-  /* Filter criterion: Field: Customer (field_customer_ref) */
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['relationship'] = 'field_contract_payment_value';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Field: Contractor (field_contractor_ref) */
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['id'] = 'field_contractor_ref_target_id';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['table'] = 'field_data_field_contractor_ref';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['field'] = 'field_contractor_ref_target_id';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['relationship'] = 'field_contract_payment_value';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['group'] = 1;
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['operator_id'] = 'field_contractor_ref_target_id_op';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['label'] = 'Contractor';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['operator'] = 'field_contractor_ref_target_id_op';
   $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['identifier'] = 'field_contractor_ref_target_id';
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contractor_ref_target_id']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Field: Customer (field_customer_ref) */
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['relationship'] = 'field_contract_payment_value';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['group'] = 1;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
 
   /* Display: Contracts */
   $handler = $view->new_display('page', 'Contracts', 'page');
@@ -330,6 +374,16 @@ echo _erpal_contract_helper_view_contracts_header_content();
   $handler->display->display_options['filters']['created']['expose']['label'] = 'Created';
   $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
   $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  $handler->display->display_options['filters']['created']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
   $handler->display->display_options['filters']['created']['form_type'] = 'date_popup';
   /* Filter criterion: Budget: Budget ID */
   $handler->display->display_options['filters']['budget_id']['id'] = 'budget_id';
@@ -347,6 +401,51 @@ echo _erpal_contract_helper_view_contracts_header_content();
       'fixed' => '',
       'label' => 'Content: Nid',
     ),
+  );
+  $translatables['contracts'] = array(
+    t('Master'),
+    t('Contracts'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('<?php
+echo _erpal_contract_helper_view_contracts_header_content();
+?>'),
+    t('No contract available'),
+    t('field collection item from field_contract_payment'),
+    t('Contractor'),
+    t('Customer'),
+    t('Contract type'),
+    t('Period'),
+    t('Payment period'),
+    t('Payment type'),
+    t('Price per month'),
+    t('Edit'),
+    t('Budgets by contract pane'),
+    t('Budgets'),
+    t('No budget available'),
+    t('field collection item from field_budget_booking'),
+    t('budget entity referenced from field_budgets'),
+    t('Budget ID'),
+    t('.'),
+    t('Created'),
+    t('Total hours'),
+    t(','),
+    t('Available hours'),
+    t('Date from'),
+    t('Date till'),
+    t('All'),
+    t('View panes'),
   );
   $export['contracts'] = $view;
 

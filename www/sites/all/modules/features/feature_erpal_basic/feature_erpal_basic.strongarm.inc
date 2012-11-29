@@ -122,6 +122,7 @@ function feature_erpal_basic_strongarm() {
   $strongarm->value = array(
     'billables_pane' => TRUE,
     'budget_by_contract_pane' => TRUE,
+    'relations' => TRUE,
   );
   $export['default_page_manager_pages'] = $strongarm;
 
