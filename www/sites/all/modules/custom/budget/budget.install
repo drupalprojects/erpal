@@ -30,12 +30,14 @@ function budget_schema() {
       'available_hours' => array(
         'description' => 'Actually available hours at this budget',
         'type' => 'float',
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
       'total_hours' => array(
         'description' => 'Initially total hours given at this budget',
         'type' => 'float',
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -89,6 +91,30 @@ function budget_update_7001(&$sandbox) {
   db_change_field('budget', 'available_hours', 'available_hours',
     array(
       'type' => 'float', 
+      'not null' => TRUE,
+      'description' => 'Actually available hours at this budget',
+      'default' => 0,
+    )  
+  );
+  
+  db_change_field('budget', 'total_hours', 'total_hours',
+    array(
+      'type' => 'float', 
+      'not null' => TRUE,
+      'description' => 'Initially total hours given at this budget',
+      'default' => 0,
+    )
+  );
+}
+
+/**
+* Change all flowt fields to double (float:big) fields, otherwise, we cannot save exact decimal values > 10000
+*/
+function budget_update_7002(&$sandbox) {
+  db_change_field('budget', 'available_hours', 'available_hours',
+    array(
+      'type' => 'float', 
+      'size' => 'big',
       'not null' => TRUE,
       'description' => 'Actually available hours at this budget',
       'default' => 0,

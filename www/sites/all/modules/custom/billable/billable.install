@@ -69,12 +69,14 @@ function billable_schema() {
       'quantity' => array(
         'description' => 'The quantity of the billable entity',
         'type' => 'float',
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
       'single_price' => array(
         'description' => 'The single price of the billable entity',
         'type' => 'float',
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -87,18 +89,21 @@ function billable_schema() {
       'total_price_no_vat' => array(
         'description' => 'The total price excluding VAT',
         'type' => 'float',
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
       'total_price' => array(
         'description' => 'The total price including VAT',
         'type' => 'float',
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
       'total_vat' => array(
         'description' => 'The total VAT value',
         'type' => 'float',
+        'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -163,4 +168,19 @@ function billable_update_7001(&$sandbox) {
 */
 function billable_update_7002(&$sandbox) {
   db_add_field('billable', 'contractor_nid', array('type' => 'int', 'not null' => TRUE, 'description' => 'Reference to an entity for the contractor.'));
+}
+
+/**
+* Change all flowt fields to double (float:big) fields, otherwise, we cannot save exact decimal values > 10000
+*/
+function billable_update_7003(&$sandbox) {
+  $schema = billable_schema();
+  $fields = $schema['billable']['fields'];
+
+  db_change_field('billable', 'quantity', 'quantity', $fields['quantity']);
+  db_change_field('billable', 'single_price', 'single_price', $fields['single_price']);
+  db_change_field('billable', 'total_price', 'total_price', $fields['total_price']);
+  db_change_field('billable', 'total_vat', 'total_vat', $fields['total_vat']);
+  db_change_field('billable', 'total_price_no_vat', 'total_price_no_vat', $fields['total_price_no_vat']);
+  
 }
