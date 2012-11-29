@@ -1,0 +1,233 @@
+<?php
+
+/**
+ * @file
+ * A new, different kind of node access module made possible by Drupal 7.
+ *
+ * This module completely bypasses the node access grants system, and instead
+ * uses hook_node_access() and hook_query_alter() to prevent users without
+ * proper permissions from viewing nodes.
+ */
+
+/**
+ * Constant definition for 'any' access type.
+ */
+define('NODETYPE_ACCESS_ANY', 'any');
+
+/**
+ * Constant definition for 'own' access type.
+ */
+define('NODETYPE_ACCESS_OWN', 'own');
+
+/**
+ * Implements hook_permission().
+ *
+ * Defines 'view any $type content' and 'view own $type content' permissions for
+ * each node types.
+ */
+function nodetype_access_permission() {
+  $perms = array();
+
+  foreach (node_permissions_get_configured_types() as $node_type) {
+    $info = node_type_get_type($node_type);
+
+    foreach (array(NODETYPE_ACCESS_OWN, NODETYPE_ACCESS_ANY) as $access_type) {
+      $args = array('@access_type' => $access_type, '%type_name' => $info->name);
+      $permission = nodetype_access_get_permission($node_type, $access_type);
+      $permission_title = t('View @access_type %type_name content', $args);
+      $permission_description = t('Allow the current user to see @access_type content of type %type_name.', $args);
+      $perms += array(
+        $permission => array(
+          'title' => $permission_title,
+          'description' => $permission_description,
+        ),
+      );
+    }
+  }
+
+  return $perms;
+}
+
+/**
+ * Get permission (sanitized) for a single type.
+ *
+ * @param $node_type
+ *   String with the machine readable name ot the node type.
+ * @param $access_type
+ *   String with the type of permission. It may be 'any' or 'own'.
+ *
+ * @return
+ *   String with the permission machine name.
+ */
+function nodetype_access_get_permission($node_type, $access_type) {
+  $node_type = check_plain($node_type);
+  return "view $access_type $node_type content";
+}
+
+/**
+ * Get all permissions (sanitized) keyed by nodetype.
+ *
+ * @param $access_type
+ *   String with the type of permission. It may be 'any' or 'own'.
+ *
+ * @return
+ *   Associative array with all permisions taking node type as key and
+ *   permission name as value.
+ */
+function nodetype_access_get_permissions($access_type) {
+  // This will not change during the request so it's safe to use static instead
+  // of calling drupal_static().
+  static $permission_keys;
+  
+  // Build $permission_keys once for both: 'any' and 'own'.
+  if(!isset($permission_keys)) {
+    $permission_keys = array(NODETYPE_ACCESS_OWN => array(), NODETYPE_ACCESS_ANY => array());
+    foreach(node_type_get_types() as $node_type => $info) {
+      $node_type = check_plain($node_type);
+      $permission_keys[NODETYPE_ACCESS_OWN][$node_type] = nodetype_access_get_permission($node_type, NODETYPE_ACCESS_OWN);
+      $permission_keys[NODETYPE_ACCESS_ANY][$node_type] = nodetype_access_get_permission($node_type, NODETYPE_ACCESS_ANY);
+    }
+  }
+  return $permission_keys[$access_type];
+}
+
+/**
+ * Implement hook_node_access().
+ *
+ * This will deny access to nodes accessed via node/X, or otherwise having a
+ * full node_load() done on them.
+ */
+function nodetype_access_node_access($node, $op, $account) {
+  if ($op != 'view') {
+    return;
+  }
+
+  $view_any = user_access(nodetype_access_get_permission($node->type, NODETYPE_ACCESS_ANY), $account);
+  if ($view_any) {
+    return NODE_ACCESS_ALLOW;
+  }
+  else {
+    if ($node->uid == $account->uid) {
+      $view_own = user_access(nodetype_access_get_permission($node->type, NODETYPE_ACCESS_OWN), $account);
+      if ($view_own) {
+        return NODE_ACCESS_ALLOW;
+      }
+    }
+  }
+  return NODE_ACCESS_DENY;
+}
+
+/**
+ * Implement hook_query_TAG_alter().
+ *
+ * This takes care of nodes in listing pages, sidebar blocks, and so on. These
+ * do not trigger the full set of hook_node_XXX functions, for performance
+ * reasons.
+ */
+function nodetype_access_query_node_access_alter(QueryAlterableInterface $query) {
+  global $user;
+
+  // Return if the current user is able to bypass node access.
+  if (user_access('bypass node access')) {
+    return;
+  }
+
+  // Get node types that this user is able to view.
+  $types_any = nodetype_access_get_accessible_types(NODETYPE_ACCESS_ANY);
+  $types_own = nodetype_access_get_accessible_types(NODETYPE_ACCESS_OWN);
+
+  // If the current user is able to see any node from any node type then return.
+  if ($types_any == nodetype_access_get_all_types()) {
+    return;
+  }
+
+  // If a user is able to access any node from a type then is able to access
+  // also his own node of that type. Remove types from $types_own that are also
+  // in $types_any.
+  $types_own = array_diff($types_own, $types_any);
+
+  // The current user is not allowed to see any kind of nodes so alter the query
+  // to return an empty result set. '0 = 1' evaluates to a boolean on Postgresql
+  // as well as on MySQL. Using just '0' wont work on Postgresql, and using
+  // 'true' might cause issues on MySQL.
+  if (empty($types_any) && empty($types_own)) {
+    $query->where('0 = 1');
+    return;
+  }
+
+  // If we haven't joined on the node table yet, do so.
+  $tables = $query->getTables();
+  $node_exists = FALSE;
+  foreach ($tables as $alias => $table) {
+    if ($table['table'] == 'node') {
+      $node_exists = TRUE;
+      break;
+    }
+  }
+  // $alias is the alias of the node table if $node_exists
+  // otherwise it is the index of the last table
+  $alias = check_plain($alias);
+
+  if (!$node_exists) {
+    // Assume the primary table has a 'nid' column. Not a safe assumption, but
+    // it stops Comment module from freaking out.
+    // @todo: write tests for this
+    $alias = 'n';
+    $query->join('node', $alias, "$alias.nid = " . key($tables) . '.nid');
+  }
+
+  // Use can see nodes via 'any node' OR via 'own nodes' access types.
+  $or = db_or();
+
+  // Add the 'any node' condition, if case.
+  if ($types_any) {
+    $or->condition($alias . '.type', $types_any);
+  }
+
+  // Build and add the 'own nodes' condition, if case. It's an AND condition.
+  if ($types_own) {
+    $and = db_and();
+    $and
+      ->condition($alias . '.type', $types_own)
+      ->condition($alias . '.uid', $user->uid);
+    $or->condition($and);
+  }
+
+  // Alter the Query.
+  $query->condition($or);
+}
+
+/**
+ * Returns the list of node types that a user can access.
+ *
+ * @param $access_type
+ *   String with the type of permission. It may be 'any' or 'own'.
+ *
+ * @return
+ *   Array with the list of node types that can be viewed by the current user.
+ */
+function nodetype_access_get_accessible_types($access_type) {
+  global $user;
+
+  // This will not change during the request so it's safe to use static instead
+  // of calling drupal_static().
+  static $accessible_types;
+
+  // Build $accessible_types once for both: 'any' and 'own'.
+  if (!isset($accessible_types)) {
+    $accessible_types = array();
+    $user_permissions = array_keys(drupal_array_merge_deep_array(user_role_permissions($user->roles)));
+    foreach (array(NODETYPE_ACCESS_OWN, NODETYPE_ACCESS_ANY) as $access_type_value) {
+      $nodetype_permissions = nodetype_access_get_permissions($access_type_value);
+      $accessible_types[$access_type_value] = array_keys(array_intersect($nodetype_permissions, $user_permissions));
+    }
+  }
+  return $accessible_types[$access_type];
+}
+
+/**
+ * Returns the list of all node types.
+ */
+function nodetype_access_get_all_types() {
+  return array_keys(node_type_get_types());
+}

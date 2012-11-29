@@ -7,7 +7,7 @@ function nodetype_access_test_helper_menu() {
   $items = array();
   $items['nodetype_access_test_helper_efq_node_listing'] = array(
     'title' => t('EFQ node listing'),
-    'description' => 'A node listung using EFQ.',
+    'description' => 'A node listing using EFQ.',
     'page callback' => 'nodetype_access_test_efq_nodelist',
     'type' => MENU_NORMAL_ITEM,
     'access callback' => 1,

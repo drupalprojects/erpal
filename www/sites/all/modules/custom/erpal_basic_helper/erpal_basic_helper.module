@@ -904,7 +904,8 @@ function _erpal_basic_helper_check_all_allowed_values_used_in_vocabulary($vocab_
   //now check if all allowed values are covered by the terms
   foreach ($terms as $term) {
     $term = taxonomy_term_load($term->tid);
-    $field_value = $term->{$field_name}[LANGUAGE_NONE][0]['value'];
+    
+    $field_value = isset($term->{$field_name}[LANGUAGE_NONE][0]['value'])?$term->{$field_name}[LANGUAGE_NONE][0]['value'] : FALSE;
 
     if (isset($allowed_values[$field_value]))
       unset($allowed_values[$field_value]);

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * erpal_germany_permissions.features.user_permission.inc
+ * feature_erpal_germany_permissions.features.user_permission.inc
  */
 
 /**
  * Implements hook_user_default_permissions().
  */
-function erpal_germany_permissions_user_default_permissions() {
+function feature_erpal_germany_permissions_user_default_permissions() {
   $permissions = array();
 
   // Exported permission: access activities view.
@@ -35,6 +35,19 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'views',
   );
 
+  // Exported permission: access any og user.
+  $permissions['access any og user'] = array(
+    'name' => 'access any og user',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'controller',
+      2 => 'financial user',
+      3 => 'internal developer',
+      4 => 'project manager',
+    ),
+    'module' => 'og_relations',
+  );
+
   // Exported permission: access billables view.
   $permissions['access billables view'] = array(
     'name' => 'access billables view',
@@ -50,7 +63,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'access bookmarks view',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'internal developer',
     ),
     'module' => 'erpal_bookmark_helper',
   );
@@ -107,14 +119,7 @@ function erpal_germany_permissions_user_default_permissions() {
   $permissions['access content'] = array(
     'name' => 'access content',
     'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'customer',
-      4 => 'external developer',
-      5 => 'financial user',
-      6 => 'internal developer',
-      7 => 'project manager',
+      0 => 'authenticated user',
     ),
     'module' => 'node',
   );
@@ -126,13 +131,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: access contextual links.
-  $permissions['access contextual links'] = array(
-    'name' => 'access contextual links',
-    'roles' => array(),
-    'module' => 'contextual',
-  );
-
   // Exported permission: access contracts view.
   $permissions['access contracts view'] = array(
     'name' => 'access contracts view',
@@ -142,20 +140,6 @@ function erpal_germany_permissions_user_default_permissions() {
       2 => 'financial user',
     ),
     'module' => 'erpal_contract_helper',
-  );
-
-  // Exported permission: access dashboard.
-  $permissions['access dashboard'] = array(
-    'name' => 'access dashboard',
-    'roles' => array(),
-    'module' => 'dashboard',
-  );
-
-  // Exported permission: access devel information.
-  $permissions['access devel information'] = array(
-    'name' => 'access devel information',
-    'roles' => array(),
-    'module' => 'devel',
   );
 
   // Exported permission: access documents view.
@@ -246,9 +230,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'access sub tasks and tickets view',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'financial user',
-      2 => 'internal developer',
-      3 => 'project manager',
     ),
     'module' => 'erpal_projects_helper',
   );
@@ -268,9 +249,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'access tasks tree',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'financial user',
-      2 => 'internal developer',
-      3 => 'project manager',
     ),
     'module' => 'erpal_projects_helper',
   );
@@ -291,13 +269,7 @@ function erpal_germany_permissions_user_default_permissions() {
   $permissions['access tickets details'] = array(
     'name' => 'access tickets details',
     'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'external developer',
-      4 => 'financial user',
-      5 => 'internal developer',
-      6 => 'project manager',
+      0 => 'authenticated user',
     ),
     'module' => 'erpal_projects_helper',
   );
@@ -532,13 +504,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'panels_mini',
   );
 
-  // Exported permission: administer module filter.
-  $permissions['administer module filter'] = array(
-    'name' => 'administer module filter',
-    'roles' => array(),
-    'module' => 'module_filter',
-  );
-
   // Exported permission: administer modules.
   $permissions['administer modules'] = array(
     'name' => 'administer modules',
@@ -647,20 +612,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'administer search',
     'roles' => array(),
     'module' => 'search',
-  );
-
-  // Exported permission: administer services.
-  $permissions['administer services'] = array(
-    'name' => 'administer services',
-    'roles' => array(),
-    'module' => 'services',
-  );
-
-  // Exported permission: administer shortcuts.
-  $permissions['administer shortcuts'] = array(
-    'name' => 'administer shortcuts',
-    'roles' => array(),
-    'module' => 'shortcut',
   );
 
   // Exported permission: administer simple_date date_item.
@@ -1052,12 +1003,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'create erpal_task content',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'controller',
-      2 => 'customer',
-      3 => 'external developer',
-      4 => 'financial user',
-      5 => 'internal developer',
-      6 => 'project manager',
     ),
     'module' => 'node',
   );
@@ -1142,13 +1087,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'create url aliases',
     'roles' => array(),
     'module' => 'path',
-  );
-
-  // Exported permission: customize shortcut links.
-  $permissions['customize shortcut links'] = array(
-    'name' => 'customize shortcut links',
-    'roles' => array(),
-    'module' => 'shortcut',
   );
 
   // Exported permission: delete any erpal_book content.
@@ -1408,8 +1346,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'delete own erpal_task content',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'internal developer',
-      2 => 'project manager',
     ),
     'module' => 'node',
   );
@@ -1432,13 +1368,7 @@ function erpal_germany_permissions_user_default_permissions() {
   $permissions['delete own simple_date date_item'] = array(
     'name' => 'delete own simple_date date_item',
     'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'external developer',
-      4 => 'financial user',
-      5 => 'internal developer',
-      6 => 'project manager',
+      0 => 'authenticated user',
     ),
     'module' => 'date_item',
   );
@@ -1527,6 +1457,13 @@ function erpal_germany_permissions_user_default_permissions() {
   // Exported permission: delete terms in 17.
   $permissions['delete terms in 17'] = array(
     'name' => 'delete terms in 17',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: delete terms in 18.
+  $permissions['delete terms in 18'] = array(
+    'name' => 'delete terms in 18',
     'roles' => array(),
     'module' => 'taxonomy',
   );
@@ -1899,12 +1836,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'edit own erpal_task content',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'controller',
-      2 => 'customer',
-      3 => 'external developer',
-      4 => 'financial user',
-      5 => 'internal developer',
-      6 => 'project manager',
     ),
     'module' => 'node',
   );
@@ -2007,6 +1938,13 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: edit terms in 18.
+  $permissions['edit terms in 18'] = array(
+    'name' => 'edit terms in 18',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
   // Exported permission: edit terms in 2.
   $permissions['edit terms in 2'] = array(
     'name' => 'edit terms in 2',
@@ -2068,18 +2006,8 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'erpal print tasks',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'financial user',
-      2 => 'internal developer',
-      3 => 'project manager',
     ),
     'module' => 'erpal_projects_helper',
-  );
-
-  // Exported permission: execute php code.
-  $permissions['execute php code'] = array(
-    'name' => 'execute php code',
-    'roles' => array(),
-    'module' => 'devel',
   );
 
   // Exported permission: export relation types.
@@ -2141,13 +2069,7 @@ function erpal_germany_permissions_user_default_permissions() {
   $permissions['field view task advanced'] = array(
     'name' => 'field view task advanced',
     'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'external developer',
-      4 => 'financial user',
-      5 => 'internal developer',
-      6 => 'project manager',
+      0 => 'authenticated user',
     ),
     'module' => 'erpal_projects_helper',
   );
@@ -2192,27 +2114,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'flag',
   );
 
-  // Exported permission: get a system variable.
-  $permissions['get a system variable'] = array(
-    'name' => 'get a system variable',
-    'roles' => array(),
-    'module' => 'services',
-  );
-
-  // Exported permission: get any binary files.
-  $permissions['get any binary files'] = array(
-    'name' => 'get any binary files',
-    'roles' => array(),
-    'module' => 'services',
-  );
-
-  // Exported permission: get own binary files.
-  $permissions['get own binary files'] = array(
-    'name' => 'get own binary files',
-    'roles' => array(),
-    'module' => 'services',
-  );
-
   // Exported permission: grant content access.
   $permissions['grant content access'] = array(
     'name' => 'grant content access',
@@ -2239,13 +2140,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'notify of path changes',
     'roles' => array(),
     'module' => 'pathauto',
-  );
-
-  // Exported permission: perform unlimited index queries.
-  $permissions['perform unlimited index queries'] = array(
-    'name' => 'perform unlimited index queries',
-    'roles' => array(),
-    'module' => 'services',
   );
 
   // Exported permission: post comments.
@@ -2284,13 +2178,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: save file information.
-  $permissions['save file information'] = array(
-    'name' => 'save file information',
-    'roles' => array(),
-    'module' => 'services',
-  );
-
   // Exported permission: search content.
   $permissions['search content'] = array(
     'name' => 'search content',
@@ -2307,13 +2194,6 @@ function erpal_germany_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
-  // Exported permission: set a system variable.
-  $permissions['set a system variable'] = array(
-    'name' => 'set a system variable',
-    'roles' => array(),
-    'module' => 'services',
-  );
-
   // Exported permission: skip comment approval.
   $permissions['skip comment approval'] = array(
     'name' => 'skip comment approval',
@@ -2321,20 +2201,6 @@ function erpal_germany_permissions_user_default_permissions() {
       0 => 'authenticated user',
     ),
     'module' => 'comment',
-  );
-
-  // Exported permission: switch shortcut sets.
-  $permissions['switch shortcut sets'] = array(
-    'name' => 'switch shortcut sets',
-    'roles' => array(),
-    'module' => 'shortcut',
-  );
-
-  // Exported permission: switch users.
-  $permissions['switch users'] = array(
-    'name' => 'switch users',
-    'roles' => array(),
-    'module' => 'devel',
   );
 
   // Exported permission: unflag bookmark_flag.
@@ -2479,6 +2345,20 @@ function erpal_germany_permissions_user_default_permissions() {
   // Exported permission: use text format ds_code.
   $permissions['use text format ds_code'] = array(
     'name' => 'use text format ds_code',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
+  // Exported permission: use text format filtered_html.
+  $permissions['use text format filtered_html'] = array(
+    'name' => 'use text format filtered_html',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
+  // Exported permission: use text format full_html.
+  $permissions['use text format full_html'] = array(
+    'name' => 'use text format full_html',
     'roles' => array(),
     'module' => 'filter',
   );
@@ -2689,9 +2569,154 @@ function erpal_germany_permissions_user_default_permissions() {
     'name' => 'view own contract profile',
     'roles' => array(
       0 => 'authenticated user',
-      1 => 'controller',
     ),
     'module' => 'profile2',
+  );
+
+  // Exported permission: view own erpal_book content.
+  $permissions['view own erpal_book content'] = array(
+    'name' => 'view own erpal_book content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'controller',
+      3 => 'financial user',
+      4 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_book_page content.
+  $permissions['view own erpal_book_page content'] = array(
+    'name' => 'view own erpal_book_page content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'controller',
+      3 => 'financial user',
+      4 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_contact content.
+  $permissions['view own erpal_contact content'] = array(
+    'name' => 'view own erpal_contact content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'controller',
+      3 => 'financial user',
+      4 => 'internal developer',
+      5 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_contract content.
+  $permissions['view own erpal_contract content'] = array(
+    'name' => 'view own erpal_contract content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'controller',
+      3 => 'financial user',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_crm_activity content.
+  $permissions['view own erpal_crm_activity content'] = array(
+    'name' => 'view own erpal_crm_activity content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'controller',
+      3 => 'financial user',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_date content.
+  $permissions['view own erpal_date content'] = array(
+    'name' => 'view own erpal_date content',
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_file content.
+  $permissions['view own erpal_file content'] = array(
+    'name' => 'view own erpal_file content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'controller',
+      3 => 'financial user',
+      4 => 'internal developer',
+      5 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_invoice content.
+  $permissions['view own erpal_invoice content'] = array(
+    'name' => 'view own erpal_invoice content',
+    'roles' => array(
+      0 => 'authenticated user',
+      1 => 'controller',
+      2 => 'financial user',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_project content.
+  $permissions['view own erpal_project content'] = array(
+    'name' => 'view own erpal_project content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'controller',
+      3 => 'financial user',
+      4 => 'internal developer',
+      5 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_space content.
+  $permissions['view own erpal_space content'] = array(
+    'name' => 'view own erpal_space content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_task content.
+  $permissions['view own erpal_task content'] = array(
+    'name' => 'view own erpal_task content',
+    'roles' => array(
+      0 => 'authenticated user',
+      1 => 'internal developer',
+      2 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
+  );
+
+  // Exported permission: view own erpal_timetracking content.
+  $permissions['view own erpal_timetracking content'] = array(
+    'name' => 'view own erpal_timetracking content',
+    'roles' => array(
+      0 => 'account manager',
+      1 => 'authenticated user',
+      2 => 'financial user',
+      3 => 'project manager',
+    ),
+    'module' => 'nodetype_access',
   );
 
   // Exported permission: view own main profile.

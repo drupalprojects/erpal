@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * erpal_germany_permissions.features.user_role.inc
+ * feature_erpal_germany_permissions.features.user_role.inc
  */
 
 /**
  * Implements hook_user_default_roles().
  */
-function erpal_germany_permissions_user_default_roles() {
+function feature_erpal_germany_permissions_user_default_roles() {
   $roles = array();
 
   // Exported role: account manager.
