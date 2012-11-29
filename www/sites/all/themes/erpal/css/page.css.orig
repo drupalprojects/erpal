@@ -600,6 +600,7 @@ ul.pager li a, ul.pager li.pager-current {
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
+<<<<<<< HEAD
 article.comment{
 	padding: 15px 0px;
 	-webkit-border-radius: 5px;
@@ -627,6 +628,10 @@ article.comment{
 }
 .pane-node-body p,
 .comment .field-name-comment-body p{
+=======
+
+.pane-node-body p{
+>>>>>>> ac6ff41d23de358181675ed92e38179e110603f2
 	font-size: 16px;
 }
 .comment-form{

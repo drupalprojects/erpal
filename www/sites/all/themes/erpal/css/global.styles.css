@@ -1392,7 +1392,9 @@ h2.pane-title {
 
 .comment .submitted .username {}
 
-.comment .submitted time {}
+.comment .submitted time {
+	float: right;
+}
 
 .comment .user-signature {}
 
