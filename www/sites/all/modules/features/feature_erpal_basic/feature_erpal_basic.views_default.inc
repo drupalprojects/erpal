@@ -103,6 +103,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Search Terms';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -122,6 +123,8 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['label'] = 'Contact Type';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['operator'] = 'field_contact_type_value_op';
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['identifier'] = 'field_contact_type_value';
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_type_value']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_contact_type_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -567,6 +570,16 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['filters']['relation_type']['expose']['label'] = 'Relation type';
   $handler->display->display_options['filters']['relation_type']['expose']['operator'] = 'relation_type_op';
   $handler->display->display_options['filters']['relation_type']['expose']['identifier'] = 'relation_type';
+  $handler->display->display_options['filters']['relation_type']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['relation_type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
 
   /* Display: Relations by node */
   $handler = $view->new_display('panel_pane', 'Relations by node', 'panel_pane_1');
@@ -651,7 +664,7 @@ function feature_erpal_basic_views_default_views() {
   $handler->display->display_options['argument_input'] = array(
     'endpoints_entity_id' => array(
       'type' => 'panel',
-      'context' => 'entity:billable.billable-id',
+      'context' => 'entity:comment.node',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',

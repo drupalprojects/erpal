@@ -165,7 +165,8 @@ h1 {
 	);
 }
 
-#mini-panel-task_status_panel{
+#mini-panel-task_status_panel,
+#mini-panel-activity_status_panel{
 	background-color: #eeeeee;
 	color: #525252;
 }
@@ -214,7 +215,6 @@ ul.quicktabs-tabs li.last{
 }
 .view-filters .rel-register-build{
 	background-color: #EEEEEE;
-
 }
 .block-content .view-content .views-table th{
 	background-color: #AFAFAF;
@@ -295,6 +295,14 @@ article.comment{
 }
 .comment-form{
 	background-color: #eeeeee;
+}
+/* crm activity */
+
+.field-type-datetime  fieldset {
+	border: none;
+}
+#comment-form {
+	border: 1px solid #AFAFAF;
 }
 /*---------------------------------dashboard styles-----------------------------------------*/
 #homebox .homebox-column{

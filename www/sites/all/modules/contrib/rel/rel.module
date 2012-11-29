@@ -346,7 +346,7 @@ function rel_form_alter(&$form, &$form_state, $form_id) {
     $form['#attached']['css'][] = drupal_get_path('module', 'rel') . '/rel.admin.css';
 
     // (Un)Register link.
-    drupal_add_js('misc/ajax.js');
+   // drupal_add_js('misc/ajax.js');
     $link = l($link_text, $callback . '/' . $form_id, array('attributes' => array('class' => array('ctools-use-modal')), 'query' => drupal_get_destination()));
     $form['rel_register_link'] = array(
       '#type' => 'markup',

@@ -1,0 +1,12 @@
+/* Clean up style a bit to better fit Drupal style standards. */
+ul.ui-multiselect-checkboxes label input {
+  margin-right: 4px;
+}
+
+ul.ui-multiselect-checkboxes label {
+  font-weight: normal;
+}
+
+button.ui-multiselect.ui-state-active {
+  font-weight: bold;
+}

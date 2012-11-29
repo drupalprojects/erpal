@@ -26,6 +26,6 @@ class timetracking_handler_edit_link_field extends timetracking_handler_link_fie
     $text = !empty($this->options['text']) ? $this->options['text'] : t('edit');
     $timetracking_id = $values->{$this->aliases['timetracking_id']};
     
-    return l($text, 'timetracking/' . $timetracking_id . '/edit');
+    return l($text, 'timetracking/' . $timetracking_id . '/edit', array('query' => array('destination' => $_GET['q'])));
   }
 }

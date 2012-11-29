@@ -73,7 +73,7 @@ function feature_erpal_crm_field_default_fields() {
           'rows' => 5,
         ),
         'type' => 'text_textarea',
-        'weight' => 3,
+        'weight' => 2,
       ),
     ),
   );
@@ -103,9 +103,6 @@ function feature_erpal_crm_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'direction' => 'ASC',
-            'field' => 'body:value',
-            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -265,7 +262,7 @@ function feature_erpal_crm_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 2,
+        'weight' => 3,
       ),
     ),
   );
@@ -503,6 +500,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 1,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -563,9 +561,6 @@ function feature_erpal_crm_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'direction' => 'ASC',
-            'field' => 'body:value',
-            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -581,6 +576,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'default_value_function' => '',
       'deleted' => '0',
@@ -616,14 +612,11 @@ function feature_erpal_crm_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_asset_files',
-      'label' => 'Global documents',
+      'label' => 'Attached files',
       'required' => 0,
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
-            'action' => 'none',
-            'fallback' => 'none',
-            'skip_perm' => '0',
             'status' => 0,
           ),
         ),
@@ -672,12 +665,14 @@ function feature_erpal_crm_field_default_fields() {
           4 => 'MUST',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_integer',
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => 'The chance, you guess, the proposal will be contracted',
@@ -1044,9 +1039,11 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 1,
       'date_item' => array(
         'create_date_item' => 1,
         'date_item_type' => 'simple_date',
+        'handle_range' => 'range',
       ),
       'deleted' => '0',
       'description' => '',
@@ -1261,6 +1258,7 @@ function feature_erpal_crm_field_default_fields() {
       'settings' => array(
         'decimal_separator' => '.',
         'precision' => '10',
+        'profile2_private' => FALSE,
         'scale' => '2',
       ),
       'translatable' => '0',
@@ -1268,6 +1266,7 @@ function feature_erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => 'The volume for the activities proposal or the budget for the request',
@@ -1448,6 +1447,7 @@ function feature_erpal_crm_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Account Manager');
+  t('Attached files');
   t('Body');
   t('Chance');
   t('Check, if this is the default value on fields where to select on of the terms in this vocabulary');
@@ -1456,7 +1456,6 @@ function feature_erpal_crm_field_default_fields() {
   t('Customer');
   t('Expected date');
   t('Files');
-  t('Global documents');
   t('Is default');
   t('Next Contact');
   t('Order number extern');

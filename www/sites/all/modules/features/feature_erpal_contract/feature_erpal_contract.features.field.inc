@@ -1143,6 +1143,73 @@ If not set, budget will not expire',
     ),
   );
 
+  // Exported field: 'field_collection_item-field_contract_payment-field_service_category_term'.
+  $fields['field_collection_item-field_contract_payment-field_service_category_term'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_service_category_term',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'service_category_terms',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_contract_payment',
+      'comment_enabled' => 0,
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 11,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_service_category_term',
+      'label' => 'Service category',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 10,
+      ),
+    ),
+  );
+
   // Exported field: 'field_collection_item-field_contract_payment-field_vat_rate'.
   $fields['field_collection_item-field_contract_payment-field_vat_rate'] = array(
     'field_config' => array(
@@ -1415,9 +1482,6 @@ If not set, budget will not expire',
             ),
           ),
           'sort' => array(
-            'direction' => 'ASC',
-            'field' => 'body:value',
-            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -2134,6 +2198,7 @@ If not set, budget will not expire',
   t('Period');
   t('Price per month');
   t('Repeating duration');
+  t('Service category');
   t('The amount of budget hours added to the budget destination');
   t('The duration the contract repeats after first duration period');
   t('The initial contract duration');
