@@ -1805,7 +1805,6 @@ function feature_erpal_project_basic_field_default_fields() {
         'active' => 0,
         'module' => 'options',
         'settings' => array(
-          'autocomplete_deluxe_path' => 'autocomplete_deluxe/taxonomy',
           'autocomplete_path' => 'taxonomy/autocomplete',
           'size' => 60,
         ),
@@ -2929,7 +2928,6 @@ function feature_erpal_project_basic_field_default_fields() {
         'active' => 0,
         'module' => 'options',
         'settings' => array(
-          'autocomplete_deluxe_path' => 'autocomplete_deluxe/taxonomy',
           'autocomplete_path' => 'taxonomy/autocomplete',
           'size' => 60,
         ),
