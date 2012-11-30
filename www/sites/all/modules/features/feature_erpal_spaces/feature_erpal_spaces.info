@@ -4,7 +4,6 @@ package = ERPAL Features
 php = 5.2.4
 version = 7.x-1.0-dev
 project = feature_erpal_spaces
-dependencies[] = content_access
 dependencies[] = erpal_basic_helper
 dependencies[] = erpal_book_helper
 dependencies[] = erpal_crm_helper
