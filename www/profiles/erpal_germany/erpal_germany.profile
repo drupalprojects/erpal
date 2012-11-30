@@ -363,8 +363,6 @@ function erpal_germany_config_form_submit($form, $form_state){
   variable_set('erpal_book_skip_pdf_header_frontpage', $values['skip_logo']);
   $cancelation_precalculate_range = intval($values['precalculation_range']);
   variable_set('cancelation_precalculate_range', $cancelation_precalculate_range);
-  dpm($values['date_only']);
-  dpm($values['date_time']);
 }
 
 function erpal_germany_invoice_config_form(){

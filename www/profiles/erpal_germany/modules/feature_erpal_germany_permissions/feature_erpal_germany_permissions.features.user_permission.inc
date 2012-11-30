@@ -2114,20 +2114,6 @@ function feature_erpal_germany_permissions_user_default_permissions() {
     'module' => 'flag',
   );
 
-  // Exported permission: grant content access.
-  $permissions['grant content access'] = array(
-    'name' => 'grant content access',
-    'roles' => array(),
-    'module' => 'content_access',
-  );
-
-  // Exported permission: grant own content access.
-  $permissions['grant own content access'] = array(
-    'name' => 'grant own content access',
-    'roles' => array(),
-    'module' => 'content_access',
-  );
-
   // Exported permission: manage features.
   $permissions['manage features'] = array(
     'name' => 'manage features',

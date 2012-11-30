@@ -30,7 +30,7 @@ function _erpal_germany_rebuild_content_access(&$context){
  * creates Taxonomy
  */
 function _erpal_germany_create_taxonomy(&$context){
-  $context['message'] = st('Created taxonomy');
+  $context['message'] = st('Created taxonomy terms');
   erpal_germany_create_taxonomy();
 }
 
@@ -38,7 +38,7 @@ function _erpal_germany_create_taxonomy(&$context){
  * BatchAPI callback
  */
 function _erpal_germany_create_relations(&$context){
-  $context['message'] = st('Created relations');
+  $context['message'] = st('Created relation types');
   erpal_germany_create_relations();
 }
 
