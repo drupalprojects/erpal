@@ -57,10 +57,11 @@ function erpal_projects_billable_tokens($type, $tokens, array $data = array(), a
           $replacements[$original] = $title;
         break;
         case 'task_subject':
-          $title = _erpal_projects_billable_get_billable_subject_title($subject_node, 'erpal_task');
+          $title = _erpal_projects_billable_get_billable_subject_title($subject_node, 'erpal_task');          
           $replacements[$original] = $title;
+        break;
         case 'service_category':
-          $service_category = $data['service_category'];
+          $service_category = isset($data['service_category']) ? $data['service_category'] : '';
           $replacements[$original] = $service_category;
         break;
           
@@ -83,6 +84,7 @@ function _erpal_projects_billable_get_billable_subject_title($subject_node, $nod
   if (isset($subject_node->field_timetracking_subject[LANGUAGE_NONE][0])) {
     $subject_nid = $subject_node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
     $subject_node = node_load($subject_nid);
+
     if ($subject_node->type == $node_type)
       return $subject_node->title;
   }
