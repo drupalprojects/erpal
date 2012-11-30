@@ -223,8 +223,7 @@ body.panels-ipe{
 }
 .panel-display .pane-entity-field h2.pane-title {
 	padding-right: 5px;
-	font-size: 14px;
-    font-weight: bold;
+	font-size: 12px;
 }
 .panel-display .pane-entity-field .block-content{
 	float: left;
@@ -289,17 +288,23 @@ ul.quicktabs-tabs li{
 /*
  *  collapsible
  */
+ .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle{
+	padding: 3px 5px 3px 30px;
+ }
  .ctools-collapsible-processed h2.pane-title {
     margin: 0;
     padding: 3px 5px 0px 30px;
-	font-size: 13px;
+	font-size: 12px;
+	line-height: 12px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
 	padding-left: 0;
-	color: #525252;
+	font-weight: bold;
 }
 .ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
 	margin: 0;
+	clear: both;
+	line-height: 12px;
 }
 .ctools-collapsible-container .block-content a{
 	text-decoration: underline;
@@ -331,12 +336,20 @@ ul.quicktabs-tabs li{
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item{
     margin-left: 20px;
+    padding-left: 0 !important;
 	display: list-item;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a,
 .ctools-collapsible-processed .field-name-field-books-ref a{
     text-decoration: underline;
 }
+.ctools-collapsible-container .ctools-collapsible-content .field-items{
+	clear: both;
+}
+.ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item{
+	padding-left: 10px;
+}
+
 #mini-panel-task_status_panel .panel-separator,
 #mini-panel-activity_status_panel .panel-separator{
 	display: none;
@@ -365,7 +378,7 @@ ul.quicktabs-tabs li{
 	padding-left: 10px;
 }
 .ctools-collapsible-container .ctools-toggle{
-	background-position: 7px 10px;
+	background-position: 7px 8px;
 }
 /*
  *  table
@@ -608,19 +621,10 @@ article.comment{
 }
 .comment .comment-header{
 	padding-right: 10px;
-	padding-left: 15px;
 	float: left;
-}
-.comment .comment-content,
-.comment ul.links{
-	padding-right: 15px;
-	padding-left: 15px !important;
 }
 .comment .comment-content{
 	padding-top: 15px;
-}
-.comment .submitted{
-	padding-right: 15px;
 }
 .comment .author-datetime{
 	margin-bottom: 12px;
@@ -903,6 +907,15 @@ article.comment .field-name-comment-body p{
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title{
 	font-size: 26px;
+}
+.node-type-erpal-contact .panel-display .pane-entity-field .block-content {
+    float: none;
+}
+.page-crm-contacts table .views-field-field-contact-image{
+	width: 160px;
+}
+.page-crm-contacts table .views-field-title{
+	width: 345px;
 }
 .region-sidebar-right .ctools-collapsible-container figure {
     text-align: center;
