@@ -1211,11 +1211,17 @@ function _erpal_invoice_helper_get_order_numbers($invoice_node) {
           //get the order numbers intern and extern and add it to the $numbers array
           if (isset($activity_node->field_order_number_intern[LANGUAGE_NONE][0]['value'])) {
             $order_number_intern = $activity_node->field_order_number_intern[LANGUAGE_NONE][0]['value'];
-            $numbers['intern'][] = $order_number_intern;
+            
+            //add this number, if it is not already in the array
+            if (!in_array($order_number_intern, $numbers['intern']))
+              $numbers['intern'][] = $order_number_intern;
           }
           
           if (isset($activity_node->field_order_number_extern[LANGUAGE_NONE][0]['value'])) {
             $order_number_extern = $activity_node->field_order_number_extern[LANGUAGE_NONE][0]['value'];
+            
+            //add this number, if it is not already in the array
+            if (!in_array($order_number_extern, $numbers['extern']))
             $numbers['extern'][] = $order_number_extern;
           }
         }
