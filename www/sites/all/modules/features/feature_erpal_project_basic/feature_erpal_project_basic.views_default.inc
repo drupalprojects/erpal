@@ -7695,6 +7695,7 @@ function feature_erpal_project_basic_views_default_views() {
       'label' => 'Content: Project (field_project_ref)',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: Budget timetrackings pane */
   $handler = $view->new_display('panel_pane', 'Budget timetrackings pane', 'panel_pane_3');
