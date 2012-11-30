@@ -7,8 +7,8 @@ function _erpal_asterisk_menu(){
   
   $items = array();
   
-  $items['admin/erpal/asterisk/cor'] = array(
-    'title' => 'Asterisk Cor Config',
+  $items['admin/erpal/asterisk/core'] = array(
+    'title' => 'Asterisk Core Config',
     'page callback' => '_erpal_asterisk_config',    
     'access arguments' => array('config erpal asterisk'),
     'file' => 'inc/config.inc',

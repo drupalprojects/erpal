@@ -25,11 +25,13 @@ function libphonenumber_is_valid($phone_number, $region = "DE") {
   return $is_valid;
 }
 
-function libphonenumber_format($phone_number, $format = PhoneNumberFormat::E164, $region = "DE") {
+function libphonenumber_format($phone_number, $format = PhoneNumberFormat::NATIONAL, $region = "DE") {
+  //dpm("libphonenumber_format: " . $phone_number);
   $phone_util = PhoneNumberUtil::getInstance();
   $number_proto = _libphonenumber_parse($phone_number, $region);
-  // var_dump($number_proto);
-  $number_formatted = $phone_util->format($number_proto, $format);
+  var_dump($number_proto);
+  $number_formatted = $phone_util->format($number_proto, $format) . PHP_EOL;
+  //dpm("libphonenumber_format: " . $number_formatted);
   return $number_formatted;
 }
 
@@ -64,7 +66,7 @@ function libphonenumber_entity_update($entity, $type) {
   //dpm($entity);
   /*$phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
   $phone_number_normalized =  libphonenumber_format($phone_number);
-  dpm(libphonenumber_format($phone_number));
+  //dpm(libphonenumber_format($phone_number));
   $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
   $entity->save(TRUE);*/
   //dpm($entity);

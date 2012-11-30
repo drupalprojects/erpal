@@ -47,7 +47,6 @@ function erpal_germany_file_private_path_validate($form, $form_state){
 
 function erpal_germany_file_private_path_submit($form, $form_state){
   variable_set('file_private_path', $form_state['values']['file_private_path']);
-  global $advanced;
 
 }
 
@@ -55,14 +54,22 @@ function erpal_germany_file_private_path_submit($form, $form_state){
  * Add additional install tasks 
  */
 function erpal_germany_install_tasks(){
-  global $advanced;
-  $tasks = array(
-    'erpal_germany_contact_information_form' => array(
-      'display_name' => st('Contact Information'),
-      'display' => TRUE,
-      'type' => 'form',
-      ),
+
+  
+  $tasks = array();
+  
+  $tasks['erpal_germany_preconfigure_site'] = array(
+    'display_name' => st('Configure Erpal'),
+    'display' => TRUE,
+    'type' => 'batch',
   );
+
+  $tasks['erpal_germany_contact_information_form'] = array(
+    'display_name' => st('Contact information'),
+    'display' => TRUE,
+    'type' => 'form',
+  );
+  
   if(FALSE){
     $tasks['erpal_germany_config_form'] = array(
       'display_name' => st('Configure Erpal'),
@@ -80,8 +87,46 @@ function erpal_germany_install_tasks(){
       'type' => 'form',
     );
   }
+  $tasks['erpal_germany_last_config_steps'] = array(
+    'display' => FALSE, 
+    'type' => 'batch',
+  );
   
   return $tasks;
+}
+
+function erpal_germany_preconfigure_site(){
+  $operations = array(
+    array('_erpal_germany_create_relations', array()),
+    array('_erpal_germany_create_taxonomy', array()),
+    array('_erpal_germany_invoice_config', array()),
+    array('_erpal_germany_projects_config', array()),
+    array('_erpal_germany_calendar_config', array()),
+    array('_erpal_germany_various_settings', array()),
+  );
+  $batch = array(
+    'title' => st('Preparing site'),
+    'operations' => $operations,
+    'file' => drupal_get_path('profile', 'erpal_germany') . '/erpal_germany_callbacks.inc',
+  );
+  return $batch;  
+}
+
+
+function erpal_germany_last_config_steps(){
+  
+  $operations = array(
+    array('_erpal_germany_revert_features', array()),
+    array('_erpal_germany_rebuild_content_access', array()),
+  );
+    
+  $batch = array(
+    'title' => st('Performing last installation tasks'),
+    'operations' => $operations,  
+    'file' => drupal_get_path('profile', 'erpal_germany') . '/erpal_germany_callbacks.inc',
+  );
+  return $batch;
+
 }
 
 /**
@@ -122,8 +167,8 @@ function erpal_germany_contact_information_form($form, &$form_state){
   );
   
   
-  $countries_vid = erpal_germany_get_vocabulary_by_name('Countries');
-  $countries_terms = taxonomy_get_tree($countries_vid->vid, 0);
+  $countries_vocabulary = taxonomy_vocabulary_machine_name_load('countries');
+  $countries_terms = taxonomy_get_tree($countries_vocabulary->vid, 0);
   $countries = array();
   foreach($countries_terms as $term){
     $countries[$term->tid] = $term->name;
@@ -318,8 +363,6 @@ function erpal_germany_config_form_submit($form, $form_state){
   variable_set('erpal_book_skip_pdf_header_frontpage', $values['skip_logo']);
   $cancelation_precalculate_range = intval($values['precalculation_range']);
   variable_set('cancelation_precalculate_range', $cancelation_precalculate_range);
-  dpm($values['date_only']);
-  dpm($values['date_time']);
 }
 
 function erpal_germany_invoice_config_form(){

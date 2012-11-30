@@ -617,54 +617,12 @@ function feature_erpal_invoice_views_default_views() {
       'label' => 'Billable: Subject_nid',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: billables pane */
   $handler = $view->new_display('panel_pane', 'billables pane', 'panel_pane_3');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['billables'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No billable available'),
-    t('Contractor'),
-    t('Customer'),
-    t('Billable subject'),
-    t('Billable ID'),
-    t('.'),
-    t('Subject_nid'),
-    t('Subject'),
-    t('<a href="/node/[subject_nid]">[subject]</a>'),
-    t('Billed'),
-    t('Date delivery'),
-    t('Menge'),
-    t(','),
-    t('Single price'),
-    t('Summe Netto'),
-    t('Summe Brutto'),
-    t('Summe'),
-    t('Währung'),
-    t('Service category'),
-    t('Delivery'),
-    t('Billables by invoice pane'),
-    t('Content referencing Billable from field_billables_ref'),
-    t('gesetzl. MwSt,'),
-    t('All'),
-    t('View panes'),
-    t('Billables by contract pane'),
-    t('billables pane'),
-  );
   $export['billables'] = $view;
 
   $view = new view();
@@ -1056,38 +1014,7 @@ function feature_erpal_invoice_views_default_views() {
   /* Display: Invoices pane */
   $handler = $view->new_display('panel_pane', 'Invoices pane', 'panel_pane_2');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $translatables['invoices'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No invoices available'),
-    t('Invoice Date'),
-    t('Invoice Number'),
-    t('Paid'),
-    t('Payment date'),
-    t('Summe Netto'),
-    t('Total incl. VAT'),
-    t('Währung'),
-    t('Contractor'),
-    t('Customer'),
-    t('Exported'),
-    t('Payed'),
-    t('Invoices to contact pane'),
-    t('All'),
-    t('View panes'),
-    t('Invoices pane'),
-  );
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $export['invoices'] = $view;
 
   return $export;

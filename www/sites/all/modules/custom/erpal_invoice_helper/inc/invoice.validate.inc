@@ -116,13 +116,14 @@ function _erpal_invoice_helper_invoice_validate_billables($invoice) {
       }
     }
     
-    //check that no delivery date of a billable is greater than the invoice date
-    $date_delivery = $billable->date_delivery;
+    //check that no delivery date of a billable is greater than the invoice date, but we don't use the values from the loaded billable but from the widget values
+    $billable_form_values = $invoice->field_billables_ref_values[LANGUAGE_NONE][$i]['widget_values'];
+    $date_delivery = $billable_form_values['date_delivery'];
     $invoice_date = isset($invoice->field_invoice_date[LANGUAGE_NONE][0]) ? $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'] : false;
 
     if ($invoice_date && $date_delivery) {
-      if ($invoice_date < $date_delivery) {
-        $errors['field_billables_ref]['.LANGUAGE_NONE.']['.$j.'][target_id'][] = t('Delivery date of "%title" must be less than invoice date', array('%title' => $billable->subject));
+      if (date('Ymd', $invoice_date) < date('Ymd', $date_delivery)) {
+        $errors['field_billables_ref]['.LANGUAGE_NONE.']['.$j.'][target_id'][] = t('Delivery date of "%title" must be less than invoice date', array('%title' => $billable_form_values['subject']));
       }
     }
 

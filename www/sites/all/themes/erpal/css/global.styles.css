@@ -1131,6 +1131,7 @@ ul.action-links li {}
 .block-content li {
   margin: 0;
   padding: 0;
+  list-style-type: none;
 }
 
 /*
@@ -1392,7 +1393,9 @@ h2.pane-title {
 
 .comment .submitted .username {}
 
-.comment .submitted time {}
+.comment .submitted time {
+	float: right;
+}
 
 .comment .user-signature {}
 

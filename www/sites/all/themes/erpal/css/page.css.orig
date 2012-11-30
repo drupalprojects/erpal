@@ -223,7 +223,8 @@ body.panels-ipe{
 }
 .panel-display .pane-entity-field h2.pane-title {
 	padding-right: 5px;
-	font-size: 12px;
+	font-size: 14px;
+    font-weight: bold;
 }
 .panel-display .pane-entity-field .block-content{
 	float: left;
@@ -288,23 +289,17 @@ ul.quicktabs-tabs li{
 /*
  *  collapsible
  */
- .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle{
-	padding: 3px 5px 3px 30px;
- }
  .ctools-collapsible-processed h2.pane-title {
     margin: 0;
     padding: 3px 5px 0px 30px;
-	font-size: 12px;
-	line-height: 12px;
+	font-size: 13px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
 	padding-left: 0;
-	font-weight: bold;
+	color: #525252;
 }
 .ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
 	margin: 0;
-	clear: both;
-	line-height: 12px;
 }
 .ctools-collapsible-container .block-content a{
 	text-decoration: underline;
@@ -336,20 +331,12 @@ ul.quicktabs-tabs li{
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item{
     margin-left: 20px;
-    padding-left: 0 !important;
 	display: list-item;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a,
 .ctools-collapsible-processed .field-name-field-books-ref a{
     text-decoration: underline;
 }
-.ctools-collapsible-container .ctools-collapsible-content .field-items{
-	clear: both;
-}
-.ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item{
-	padding-left: 10px;
-}
-
 #mini-panel-task_status_panel .panel-separator,
 #mini-panel-activity_status_panel .panel-separator{
 	display: none;
@@ -378,7 +365,7 @@ ul.quicktabs-tabs li{
 	padding-left: 10px;
 }
 .ctools-collapsible-container .ctools-toggle{
-	background-position: 7px 8px;
+	background-position: 7px 10px;
 }
 /*
  *  table
@@ -613,6 +600,7 @@ ul.pager li a, ul.pager li.pager-current {
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
+<<<<<<< HEAD
 article.comment{
 	padding: 15px 0px;
 	-webkit-border-radius: 5px;
@@ -621,16 +609,29 @@ article.comment{
 }
 .comment .comment-header{
 	padding-right: 10px;
+	padding-left: 15px;
 	float: left;
+}
+.comment .comment-content,
+.comment ul.links{
+	padding-right: 15px;
+	padding-left: 15px !important;
 }
 .comment .comment-content{
 	padding-top: 15px;
+}
+.comment .submitted{
+	padding-right: 15px;
 }
 .comment .author-datetime{
 	margin-bottom: 12px;
 }
 .pane-node-body p,
 .comment .field-name-comment-body p{
+=======
+
+.pane-node-body p{
+>>>>>>> ac6ff41d23de358181675ed92e38179e110603f2
 	font-size: 16px;
 }
 .comment-form{
@@ -684,7 +685,7 @@ article.comment{
 /* crm */
 
 .field-type-datetime  fieldset .date-padding {
-	width: 270px;
+	width: 260px;
 }
 .field-type-datetime  fieldset,
 .field-type-datetime  fieldset .date-padding {
@@ -721,6 +722,10 @@ article.comment .field-name-comment-body p{
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
 }
+#comment-form .field-name-field-activity-status-term  {
+	width: 160px;
+	float: left;
+}
 #comment-form .field-type-datetime {
 	width: 300px;
 	float: left;
@@ -733,12 +738,6 @@ article.comment .field-name-comment-body p{
 	float: left;
 	margin-right: 40px;
 }
-#comment-form #edit-field-contacts-ref  table,
-#comment-form #edit-field-contacts-ref  table input,
-#comment-form #edit-field-asset-files table,
-#comment-form #edit-field-asset-files table input{
-	width: 310px;
-}
 #comment-form #edit-field-asset-files {
 	width: 350px;
 	float: left;
@@ -746,13 +745,8 @@ article.comment .field-name-comment-body p{
 #comment-form #edit-actions {
 	clear: both;
 }
-#comment-form .field-widget-options-select {
+#comment-form .group-left .field-widget-options-select {
 	width: 100px;
-	float: left;
-	margin-right: 15px;
-}
-#comment-form .field-name-field-activity-status-term  {
-	width: 160px !important;
 	float: left;
 }
 .comment-content section{
@@ -762,16 +756,6 @@ article.comment .field-name-comment-body p{
 .comment nav {
 	clear: both;
 }
-
-
-/*****DELETE****/
-	.rel-register-link {
-		display: none;
-	}
-
-/****DELEEETE****/
-
-
 /* multi select boxes */
 .views-exposed-form .views-exposed-widget {
 	padding-right: 10px !important;
@@ -907,15 +891,6 @@ article.comment .field-name-comment-body p{
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title{
 	font-size: 26px;
-}
-.node-type-erpal-contact .panel-display .pane-entity-field .block-content {
-    float: none;
-}
-.page-crm-contacts table .views-field-field-contact-image{
-	width: 160px;
-}
-.page-crm-contacts table .views-field-title{
-	width: 345px;
 }
 .region-sidebar-right .ctools-collapsible-container figure {
     text-align: center;

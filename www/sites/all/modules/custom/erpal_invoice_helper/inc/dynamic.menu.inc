@@ -4,7 +4,7 @@
 * @file provide functions for dynamic menu items in invoice context
 */
 //define some contexts
-define('ERPAL_CONTEXT_INVOICES', 'invices'); //invoices list
+define('ERPAL_CONTEXT_INVOICES', 'invoices'); //invoices list
 define('ERPAL_CONTEXT_INVOICE_GLOBAL', 'invoice_global'); //we are in activies view or in a tab that belongs to the activities
 define('ERPAL_CONTEXT_INVOICE', 'invoice');
 define('ERPAL_CONTEXT_BILLABLES', 'billables');
@@ -43,8 +43,8 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
   
   
   //CHECK INVOICES list CONTEXT
-  if ($path == 'invoice/invoices') {        
-    $contexts[ERPAL_CONTEXT_INVOICES] = true;       
+  if ($path == 'invoice/invoices' || $path == 'node/%/invoices') {        
+    $contexts[ERPAL_CONTEXT_INVOICES] = true; 
   }
   
   //CHECK BILLABLES list CONTEXT
@@ -61,8 +61,9 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
 */
 function erpal_invoice_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
   //invoices list context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICES, $router_item)) {        
-    _erpal_invoice_helper_invoices_links($data);       
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICES, $router_item)) {  
+    $contact_node = is_object($router_item['map'][1]) ? $router_item['map'][1]->data : false;
+    _erpal_invoice_helper_invoices_links($data, $router_item, $contact_node);       
   }
   
   //INVOICE global context
@@ -114,7 +115,7 @@ function _erpal_invoice_helper_get_menu_parents($router_item) {
 /**
 * Adds all invoices context links
 */
-function _erpal_invoice_helper_invoices_links(&$data, $contact_node=false) {
+function _erpal_invoice_helper_invoices_links(&$data, $router_item, $contact_node=false) {
   //single project context
   $query = array('destination' => $_GET['q']);
   
