@@ -621,10 +621,14 @@ article.comment{
 }
 .comment .comment-header{
 	padding-right: 10px;
+	padding-left: 15px;
 	float: left;
 }
 .comment .comment-content{
-	padding-top: 15px;
+	padding: 15px 15px 0;
+}
+.comment .submitted {
+    padding-right: 15px;
 }
 .comment .author-datetime{
 	margin-bottom: 12px;
@@ -706,7 +710,6 @@ article.comment{
 /* comments */
 
 article.comment{
-	padding: 20px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
@@ -760,6 +763,7 @@ article.comment .field-name-comment-body p{
 	float: left;
 }
 .comment nav {
+	padding: 0 15px;
 	clear: both;
 }
 
@@ -919,4 +923,10 @@ article.comment .field-name-comment-body p{
 }
 .region-sidebar-right .ctools-collapsible-container figure {
     text-align: center;
+}
+#mini-panel-contact_details_panel{
+	margin-top: 2px;
+}
+.ctools-collapsible-processed .ctools-collapsible-content{
+	padding-top: 10px;
 }
