@@ -90,6 +90,7 @@ features[field][] = node-erpal_contact-field_contact_image
 features[field][] = node-erpal_contact-field_contact_relations
 features[field][] = node-erpal_contact-field_contact_tags
 features[field][] = node-erpal_contact-field_contact_type
+features[field][] = node-erpal_contact-field_customer_category
 features[field][] = node-erpal_contact-field_email
 features[field][] = node-erpal_contact-field_facebook
 features[field][] = node-erpal_contact-field_fax
