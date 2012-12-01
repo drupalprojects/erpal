@@ -14,7 +14,8 @@ body{
 /*
  * tabs background
  */
-.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside {
+/*.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside,*/
+.pane-page-tabs {
 	background-color: #EEEEEE;
 }
 ul.primary li a:hover,
@@ -77,7 +78,7 @@ ul.primary a.active, ul.primary a.active:hover {
 	border-top: 2px solid #fd8300;
 	border-bottom: 2px solid #fd8300;
 }
-.panels-flexible-erpal_panel_layout-left {
+.panel-2col .panel-col-first {
     background-color: #7B726B;
 }
 .pane-system-user-menu ul{
@@ -108,13 +109,9 @@ input.form-submit:hover,
 input.form-submit:focus {
   background: #dedede;
 }
-
-.panels-flexible-row .panels-flexible-region-erpal_panel_layout-tabs_region_ {
-    width: 100%;
-}
-.panels-flexible-row.panels-flexible-row-erpal_panel_layout-5.panels-flexible-row-first.clearfix.tabs-region{
+.pane-page-tabs {
 	-moz-box-shadow: 2px 3px 4px #b6b6b6;
-    -webkit-box-shadow: 2px 3px 4px #b6b6b6;
+  -webkit-box-shadow: 2px 3px 4px #b6b6b6;
 	box-shadow: 2px 3px 4px #b6b6b6;
 	height: 42px;
 	background-color: #ffffff;

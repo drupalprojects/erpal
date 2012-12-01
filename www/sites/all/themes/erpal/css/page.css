@@ -4,10 +4,7 @@ body.panels-ipe{
 /* =============================================================================
  *  Top region
  * ========================================================================== */
-.panel-flexible.panels-flexible-erpal_panel_layout.top-region {
-    height: 125px;
-}
-.panels-flexible-region-erpal_panel_layout-tabs_region{
+.pane-page-tabs{
     width: 100%;
 }
 
@@ -24,11 +21,13 @@ body.panels-ipe{
 /* =============================================================================
  *   Left region
  * ========================================================================== */
-.panels-flexible-region-erpal_panel_layout-left_region{
-    width: 150px;
+.panel-2col .panel-col-first{
+  width: 150px;
+	max-width:none;
+	margin:0;
 }
-.panels-flexible-region-inside-first {
-    padding-right: 0;
+.panel-2col .panel-col-first .inside {
+  margin:0;
 }
 .pane-menu-menu-erpal-menu ul,
 .pane-menu-menu-erpal-menu ul li ul {
@@ -67,22 +66,18 @@ body.panels-ipe{
 .pane-system-user-menu li.last{
 	border-right: 1px solid #847C76;
 }
-.panels-flexible-erpal_panel_layout-inside,
-.panels-flexible-erpal_panel_layout-left,
-.panels-flexible-column,
-.left-region .panels-flexible-column-inside,
-.left-region .panels-flexible-row,
-.left-region .panels-flexible-row-inside {
+.panel-2col .panel-col-first,
+.panel-2col .panel-col-first .inside {
 	height: 100%
 } 
-.panels-flexible-column-inside-first{
+.panel-2col .panel-col-first .inside{
 	padding-right: 0;
 	box-shadow: 1px 2px 2px #888888;
 }
 .tabs-region .block {
 	margin-bottom: 0px;
 }
-.panels-flexible-erpal_panel_layout-left{
+.panel-2col .panel-col-first{
 	float: left;
 	position: absolute;
 	left: 0;
@@ -134,23 +129,23 @@ body.panels-ipe{
 .panels-flexible-column-inside-last {
     padding: 0;
 }
-.panels-flexible-row-erpal_panel_layout-main-row-inside, .panels-flexible-row-erpal_panel_layout-1-inside {
+.pane-page-content {
 	margin-right: 20px;
 	margin-left: 30px;
 }
 .panels-flexible-row-erpal_panel_layout-1 .tabs-region, .panels-flexible-row-erpal_panel_layout-main-row .tabs-region{
 	display: none;
 }
-.panels-flexible-column-erpal_panel_layout-main{
-    width: 100%;
-	float: left;
+.panel-2col .panel-col-last{
+  float: left;
+	width: 100%;
 }
-.panels-flexible-row.panels-flexible-row-erpal_panel_layout-5.panels-flexible-row-first.clearfix.tabs-region{
-	margin-bottom: 30px;
+.pane-page-content{
+	margin-top: 30px;
 }
-.panels-flexible-erpal_panel_layout-middle {
-    margin-left: 150px;
-    min-width: 440px;
+.panel-2col .panel-col-last .inside {
+  min-width: 440px;
+  margin-left: 150px;
 }
 .panels-flexible-erpal_panel_layout {
     height: 100%;
