@@ -113,6 +113,7 @@ features[field_group][] = group_weblinks|node|erpal_contact|form
 features[menu_custom][] = menu-erpal-menu
 features[menu_custom][] = user-menu
 features[menu_links][] = user-menu:user
+features[menu_links][] = user-menu:user/login
 features[menu_links][] = user-menu:user/logout
 features[node][] = erpal_contact
 features[page_manager_pages][] = crm_contacts
