@@ -5,4 +5,5 @@ www/nbproject
 www/sites/all/libraries
 www/private
 
-
+.DS_Store
+*~
