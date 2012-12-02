@@ -214,14 +214,14 @@ function erpal_timetracking_export_handle_entity($node, $context = array()) {
   $row = array();
 
   // Description
-  $row['description'] = $node->title;
+  $row['description'] = utf8_decode($node->title);
 
   // Duration
   $row['duration'] = $node_wrapper->field_timetracking_duration->value();
 
   // Dates
   $date_time = $node_wrapper->field_date_time->value();
-  $date_format = 'Y.m.d h:i';
+  $date_format = _erpal_basic_helper_date_format_date_time();  //get the global time format set in ERPAL settings
 
   // Date start
   if (!empty($date_time['value'])) {
