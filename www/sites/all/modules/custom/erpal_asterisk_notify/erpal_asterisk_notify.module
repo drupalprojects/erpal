@@ -14,7 +14,6 @@ define("VIEWCONTENTTYPE", "erpal_contact");
 function erpal_asterisk_notify_init() {
 	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );  
 	$my_phone_number = _erpal_basic_helper_return_my_value('field_phone');
-	//dpm($my_phone_number);
 	$js_settings = array(
 	  'client_phone_number' => $my_phone_number,
     'client_ip' => $_SERVER['REMOTE_ADDR'],
@@ -23,7 +22,7 @@ function erpal_asterisk_notify_init() {
     'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port')
   );
   
-  //@todo externe libraries mit dem libraries modul einbinden, dürfen nicht in der Distribution mitgeliefert werden
+  //@todo externe libraries mit dem libraries modul einbinden, dï¿½rfen nicht in der Distribution mitgeliefert werden
   drupal_add_js( $path . '/js/socketio/socket.io.min.js', Array( 'every_page'=>TRUE ) );
   drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting' );
 }
@@ -149,22 +148,19 @@ function _erpal_asterisk_notify_config(){
  */
 
 function erpal_asterisk_notify_ingoing_call($destination, $source) {
-
-  libphonenumber_is_number_match($source, $destination);
   
-  $view = _erpal_asterisk_get_view($source);
-  
+  // libphonenumber_is_number_match($source, $destination);
+//   
+  $view = _erpal_asterisk_get_view($source);
+//   
   if($source!=NULL) {
-    
     $out	= theme('erpal_asterisk_view', array('output' => $view));
-  
   } else {
-  
     $out	= theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
-    
   }
-  
+ 
   erpal_asterisk_send_dispatch_data( $out, $source, $destination );
+   
 }
 
 /*
@@ -186,16 +182,15 @@ function _erpal_asterisk_get_view($phone_number){
   
   $display_id = 'page';
   $view = views_get_view(variable_get('asterisk_default_view'));
-  
   // Thiemo; Update to new flow
-  $view->set_arguments(Array($phone_number));
+  $view->set_arguments(array($phone_number));
   $view->display_handler->options['empty']['area']['content'] = _erpal_asterisk_notify_get_default_message($phone_number);
   $view->init_display();
   $view->pre_execute();
   $view->execute();
   
   $result	= $view->render();
-  
+  dpm($view);
   return $result;
   
   /*

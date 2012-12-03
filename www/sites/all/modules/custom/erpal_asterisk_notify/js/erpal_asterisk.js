@@ -1,5 +1,6 @@
 (function($) {
-$(document).ready(function() {
+  Drupal.behaviors.asteriskClient = {
+  	attach: function() {
 
   // fetching settings defined in erpal_asterisk_notify.module
   var client_ip = Drupal.settings.erpal_asterisk_notify.client_ip;
@@ -12,6 +13,7 @@ $(document).ready(function() {
   
   // incoming call arrives - display notification
   socket.on('caller_data', function (data) {
+  	
     $("body").append(data.caller_data);
     $('.erpal-asterisk-notify').css('bottom', '-' + $('.erpal-asterisk-notify').css('height'));
     $('.erpal-asterisk-notify').animate({
@@ -52,5 +54,6 @@ $(document).ready(function() {
     }
   });
 
-});
-})(jQuery);
+    }
+  }
+}(jQuery));	

@@ -5,7 +5,7 @@ node bs_asterisk_server.js
 
 
 
-Calling asterisk server for submitting caller info.
+Calling dispatcher for submitting caller info.
 ------------------------------------------------------------------------
 
 http://localhost:[HTTP PORT]/ingoing
@@ -18,7 +18,7 @@ Postdata:
 	
 	
 	
-Calling asterisk server for registering a client.
+Calling dispatcher for registering a client.
 ------------------------------------------------------------------------
 
 http://localhost:[HTTP PORT]/register

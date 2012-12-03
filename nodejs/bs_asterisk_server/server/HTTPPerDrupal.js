@@ -67,10 +67,13 @@ HTTPPerDrupal.prototype.handleIngoingData = function (request, response) {
     postData += chunk.toString();
   });
   
+  	    
   request.on('end', function(chunk) {
     var post = self.queryString.parse (postData);	 
     self.eventHandler.invokeListeners('sendData',  post);
     
+  	console.log('Incoming data: ' + postData);  
+        
     response.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin' : '*'
@@ -124,6 +127,8 @@ HTTPPerDrupal.prototype.start = function (port) {
 	
 	this.httpServer.listen (port);
 	
+	// @TODO: Console Log wieder entfernen
+	console.log('Listening on Port ' + port);
 	return;
 }; 
 
