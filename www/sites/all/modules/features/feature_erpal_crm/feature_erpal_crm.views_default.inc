@@ -275,6 +275,7 @@ function feature_erpal_crm_views_default_views() {
       'label' => 'Content: Customer (field_customer_ref)',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: Next activities pane */
   $handler = $view->new_display('panel_pane', 'Next activities pane', 'panel_pane_2');
@@ -385,6 +386,7 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_next_contact_value_1']['operator'] = '>=';
   $handler->display->display_options['filters']['field_next_contact_value_1']['group'] = 1;
   $handler->display->display_options['filters']['field_next_contact_value_1']['default_date'] = 'now';
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: Missed activities pane */
   $handler = $view->new_display('panel_pane', 'Missed activities pane', 'panel_pane_3');
@@ -494,11 +496,13 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['filters']['field_next_contact_value']['operator'] = '<';
   $handler->display->display_options['filters']['field_next_contact_value']['group'] = 1;
   $handler->display->display_options['filters']['field_next_contact_value']['default_date'] = 'now';
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: activities view pane */
   $handler = $view->new_display('panel_pane', 'activities view pane', 'panel_pane_4');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: Activities by contact */
   $handler = $view->new_display('panel_pane', 'Activities by contact', 'panel_pane_6');
@@ -607,6 +611,7 @@ function feature_erpal_crm_views_default_views() {
       'label' => 'Field: Contacts (field_contacts_ref)',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: CRM Activities Pane */
   $handler = $view->new_display('panel_pane', 'CRM Activities Pane', 'panel_pane_5');
@@ -716,6 +721,7 @@ function feature_erpal_crm_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['crm_activities'] = array(
     t('Master'),
     t('more'),

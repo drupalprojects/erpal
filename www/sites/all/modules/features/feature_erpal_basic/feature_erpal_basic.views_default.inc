@@ -157,6 +157,7 @@ function feature_erpal_basic_views_default_views() {
   /* Display: Contacts pane */
   $handler = $view->new_display('panel_pane', 'Contacts pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: Contact Reference Project */
   $handler = $view->new_display('entityreference_view_widget', 'Contact Reference Project', 'entityreference_view_widget_2');

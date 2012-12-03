@@ -14,6 +14,7 @@ features[features_api][] = api:1
 features[field][] = date_item-simple_date-field_date_item_tags
 features[field][] = node-erpal_date-body
 features[field][] = node-erpal_date-field_date_repeat
+features[field][] = node-erpal_date-field_users
 features[menu_links][] = menu-erpal-menu:calendar/global
 features[node][] = erpal_date
 features[taxonomy][] = date_item_tags
