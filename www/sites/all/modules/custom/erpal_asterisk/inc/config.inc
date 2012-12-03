@@ -11,16 +11,18 @@ function _erpal_asterisk_menu(){
     'title' => 'Asterisk Core Config',
     'page callback' => '_erpal_asterisk_config',    
     'access arguments' => array('config erpal asterisk'),
-    'file' => 'inc/config.inc',
+    'file' => 'erpal_asterisk.module',
     'type' => MENU_LOCAL_TASK,
   );
   $items['asterisk/ingoingcall/%'] = array(
     'page callback' => '_erpal_asterisk_call',    
     'page arguments' => array(2,3),
     'access callback' => TRUE,
-    'file' => 'inc/config.inc',
+    'file' => 'erpal_asterisk.module',
   );
 
   return $items;
 }
+
+
 

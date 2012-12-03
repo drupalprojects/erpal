@@ -40,7 +40,7 @@ function erpal_asterisk_schema() {
     'foreign keys' => array(
       'uid' => array('users' => 'uid'),
     ),
-    'primary key' => array('call_log'),
+    'primary key' => array('call_log_id'),
   );
 
   return $schema;

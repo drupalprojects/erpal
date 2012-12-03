@@ -596,6 +596,71 @@ function feature_erpal_profile_field_default_fields() {
     ),
   );
 
+  // Exported field: 'profile2-asterisk_settings-field_phone_numbers'.
+  $fields['profile2-asterisk_settings-field_phone_numbers'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_phone_numbers',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+        'profile2_private' => 0,
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'asterisk_settings',
+      'comment_enabled' => 0,
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'profile2',
+      'field_name' => 'field_phone_numbers',
+      'label' => 'Listening numbers',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => 1,
+      ),
+    ),
+  );
+
   // Exported field: 'profile2-contract-field_contract_data'.
   $fields['profile2-contract-field_contract_data'] = array(
     'field_config' => array(
@@ -808,6 +873,7 @@ function feature_erpal_profile_field_default_fields() {
   t('Hours a week');
   t('Hours a week the worker has to work');
   t('How many days a year the worker has for holiday');
+  t('Listening numbers');
   t('Member type');
   t('Monday till sunday basic availability per day');
   t('Price per h');

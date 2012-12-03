@@ -67,10 +67,11 @@ HTTPPerDrupal.prototype.handleIngoingData = function (request, response) {
     postData += chunk.toString();
   });
   
+  	    
   request.on('end', function(chunk) {
     var post = self.queryString.parse (postData);	 
     self.eventHandler.invokeListeners('sendData',  post);
-    
+            
     response.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin' : '*'
@@ -97,7 +98,9 @@ HTTPPerDrupal.prototype.handleClientRegistering = function (request, response) {
   request.on('data', function(chunk) {
     postData += chunk.toString();
   });
-  
+  // console.log('---------------------------------------------------------');
+  // console.log(postData);
+  // console.log('---------------------------------------------------------');
   request.on('end', function(chunk) {
 
     var post = self.queryString.parse (postData);	 
