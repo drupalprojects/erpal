@@ -89,6 +89,7 @@ function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
   variable_set('asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
   variable_set('asterisk_nodejs_socket_port'    , $form_state['values']['socket_port']);
   variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
+  
    
 }
 

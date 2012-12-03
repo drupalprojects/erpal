@@ -12,14 +12,25 @@ define("VIEWCONTENTTYPE", "erpal_contact");
 * Implements hook_init
 */
 function erpal_asterisk_notify_init() {
-	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' );  
-	$my_phone_number = _erpal_basic_helper_return_my_value('field_phone');
+  
+	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' ); 
+  global $user; 
+  $profile = profile2_load_by_user($user);
+  
+  (isset($profile['asterisk_settings'])) 
+    ? $phone_numbers_raw = $profile['asterisk_settings']->field_phone_numbers[LANGUAGE_NONE]
+    : $phone_numbers_raw = array();
+  
+  $phone_numbers = array();  foreach($phone_numbers_raw as $item){
+    $phone_numbers[] = $item['value'];
+  }
+  
 	$js_settings = array(
-	  'client_phone_number' => $my_phone_number,
+	  'client_phone_numbers' => $phone_numbers,
     'client_ip' => $_SERVER['REMOTE_ADDR'],
     'nodejs_host' => variable_get('asterisk_nodejs_host'),
     'nodejs_http_port' => variable_get('asterisk_nodejs_http_port'),
-    'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port')
+    'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port'),
   );
   
   //@todo externe libraries mit dem libraries modul einbinden, d�rfen nicht in der Distribution mitgeliefert werden
@@ -190,7 +201,6 @@ function _erpal_asterisk_get_view($phone_number){
   $view->execute();
   
   $result	= $view->render();
-  dpm($view);
   return $result;
   
   /*

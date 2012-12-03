@@ -14,18 +14,12 @@ function ClientManager () {
 }
 
 ClientManager.prototype.register = function (phoneNumbers, ip) {
-
-  // debugging
-  console.log("register");
-  console.log(phoneNumbers + ", " + ip);
-
   
 	this.clientEntities[ip] = {
 			'phoneNumbers': 		JSON.parse (phoneNumbers),
 			'socketClientObject': 	this.socketClients[ip],
 			'status':				true
-	};
-	
+	};	
 	return;
 }; 
 
