@@ -22,8 +22,7 @@ function cne_form_comment_form_alter(&$form, &$form_state) {
   $node = $form['#node'];
 
 	//Check to see if it's a new comment (CID should be null), that user has 'post comments' permission, that commenting is open.
-  if (is_null ($form['cid']['#value']) &&
-						user_access('post comments') && 
+  if (user_access('post comments') && 
 						$node->comment == COMMENT_NODE_OPEN && 
 						(variable_get('comment_form_location_' . $node->type, COMMENT_FORM_BELOW) == COMMENT_FORM_BELOW)) { 	
 		
@@ -80,5 +79,5 @@ function cne_form_validate($form, &$form_state) {
 function  cne_form_submit($form, &$form_state) {
 	field_attach_submit('node', $form['#node'], $form, $form_state);
   node_save($node = $form['#node']);
-	drupal_set_message($form['#node']->title . " updated by " . $form['author']['_author']['#markup'] . " via comment");
+	drupal_set_message($form['#node']->title . " updated via comment");
 }

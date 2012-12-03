@@ -3,5 +3,5 @@ www/sites/all/modules/development
 www/sites/*/files
 www/sites/*/libraries
 www/nbproject
-
-/www/sites/all/libraries
+www/sites/all/libraries
+www/private

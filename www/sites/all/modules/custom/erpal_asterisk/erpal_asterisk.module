@@ -38,7 +38,7 @@ function _erpal_asterisk_config_form() {
   
   $form['description'] = array(
     '#type' => 'fieldset', 
-    '#title' => t('Configurations of asterisk cor'),
+    '#title' => t('Configurations of asterisk core'),
     '#collapsible' => TRUE, // Added 
     '#collapsed' => FALSE, // Added
   );
@@ -89,6 +89,7 @@ function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
   variable_set('asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
   variable_set('asterisk_nodejs_socket_port'    , $form_state['values']['socket_port']);
   variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
+  
    
 }
 
@@ -99,37 +100,57 @@ function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
  *	@result A boolean indicating whether the communication was successful or not
  */
 function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
+  
 	//$file	= drupal_get_path('module','erpal_asterisk').'/last_call.htm';
 	//file_put_contents( $file, $data );
   
   //set POST variables
-  $url = variable_get('asterisk_nodejs_host') . ':' . variable_get('asterisk_nodejs_http_port') . '/ingoing';
+  $url = 'http://' . variable_get('asterisk_nodejs_host') . ':' . variable_get('asterisk_nodejs_http_port') . '/ingoing';
+  
+  // $phone_number = libphonenumber_format(urlencode($destination));
+  $phone_number = $destination;
   $fields = array(
-      'receiverPhoneNumber' => urlencode($destination),
+      'destination' => $phone_number,
       'caller_data' => urlencode($data)
+  );
+  $fields_string = '';
+  foreach ($fields as $key => $value) {
+    $fields_string .= $key . '=' . $value . '&';
+  } 
+  $fields_string = rtrim($fields_string, '&');
+  $options = array(
+    'method' => 'POST',
+    'data' => $fields_string,
   );
 
-  $fields_string = '';
-  foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-  rtrim($fields_string,'&');
+  //send data to node.js server
+  drupal_http_request($url, $options);
+}
 
-  //print "url: " . $url;
-  //print "  fields: " . $fields_string;
-  
-  //open connection
-  $ch = curl_init();
 
-  //set the url, number of POST vars, POST data
-  curl_setopt($ch,CURLOPT_URL,$url);
-  curl_setopt($ch,CURLOPT_POST,count($fields));
-  curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
+/**
+ * Implements hook_entity_update()
+ */
+function erpal_asterisk_entity_update($entity, $type) {
+  if($type == 'field_collection_item' && $entity->field_name == 'field_phone') {
+    $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
+    
+    if(!isset($entity->field_phone_number_normali[LANGUAGE_NONE][0])) {
+      $phone_number_normalized_old = "";
+    }
+    else {
+      $phone_number_normalized_old = $entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'];
+    }
+    
+    // TODO: find out why libphonenumber is not working correctly or use own
+    // function (-> _erpal_asterisk_normalize_phone_number())
+    $phone_number_normalized =  libphonenumber_format($phone_number);
 
-  //execute post
-  $result = curl_exec($ch);
-  //print "result: " . $result;
-
-  //close connection
-  curl_close($ch);
+    if($phone_number_normalized != $phone_number_normalized_old) {
+      //$entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
+      //$entity->save(TRUE);
+    }
+  }
 }
 
 
@@ -140,8 +161,13 @@ function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
 function _erpal_asterisk_call($destination, $source = NULL){
   
   module_invoke_all('ingoing_call', $destination, $source);
-  die();
-  
+  $s = ($source == NULL) ? 'NULL' : $source;
+  return 'call notification with destination ' 
+    . $destination 
+    . ' and source ' 
+    . $s 
+    . ' forwarded to asterisk_notify.';
+    
   return implode (
   	'', 
     module_invoke_all('ingoing_call', $destination, $source)
@@ -154,6 +180,10 @@ function _erpal_asterisk_request($destination, $source = False, $html){
 
    // JAVASCRIPT REQUEST FOLGT HIER
    return $html; 
+}
+
+function _erpal_asterisk_normalize_phone_number($phone_number) {
+
 }
 
 

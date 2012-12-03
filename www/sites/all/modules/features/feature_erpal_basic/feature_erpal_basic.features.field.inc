@@ -913,9 +913,6 @@ function feature_erpal_basic_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'direction' => 'ASC',
-            'field' => 'body:value',
-            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -1587,6 +1584,84 @@ function feature_erpal_basic_field_default_fields() {
         'settings' => array(),
         'type' => 'options_buttons',
         'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_contact-field_customer_category'.
+  $fields['node-erpal_contact-field_customer_category'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_customer_category',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'A' => 'A-Customer',
+          'B' => 'B-Customer',
+          'C' => 'C-Customer',
+          'NO' => 'NO-Customer',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_contact',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 16,
+        ),
+        'entityreference_view_widget' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 9,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_customer_category',
+      'label' => 'Customer Category',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 12,
       ),
     ),
   );
@@ -2943,6 +3018,7 @@ function feature_erpal_basic_field_default_fields() {
   t('Contact Tags');
   t('Contact Type');
   t('Country');
+  t('Customer Category');
   t('Email Addresses');
   t('Facebook');
   t('Fax numbers');

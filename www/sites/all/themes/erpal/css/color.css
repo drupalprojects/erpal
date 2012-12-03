@@ -164,7 +164,21 @@ h1 {
 		color-stop(0.72, #EFEFEF)
 	);
 }
+.region-sidebar-right .pane-page-actions li a:hover{
+	background-image: linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+	background-image: -o-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+	background-image: -moz-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+	background-image: -webkit-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+	background-image: -ms-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.37, #DBD8DB),
+		color-stop(0.69, #E8E8E8)
+	);
+}
 #mini-panel-task_status_panel,
 #mini-panel-activity_status_panel{
 	background-color: #eeeeee;
@@ -201,10 +215,13 @@ ul.quicktabs-tabs li.last{
 }
 .ctools-collapsible-processed h2.pane-title {
     background-color: #AFAFAF;
-	color: #202020;
 }
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
 	background: none;
+}
+.ctools-collapsible-processed h2.pane-title,
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title,
+.erpal-content-layout-template .region-sidebar-right{
 	color: #202020;
 }
 .ctools-collapsible-processed .panel-separator{
@@ -287,17 +304,19 @@ tr.even.completed {
 }
 
 .pane-node-body,
-/*#block-panels-mini-body-and-comments */article.comment{
+article.comment{
 	background-color: #ffffff;
 }
-
+.comment .submitted {
+    border-bottom: 1px solid #F4F4F4;
+}
+.comment-form{
+	background-color: #eeeeee;
+}
 /* crm activity */
 
 .field-type-datetime  fieldset {
 	border: none;
-}
-#comment-form {
-	border: 1px solid #AFAFAF;
 }
 /*---------------------------------dashboard styles-----------------------------------------*/
 #homebox .homebox-column{
@@ -305,4 +324,13 @@ tr.even.completed {
 }
 #homebox .more-link, #homebox .portlet-title, #homebox .homebox-portlet .portlet-header {
     background-color: #F6F6F6;
+}
+
+/*-------------------------------------crm styles-------------------------------------*/
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th,
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li{
+	background-color: #AFAFAF;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td{
+	border-bottom: 1px solid #e7e7e7;
 }

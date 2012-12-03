@@ -67,7 +67,15 @@ function erpal_invoice_helper_schema() {
       'notes' => array(
         'description' => 'The default notes on invoices of the customer.',
         'type' => 'text',
-      ),
+      ),      
+      'currency' => array(
+        'type' => 'varchar', 
+        'length' => 10, 
+        'not null' => TRUE, 
+        'default' => '', 
+        'description' => 'Add customer currency'
+      ,)
+      
     ),
     'primary key' => array('customer_nid'), //only one default per customer id
   );

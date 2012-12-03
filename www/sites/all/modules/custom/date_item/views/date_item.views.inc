@@ -83,6 +83,32 @@ function date_item_views_data() {
     ),
   );
   
+  //@TODO actually this only works for nodes, later we should prepare this to be compatible with all entities
+  $data['date_item']['src_id'] = array(
+    'title' => t('Src node'),
+    'help' => t('The referenced source entity'),
+    'field' => array(
+      'handler' => 'views_handler_field_numeric',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_numeric',
+      'numeric' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_numeric',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+    'relationship' => array(
+      'label' => 'relation src node',
+      'title' => t('Referenced source node'),
+      'base' => 'node',
+      'base field' => 'nid',
+    ),
+  );
+  
   $data['date_item']['created'] = array(
     'title' => t('Create Date'),
     'help' => t('The date when the date item was created.'),

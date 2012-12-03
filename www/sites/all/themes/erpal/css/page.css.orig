@@ -1,0 +1,897 @@
+body.panels-ipe{
+	margin-bottom: 0 !important;
+}
+/* =============================================================================
+ *  Top region
+ * ========================================================================== */
+.panel-flexible.panels-flexible-erpal_panel_layout.top-region {
+    height: 125px;
+}
+.panels-flexible-region-erpal_panel_layout-tabs_region{
+    width: 100%;
+}
+
+/* =============================================================================
+ *   Logo
+ * ========================================================================== */
+.pane-page-logo {
+	margin-bottom: 10px;
+	padding: 0;
+	text-align: center;
+}
+
+
+/* =============================================================================
+ *   Left region
+ * ========================================================================== */
+.panels-flexible-region-erpal_panel_layout-left_region{
+    width: 150px;
+}
+.panels-flexible-region-inside-first {
+    padding-right: 0;
+}
+.pane-menu-menu-erpal-menu ul,
+.pane-menu-menu-erpal-menu ul li ul {
+    margin: 0;
+    padding: 0;
+}
+.pane-menu-menu-erpal-menu ul li {
+    padding: 0;
+    list-style-image: none;
+    list-style-type: none;
+}
+.pane-menu-menu-erpal-menu ul li ul li.last,
+.pane-menu-menu-erpal-menu ul li.expanded.active-trail ul li a,
+.pane-menu-menu-erpal-menu ul li.expanded.active-trail{
+	border-bottom: none;
+}
+.pane-menu-menu-erpal-menu ul li ul li a {
+	padding-left: 25px;
+}
+.pane-menu-menu-erpal-menu ul li a {
+    padding: 9px 17px 9px 10px;
+	display: block;
+	font-size: 14px;
+}
+.pane-system-user-menu ul{
+	margin: 0px;
+	padding: 0;
+	overflow: hidden;
+}
+.pane-system-user-menu li{
+	padding: 0;
+	float: right;
+	width: 74px;
+	text-align: center;
+}
+.pane-system-user-menu li.last{
+	border-right: 1px solid #847C76;
+}
+.panels-flexible-erpal_panel_layout-inside,
+.panels-flexible-erpal_panel_layout-left,
+.panels-flexible-column,
+.left-region .panels-flexible-column-inside,
+.left-region .panels-flexible-row,
+.left-region .panels-flexible-row-inside {
+	height: 100%
+} 
+.panels-flexible-column-inside-first{
+	padding-right: 0;
+	box-shadow: 1px 2px 2px #888888;
+}
+.tabs-region .block {
+	margin-bottom: 0px;
+}
+.panels-flexible-erpal_panel_layout-left{
+	float: left;
+	position: absolute;
+	left: 0;
+}
+.pane-search-form{
+	margin-bottom: 12px;
+}
+.ui-tabs .ui-tabs-nav li {
+	margin: 0px;
+}
+/*-----------------Search Block-------------------------------*/
+#search-block-form .form-text{
+	margin-left: 5px;
+	width: 130px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #C0C0C0;
+    font-size: 11px;
+}
+
+
+
+/* =============================================================================
+ *   Tabs
+ * ========================================================================== */
+.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside{
+	margin-left: 150px;
+	height: 52px;
+}
+.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside .panels-ipe-region{
+	height: 42px;
+}
+
+/* =============================================================================
+ *   Middle region
+ * ========================================================================== */
+#user-login input.form-text {
+	width: 200px;
+}
+.panel-2col-stacked .inside .inside, 
+.pane-content .panels-flexible-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside {
+    background: none;
+    border: none;
+}
+.panels-flexible-row{
+	padding: 0px;
+}
+.panels-flexible-column-inside-last {
+    padding: 0;
+}
+.panels-flexible-row-erpal_panel_layout-main-row-inside, .panels-flexible-row-erpal_panel_layout-1-inside {
+	margin-right: 20px;
+	margin-left: 30px;
+}
+.panels-flexible-row-erpal_panel_layout-1 .tabs-region, .panels-flexible-row-erpal_panel_layout-main-row .tabs-region{
+	display: none;
+}
+.panels-flexible-column-erpal_panel_layout-main{
+    width: 100%;
+	float: left;
+}
+.panels-flexible-row.panels-flexible-row-erpal_panel_layout-5.panels-flexible-row-first.clearfix.tabs-region{
+	margin-bottom: 30px;
+}
+.panels-flexible-erpal_panel_layout-middle {
+    margin-left: 150px;
+    min-width: 440px;
+}
+.panels-flexible-erpal_panel_layout {
+    height: 100%;
+}
+
+/* =============================================================================
+ *   first row - middle section
+ * ========================================================================== */
+.panels-flexible-region-erpal_panel_layout-row_first_right {
+    margin-left: 20px;
+}
+.row-first-left{
+	min-width: 360px;
+}
+
+/* =============================================================================
+ *   erpal_content_layout
+ * ========================================================================== */
+.erpal-content-layout-template .region-sidebar-left{
+	float: left;
+}
+.erpal-content-layout-template .region-sidebar-right{
+	float: right;
+}
+.erpal-content-layout-template .region-sidebar-right{
+    margin: 0 0 0 10px;
+    width: 250px;
+}
+.erpal-content-layout-template .content-inner{
+	padding-bottom: 30px;
+	clear: both;
+	max-width: 1100px;
+	min-width: 1100px;
+	overflow: hidden;
+}
+.erpal-content-layout-template .region-sidebar-left{
+	max-width: 800px;
+	min-width: 360px;
+    width: 100%;
+}
+.pane-page-title.block{
+	margin-bottom: 0;
+}
+/* =============================================================================
+ *   Projects
+ * ========================================================================== */
+.region-sidebar-right .pane-page-actions li{
+	margin: 0 2px 7px;
+	list-style-type: none;
+}
+.region-sidebar-right .pane-page-actions li a{
+	padding: 6px 0px;
+	display: block;
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px; 
+	border-radius: 11px;
+	-webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+	box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+#mini-panel-task_status_panel,
+#mini-panel-activity_status_panel{
+	padding: 10px 20px;
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px; 
+	border-radius: 11px;
+}
+.panel-display .pane-entity-field h2.pane-title {
+	padding-right: 5px;
+	font-size: 14px;
+    font-weight: bold;
+}
+.panel-display .pane-entity-field .block-content{
+	float: left;
+}
+.panel-display .pane-entity-field  .ds-form .group-left {
+    width: auto;
+	float: none;
+}
+.ctools-collapsible-content .panel-display .pane-entity-field .block-content, 
+.ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title{
+	float: none;
+}
+.panel-display .pane-entity-field .form-item label,
+.panel-display .pane-entity-field .rel-register-link {
+    float: left;
+}
+.panel-display .pane-entity-field  .field-type-taxonomy-term-reference{
+	margin: 0px;
+}
+.panel-display .pane-entity-field .form-item {
+	margin-bottom: 0px;
+}
+ul.quicktabs-tabs{
+	margin: 0;
+	padding-left: 0;
+	background: none;
+	overflow: hidden;
+	border: none;
+}
+.panel-display .ui-widget-content{
+	background: none;
+	border: none;
+}
+.panel-display .ui-tabs .ui-tabs-panel{
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px; 
+	border-radius: 11px;
+	-webkit-border-top-left-radius: 0;
+	-moz-border-radius-topleft: 0;
+	border-top-left-radius: 0;
+	display: block;
+	float: left;
+}
+ul.quicktabs-tabs li a {
+    padding: 1px 12px;
+    text-decoration: none;
+	font-size: 12px;
+	font-weight: bold;
+	min-width: 100px;
+	display: block;
+    float: left;
+}
+ul.quicktabs-tabs li{
+	margin: 0px;
+	padding: 0;
+	float: left;
+}
+.ctools-collapsible-container .ctools-collapsible-handle {
+    cursor: pointer;
+}
+
+/*
+ *  collapsible
+ */
+ .ctools-collapsible-processed h2.pane-title {
+    margin: 0;
+    padding: 3px 5px 0px 30px;
+	font-size: 13px;
+}
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
+	padding-left: 0;
+	color: #525252;
+}
+.ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
+	margin: 0;
+}
+.ctools-collapsible-container .block-content a{
+	text-decoration: underline;
+}
+.ctools-collapsible-processed section,
+.ctools-collapsible-processed .field-name-field-books-ref{
+	margin-bottom: 10px;
+	padding-left: 10px;
+}
+.ctools-collapsible-processed .field-name-field-task-assigned-users{
+	padding-left: 0px;
+}
+.ctools-collapsible-processed .panel-separator{
+	height: 1px;
+	overflow: hidden;
+}
+.ctools-collapsible-processed ul{
+	margin: 0;
+	padding: 0px;
+}
+.ctools-collapsible-processed ul li{
+	list-style-type: none;
+}
+.ctools-collapsible-processed .field-type-taxonomy-term-reference{
+	margin: 0;
+}
+.ctools-collapsible-processed .field-name-field-asset-files{
+	margin-bottom: 10px;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item{
+    margin-left: 20px;
+	display: list-item;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item a,
+.ctools-collapsible-processed .field-name-field-books-ref a{
+    text-decoration: underline;
+}
+#mini-panel-task_status_panel .panel-separator,
+#mini-panel-activity_status_panel .panel-separator{
+	display: none;
+}
+#mini-panel-task_status_panel section,
+#mini-panel-activity_status_panel section{
+	margin-bottom: 0;
+	margin-right: 30px;
+	float: left;
+}
+.block-content .local_tasks, #mini-panel-task_status_panel li{
+	padding: 0px;
+	list-style-type: none;
+}
+#mini-panel-task_status_panel  ul,
+#mini-panel-activity_status_panel ul{
+	padding-left: 5px;
+}
+.region-sidebar-right .panel-separator{
+	display: none;
+}
+.ctools-collapsible-container .panel-separator{
+	display: block;
+}
+.ctools-collapsible-container .no-title{
+	padding-left: 10px;
+}
+.ctools-collapsible-container .ctools-toggle{
+	background-position: 7px 10px;
+}
+/*
+ *  table
+ */
+.block-content .view-content .views-table th{
+	font-size: 14px;
+}
+.block-content .view-content .views-table td, .block-content .view-content .views-table th{
+	padding: 15px 15px 15px 12px;
+}
+.block-content .view-content .views-table{
+	margin-top: 0;
+	border: none;
+}
+.view-filters .rel-register-build{
+	padding: 10px;
+	-webkit-border-top-left-radius: 8px;
+	-moz-border-radius-topleft: 8px;
+	border-top-left-radius: 8px;
+	-webkit-border-top-right-radius: 8px;
+	-moz-border-radius-rightleft: 8px;
+	border-top-right-radius: 8px;
+}
+.view-filters .rel-register-build .views-exposed-widgets{
+	margin-bottom: 0px;
+}
+.block-content .view-content .views-table td.views-field-title a,
+.block-content .view-content .views-table td.views-field-field-customer-ref{
+	text-decoration: underline;
+}
+.view-filters .rel-register-build  .views-exposed-widget .rel-register-link{
+	padding-top: 12px;
+	padding-right: 20px;
+	float: left;
+}
+.views-exposed-form .views-exposed-widget .form-submit {
+    margin-top: 1.3em;
+}
+.view-empty{
+	padding: 15px;
+}
+.local_tasks{
+	margin: 2px 0 0;
+}
+.quicktabs-tabpage .views-table .views-field-title{
+	 width: 115px;
+}
+.quicktabs-tabpage .views-field-field-task-status-term{
+	width: 70px;
+}
+.page-projects .views-field-title{
+	width: 200px;
+}
+.page-projects .views-field-field-customer-ref{
+	width: 200px;
+}
+.page-projects .views-field-field-project-status-term, 
+.page-projects .views-field-field-priority-term{
+	width: 100px;
+}
+.page-projects #edit-field-customer-ref-target-id-wrapper{
+	margin-left: 45px;
+}
+.page-projects #edit-field-project-status-term-tid-wrapper{
+	margin-left: 23px;
+}
+.page-projects #edit-field-project-status-term-tid-wrapper{
+
+}
+/*--------------------------------for erpal task view row layout------------------------------------------*/
+.erpal-task-view-row-layout .region-sidebar-left{
+	width: 70%;
+	float: left;
+}
+.erpal-task-view-row-layout .region-sidebar-right{
+    margin-left: 20px;
+    width: 28%;
+	float: left;
+}
+.erpal-task-view-row-layout .content-inner{
+	margin-bottom: 20px;
+	clear: both;
+	max-width: 1100px;
+	min-width: 1100px;
+}
+
+/*---------------ticket details-----------*/
+.field-name-task-title .field-item a{
+	font-weight: bold;
+	font-size: 16px;
+}
+.field-name-task-title .field-item p{
+	margin-bottom: 0px;
+}
+.node-erpal-task .columns-inner{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+#tabs-tasks_by_project_panel-middle ul.field-items{
+	padding: 0px;
+	margin: 0px;
+}
+
+#tabs-tasks_by_project_panel-middle-1,
+#tabs-tasks_by_project_panel-middle-2,
+#quicktabs-tabpage-tickets_by_project_tabs-2,
+#tabs-tickets_by_project_panel-middle-1,
+#tabs-tickets_by_project_panel-middle-2 {
+    background: transparent;
+    border-radius: 0 0 0 0;
+    padding: 0;
+}
+#quicktabs-tabpage-tickets_by_project_tabs-2  .content-column .content-inner,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner{
+	overflow: hidden;
+}
+.quicktabs-tabpage .view-mode-view_row_details .field-label,
+.quicktabs-tabpage .view-mode-view_row_details .field-items,
+#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div, 
+.quicktabs-tabpage .field-collection-item-field-pricing .field-label, 
+.quicktabs-tabpage .field-collection-item-field-pricing .field-items{
+	float: left;
+}
+#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above{
+	width: 100%;
+}
+.quicktabs-tabpage .field-label{
+    margin: 0px !important;
+}
+#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
+	font-weight: bold;
+}
+#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
+#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a{
+	font-weight: normal;
+	text-decoration: underline;
+}
+#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field .field-label,
+#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field .field-label,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
+	padding-right: 5px;
+}
+.quicktabs-tabpage .field-group-format section.field,
+#quicktabs-tabpage-tasks_by_project_tabs-2 section.field{
+	overflow: hidden;
+	clear: both;
+}
+.page-node-tasks ul li{
+	list-style-type: none;
+}
+.page-node-tasks .quicktabs-tabpage .article.view-mode-view_row_details .columns-inner{
+	padding: 0;
+}
+.page-node-tasks .content-inner{
+	border-bottom: 1px solid #e5e5e5;
+}
+.page-node-tasks .region-sidebar-left, 
+.page-node-tasks .region-sidebar-right{
+	padding: 10px;
+}
+.page-node-tasks .region-sidebar-left{
+	max-width: 650px;
+}
+.page-node-tasks .region-sidebar-right{
+	width: 400px;
+}
+.page-node-tasks .node-erpal-task a{
+	text-decoration: underline;
+}
+#quicktabs-tabpage-tickets_by_project_tabs-2 .view-content .item-list ul li.field-item,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .view-content .item-list ul li.field-item{
+	margin: 0px;
+}
+#quicktabs-tabpage-tickets_by_project_tabs-2  .item-list ul,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .item-list ul{
+	padding: 0px;
+}
+#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-container,
+#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-container {
+    background-color: transparent;
+    border: none;
+}
+#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-content,
+#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-content{
+	padding-top: 0px;
+}
+.erpal-content-layout-template .single-row{
+	max-width: 100%;
+}
+.field-name-files-count .field-items,
+.field-name-comment-count .field-items{
+	padding-top: 5px;
+	width: 50%;
+}
+.inline_fields .field{
+	margin-right: 50px;
+	clear: none !important;
+	float: left;
+}
+.inline_fields{
+	clear: both;
+}
+ul.pager li a, ul.pager li.pager-current {
+    font-size: 1.2em;
+}
+.quicktabs-tabpage  .article.view-mode-view_row_details .columns-inner{
+	padding: 15px;
+}
+#quicktabs-tabpage-tasks_by_project_tabs-2 .item-list ul li,
+#quicktabs-tabpage-tickets_by_project_tabs-2 .item-list ul li{
+	margin: 0 0 12px 0;
+}
+#quicktabs-tabpage-tasks_by_project_tabs-1 .view-content,
+#quicktabs-tabpage-tickets_by_project_tabs-1 .view-content{
+	padding: 15px 15px 15px 10px;
+	background-color: #FFFFFF;
+}
+.view-mode-view_row_details .content-inner{
+	padding-bottom: 0px;
+}
+.pane-node-body{
+	padding: 20px;
+	min-height: 350px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+<<<<<<< HEAD
+article.comment{
+	padding: 15px 0px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+.comment .comment-header{
+	padding-right: 10px;
+	padding-left: 15px;
+	float: left;
+}
+.comment .comment-content,
+.comment ul.links{
+	padding-right: 15px;
+	padding-left: 15px !important;
+}
+.comment .comment-content{
+	padding-top: 15px;
+}
+.comment .submitted{
+	padding-right: 15px;
+}
+.comment .author-datetime{
+	margin-bottom: 12px;
+}
+.pane-node-body p,
+.comment .field-name-comment-body p{
+=======
+
+.pane-node-body p{
+>>>>>>> ac6ff41d23de358181675ed92e38179e110603f2
+	font-size: 16px;
+}
+.comment-form{
+	padding: 15px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+.quicktabs-tabpage  #edit-nid{
+	width: 40px;
+}
+.quicktabs-tabpage  #edit-title{
+	width: 120px;
+}
+.quicktabs-tabpage #edit-field-priority-term-tid{
+	width: 75px;
+}
+.quicktabs-tabpage #edit-field-task-type-term-tid{
+	width: 60px;
+}
+.page-projects-timetrackings #edit-field-date-time-value-wrapper{
+	margin-left: 45px;
+}
+.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper{
+	margin-left: 440px;
+}
+.page-projects-timetrackings #edit-field-project-ref-target-id{
+	width: 120px;
+}
+.page-projects-timetrackings .views-field-field-date-time{
+	width: 140px;
+}
+.page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2{
+	width: 120px;
+}
+.page-projects-timetrackings #edit-uid{
+	width: 90px;
+}
+.page-projects-timetrackings .views-submit-button{
+	clear: both;
+}
+.page-projects-timetrackings #edit-uid-wrapper{
+	width: 140px;
+}
+.page-projects-timetrackings #edit-uid-wrapper .description{
+	line-height: 12px;
+}
+.page-node-edit div.autocomplete-deluxe-multiple{
+	width: auto;
+}
+/* crm */
+
+.field-type-datetime  fieldset .date-padding {
+	width: 260px;
+}
+.field-type-datetime  fieldset,
+.field-type-datetime  fieldset .date-padding {
+	padding: 0;
+	margin: 0;
+}
+.field-name-field-next-contact form{
+	width: 500px;
+}
+.field-name-field-next-contact form #edit-field-next-contact {
+	float: left;
+}
+
+.field-name-field-next-contact form .form-actions {
+	width: 70px;
+	float: left; 
+}
+
+/* comments */
+
+article.comment{
+	padding: 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+article.comment .field-name-comment-body p{
+	font-size: 16px;
+}
+#comment-form {
+	padding: 15px;
+	margin-top: 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px; 
+	border-radius: 5px;
+}
+#comment-form .field-name-field-activity-status-term  {
+	width: 160px;
+	float: left;
+}
+#comment-form .field-type-datetime {
+	width: 300px;
+	float: left;
+}
+#comment-form #edit-author--2 {
+	clear: both;
+}
+#comment-form #edit-field-contacts-ref {
+	width: 350px;
+	float: left;
+	margin-right: 40px;
+}
+#comment-form #edit-field-asset-files {
+	width: 350px;
+	float: left;
+}
+#comment-form #edit-actions {
+	clear: both;
+}
+#comment-form .group-left .field-widget-options-select {
+	width: 100px;
+	float: left;
+}
+.comment-content section{
+	width: 250px;
+	float: left;
+}
+.comment nav {
+	clear: both;
+}
+/* multi select boxes */
+.views-exposed-form .views-exposed-widget {
+	padding-right: 10px !important;
+}
+.views-exposed-form button span:not(.ui-icon){
+	position: absolute;
+	overflow: hidden;
+	width: 105px !important;
+	height: 19px;
+	line-height: 13px;
+}
+.views-exposed-form button {
+	font-size: 11px;
+	height: 25px;
+	width: 130px !important;
+	overflow: hidden;
+}
+#edit-field-task-status-term-tid-wrapper ,
+#edit-field-activity-status-term-tid-wrapper,
+#edit-field-priority-term-tid-wrapper,
+#edit-field-task-type-term-tid-wrapper,
+#edit-field-project-tags-tid-wrapper,
+#edit-field-task-assigned-users-target-id-wrapper  {
+	width: 130px !important;
+}
+.ui-multiselect-menu {
+	width: 200px !important;
+}
+.ui-helper-reset {
+	position: relative;
+}
+.ui-multiselect-close {
+	position: absolute;
+	right: 0;
+}
+.ui-multiselect-header {
+	padding: 3px 0;
+}
+/*---------------------------------dashboard styles-----------------------------------------*/
+#homebox .portlet-content {
+    padding: 0px;
+}
+#homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
+    border: none;
+}
+#homebox .more-link {
+    padding: 4px 10px;
+}
+#homebox .homebox-column{
+	margin: 0;
+	padding: 0;
+}
+#homebox .homebox-column-wrapper-1{
+	margin-right: 20px;
+}
+#homebox .homebox-column-wrapper {
+    float: left;
+    width: 48% !important;
+}
+#homebox .homebox-column-wrapper-1 {
+    margin-right: 25px;
+}
+#homebox .homebox-column-wrapper {
+    width: 48% !important;
+}
+#homebox .portlet-header{
+	font-weight: normal;
+}
+#homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption{
+	padding-left: 12px;
+}
+#homebox .form-submit{
+	margin-left: 12px;
+}
+#homebox .homebox-portlet .portlet-header .portlet-title {
+    padding-left: 8px;
+}
+#homebox .homebox-portlet .portlet-header{
+	border: none;
+}
+/*-------------------------------------crm styles-------------------------------------*/
+.node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title{
+    margin-bottom: 7px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
+    margin: 0;
+    padding: 0;
+	border: medium none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th{
+	padding: 10px;
+	font-size: 14px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li{
+	list-style-type: none;
+	padding-right: 7px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul{
+	margin: 0;
+    padding: 0;
+	float: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane table{
+	margin: 0;
+	border: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane table td{
+	padding: 10px;
+}
+
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container{
+	border: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a{
+	font-size: 1.2em;
+    text-decoration: underline;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item{
+	margin: 0px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li{
+	padding: 10px;
+	text-align: right;
+	-webkit-border-bottom-left-radius: 2px;
+	-moz-border-radius-bottomleft: 2px;
+	border-bottom-left-radius: 2px;
+	-webkit-border-bottom-right-radius: 2px;
+	-moz-border-radius-bottomright: 2px;
+	border-bottom-right-radius: 2px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference{
+	margin: 0px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title{
+	font-size: 26px;
+}
+.region-sidebar-right .ctools-collapsible-container figure {
+    text-align: center;
+}

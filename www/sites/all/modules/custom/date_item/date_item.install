@@ -125,6 +125,12 @@ function date_item_schema() {
       'date_item_type' => array(array('type', 4)),
     ),
     'primary key' => array('date_item_id'),
+    'foreign keys' => array(
+      'subject_node' => array(
+        'table' => 'node',  //@TODO: not so good because the referenced entity could be a different type than node
+        'columns' => array('src_id' => 'nid'),
+      ),
+     ),
   );
 
 
@@ -236,4 +242,3 @@ function date_item_update_7001 () {
   ); 
   db_add_field( 'date_item', 'title', $spec);
 } 
-

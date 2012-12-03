@@ -78,6 +78,29 @@ function feature_erpal_project_basic_taxonomy_default_vocabularies() {
         ),
       ),
     ),
+    'service_category_terms' => array(
+      'name' => 'Service category terms',
+      'machine_name' => 'service_category_terms',
+      'description' => '',
+      'hierarchy' => '0',
+      'module' => 'taxonomy',
+      'weight' => '0',
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
+    ),
     'task_status_terms' => array(
       'name' => 'Task status terms',
       'machine_name' => 'task_status_terms',
