@@ -6,3 +6,7 @@ www/sites/all/libraries
 www/private
 
 
+
+www/sites/all/modules/dev
+.DS_Store
+*~

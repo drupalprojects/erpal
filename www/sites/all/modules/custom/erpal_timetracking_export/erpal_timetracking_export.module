@@ -1,0 +1,19 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_timetracking_export module.
+ */
+module_load_include('inc', 'erpal_timetracking_export', 'erpal_timetracking_export_action');
+/**
+ * Implements hook_permission
+ */
+function erpal_timetracking_export_permission(){
+  return array(
+    'timeracking export' => array(
+      'title' => t('Timetracking export'), 
+      'description' => t('Perform timeracking export'),
+    ),
+  );
+}
+
+
