@@ -230,6 +230,37 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['field_timetracking_button']['field'] = 'field_timetracking_button';
   $handler->display->display_options['fields']['field_timetracking_button']['label'] = 'Timetracking';
   $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
+  $translatables['assigned_tasks'] = array(
+    t('Master'),
+    t('Assigned open tasks'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No tasks available'),
+    t('User entity referenced from field_task_assigned_users'),
+    t('term from field_task_status_term'),
+    t('Title'),
+    t('Project'),
+    t('Priority'),
+    t('Deadline'),
+    t('Timetracking button'),
+    t('Assigned tasks page'),
+    t('Status'),
+    t('Progress'),
+    t('Parent'),
+    t('Timetracking'),
+    t('Assigned tasks block'),
+  );
   $export['assigned_tasks'] = $view;
 
   $view = new view();
@@ -522,6 +553,38 @@ function feature_erpal_project_basic_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['fixed_price_nodes'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No fixed priced items found'),
+    t('field collection item from field_pricing'),
+    t('term from field_project_status_term'),
+    t('term from field_task_status_term'),
+    t('Task title'),
+    t('Project'),
+    t('Deadline'),
+    t('Status'),
+    t('Price'),
+    t('Fixed price nodes pane'),
+    t('[field_project_status_term] --'),
+    t('Type'),
+    t('View panes'),
+    t('Fixed price tasks by project pane'),
+    t('Fixed price tasks'),
+    t('All'),
+  );
   $export['fixed_price_nodes'] = $view;
 
   $view = new view();
@@ -1013,6 +1076,40 @@ function feature_erpal_project_basic_views_default_views() {
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['projects'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No projects found'),
+    t('Title'),
+    t('Customer'),
+    t('Status'),
+    t('Priority'),
+    t('Project starts'),
+    t('Project ends'),
+    t('Projects by activity pane'),
+    t('[title] ([field_activity_status_term])'),
+    t('All'),
+    t('View panes'),
+    t('Projects and tasks reference dialog search'),
+    t('Projects and tasks'),
+    t('Content entity referenced from field_project_ref'),
+    t('Type'),
+    t('Tasks by project'),
+    t('Projects pane'),
+    t('Search Terms'),
+  );
   $export['projects'] = $view;
 
   $view = new view();
@@ -3834,6 +3931,63 @@ function feature_erpal_project_basic_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['tasks'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('No tasks available'),
+    t('Content entity referenced from field_parent'),
+    t('author'),
+    t('Project'),
+    t('Type'),
+    t('Status'),
+    t('Priority'),
+    t('Time'),
+    t('[field_estimated_time] h'),
+    t('Parent'),
+    t('Edit'),
+    t('Nid'),
+    t('Weight'),
+    t('Assigned'),
+    t('Title'),
+    t('Categories'),
+    t('Task by project pane tree'),
+    t('Tree'),
+    t('All'),
+    t('ID'),
+    t('Priority (field_priority_term)'),
+    t('View panes'),
+    t('Task child view AJAX'),
+    t('Task child view AJAX TOP'),
+    t('Subtasks Tree'),
+    t('Subtasks (tree)'),
+    t('Tasks by ID'),
+    t('Subtasks List'),
+    t('Subtasks (list)'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('#'),
+    t('Task title'),
+    t('Submitted'),
+    t('Last update'),
+    t('Deadline'),
+    t('Author'),
+    t('Subtasks Details'),
+    t('Subtasks (details)'),
+    t('Tasks by project pane list'),
+    t('List'),
+    t('Tasks by project pane details'),
+    t('Details'),
+  );
   $export['tasks'] = $view;
 
   $view = new view();
@@ -6448,6 +6602,63 @@ function feature_erpal_project_basic_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['tickets'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('No tasks available'),
+    t('Content entity referenced from field_parent'),
+    t('author'),
+    t('Project'),
+    t('Type'),
+    t('Status'),
+    t('Priority'),
+    t('Time'),
+    t('[field_estimated_time] h'),
+    t('Parent'),
+    t('Edit'),
+    t('Nid'),
+    t('Weight'),
+    t('Assigned'),
+    t('Title'),
+    t('Categories'),
+    t('ID'),
+    t('Tickets by project pane tree'),
+    t('Tree'),
+    t('All'),
+    t('Priority (field_priority_term)'),
+    t('View panes'),
+    t('Tickets child view AJAX'),
+    t('Tickets child view AJAX TOP'),
+    t('Subtickets Tree'),
+    t('Subtickets (tree)'),
+    t('Tickets by ID'),
+    t('Subtickets List'),
+    t('Subtickets (list)'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('#'),
+    t('Ticket title'),
+    t('Submitted'),
+    t('Last update'),
+    t('Deadline'),
+    t('Author'),
+    t('Subtickets Details'),
+    t('Subtasks (details)'),
+    t('Tickets by project pane list'),
+    t('List'),
+    t('Tickets by project pane details'),
+    t('Details'),
+  );
   $export['tickets'] = $view;
 
   $view = new view();
@@ -6824,6 +7035,35 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['description']['field'] = 'description';
   $handler->display->display_options['fields']['description']['label'] = 'Artikelbezeichnung';
   $handler->display->display_options['fields']['description']['exclude'] = TRUE;
+  $translatables['timetracking_entities'] = array(
+    t('Master'),
+    t('My unbooked timetrackings'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('No timetrackings available'),
+    t('Timetracking subject'),
+    t('Timetracking user'),
+    t('Timetracking'),
+    t('Timetracking ID'),
+    t('.'),
+    t(','),
+    t('Changed'),
+    t('Artikelbezeichnung'),
+    t('start'),
+    t('end'),
+    t('Duration'),
+    t('Subject'),
+    t('User'),
+    t('Delete Link'),
+    t('Edit Link'),
+    t('Timetracking button'),
+    t('My timetracking entites'),
+    t('My Timetrackings block'),
+  );
   $export['timetracking_entities'] = $view;
 
   $view = new view();
@@ -6943,6 +7183,201 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
+  /* Field: Bulk operations: Content */
+  $handler->display->display_options['fields']['views_bulk_operations_1']['id'] = 'views_bulk_operations_1';
+  $handler->display->display_options['fields']['views_bulk_operations_1']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations_1']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations_1']['label'] = 'Select';
+  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo']['operations'] = array(
+    'action::node_assign_owner_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::erpal_book_helper_clone_to_book_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::erpal_invoice_helper_invoice_from_billables_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_delete_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_delete_item' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::system_message_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_script_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::erpal_timetracking_export_basic_action' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::erpal_projects_helper_timetracking_finalise_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::flag_node_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_reduce_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_make_sticky_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_make_unsticky_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_modify_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'show_all_tokens' => 1,
+        'display_values' => array(
+          '_all_' => '_all_',
+        ),
+      ),
+    ),
+    'action::views_bulk_operations_argument_selector_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'url' => '',
+      ),
+    ),
+    'action::node_promote_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_publish_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::system_goto_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_unpromote_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_save_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::system_send_email_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_billed_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::billable_unbilled_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_unpublish_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_unpublish_by_keyword_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::pathauto_node_update_action' => array(
+      'selected' => 0,
+      'use_queue' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+  );
+  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo']['display_result'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo']['merge_single_action'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo']['force_single'] = 0;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -7549,6 +7984,42 @@ function feature_erpal_project_basic_views_default_views() {
       'fixed' => '',
       'label' => 'Budget: Budget ID',
     ),
+  );
+  $translatables['timetrackings'] = array(
+    t('Master'),
+    t('Timetrackings'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No timetrackings available'),
+    t('author'),
+    t('field_timetracking_subject'),
+    t('Date'),
+    t('Duration'),
+    t('Billing Duration'),
+    t('Task'),
+    t('Project'),
+    t('User'),
+    t('Select'),
+    t('All'),
+    t('Search Terms'),
+    t('field_project_ref'),
+    t('Timetrackings by task'),
+    t('View panes'),
+    t('Timetracking by project pane'),
+    t('Timetracking title'),
+    t('Budget timetrackings pane'),
+    t('budget entity referenced from field_budget'),
   );
   $export['timetrackings'] = $view;
 
