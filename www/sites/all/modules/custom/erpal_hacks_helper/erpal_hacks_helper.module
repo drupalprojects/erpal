@@ -29,7 +29,8 @@ function _erpal_hacks_fix_editablefields_problem(&$form) {
 function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form) {
   if (isset($form['#form_id']) && $form['#form_id'] == 'views_exposed_form') {
     //only form task views
-    if (in_array('views_exposed_form__tasks', $form['#theme']) || in_array('views_exposed_form__tickets', $form['#theme'])) {
+    $is_tabbed_view = _erpal_hacks_is_tabbed_view_exposed_form($form);
+    if ($is_tabbed_view) {
       $url = $_GET['q'];
       //dpm(request_path());
       $form['#action'] = '/'.$_GET['q'];
@@ -37,6 +38,16 @@ function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form) {
       _erpal_hacks_helper_add_qt_parameters_to_exposed_form($form);
     }
   }
+}
+
+/**
+* Returns true, if the exposed form given in argument is a tabbed view
+*/
+function _erpal_hacks_is_tabbed_view_exposed_form($form) {
+  return in_array('views_exposed_form__tasks', $form['#theme']) || 
+    in_array('views_exposed_form__tickets', $form['#theme']) ||
+    in_array('views_exposed_form__invoices', $form['#theme']) ||
+    in_array('views_exposed_form__crm_activities', $form['#theme']);
 }
 
 /**
