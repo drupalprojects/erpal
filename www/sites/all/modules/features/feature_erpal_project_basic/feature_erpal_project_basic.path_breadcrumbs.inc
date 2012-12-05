@@ -100,5 +100,49 @@ function feature_erpal_project_basic_path_breadcrumbs_settings_info() {
   $path_breadcrumb->weight = 0;
   $export['task_breakdcrump'] = $path_breadcrumb;
 
+  $path_breadcrumb = new stdClass();
+  $path_breadcrumb->api_version = 1;
+  $path_breadcrumb->machine_name = 'timetracking_node_breadcrumps';
+  $path_breadcrumb->name = 'Timetracking node breadcrump';
+  $path_breadcrumb->path = 'node/%node';
+  $path_breadcrumb->data = array(
+    'titles' => array(
+      0 => '%node:field-timetracking-subject:title',
+      1 => '%node:title',
+    ),
+    'paths' => array(
+      0 => 'node/%node:field-timetracking-subject:nid',
+      1 => '<none>',
+    ),
+    'home' => 1,
+    'translatable' => 0,
+    'arguments' => array(
+      'node' => array(
+        'position' => 1,
+        'argument' => 'entity_id:node',
+        'settings' => array(
+          'identifier' => 'Node: ID',
+        ),
+      ),
+    ),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'erpal_timetracking' => 'erpal_timetracking',
+            ),
+          ),
+          'context' => 'node',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+  );
+  $path_breadcrumb->weight = 0;
+  $export['timetracking_node_breadcrumps'] = $path_breadcrumb;
+
   return $export;
 }

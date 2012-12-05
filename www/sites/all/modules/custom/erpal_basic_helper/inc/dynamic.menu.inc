@@ -46,7 +46,7 @@ function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_p
       
       //and if this is the view button, rename it
       if ($path == 'node/%/view') {
-        $data['tabs'][$delta]['output'][$inner_delta]['#link']['title'] = t('Summary');
+        unset($data['tabs'][$delta]['output'][$inner_delta]);
       }
     }
   }

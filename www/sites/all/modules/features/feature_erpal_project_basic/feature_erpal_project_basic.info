@@ -163,6 +163,7 @@ features[panels_mini][] = task_status_panel
 features[panels_mini][] = time_information
 features[path_breadcrumbs][] = project_path
 features[path_breadcrumbs][] = task_breakdcrump
+features[path_breadcrumbs][] = timetracking_node_breadcrumps
 features[quicktabs][] = task_content_tabs
 features[quicktabs][] = tasks_by_project_tabs
 features[quicktabs][] = ticket_content_tabs
