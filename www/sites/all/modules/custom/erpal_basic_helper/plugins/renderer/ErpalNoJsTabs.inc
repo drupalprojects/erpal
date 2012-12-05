@@ -35,8 +35,9 @@ class ErpalNoJsTabs extends QuickQuicktabs {
         ),
       );
 
-      // If in ajax mode, we'll only be rendering one tab, otherwise all of them.
-      $tabs_to_render = $settings['ajax'] ? array($active_tab => $contents[$active_tab]) : $contents;
+      // we render only the current active tab, not the others!
+      $tabs_to_render = array($active_tab => $contents[$active_tab]);
+
       foreach ($tabs_to_render as $key => $tab) {
         if (!empty($tab)) {
           $attribs = array(
@@ -47,7 +48,7 @@ class ErpalNoJsTabs extends QuickQuicktabs {
             '#prefix' => '<div '. drupal_attributes($attribs) .'>',
             '#suffix' => '</div>',
             'content' => $tab->render(),
-          );
+          );          
         }
       }
     }
