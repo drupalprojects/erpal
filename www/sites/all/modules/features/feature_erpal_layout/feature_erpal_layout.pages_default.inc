@@ -137,8 +137,8 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-5';
     $pane->panel = 'row_first_left_';
-    $pane->type = 'pane_messages';
-    $pane->subtype = 'pane_messages';
+    $pane->type = 'page_breadcrumb';
+    $pane->subtype = 'page_breadcrumb';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
@@ -155,6 +155,24 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-6';
     $pane->panel = 'row_first_left_';
+    $pane->type = 'pane_messages';
+    $pane->subtype = 'pane_messages';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-6'] = $pane;
+    $display->panels['row_first_left_'][1] = 'new-6';
+    $pane = new stdClass();
+    $pane->pid = 'new-7';
+    $pane->panel = 'row_first_left_';
     $pane->type = 'page_content';
     $pane->subtype = 'page_content';
     $pane->shown = TRUE;
@@ -170,12 +188,12 @@ function feature_erpal_layout_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['row_first_left_'][1] = 'new-6';
+    $display->content['new-7'] = $pane;
+    $display->panels['row_first_left_'][2] = 'new-7';
     $pane = new stdClass();
-    $pane->pid = 'new-7';
+    $pane->pid = 'new-8';
     $pane->panel = 'tabs_region_';
     $pane->type = 'page_tabs';
     $pane->subtype = 'page_tabs';
@@ -195,8 +213,8 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['tabs_region_'][0] = 'new-7';
+    $display->content['new-8'] = $pane;
+    $display->panels['tabs_region_'][0] = 'new-8';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
