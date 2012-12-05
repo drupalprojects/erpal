@@ -10,7 +10,20 @@
 function erpal_hacks_helper_form_alter(&$form, &$form_state, $form_id) {
   _erpal_hacks_fix_editablefields_problem($form);
   _erpal_hacks_fix_quick_tabs_exposed_filter_form_action($form);
+
+  /**
+   * bugfix: display suite has a bug rendering any form in a ds context with the ds forms template. 
+   * Regardless which form will be displayed but ds should only use the ds forms template on node edit forms. 
+   */
+  if ($ds_form = ds_build_load($form, $form_id)) {
+    if (preg_match('/^editablefields_form_/', $form_id)) {
+	  $form['#theme'] = array($form['#form_id'] , 'editablefields_form');
+    }
+  } 
 }
+
+
+
 
 /**
 * Editable fields seams not to work, when the submit button with ajax processing inserted by editbale fields module is in subarray [actions] it will not be rendered (after that it will be removed by editable fields ajax, but submithandler will stay), so we just move it to another subarray
