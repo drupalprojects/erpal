@@ -575,7 +575,7 @@ function feature_erpal_crm_default_page_manager_pages() {
     'logic' => 'and',
   );
   $page->menu = array(
-    'type' => 'tab',
+    'type' => 'none',
     'title' => 'Activities',
     'name' => 'navigation',
     'weight' => '0',

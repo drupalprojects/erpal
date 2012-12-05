@@ -56,6 +56,19 @@ function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_p
 }
 
 /**
+* Return the object of an argument (direct node or ctools context) at the given $position
+*/ 
+function _erpal_basic_helper_router_object($position, $router_item) {
+  $node = isset($router_item['map'][$position]) && is_object($router_item['map'][$position]) ? $router_item['map'][$position] : false;
+    
+  //may be we have a ctools context    
+  if (is_object($node) && get_class($node) == 'ctools_context')
+    $node = $node->data;
+    
+  return $node;
+}
+
+/**
 * Module determines the context(s) of the current page
 */
 function _erpal_basic_helper_get_contexts($router_item = false) {
