@@ -81,6 +81,30 @@ function feature_erpal_crm_quicktabs_default_quicktabs() {
       'weight' => '-99',
       'type' => 'view',
     ),
+    2 => array(
+      'vid' => 'crm_activities',
+      'display' => 'panel_pane_1',
+      'args' => '%1',
+      'title' => 'Activities',
+      'weight' => '-98',
+      'type' => 'view',
+    ),
+    3 => array(
+      'vid' => 'invoices',
+      'display' => 'panel_pane_1',
+      'args' => '%1',
+      'title' => 'Invoices',
+      'weight' => '-97',
+      'type' => 'view',
+    ),
+    4 => array(
+      'vid' => 'contracts',
+      'display' => 'panel_pane_2',
+      'args' => '%1',
+      'title' => 'Contracts',
+      'weight' => '-96',
+      'type' => 'view',
+    ),
   );
   $quicktabs->renderer = 'erpal_no_js_tabs';
   $quicktabs->style = 'nostyle';
@@ -88,8 +112,11 @@ function feature_erpal_crm_quicktabs_default_quicktabs() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Activities');
   t('Contact content tabs');
+  t('Contracts');
   t('Details');
+  t('Invoices');
   t('Relations');
 
   $export['contact_content_tabs'] = $quicktabs;
