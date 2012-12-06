@@ -7,4 +7,4 @@ ul.menu li {
     list-style-type: none;
 }
 
-.local_tasks_menu ul ul { display:none; position:absolute; width: 246px; z-index:999}
+.local_tasks_menu ul ul { display:none;}
