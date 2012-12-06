@@ -24,7 +24,7 @@ function feature_erpal_layout_default_page_manager_handlers() {
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
     'body_classes_to_add' => '',
-    'css_id' => '',
+    'css_id' => 'erpal_wrapper',
     'css' => '',
     'contexts' => array(),
     'relationships' => array(),
