@@ -1,0 +1,48 @@
+.pane-system-user-menu {
+}
+
+/*
+ * left region
+ */
+.pane-menu-menu-erpal-menu {
+	margin-top: 10px;
+    width: 150px;
+}
+.pane-system-user-menu li a {
+    font-size: 11px;
+}
+/*
+ * middle region
+ */
+.panels-ipe-display-container{
+	height: 100%;
+}
+.panels-flexible-row-erpal_panel_layout-main-row-middle {
+    margin-right: 0;
+}
+.panels-flexible-region-erpal_panel_layout-center{
+   	float: left;
+    width: 100%;
+	height: 100%;
+}
+#erpal_wrapper>.panel-col-first .inside {
+    margin: 0 0 1em;
+}
+/*
+ * middle region left column
+ */
+/*
+.panel-2col .panel-col-first {
+	margin-right: -250px;
+    float: left;
+    width: 100%;
+	max-width: 800px;
+}*/
+
+/*
+ * middle region right column
+ */
+/*.panel-2col .panel-col-last {
+    float: right;
+    width: 250px;
+}*/
