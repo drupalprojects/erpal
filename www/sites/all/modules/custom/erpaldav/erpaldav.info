@@ -1,0 +1,10 @@
+name = "ERPAL DAV Modul"
+description = "CardDAV functionalities for ERPAL"
+package = "ERPAL"
+core = 7.x
+php = 5.3
+version = 7.x-1.0
+files[] = "erpaldav.module"
+files[] = "erpaldav.install"
+files[] = "include/erpaldav_server.php"
+files[] = "include/erpaldav.admin.inc"

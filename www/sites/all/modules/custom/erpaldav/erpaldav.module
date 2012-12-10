@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * Implements hook_menu()
+ */
+
+function erpaldav_menu() {
+	
+	
+	$items['erpaldav'] = array(
+		'page callback' => 'erpaldav_init_server',
+		'title' => 'ERPAL DAV',
+    	'description' =>  'ERPAlDAV Settings',
+    	'file' => 'include/erpaldav_server.php',
+    	'type' => MENU_CALLBACK,
+    	'access callback' => true
+	
+	);
+	
+	return $items;
+		
+}
+
+
+
+function erpaldav_permissions() {
+	
+}
