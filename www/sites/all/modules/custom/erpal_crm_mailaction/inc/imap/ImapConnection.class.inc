@@ -8,7 +8,7 @@
  */
  
 
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\imap;
 
 class ImapConnection {
 	

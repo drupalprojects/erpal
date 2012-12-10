@@ -7,7 +7,7 @@
  * Provides functions for loading, updating and inserting actitivy nodes.
  */
 
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\aggregating;
 
 class ActivityNodeModel {
 	

@@ -5,7 +5,7 @@
  * @copyright	2012 © Bright Solutions GmbH 
  */
  
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\cron_processing;
 
 class CronProcessor {
   
@@ -17,8 +17,6 @@ class CronProcessor {
    * Ctor.
    */
   private function __construct () {
-    
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/CronProcessor/CronModel.class');
     
     $this->cronModel = new CronModel ();
     
@@ -50,12 +48,10 @@ class CronProcessor {
    * Creates new tasks from incomming mails.
    */
   private function createNewTaks () {
-    
-    // Include important files.
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/ImapFetcher/ImapFetcher.class');
+
          
     // Create a fetcher object for fetching mails.
-    $imapFetcher = new ImapFetcher ();
+    $imapFetcher = new \erpal_crm_mailaction\imap\ImapFetcher ();
 
     $connection = self::configureImapConnection ($imapFetcher);
     
@@ -103,12 +99,10 @@ class CronProcessor {
    * @return ImapConnection	Returns an ImapConnection object.
    */
   public static function configureImapConnection ($imapFetcher) {
-    
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/config');
-    
+
     $connection  = $imapFetcher->openConnection (
-      _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'username'),
-      _erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'password')
+      \erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'username'),
+      \erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'password')
     );
     
     self::imapConnectionHelper ($connection);
@@ -118,60 +112,51 @@ class CronProcessor {
   
   /*
    * Configures an ImapConnection object by current settings.
-   * @param ImapConnection	$imap_connection	This object 
+   * @param ImapConnection	$imapConnection	This object 
    */
-  private static function imapConnectionHelper ($imap_connection) {
-    
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/config');
+  private static function imapConnectionHelper ($imapConnection) {
     
     // Realize TLS settings.
-    switch (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 'tls', FALSE)) {
+    switch (\erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'tls')) {
       case '/notls':
-        $imap_connection->noTls ();
+        $imapConnection->noTls ();
         break;
         
       case '/tls':
-        $imap_connection->tls ();
+        $imapConnection->tls ();
         break;
     }
       
     // Realize protocol settings.
-    switch (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 
-    'protocol', FALSE)) {
+    switch (\erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'protocol')) {
       case '/imap':
-        $imap_connection->imap ();
+        $imapConnection->imap ();
         break;
         
       case '/pop3':
-        $imap_connection->pop3 ();
+        $imapConnection->pop3 ();
         break;
     }
     
     // Realize protocol settings.
-    if (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 
-    'ssl', FALSE) == '/ssl') {
-      $imap_connection->imap ();
+    if (\erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'ssl') == '/ssl') {
+      $imapConnection->imap ();
     }
     
     // Realize certificate settings.
-    switch (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX_SETTINGS, 
-    'certificate', FALSE)) {
+    switch (\erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'certificate')) {
       case '/novalidate-cert':
-        $imap_connection->doNotValidateCertificates ();
+        $imapConnection->doNotValidateCertificates ();
         break;
         
       case '/validate-cert':
-        $imap_connection->validateCertificates ();
+        $imapConnection->validateCertificates ();
         break;
     }
-     
-    $imap_connection->port ((integer)_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 
-    	'port', '143'
-    ));
-    $imap_connection->host (_erpal_crm_mailaction_get_settings (ERPAL_CRM_MAILACTION_CONFIG_GROUP_MAILBOX, 'host', 
-    	'localhost'
-    ));
-    $imap_connection->connect ();
+    
+    $imapConnection->port ((int) \erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'port', 143)); 
+    $imapConnection->host (\erpal_crm_mailaction\misc\Settings::get ('mailbox_settings', 'host', 'localhost'));
+    $imapConnection->connect ();
     
     return;
   }

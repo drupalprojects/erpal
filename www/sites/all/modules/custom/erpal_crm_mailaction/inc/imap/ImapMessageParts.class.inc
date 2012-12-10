@@ -5,7 +5,7 @@
  * @copyright	2012 © Bright Solutions GmbH 
  */
  
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\imap;
 
 class ImapMessageParts {
   

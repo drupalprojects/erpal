@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * @author 		Marc Sven Kleinboehl
  * @created 	01/14/2012
  * @copyright	2012 © Bright Solutions GmbH 
@@ -7,7 +7,7 @@
  * This class is an IMAP email fetcher.
  */
  
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\imap;
 
 class ImapFetcher {
 	
@@ -43,8 +43,9 @@ class ImapFetcher {
 		return;
 	}
 	
-	/*
+	/**
 	 * A helper method for checking whether a host is accessible.
+   * 
 	 * @param string	$hostAddress	The network address of the host.
 	 * @param integer	$post			The network port of the host.
 	 * @return boolean					TRUE on success.	
@@ -62,9 +63,11 @@ class ImapFetcher {
 	  return TRUE;
 	}
 	
-	/*
+	/**
 	 * Creates a connection.
+   * 
 	 * Use method-chaining to configure this connection.
+   * 
 	 * @return	ImapConnection	An ImapConnection object. 
 	 */
 	public function openConnection ($username, $password) {
@@ -76,6 +79,9 @@ class ImapFetcher {
 		return $this->connection;
 	}
 	
+  /**
+   * 
+   */
 	private function decode ($input) {
 		
 		$output = imap_mime_header_decode($input);
@@ -86,8 +92,9 @@ class ImapFetcher {
 		return utf8_encode ($output[0]->text);
 	}
 	
-	/*
+	/**
 	 * Reads mails from mailbox by specific criteria.
+   * 
 	 * @param string $criteria	The IMAP criteria.
 	 * @return array			An array of mails.
 	 */
@@ -125,8 +132,9 @@ class ImapFetcher {
 		return $mails;
 	}
 	
-	/*
+	/**
 	 * Reads all unseen mails.
+   * 
 	 * @return array 	An array of mails.
 	 */
 	public function readUnseen () {

@@ -7,7 +7,7 @@
  * Provides functions mail sender an mail receiver authentification.
  */
 
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\aggregating\database\models;
 
 class ContactNodeModel {
   

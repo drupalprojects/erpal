@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * @author 		Marc Sven Kleinboehl
  * @created 	01/14/2012
  * @copyright	2012 © Bright Solutions GmbH
@@ -8,13 +8,13 @@
  * It is for extending other classes with properties functionality.
  */
 
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\misc;
 
 abstract class Properties {
   
   protected $__properties;
     
-  /*
+  /**
    * Getter.
    */
   public function __get ($key) {
@@ -26,7 +26,7 @@ abstract class Properties {
     return isset ($this->__properties[$key]) ? $this->__properties[$key] : FALSE;
   }
   
-  /*
+  /**
    * Setter.
    */
   public function __set ($key, $value) {

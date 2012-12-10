@@ -5,7 +5,7 @@
  * @copyright	2012 © Bright Solutions GmbH 
  */
  
-namespace erpal_crm_mailaction;
+namespace erpal_crm_mailaction\cron_processing;
 
 class CronModel {
   
@@ -68,17 +68,13 @@ class CronModel {
       return FALSE;
     }
     
-    // Include important files.
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/ImapFetcher/ImapFetcher.class');
-    module_load_include ('inc', 'erpal_crm_mailaction', 'inc/ImapFetcher/ImapMailReader.class');
-    
-    $imapFetcher  = new ImapFetcher ();
+    $imapFetcher  = new \erpal_crm_mailaction\imap\ImapFetcher ();
     $connection   = CronProcessor::configureImapConnection($imapFetcher);
     $messageIDs   = unserialize ($this->nextTask->messageids);
     
     foreach ($messageIDs as $messageID) {
 
-      $mail = ImapMailReader::getReader($connection->getResourceHandle(), $messageID);
+      $mail = \erpal_crm_mailaction\imap\ImapMailReader::getReader($connection->getResourceHandle(), $messageID);
          
       if ($mail->hasAttachments()) {
         $mail->saveAttachments ();
