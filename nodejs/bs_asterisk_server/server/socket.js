@@ -22,7 +22,7 @@ function Socket () {
 Socket.prototype.sendData = function (postData) {
 
 	var socketClientObject = this.clientManager.getSocketClientByPhoneNumber(
-			postData['receiverPhoneNumber']
+			postData['destination']
 	);
   
 	if (socketClientObject == null) {

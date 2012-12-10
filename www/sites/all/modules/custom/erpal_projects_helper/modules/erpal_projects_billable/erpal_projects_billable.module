@@ -808,8 +808,13 @@ function _erpal_billable_update_billable($node, $op) {
 
   $subject_title = _erpal_projects_billable_get_billable_text($subject_node->type);
   $subject_title = token_replace($subject_title, array('subject' => $subject_node, 'service_category' => $service_category_string));
-  $date_delivery = time();  //the current time
   
+  if ($is_timetracking) {
+    //use the date of the timetracking node!
+    $date_delivery = $subject_node->field_date_time[LANGUAGE_NONE][0]['value2'];
+  } else {
+    $date_delivery = time();  //the current time
+  }  
   if ($op == 'insert') { 
     if (_erpal_billable_is_billable($billable_information, $node, $type)) {  
       //last parameter is set false, so we create a new billable!

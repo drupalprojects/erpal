@@ -987,6 +987,11 @@ function _erpal_projects_helper_has_project($node) {
   elseif ($node->type == 'erpal_project') {
     return $node->nid;
   }
+  elseif ($node->type == 'erpal_timetracking') {
+    $subject_nid = $node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
+    $subject_node = node_load($subject_nid);
+    return _erpal_projects_helper_has_project($subject_node);
+  }
   else
     return false;
 

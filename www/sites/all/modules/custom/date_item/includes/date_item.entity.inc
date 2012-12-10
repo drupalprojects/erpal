@@ -288,6 +288,14 @@ class DateItemMetadataController extends EntityDefaultMetadataController {
       'description' => t('The source entity the date_item belongs to.'),
       'getter callback' => 'date_item_get_properties',
     );
+    $properties['rendered_src'] = array(
+      'label' => t('Rendered source'),
+      'type' => 'text',      
+      'description' => t('The rendered source entity the date_item belongs to.'),
+      'computed' => TRUE,
+      'sanitized' => TRUE,
+      'getter callback' => 'date_item_get_rendered_source',
+    );
     $properties['user'] = array(
       'label' => t("User"),
       'type' => 'user',
@@ -340,6 +348,12 @@ function date_item_get_properties($entity, array $options, $name, $type) {
 
 }
 
+
+function date_item_get_rendered_source($entity, array $options, $name, $type) {
+  $src_entity = $entity->src_entity();
+  $src_view = entity_view($entity->src_type, array($src_entity));
+  return render($src_view);
+}
 /**
  * Loads a date_item by ID.
  */

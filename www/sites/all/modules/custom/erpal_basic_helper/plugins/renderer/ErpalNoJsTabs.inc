@@ -35,8 +35,9 @@ class ErpalNoJsTabs extends QuickQuicktabs {
         ),
       );
 
-      // If in ajax mode, we'll only be rendering one tab, otherwise all of them.
-      $tabs_to_render = $settings['ajax'] ? array($active_tab => $contents[$active_tab]) : $contents;
+      // we render only the current active tab, not the others!
+      $tabs_to_render = array($active_tab => $contents[$active_tab]);
+
       foreach ($tabs_to_render as $key => $tab) {
         if (!empty($tab)) {
           $attribs = array(
@@ -47,7 +48,7 @@ class ErpalNoJsTabs extends QuickQuicktabs {
             '#prefix' => '<div '. drupal_attributes($attribs) .'>',
             '#suffix' => '</div>',
             'content' => $tab->render(),
-          );
+          );          
         }
       }
     }
@@ -71,20 +72,7 @@ class ErpalNoJsTabs extends QuickQuicktabs {
           '#href' =>  $_GET['q'],
           '#options' => $this->construct_link_options($i),
         );
-        if ($settings['ajax']) {
-          $tab_settings = $tab->getSettings();
-          $ajax_keys = $tab->getAjaxKeys();
-          $ajax_args = array();
-          foreach ($ajax_keys as $key) {
-            $ajax_args[] = $tab_settings[$key];
-          }
-          $ajax_path = $quickset->getAjaxPath($i, $tab->getType());
-          $ajax_href = $ajax_path . '/'. implode('/', $ajax_args);
-          $tablink['#ajax'] = array(
-            'progress' => array('message' => '', 'type' => 'throbber'),
-            'path' => $ajax_href,
-          );
-        }
+        
         $tabs[$i] = $tablink;
       }
     }
@@ -112,7 +100,10 @@ class ErpalNoJsTabs extends QuickQuicktabs {
     // Need to construct the correct querystring for the tab links.
     $query = drupal_get_query_parameters(NULL, array("qt-$qt_name", 'q', 'page'));
     $query["qt-{$qt_name}"] = $tabkey;
-  
+
+    //if there is an operation set, unset it
+    unset($query['op']);
+    
     $link_options = array(
       'attributes' => array(
         'id' => $id,
