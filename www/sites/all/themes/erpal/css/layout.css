@@ -25,24 +25,24 @@
     width: 100%;
 	height: 100%;
 }
-.panel-2col .panel-col-first .inside {
+#erpal_wrapper>.panel-col-first .inside {
     margin: 0 0 1em;
 }
 /*
  * middle region left column
  */
-
+/*
 .panel-2col .panel-col-first {
 	margin-right: -250px;
     float: left;
     width: 100%;
 	max-width: 800px;
-}
+}*/
 
 /*
  * middle region right column
  */
-.panel-2col .panel-col-last {
+/*.panel-2col .panel-col-last {
     float: right;
     width: 250px;
-}
+}*/
