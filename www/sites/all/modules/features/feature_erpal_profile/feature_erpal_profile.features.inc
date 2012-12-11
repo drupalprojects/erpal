@@ -25,7 +25,8 @@ function feature_erpal_profile_default_profile2_type() {
     "type" : "asterisk_settings",
     "label" : "Asterisk settings",
     "weight" : "0",
-    "data" : { "registration" : 0, "use_page" : 1 }
+    "data" : { "registration" : 0, "use_page" : 1 },
+    "rdf_mapping" : []
   }');
   $items['contract'] = entity_import('profile2_type', '{
     "userCategory" : true,
@@ -33,7 +34,8 @@ function feature_erpal_profile_default_profile2_type() {
     "type" : "contract",
     "label" : "Contract",
     "weight" : "0",
-    "data" : { "registration" : 0, "use_page" : 0 }
+    "data" : { "registration" : 0, "use_page" : 0 },
+    "rdf_mapping" : []
   }');
   $items['main'] = entity_import('profile2_type', '{
     "userCategory" : true,
@@ -41,7 +43,8 @@ function feature_erpal_profile_default_profile2_type() {
     "type" : "main",
     "label" : "Main profile",
     "weight" : "0",
-    "data" : { "registration" : 1, "use_page" : 0 }
+    "data" : { "registration" : 1, "use_page" : 0 },
+    "rdf_mapping" : []
   }');
   return $items;
 }
