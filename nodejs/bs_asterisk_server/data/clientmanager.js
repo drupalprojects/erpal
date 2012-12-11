@@ -19,9 +19,9 @@ ClientManager.prototype.register = function (phoneNumbers, ip) {
 			'phoneNumbers': 		JSON.parse (phoneNumbers),
 			'socketClientObject': 	this.socketClients[ip],
 			'status':				true
-	};	
+	};
 	return;
-}; 
+};
 
 /*
  * Returns the socket client object of a specific phone number.
