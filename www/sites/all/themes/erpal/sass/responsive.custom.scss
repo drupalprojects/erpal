@@ -1,7 +1,3 @@
-
-// _base.scss imports _custom.scss and other partials.
-@import "base";
-
 /*
  * responsive.custom.css is for custom media queries that are not set via the
  * theme settings, such as cascading media queries.
@@ -16,25 +12,18 @@
  * NOTE: this file loads by default, to disable got to your theme settings and
  * look under the "CSS" settings tab.
  */
-
-
 /*
  * Really small screens and up
  */
 /* @media only screen and (min-width: 220px) {} */
-
-
 /*
  * Smartphone sizes and up
  */
 /* @media only screen and (min-width: 320px) {} */
-
-
 /*
  * Smartphone sizes and down
  */
 @media only screen and (max-width: 480px) {
-  
   /* 
    * Float Region blocks example:
    * In smaller screen sizes we can remove the float and widths so all blocks
@@ -45,20 +34,16 @@
    * 
    * "Float Region blocks" is an extension for floating blocks in regions, see
    * your themes appearance settings, under the Extensions tab.
-   */ 
+   */
   .region[class*="float-blocks"] .block {
     float: none;
     width: 100%;
   }
 }
-
-
 /*
  * Tablet sizes and up
  */
 /* @media only screen and (min-width: 768px) {} */
-
-
 /*
  * Desktops/laptops and up
  */

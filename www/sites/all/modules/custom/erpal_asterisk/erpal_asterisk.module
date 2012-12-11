@@ -166,7 +166,7 @@ function _erpal_asterisk_call($destination, $source = NULL){
     . $destination 
     . ' and source ' 
     . $s 
-    . ' forwarded to asterisk_notify.';
+    . ' forwarded to asterisk_notify.';
     
   return implode (
   	'', 
