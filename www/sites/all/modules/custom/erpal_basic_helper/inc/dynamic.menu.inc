@@ -46,13 +46,26 @@ function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_p
       
       //and if this is the view button, rename it
       if ($path == 'node/%/view') {
-        $data['tabs'][$delta]['output'][$inner_delta]['#link']['title'] = t('Summary');
+        unset($data['tabs'][$delta]['output'][$inner_delta]);
       }
     }
   }
   
   //finally at the end...
   _erpal_basic_helper_alter_local_tasks_output($data); //to correct markup
+}
+
+/**
+* Return the object of an argument (direct node or ctools context) at the given $position
+*/ 
+function _erpal_basic_helper_router_object($position, $router_item) {
+  $node = isset($router_item['map'][$position]) && is_object($router_item['map'][$position]) ? $router_item['map'][$position] : false;
+    
+  //may be we have a ctools context    
+  if (is_object($node) && get_class($node) == 'ctools_context')
+    $node = $node->data;
+    
+  return $node;
 }
 
 /**

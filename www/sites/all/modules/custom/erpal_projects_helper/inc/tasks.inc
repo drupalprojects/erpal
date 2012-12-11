@@ -247,6 +247,24 @@ function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($proj
 */
 function erpal_projects_helper_node_presave_task($task_node) {
   _erpal_projects_helper_task_set_project($task_node);
+  _erpal_projects_helper_field_automation($task_node);
+}
+
+/**
+* Set some fields in dependency of other fields
+*/
+function _erpal_projects_helper_field_automation($task_node) {
+  //if task is completed, set percent to 100%
+  $task_status = _erpal_basic_helper_get_tid_semantic($task_node, 'field_task_status_term');
+
+  if ($task_status == 'completed') {
+    $original_node = $task_node->original; //check if status really changed!
+    $task_status_original = _erpal_basic_helper_get_tid_semantic($original_node, 'field_task_status_term');
+    if ($task_status_original != $task_status) {
+      //status has changed, so we change the percent, too
+      $task_node->field_progress_percent[LANGUAGE_NONE][0]['value'] = 100; //this means completed
+    }
+  }
 }
 
 /**

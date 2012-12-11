@@ -28,7 +28,6 @@ function feature_erpal_calendar_views_default_views() {
   $handler->display->display_options['access']['perm'] = 'access calendar view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'date_views_pager';
@@ -40,16 +39,30 @@ function feature_erpal_calendar_views_default_views() {
   $handler->display->display_options['style_options']['theme_style'] = '1';
   $handler->display->display_options['style_options']['max_items'] = '0';
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
+  /* Relationship: Date item: Referenced source node */
+  $handler->display->display_options['relationships']['src_id']['id'] = 'src_id';
+  $handler->display->display_options['relationships']['src_id']['table'] = 'date_item';
+  $handler->display->display_options['relationships']['src_id']['field'] = 'src_id';
+  $handler->display->display_options['relationships']['src_id']['required'] = TRUE;
   /* Relationship: Date item: Relation Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'date_item';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  /* Field: Date item: Entity label */
-  $handler->display->display_options['fields']['entity_label']['id'] = 'entity_label';
-  $handler->display->display_options['fields']['entity_label']['table'] = 'date_item';
-  $handler->display->display_options['fields']['entity_label']['field'] = 'entity_label';
-  $handler->display->display_options['fields']['entity_label']['label'] = 'Date Item';
-  $handler->display->display_options['fields']['entity_label']['link_to_entity'] = TRUE;
+  /* Field: Date item: Date item ID */
+  $handler->display->display_options['fields']['date_item_id']['id'] = 'date_item_id';
+  $handler->display->display_options['fields']['date_item_id']['table'] = 'date_item';
+  $handler->display->display_options['fields']['date_item_id']['field'] = 'date_item_id';
+  $handler->display->display_options['fields']['date_item_id']['exclude'] = TRUE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'src_id';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<a href="/date_item/[date_item_id]">[title]</a>';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Date item: Date item date from */
   $handler->display->display_options['fields']['date_from']['id'] = 'date_from';
   $handler->display->display_options['fields']['date_from']['table'] = 'date_item';
@@ -357,8 +370,12 @@ function feature_erpal_calendar_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('relation src node'),
     t('relation author'),
-    t('Date Item'),
+    t('Date item ID'),
+    t('.'),
+    t(','),
+    t('<a href="/date_item/[date_item_id]">[title]</a>'),
     t('Date tags'),
     t('Categories'),
     t('User'),

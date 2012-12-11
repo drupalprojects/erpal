@@ -1,0 +1,59 @@
+ul.primary,
+ul.secondary {
+  overflow: hidden;
+  *zoom: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  border: medium none
+}
+
+ul.primary li,
+ul.secondary li {
+  float: left; /* LTR */
+  margin: 0.5em 3px 0;
+}
+
+ul.primary a,
+ul.secondary a {
+  display: block;
+  line-height: 1.5em;
+}
+
+/*
+ * Primary tabs
+ */
+
+ul.primary li {
+  margin: 0; /* LTR */
+}
+
+
+ul.primary a:link,
+ul.primary a:visited {
+  margin: 0;
+  padding: 0 20px;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  height: 42px;
+  line-height: 42px;
+  min-width: 80px;
+  border: none;
+}
+
+
+ul.primary a.active {
+  *zoom: 1;
+}
+ul.primary li.active a, 
+ul.primary li.active a:hover, 
+ul.primary li.active a:focus{
+	border: none;
+}
+/*
+ * Secondary tabs
+ */
+
