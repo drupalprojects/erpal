@@ -973,6 +973,9 @@ function _erpal_projects_helper_add_duration_to_budget($node) {
 */
 function _erpal_projects_helper_has_project($node) {
 
+  if (!is_object($node) && is_numeric($node))
+    $node = node_load($node);
+
   if ($node->type == 'erpal_task') {
     //get the project of the task, because a task alsways has a project assigned
     $project_nid = $node->field_project_ref[LANGUAGE_NONE][0]['target_id'];

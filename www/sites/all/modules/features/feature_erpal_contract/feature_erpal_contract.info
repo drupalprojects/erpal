@@ -16,6 +16,7 @@ dependencies[] = erpal_contract_helper
 dependencies[] = feature_erpal_basic
 dependencies[] = feature_erpal_docs
 dependencies[] = feature_erpal_invoice
+dependencies[] = feature_erpal_project_basic
 dependencies[] = field_collection
 dependencies[] = field_group
 dependencies[] = field_ui
