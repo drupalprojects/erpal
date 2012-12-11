@@ -194,7 +194,7 @@ function submit($form, &$form_state) {
   if (empty ($values['mailbox_settings']['password'])) {
     $values['mailbox_settings']['password'] = $settings['mailbox_settings']['password'];
   }  
-dpm ($form_state['values']);
+
   variable_set ('erpal_crm_mailaction', $values);
   
   drupal_set_message (t('Settings successfuly saved.'));
