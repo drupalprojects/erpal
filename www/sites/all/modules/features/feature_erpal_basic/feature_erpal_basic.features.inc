@@ -55,8 +55,7 @@ function feature_erpal_basic_default_date_item_type() {
     "label" : "simple date",
     "locked" : "0",
     "weight" : "0",
-    "data" : null,
-    "rdf_mapping" : []
+    "data" : null
   }');
   return $items;
 }

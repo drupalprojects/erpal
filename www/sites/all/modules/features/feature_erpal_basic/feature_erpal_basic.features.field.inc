@@ -807,6 +807,67 @@ function feature_erpal_basic_field_default_fields() {
     ),
   );
 
+  // Exported field: 'field_collection_item-field_phone-field_phone_number_normalized'.
+  $fields['field_collection_item-field_phone-field_phone_number_normalized'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_phone_number_normalized',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'field_phone',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 3,
+        ),
+      ),
+      'entity_type' => 'field_collection_item',
+      'field_name' => 'field_phone_number_normalized',
+      'label' => 'Normalized Number',
+      'required' => FALSE,
+      'settings' => array(
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 4,
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_contact-field_addresses'.
   $fields['node-erpal_contact-field_addresses'] = array(
     'field_config' => array(
@@ -2327,7 +2388,7 @@ function feature_erpal_basic_field_default_fields() {
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
-        'profile2_private' => FALSE,
+        'profile2_private' => 0,
       ),
       'translatable' => '0',
       'type' => 'field_collection',
@@ -3029,6 +3090,7 @@ function feature_erpal_basic_field_default_fields() {
   t('IBAN');
   t('Image');
   t('Lastname');
+  t('Normalized Number');
   t('Number');
   t('Number Type');
   t('Other legal information');

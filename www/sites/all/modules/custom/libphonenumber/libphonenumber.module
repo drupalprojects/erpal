@@ -107,33 +107,26 @@ function libphonenumber_is_number_match($phone_number_a, $phone_number_b, $regio
   // PhoneNumberFormat:: NATIONAL, E164, INTERNATIONAL, RFC3966
 }
 
-function libphonenumber_entity_update($entity, $type) {
-  //dpm($entity);
-  //dpm($type);
+
+/**
+ * implements hook_entity_update() to save normalized phone numbers 
+ * everytime a field collection of type phone_number is saved
+ */
+function libphonenumber_field_attach_presave($type, $entity){
+
   if($type == 'field_collection_item' && $entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
-    //dpm($entity->field_phone_number_normali[LANGUAGE_NONE]);
-    if(!isset($entity->field_phone_number_normali[LANGUAGE_NONE][0])) $phone_number_normalized_old = "";
+    
+    if(!isset($entity->field_phone_number_normalized[LANGUAGE_NONE][0])) $phone_number_normalized_old = "";
     else $phone_number_normalized_old = $entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'];
-    $phone_number_normalized = libphonenumber_format($phone_number);
-    //dpm($phone_number);
-    //dpm($phone_number_normalized);
+   
+    // TODO: default region in asterisk-settings abrufen
+    $phone_number_normalized = libphonenumber_format($phone_number, PhoneNumberFormat::E164, 'DE');
+    
     if($phone_number_normalized != $phone_number_normalized_old) {
-      //dpm($phone_number_normalized);
-      $entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
-      $entity->save(TRUE);
+      $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
     }
+    dpm($entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value']);
+    
   }
-  
-  
-  //$entity_id = $node->field_phone[LANGUAGE_NONE][0]['value'];
-  //$entity = entity_load_single('field_collection_item', $entity_id);
-  //dpm($entity);
-  /*$phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
-  $phone_number_normalized =  libphonenumber_format($phone_number);
-  //dpm(libphonenumber_format($phone_number));
-  $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
-  $entity->save(TRUE);*/
-  //dpm($entity);
-  
 }

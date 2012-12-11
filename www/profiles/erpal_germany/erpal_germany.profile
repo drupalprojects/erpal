@@ -116,8 +116,8 @@ function erpal_germany_preconfigure_site(){
 function erpal_germany_last_config_steps(){
   
   $operations = array(
-    array('_erpal_germany_revert_features', array()),
     array('_erpal_germany_rebuild_content_access', array()),
+    array('_erpal_germany_revert_features', array()),
   );
     
   $batch = array(

@@ -16,17 +16,22 @@ function erpal_asterisk_notify_init() {
 	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' ); 
   global $user; 
   $profile = profile2_load_by_user($user);
-  
-  
-  // Get numbers registered in asterisk-settings profile 
+    
+  // Get field-collections attached to asterisk-settings profile 
   (isset($profile['asterisk_settings'])) 
-    ? $phone_numbers_raw = $profile['asterisk_settings']->field_phone_numbers[LANGUAGE_NONE]
-    : $phone_numbers_raw = array();
+    ? $fields = $profile['asterisk_settings']->field_phone[LANGUAGE_NONE]
+    : $fields = array();
   
-  $phone_numbers = array();  foreach($phone_numbers_raw as $item){
-    $phone_numbers[] = $item['value'];
+  // $fields: array of entity-ids of field-collections attached to the profile
+  
+  $phone_numbers = array();
+    foreach($fields as $item){
+    // load field collections and get numbers to store in array $phone_numbers
+    $field_collection = entity_load('field_collection_item', array($item['value']));
+    $phone_numbers[] = $field_collection[$item['value']]->field_phone_number[LANGUAGE_NONE][0]['value'];
   }
   
+  // Attach javascript to etablish connection to nodejs-server
 	$js_settings = array(
 	  'client_phone_numbers' => $phone_numbers,
     'client_ip' => $_SERVER['REMOTE_ADDR'],
