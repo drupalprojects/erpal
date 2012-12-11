@@ -100,22 +100,6 @@ function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subjec
 }
 
 /**
- * A settings getter.
- * 
- * @param 	string	The name of the settings group.
- * @param		string	The key of the settings value.
- * @return	mixed 	The settings value on success. Otherwise NULL.
- */
-function _erpal_crm_mailaction_get_settings ($group, $key, $default_value = NULL) {
-  
-  $settings = variable_get ('erpal_crm_mailaction', array ());
-
-  return isset ($settings[$group][$key]) ?
-  $settings[$group][$key] :
-  $default_value;
-}
-
-/**
  * Implements hook_boot.
  */
 function erpal_crm_mailaction_boot () {
