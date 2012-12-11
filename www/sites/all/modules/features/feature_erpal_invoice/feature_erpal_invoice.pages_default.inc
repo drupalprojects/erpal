@@ -1039,7 +1039,7 @@ function feature_erpal_invoice_default_page_manager_pages() {
     'logic' => 'and',
   );
   $page->menu = array(
-    'type' => 'tab',
+    'type' => 'none',
     'title' => 'Invoices',
     'name' => 'navigation',
     'weight' => '0',

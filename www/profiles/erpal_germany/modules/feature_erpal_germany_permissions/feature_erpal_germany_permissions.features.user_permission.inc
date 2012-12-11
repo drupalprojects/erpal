@@ -2114,6 +2114,24 @@ function feature_erpal_germany_permissions_user_default_permissions() {
     'module' => 'flag',
   );
 
+  // Exported permission: grant content access.
+  $permissions['grant content access'] = array(
+    'name' => 'grant content access',
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'content_access',
+  );
+
+  // Exported permission: grant own content access.
+  $permissions['grant own content access'] = array(
+    'name' => 'grant own content access',
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'content_access',
+  );
+
   // Exported permission: manage features.
   $permissions['manage features'] = array(
     'name' => 'manage features',
@@ -2385,139 +2403,6 @@ function feature_erpal_germany_permissions_user_default_permissions() {
     'module' => 'profile2',
   );
 
-  // Exported permission: view any erpal_book content.
-  $permissions['view any erpal_book content'] = array(
-    'name' => 'view any erpal_book content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-      3 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_book_page content.
-  $permissions['view any erpal_book_page content'] = array(
-    'name' => 'view any erpal_book_page content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-      3 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_contact content.
-  $permissions['view any erpal_contact content'] = array(
-    'name' => 'view any erpal_contact content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-      3 => 'internal developer',
-      4 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_contract content.
-  $permissions['view any erpal_contract content'] = array(
-    'name' => 'view any erpal_contract content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_crm_activity content.
-  $permissions['view any erpal_crm_activity content'] = array(
-    'name' => 'view any erpal_crm_activity content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_date content.
-  $permissions['view any erpal_date content'] = array(
-    'name' => 'view any erpal_date content',
-    'roles' => array(),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_file content.
-  $permissions['view any erpal_file content'] = array(
-    'name' => 'view any erpal_file content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-      3 => 'internal developer',
-      4 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_invoice content.
-  $permissions['view any erpal_invoice content'] = array(
-    'name' => 'view any erpal_invoice content',
-    'roles' => array(
-      0 => 'controller',
-      1 => 'financial user',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_project content.
-  $permissions['view any erpal_project content'] = array(
-    'name' => 'view any erpal_project content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-      3 => 'internal developer',
-      4 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_space content.
-  $permissions['view any erpal_space content'] = array(
-    'name' => 'view any erpal_space content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_task content.
-  $permissions['view any erpal_task content'] = array(
-    'name' => 'view any erpal_task content',
-    'roles' => array(
-      0 => 'internal developer',
-      1 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view any erpal_timetracking content.
-  $permissions['view any erpal_timetracking content'] = array(
-    'name' => 'view any erpal_timetracking content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'financial user',
-      2 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
   // Exported permission: view any main profile.
   $permissions['view any main profile'] = array(
     'name' => 'view any main profile',
@@ -2557,152 +2442,6 @@ function feature_erpal_germany_permissions_user_default_permissions() {
       0 => 'authenticated user',
     ),
     'module' => 'profile2',
-  );
-
-  // Exported permission: view own erpal_book content.
-  $permissions['view own erpal_book content'] = array(
-    'name' => 'view own erpal_book content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'financial user',
-      4 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_book_page content.
-  $permissions['view own erpal_book_page content'] = array(
-    'name' => 'view own erpal_book_page content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'financial user',
-      4 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_contact content.
-  $permissions['view own erpal_contact content'] = array(
-    'name' => 'view own erpal_contact content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'financial user',
-      4 => 'internal developer',
-      5 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_contract content.
-  $permissions['view own erpal_contract content'] = array(
-    'name' => 'view own erpal_contract content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'financial user',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_crm_activity content.
-  $permissions['view own erpal_crm_activity content'] = array(
-    'name' => 'view own erpal_crm_activity content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'financial user',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_date content.
-  $permissions['view own erpal_date content'] = array(
-    'name' => 'view own erpal_date content',
-    'roles' => array(
-      0 => 'authenticated user',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_file content.
-  $permissions['view own erpal_file content'] = array(
-    'name' => 'view own erpal_file content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'financial user',
-      4 => 'internal developer',
-      5 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_invoice content.
-  $permissions['view own erpal_invoice content'] = array(
-    'name' => 'view own erpal_invoice content',
-    'roles' => array(
-      0 => 'authenticated user',
-      1 => 'controller',
-      2 => 'financial user',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_project content.
-  $permissions['view own erpal_project content'] = array(
-    'name' => 'view own erpal_project content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'controller',
-      3 => 'financial user',
-      4 => 'internal developer',
-      5 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_space content.
-  $permissions['view own erpal_space content'] = array(
-    'name' => 'view own erpal_space content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_task content.
-  $permissions['view own erpal_task content'] = array(
-    'name' => 'view own erpal_task content',
-    'roles' => array(
-      0 => 'authenticated user',
-      1 => 'internal developer',
-      2 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
-  );
-
-  // Exported permission: view own erpal_timetracking content.
-  $permissions['view own erpal_timetracking content'] = array(
-    'name' => 'view own erpal_timetracking content',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'authenticated user',
-      2 => 'financial user',
-      3 => 'project manager',
-    ),
-    'module' => 'nodetype_access',
   );
 
   // Exported permission: view own main profile.

@@ -9,7 +9,7 @@
 */
 function erpal_hacks_helper_form_alter(&$form, &$form_state, $form_id) {
   _erpal_hacks_fix_editablefields_problem($form);
-  _erpal_hacks_fix_quick_tabs_exposed_filter_form_action($form);
+  _erpal_hacks_fix_quick_tabs_exposed_filter_form_action($form, $form_state);
 }
 
 /**
@@ -26,17 +26,57 @@ function _erpal_hacks_fix_editablefields_problem(&$form) {
 /**
 * If we have views (pane or block) with exposed filter embedded in quicktabs and these quicktabs in a panel, the action of the filter form is not set which redirects to the frontpage after submitting a views exposed filter form. So we set the action to the current page here
 */
-function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form) {
+function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form, &$form_state) {
+  static $processed = array(); //stores information if we have already processed a certain form, if we dont do that we get an endless redirect for example after form reet button.
   if (isset($form['#form_id']) && $form['#form_id'] == 'views_exposed_form') {
     //only form task views
-    if (in_array('views_exposed_form__tasks', $form['#theme']) || in_array('views_exposed_form__tickets', $form['#theme'])) {
-      $url = $_GET['q'];
-      //dpm(request_path());
-      $form['#action'] = '/'.$_GET['q'];
+    $is_tabbed_view = _erpal_hacks_is_tabbed_view_exposed_form($form);
 
-      _erpal_hacks_helper_add_qt_parameters_to_exposed_form($form);
+    if ($is_tabbed_view) { //if value is set, we have one of the theme function name of the exposed form here
+      $url = $_GET['q'];
+      $form['reset']['#submit'] = array('_erpal_hacks_exposed_form_reset_submit');
+      if ($is_tabbed_view && !isset($processed[$is_tabbed_view])) {                
+        $form['#action'] = '/'.$url;
+        $processed[$is_tabbed_view] = true;       
+        _erpal_hacks_helper_add_qt_parameters_to_exposed_form($form);
+      }
+
+      
     }
   }
+}
+
+/**
+* Redirect for reset button on exposed filter forms. If we miss that, we get endless redirect loops...don't know exactly why
+*/
+function _erpal_hacks_exposed_form_reset_submit($form, &$form_state) {
+  $query = array();
+  foreach ($_GET as $name => $value) {
+    $pos = strpos($name, 'qt-');
+    if ($pos === 0) {
+      //redirect to q and add all the qtab state parameters to have the correct quickt tab active after reset
+      $query[$name] = $value;
+    }
+  }
+  
+  drupal_goto($_GET['q'], array('query' => $query));
+}
+
+/**
+* Returns true, if the exposed form given in argument is a tabbed view
+*/
+function _erpal_hacks_is_tabbed_view_exposed_form($form) {
+  foreach ($form['#theme'] as $theme) {
+    switch ($theme) {
+      case 'views_exposed_form__tasks':
+      case 'views_exposed_form__tickets':
+      case 'views_exposed_form__invoices':
+      case 'views_exposed_form__crm_activities':
+      return $theme;
+    }
+  }
+  
+  return false;
 }
 
 /**

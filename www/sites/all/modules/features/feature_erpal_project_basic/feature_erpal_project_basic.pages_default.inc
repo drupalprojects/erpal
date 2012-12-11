@@ -894,7 +894,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     'logic' => 'and',
   );
   $page->menu = array(
-    'type' => 'tab',
+    'type' => 'none',
     'title' => 'Pricing',
     'name' => 'navigation',
     'weight' => '0',
@@ -1070,7 +1070,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     'logic' => 'and',
   );
   $page->menu = array(
-    'type' => 'tab',
+    'type' => 'none',
     'title' => 'Tasks',
     'name' => 'navigation',
     'weight' => '0',
@@ -1246,7 +1246,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     'logic' => 'and',
   );
   $page->menu = array(
-    'type' => 'tab',
+    'type' => 'none',
     'title' => 'Timetrackings',
     'name' => 'navigation',
     'weight' => '0',
@@ -1668,7 +1668,7 @@ function feature_erpal_project_basic_default_page_manager_pages() {
     'logic' => 'and',
   );
   $page->menu = array(
-    'type' => 'tab',
+    'type' => 'none',
     'title' => 'Tickets',
     'name' => 'navigation',
     'weight' => '0',

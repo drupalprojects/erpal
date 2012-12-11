@@ -735,7 +735,7 @@ function erpal_invoice_helper_menu(){
     'page arguments' => array('erpal_invoice_helper_contact_invoice_default_form', 1),
     'access callback' => '_erpal_invoice_helper_invoice_defaults_menu_access',
     'access arguments' => array(1),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_LOCAL_ACTION,
   );
   
   require_once 'inc/config.inc';
