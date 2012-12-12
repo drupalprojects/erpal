@@ -3,8 +3,124 @@ description = Install Erpal
 version = VERSION
 core = 7.x
 
-; Dependencies 
+;core
+dependencies[] = php
+dependencies[] = menu
+dependencies[] = path
+
+
+; core fields
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = list
+dependencies[] = file
+dependencies[] = image
+dependencies[] = options
+dependencies[] = number
+
+dependencies[] = taxonomy
+
+;contrib
+dependencies[] = auto_nodetitle
+dependencies[] = better_exposed_filters
+dependencies[] = calendar
+dependencies[] = comment
+dependencies[] = computed_field
+dependencies[] = conditional_fields
+dependencies[] = content_access
+dependencies[] = ctools
+dependencies[] = date
+dependencies[] = date_item
+dependencies[] = date_popup
+dependencies[] = date_repeat
+dependencies[] = date_repeat_field
+dependencies[] = date_views
+dependencies[] = ds
+dependencies[] = ds_forms
+dependencies[] = editablefields
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = entityreference
+dependencies[] = entityreference_prepopulate
+dependencies[] = fe_block
+dependencies[] = features
+dependencies[] = features_plumber
+dependencies[] = field_collection
+dependencies[] = field_collection_table
+dependencies[] = field_group
+dependencies[] = fileedit
+dependencies[] = flag
+dependencies[] = front_page
+dependencies[] = homebox
+
+dependencies[] = jquery_ui_multiselect_widget
+dependencies[] = jquery_update
+dependencies[] = libraries
+dependencies[] = link
+
+#dependencies[] = nodeaccess_userreference
+
+dependencies[] = og
+dependencies[] = og_access
+dependencies[] = og_relations
+dependencies[] = og_ui
+
+dependencies[] = page_manager
+dependencies[] = panels
+dependencies[] = panels_everywhere
+dependencies[] = panels_mini
+dependencies[] = panels_style_collapsible
+
+dependencies[] = path_breadcrumbs
+dependencies[] = pathauto
+
+dependencies[] = pm_existing_pages
+dependencies[] = post_hooks
+dependencies[] = profile2
+dependencies[] = profile2_page
+dependencies[] = quicktabs
+dependencies[] = references_dialog
+dependencies[] = rel
+dependencies[] = relation
+dependencies[] = relation_add
+dependencies[] = relation_dummy_field
+dependencies[] = relation_endpoint
+dependencies[] = relation_ui
+dependencies[] = strongarm
+
+dependencies[] = timetracking
+dependencies[] = token
+dependencies[] = views
+dependencies[] = views_bulk_operations
+dependencies[] = views_content
+dependencies[] = views_jstree
+
+; custom
 dependencies[] = feature_erpal_basic
+dependencies[] = billable
+dependencies[] = budget
+dependencies[] = cne
+dependencies[] = erpal_basic_helper
+dependencies[] = erpal_bookmark_helper
+dependencies[] = erpal_calendar_helper
+dependencies[] = erpal_contract_helper
+dependencies[] = erpal_crm_helper
+dependencies[] = erpal_dashboard_helper
+dependencies[] = erpal_docs_helper
+dependencies[] = erpal_hacks_helper
+dependencies[] = erpal_invoice_helper
+dependencies[] = erpal_layout_helper
+dependencies[] = erpal_print
+dependencies[] = erpal_profile_helper
+dependencies[] = erpal_projects_billable
+dependencies[] = erpal_projects_helper
+dependencies[] = erpal_resource_helper
+dependencies[] = erpal_spaces_helper
+dependencies[] = erpal_timetracking_export
+
+; features 
+
 dependencies[] = feature_erpal_book
 dependencies[] = feature_erpal_bookmark
 dependencies[] = feature_erpal_calendar
@@ -20,4 +136,10 @@ dependencies[] = feature_erpal_contract
 dependencies[] = feature_erpal_germany_permissions
  
 
+
+; Information added by drupal.org packaging script on 2012-12-06
+version = "7.x-1.0-dev+275-dev"
+core = "7.x"
+project = "erpal"
+datestamp = "1354755512"
 
