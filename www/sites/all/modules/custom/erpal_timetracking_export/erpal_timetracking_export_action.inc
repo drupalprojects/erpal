@@ -217,7 +217,7 @@ function erpal_timetracking_export_handle_entity($node, $context = array()) {
   $row['description'] = utf8_decode($node->title);
 
   // Duration
-  $row['duration'] = $node_wrapper->field_timetracking_duration->value();
+  $row['duration'] = $node_wrapper->field_billing_duration->value();
 
   // Dates
   $date_time = $node_wrapper->field_date_time->value();
