@@ -13,22 +13,12 @@ class ContactNodeModel {
   
   /*
    * Checks whether one of the contact participants exists in the database.
-   * @param array			$participants 	An array of mail-header values (from or to).
+   * @param array			$emailAddress 	An email address.
    * @return boolean									TRUE on success.
    */
-  public function oneOftheParticipantsExists (array $participants) {
-    
-    $emailAddress = '';
-    
-    foreach ($participants as $participant) {
-      $emailAddress = $participant->mailbox . '@' . $participant->host;
-   
-      if ($this->loadContactOfMailAddress ($emailAddress) !== FALSE) {
-        return TRUE;
-      }
-    }
-    
-    return FALSE;
+  public function isParticipantExisting ($emailAddress) {
+
+    return ($this->loadContactIDOfMailAddress ($emailAddress) !== FALSE);
   }
   
   /*
@@ -37,7 +27,7 @@ class ContactNodeModel {
    * @return 	mixed						The database ID of the contact on success. Otherwise FALSE.
    */
 
-  public function loadContactOfMailAddress ($emailAddress) {
+  public function loadContactIDOfMailAddress ($emailAddress) {
     
   	static $last_result = array ();
   	
@@ -65,10 +55,10 @@ class ContactNodeModel {
   
   /*
    * Creates a new unknown contact.
-   * @param 	object $sender	The IMAP 'to' object of the new unknown contact.
-   * @return 	boolean					TRUE on success.
+   * @param 	string   $senderMailAddress 	The IMAP 'to' object of the new unknown contact.
+   * @return 	boolean					              TRUE on success.
    */
-  public function createUnknownContact ($sender) {
+  public function createUnknownContact ($senderMailAddress) {
     
     $node = new \stdClass ();
     
@@ -77,7 +67,7 @@ class ContactNodeModel {
     node_object_prepare($node);
     
     $node->field_contact_type[LANGUAGE_NONE][]['value']  = 'person';
-    $node->field_email[LANGUAGE_NONE][]['value']         = $sender->mailbox . '@' . $sender->host;
+    $node->field_email[LANGUAGE_NONE][]['value']         = $senderMailAddress;
     $node->field_lastname[LANGUAGE_NONE][]['value']      = t('New contact. Known by email conversation.');
     $node->title                                         = $node->field_lastname[LANGUAGE_NONE][0]['value'];
     $node->auto_nodetitle_applied                        = TRUE;

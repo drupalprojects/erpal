@@ -68,5 +68,5 @@ class MailEntityWrapper extends EntityWrapperBase {
     );
     
     return;
-  }
+  }  
 }

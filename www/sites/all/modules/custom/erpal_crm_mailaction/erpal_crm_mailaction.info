@@ -4,33 +4,7 @@ name        = "erpal_crm_mailaction"
 package     = "ERPAL CRM"
 php         = "5.3.x"
 project     = "erpal_crm_mailaction"
-version     = "7.x-1.20-dev"
+version     = "7.x-1.22-dev"
 
 dependencies[] = "feature_erpal_crm"
 
-files[] = "erpal_crm_mailaction.module"
-files[] = "erpal_crm_mailaction.install"
-
-files[] = "inc/ImapFetcher/ImapFetcher.class.inc"
-files[] = "inc/ImapFetcher/ImapMailReader.class.inc"
-files[] = "inc/ImapFetcher/ImapConnection.class.inc"
-
-; Cron processing
-files[] = "inc/CronProcessor/CronProcessor.class.inc"
-files[] = "inc/CronProcessor/CronModel.class.inc"
-
-; Importing
-files[] = "inc/Import/Import.class.inc"
-files[] = "inc/Import/MailParser.class.inc"
-files[] = "inc/Import/ContactNodeModel.class.inc"
-files[] = "inc/Import/ActivityNodeModel.class.inc"
-
-; Common
-files[] = "inc/Properties.class.inc"
-files[] = "inc/config.inc"
-
-; Templates
-files[] = "templates/erpal_crm_mailaction_comment.tpl.php"
-
-; Tests
-files[] = "test/ActivityNodeModelTest.test"
