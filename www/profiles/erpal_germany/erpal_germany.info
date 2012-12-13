@@ -59,7 +59,7 @@ dependencies[] = jquery_update
 dependencies[] = libraries
 dependencies[] = link
 
-#dependencies[] = nodeaccess_userreference
+dependencies[] = nodeaccess_userreference
 
 dependencies[] = og
 dependencies[] = og_access
