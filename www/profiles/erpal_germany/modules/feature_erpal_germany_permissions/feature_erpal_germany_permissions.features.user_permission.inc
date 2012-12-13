@@ -10,17 +10,6 @@
 function feature_erpal_germany_permissions_user_default_permissions() {
   $permissions = array();
 
-  // Exported permission: access activities view.
-  $permissions['access activities view'] = array(
-    'name' => 'access activities view',
-    'roles' => array(
-      0 => 'account manager',
-      1 => 'controller',
-      2 => 'financial user',
-    ),
-    'module' => 'erpal_crm_helper',
-  );
-
   // Exported permission: access administration pages.
   $permissions['access administration pages'] = array(
     'name' => 'access administration pages',
@@ -679,13 +668,6 @@ function feature_erpal_germany_permissions_user_default_permissions() {
     'module' => 'views',
   );
 
-  // Exported permission: approve erpal crm activities.
-  $permissions['approve erpal crm activities'] = array(
-    'name' => 'approve erpal crm activities',
-    'roles' => array(),
-    'module' => 'erpal_crm_activity_queue',
-  );
-
   // Exported permission: block IP addresses.
   $permissions['block IP addresses'] = array(
     'name' => 'block IP addresses',
@@ -846,13 +828,6 @@ function feature_erpal_germany_permissions_user_default_permissions() {
     'name' => 'config erpal calendar',
     'roles' => array(),
     'module' => 'erpal_calendar_helper',
-  );
-
-  // Exported permission: config erpal crm.
-  $permissions['config erpal crm'] = array(
-    'name' => 'config erpal crm',
-    'roles' => array(),
-    'module' => 'erpal_crm_helper',
   );
 
   // Exported permission: config erpal invoice.
@@ -2160,13 +2135,6 @@ function feature_erpal_germany_permissions_user_default_permissions() {
     'name' => 'rel_build_registration',
     'roles' => array(),
     'module' => 'rel',
-  );
-
-  // Exported permission: reply mails erpal crm activity.
-  $permissions['reply mails erpal crm activity'] = array(
-    'name' => 'reply mails erpal crm activity',
-    'roles' => array(),
-    'module' => 'erpal_crm_helper',
   );
 
   // Exported permission: revert revisions.

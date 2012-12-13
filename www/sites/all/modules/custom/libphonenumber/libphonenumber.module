@@ -118,7 +118,7 @@ function libphonenumber_field_attach_presave($type, $entity){
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
     
     if(!isset($entity->field_phone_number_normalized[LANGUAGE_NONE][0])) $phone_number_normalized_old = "";
-    else $phone_number_normalized_old = $entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'];
+    else $phone_number_normalized_old = $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'];
    
     // TODO: default region in asterisk-settings abrufen
     $phone_number_normalized = libphonenumber_format($phone_number, PhoneNumberFormat::E164, 'DE');
@@ -126,7 +126,6 @@ function libphonenumber_field_attach_presave($type, $entity){
     if($phone_number_normalized != $phone_number_normalized_old) {
       $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
     }
-    dpm($entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value']);
     
   }
 }
