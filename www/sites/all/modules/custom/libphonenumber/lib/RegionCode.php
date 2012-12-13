@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-//namespace com\google\i18n\phonenumbers;
+namespace com\google\i18n\phonenumbers;
 
 /**
  * Class containing string constants of region codes for easier testing.
@@ -35,6 +35,7 @@ class RegionCode {
   const CS = "CS";
   const DE = "DE";
   const GB = "GB";
+  const IN = "IN";
   const IT = "IT";
   const JP = "JP";
   const KR = "KR";

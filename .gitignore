@@ -5,3 +5,6 @@ www/sites/*/libraries
 www/nbproject
 www/sites/all/libraries
 www/private
+nodejs/bs_asterisk_server/bs_asterisk_server.pid
+www/sites/all/modules/dev
+

@@ -935,6 +935,83 @@ function feature_erpal_invoice_views_default_views() {
   /* Display: Invoices to contact pane */
   $handler = $view->new_display('panel_pane', 'Invoices to contact pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Invoice Date */
+  $handler->display->display_options['fields']['field_invoice_date']['id'] = 'field_invoice_date';
+  $handler->display->display_options['fields']['field_invoice_date']['table'] = 'field_data_field_invoice_date';
+  $handler->display->display_options['fields']['field_invoice_date']['field'] = 'field_invoice_date';
+  $handler->display->display_options['fields']['field_invoice_date']['settings'] = array(
+    'format_type' => 'erpal_date',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Content: Invoice Number */
+  $handler->display->display_options['fields']['field_invoice_number']['id'] = 'field_invoice_number';
+  $handler->display->display_options['fields']['field_invoice_number']['table'] = 'field_data_field_invoice_number';
+  $handler->display->display_options['fields']['field_invoice_number']['field'] = 'field_invoice_number';
+  /* Field: Content: Paid */
+  $handler->display->display_options['fields']['field_payed']['id'] = 'field_payed';
+  $handler->display->display_options['fields']['field_payed']['table'] = 'field_data_field_payed';
+  $handler->display->display_options['fields']['field_payed']['field'] = 'field_payed';
+  $handler->display->display_options['fields']['field_payed']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_payed']['settings'] = array(
+    'click_to_edit' => 1,
+    'click_to_edit_style' => 'hover',
+    'empty_text' => '',
+    'fallback_format' => 'list_default',
+  );
+  /* Field: Content: Payment date */
+  $handler->display->display_options['fields']['field_payment_date']['id'] = 'field_payment_date';
+  $handler->display->display_options['fields']['field_payment_date']['table'] = 'field_data_field_payment_date';
+  $handler->display->display_options['fields']['field_payment_date']['field'] = 'field_payment_date';
+  $handler->display->display_options['fields']['field_payment_date']['settings'] = array(
+    'format_type' => 'erpal_date',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Content: Total excl. VAT */
+  $handler->display->display_options['fields']['field_price_no_vat']['id'] = 'field_price_no_vat';
+  $handler->display->display_options['fields']['field_price_no_vat']['table'] = 'field_data_field_price_no_vat';
+  $handler->display->display_options['fields']['field_price_no_vat']['field'] = 'field_price_no_vat';
+  $handler->display->display_options['fields']['field_price_no_vat']['label'] = 'Summe Netto';
+  $handler->display->display_options['fields']['field_price_no_vat']['settings'] = array(
+    'thousand_separator' => ' ',
+    'decimal_separator' => '.',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Total incl. VAT */
+  $handler->display->display_options['fields']['field_invoice_total']['id'] = 'field_invoice_total';
+  $handler->display->display_options['fields']['field_invoice_total']['table'] = 'field_data_field_invoice_total';
+  $handler->display->display_options['fields']['field_invoice_total']['field'] = 'field_invoice_total';
+  $handler->display->display_options['fields']['field_invoice_total']['settings'] = array(
+    'thousand_separator' => ' ',
+    'decimal_separator' => '.',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Field: Currency */
+  $handler->display->display_options['fields']['field_currency']['id'] = 'field_currency';
+  $handler->display->display_options['fields']['field_currency']['table'] = 'field_data_field_currency';
+  $handler->display->display_options['fields']['field_currency']['field'] = 'field_currency';
+  $handler->display->display_options['fields']['field_currency']['label'] = 'Währung';
+  /* Field: Content: Exported */
+  $handler->display->display_options['fields']['field_invoice_exported']['id'] = 'field_invoice_exported';
+  $handler->display->display_options['fields']['field_invoice_exported']['table'] = 'field_data_field_invoice_exported';
+  $handler->display->display_options['fields']['field_invoice_exported']['field'] = 'field_invoice_exported';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Field: Customer (field_customer_ref) */
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
@@ -1432,6 +1509,14 @@ function feature_erpal_invoice_views_default_views() {
     6 => 0,
     5 => 0,
     7 => 0,
+  );
+  /* Filter criterion: Content: Paid (field_payed) */
+  $handler->display->display_options['filters']['field_payed_value']['id'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['table'] = 'field_data_field_payed';
+  $handler->display->display_options['filters']['field_payed_value']['field'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['operator'] = 'not';
+  $handler->display->display_options['filters']['field_payed_value']['value'] = array(
+    1 => '1',
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['invoices'] = array(

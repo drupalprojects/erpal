@@ -18,14 +18,28 @@ function _erpal_basic_helper_has_context($context, $router_item = false) {
 function _erpal_basic_helper_alter_local_tasks_output(&$data) {
   $links = $data['actions']['output'];
   unset($data['actions']['output']);
-  $data['actions']['output']['container'] = array(
-    '#prefix' => '<ul class="local_tasks">',
-    '#suffix' => '</ul>',
-  );
+  
+  //add a container for colapsible elements if there are more than 3 items
+  if (count($links) > 3) {
+    $data['actions']['output']['container'] = array(
+      '#prefix' => '<div class="local_tasks_menu"><ul class="local_tasks"><li><a href="#">Actions</a><ul>',
+      '#suffix' => '</ul></li></ul></div>',
+    );
+  } else {
+    $data['actions']['output']['container'] = array(
+      '#prefix' => '<div class="local_tasks_menu_no_popup"><ul class="local_tasks">',
+      '#suffix' => '</ul></div>',
+    );
+  }
   
   foreach ($links as $link) {
     $data['actions']['output']['container'][] = $link;
   }
+  
+  //add javascript to show local tasks as popup!
+  $mod_path = drupal_get_path('module', 'erpal_basic_helper');
+  $js_path = $mod_path.'/js/local_tasks.js';
+  drupal_add_js($js_path);
 }
 
 /**

@@ -256,7 +256,7 @@ function _erpal_basic_helper_get_own_company_nid($for_autocomplete){
 }
 
 /**
-* returns a autocomplete compatible String for a nid (title [nid: 12])
+* returns a autocomplete compatible String for a nid title (12)
 */
 function _erpal_basic_helper_autocomplete_string_from_nid($nid){
   if (!$nid)
@@ -268,6 +268,7 @@ function _erpal_basic_helper_autocomplete_string_from_nid($nid){
     
   return false;
 }
+
 
 /**
 * Overview for all the activated ERPAL Features

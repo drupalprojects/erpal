@@ -1,74 +1,172 @@
 <?php
 
-/*
-* Implements hook_init
-*/
-function libphonenumber_init() {
+use com\google\i18n\phonenumbers\PhoneNumberUtil;
+use com\google\i18n\phonenumbers\PhoneNumberFormat;
+use com\google\i18n\phonenumbers\NumberParseException;
+
+// require_once 'lib/PhoneNumberUtil.php';
+
+/**
+ * Includes the libphonenumber library and sets a warning when the library can
+ * not be found in the libraries directory.
+ * @return true/false if the library is available or not
+ *  
+ */
+function _libphonenumber_include_library(){
+  
+  $path = libraries_get_path('libphonenumber');
+  
+
+  if (!file_exists($path)) {
+    $libphonenumber_link = l('download', 'https://github.com/davideme/libphonenumber-for-PHP');
+    $libphonenumber_path = libraries_get_path('libphonenumber');
+    drupal_set_message(
+      t('The libphonenumber-module can not work without libphonenumber-for-PHP. Please !link and extract to !path.', 
+        array('!link' => $libphonenumber_link, '!path' => $libphonenumber_path)), 'warning');    
+    return false;
+  }
+  
+  
+  require_once $path . '/PhoneNumberUtil.php';
+  
+  return true;
 
 }
+
+
+function libphonenumber_menu(){
+  
+  $items['libphonenumber/test'] = array(
+    'title' => 'Libphonenumber test',
+    'page callback' => '_libphonenumber_test',    
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
+  
+}
+
+function _libphonenumber_test(){
+  return drupal_get_form('_libphonenumber_test_form');
+}
+
+function _libphonenumber_test_form(){
+  if(_libphonenumber_include_library()){
+    $phone_util = PhoneNumberUtil::getInstance();
+  
+    $form = array();
+  
+    $form['test'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Test'),
+    );
+  
+    $form['test']['phonenumber'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Number to parse:'),
+    );
+  
+    $form['country'] = array(
+      '#type' => 'select',
+      '#title' => t('Default country'),
+      '#description' => t('Select the default country-code for your telephone-numbers'),
+      '#options' => $phone_util->getSupportedRegions(),
+      '#default_value' => variable_get('libphonenumber_default_country'), 
+    );
+  
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Contiue',
+    );
+  
+    return $form;
+  }
+  else 
+    return array();
+}
+
+function _libphonenumber_test_form_submit(&$form, &$form_state){
+  
+  // Save default country number in 'libphonenumber_default_country'  
+  $country = $form_state['values']['country'];
+  variable_set('libphonenumber_default_country', $country);
+  
+  // Test functions of libphonenumber-module
+  $numberProto = _libphonenumber_parse($form_state['values']['phonenumber'], 'DE');
+  
+}
+
 
 function _libphonenumber_parse($phone_number, $region) {
-  $phone_util = PhoneNumberUtil::getInstance();
-  try {
-      return $phone_util->parse($phone_number, $region);
-  } catch (NumberParseException $e) {
-      // TODO: specify error
-      return false;
+  if(_libphonenumber_include_library()){
+    $phone_util = PhoneNumberUtil::getInstance();
+    $parsed = FALSE;
+    try {
+      $parsed = $phone_util->parse($phone_number, $region);
+    } catch (NumberParseException $e) {
+        // TODO: specify error
+        return false;
+    }
+    return $parsed;
   }
+  return $phone_number;
 }
 
+/**
+ * Checks if a phonenumber is valid for the given region
+ */
 function libphonenumber_is_valid($phone_number, $region = "DE") {
-  $phone_util = PhoneNumberUtil::getInstance();
-  $number_proto = _libphonenumber_parse($phone_number, $region);
-  if($number_proto == false) return false;
-  $is_valid = $phone_util->isValidNumber($number_proto);
-  return $is_valid;
+  if(_libphonenumber_include_library()){
+    $phone_util = PhoneNumberUtil::getInstance();
+    $number_proto = _libphonenumber_parse($phone_number, $region);
+    if($number_proto == false) return false;
+    $is_valid = $phone_util->isValidNumber($number_proto);
+    return $is_valid;
+  }
+  return FALSE;
 }
 
-function libphonenumber_format($phone_number, $format = PhoneNumberFormat::NATIONAL, $region = "DE") {
-  //dpm("libphonenumber_format: " . $phone_number);
-  $phone_util = PhoneNumberUtil::getInstance();
-  $number_proto = _libphonenumber_parse($phone_number, $region);
-  var_dump($number_proto);
-  $number_formatted = $phone_util->format($number_proto, $format) . PHP_EOL;
-  //dpm("libphonenumber_format: " . $number_formatted);
-  return $number_formatted;
+function libphonenumber_format($phone_number, $format = PhoneNumberFormat::INTERNATIONAL, $region = "DE") {
+  if(_libphonenumber_include_library()){
+    // dpm("libphonenumber_format: " . $phone_number);
+    $phone_util = PhoneNumberUtil::getInstance();
+    $number_proto = _libphonenumber_parse($phone_number, $region);
+    $number_formatted = $phone_util->format($number_proto, $format) . PHP_EOL;
+    // dpm("libphonenumber_format: " . $number_formatted);
+    return $number_formatted;}
 }
+
 
 function libphonenumber_is_number_match($phone_number_a, $phone_number_b, $region = "DE") {
-  $number_a_formatted = libphonenumber_format($phone_number_a, PhoneNumberFormat::E164, $region);
-  $number_b_formatted = libphonenumber_format($phone_number_b, PhoneNumberFormat::E164, $region);
-  return ($number_a_formatted == $number_b_formatted);
-  // PhoneNumberFormat:: NATIONAL, E164, INTERNATIONAL, RFC3966
+  if(_libphonenumber_include_library()){
+    $number_a_formatted = libphonenumber_format($phone_number_a, PhoneNumberFormat::E164, $region);
+    $number_b_formatted = libphonenumber_format($phone_number_b, PhoneNumberFormat::E164, $region);
+    return ($number_a_formatted == $number_b_formatted);
+    // PhoneNumberFormat:: NATIONAL, E164, INTERNATIONAL, RFC3966
+  }
+  else 
+    return FALSE; 
 }
 
-function libphonenumber_entity_update($entity, $type) {
-  //dpm($entity);
-  //dpm($type);
+
+/**
+ * implements hook_entity_update() to save normalized phone numbers 
+ * everytime a field collection of type phone_number is saved
+ */
+function libphonenumber_field_attach_presave($type, $entity){
+
   if($type == 'field_collection_item' && $entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
-    //dpm($entity->field_phone_number_normali[LANGUAGE_NONE]);
-    if(!isset($entity->field_phone_number_normali[LANGUAGE_NONE][0])) $phone_number_normalized_old = "";
-    else $phone_number_normalized_old = $entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'];
-    $phone_number_normalized =  libphonenumber_format($phone_number);
-    //dpm($phone_number);
-    //dpm($phone_number_normalized);
+    
+    if(!isset($entity->field_phone_number_normalized[LANGUAGE_NONE][0])) $phone_number_normalized_old = "";
+    else $phone_number_normalized_old = $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'];
+   
+    // TODO: default region in asterisk-settings abrufen
+    $phone_number_normalized = libphonenumber_format($phone_number, PhoneNumberFormat::E164, 'DE');
+    
     if($phone_number_normalized != $phone_number_normalized_old) {
-      //dpm($phone_number_normalized);
-      $entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
-      $entity->save(TRUE);
+      $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
     }
+    
   }
-  
-  
-  //$entity_id = $node->field_phone[LANGUAGE_NONE][0]['value'];
-  //$entity = entity_load_single('field_collection_item', $entity_id);
-  //dpm($entity);
-  /*$phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
-  $phone_number_normalized =  libphonenumber_format($phone_number);
-  //dpm(libphonenumber_format($phone_number));
-  $entity->field_phone_number_normalized[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
-  $entity->save(TRUE);*/
-  //dpm($entity);
-  
 }

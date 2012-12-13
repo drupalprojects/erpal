@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the feature_erpal_mail feature.
+ */
+
+include_once 'feature_erpal_mail.features.inc';
