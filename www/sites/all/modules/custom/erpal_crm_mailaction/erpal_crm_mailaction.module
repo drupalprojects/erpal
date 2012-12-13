@@ -22,14 +22,13 @@ function erpal_crm_mailaction_menu(){
     'page callback'       => 'drupal_get_form',
     'page arguments'      => array ('erpal_crm_mailaction\misc\config\form'),
     'access arguments'    => array('config erpal crm mailaction'),
-    'file'                => 'inc/misc/config.inc',
+    'file'                => 'inc/misc/config.form.inc',
     'type'                => MENU_LOCAL_TASK,
   );
   
   $items['admin/erpal/crm-mailaction/run-import'] = array(
     'page callback'       => '_erpal_crm_mailaction_cron_page_wrapper',
     'access arguments'    => array('config erpal crm mailaction'),
-    'file'                => 'inc/misc/drupal_oop.inc',
     'type'                => MENU_CALLBACK,
   );
 
@@ -94,7 +93,8 @@ function _erpal_crm_mailaction_cron_page_wrapper () {
  */
 function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body, $attachments) {
  
-  erpal_crm_mailaction\aggregating\Import::import ($to, $from, $subject, $body, $attachments);
+  $import = new erpal_crm_mailaction\aggregating\Import ();
+  $import->import ($to, $from, $subject, $body, $attachments);
   
   return;
 }

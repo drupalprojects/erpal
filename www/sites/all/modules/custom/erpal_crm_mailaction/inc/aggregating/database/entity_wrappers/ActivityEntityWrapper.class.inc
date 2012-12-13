@@ -9,7 +9,7 @@
 
 namespace erpal_crm_mailaction\aggregating\database\entity_wrappers;
 
-class ActivityEntityWrapper extends EntityWrapper {
+class ActivityEntityWrapper extends EntityWrapperBase {
   
   /**
    * Default values for the wrapped node entity.
