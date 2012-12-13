@@ -15,6 +15,11 @@ function erpal_employee_helper_schema() {
   $schema['working_times'] = array(
     'description' => 'The base table for working_times entities.',
     'fields' => array(            
+      'id' => array(
+        'description' => 'The id of the working_times entity',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
       'uid' => array(
         'description' => 'The uid for whom the working times is for',
         'type' => 'int',
@@ -90,7 +95,10 @@ function erpal_employee_helper_schema() {
         'default' => 0,
       ),
     ),
-    'primary key' => array('uid', 'month', 'year'),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'ui_month_year' => array('uid', 'month', 'year'),
+    ),
     'indexes' => array(
       'booking_type' => array('booking_type'),
       'uid' => array('uid'),

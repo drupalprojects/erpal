@@ -4,6 +4,7 @@
  * Code for the erpal_employee_helper module.
  */
 module_load_include('inc', 'erpal_employee_helper', 'inc/config');
+module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.entity');
 
 /**
  * Implements hook_menu
@@ -27,32 +28,31 @@ function erpal_employee_helper_entity_info() {
     'label' => t('Calculated working times'),
     // The entity class and controller class extend the classes provided by the
     // Entity API
-    'entity class' => 'working_times',
+    'entity class' => 'WorkingTimes',
     'controller class' => 'WorkingTimesController',
     'base table' => 'working_times',
-    'file' => 'billable.entity.inc',
-    'fieldable' => TRUE,
+    'file' => 'inc/working_times.entity.inc',
+    'fieldable' => false,
     'entity keys' => array(
-        'id' => 'billable_id',
+        'id' => 'id',
         'bundle' => 'type',
     ),
     'bundles' => array(
-      'billable'=> array(
-        'label' => 'Billable',        
-      ),
+      'working_times'=> array(),
     ),
     'label callback' => 'entity_class_label',
-    'uri callback' => 'entity_class_uri',
-    'creation callback' => 'billable_create',
-    'access callback' => 'billable_access',
-    'module' => 'billable',
+    //'uri callback' => 'entity_class_uri',  //not accessible
+    'creation callback' => 'working_times_create',
+    'access callback' => 'working_times_access',
+    'module' => 'erpal_employee_helper',
     // The information below is used by the BillableUIController (which extends the EntityDefaultUIController)
-    'admin ui' => array(
-      'path' => 'admin/content/billables',
-      'file' => 'billable.admin.inc',
-      'controller class' => 'BillableUIController',
-      'menu wildcard' => '%billable',
+   /* 'admin ui' => array(
+      'path' => 'admin/content/working_times',
+      'file' => 'working_times.admin.inc',
+      'controller class' => 'WorkingTimesUIController',
+      'menu wildcard' => '%working_times',
     ),
+    */
   );
 
   return $return;
