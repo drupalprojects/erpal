@@ -1,6 +1,6 @@
 <?php
 
-//namespace com\google\i18n\phonenumbers;
+namespace com\google\i18n\phonenumbers;
 
 class PhoneMetadata {
 
@@ -97,7 +97,7 @@ class PhoneMetadata {
 		return $this;
 	}
 
-	private $preferredInternationalPrefix = "";
+	private $preferredInternationalPrefix = NULL;
 
 	public function hasPreferredInternationalPrefix() {
 		return isset($this->preferredInternationalPrefix);
@@ -663,21 +663,20 @@ class PhoneMetadata {
 		$this->setId($input['id']);
 		$this->setCountryCode($input['countryCode']);
 		$this->setInternationalPrefix($input['internationalPrefix']);
-		/*
-		  boolean hasString = objectInput.readBoolean();
-		  if (hasString) {
-		  setPreferredInternationalPrefix(objectInput.readUTF());
-		  }
-		 */
+
+		if (isset($input['preferredInternationalPrefix'])) {
+			$this->setPreferredInternationalPrefix($input['preferredInternationalPrefix']);
+		}
 		if (isset($input['nationalPrefix'])) {
 			$this->setNationalPrefix($input['nationalPrefix']);
 		}
-		/*
-		  hasString = objectInput.readBoolean();
-		  if (hasString) {
-		  setPreferredExtnPrefix(objectInput.readUTF());
-		  }
-		 */
+		if (isset($input['nationalPrefix'])) {
+			$this->setNationalPrefix($input['nationalPrefix']);
+		}
+
+		if (isset($input['preferredExtnPrefix'])) {
+			$this->setPreferredExtnPrefix($input['preferredExtnPrefix']);
+		}
 
 		if (isset($input['nationalPrefixForParsing'])) {
 			$this->setNationalPrefixForParsing($input['nationalPrefixForParsing']);
@@ -916,28 +915,30 @@ class NumberFormat {
 		return $this;
 	}
 
-	/*
-	  public NumberFormat mergeFrom(NumberFormat other) {
-	  if (other.hasPattern()) {
-	  setPattern(other.getPattern());
-	  }
-	  if (other.hasFormat()) {
-	  setFormat(other.getFormat());
-	  }
-	  int leadingDigitsPatternSize = other.leadingDigitsPatternSize();
-	  for (int i = 0; i < leadingDigitsPatternSize; i++) {
-	  addLeadingDigitsPattern(other.getLeadingDigitsPattern(i));
-	  }
-	  if (other.hasNationalPrefixFormattingRule()) {
-	  setNationalPrefixFormattingRule(other.getNationalPrefixFormattingRule());
-	  }
-	  if (other.hasDomesticCarrierCodeFormattingRule()) {
-	  setDomesticCarrierCodeFormattingRule(other.getDomesticCarrierCodeFormattingRule());
-	  }
-	  setNationalPrefixOptionalWhenFormatting(other.isNationalPrefixOptionalWhenFormatting());
-	  return this;
-	  }
+	/**
+	 * @param NumberFormat $other
+	 * @return NumberFormat
 	 */
+	public function mergeFrom(NumberFormat $other) {
+		if ($other->hasPattern()) {
+			$this->setPattern($other->getPattern());
+		}
+		if ($other->hasFormat()) {
+			$this->setFormat($other->getFormat());
+		}
+		$leadingDigitsPatternSize = $other->leadingDigitsPatternSize();
+		for ($i = 0; $i < $leadingDigitsPatternSize; $i++) {
+			$this->addLeadingDigitsPattern($other->getLeadingDigitsPattern($i));
+		}
+		if ($other->hasNationalPrefixFormattingRule()) {
+			$this->setNationalPrefixFormattingRule($other->getNationalPrefixFormattingRule());
+		}
+		if ($other->hasDomesticCarrierCodeFormattingRule()) {
+			$this->setDomesticCarrierCodeFormattingRule($other->getDomesticCarrierCodeFormattingRule());
+		}
+		//  $this->setNationalPrefixOptionalWhenFormatting($other->isNationalPrefixOptionalWhenFormatting());
+		return $this;
+	}
 
 	public function toArray() {
 		$output = array();

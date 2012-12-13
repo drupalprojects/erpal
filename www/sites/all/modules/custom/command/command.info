@@ -1,9 +1,0 @@
-name = Command
-description = Command module, provides API for other modules to register their own commands, hande and execute them.
-version = "7.x-1.0"
-core = 7.x
-package = "Misc"
-
-scripts[] = assets/js/command.js
-
-stylesheets[all][] = assets/css/command.css

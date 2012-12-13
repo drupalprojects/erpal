@@ -7,13 +7,9 @@
 define('ERPAL_CONTEXT_ACTIVITIES', 'activities'); //activities list
 define('ERPAL_CONTEXT_CRM_GLOBAL', 'crm_global'); //we are in activies view or in a tab that belongs to the activities
 define('ERPAL_CONTEXT_ACTIVITY', 'activity');
-define('ERPAL_CONTEXT_ACTIVITY_ADD', 'activity_add');
-define('ERPAL_CONTEXT_ACTIVITY_EDIT', 'activity_edit');
 define('ERPAL_CONTEXT_CONTACTS', 'contacts');
 define('ERPAL_CONTEXT_CONTACT_ACTIVITIES', 'contact_activities');
 define('ERPAL_CONTEXT_CONTACT', 'contact');
-define('ERPAL_CONTEXT_CONTACT_ADD', 'contact_add');
-define('ERPAL_CONTEXT_CONTACT_EDIT', 'contact_edit');
 
 /**
 * Implement hook_erpal_contexts definied in erpal_basic_helper module
@@ -26,18 +22,21 @@ function erpal_crm_helper_erpal_contexts($router_item) {
   $node = _erpal_basic_helper_router_object(1, $router_item);
   
   //do we have node add form
-  if (drupal_match_path($path, 'node/add/erpal-contact*')) {
-    $contexts[ERPAL_CONTEXT_CONTACT_ADD] = true;  
-  } elseif (drupal_match_path($path, 'node/add/erpal-activity*')) {
-    $contexts[ERPAL_CONTEXT_ACTIVITY_ADD] = true;  
+  if (drupal_match_path($path, 'node/add/erpal-contact*')) { 
+    $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
+    $contexts[ERPAL_CONTEXT_CONTACT] = true;  
+  } elseif (drupal_match_path($path, 'node/add/erpal-crm-activity*')) {  
+    $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
+    $contexts[ERPAL_CONTEXT_ACTIVITY] = true; 
   }
   
   //do we have an edit form?
   if ($path == 'node/%/edit') {
-    if ($node->type == 'erpal_contact')
-      $contexts[ERPAL_CONTEXT_CONTACT_EDIT] = true;
-    elseif ($node->type == 'erpal_crm_activity') 
-      $contexts[ERPAL_CONTEXT_ACTIVITY_EDIT] = true;
+    if ($node->type == 'erpal_contact') {
+      $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
+    } elseif ($node->type == 'erpal_crm_activity') { 
+      $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
+    }
   }
      
   if (drupal_match_path($path, 'node/%*') ) {    
@@ -50,7 +49,6 @@ function erpal_crm_helper_erpal_contexts($router_item) {
       switch ($node->type) {
         case 'erpal_contact':  
         case 'erpal_crm_activity':       
-        $contexts[ERPAL_CONTEXT_CRM_SUB_PATH] = true;
         $is_crm_context_node = true;
         break;
       }
@@ -110,11 +108,6 @@ function erpal_crm_helper_dynamic_menu_items_alter(&$data, $router_item, $root_p
     _erpal_crm_helper_activities_links($data, $node);       
   }
   
-  //CRM global context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_CRM_GLOBAL, $router_item)) {    
-    //_erpal_crm_helper_crm_global_menu_tabs($data, $node);       
-  } 
-  
   //CRM contacts context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTACTS, $router_item)) {    
     _erpal_crm_helper_contacts_links($data);       
@@ -132,6 +125,7 @@ function erpal_crm_helper_dynamic_menu_items_alter(&$data, $router_item, $root_p
     _erpal_crm_helper_node_activity_links($data, $node, $is_node_view); 
     _erpal_crm_helper_crm_global_menu_tabs($data, $node, array('activities'));   
   }
+ 
   
 }
 

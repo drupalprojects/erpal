@@ -1,0 +1,71 @@
+<?php
+
+define('MODULE_COMMANDER_PERMISSION_ACCESS', 'access commander');
+define('MODULE_COMMANDER_IMPLEMENTATION', 'commander.inc');
+
+/**
+ * Implements hook_init().
+ */
+function commander_init() {
+    if (user_access(MODULE_COMMANDER_PERMISSION_ACCESS)) {
+        drupal_add_library('system', 'jquery.form');
+        drupal_add_library('system', 'drupal.ajax');
+    }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function commander_permission() {
+    return array(
+        MODULE_COMMANDER_PERMISSION_ACCESS => array(
+            'title' => t('Access commander'),
+            'description' => t('Indicates access to commander panel.'),
+        ),
+    );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function commander_menu() {
+    $items = array();
+
+    $items['commander/prompt'] = array(
+        'page callback' => 'commander_prompt',
+        'access callback' => 'user_access',
+        'access arguments' => array(MODULE_COMMANDER_PERMISSION_ACCESS),
+        'type' => MENU_CALLBACK,
+        'file' => MODULE_COMMANDER_IMPLEMENTATION
+    );
+
+    $items['commander/prompt/show'] = array(
+        'title' => t('Show commander'),
+        'page callback' => 'commander_prompt_show',
+        'access callback' => 'user_access',
+        'access arguments' => array(MODULE_COMMANDER_PERMISSION_ACCESS),
+        'type' => MENU_NORMAL_ITEM,
+        'file' => MODULE_COMMANDER_IMPLEMENTATION
+    );
+
+    return $items;
+}
+
+/**
+ * Implements hook_command().
+ */
+function commander_command() {
+    $items = array();
+
+    $items['echo'] = array(
+        'callback' => 'commander_echo',
+        'file' => MODULE_COMMANDER_IMPLEMENTATION
+    );
+
+    $items['hello'] = array(
+        'callback' => 'commander_hello',
+        'file' => MODULE_COMMANDER_IMPLEMENTATION
+    );
+
+    return $items;
+}
