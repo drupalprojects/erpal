@@ -1,0 +1,308 @@
+<?php
+/**
+ * @file
+ * feature_erpal_germany_permissions.features.og_features_permission.inc
+ */
+
+/**
+ * Implements hook_og_features_default_permissions().
+ */
+function feature_erpal_germany_permissions_og_features_default_permissions() {
+  $permissions = array();
+
+  // Exported og permission: 'node:erpal_space:add user'
+  $permissions['node:erpal_space:add user'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:administer group'
+  $permissions['node:erpal_space:administer group'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:approve and deny subscription'
+  $permissions['node:erpal_space:approve and deny subscription'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:create erpal_file content'
+  $permissions['node:erpal_space:create erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:create erpal_project content'
+  $permissions['node:erpal_space:create erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:create erpal_task content'
+  $permissions['node:erpal_space:create erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:delete any erpal_file content'
+  $permissions['node:erpal_space:delete any erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:delete any erpal_project content'
+  $permissions['node:erpal_space:delete any erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:delete any erpal_task content'
+  $permissions['node:erpal_space:delete any erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:delete own erpal_file content'
+  $permissions['node:erpal_space:delete own erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:delete own erpal_project content'
+  $permissions['node:erpal_space:delete own erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:delete own erpal_task content'
+  $permissions['node:erpal_space:delete own erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:manage members'
+  $permissions['node:erpal_space:manage members'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:manage permissions'
+  $permissions['node:erpal_space:manage permissions'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:manage roles'
+  $permissions['node:erpal_space:manage roles'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:subscribe'
+  $permissions['node:erpal_space:subscribe'] = array(
+    'roles' => array(
+      'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:subscribe without approval'
+  $permissions['node:erpal_space:subscribe without approval'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:unsubscribe'
+  $permissions['node:erpal_space:unsubscribe'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:update any erpal_file content'
+  $permissions['node:erpal_space:update any erpal_file content'] = array(
+    'roles' => array(
+      'customer' => 'customer',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:update any erpal_project content'
+  $permissions['node:erpal_space:update any erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:update any erpal_task content'
+  $permissions['node:erpal_space:update any erpal_task content'] = array(
+    'roles' => array(
+      'customer' => 'customer',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:update group'
+  $permissions['node:erpal_space:update group'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:update own erpal_file content'
+  $permissions['node:erpal_space:update own erpal_file content'] = array(
+    'roles' => array(
+      'customer' => 'customer',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_space:update own erpal_project content'
+  $permissions['node:erpal_space:update own erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_space:update own erpal_task content'
+  $permissions['node:erpal_space:update own erpal_task content'] = array(
+    'roles' => array(
+      'customer' => 'customer',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:add user'
+  $permissions['node:erpal_task:add user'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:administer group'
+  $permissions['node:erpal_task:administer group'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:approve and deny subscription'
+  $permissions['node:erpal_task:approve and deny subscription'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:create erpal_file content'
+  $permissions['node:erpal_task:create erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:create erpal_project content'
+  $permissions['node:erpal_task:create erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:create erpal_task content'
+  $permissions['node:erpal_task:create erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:delete any erpal_file content'
+  $permissions['node:erpal_task:delete any erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:delete any erpal_project content'
+  $permissions['node:erpal_task:delete any erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:delete any erpal_task content'
+  $permissions['node:erpal_task:delete any erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:delete own erpal_file content'
+  $permissions['node:erpal_task:delete own erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:delete own erpal_project content'
+  $permissions['node:erpal_task:delete own erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:delete own erpal_task content'
+  $permissions['node:erpal_task:delete own erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:manage members'
+  $permissions['node:erpal_task:manage members'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:manage permissions'
+  $permissions['node:erpal_task:manage permissions'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:manage roles'
+  $permissions['node:erpal_task:manage roles'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:subscribe'
+  $permissions['node:erpal_task:subscribe'] = array(
+    'roles' => array(
+      'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:subscribe without approval'
+  $permissions['node:erpal_task:subscribe without approval'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:unsubscribe'
+  $permissions['node:erpal_task:unsubscribe'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:update any erpal_file content'
+  $permissions['node:erpal_task:update any erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:update any erpal_project content'
+  $permissions['node:erpal_task:update any erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:update any erpal_task content'
+  $permissions['node:erpal_task:update any erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:update group'
+  $permissions['node:erpal_task:update group'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:erpal_task:update own erpal_file content'
+  $permissions['node:erpal_task:update own erpal_file content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:update own erpal_project content'
+  $permissions['node:erpal_task:update own erpal_project content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:erpal_task:update own erpal_task content'
+  $permissions['node:erpal_task:update own erpal_task content'] = array(
+    'roles' => array(),
+  );
+
+  return $permissions;
+}

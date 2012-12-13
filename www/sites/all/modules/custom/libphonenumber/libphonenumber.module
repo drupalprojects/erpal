@@ -4,9 +4,38 @@ use com\google\i18n\phonenumbers\PhoneNumberUtil;
 use com\google\i18n\phonenumbers\PhoneNumberFormat;
 use com\google\i18n\phonenumbers\NumberParseException;
 
-require_once 'lib/PhoneNumberUtil.php';
+// require_once 'lib/PhoneNumberUtil.php';
+
+/**
+ * Includes the libphonenumber library and sets a warning when the library can
+ * not be found in the libraries directory.
+ * @return true/false if the library is available or not
+ *  
+ */
+function _libphonenumber_include_library(){
+  
+  $path = libraries_get_path('libphonenumber');
+  
+
+  if (!file_exists($path)) {
+    $libphonenumber_link = l('download', 'https://github.com/davideme/libphonenumber-for-PHP');
+    $libphonenumber_path = libraries_get_path('libphonenumber');
+    drupal_set_message(
+      t('The libphonenumber-module can not work without libphonenumber-for-PHP. Please !link and extract to !path.', 
+        array('!link' => $libphonenumber_link, '!path' => $libphonenumber_path)), 'warning');    
+    return false;
+  }
+  
+  
+  require_once $path . '/PhoneNumberUtil.php';
+  
+  return true;
+
+}
+
 
 function libphonenumber_menu(){
+  
   $items['libphonenumber/test'] = array(
     'title' => 'Libphonenumber test',
     'page callback' => '_libphonenumber_test',    
@@ -14,6 +43,7 @@ function libphonenumber_menu(){
     'type' => MENU_LOCAL_TASK,
   );
   return $items;
+  
 }
 
 function _libphonenumber_test(){
@@ -21,40 +51,42 @@ function _libphonenumber_test(){
 }
 
 function _libphonenumber_test_form(){
+  if(_libphonenumber_include_library()){
+    $phone_util = PhoneNumberUtil::getInstance();
   
-  $phone_util = PhoneNumberUtil::getInstance();
+    $form = array();
   
-  $form = array();
+    $form['test'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Test'),
+    );
   
-  $form['test'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Test'),
-  );
+    $form['test']['phonenumber'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Number to parse:'),
+    );
   
-  $form['test']['phonenumber'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Number to parse:'),
-  );
+    $form['country'] = array(
+      '#type' => 'select',
+      '#title' => t('Default country'),
+      '#description' => t('Select the default country-code for your telephone-numbers'),
+      '#options' => $phone_util->getSupportedRegions(),
+      '#default_value' => variable_get('libphonenumber_default_country'), 
+    );
   
-  $form['country'] = array(
-    '#type' => 'select',
-    '#title' => t('Default country'),
-    '#description' => t('Select the default country-code for your telephone-numbers'),
-    '#options' => $phone_util->getSupportedRegions(),
-    '#default_value' => variable_get('libphonenumber_default_country'), 
-  );
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Contiue',
+    );
   
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => 'Contiue',
-  );
-  
-  return $form;
+    return $form;
+  }
+  else 
+    return array();
 }
 
-
 function _libphonenumber_test_form_submit(&$form, &$form_state){
-
+  
   // Save default country number in 'libphonenumber_default_country'  
   $country = $form_state['values']['country'];
   variable_set('libphonenumber_default_country', $country);
@@ -66,43 +98,54 @@ function _libphonenumber_test_form_submit(&$form, &$form_state){
 
 
 function _libphonenumber_parse($phone_number, $region) {
-  
-  $phone_util = PhoneNumberUtil::getInstance();
-  $parsed = FALSE;
-  try {
-    $parsed = $phone_util->parse($phone_number, $region);
-  } catch (NumberParseException $e) {
-      // TODO: specify error
-      return false;
+  if(_libphonenumber_include_library()){
+    $phone_util = PhoneNumberUtil::getInstance();
+    $parsed = FALSE;
+    try {
+      $parsed = $phone_util->parse($phone_number, $region);
+    } catch (NumberParseException $e) {
+        // TODO: specify error
+        return false;
+    }
+    return $parsed;
   }
-  return $parsed;
+  return $phone_number;
 }
 
 /**
  * Checks if a phonenumber is valid for the given region
  */
 function libphonenumber_is_valid($phone_number, $region = "DE") {
-  $phone_util = PhoneNumberUtil::getInstance();
-  $number_proto = _libphonenumber_parse($phone_number, $region);
-  if($number_proto == false) return false;
-  $is_valid = $phone_util->isValidNumber($number_proto);
-  return $is_valid;
+  if(_libphonenumber_include_library()){
+    $phone_util = PhoneNumberUtil::getInstance();
+    $number_proto = _libphonenumber_parse($phone_number, $region);
+    if($number_proto == false) return false;
+    $is_valid = $phone_util->isValidNumber($number_proto);
+    return $is_valid;
+  }
+  return FALSE;
 }
 
 function libphonenumber_format($phone_number, $format = PhoneNumberFormat::INTERNATIONAL, $region = "DE") {
-  // dpm("libphonenumber_format: " . $phone_number);
-  $phone_util = PhoneNumberUtil::getInstance();
-  $number_proto = _libphonenumber_parse($phone_number, $region);
-  $number_formatted = $phone_util->format($number_proto, $format) . PHP_EOL;
-  // dpm("libphonenumber_format: " . $number_formatted);
-  return $number_formatted;
+  if(_libphonenumber_include_library()){
+    // dpm("libphonenumber_format: " . $phone_number);
+    $phone_util = PhoneNumberUtil::getInstance();
+    $number_proto = _libphonenumber_parse($phone_number, $region);
+    $number_formatted = $phone_util->format($number_proto, $format) . PHP_EOL;
+    // dpm("libphonenumber_format: " . $number_formatted);
+    return $number_formatted;}
 }
 
+
 function libphonenumber_is_number_match($phone_number_a, $phone_number_b, $region = "DE") {
-  $number_a_formatted = libphonenumber_format($phone_number_a, PhoneNumberFormat::E164, $region);
-  $number_b_formatted = libphonenumber_format($phone_number_b, PhoneNumberFormat::E164, $region);
-  return ($number_a_formatted == $number_b_formatted);
-  // PhoneNumberFormat:: NATIONAL, E164, INTERNATIONAL, RFC3966
+  if(_libphonenumber_include_library()){
+    $number_a_formatted = libphonenumber_format($phone_number_a, PhoneNumberFormat::E164, $region);
+    $number_b_formatted = libphonenumber_format($phone_number_b, PhoneNumberFormat::E164, $region);
+    return ($number_a_formatted == $number_b_formatted);
+    // PhoneNumberFormat:: NATIONAL, E164, INTERNATIONAL, RFC3966
+  }
+  else 
+    return FALSE; 
 }
 
 
