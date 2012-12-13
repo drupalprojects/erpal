@@ -22,9 +22,8 @@ function erpal_germany_form_install_configure_form_alter(&$form, $form_state) {
   $form['filesystem_settings']['file_private_path'] = array(
     '#type' => 'textfield', 
     '#title' => st('Private file system path'), 
-    '#default_value' => variable_get('file_private_path', ''), 
-    '#maxlength' => 255, 
-    '#default_value' => 'private/',
+    '#default_value' => variable_get('file_private_path', 'sites/default/files/private'), 
+    '#maxlength' => 255,
     '#required' => TRUE, 
   );
 
@@ -116,8 +115,8 @@ function erpal_germany_preconfigure_site(){
 function erpal_germany_last_config_steps(){
   
   $operations = array(
-    array('_erpal_germany_revert_features', array()),
     array('_erpal_germany_rebuild_content_access', array()),
+    array('_erpal_germany_revert_features', array()),
   );
     
   $batch = array(

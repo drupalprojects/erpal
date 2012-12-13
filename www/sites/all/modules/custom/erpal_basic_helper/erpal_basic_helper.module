@@ -147,6 +147,10 @@ function _erpal_basic_helper_contact_node_form_alter(&$form, &$form_state) {
   $form['#submit'][] = '_erpal_basic_helper_contact_form_submit';
   
   _erpal_basic_helper_contact_node_form_field_conditions($form, $form_state);
+ 
+  //Hide field_phone_number_normalized
+  $form['field_phone'][LANGUAGE_NONE][0]['field_phone_number_normalized']['#access'] = FALSE;
+  $form['field_phone'][LANGUAGE_NONE][0]['field_phone_number_normalized'][LANGUAGE_NONE]['#title'] = '';
 }
 
 /**

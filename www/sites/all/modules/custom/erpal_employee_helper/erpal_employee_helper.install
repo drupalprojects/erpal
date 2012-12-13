@@ -1,0 +1,109 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for our entity and a table to store information about
+ * the entity types.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function erpal_employee_helper_schema() {
+  $schema = array();
+
+  $schema['working_times'] = array(
+    'description' => 'The base table for working_times entities.',
+    'fields' => array(            
+      'id' => array(
+        'description' => 'The id of the working_times entity',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The uid for whom the working times is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'booking_type' => array(
+        'description' => 'Wether this data is aggregated for a month or a year',
+        'type' => 'varchar',
+        'length' => 5,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'month' => array(
+        'description' => 'The month for the booked working_times',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'year' => array(
+        'description' => 'The year for the booked working_times',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'overtime' => array(
+        'description' => 'Long hours for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'ill_days' => array(
+        'description' => 'Ill days for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'holidays_used' => array(
+        'description' => 'Used holidays for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'holidays_available' => array(
+        'description' => 'Available holidays for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'total_hours' => array(
+        'description' => 'Total working hours for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'project_time' => array(
+        'description' => 'Sum of timetrackings on project for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'overtime_reduce' => array(
+        'description' => 'Reduced overtime for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'ui_month_year' => array('uid', 'month', 'year'),
+    ),
+    'indexes' => array(
+      'booking_type' => array('booking_type'),
+      'uid' => array('uid'),
+    ),
+  );
+
+  return $schema;
+}

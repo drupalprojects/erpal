@@ -1,0 +1,9 @@
+name = Commander
+description = Commander module, provides API for other modules to register their own commands, handle and execute them.
+version = "7.x-1.0"
+core = 7.x
+package = "Misc"
+
+scripts[] = assets/js/commander.js
+
+stylesheets[all][] = assets/css/commander.css

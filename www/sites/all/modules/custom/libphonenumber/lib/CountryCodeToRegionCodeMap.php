@@ -1,6 +1,6 @@
 <?php
 
-//namespace com\google\i18n\phonenumbers;
+namespace com\google\i18n\phonenumbers;
 
 class CountryCodeToRegionCodeMap {
 

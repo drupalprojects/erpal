@@ -80,8 +80,17 @@ function _erpal_asterisk_config_form() {
   
 }
 
-/*
- *  Implemtent form Submit Function 
+/**
+ * Implements form validate function for _asterisk_config_form
+ * 
+ */
+function _erpal_asterisk_contig_form_validate(&$form, &$form_state){
+  // @TODO: implement
+  
+}
+
+/**
+ *  Implemtents form Submit Function for _asterisk_config_form
  */
 function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
 
@@ -107,6 +116,7 @@ function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
   //set POST variables
   $url = 'http://' . variable_get('asterisk_nodejs_host') . ':' . variable_get('asterisk_nodejs_http_port') . '/ingoing';
   
+  dpm($url);
   // $phone_number = libphonenumber_format(urlencode($destination));
   $phone_number = $destination;
   $fields = array(
@@ -166,7 +176,7 @@ function _erpal_asterisk_call($destination, $source = NULL){
     . $destination 
     . ' and source ' 
     . $s 
-    . ' forwarded to asterisk_notify.';
+    . ' forwarded to asterisk_notify.';
     
   return implode (
   	'', 

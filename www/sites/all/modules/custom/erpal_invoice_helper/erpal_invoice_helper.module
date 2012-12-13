@@ -750,6 +750,8 @@ function erpal_invoice_helper_menu(){
 */
 function _erpal_invoice_helper_invoice_defaults_menu_access($node) {
   //@TODO implement
+  if ($node->type != 'erpal_contact')
+    return false;
   
   return node_access('view', $node);
 }

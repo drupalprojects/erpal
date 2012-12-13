@@ -245,6 +245,75 @@ function feature_erpal_calendar_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_date-field_date_type'.
+  $fields['node-erpal_date-field_date_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_date_type',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'date' => 'Date',
+          'holiday' => 'Holiday',
+        ),
+        'allowed_values_function' => '',
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_date',
+      'comment_enabled' => 0,
+      'default_value' => array(
+        0 => array(
+          'value' => 'date',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 4,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_date_type',
+      'label' => 'date_type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 34,
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_date-field_users'.
   $fields['node-erpal_date-field_users'] = array(
     'field_config' => array(
@@ -391,6 +460,7 @@ function feature_erpal_calendar_field_default_fields() {
   t('Date');
   t('Date tags');
   t('Participants');
+  t('date_type');
 
   return $fields;
 }

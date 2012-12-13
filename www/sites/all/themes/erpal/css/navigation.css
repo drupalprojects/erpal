@@ -6,3 +6,5 @@ ul.menu li {
     list-style-image: none;
     list-style-type: none;
 }
+
+.local_tasks_menu ul ul { display:none;}

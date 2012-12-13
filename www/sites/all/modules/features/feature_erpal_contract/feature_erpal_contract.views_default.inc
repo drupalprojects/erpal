@@ -402,6 +402,86 @@ echo _erpal_contract_helper_view_contracts_header_content();
       'label' => 'Content: Nid',
     ),
   );
+
+  /* Display: Contracts by customer */
+  $handler = $view->new_display('panel_pane', 'Contracts by customer', 'panel_pane_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Contract type */
+  $handler->display->display_options['fields']['field_contract_type']['id'] = 'field_contract_type';
+  $handler->display->display_options['fields']['field_contract_type']['table'] = 'field_data_field_contract_type';
+  $handler->display->display_options['fields']['field_contract_type']['field'] = 'field_contract_type';
+  $handler->display->display_options['fields']['field_contract_type']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_contract_type']['delta_offset'] = '0';
+  /* Field: Field: Period */
+  $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
+  $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['settings'] = array(
+    'format_type' => 'erpal_date',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Field collection item: Payment period */
+  $handler->display->display_options['fields']['field_payment_period']['id'] = 'field_payment_period';
+  $handler->display->display_options['fields']['field_payment_period']['table'] = 'field_data_field_payment_period';
+  $handler->display->display_options['fields']['field_payment_period']['field'] = 'field_payment_period';
+  $handler->display->display_options['fields']['field_payment_period']['relationship'] = 'field_contract_payment_value';
+  /* Field: Field collection item: Payment type */
+  $handler->display->display_options['fields']['field_payment_type']['id'] = 'field_payment_type';
+  $handler->display->display_options['fields']['field_payment_type']['table'] = 'field_data_field_payment_type';
+  $handler->display->display_options['fields']['field_payment_type']['field'] = 'field_payment_type';
+  $handler->display->display_options['fields']['field_payment_type']['relationship'] = 'field_contract_payment_value';
+  /* Field: Field collection item: Price per month */
+  $handler->display->display_options['fields']['field_price']['id'] = 'field_price';
+  $handler->display->display_options['fields']['field_price']['table'] = 'field_data_field_price';
+  $handler->display->display_options['fields']['field_price']['field'] = 'field_price';
+  $handler->display->display_options['fields']['field_price']['relationship'] = 'field_contract_payment_value';
+  $handler->display->display_options['fields']['field_price']['settings'] = array(
+    'thousand_separator' => ' ',
+    'decimal_separator' => '.',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Field: Customer (field_customer_ref) */
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['relationship'] = 'field_contract_payment_value';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_contract' => 'erpal_contract',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['contracts'] = array(
     t('Master'),
     t('Contracts'),
@@ -446,6 +526,7 @@ echo _erpal_contract_helper_view_contracts_header_content();
     t('Date till'),
     t('All'),
     t('View panes'),
+    t('Contracts by customer'),
   );
   $export['contracts'] = $view;
 
