@@ -20,6 +20,45 @@ function erpal_employee_helper_menu(){
 } 
 
 /**
+* Implements hook_entity_info
+*/
+function erpal_employee_helper_entity_info() {
+  $return['working_times'] = array(
+    'label' => t('Calculated working times'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'working_times',
+    'controller class' => 'WorkingTimesController',
+    'base table' => 'working_times',
+    'file' => 'billable.entity.inc',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+        'id' => 'billable_id',
+        'bundle' => 'type',
+    ),
+    'bundles' => array(
+      'billable'=> array(
+        'label' => 'Billable',        
+      ),
+    ),
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => 'billable_create',
+    'access callback' => 'billable_access',
+    'module' => 'billable',
+    // The information below is used by the BillableUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/billables',
+      'file' => 'billable.admin.inc',
+      'controller class' => 'BillableUIController',
+      'menu wildcard' => '%billable',
+    ),
+  );
+
+  return $return;
+}
+
+/**
 * Implements hook_permission
 */
 function erpal_employee_helper_permission() {
