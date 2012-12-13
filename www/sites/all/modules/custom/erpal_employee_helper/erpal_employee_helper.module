@@ -30,3 +30,38 @@ function erpal_employee_helper_permission() {
     )
   );
 }
+
+/**
+* callback to calculate the duration if a working time node
+*/
+function computed_field_field_duration_calc_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $date_field = $entity->field_date_time[LANGUAGE_NONE][0];
+  $working_time_sec = $date_field['value2'] - $date_field['value'];
+  
+  //now substract the breaks
+  $breaks = $entity->field_date_times[LANGUAGE_NONE];
+  $total_break_sec = 0;
+  foreach ($breaks as $delta=>$value) {
+    $from = $value['value'];
+    $till = $value['value2'];
+    $break_sec = $till - $from;
+    $total_break_sec += $break_sec;
+  }
+  
+  $time_decimal = round(($working_time_sec - $total_break_sec) / (60 * 60), 2); //time in hours
+  $entity_field[0]['value'] = $time_decimal;
+}
+
+/**
+*  Callback to set the display of a calculated duration of a working time node
+*/
+function computed_field_field_duration_calc_display($field, $entity_field_item, $entity_lang, $langcode) {
+  
+  $value = $entity_field_item['value'];
+  $whole = floor($value);      // full part
+  $decimal_part = $value - $whole; // decimal part
+  //get decimal part in minutes
+  
+  $minutes = round(60 * $decimal_part);
+  return $whole.':'.$minutes.' '.t('hours');
+}
