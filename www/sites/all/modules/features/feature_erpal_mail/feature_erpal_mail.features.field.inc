@@ -14,7 +14,7 @@ function feature_erpal_mail_field_default_fields() {
   $fields['node-erpal_crm_activity-field_mails'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_mails',
@@ -48,6 +48,7 @@ function feature_erpal_mail_field_default_fields() {
             'erpal_mail' => 'erpal_mail',
           ),
         ),
+        'profile2_private' => FALSE,
         'target_type' => 'node',
       ),
       'translatable' => '0',
@@ -55,7 +56,9 @@ function feature_erpal_mail_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
       'default_value' => NULL,
+      'default_value_function' => '',
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -63,7 +66,7 @@ function feature_erpal_mail_field_default_fields() {
           'label' => 'above',
           'module' => 'entityreference',
           'settings' => array(
-            'link' => FALSE,
+            'link' => 1,
           ),
           'type' => 'entityreference_label',
           'weight' => 18,
@@ -78,11 +81,17 @@ function feature_erpal_mail_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_mails',
       'label' => 'Mails',
-      'required' => FALSE,
+      'required' => 0,
       'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'status' => 0,
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'entityreference',
         'settings' => array(
           'match_operator' => 'CONTAINS',
@@ -91,7 +100,7 @@ function feature_erpal_mail_field_default_fields() {
           'references_dialog_edit' => 0,
           'references_dialog_search' => 0,
           'references_dialog_search_view' => '',
-          'size' => 60,
+          'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
         'weight' => 31,
