@@ -4,19 +4,19 @@
  * @created   12/07/2012
  * @copyright 2012 © Bright Solutions GmbH 
  * 
- * The import model for importing mails for tickets.
+ * The model for referencing mails to tickets.
  */
 
-namespace erpal_crm_mailaction\aggregating\database\models\import;
+namespace erpal_crm_mailaction\aggregating\database\models\referencing;
 
-class Ticket implements ImportModel {
+class Ticket implements ReferencingModel {
   
   private $lastError;
   
   /**
    * Implements erpal_crm_mailaction\aggregating\database\import_models\ImportModel::__construct.
    */
-  public function __construct ($destinationID, $to, $from, $subject, $body, array $attachments) {
+  public function __construct ($destinationID, $toID, $fromID, $mailID, $contactModel) {
     
     // TODO: Not yet implemented.
     

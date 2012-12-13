@@ -51,7 +51,6 @@ class Autoloader {
     $classPath = str_replace ('\\', '/' , $classPath);
     
     $filePath  = $this->basePath . '/' . $classPath . '.class.inc';
- 
     if (is_readable(drupal_realpath ($filePath))) {
       require_once $filePath;
       return;
