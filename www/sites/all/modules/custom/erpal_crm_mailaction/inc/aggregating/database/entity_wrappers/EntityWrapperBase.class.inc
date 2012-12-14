@@ -134,7 +134,7 @@ abstract class EntityWrapperBase {
    * @param   integer $value      The value.
    * @param   boolean $append     TRUE if you want to append the value.
    */
-  public function createEntitySimpleValue ($fieldName, $value, $append = FALSE) {
+  public function createEntitySimpleValue ($fieldName, $value, $append = FALSE, $valueName = 'value') {
 
     if ($fieldName == 'body') {
       
@@ -145,7 +145,7 @@ abstract class EntityWrapperBase {
         'summary'     => ''
       );
     }else{
-      $valueArray = array ('value' => $value);
+      $valueArray = array ($valueName => $value);
     } 
     
     
