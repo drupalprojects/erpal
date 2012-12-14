@@ -487,10 +487,10 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'erpal_task';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_advanced_right';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Time information',
-    'weight' => '10',
+    'weight' => '18',
     'children' => array(
       0 => 'field_date',
       1 => 'field_estimated_time',

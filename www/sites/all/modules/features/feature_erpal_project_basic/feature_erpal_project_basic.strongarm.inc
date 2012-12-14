@@ -371,7 +371,7 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '33',
         ),
         'path' => array(
-          'weight' => '4',
+          'weight' => '7',
         ),
         'alias' => array(
           'weight' => '22',
@@ -491,7 +491,7 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '28',
         ),
         'path' => array(
-          'weight' => '9',
+          'weight' => '13',
         ),
         'alias' => array(
           'weight' => '26',

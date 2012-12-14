@@ -240,6 +240,66 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
 
   $ds_layout = new stdClass();
   $ds_layout->api_version = 1;
+  $ds_layout->id = 'node|erpal_project|form';
+  $ds_layout->entity_type = 'node';
+  $ds_layout->bundle = 'erpal_project';
+  $ds_layout->view_mode = 'form';
+  $ds_layout->layout = 'erpal_forms';
+  $ds_layout->settings = array(
+    'hide_empty_regions' => 0,
+    'hide_sidebars' => FALSE,
+    'regions' => array(
+      'left' => array(
+        0 => 'title',
+        1 => 'body',
+      ),
+      'right' => array(
+        0 => 'group_content_access',
+        1 => 'field_customer_ref',
+        2 => 'field_project_status_term',
+        3 => 'field_priority_term',
+        4 => 'field_pricing',
+      ),
+      'advancedleft' => array(
+        0 => 'path',
+        1 => 'field_project_tags',
+        2 => 'og_group_ref',
+        3 => 'field_project_contacts',
+        4 => 'field_activity_ref',
+      ),
+      'advancedright' => array(
+        0 => 'field_date',
+        1 => 'field_books_ref',
+        2 => 'field_asset_files',
+      ),
+      'hidden' => array(
+        0 => '_add_existing_field',
+      ),
+    ),
+    'fields' => array(
+      'title' => 'left',
+      'body' => 'left',
+      'group_content_access' => 'right',
+      'field_customer_ref' => 'right',
+      'field_project_status_term' => 'right',
+      'field_priority_term' => 'right',
+      'field_pricing' => 'right',
+      'path' => 'advancedleft',
+      'field_project_tags' => 'advancedleft',
+      'og_group_ref' => 'advancedleft',
+      'field_project_contacts' => 'advancedleft',
+      'field_activity_ref' => 'advancedleft',
+      'field_date' => 'advancedright',
+      'field_books_ref' => 'advancedright',
+      'field_asset_files' => 'advancedright',
+      '_add_existing_field' => 'hidden',
+    ),
+    'classes' => array(),
+  );
+  $export['node|erpal_project|form'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
   $ds_layout->id = 'node|erpal_project|full';
   $ds_layout->entity_type = 'node';
   $ds_layout->bundle = 'erpal_project';
@@ -283,6 +343,80 @@ function feature_erpal_project_basic_ds_layout_settings_info() {
     'classes' => array(),
   );
   $export['node|erpal_project|full'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
+  $ds_layout->id = 'node|erpal_task|form';
+  $ds_layout->entity_type = 'node';
+  $ds_layout->bundle = 'erpal_task';
+  $ds_layout->view_mode = 'form';
+  $ds_layout->layout = 'erpal_forms';
+  $ds_layout->settings = array(
+    'hide_empty_regions' => 0,
+    'hide_sidebars' => FALSE,
+    'regions' => array(
+      'advancedright' => array(
+        0 => 'field_date',
+        1 => 'field_estimated_time',
+        2 => 'field_project_tags',
+        3 => 'field_task_assigned_users',
+        4 => 'group_task_time_group',
+        5 => 'field_asset_files',
+      ),
+      'left' => array(
+        0 => 'title',
+        1 => 'field_is_ticket',
+        2 => 'body',
+      ),
+      'right' => array(
+        0 => 'field_project_ref',
+        1 => 'group_content_access',
+        2 => 'field_task_status_term',
+        3 => 'field_priority_term',
+        4 => 'field_task_type_term',
+        5 => 'field_pricing',
+      ),
+      'advancedleft' => array(
+        0 => 'field_parent',
+        1 => 'field_progress_percent',
+        2 => 'field_task_exclude_from',
+        3 => 'og_group_ref',
+        4 => 'path',
+        5 => 'field_timetracking_button',
+        6 => 'field_weight',
+      ),
+      'hidden' => array(
+        0 => '_add_existing_field',
+      ),
+    ),
+    'fields' => array(
+      'field_date' => 'advancedright',
+      'field_estimated_time' => 'advancedright',
+      'title' => 'left',
+      'field_is_ticket' => 'left',
+      'body' => 'left',
+      'field_project_ref' => 'right',
+      'group_content_access' => 'right',
+      'field_task_status_term' => 'right',
+      'field_priority_term' => 'right',
+      'field_task_type_term' => 'right',
+      'field_pricing' => 'right',
+      'field_parent' => 'advancedleft',
+      'field_progress_percent' => 'advancedleft',
+      'field_task_exclude_from' => 'advancedleft',
+      'og_group_ref' => 'advancedleft',
+      'path' => 'advancedleft',
+      'field_timetracking_button' => 'advancedleft',
+      'field_weight' => 'advancedleft',
+      'field_project_tags' => 'advancedright',
+      'field_task_assigned_users' => 'advancedright',
+      'group_task_time_group' => 'advancedright',
+      'field_asset_files' => 'advancedright',
+      '_add_existing_field' => 'hidden',
+    ),
+    'classes' => array(),
+  );
+  $export['node|erpal_task|form'] = $ds_layout;
 
   $ds_layout = new stdClass();
   $ds_layout->api_version = 1;
