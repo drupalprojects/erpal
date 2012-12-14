@@ -1,8 +1,10 @@
 <?php
-/*
+/**
  * @author 		Marc Sven Kleinboehl
  * @created 	01/14/2012
  * @copyright	2012 © Bright Solutions GmbH 
+ * 
+ * This class provides a model for handling with the cronjob queue.
  */
  
 namespace erpal_crm_mailaction\cron_processing;
@@ -32,8 +34,9 @@ class CronModel {
     return;
   }
   
-  /*
+  /**
    * Adds a bunch of tasks to the task queue.
+   * 
    * @param array	$messageIDs	An array which contains IMAP message IDs.
    */
   public function addTask (array $messageIDs) {
@@ -49,8 +52,9 @@ class CronModel {
     return;
   }
   
-  /*
+  /**
    * Checks whether tasks are available.
+   * 
    * @return boolean	TRUE on success.
    */
   public function areTasksAvailable () {
@@ -58,8 +62,9 @@ class CronModel {
     return ! empty ($this->nextTask);
   }
   
-  /*
+  /**
    * Runs a next available task and deletes it from tasks queue.
+   * 
    * @return boolean	TRUE on success, if a task could be processed.
    */
   public function processNextTask () {
