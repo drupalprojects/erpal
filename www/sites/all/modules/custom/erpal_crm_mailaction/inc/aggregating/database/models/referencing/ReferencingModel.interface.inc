@@ -36,4 +36,18 @@ interface ReferencingModel {
    * @return boolean    FALSE on error.
    */
   public function isOK ();
+  
+  /**
+   * Retrieves the machine name of the relevant content type.
+   * 
+   * @return string   The machine name of the content type.
+   */
+  public static function getRelevantContentTypeMachineName ();
+  
+  /**
+   * Retrieves the human readable name of the relevant content type.
+   * 
+   * @return string   The human readable name of the content type.
+   */
+  public static function getRelevantContentTypeHumanReadableName ();
 }

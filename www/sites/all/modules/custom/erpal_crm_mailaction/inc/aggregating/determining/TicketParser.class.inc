@@ -41,22 +41,25 @@ class TicketParser extends \erpal_crm_mailaction\misc\Properties {
     
       $this->ticketID   = trim($matches[2][0]);
       $this->subject    = trim(preg_replace ('#\[\w+:.*\]#', '', $subject));
+      $this->ticketType = 'erpal_' . trim($matches[1][0]);
       
-      switch (trim($matches[1][0])) {
-        case 'ticket':
+      switch ($this->ticketType) {
+        case 'erpal_ticket':
           $this->ticketClass = 'erpal_crm_mailaction\aggregating\database\models\referencing\Ticket';
           
-        case 'activity':
+        case 'erpal_activity':
           $this->ticketClass = 'erpal_crm_mailaction\aggregating\database\models\referencing\Activity';
           break;
         
         default:
           $this->ticketClass = self::UNKNOWN;
+          $this->ticketType  = self::UNKNOWN;
       }
       
       return;
     }
     
+    $this->ticketType   = self::UNKNOWN;
     $this->ticketID     = self::UNKNOWN;
     $this->ticketClass  = self::UNKNOWN;
     $this->subject      = $subject;
