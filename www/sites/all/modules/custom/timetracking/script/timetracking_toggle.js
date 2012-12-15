@@ -54,7 +54,6 @@
           // default hours
           hoursText = defaultText.split('.').slice(0)[0];
           hoursText = hoursText.replace(/\s*/, '');
-          ;
           this.hours = hoursText;
           // default minutes
           minutesText = defaultText.split('.').slice(-1)[0];
@@ -99,10 +98,11 @@
       });
       
       // Start / Stop timer button
-      $('.timetracking_button', context).click(function () {
+      $('.timetracking_button:not(.in-progress)', context).click(function () {
         // get id of timer
         var lastClass = $(this).attr('class').split(' ').slice(-1);
         var id = lastClass[0].split('timetracking_button_').join('');
+        $(this).addClass('in-progress');
         // initialize timer if undefined
         if(!timer)
           timer = new Timer(id);
@@ -170,6 +170,7 @@
       $('.timetracking_text_'+id).each(function(index, button_element){
         $(this).text(newText)//set new text
       });
+      $('.timetracking_button_'+id).removeClass('in-progress');
     });
   }
   
