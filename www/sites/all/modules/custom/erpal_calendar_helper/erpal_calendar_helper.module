@@ -60,7 +60,7 @@ function _erpal_calendar_helper_set_tag($date_item) {
   
   $tag_is_set = false;
   foreach ($current_tags as $delta => $term_arr) {
-    if ($term_arr['name'] == $term_to_set) {
+    if (isset($term_arr['name']) && $term_arr['name'] == $term_to_set) {
       $tag_is_set = true;
     }    
   }

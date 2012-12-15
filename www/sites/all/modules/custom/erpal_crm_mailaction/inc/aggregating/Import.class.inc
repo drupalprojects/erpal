@@ -1,23 +1,40 @@
 <?php
-/*
+/**
  * @author 		Marc Sven Kleinboehl
  * @created 	07/12/2012
  * @copyright	2012 © Bright Solutions GmbH
  * 
- * Imports a mail as node or as a comment of a node of a specific ticket ID.
+ * Imports a mail as node of a various type.
  */
 
 namespace erpal_crm_mailaction\aggregating;
 
+use \erpal_crm_mailaction\misc\Settings as Settings;
+use \erpal_crm_mailaction\aggregating\database\models\ContactNodeModel as ContactNodeModel;
+use \erpal_crm_mailaction\aggregating\determining\TicketParser as TicketParser;
+use \erpal_crm_mailaction\misc\Log as Log;
+use \erpal_crm_mailaction\aggregating\database\entity_wrappers\MailEntityWrapper as MailEntityWrapper;
+use \erpal_crm_mailaction\aggregating\database\entity_wrappers\FileEntityWrapper as FileEntityWrapper;
+
 class Import {
+
+  private $contactModel;
   
-  private $lastError;
+  /**
+   * CTor.
+   */
+  public function __construct () {
+    
+    $this->contactModel = new ContactNodeModel ();
+    
+    return;
+  }
   
   /**
    * Imports a single mail.
    * 
-   * @param array   $to               
-   * @param array   $from             
+   * @param array   $to               The "to" address as IMAP participant object.
+   * @param array   $from             The "from" address as IMAP participant object.
    * @param string  $subject          The subject/title of the mail.
    * @param string  $body             The body text of the mail.
    * @param array   $attachments      The attachments of the mail. It is 
@@ -25,81 +42,196 @@ class Import {
    */
   public function import ($to, $from, $subject, $body, $attachments) {
 
-    $import              = new Import ();
-    $import->mailParser  = new \erpal_crm_mailaction\aggregating\determining\MailParser ($subject, $body);
-    $body                = $import->mailParser->body;
-    $subject             = $import->mailParser->subject;
-    $published           = (int)\erpal_crm_mailaction\misc\Settings::get ('import_settings', 'publish_imports');
+    $ticketParser        = new TicketParser ($subject, $body);
+    $body                = $ticketParser->body;
+    $subject             = $ticketParser->subject;
+    $toMail              = self::imapParticipantObjectToEmailAddress ($to);
+    $fromMail            = self::imapParticipantObjectToEmailAddress ($from);
  
-    if ($import->mailParser->ticketID == \erpal_crm_mailaction\aggregating\determining\MailParser::UNKNOWN) {
-      
-      $this->lastError = t(
-        'Unknown ticket ID for mail "@mail"', 
-        array (
-          '@mail' => empty (trim($subject)) ? t('Unknown subject') : $subject
-        )
+    if (! $this->checkForErrors($ticketParser, $toMail, $fromMail, $subject)) {
+      return FALSE;
+    }
+    
+    $mailID = $this->importMail (
+      $toMail,
+      $fromMail,
+      $subject, 
+      $body, 
+      $attachments
+    );
+
+    $importModel = $this->loadImportModel (
+      $ticketParser->ticketClass,
+      $ticketParser->ticketID,
+      $this->contactModel->loadContactIDOfMailAddress ($toMail),
+      $this->contactModel->loadContactIDOfMailAddress ($fromMail),
+      $mailID,
+      $this->contactModel
+    );
+    if ($importModel == NULL) {
+
+      return FALSE;
+    }
+    
+    // Occured errors while importing in the import model.
+    if ($importModel != NULL && ! $importModel->isOk ()) {
+       Log::error (
+        get_class($importModel),
+        $importMode->getLastError ()
       );
-      return;
-    }
- 
-    switch ($import->mailParser->ticketType) {
-      case \erpal_crm_mailaction\aggregating\determining\MailParser::TICKET_TYPE_TICKET: // For importing to tickets.
-        $importModel = new \erpal_crm_mailaction\aggregating\database\models\import\Ticket (
-          $import->mailParser->ticketID,
-          $to, 
-          $from, 
-          $subject, 
-          $body, 
-          $attachments
-        );
-        return $importModel;
       
-      case \erpal_crm_mailaction\aggregating\determining\MailParser::TICKET_TYPE_ACTIVITY: // For importing to activities.
-        $importModel = new \erpal_crm_mailaction\aggregating\database\models\import\Activity (
-          $import->mailParser->ticketID,
-          $to, 
-          $from, 
-          $subject, 
-          $body, 
-          $attachments
-        );
-        return $importModel;
-        
-      default:
-        $this->lastError = t(
-          'Unknown ticket type "@ticket_type" for mail "@mail"', 
-          array (
-            '@mail'         => empty (trim($subject)) ? t('Unknown subject') : $subject,
-            '@ticket_type'  => $import->mailParser->ticketType
-          )
-        );
-        return;
+      return FALSE;
     }
     
-    if (! $importMode->isOk ()) {
-        $this->lastError = $importMode->getLastError ();
-    }
-    
-    return;
+    return TRUE;
   }
 
   /**
-   * Returns the message of the last occured error.
+   * Loads an import model by a class path.
    * 
-   * @return string     A message if an error occured previously. NULL if not.
+   * @param   string  $classPath        Describes the class path of the importer.
+   * @param   array   $to               The "to" address as IMAP participant object.
+   * @param   array   $from             The "from" address as IMAP participant object.
+   * @param   string  $subject          The subject/title of the mail.
+   * @param   string  $body             The body text of the mail.
+   * @param   array   $attachments      The attachments of the mail. It is 
+   *                                    an array of drupal file objects. 
+   * @return  ImportModel               An implementation of the ImportModel interface on success.
+   *                                    Otherwise NULL.
    */
-  public function getLastError () {
-    
-    return $this->lastError ();
+  private function loadImportModel ($classPath, $tickedID, $toID, $fromID, $mailID) {
+   
+    $reflectionClass = new \ReflectionClass ($classPath);
+    $importModel     = $reflectionClass->newInstanceArgs(
+      array(
+        $tickedID,
+        $toID,
+        $fromID,
+        $mailID,
+        $this->contactModel
+      )
+    );
+
+    return $importModel;
   }
   
   /**
-   * Returns FALSE if an error occured previously.
+   * Checks for errors.
    * 
-   * @return boolean    FALSE on error.
+   * @param   TicketParser  $ticketParser     The ticker parser object.
+   * @param   array         $to               The "to" address as IMAP participant object.
+   * @param   array         $from             The "from" address as IMAP participant object.
+   * @param   string        $subject          The subject/title of the mail.
+   * @return  boolean                         TRUE on success.
    */
-  public function isOK () {
+  private function checkForErrors ($ticketParser, $toMail, $fromMail, $subject) {
     
-    return empty ($this->lastError);
+    if ($ticketParser->ticketID == TicketParser::UNKNOWN) {
+      
+      Log::error (
+        __CLASS__,
+        'Unknown ticket ID for mail "' . $subject . '".'
+      );
+      
+      return FALSE;
+    }
+    
+    if (! array_key_exists ($ticketParser->ticketType, Settings::get ('referencing_settings', 'content_types', array ('erpal_activity')))) {
+      
+      Log::error (
+        __CLASS__,
+        'The requested ticket type "' . $ticketParser->ticketType . '" is not configured.'
+      );
+      
+      return FALSE;
+    }
+    
+    if (! $this->contactModel->isParticipantExisting ($toMail)) {
+      
+      if (Settings::get ('import_settings', 'create_contact_for_unknown_user') != FALSE) {
+         $this->contactModel->createUnknownContact ($toMail);
+      }else{
+        Log::error (
+          __CLASS__,
+          'Unknown conversion source partner for mail "' . $subject . '".'
+        );
+        
+        return FALSE;
+      }
+      return FALSE;
+    }
+    
+    if (! $this->contactModel->isParticipantExisting ($fromMail)) {
+      
+      if (Settings::get ('import_settings', 'create_contact_for_unknown_user') != FALSE) {
+         $this->contactModel->createUnknownContact ($fromMail);
+      }else{
+        Log::error (
+          __CLASS__,
+          'Unknown conversion source partner for mail "' . $subject . '".'
+        );
+        
+        return FALSE;
+      }
+    }
+    
+    return TRUE;
+  }
+  
+  /**
+   * Imports a mail.
+   * 
+   * @param   string  $toMail           The mail address of the receiver.
+   * @param   string  $fromMail         The mail address of the sender.
+   * @param   string  $subject          The subject/title of the mail.
+   * @param   string  $body             The body text of the mail.
+   * @param   array   $attachments      The attachments of the mail. It is 
+   *                                    an array of drupal file objects.
+   */
+  private function importMail ($toMail, $fromMail, $subject, $body, array $attachments) {
+    
+    $mailEntity = new MailEntityWrapper (
+      $this->contactModel->loadContactIDOfMailAddress ($toMail),
+      $this->contactModel->loadContactIDOfMailAddress ($fromMail),
+      $subject,
+      $body
+    );
+    
+    if (Settings::get ('import_settings', 'publish_attachments')) {
+      foreach ($attachments as $attachment) {
+        
+        $fileEntity = new FileEntityWrapper (
+          $attachment,
+          $attachment->filename
+        );
+        $fileEntity->save ();
+        
+        $mailEntity->addAttachment ($fileEntity);
+      }
+    }
+    
+    $mailEntity->status = (boolean)Settings::get ('import_settings', 'publish_imports');
+    $mailEntity->save ();
+    
+    return $mailEntity->getID ();
+  }
+  
+  /**
+   * Creates an email address from an IMAP participant object.
+   * 
+   * @param   stdClass  $imapParticipantObject    The IMAP participant object.
+   * @return  mixed                               The email address on succes. Otherwise FALSE.
+   */
+  private static function imapParticipantObjectToEmailAddress ($imapParticipantObject) {
+    
+    if (! is_object ($imapParticipantObject)) {
+      return FALSE;
+    }
+    
+    if (! isset ($imapParticipantObject->mailbox) || ! isset ($imapParticipantObject->host)) {
+      return FALSE;
+    }
+    
+    return $imapParticipantObject->mailbox . '@' . $imapParticipantObject->host;
   }
 }

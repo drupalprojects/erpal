@@ -94,10 +94,9 @@ function _erpal_basic_helper_notify_users_send($users, $message, $module='erpal_
   $site_name = variable_get('site_name', 'ERPAL');
   $site_mail = variable_get('site_mail', ini_get('sendmail_from'));
   $sender = $site_name.' <'.$site_mail.'>';
-  
   $params = array('message' => $message, 'subject' => $subject);
   $message = drupal_mail($module, $message_type, $mails, user_preferred_language($user), $params, $sender);
-  
+   
   if ($message['result']) {
     watchdog('ERPAL notification', t('!count user(s) have been notified', array('!count' => count($users))));
   } else {

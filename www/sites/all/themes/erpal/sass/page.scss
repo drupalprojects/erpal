@@ -1,3 +1,5 @@
+@import "global_vars_a_mixins";
+
 body.panels-ipe{
 	margin-bottom: 0 !important;
 }
@@ -6,6 +8,7 @@ body.panels-ipe{
  * ========================================================================== */
 .pane-page-tabs{
     width: 100%;
+	background-color: $light_grey;
 }
 
 /* =============================================================================
@@ -32,7 +35,7 @@ body.panels-ipe{
 #erpal_wrapper>.panel-col-first>.inside {
   margin:0;
   padding-right: 0;
-  box-shadow: 1px 2px 2px #888888;
+  @include box-shadow($dark_grey 1px 2px 2px);
 }
 #erpal_wrapper>.panel-col-first,
 #erpal_wrapper>.panel-col-first .inside {
@@ -63,6 +66,11 @@ body.panels-ipe{
     padding: 9px 17px 9px 10px;
 	display: block;
 	font-size: 14px;
+	border-top: 1px solid #756c65;
+}
+.pane-menu-menu-erpal-menu ul li a:hover, 
+.pane-system-user-menu li a:hover{
+	color: #fdf8f4;
 }
 .pane-system-user-menu ul{
 	margin: 0px;
@@ -88,6 +96,44 @@ body.panels-ipe{
 .ui-tabs .ui-tabs-nav li {
 	margin: 0px;
 }
+.pane-system-user-menu ul,
+.pane-menu-menu-erpal-menu ul li,
+.pane-menu-menu-erpal-menu ul li.last ul li.last a, 
+.pane-menu-menu-erpal-menu ul li.last a{
+	border-bottom: 1px solid $brown;
+}
+.pane-menu-menu-erpal-menu ul li.last  {
+	border-bottom: 1px solid #756c65;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail,
+.pane-menu-menu-erpal-menu ul li.active-trail.active{
+	background: url("../images/arrow.gif") no-repeat 100% center $orange;
+}
+.pane-system-user-menu li a, 
+.pane-menu-menu-erpal-menu ul li a {
+    color: #e7d4c5;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail.active a,
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail{
+	color: $black;
+}
+.pane-menu-menu-erpal-menu ul li a.active,
+.pane-menu-menu-erpal-menu ul li a.active:hover,
+.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail,
+.pane-menu-menu-erpal-menu ul li.expanded.active-trail a.active-trail,
+.pane-menu-menu-erpal-menu ul li.active-trail.active a,
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
+	border-top: 2px solid $dark_orange;
+	border-bottom: 2px solid $dark_orange;
+}
+.pane-menu-menu-erpal-menu ul li.last ul li.last a.active-trail, 
+.pane-menu-menu-erpal-menu ul li.last a.active-trail.active, 
+.pane-menu-menu-erpal-menu ul li.expanded a.active-trail.active{
+	border-bottom: 2px solid $dark_orange;
+}
+#erpal_wrapper>.panel-col-first {
+    background-color: #7B726B;
+}
 /*-----------------Search Block-------------------------------*/
 #search-block-form .form-text{
 	margin-left: 5px;
@@ -98,16 +144,6 @@ body.panels-ipe{
 	color: #C0C0C0;
     font-size: 11px;
 }
-/* =============================================================================
- *   Tabs
- * ========================================================================== */
-/*.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside{
-	margin-left: 150px;
-	height: 52px;
-}
-.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside .panels-ipe-region{
-	height: 42px;
-}*/
 
 /* =============================================================================
  *   Middle region
@@ -205,26 +241,47 @@ body.panels-ipe{
 .region-sidebar-right .pane-page-actions li a{
 	padding: 6px 0px;
 	display: block;
-	-webkit-border-radius: 11px;
-	-moz-border-radius: 11px; 
-	border-radius: 11px;
-	-webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-	-moz-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-	box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+	@include rounded_corners_11;
+	@include box-shadow(0px 1px 3px rgba(50, 50, 50, 0.5));
+	color: $grey;
+	@include background-image(linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%));
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.44, #E6E6E6),
+		color-stop(0.72, #EFEFEF)
+	);
 	text-align: center;
 	font-size: 1.1em;
 	font-weight: bold;
 }
+.region-sidebar-right .pane-page-actions li a:hover{
+	background-image: linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+	background-image: -moz-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+	background-image: -webkit-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+	background-image: -ms-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.37, #DBD8DB),
+		color-stop(0.69, #E8E8E8)
+	);
+}
 #mini-panel-task_status_panel,
 #mini-panel-activity_status_panel{
 	padding: 10px 20px;
-	-webkit-border-radius: 11px;
-	-moz-border-radius: 11px; 
-	border-radius: 11px;
+	@include rounded_corners_11;
+	background-color: $light_grey;
+	color: $grey;
 }
 .panel-display .pane-entity-field h2.pane-title {
 	padding-right: 5px;
 	font-size: 12px;
+	color: $grey;
 }
 .panel-display .pane-entity-field .block-content{
 	float: left;
@@ -259,23 +316,18 @@ ul.quicktabs-tabs{
 	border: none;
 }
 .panel-display .ui-tabs .ui-tabs-panel{
-	-webkit-border-radius: 11px;
-	-moz-border-radius: 11px; 
-	border-radius: 11px;
+	@include rounded_corners_11;
 	-webkit-border-top-left-radius: 0;
 	-moz-border-radius-topleft: 0;
 	border-top-left-radius: 0;
 	display: block;
 	float: left;
+	background-color: $light_grey;
 }
 ul.quicktabs-tabs li a {
     padding: 1px 12px;
-    text-decoration: none;
-	font-size: 12px;
-	font-weight: bold;
+    @include text_bold_12;
 	min-width: 100px;
-	display: block;
-    float: left;
 }
 ul.quicktabs-tabs li{
 	margin: 0px;
@@ -930,4 +982,34 @@ article.comment .field-name-comment-body p{
 }
 .ctools-collapsible-processed .ctools-collapsible-content{
 	padding-top: 10px;
+}
+/*
+ *  Buttons
+ */
+a.button:link,
+a.button:visited,
+a.button:hover,
+a.button:focus,
+a.button:active {
+  color: #5a5a5a;
+}
+input.form-submit,
+a.button {
+  background: $white url(../images/buttons.png) 0 0 repeat-x;
+  border: 1px solid #e4e4e4;
+  border-bottom: 1px solid #b4b4b4;
+  border-left-color: #d2d2d2;
+  border-right-color: #d2d2d2;
+  color: #3a3a3a;
+}
+
+input.form-submit:hover,
+input.form-submit:focus {
+  background: #dedede;
+}
+.pane-page-tabs {
+	@include box-shadow(2px 3px 4px $silver_gray);
+	height: 42px;
+	background-color: $white;
+	border-bottom: 2px solid $orange;
 }

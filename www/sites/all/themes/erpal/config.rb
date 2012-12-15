@@ -55,4 +55,4 @@ relative_assets = true
 # - For production, we force the CSS to be regenerated even though the source
 #   scss may not have changed, since we want the CSS to be compressed and have
 #   the debug info removed.
-sass_options = (environment == :development) ? {:debug_info => true} : {:always_update => true}
+sass_options = (environment == :development) ? {:debug_info => false} : {:always_update => true}

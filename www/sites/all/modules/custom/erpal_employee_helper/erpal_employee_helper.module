@@ -4,6 +4,7 @@
  * Code for the erpal_employee_helper module.
  */
 module_load_include('inc', 'erpal_employee_helper', 'inc/config');
+module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.entity');
 
 /**
  * Implements hook_menu
@@ -20,6 +21,44 @@ function erpal_employee_helper_menu(){
 } 
 
 /**
+* Implements hook_entity_info
+*/
+function erpal_employee_helper_entity_info() {
+  $return['working_times'] = array(
+    'label' => t('Calculated working times'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'WorkingTimes',
+    'controller class' => 'WorkingTimesController',
+    'base table' => 'working_times',
+    'file' => 'inc/working_times.entity.inc',
+    'fieldable' => false,
+    'entity keys' => array(
+        'id' => 'id',
+        'bundle' => 'type',
+    ),
+    'bundles' => array(
+      'working_times'=> array(),
+    ),
+    'label callback' => 'entity_class_label',
+    //'uri callback' => 'entity_class_uri',  //not accessible
+    'creation callback' => 'working_times_create',
+    'access callback' => 'working_times_access',
+    'module' => 'erpal_employee_helper',
+    // The information below is used by the BillableUIController (which extends the EntityDefaultUIController)
+   /* 'admin ui' => array(
+      'path' => 'admin/content/working_times',
+      'file' => 'working_times.admin.inc',
+      'controller class' => 'WorkingTimesUIController',
+      'menu wildcard' => '%working_times',
+    ),
+    */
+  );
+
+  return $return;
+}
+
+/**
 * Implements hook_permission
 */
 function erpal_employee_helper_permission() {
@@ -29,4 +68,39 @@ function erpal_employee_helper_permission() {
       'description' => t('Allows the user to configure ERPAL employee module settings'),
     )
   );
+}
+
+/**
+* callback to calculate the duration if a working time node
+*/
+function computed_field_field_duration_calc_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $date_field = $entity->field_date_time[LANGUAGE_NONE][0];
+  $working_time_sec = $date_field['value2'] - $date_field['value'];
+  
+  //now substract the breaks
+  $breaks = $entity->field_date_times[LANGUAGE_NONE];
+  $total_break_sec = 0;
+  foreach ($breaks as $delta=>$value) {
+    $from = $value['value'];
+    $till = $value['value2'];
+    $break_sec = $till - $from;
+    $total_break_sec += $break_sec;
+  }
+  
+  $time_decimal = round(($working_time_sec - $total_break_sec) / (60 * 60), 2); //time in hours
+  $entity_field[0]['value'] = $time_decimal;
+}
+
+/**
+*  Callback to set the display of a calculated duration of a working time node
+*/
+function computed_field_field_duration_calc_display($field, $entity_field_item, $entity_lang, $langcode) {
+  
+  $value = $entity_field_item['value'];
+  $whole = floor($value);      // full part
+  $decimal_part = $value - $whole; // decimal part
+  //get decimal part in minutes
+  
+  $minutes = round(60 * $decimal_part);
+  return $whole.':'.$minutes.' '.t('hours');
 }

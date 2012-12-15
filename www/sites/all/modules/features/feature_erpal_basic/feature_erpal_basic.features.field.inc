@@ -2388,7 +2388,7 @@ function feature_erpal_basic_field_default_fields() {
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
-        'profile2_private' => 0,
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'field_collection',

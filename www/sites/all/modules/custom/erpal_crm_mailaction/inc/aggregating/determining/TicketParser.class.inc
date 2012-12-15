@@ -10,9 +10,6 @@
 
 namespace erpal_crm_mailaction\aggregating\determining;
 
-
-module_load_include ('inc', 'erpal_crm_mailaction', 'inc/aggregating/determining/Properties.class');
-
 class TicketParser extends \erpal_crm_mailaction\misc\Properties {
 
   const UNKNOWN = FALSE;
@@ -41,15 +38,31 @@ class TicketParser extends \erpal_crm_mailaction\misc\Properties {
     $matches = array ();
     
     if (preg_match_all ('/.+\[(\w+):\W*(\d+)\]/i', $subject, $matches) >= 1) {
-      $this->ticketID   = trim($matches[2]);
-      $this->tickettype = trim($matches[1]);      
-      $this->subject   = trim(preg_replace ('#\[\w+:.*\]#', '', $subject));
-       
+    
+      $this->ticketID   = trim($matches[2][0]);
+      $this->subject    = trim(preg_replace ('#\[\w+:.*\]#', '', $subject));
+      $this->ticketType = 'erpal_' . trim($matches[1][0]);
+      
+      switch ($this->ticketType) {
+        case 'erpal_ticket':
+          $this->ticketClass = 'erpal_crm_mailaction\aggregating\database\models\referencing\Ticket';
+          
+        case 'erpal_activity':
+          $this->ticketClass = 'erpal_crm_mailaction\aggregating\database\models\referencing\Activity';
+          break;
+        
+        default:
+          $this->ticketClass = self::UNKNOWN;
+          $this->ticketType  = self::UNKNOWN;
+      }
+      
       return;
     }
     
+    $this->ticketType   = self::UNKNOWN;
     $this->ticketID     = self::UNKNOWN;
-    $this->tickettype   = self::UNKNOWN;
+    $this->ticketClass  = self::UNKNOWN;
+    $this->subject      = $subject;
 
     return;
   }

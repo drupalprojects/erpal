@@ -47,12 +47,9 @@ class Autoloader {
       }
     }
 
-    $classPath = strtr ($classPath, $this->replacements);
-    $classPath = str_replace ('\\', '/' , $classPath);
-    
+    $classPath = $this->resolveFilePathOfANamespace ($classPath);    
     $filePath  = $this->basePath . '/' . $classPath . '.class.inc';
- 
-    if (is_readable(drupal_realpath ($filePath))) {
+    if (is_readable(realpath($filePath))) {
       require_once $filePath;
       return;
     }
@@ -63,6 +60,36 @@ class Autoloader {
     }
 
     return;
+  }
+   
+   private function resolveFilePathOfANamespace ($namespacePath) {
+
+     return str_replace (
+       '\\', 
+       '/' , 
+       strtr ($namespacePath, $this->replacements)
+     );
+   }
+   
+  /**
+   * Loads all classes of a specific namespace and retrieves an array of the 
+   * found class pathes.
+   */
+  public function loadAllNamespaceClasses ($namespacePath) {
+    
+    $filePath = realpath ($this->basePath . '/' . $this->resolveFilePathOfANamespace ($namespacePath));
+    $classes  = array ();
+ 
+    $directoryIterator = new \DirectoryIterator($filePath);
+    foreach ($directoryIterator as $fileInfo) {
+        
+        if ($fileInfo->isFile() && substr ($fileInfo->getFilename(), -10) == '.class.inc') {
+
+            $classes[] = $namespacePath . '\\' . substr ($fileInfo->getFilename(), 0, -10);
+        }
+    }
+    
+    return $classes;
   }
 }
     

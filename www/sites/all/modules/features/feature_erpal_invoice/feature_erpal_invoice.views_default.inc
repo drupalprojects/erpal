@@ -1510,6 +1510,14 @@ function feature_erpal_invoice_views_default_views() {
     5 => 0,
     7 => 0,
   );
+  /* Filter criterion: Content: Paid (field_payed) */
+  $handler->display->display_options['filters']['field_payed_value']['id'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['table'] = 'field_data_field_payed';
+  $handler->display->display_options['filters']['field_payed_value']['field'] = 'field_payed_value';
+  $handler->display->display_options['filters']['field_payed_value']['operator'] = 'not';
+  $handler->display->display_options['filters']['field_payed_value']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['invoices'] = array(
     t('Master'),
