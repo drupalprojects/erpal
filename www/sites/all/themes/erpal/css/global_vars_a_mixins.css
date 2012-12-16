@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 Document   : global_vars_a_mixins
 Created on : December, 2012, 
@@ -29,3 +30,36 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 	}
 	background-color: none;
 }*/
+=======
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/* left sidebar link*/
+/*@mixin h2_pane_title{
+	padding-right: 5px;
+	color: $dark_black;
+	font:{
+		size: $font-size_12;
+	}
+	background-color: none;
+}*/
+>>>>>>> 63fb14df39709f96b134c0c5cb96afb12a6b8683
