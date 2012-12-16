@@ -6,9 +6,8 @@ www/sites/all/libraries
 www/private
 .project
 nodejs/bs_asterisk_server/bs_asterisk_server.pid
-
+www/sites/*/.sass-cache
 
 
 www/sites/all/modules/dev
-.DS_Store
-*~
+.DS_Store*
