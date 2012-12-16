@@ -1,3 +1,35 @@
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/* left sidebar link*/
+/*@mixin h2_pane_title{
+	padding-right: 5px;
+	color: $dark_black;
+	font:{
+		size: $font-size_12;
+	}
+	background-color: none;
+}*/
+/* line 3, ../sass/tabs.scss */
 ul.primary,
 ul.secondary {
   overflow: hidden;
@@ -6,30 +38,28 @@ ul.secondary {
   margin: 0;
   padding: 0;
   white-space: nowrap;
-  border: medium none
+  background-color: white;
+  border: medium none;
 }
 
+/* line 15, ../sass/tabs.scss */
 ul.primary li,
 ul.secondary li {
-  float: left; /* LTR */
-  margin: 0.5em 3px 0;
-}
-
-ul.primary a,
-ul.secondary a {
-  display: block;
-  line-height: 1.5em;
+  float: left;
+  /* LTR */
 }
 
 /*
  * Primary tabs
  */
-
+/* line 23, ../sass/tabs.scss */
 ul.primary li {
-  margin: 0; /* LTR */
+  margin: 0;
+  /* LTR */
+  display: block;
 }
 
-
+/* line 30, ../sass/tabs.scss */
 ul.primary a:link,
 ul.primary a:visited {
   margin: 0;
@@ -38,22 +68,43 @@ ul.primary a:visited {
   text-align: center;
   font-size: 12px;
   font-weight: bold;
+  text-decoration: none;
+  display: block;
+  float: left;
   height: 42px;
   line-height: 42px;
   min-width: 80px;
+  background: white;
   border: none;
 }
 
-
-ul.primary a.active {
+/* line 45, ../sass/tabs.scss */
+ul.primary a.active,
+ul.primary a.active:hover {
   *zoom: 1;
+  background-color: #ffa800;
+  color: black;
 }
-ul.primary li.active a, 
-ul.primary li.active a:hover, 
-ul.primary li.active a:focus{
-	border: none;
+
+/* line 50, ../sass/tabs.scss */
+ul.primary li a:hover {
+  background-color: white;
 }
+
+/* line 55, ../sass/tabs.scss */
+ul.primary li.active a,
+ul.primary li.active a:hover,
+ul.primary li.active a:focus {
+  border: none;
+}
+
+/* line 59, ../sass/tabs.scss */
+ul.primary li a:hover,
+ul.primary li a:focus {
+  border-color: #ccc;
+  color: black;
+}
+
 /*
  * Secondary tabs
  */
-

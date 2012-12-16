@@ -1,10 +1,11 @@
+/* line 1, ../sass/navigation.scss */
 ul.menu li {
-    margin: 0;
-}
-.pane-system-user-menu li {
-    display: inline;
-    list-style-image: none;
-    list-style-type: none;
+  margin: 0;
 }
 
-.local_tasks_menu ul ul { display:none;}
+/* line 4, ../sass/navigation.scss */
+.pane-system-user-menu li {
+  display: inline;
+  list-style-image: none;
+  list-style-type: none;
+}

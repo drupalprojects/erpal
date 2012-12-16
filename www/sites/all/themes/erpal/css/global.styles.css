@@ -17,11 +17,9 @@
  * See global.base also which includes normalize.css and some additional
  * helper classes and base styles.
  */
-
 /* =============================================================================
  *   Base
  * ========================================================================== */
-
 /*
  * To preserve theme settings never apply font properties to the HTML element.
  * This is critically important if you are using the Responsive JavaScript
@@ -29,7 +27,7 @@
  * element. If you need to set default font properties of any kind use the BODY
  * element as these can be overridden using font theme settings.
  */
-
+/* line 33, ../sass/global.styles.scss */
 body {
   margin: 0;
   padding: 0;
@@ -41,78 +39,17 @@ body {
   position: relative;
 }
 
-
 /*if the admin menu is used change margin-top to padding-top */
+/* line 46, ../sass/global.styles.scss */
 body.admin-menu {
-	margin-top: 0 !important;
-	padding-top: 20px !important;
+  margin-top: 0 !important;
+  padding-top: 20px !important;
 }
-
 
 /* =============================================================================
  *   HTML Elements
  * ========================================================================== */
-
-h1 {
-    font-size: 3.3em;
-    font-weight: normal;
-    margin-top: 0;
-}
-
-h2 {}
-
-h3 {}
-
-h4 {}
-
-h5 {}
-
-h6 {}
-
-p {
-	
-}
-
-b,
-strong {}
-
-i,
-em {}
-
-dfn {}
-
-sup {}
-
-sub {}
-
-del {}
-
-ins {}
-
-blockquote {}
-
-cite {}
-
-q {}
-
-address {}
-
-ul {}
-
-ol {}
-
-li {}
-
-dl {}
-
-dd {}
-
-dt {}
-
-abbr {}
-
-acronym {}
-
+/* line 61, ../sass/global.styles.scss */
 pre,
 code,
 tt,
@@ -122,53 +59,34 @@ var {
   font-family: Consolas, Monaco, 'Courier New', Courier, monospace, sans-serif;
 }
 
-
 /* =============================================================================
  *   Wrappers
  * ========================================================================== */
-
 /*
  * Page wrapper, includes the .container class which sets the overall page or section width
  * Main wrapper in page.tpl.php, the .container class sets the width of the page, do not add width to it!
  */
-#page {}
-#page .container {}
-
 /*
  * Wraps all header elements - branding and .region-header
  */
-#header {}
-
 /*
  * Wraps the sidebars the content column
  */
-#columns {}
-
 /*
  * Main content column wrapper
  */
-#content-column {}
-
 /*
  * Wraps the main-content-header, the content region and feed-icons. Use this wrapper to style the entire main content column
  */
-#main-content {}
-
 /*
  * Wraps the content region, avoid applying styles to this wrapper, its used mainly for position and invisible gutters and can be problematic to style
  */
-#content {}
-
 /*
  * Footer wrapper
  */
-#footer {}
-
 /*
  * Panels may need additional margin wrangling when in the $content region
  */
-#content .panel-display {}
-
 /*
  * Full Width Wrappers
  * These are used in the optional page--full-width-wrappers.tpl.php template.
@@ -179,83 +97,55 @@ var {
 /*
  * Wraps #page
  */
-#page-wrapper {}
-#page-wrapper .container {}
-
 /*
  * Wraps the leaderboard
  */
-#leaderboard-wrapper {}
-#leaderboard-wrapper .container {}
-
 /*
  * Wraps the header
  */
+/* line 134, ../sass/global.styles.scss */
 #header-wrapper {
   /* Debug styles, is this working */
   background: rgba(255, 192, 203, 0.5);
 }
-#header-wrapper .container {}
 
 /*
  * Wraps the nav elements
  */
-#nav-wrapper {}
-#nav-wrapper .container {}
-
 /*
  * Wraps breadcrumb
  */
-#breadcrumb-wrapper {}
-#breadcrumb-wrapper .container {}
-
 /*
  * Wraps messages and help
  */
-#messages-help-wrapper {}
-#messages-help-wrapper .container {}
-
 /*
  * Wraps the secondary content/preface region
  */
-#secondary-content-wrapper {}
-#secondary-content-wrapper .container {}
-
 /*
  * Wraps the main content column
  */
-#content-wrapper {}
-#content-wrapper .container {}
-
 /*
  * Wraps the tertiary content/postfix region
  */
-#tertiary-content-wrapper {}
-#tertiary-content-wrapper .container {}
-
 /*
  * Footer wrapper
  */
+/* line 179, ../sass/global.styles.scss */
 #footer-wrapper {
   /* Debug styles, is this working? */
   background: rgba(255, 192, 203, 0.5);
 }
-#footer-wrapper .container {}
-
 
 /* =============================================================================
  *   Branding
  * ========================================================================== */
-
 /*
  * Wraps all the branding elements, logo, name and slogan
  */
-#branding {}
-
 /*
  * Logo
  */
-
+/* line 199, ../sass/global.styles.scss */
 #logo img {
   vertical-align: bottom;
 }
@@ -263,22 +153,21 @@ var {
 /*
  * Wrapper for the site name and slogan (hgroup)
  */
-#name-and-slogan {}
-
 /*
  * Site name (h1)
  */
+/* line 211, ../sass/global.styles.scss */
 #site-name {
   margin: 0;
 }
 
-#site-name a {}
-
+/* line 218, ../sass/global.styles.scss */
 #site-name a:link,
 #site-name a:visited {
   text-decoration: none;
 }
 
+/* line 223, ../sass/global.styles.scss */
 #site-name a:hover,
 #site-name a:focus {
   text-decoration: underline;
@@ -287,46 +176,42 @@ var {
 /*
  * Site slogan (h2)
  */
+/* line 230, ../sass/global.styles.scss */
 #site-slogan {
   margin: 0;
 }
 
-
 /* =============================================================================
  *   Page content header
  * ========================================================================== */
-
 /*
  * Main content header wraps the page title, tabs and actions links
  */
-#main-content-header {}
-
 /*
  * The main page title (h1)
  */
+/* line 247, ../sass/global.styles.scss */
 #page-title {
   margin: 0;
 }
 
-
 /* =============================================================================
  *   Misc Global Styles
  * ========================================================================== */
-
 /*
  * Feed icons
  */
-.feed-icon {}
-
 /*
  * Aggregator feed source
  */
+/* line 264, ../sass/global.styles.scss */
 #aggregator .feed-source .feed-icon {
   display: inline;
   float: none;
   margin-right: 10px;
 }
 
+/* line 271, ../sass/global.styles.scss */
 .feed-details dt,
 .feed-details dd {
   display: inline;
@@ -336,20 +221,21 @@ var {
 /*
  * Generic styles for the more link
  */
-.more-link {}
-
 /*
  * Generic styles for links. See the ul.links declaration in node and comment stylesheets
  */
+/* line 284, ../sass/global.styles.scss */
 ul.links {
   margin: 0;
   padding: 0;
 }
 
+/* line 289, ../sass/global.styles.scss */
 ul.links.inline {
   display: block;
 }
 
+/* line 293, ../sass/global.styles.scss */
 ul.links li {
   display: inline;
   list-style: none;
@@ -359,109 +245,78 @@ ul.links li {
 /*
  * Search results are an ordered list so reset the margin
  */
+/* line 302, ../sass/global.styles.scss */
 .search-results {
   margin: 0;
 }
 
-
 /* =============================================================================
  *   Regions
  * ========================================================================== */
-
 /*
  * Standard region wrapper, don't add width to any regions, you will bork the layout - no margin, padding or borders etc
  */
-.region {}
-
 /*
  * Regions have an inner div - perfect for adding margin, padding or borders
  */
-.region-inner {}
-
 /*
  * Regions can be nested, such as when using Panels
  */
-.region-inner .region-inner {}
-
 /*
  * Header region, embedded in the #header
  */
-.region-header {}
-
 /*
  * Generally used to output Drupals help block, if the help module is enabled
  */
-.region-help {}
-
 /*
  * Secondary content
  */
-.region-secondary-content {}
-
 /*
  * Sits above the main content header, like a content-top region
  */
-.region-highlighted {}
-
 /*
  * Sits below the main content, like a content-bottom region
  */
-.region-content-aside {}
-
 /*
  * Sidebars - targets both
  */
-.sidebar {}
-
 /*
  * First sidebar
  */
-.region-sidebar-first {}
-
 /*
  * Second sidebar
  */
-.region-sidebar-second {}
-
 /*
  * Tertiary content
  */
-.region-tertiary-content {}
-
 /*
  * Footer region
  */
-.region-footer {}
-
-
 /* =============================================================================
  *   Links
  * ========================================================================== */
-
+/* line 381, ../sass/global.styles.scss */
 a {
   text-decoration: none;
-   color: #525252;
+  color: #525252;
 }
 
+/* line 387, ../sass/global.styles.scss */
 a:link,
 a:visited {
- color: #525252;
+  color: #525252;
 }
 
-a:active,
-a.active {}
-
+/* line 395, ../sass/global.styles.scss */
 a:hover,
 a:focus {
   text-decoration: none;
   cursor: pointer;
 }
 
-
 /* =============================================================================
  *   Primary, Secondary and Menu Bar region menus
  * ========================================================================== */
-
 /*
  * Use one of the following id's for granular control:
  *  - #menu-bar (menu bar region)
@@ -469,17 +324,20 @@ a:focus {
  *  - #secondary-menu (secondary/user menu)
  * You can target all of these with .nav or div[id$="menu-bar"]
  */
+/* line 412, ../sass/global.styles.scss */
 .nav {
   clear: both;
   margin: 10px 0;
 }
 
+/* line 418, ../sass/global.styles.scss */
 .nav ul,
 .nav ul.menu {
   margin: 0;
   padding: 0;
 }
 
+/* line 424, ../sass/global.styles.scss */
 .nav li,
 .nav ul.menu li {
   display: inline;
@@ -489,6 +347,7 @@ a:focus {
   padding: 0;
 }
 
+/* line 433, ../sass/global.styles.scss */
 .nav li a,
 .nav ul.menu li a {
   display: block;
@@ -496,27 +355,20 @@ a:focus {
   padding: 0 10px;
 }
 
-.nav li a:visited,
-.nav ul.menu li a:visited {}
-
-.nav li a:hover,
-.nav li a:focus,
-.nav ul.menu li a:hover,
-.nav ul.menu li a:focus {}
-
+/* line 447, ../sass/global.styles.scss */
 .nav .block {
   margin-bottom: 0;
 }
 
-
 /* =============================================================================
  *   Superfish
  * ========================================================================== */
-
+/* line 456, ../sass/global.styles.scss */
 ul.sf-menu {
   margin-bottom: 0;
 }
 
+/* line 460, ../sass/global.styles.scss */
 ul.sf-menu a {
   border-left: 0;
   border-top: 0;
@@ -526,18 +378,13 @@ ul.sf-menu a {
   line-height: 2.5em;
 }
 
-ul.sf-menu a:link,
-ul.sf-menu a:visited {}
-
-ul.sf-menu li {}
-
+/* line 475, ../sass/global.styles.scss */
 ul.sf-menu li:hover,
 ul.sf-menu li.sfHover {
   outline: 0;
 }
 
-ul.sf-menu a {}
-
+/* line 483, ../sass/global.styles.scss */
 ul.sf-menu a:focus,
 ul.sf-menu a:hover,
 ul.sf-menu a:active {
@@ -547,21 +394,13 @@ ul.sf-menu a:active {
 /*
  * Superfish blocks
  */
-.block-superfish {}
-
-.block-superfish .block-inner .content {}
-
+/* line 494, ../sass/global.styles.scss */
 .block-superfish ul {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.block-superfish ul ul {}
-
-.block-superfish ul ul ul {}
-
-.block-superfish ul ul ul ul {}
-
+/* line 505, ../sass/global.styles.scss */
 .block-superfish li {
   margin: 0 !important;
   padding: 0 !important;
@@ -570,16 +409,17 @@ ul.sf-menu a:active {
 /*
  * Vertical style
  */
+/* line 513, ../sass/global.styles.scss */
 .sf-vertical {
   width: 100%;
 }
 
+/* line 517, ../sass/global.styles.scss */
 .sf-vertical li {
   width: 100%;
 }
 
-.sf-vertical li.last {}
-
+/* line 524, ../sass/global.styles.scss */
 .sf-vertical li:hover ul,
 .sf-vertical li.sfHover ul {
   left: 100%;
@@ -588,6 +428,7 @@ ul.sf-menu a:active {
   padding: 0;
 }
 
+/* line 531, ../sass/global.styles.scss */
 .sf-vertical li a {
   padding: 0 10px;
 }
@@ -595,6 +436,7 @@ ul.sf-menu a:active {
 /*
  * Navbar style
  */
+/* line 538, ../sass/global.styles.scss */
 .sf-navbar {
   padding-bottom: 0 !important;
 }
@@ -602,147 +444,107 @@ ul.sf-menu a:active {
 /*
  * Sensible padding for the default style
  */
+/* line 545, ../sass/global.styles.scss */
 .sf-menu.sf-style-default a {
   padding: 0 10px;
 }
 
-
 /* =============================================================================
  *   Menus, usually blocks
  * ========================================================================== */
-
+/* line 554, ../sass/global.styles.scss */
 ul.menu {
   padding-left: 15px;
 }
 
+/* line 558, ../sass/global.styles.scss */
 ul.menu ul {
   padding-left: 15px;
 }
 
-ul.menu ul ul {}
-
-ul.menu ul ul ul {}
-
+/* line 566, ../sass/global.styles.scss */
 ul.menu li {
   margin: 0;
 }
 
-ul.menu li.collapsed,
-ul.menu li.expanded,
-ul.menu li.leaf {}
-
-ul.menu li a {}
-
-ul.menu li a:link,
-ul.menu li a:visited {}
-
-ul.menu li a:active,
-ul.menu li a.active {}
-
-ul.menu li a:hover,
-ul.menu li a:focus {}
-
-ul.menu li.active a,
-ul.menu li.active-trail a {}
-
-ul.menu li.first,
-ul.menu li.last {}
-
 /* If li.content exists it's a problem, so reset the padding */
+/* line 592, ../sass/global.styles.scss */
 .block .menu li.content {
   padding: 0;
 }
 
-
 /* =============================================================================
  *   Book navigation menu
  * ========================================================================== */
-
-.book-navigation {}
-
-.book-navigation .page-links {}
-
-.book-navigation .page-previous {}
-
-.book-navigation .page-next {}
-
+/* line 609, ../sass/global.styles.scss */
 .book-navigation .page-up {
   /* Prevent text wrapping to a new line, assumes English "up" is used (two characters) */
   min-width: 2em;
   white-space: nowrap;
 }
 
+/* line 615, ../sass/global.styles.scss */
 .book-navigation .menu {
   margin-left: 0;
 }
 
-
 /* =============================================================================
  *   Breadcrumbs
  * ========================================================================== */
-
+/* line 624, ../sass/global.styles.scss */
 #breadcrumb {
   margin: 10px 0;
 }
 
 /* If the label is set to show in theme settings the label class is added */
+/* line 629, ../sass/global.styles.scss */
 #breadcrumb .breadcrumb-label {
   font-size: 1em;
   display: inline;
   padding-right: 10px;
 }
 
+/* line 635, ../sass/global.styles.scss */
 #breadcrumb .breadcrumb-label:after {
   content: ":";
 }
 
+/* line 639, ../sass/global.styles.scss */
 #breadcrumb ol {
   margin: 0;
   padding: 0;
 }
 
+/* line 644, ../sass/global.styles.scss */
 #breadcrumb .with-breadcrumb-label ol {
   display: inline;
 }
 
+/* line 648, ../sass/global.styles.scss */
 #breadcrumb li {
   list-style: none;
   display: inline;
 }
 
-#breadcrumb li.crumb-first {}
-
-#breadcrumb li.crumb-last {}
-
-#breadcrumb a {}
-
-#breadcrumb a:link,
-#breadcrumb a:visited {}
-
-#breadcrumb a:active,
-#breadcrumb a.active {}
-
-#breadcrumb a:hover,
-#breadcrumb a:focus {}
-
-
 /* =============================================================================
  *   Pagers
  * ========================================================================== */
-
+/* line 673, ../sass/global.styles.scss */
 ul.pager {
   clear: both;
   margin: 13px 0 0 0;
   text-align: center;
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px; 
+  -moz-border-radius: 5px;
   border-radius: 5px;
 }
 
+/* line 682, ../sass/global.styles.scss */
 .item-list ul.pager li {
   margin: 0;
 }
 
+/* line 686, ../sass/global.styles.scss */
 ul.pager li {
   background-image: none;
   display: inline;
@@ -751,10 +553,12 @@ ul.pager li {
   line-height: 50px;
 }
 
+/* line 694, ../sass/global.styles.scss */
 ul.pager li.pager-current {
   font-weight: 700;
 }
 
+/* line 698, ../sass/global.styles.scss */
 .block ul.pager li {
   margin: 0;
 }
@@ -762,35 +566,10 @@ ul.pager li.pager-current {
 /*
  * Theme the various states of pager links
  */
-ul.pager li {
-	
-}
-
-
-
-ul.pager li a:link,
-ul.pager li a:visited {}
-
-ul.pager li a:active,
-ul.pager li a.active {}
-
-ul.pager li a:hover,
-ul.pager li a:focus {}
-
-ul.pager li.pager-item {}
-ul.pager li.first {}
-ul.pager li.last {}
-ul.pager li.pager-current {}
-ul.pager li.pager-first {}
-ul.pager li.pager-previous {}
-ul.pager li.pager-next {}
-ul.pager li.pager-last {}
-
-
 /* =============================================================================
  *   Skip Navigation
  * ========================================================================== */
-
+/* line 734, ../sass/global.styles.scss */
 #skip-link {
   left: 50%;
   margin-left: -6.5em;
@@ -801,9 +580,10 @@ ul.pager li.pager-last {}
   z-index: 50;
 }
 
+/* line 744, ../sass/global.styles.scss */
 #skip-link a {
   background: #444;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   display: block;
   line-height: 2;
@@ -812,10 +592,11 @@ ul.pager li.pager-last {}
   text-decoration: none;
 }
 
+/* line 756, ../sass/global.styles.scss */
 #skip-link a:link,
 #skip-link a:visited {
   background: #444;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   display: block;
   line-height: 2;
@@ -824,97 +605,67 @@ ul.pager li.pager-last {}
   text-decoration: none;
 }
 
+/* line 769, ../sass/global.styles.scss */
 #skip-link a:hover,
 #skip-link a:focus,
 #skip-link a:active {
   outline: 0;
 }
 
-
 /* =============================================================================
  *   Tabs (local tasks)
  * ========================================================================== */
-
+/* line 778, ../sass/global.styles.scss */
 #tasks {
   margin-bottom: 15px;
 }
 
-ul.primary {
-  border-bottom-color: #ccc;
-  margin: 20px 0;
-  padding: 0 0 0 5px;
-}
-
-ul.primary li {
-  display: block;
-  float: left;
-  margin: 0 1px -1px;
-}
-
-ul.primary li a {
-  margin-right: 1px;
-  padding: 0 10px;
-  display: block;
-  float: left;
-  height: 1.5em;
-  line-height: 1.5em;
-}
-
+/* line 782, ../sass/global.styles.scss */
 ul.secondary {
   border-bottom: 1px solid #ccc;
   margin: 1em 0 0;
   padding: 0 .3em 1em;
 }
 
+/* line 788, ../sass/global.styles.scss */
 ul.secondary li {
   border-right: 0;
   list-style: none;
   padding: 0 10px 0 0;
 }
 
-ul.secondary li a {}
-
+/* line 797, ../sass/global.styles.scss */
 ul.secondary li a:hover,
 ul.secondary li a.active {
   border-bottom: none;
   text-decoration: underline;
 }
 
-
 /* =============================================================================
  *   Action links
  * ========================================================================== */
-
+/* line 807, ../sass/global.styles.scss */
 ul.action-links {
   margin: 20px 0 0;
   list-style: none;
 }
 
-ul.action-links li {}
-
-
 /* =============================================================================
  *  Field Styling
  * ========================================================================== */
-
 /*
  * Wrapper for any field
  */
-.field {}
-
 /*
  * Above and inline classes are on the field wrapper
  */
-.field-label-above {}
-
 /*
  * When labels are set to inline in field display settings the clearfix class is automatically added
  */
-.field-label-inline {}
-
 /*
  * Labels are h2 in Adaptivetheme. Use a strong selector to mitigate unwanted ineritance issues
  */
+/* line 837, ../sass/global.styles.scss */
 .field-label {
   font-size: 1em;
   font-weight: 700;
@@ -923,35 +674,28 @@ ul.action-links li {}
   margin-bottom: 0;
 }
 
-
 /*
  * Field types (Core)
  */
-
 /*
  * Image fields use the <figure> and <figcaption> elements from HTML5
  */
-.field-type-image {}
-
-.field-type-image .caption {}
-
-.field-type-image .full-caption {}
-
-.field-type-image .teaser-caption {}
-
 /*
  * Taxonomy
  */
+/* line 864, ../sass/global.styles.scss */
 .field-type-taxonomy-term-reference {
   /* The same bottom margin as p, blockquote, ul, ol and dl */
   margin-bottom: 1.5em;
 }
 
+/* line 869, ../sass/global.styles.scss */
 .field-type-taxonomy-term-reference.field-label-inline .field-items {
   margin: 0;
   padding: 0;
 }
 
+/* line 874, ../sass/global.styles.scss */
 .field-type-taxonomy-term-reference.field-label-inline .field-item {
   display: inline;
   list-style: none;
@@ -961,93 +705,55 @@ ul.action-links li {}
 /*
  * Text
  */
-.field-type-text {}
-
 /*
  * Long text
  */
-.field-type-text-long {}
-
 /*
  * Text with summary
  */
-.field-type-text-with-summary {}
-
 /*
  * File
  */
-.field-type-file {}
-
 /*
  * Number/Integer
  */
-.field-type-number-integer {}
-
 /*
  * Decimal
  */
-.field-type-number-decimal {}
-
 /*
  * Number float
  */
-.field-type-number-float {}
-
 /*
  * List
  */
-.field-type-list-text {}
-
 /*
  * List boolean
  */
-.field-type-list-boolean {}
-
 /*
  * List integer
  */
-.field-type-list-integer {}
-
 /*
  * List float
  */
-.field-type-list-float {}
-
 /*
  * Field types (Contrib)
  */
-.field-type-datetime {}
-
-.field-type-node-reference {}
-
-.field-type-user-reference {}
-
 /*
  * Named fields
  */
-.field-name-body {}
-
-.field-name-field-image {}
-
-.field-name-field-tags {}
-
 /*
  * Underscores in field name are replaced with dashes
  */
-.field-name-field-FIELDNAME {}
-
 /*
  * Image Alignment Theme Settings - included here so you can easily override
  */
 /*
  * Float none setting
  */
-.ia-n .field-type-image,
-.iat-n .field-type-image {}
-
 /*
  * Float left setting
  */
+/* line 971, ../sass/global.styles.scss */
 .ia-l .field-type-image figure,
 .iat-l .field-type-image figure {
   margin: 5px 20px 15px 0;
@@ -1056,6 +762,7 @@ ul.action-links li {}
 /*
  * Centered setting
  */
+/* line 979, ../sass/global.styles.scss */
 .ia-c .field-type-image figure,
 .iat-c .field-type-image figure {
   margin: 5px auto 15px;
@@ -1064,19 +771,19 @@ ul.action-links li {}
 /*
  * Float right setting
  */
+/* line 987, ../sass/global.styles.scss */
 .ia-r .field-type-image figure,
 .iat-r .field-type-image figure {
   margin: 5px 0 15px 20px;
 }
 
-
 /* =============================================================================
  *   Block Styling
  * ========================================================================== */
-
 /*
  * Main wrapper for most blocks, block_system_main does not have it
  */
+/* line 999, ../sass/global.styles.scss */
 .block {
   margin-bottom: 20px;
 }
@@ -1084,31 +791,22 @@ ul.action-links li {}
 /*
  * Inner wrapper for most blocks, good for margin, padding and borders, block_system_main does not have it
  */
-.block-inner {}
-
 /*
  * The first block in the region
  */
-.block.first {}
-
 /*
  * The last block in the region
  */
-.block.last {}
-
 /*
  * Zebra striping for each block in the region
  */
-.block.odd {}
-
 /*
  * Zebra striping for each block in the region
  */
-.block.even {}
-
 /*
  * Block title
  */
+/* line 1031, ../sass/global.styles.scss */
 .block-title {
   margin: 0;
 }
@@ -1116,18 +814,16 @@ ul.action-links li {}
 /*
  * Block content wrapper
  */
-.block-content {}
-
 /*
  * Match item list and block menu margin and padding
  */
-.block-content {}
-
+/* line 1046, ../sass/global.styles.scss */
 .block-content ul,
 .block-content ol {
   padding: 0;
 }
 
+/* line 1050, ../sass/global.styles.scss */
 .block-content li {
   margin: 0;
   padding: 0;
@@ -1137,235 +833,120 @@ ul.action-links li {}
 /*
  * Block for the latest news items in the first category
  */
-#block-aggregator-category-1 {}
-
 /*
  * Block for the latest news items in the first feed
  */
-#block-aggregator-feed-1 {}
-
 /*
  * First block created with "Add block" link
  */
-#block-block-1 {}
-
 /*
  * "Recent blog posts" block
  */
-#block-blog-recent {}
-
 /*
  * "Book navigation" block for the current book's table of contents
  */
-#block-book-navigation {}
-
 /*
  * "Recent comments" block
  */
-#block-comment-recent {}
-
 /*
  * "Active forum topics" block
  */
-#block-forum-active {}
-
 /*
  * "New forum topics" block
  */
-#block-forum-new {}
-
 /*
  * Language switcher block
  */
-#block-locale-language {}
-
 /*
  * Custom menu block
  */
-#block-menu-menu-NAME {}
-
 /*
  * "Recent content" block
  */
-#block-node-recent {}
-
 /*
  * "Syndicate" block for primary RSS feed; see also page.css's .feed-icon
  */
-#block-node-syndicate {}
-
 /*
  * "Most recent poll" block
  */
-#block-poll-recent {}
-
 /*
  * "Author information" block for the profile of the page's author
  */
-#block-profile-author-information {}
-
 /*
  * "Search form" block
  */
-#block-search-form {}
-
 /*
  * "Shortcuts" block
  */
-#block-shortcut-shortcuts {}
-
 /*
  * "Popular content" block
  */
-#block-statistics-popular {}
-
 /*
  * "Main menu" block
  */
-#block-system-main-menu {}
-
 /*
  * "Management" block for Drupal management menu
  */
-#block-system-management {}
-
 /*
  * "Navigation" block for Drupal navigation menu
  */
-#block-system-navigation {}
-
 /*
  * "User menu" block for Drupal user menu
  */
-#block-system-user-menu {}
-
 /*
  * "System help" block
  */
-#block-system-help {}
-
 /*
  * "Main page content" block
  */
-#block-system-main {}
-
 /*
  * "Powered by Drupal" block
  */
-#block-system-powered-by {}
-
 /*
  * "User login form" block
  */
-#block-user-login {}
-
 /*
  * "Who's new" block for a list of the newest users
  */
-#block-user-new {}
-
 /*
  * "Who's online" block for a list of the online users
  */
-#block-user-online {}
-
-
 /* =============================================================================
  *   Node Styling
  * ========================================================================== */
-
+/* line 1196, ../sass/global.styles.scss */
 .node {
   margin-bottom: 20px;
 }
 
-.node.node-promoted {}
-
-.node.node-sticky {}
-
-.node.node-by-viewer {}
-
-.node.node-teaser {}
-
-.node.node-full {}
-
-.node.odd {}
-
-.node.even {}
-
+/* line 1214, ../sass/global.styles.scss */
 .node .node-title {
   margin: 0;
   line-height: 50px;
 }
-h2.pane-title {
- 
-}
-.node .user-picture {}
-
-.node .submitted {}
-
-.node .submitted .username {}
-
-.node .submitted time {}
-
-.node .node-content {}
-
-.node ul.links {}
-
-.node ul.links li {}
-
-.node ul.links li a {}
-
-.node ul.links li.node-read-more a {}
-
-.node ul.links li.comment-add a {}
-
-.node ul.links li.comment-comments a {}
-
-.node ul.links li.comment-new-comments a {}
-
-.node ul.links li.blog-sernames-blog a {}
-
-.node ul.links li.print-html a {}
-
-.node ul.links li.print-email a {}
-
-.node ul.links li.print-pdf a {}
-
-.preview .node {}
 
 /*
  * All nodes are given a node-FOO class that describes the type of content that
  * it is. If you create a new content type called "my-custom-type", it will
  * receive a "node-my-custom-type" class.
  */
-.node-page {}
-
-.node-article {}
-
-.node-book {}
-
-.node-forum {}
-
-.node-poll {}
-
-
 /* =============================================================================
  *   Comment Styling - Comments, comment wrapper, comment form
  * ========================================================================== */
-
 /*
  * Wrapper for the list of comments and its titles
  */
+/* line 1278, ../sass/global.styles.scss */
 #comments {
   margin: 1.5em 0;
 }
 
-#comments h2 {}
-
+/* line 1284, ../sass/global.styles.scss */
 #comments h2.comment-title {
   margin: 0;
 }
 
+/* line 1288, ../sass/global.styles.scss */
 #comments h2.comment-form {
   margin: 0;
 }
@@ -1373,37 +954,20 @@ h2.pane-title {
 /*
  * Wrapper for a single comment
  */
+/* line 1295, ../sass/global.styles.scss */
 .comment {
   margin-bottom: 10px;
 }
 
-.comment.first {}
-
-.comment.last {}
-
-.comment.odd {}
-
-.comment.even {}
-
-.comment .user-picture {}
-
-.comment .submitted {}
-
-.comment .submitted p {}
-
-.comment .submitted .username {}
-
+/* line 1315, ../sass/global.styles.scss */
 .comment .submitted time {
-	float: right;
+  float: right;
 }
-
-.comment .user-signature {}
-
-.comment ul.links {}
 
 /*
  * Comment title
  */
+/* line 1326, ../sass/global.styles.scss */
 .comment-title {
   margin: 0;
 }
@@ -1411,28 +975,13 @@ h2.pane-title {
 /*
  * Comment states
  */
-.comment-new {}
-
-.comment-by-anonymous {}
-
-.comment-by-node-author {}
-
-.comment-by-viewer {}
-
-.comment-title-hidden {}
-
-.comment-with-picture {}
-
-.comment-with-signature {}
-
 /*
  * Preview of the comment before submitting new or updated comment
  */
-.comment-preview {}
-
 /*
  * "New" marker for comments that are new for the current user
  */
+/* line 1355, ../sass/global.styles.scss */
 .new {
   color: #c00;
 }
@@ -1440,52 +989,47 @@ h2.pane-title {
 /*
  * Nested comments are indented
  */
+/* line 1362, ../sass/global.styles.scss */
 .indented {
   margin-left: 40px;
 }
 
-
 /* =============================================================================
  *   Forms
  * ========================================================================== */
-
 /*
  * Wrapper for a form element (or group of form elements) and its label
  */
-.form-item {}
-
+/* line 1378, ../sass/global.styles.scss */
 .form-item input.error,
 .form-item textarea.error,
 .form-item select.error {
   border: 1px solid #c00;
 }
 
+/* line 1382, ../sass/global.styles.scss */
 .form-item label {
   font-weight: 700;
 }
 
-.form-item label.option {}
-
 /*
  * Highlight marks and form required mark
  */
+/* line 1392, ../sass/global.styles.scss */
 .marker,
 .form-required {
   color: #c00;
 }
 
+/* line 1396, ../sass/global.styles.scss */
 .form-item .description {
   font-size: 0.85em;
 }
 
-.form-checkboxes .form-item,
-.form-radios .form-item {}
-
 /*
  * The submit button
  */
-.form-submit {}
-
+/* line 1409, ../sass/global.styles.scss */
 .container-inline div,
 .container-inline label {
   display: inline;
@@ -1494,6 +1038,7 @@ h2.pane-title {
 /*
  * Define consistent borders
  */
+/* line 1416, ../sass/global.styles.scss */
 fieldset {
   border: 1px solid #ccc;
 }
@@ -1501,11 +1046,10 @@ fieldset {
 /*
  * Tips for Drupal's input formats
  */
-.tips {}
-
 /*
  * Buttons used by contrib modules like Media
  */
+/* line 1428, ../sass/global.styles.scss */
 a.button {
   -webkit-appearance: button;
   -moz-appearance: button;
@@ -1515,26 +1059,28 @@ a.button {
 /*
  * Password confirmation
  */
+/* line 1438, ../sass/global.styles.scss */
 .password-parent,
 .confirm-parent {
   margin: 0;
 }
 
-
 /* =============================================================================
  *   Tables
  * ========================================================================== */
-
+/* line 1447, ../sass/global.styles.scss */
 table {
   margin: 10px 0;
   padding: 0;
   width: 100%;
 }
 
+/* line 1453, ../sass/global.styles.scss */
 table.sticky-header {
   z-index: 10;
 }
 
+/* line 1462, ../sass/global.styles.scss */
 table,
 thead,
 tbody,
@@ -1544,24 +1090,27 @@ td {
   border-color: #ccc;
 }
 
+/* line 1468, ../sass/global.styles.scss */
 table,
 td,
 th {
   vertical-align: middle;
 }
 
+/* line 1474, ../sass/global.styles.scss */
 caption,
 th,
 td {
   text-align: left;
 }
 
+/* line 1478, ../sass/global.styles.scss */
 thead tr {
   font-weight: 700;
   background-color: #e5e5e5;
-
 }
 
+/* line 1485, ../sass/global.styles.scss */
 td,
 th {
   border-bottom: 0;
@@ -1569,16 +1118,17 @@ th {
   padding: 5px 7px;
 }
 
-tbody {}
-
+/* line 1493, ../sass/global.styles.scss */
 tbody tr {
   border-top: 1px solid #ccc;
 }
 
+/* line 1497, ../sass/global.styles.scss */
 tr.odd {
   background: #fff;
 }
 
+/* line 1503, ../sass/global.styles.scss */
 tr.info,
 tr.even,
 tr:nth-child(2n+2) {
@@ -1586,35 +1136,21 @@ tr:nth-child(2n+2) {
   background-color: #f5f5f5;
 }
 
-tr.drag {}
-
-tr.drag-previous {}
-
+/* line 1512, ../sass/global.styles.scss */
 tr.odd td.active {
   background-color: #eee;
 }
 
+/* line 1516, ../sass/global.styles.scss */
 tr.even td.active {
   background-color: #ebebeb;
-}
-
-.lt-ie8 tr {}
-
-.lt-ie8 tr.even,
-.lt-ie8 tr.odd {}
-
-.lt-ie8 tr.even th,
-.lt-ie8 tr.even td,
-.lt-ie8 tr.odd th,
-.lt-ie8 tr.odd td {
 }
 
 /*
  * Forum tables
  * Core sets white-space to nowrap, which makes no sense
  */
-#forum td {}
-
+/* line 1542, ../sass/global.styles.scss */
 #forum td .created,
 #forum td .posts,
 #forum td .topics,
@@ -1624,43 +1160,25 @@ tr.even td.active {
   white-space: normal;
 }
 
-
 /* =============================================================================
  *   Messages
  * ========================================================================== */
-
 /* Left and right margin are set by the global gutter width */
+/* line 1552, ../sass/global.styles.scss */
 div.messages {
   margin-bottom: 10px;
 }
 
+/* line 1556, ../sass/global.styles.scss */
 div.messages ul {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-div.status {}
-
-div.warning {}
-
-tr.warning {}
-
-div.error,
-tr.error {}
-
-.error {}
-
-.warning {}
-
 /*
  * Unpublished nodes
  */
-.node-unpublished,
-.comment-unpublished {}
-
-.node-unpublished,
-.comment-unpublished {}
-
+/* line 1584, ../sass/global.styles.scss */
 .node-unpublished p.unpublished,
 .comment-unpublished p.unpublished {
   color: pink;
@@ -1681,30 +1199,27 @@ tr.error {}
 /*
  * Otherwise these elements will appear below the "Unpublished" text
  */
-.lt-ie8 {}
-
+/* line 1606, ../sass/global.styles.scss */
 .lt-ie8 .node-unpublished > *,
 .lt-ie8 .comment-unpublished > * {
   position: relative;
 }
 
-
 /* =============================================================================
  *    Maintenance pages
  * ========================================================================== */
-
-.maintenance-page {}
+/* line 1616, ../sass/global.styles.scss */
 .maintenance-page .container {
   padding: 40px 0;
 }
 
+/* line 1621, ../sass/global.styles.scss */
 .maintenance-page #site-name,
 .maintenance-page #page-title {
   margin: 0;
 }
 
-.db-offline {}
-
+/* line 1627, ../sass/global.styles.scss */
 .db-offline .container {
   margin: 0 auto;
   padding: 40px 0;
@@ -1712,22 +1227,23 @@ tr.error {}
   max-width: 960px;
 }
 
+/* line 1634, ../sass/global.styles.scss */
 .db-offline div.messages {
   margin: 20px 0 0;
 }
 
+/* line 1638, ../sass/global.styles.scss */
 .db-offline #content {
   padding: 20px 0;
 }
 
-
 /* =============================================================================
  *   Misc overrides for contrib modules
  * ========================================================================== */
-
 /*
  * Admin menu overrides
  */
+/* line 1650, ../sass/global.styles.scss */
 #admin-menu {
   margin: 0;
   padding: 0;
@@ -1736,6 +1252,7 @@ tr.error {}
 /*
  * Devel Module
  */
+/* line 1658, ../sass/global.styles.scss */
 .dev-query {
   background: #eee;
   padding: 30px;
@@ -1744,10 +1261,12 @@ tr.error {}
 /*
  * Styleguide module tweaks
  */
+/* line 1666, ../sass/global.styles.scss */
 #styleguide-header {
   padding: 0 10px;
 }
 
+/* line 1670, ../sass/global.styles.scss */
 #styleguide-header .item-list {
   font-family: inherit;
   margin: 0 20px 20px 0;
@@ -1755,15 +1274,15 @@ tr.error {}
   width: auto;
 }
 
+/* line 1677, ../sass/global.styles.scss */
 input.form-text, textarea.form-textarea, select.form-select {
-    border: 1px solid #CCCCCC;
+  border: 1px solid #CCCCCC;
 }
-
 
 /*
  *  Buttons
  */
-
+/* line 1687, ../sass/global.styles.scss */
 input.form-submit,
 a.button {
   cursor: pointer;
@@ -1771,13 +1290,16 @@ a.button {
   font-weight: normal;
   text-align: center;
   margin-bottom: 1em;
-  margin-right: 0.6em; /* LTR */
+  margin-right: 0.6em;
+  /* LTR */
   padding: 4px 17px;
   -khtml-border-radius: 15px;
   -moz-border-radius: 20px;
   -webkit-border-radius: 15px;
   border-radius: 15px;
 }
+
+/* line 1704, ../sass/global.styles.scss */
 a.button:link,
 a.button:visited,
 a.button:hover,
@@ -1786,9 +1308,12 @@ a.button:active {
   text-decoration: none;
 }
 
+/* line 1708, ../sass/global.styles.scss */
 .panel-flexible .panel-separator {
-    margin: 0 0 0.6em;
+  margin: 0 0 0.6em;
 }
-.item-list ul li{
-	margin: 0;
+
+/* line 1711, ../sass/global.styles.scss */
+.item-list ul li {
+  margin: 0;
 }

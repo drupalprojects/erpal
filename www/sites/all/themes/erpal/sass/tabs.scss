@@ -1,3 +1,4 @@
+@import "global_vars_a_mixins";
 ul.primary,
 ul.secondary {
   overflow: hidden;
@@ -6,19 +7,13 @@ ul.secondary {
   margin: 0;
   padding: 0;
   white-space: nowrap;
+  background-color: $white;
   border: medium none
 }
 
 ul.primary li,
 ul.secondary li {
   float: left; /* LTR */
-  margin: 0.5em 3px 0;
-}
-
-ul.primary a,
-ul.secondary a {
-  display: block;
-  line-height: 1.5em;
 }
 
 /*
@@ -27,6 +22,7 @@ ul.secondary a {
 
 ul.primary li {
   margin: 0; /* LTR */
+  display: block;
 }
 
 
@@ -36,22 +32,37 @@ ul.primary a:visited {
   padding: 0 20px;
   letter-spacing: 1px;
   text-align: center;
-  font-size: 12px;
-  font-weight: bold;
+  @include text_bold_12;
   height: 42px;
   line-height: 42px;
   min-width: 80px;
+  background: $white;
   border: none;
 }
 
 
-ul.primary a.active {
+ul.primary a.active, 
+ul.primary a.active:hover {
   *zoom: 1;
+  background-color: $orange;
+  color: $black;
+}
+ul.primary li a:hover{
+  background-color: $white;
 }
 ul.primary li.active a, 
 ul.primary li.active a:hover, 
 ul.primary li.active a:focus{
-	border: none;
+  border: none;
+}
+ul.primary li a:hover,
+ul.primary li a:focus {
+  border-color: #ccc;
+  color: $black;
+}
+ul.primary a:link,
+ul.primary a:visited {
+  $dark_brown: #7b726b;
 }
 /*
  * Secondary tabs

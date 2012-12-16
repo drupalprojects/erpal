@@ -1,333 +1,201 @@
-body{
-    color: #525252;
-	background: #E5E5E5;
+/* line 1, ../sass/color.scss */
+body {
+  color: #525252;
+  background: #E5E5E5;
 }
 
-/*
- * menu item color
- */
-.pane-system-user-menu li a, 
-.pane-menu-menu-erpal-menu ul li a {
-    color: #e7d4c5;
+/* line 6, ../sass/color.scss */
+ul.quicktabs-tabs li.active {
+  background-color: #F6F6F6 !important;
 }
 
-/*
- * tabs background
- */
-/*.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside,*/
-.pane-page-tabs {
-	background-color: #EEEEEE;
-}
-ul.primary li a:hover,
-ul.primary li a:focus {
-  border-color: #ccc;
-  color: #000000;
-}
-ul.primary a:link,
-ul.primary a:visited {
-    color: #7b726b;
-}
-ul.primary li a, ul.primary li a:hover{
-	background-color: transparent;
-}
-ul.primary li {
-  border-right: 1px solid #d9d9d9;
-}
-ul.primary li.first {
-  border-left: 1px solid #d9d9d9;
-}
-ul.primary li.active {
-  border-left: 2px solid #fd8300;
-  border-right: 2px solid #fd8300;
+/* line 9, ../sass/color.scss */
+ul.quicktabs-tabs li.active a {
+  color: #525252 !important;
 }
 
-ul.primary a.active, ul.primary a.active:hover {
-  background-color: #ffa800 !important;
-  color: #000000;
-}
-
-/*
- * top background
- */
-.top-region {
-    background-color: #22130C;
-}
-
-/*
- * left menu item color
- */
-.pane-menu-menu-erpal-menu ul li a:hover, 
-.pane-menu-menu-erpal-menu ul li a:hover,
-.pane-system-user-menu li a:hover{
-	color: #fdf8f4;
-}
-.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail,
-.pane-menu-menu-erpal-menu ul li.active-trail.active{
-	background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
-}
-.pane-menu-menu-erpal-menu ul li.active-trail.active a,
-.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail{
-	color: #000000;
-}
-.pane-menu-menu-erpal-menu ul li a.active,
-.pane-menu-menu-erpal-menu ul li a.active:hover,
-.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail,
-.pane-menu-menu-erpal-menu ul li.expanded.active-trail a.active-trail,
-.pane-menu-menu-erpal-menu ul li.active-trail.active a,
-.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
-	border-top: 2px solid #fd8300;
-	border-bottom: 2px solid #fd8300;
-}
-#erpal_wrapper>.panel-col-first {
-    background-color: #7B726B;
-}
-.pane-system-user-menu ul{
-	border-bottom: 1px solid #908984;
-}
-
-/*
- *  Buttons
- */
-a.button:link,
-a.button:visited,
-a.button:hover,
-a.button:focus,
-a.button:active {
-  color: #5a5a5a;
-}
-input.form-submit,
-a.button {
-  background: #fff url(../images/buttons.png) 0 0 repeat-x;
-  border: 1px solid #e4e4e4;
-  border-bottom: 1px solid #b4b4b4;
-  border-left-color: #d2d2d2;
-  border-right-color: #d2d2d2;
-  color: #3a3a3a;
-}
-
-input.form-submit:hover,
-input.form-submit:focus {
-  background: #dedede;
-}
-.pane-page-tabs {
-	-moz-box-shadow: 2px 3px 4px #b6b6b6;
-  -webkit-box-shadow: 2px 3px 4px #b6b6b6;
-	box-shadow: 2px 3px 4px #b6b6b6;
-	height: 42px;
-	background-color: #ffffff;
-	border-bottom: 2px solid #ffa800;
-}
-.pane-menu-menu-erpal-menu ul li {
-	border-top: 1px solid #908984;
-}
-.pane-menu-menu-erpal-menu ul li.last  {
-	border-bottom: 1px solid #756c65;
-}
-.pane-menu-menu-erpal-menu ul li a{
-	border-top: 1px solid #756c65;
-}
-.pane-menu-menu-erpal-menu ul li.last ul li.last a, 
-.pane-menu-menu-erpal-menu ul li.last a{
-	border-bottom: 1px solid #908984;
-}
-.pane-menu-menu-erpal-menu ul li.last ul li.last a.active-trail, 
-.pane-menu-menu-erpal-menu ul li.last a.active-trail.active, 
-.pane-menu-menu-erpal-menu ul li.expanded a.active-trail.active{
-	border-bottom: 2px solid #fd8300;
-}
-h2.pane-title {
-    color: 525252;
-}
-h1 {
-	color: #525252;
-}
-
-/*
- *  tabs buttons
- */
-.region-sidebar-right .pane-page-actions li a{
-	color: #525252;
-	background-image: linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
-	background-image: -o-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF7 2%);
-	background-image: -moz-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
-	background-image: -webkit-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
-	background-image: -ms-linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.44, #E6E6E6),
-		color-stop(0.72, #EFEFEF)
-	);
-}
-.region-sidebar-right .pane-page-actions li a:hover{
-	background-image: linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
-	background-image: -o-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
-	background-image: -moz-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
-	background-image: -webkit-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
-	background-image: -ms-linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.37, #DBD8DB),
-		color-stop(0.69, #E8E8E8)
-	);
-}
-#mini-panel-task_status_panel,
-#mini-panel-activity_status_panel{
-	background-color: #eeeeee;
-	color: #525252;
-}
-.panel-display .pane-entity-field h2.pane-title {
-    color: #525252;
-}
-.panel-display .ui-tabs .ui-tabs-panel{
-	background-color: #EEEEEE;
-}
-ul.quicktabs-tabs li.active{
-	background-color: #F6F6F6 !important;
-}
-ul.quicktabs-tabs li.active a{
-	color: #525252 !important;
-	
-}
+/* line 13, ../sass/color.scss */
 ul.quicktabs-tabs a {
-    color: #888888;
+  color: #888888;
 }
-ul.quicktabs-tabs li{
-	background-image: none;
-	background-color: #dedede;
-	border-top: 1px solid #eeeeee;
-	border-left: 1px solid #eeeeee;
+
+/* line 16, ../sass/color.scss */
+ul.quicktabs-tabs li {
+  background-image: none;
+  background-color: #dedede;
+  border-top: 1px solid #eeeeee;
+  border-left: 1px solid #eeeeee;
 }
-ul.quicktabs-tabs li.last{
-	border-right: 1px solid #eeeeee;
+
+/* line 22, ../sass/color.scss */
+ul.quicktabs-tabs li.last {
+  border-right: 1px solid #eeeeee;
 }
+
+/* line 25, ../sass/color.scss */
 .ctools-collapsible-container {
-	background-color: #DEDEDE;
-	border: 1px solid #EEEEEE;
+  background-color: #DEDEDE;
+  border: 1px solid #EEEEEE;
 }
+
+/* line 29, ../sass/color.scss */
 .ctools-collapsible-processed h2.pane-title {
-    background-color: #AFAFAF;
+  background-color: #AFAFAF;
 }
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
-	background: none;
+
+/* line 32, ../sass/color.scss */
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
+  background: none;
 }
+
+/* line 37, ../sass/color.scss */
 .ctools-collapsible-processed h2.pane-title,
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title,
-.erpal-content-layout-template .region-sidebar-right{
-	color: #202020;
+.erpal-content-layout-template .region-sidebar-right {
+  color: #202020;
 }
-.ctools-collapsible-processed .panel-separator{
-	border-bottom: 1px solid #EEEEEE;
+
+/* line 40, ../sass/color.scss */
+.ctools-collapsible-processed .panel-separator {
+  border-bottom: 1px solid #EEEEEE;
 }
-.block-content .view-content .views-table td{
-	border-bottom: 1px solid #E5E5E5;
+
+/* line 43, ../sass/color.scss */
+.block-content .view-content .views-table td {
+  border-bottom: 1px solid #E5E5E5;
 }
-.view-filters .rel-register-build{
-	background-color: #EEEEEE;
+
+/* line 46, ../sass/color.scss */
+.view-filters .rel-register-build {
+  background-color: #EEEEEE;
 }
-.block-content .view-content .views-table th{
-	background-color: #AFAFAF;
+
+/* line 49, ../sass/color.scss */
+.block-content .view-content .views-table th {
+  background-color: #AFAFAF;
 }
-.block-content .view-content .views-table tr.info, 
-.block-content .view-content .views-table tr.even, 
+
+/* line 54, ../sass/color.scss */
+.block-content .view-content .views-table tr.info,
+.block-content .view-content .views-table tr.even,
 .block-content .view-content .views-table tr:nth-child(2n+2) {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 /*---------------ticket details-----------*/
-.node-erpal-task .columns-inner{
-	background-color: #ffffff;
-}
-#tabs-tasks_by_project_panel-middle-3  #content-column .content-inner,
-#tabs-tickets_by_project_panel-middle-3 #content-column .content-inner{
-	border-bottom: 1px solid #E5E5E5;
+/* line 59, ../sass/color.scss */
+.node-erpal-task .columns-inner {
+  background-color: #ffffff;
 }
 
+/* line 63, ../sass/color.scss */
+#tabs-tasks_by_project_panel-middle-3 #content-column .content-inner,
+#tabs-tickets_by_project_panel-middle-3 #content-column .content-inner {
+  border-bottom: 1px solid #E5E5E5;
+}
+
+/* line 67, ../sass/color.scss */
 .item-list .pager {
-    background: #AFAFAF;
+  background: #AFAFAF;
 }
+
+/* line 70, ../sass/color.scss */
 ul.pager li a {
-	color: #525252 !important;
+  color: #525252 !important;
 }
-#tabs-tasks_by_project_panel-middle-1 th a{
-	color: #525252;
+
+/* line 73, ../sass/color.scss */
+#tabs-tasks_by_project_panel-middle-1 th a {
+  color: #525252;
 }
 
 /* hightlight of different states of tasks/projects */
-
+/* line 80, ../sass/color.scss */
 tr.odd.alert,
-tr.even.alert{
-	background-color: #FFDFE4 !important;
+tr.even.alert {
+  background-color: #FFDFE4 !important;
 }
 
+/* line 85, ../sass/color.scss */
 tr.odd.alert .active,
 tr.even.alert .active {
-	background-color:#eed0d5 !important;
+  background-color: #eed0d5 !important;
 }
 
+/* line 98, ../sass/color.scss */
 .alert .field .field_item .field-name-field-task-status-term,
 .alert .field .field_item .field-name-field-date,
 .alert .views-field-field-date,
 .alert .field-item,
 .pane-quicktabs-tasks-by-project-tabs .alert td.views-field-field-date,
-.alert  td.views-field-field-date-1, 
-.alert  td.views-field-field-next-contact, 
-.alert  td.views-field-field-task-status-term, 
-.alert  td.views-field-field-project-status-term,
-.alert  td.views-field-field-activity-status-term {
-	color: #CC000C;
+.alert td.views-field-field-date-1,
+.alert td.views-field-field-next-contact,
+.alert td.views-field-field-task-status-term,
+.alert td.views-field-field-project-status-term,
+.alert td.views-field-field-activity-status-term {
+  color: #CC000C;
 }
 
+/* line 103, ../sass/color.scss */
 tr.odd.completed,
 tr.even.completed {
-	background-color: #EEEEEE !important;
+  background-color: #EEEEEE !important;
 }
 
+/* line 115, ../sass/color.scss */
 .completed .field .field_item .field-name-field-task-status-term,
 .completed .field .field_item .field-name-field-completed,
 .completed .field-item,
-.pane-quicktabs-tasks-by-project-tabs .completed  td.views-field-field-date,
-.completed  td.views-field-field-date-1, 
-.completed  td.views-field-field-next-contact, 
-.completed  td.views-field-field-task-status-term, 
-.completed  td.views-field-field-project-status-term,
-.completed  td.views-field-field-activity-status-term {
-	color: #088A58;
+.pane-quicktabs-tasks-by-project-tabs .completed td.views-field-field-date,
+.completed td.views-field-field-date-1,
+.completed td.views-field-field-next-contact,
+.completed td.views-field-field-task-status-term,
+.completed td.views-field-field-project-status-term,
+.completed td.views-field-field-activity-status-term {
+  color: #088A58;
 }
 
+/* line 120, ../sass/color.scss */
 .pane-node-body,
-article.comment{
-	background-color: #ffffff;
+article.comment {
+  background-color: #ffffff;
 }
-.comment .submitted {
-    border-bottom: 1px solid #F4F4F4;
-}
-.comment-form{
-	background-color: #eeeeee;
-}
-/* crm activity */
 
-.field-type-datetime  fieldset {
-	border: none;
+/* line 123, ../sass/color.scss */
+.comment .submitted {
+  border-bottom: 1px solid #F4F4F4;
 }
+
+/* line 126, ../sass/color.scss */
+.comment-form {
+  background-color: #eeeeee;
+}
+
+/* crm activity */
+/* line 131, ../sass/color.scss */
+.field-type-datetime fieldset {
+  border: none;
+}
+
 /*---------------------------------dashboard styles-----------------------------------------*/
-#homebox .homebox-column{
-	background: none;
+/* line 135, ../sass/color.scss */
+#homebox .homebox-column {
+  background: none;
 }
+
+/* line 138, ../sass/color.scss */
 #homebox .more-link, #homebox .portlet-title, #homebox .homebox-portlet .portlet-header {
-    background-color: #F6F6F6;
+  background-color: #F6F6F6;
 }
 
 /*-------------------------------------crm styles-------------------------------------*/
+/* line 144, ../sass/color.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th,
-.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li{
-	background-color: #AFAFAF;
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
+  background-color: #AFAFAF;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td{
-	border-bottom: 1px solid #e7e7e7;
+
+/* line 147, ../sass/color.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td {
+  border-bottom: 1px solid #e7e7e7;
 }

@@ -136,6 +136,16 @@ class Import {
       return FALSE;
     }
     
+    if (! array_key_exists ($ticketParser->ticketType, Settings::get ('referencing_settings', 'content_types', array ('erpal_activity')))) {
+      
+      Log::error (
+        __CLASS__,
+        'The requested ticket type "' . $ticketParser->ticketType . '" is not configured.'
+      );
+      
+      return FALSE;
+    }
+    
     if (! $this->contactModel->isParticipantExisting ($toMail)) {
       
       if (Settings::get ('import_settings', 'create_contact_for_unknown_user') != FALSE) {
@@ -176,7 +186,7 @@ class Import {
    * @param   string  $subject          The subject/title of the mail.
    * @param   string  $body             The body text of the mail.
    * @param   array   $attachments      The attachments of the mail. It is 
-   *                                    an array of drupal file objects. 
+   *                                    an array of drupal file objects.
    */
   private function importMail ($toMail, $fromMail, $subject, $body, array $attachments) {
     
