@@ -31,8 +31,10 @@
             this.minutes++;
             this.seconds = 0;
           }
-          if(this.minutes == 60)
-            this.hours++
+          if(this.minutes == 60){
+            this.hours++;
+            this.minutes = 0;
+          }
           // digitals in format 01
           secText = this.formatDigital(this.seconds);
           minText = this.formatDigital(this.minutes);
@@ -51,22 +53,27 @@
         setDefaultTime: function(){
           var hoursText, minutesText, defaultText, min, secondsText, sec;
           defaultText = $('.timetracking_duration_' + this.timetrackingId).text();
+          defaultText = defaultText.replace(/\s*/, '');
           // default hours
-          hoursText = defaultText.split('.').slice(0)[0];
-          hoursText = hoursText.replace(/\s*/, '');
-          this.hours = hoursText;
-          // default minutes
-          minutesText = defaultText.split('.').slice(-1)[0];
-          minutesText = minutesText.replace(/ +[a+-z]+\s*/, '');
-          if(!minutesText)
-            return
-          min = 60 * minutesText / 100;
-          min = min + '';
-          // default seconds
-          this.mimutes = min.split('.').slice(0)[0];
-          if(secondsText = min.split('.').slice(-1)[0]){
-            sec = 60 * secondsText / 100;
-            this.seconds = Math.round(sec);
+          if(defaultText.indexOf('.') != -1){
+            hoursText = defaultText.split('.').slice(0)[0];
+            this.hours = hoursText;
+            // default minutes
+            minutesText = defaultText.split('.').slice(-1)[0];
+            minutesText = minutesText.replace(/ +[a+-z]+/, '');
+            if(!minutesText)
+              return
+            min = 60 * minutesText / 100;
+            min = min + '';
+            // default seconds
+            this.mimutes = min.split('.').slice(0)[0];
+            if(secondsText = min.split('.').slice(-1)[0]){
+              sec = 60 * secondsText / 100;
+              this.seconds = Math.round(sec);
+            }
+          } else {
+            hoursText = defaultText.replace(/ +[a+-z]+/, '');
+            this.hours = hoursText;
           }
         },
         // Digitals in format 01
