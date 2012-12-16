@@ -1,27 +1,3 @@
-body{
-    color: #525252;
-	background: #E5E5E5;
-}
-
-ul.quicktabs-tabs li.active{
-	background-color: #F6F6F6 !important;
-}
-ul.quicktabs-tabs li.active a{
-	color: #525252 !important;
-	
-}
-ul.quicktabs-tabs a {
-    color: #888888;
-}
-ul.quicktabs-tabs li{
-	background-image: none;
-	background-color: #dedede;
-	border-top: 1px solid #eeeeee;
-	border-left: 1px solid #eeeeee;
-}
-ul.quicktabs-tabs li.last{
-	border-right: 1px solid #eeeeee;
-}
 .ctools-collapsible-container {
 	background-color: #DEDEDE;
 	border: 1px solid #EEEEEE;
@@ -33,8 +9,7 @@ ul.quicktabs-tabs li.last{
 	background: none;
 }
 .ctools-collapsible-processed h2.pane-title,
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title,
-.erpal-content-layout-template .region-sidebar-right{
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
 	color: #202020;
 }
 .ctools-collapsible-processed .panel-separator{
@@ -86,35 +61,14 @@ tr.even.alert .active {
 	background-color:#eed0d5 !important;
 }
 
-.alert .field .field_item .field-name-field-task-status-term,
-.alert .field .field_item .field-name-field-date,
-.alert .views-field-field-date,
-.alert .field-item,
-.pane-quicktabs-tasks-by-project-tabs .alert td.views-field-field-date,
-.alert  td.views-field-field-date-1, 
-.alert  td.views-field-field-next-contact, 
-.alert  td.views-field-field-task-status-term, 
-.alert  td.views-field-field-project-status-term,
-.alert  td.views-field-field-activity-status-term {
-	color: #CC000C;
-}
+
 
 tr.odd.completed,
 tr.even.completed {
 	background-color: #EEEEEE !important;
 }
 
-.completed .field .field_item .field-name-field-task-status-term,
-.completed .field .field_item .field-name-field-completed,
-.completed .field-item,
-.pane-quicktabs-tasks-by-project-tabs .completed  td.views-field-field-date,
-.completed  td.views-field-field-date-1, 
-.completed  td.views-field-field-next-contact, 
-.completed  td.views-field-field-task-status-term, 
-.completed  td.views-field-field-project-status-term,
-.completed  td.views-field-field-activity-status-term {
-	color: #088A58;
-}
+
 
 .pane-node-body,
 article.comment{
@@ -122,9 +76,6 @@ article.comment{
 }
 .comment .submitted {
     border-bottom: 1px solid #F4F4F4;
-}
-.comment-form{
-	background-color: #eeeeee;
 }
 /* crm activity */
 
