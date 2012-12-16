@@ -5,6 +5,7 @@
  */
 module_load_include('inc', 'erpal_employee_helper', 'inc/config');
 module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.entity');
+module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.calc');
 
 /**
  * Implements hook_menu
@@ -21,7 +22,14 @@ function erpal_employee_helper_menu(){
 } 
 
 /**
-* Implements hook_entity_info
+* Implements hook_cron
+*/
+function erpal_employee_helper_cron() {
+  _erpal_employee_helper_calculate_working_times();
+}
+
+/**
+* Implements hook_entity_info to define own entities
 */
 function erpal_employee_helper_entity_info() {
   $return['working_times'] = array(
@@ -38,7 +46,9 @@ function erpal_employee_helper_entity_info() {
         'bundle' => 'type',
     ),
     'bundles' => array(
-      'working_times'=> array(),
+      'year'=> array(),
+      'month'=> array(),
+      'offset'=> array(),
     ),
     'label callback' => 'entity_class_label',
     //'uri callback' => 'entity_class_uri',  //not accessible
@@ -46,18 +56,102 @@ function erpal_employee_helper_entity_info() {
     'access callback' => 'working_times_access',
     'module' => 'erpal_employee_helper',
     // The information below is used by the BillableUIController (which extends the EntityDefaultUIController)
-   /* 'admin ui' => array(
+    'admin ui' => array(
       'path' => 'admin/content/working_times',
-      'file' => 'working_times.admin.inc',
+      'file' => 'working_times.entity.inc',
       'controller class' => 'WorkingTimesUIController',
       'menu wildcard' => '%working_times',
     ),
-    */
+    
   );
 
   return $return;
 }
 
+/**
+ * Determines whether the given user has access to a billable.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $billable
+ *   Optionally a billable or a billable type to check access for. If nothing is
+ *   given, access for all billables is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function working_times_access($op, $working_times = NULL, $account = NULL) {
+ 
+  return user_access($op.' working times offset');
+
+}
+
+/**
+* Implements hook_node_update
+*/
+function erpal_employee_helper_node_update($node) {
+  if ($node->type == 'erpal_working_time') {
+    _erpal_employee_helper_invalidate($node);
+  }
+}
+
+/**
+* Implements hook_node_delete
+*/
+function erpal_employee_helper_node_delete($node) {
+  if ($node->type == 'erpal_working_time') {
+    _erpal_employee_helper_invalidate($node);
+  }
+}
+
+/**
+* Implements hook_node_insert
+*/
+function erpal_employee_helper_node_insert($node) {
+  if ($node->type == 'erpal_working_time') {
+    _erpal_employee_helper_invalidate($node);
+  }
+}
+
+/**
+* Set all datasets "dirty" that are in the booking date of this working time node
+*/
+function _erpal_employee_helper_invalidate($node) {
+  $booking_time = $node->field_date_time[LANGUAGE_NONE][0]['value'];
+  $uid = $node->uid;
+  $month = date('m', $booking_time);
+  $year = date('Y', $booking_time);
+  
+  //loop through all working_times till the current month
+  $current_year = date('Y');
+  $current_month = date('m');
+  for($y=$year; $y<=$current_year; $y++) {
+    if ($y==$year) //on first loop start with the month of the node
+      $m_start = $month;
+    else
+      $m_start = 1; //otherwise begin at the first month
+   
+    for($m=$m_start; $m<=12; $m++) {
+      //get the year working_times
+      $working_times_entities = working_times_load_by_user('year', $uid, $year);
+      foreach ($working_times_entities as $working_times) {
+        $working_times->dirty = 1; 
+        $working_times->save();
+      }
+      
+      //get the month working_times
+      $working_times_entities = working_times_load_by_user('month', $uid, $year, $month);
+      foreach ($working_times_entities as $working_times) {
+        $working_times->dirty = 1; 
+        $working_times->save();
+      }
+    }
+  }
+  
+  
+}
 /**
 * Implements hook_permission
 */
@@ -66,7 +160,19 @@ function erpal_employee_helper_permission() {
     'config erpal employee' => array(
       'title' => t('Config ERPAL employee settings'), 
       'description' => t('Allows the user to configure ERPAL employee module settings'),
-    )
+    ), 
+    'create working times offset' => array(
+      'title' => t('Creating working times offset'), 
+      'description' => t('Allows the user to create working times offset entities'),
+    ), 
+    'edit working times offset' => array(
+      'title' => t('Edit working times offset'), 
+      'description' => t('Allows the user to edit working times offset entities'),
+    ), 
+    'delete working times offset' => array(
+      'title' => t('Delete working times offset'), 
+      'description' => t('Allows the user to delete working times offset entities'),
+    ), 
   );
 }
 
