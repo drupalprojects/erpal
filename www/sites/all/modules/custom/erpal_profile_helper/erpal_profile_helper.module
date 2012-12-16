@@ -211,7 +211,7 @@ function _erpal_profile_helper_contract_validate_all_set($contract_entity) {
 }
 
 /**
-* Returns contract data for a given user since or at a given data
+* Returns contract data for a given user since or at a given date
 * @param $date_match if true, the date must be exact the given date, orherwise it the closes bevore that date
 * @param $only_current if true, we return only one contract, the currently newes active one
 * @param $date_since only contracts that are enabled after this date are returned. If you want any contrct, set -1
@@ -302,7 +302,7 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
 }
 
 /**
-* Returns the current active contract. If there are multiple, only the newes will be returned
+* Returns the current active contract. If there are multiple, only the newest will be returned
 */
 function _erpal_profile_helper_get_current_contract($uid, $project_tag_tids=array(), $flat_array=true) {
   $contract_arr = _erpal_profile_helper_get_contract($uid, time(), $project_tag_tids);

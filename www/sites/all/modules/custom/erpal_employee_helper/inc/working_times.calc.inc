@@ -17,8 +17,12 @@ function _erpal_employee_helper_calculate_working_times() {
   
   //get all user IDs that are employees
   
-  
   //loop through all users
+  foreach ($uids as $uid) {
+    $contract_data = _erpal_profile_helper_get_current_contract($uid);
+  }
+  
+  
   
   //get the contract data for each user with data that is valid for the current date.
   
