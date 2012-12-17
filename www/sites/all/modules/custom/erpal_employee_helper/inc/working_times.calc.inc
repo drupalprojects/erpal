@@ -25,6 +25,7 @@ function _erpal_employee_helper_calculate_working_times() {
     
     //get the contract data for each user with data that is valid for the current date.
     $contract_data = _erpal_profile_helper_get_current_contract($uid);
+
     if ($contract_data['member_type'] != 'full_employee')
       continue;
     
@@ -47,7 +48,7 @@ function _erpal_employee_helper_calculate_working_times() {
     //now recalculate the months
     $years = _erpal_employee_helper_recalculate_month($uid, $from_year, $current_year, $from_month, $current_month);
     
-    //now recalculate the years in the result array, using the data from the calculated month
+    //@TODO: now recalculate the years in the result array, using the data from the calculated month
   }
 
   
@@ -123,19 +124,99 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
     }
     
     for ($month=$start_month; $month<=$end_month; $month++) {
+      //get the time the user must work according to his contract
       $must_working_time_sec = _erpal_employee_helper_get_must_working_time($uid, $year, $month);
+      
     }
   }
 }
 
 /**
-* Returns the must working time in seconds the user has to work
+* Returns the must working time in seconds the user has to work in the given month
 */
 function _erpal_employee_helper_get_must_working_time($uid, $year, $month) {
   //get the contract data of the user in every days loop and then recalculate the time with respect to he current date (if a contract starts in the middle of a month, calculate must working days pro rata
   
-  //get all holidays in the year and month
-  $holidays = erpal_calendar_get_holidays($year, $month);
+  //get tid for holiday
+  $holiday_term_string = _erpal_employee_helper_field_tag_working_time_type('holiday');
+
+  $holiday_term = taxonomy_get_term_by_name($holiday_term_string, 'date_item_tags');
+  $holiday_term = array_shift($holiday_term);
+
+  //get all holidays in the year and month  
+  $holidays = erpal_calendar_get_holidays($year, $month, $holiday_term->tid);
+  
+  //get all general working days
+  $working_days = _erpal_employee_get_general_working_days($year, $month);
+  
+  //get the working time a day, this is hours per week divided by the number of general working days
+  $general_working_days = _erpal_employee_helper_general_working_days();
+  
+  //get the users contract
+  $contract_data = _erpal_profile_helper_get_current_contract($uid);
+
+  if (!$contract_data || !is_array($contract_data))
+    return 0; //no contract, no "must working hours"!
+
+  $working_time_week = $contract_data['hours'];
+  $working_time_day = round($working_time_week / count($general_working_days), 2);
+  
+  //calculate the time in seconds the user has to work according to his contract profile in this month but not on holidays
+  $total_working_hours = 0;
+  foreach ($working_days as $day_unix) {
+    $day_str = date('ymd', $day_unix);
+    //is this a holiday?
+    $is_holiday = false;
+    foreach ($holidays as $holiday_unix) {
+      $holiday_str = date('Ymd', $holiday_unix);
+      
+      if ($day_str == $holiday_str) {
+        $is_holiday = true;
+        break;
+      }
+    }
+    
+    if (!$is_holiday) {
+      $total_working_hours += $working_time_day; //add the working hours for this day
+    }
+  }
+  
+  return $total_working_hours;
+}
+
+/**
+* Get all working general days in the given month and the given year
+*/
+function  _erpal_employee_get_general_working_days($year, $month) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+  $date_till_unix = strtotime($range_till);
+  
+  //now count every day from start to till and check if this is a working day
+  $general_working_days = _erpal_employee_helper_general_working_days();
+  
+  $days = array();
+  if (!$year || !$month)
+    return $working_days;
+    
+  $day_count = 0;
+  $date_current = strtotime($range_from.' +'.$day_count.' days'); //initalised get day  
+  while ($date_current <= $date_till_unix) {        
+   
+    $current_week_day = date('w', $date_current);
+    if (in_array($current_week_day, $general_working_days)) {
+      //this is a general working day, add it to the result
+      $days[] = strtotime(date('Y-m-d 00:00:00', $date_current));
+    }
+   
+    $day_count++;  //next day
+    //get the day
+    $date_current = strtotime($range_from.' +'.$day_count.' days');
+  }
+ 
+  return array_unique($days);
 }
 
 /**

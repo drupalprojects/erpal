@@ -193,6 +193,61 @@ function erpal_employee_helper_permission() {
 }
 
 /**
+* Implements hook_date_term_alter to alter a term set on an date_item entity. This hook is provided by the erpal_calendar_helper module.
+* @param $term_string the string that should be set as tag to the entity given in $context
+*/
+function erpal_employee_helper_date_term_alter(&$term_string, $context) {
+  $entity_type = $context['src']['type'];
+  $bundle = $context['src']['bundle'];
+  $entity = $context['src']['entity'];
+  
+  if ($entity_type == 'node' && $bundle == 'erpal_working_time') {
+    $working_time_type = $entity->field_working_time_type[LANGUAGE_NONE][0]['value'];
+    $types_to_tag = _erpal_employee_helper_get_working_time_types_date_item_creating();
+    if (in_array($working_time_type, $holiday_term)) {
+      $term_string = _erpal_employee_helper_field_tag_working_time_type($working_time_type);
+    }
+  }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_employee_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_calendar_helper_config_form') {
+    _erpal_employee_helper_alter_calendar_config_form($form, $form_state);
+  }
+}
+
+/**
+* Implements hook_create_date_item_alter provided by date_item module. So this modul can decide wether to create a date_item entity or not. Where the date_item entity should be created is written in $context
+*/
+function erpal_employee_helper_create_date_item_alter(&$create_items, &$context) {
+  $entity_type = $context['entity_type'];
+  $field_name = $context['field_name'];
+  $bundle = $context['bundle'];
+  $entity = $context['entity'];
+
+  if ($entity_type == 'node' && $bundle == 'erpal_working_time' && $field_name == 'field_date_time') {
+    $working_time_type = $entity->field_working_time_type[LANGUAGE_NONE][0]['value'];
+    $working_time_types_create_date_item = _erpal_employee_helper_get_working_time_types_date_item_creating();
+    
+    if (in_array($working_time_type, $working_time_types_create_date_item)) {
+      $create_items = true;
+      $context['date_item_type'] = 'simple_date';
+      $context['handle_range'] = 'range'; //means that the created date_item entities have the same start and end point. If we set this to "single", we have a date_item for start date and one for end date
+    }
+  }
+}
+
+/**
+* Returns the tag string for date entites from node type erpal_working_time with given type
+*/
+function _erpal_employee_helper_field_tag_working_time_type($type) {
+  return variable_get('erpal_employee_working_time_'.$type, $type);  //@TODO better to use the label of the field_value with the $type
+}
+
+/**
 * callback to calculate the duration if a working time node
 */
 function computed_field_field_duration_calc_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {

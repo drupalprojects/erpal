@@ -251,7 +251,10 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
       
       //load the field collection entity
       $contract_data_entity = entity_load('field_collection_item', array($contract_id));
-      $contract_data_entity = $contract_data_entity[$contract_id];
+      $contract_data_entity = isset($contract_data_entity[$contract_id]) ?  $contract_data_entity[$contract_id] : false;
+      
+      if (!is_object($contract_data_entity))
+        continue;
       
       //check the date
       $contract_date_since = $contract_data_entity->field_valid_since[LANGUAGE_NONE][0]['value'];
