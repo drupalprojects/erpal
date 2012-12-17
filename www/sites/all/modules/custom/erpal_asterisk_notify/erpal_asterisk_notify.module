@@ -192,7 +192,6 @@ function erpal_asterisk_notify_views_default_views(){
  */
 function erpal_asterisk_notify_notification_view(){
   $export = array();
-  
   $view = new view();
   $view->name = 'asterisk_notification';
   $view->description = '';
@@ -202,7 +201,7 @@ function erpal_asterisk_notify_notification_view(){
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-
+  
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Default notify';
@@ -226,6 +225,14 @@ function erpal_asterisk_notify_notification_view(){
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['label'] = 'From Number:';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['header']['area']['tokenize'] = TRUE;
   /* Relationship: Field: Listening numbers (field_phone) */
   $handler->display->display_options['relationships']['field_phone_value']['id'] = 'field_phone_value';
   $handler->display->display_options['relationships']['field_phone_value']['table'] = 'field_data_field_phone';
@@ -288,7 +295,9 @@ function erpal_asterisk_notify_notification_view(){
   $handler = $view->new_display('panel_pane', 'Default notify', 'default_notification');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   
+    
   $export['asterisk_notification'] = $view;
-
+  
   return $export;
 }
+  
