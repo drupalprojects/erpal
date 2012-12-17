@@ -1,0 +1,12 @@
+www/sites/default/settings.php
+www/sites/all/modules/development
+www/sites/*/files
+www/nbproject
+www/sites/all/libraries
+www/private
+
+
+
+www/sites/all/modules/dev
+.DS_Store
+*~
