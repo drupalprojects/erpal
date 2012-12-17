@@ -114,8 +114,8 @@ function _erpal_calendar_helper_set_tag($date_item) {
 }
 
 /**
-* Returns all dates nodes with type = holiday
-* @para $date_only if set the result array contains only the dates, otherwise the complete erpal_date node is returned
+* Returns all date_item entities with a subject of type = holiday in field_date_type, which means that this date item entity is tagged with the tag used in settings of this module for holidays
+* @param $date_only if set the result array contains only the dates, otherwise the complete date_item entity is returned
 */
 function erpal_calendar_get_holidays($year, $month) {
   /*$days = array();
@@ -130,7 +130,7 @@ function erpal_calendar_get_holidays($year, $month) {
 		$days[] = $adate;
 	}
 	
-  ACHTUNG: WIR MÜSSEN immer die range eines entites berücksichtigen, nicht nur das Start- oder Enddatum
+  ACHTUNG: WIR MÜSSEN immer die range eines entites berücksichtigen, nicht nur das Start- oder Enddatum, Weihnachten geht über mehrere Tage!
 	
 	return $days;*/
 }
@@ -148,15 +148,15 @@ function erpal_calendar_helper_date_term_alter(&$term_string, $context) {
     $date_type = isset($entity->field_date_type[LANGUAGE_NONE][0]['value']);
 
     if ($date_type == 'holiday')
-      $term_string = _erpal_calendar_helper_field_tag_user_holiday_date();
+      $term_string = _erpal_calendar_helper_field_tag_holiday_date();
   }
 }
 
 /**
 * Returns the term_string that should be set for user holidays
 */
-function _erpal_calendar_helper_field_tag_user_holiday_date() {
-  return variable_get('erpal_calendar_user_holiday_tag_string', t('take holiday'));
+function _erpal_calendar_helper_field_tag_holiday_date() {
+  return variable_get('erpal_calendar_user_holiday_string', 'holiday');
 }
 
 /**
