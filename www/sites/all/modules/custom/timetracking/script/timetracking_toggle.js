@@ -47,12 +47,14 @@
           // format time h:mm:ss
           timeText = this.implode(':', time);
           // Print time
-          $('.timetracking_duration_' + this.timetrackingId).text(timeText);
+          var id = this.timetrackingId;
+          $('.timetracking_button_' + id).find('.timetracking_duration').text(timeText);
         },
         // Convert default time in format 9.99 in h:mm:ss and set default values
         setDefaultTime: function(){
           var hoursText, minutesText, defaultText, min, secondsText, sec;
-          defaultText = $('.timetracking_duration_' + this.timetrackingId).text();
+          var id = this.timetrackingId;
+          defaultText = $('.timetracking_button_' + id).find('.timetracking_duration').text();
           defaultText = defaultText.replace(/\s*/, '');
           // default hours
           if(defaultText.indexOf('.') != -1){
@@ -90,16 +92,17 @@
           return ( ( pieces instanceof Array ) ? pieces.join ( glue ) : pieces );
         }
       }
-      var timer;
+      var timers = [];
       
       // Autostart
       $('.timetracking_button').each(function(index, item){
         // get id of timer
         var lastClass = $(this).attr('class').split(' ').slice(-1);
-        var id = lastClass[0].split('timetracking_button_').join('');     
+        var id = lastClass[0].split('timetracking_button_').join(''); 
         currentState = $(this).attr("rel");
-        if(currentState == 'on'){
+        if(currentState == 'on' && !timers[id]){
           timer = new Timer(id);
+          timers[id] = timer;
           timer.start();
         }
       });
@@ -111,22 +114,23 @@
         var id = lastClass[0].split('timetracking_button_').join('');
         $(this).addClass('in-progress');
         // initialize timer if undefined
-        if(!timer)
+        if(!timers[id]){
           timer = new Timer(id);
+          timers[id] = timer;
+        }
         // track time
-        timetrackingToggle(id, timer);
+        timetrackingToggle(id, timers, $(this));
         return false;
       });
     }
   };
   
-  timetrackingToggle = function(id, timer) {
+  timetrackingToggle = function(id, timers, button) {
+    var timer = timers[id];
     var currentState;
     //the current state is set in link, so get it
-    $('.timetracking_button_'+id).each(function(index, item){     
-      currentState = $(this).attr("rel");
-    });
-    
+    currentState = button.attr("rel");
+
     //prepare variables
     if (currentState == 'on')
     {
@@ -155,29 +159,28 @@
         var newImage = Drupal.settings.timetracking.on.imagepath;
       }
     
-      //first stop all timetrackings
-      $('.timetracking_button').each(function(index, button_element){
+      // first stop all timetrackings
+      $('.timetracking_button[rel="on"]').each(function(index, button_element){
         $(this).attr("rel", 'off');  //set off state
-      });
-      $('.timetracking_button_image').each(function(index, button_element){
+        var lastClass = $(this).attr('class').split(' ').slice(-1);
+        var otherTimerId = lastClass[0].split('timetracking_button_').join('');
+        // stop other timers
+        if(otherTimerId != id && timers[otherTimerId]){
+          timers[otherTimerId].stop();
+        }
+        // set off image
         offImage = Drupal.settings.timetracking.off.imagepath
-        $(this).attr("src", offImage)//set off image
-      });
-      $('.timetracking_text').each(function(index, button_element){
+        $(this).find('.timetracking_button_image').attr("src", offImage);
+        // set off text
         offText = Drupal.settings.timetracking.off.linktext;
-        $(this).text(offText)//set off text
+        $(this).find('.timetracking_text').text(offText);
       });
       
-      $('.timetracking_button_'+id).each(function(index, button_element){
-        $(this).attr("rel", newState);  //set new state
-      });
-      $('.timetracking_button_image_'+id).each(function(index, button_element){
-        $(this).attr("src", newImage)//set new image
-      });
-      $('.timetracking_text_'+id).each(function(index, button_element){
-        $(this).text(newText)//set new text
-      });
-      $('.timetracking_button_'+id).removeClass('in-progress');
+      
+      $('.timetracking_button_' + id).attr("rel", newState);  //set new state
+      $('.timetracking_button_' + id).find('.timetracking_button_image').attr("src", newImage)//set new image
+      $('.timetracking_button_' + id).find('.timetracking_text').text(newText)//set new text
+      $('.timetracking_button_' + id).removeClass('in-progress');
     });
   }
   
