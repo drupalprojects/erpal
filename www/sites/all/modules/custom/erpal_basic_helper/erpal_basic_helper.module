@@ -558,7 +558,8 @@ function erpal_debug() {
 function _erpal_basic_helper_warnings() {
   $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
   
-  if (!$my_company_nid)
+  // dont show this warning during installation process
+  if (!$my_company_nid && !drupal_installation_attempted())
     drupal_set_message(t('Please complete !config_link to make ERPAL work.', array('!config_link' => l(t('config settings'), 'admin/erpal/basic'))), 'warning', false); //no repeat
     
   //check if private directory is set.
