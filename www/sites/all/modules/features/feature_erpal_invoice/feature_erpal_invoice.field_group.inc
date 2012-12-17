@@ -161,7 +161,7 @@ function feature_erpal_invoice_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'erpal_invoice';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_invoice_bottom';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
     'weight' => '4',
@@ -188,7 +188,7 @@ function feature_erpal_invoice_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'erpal_invoice';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_invoice_right';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Order numbers',
     'weight' => '4',
