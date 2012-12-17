@@ -20,7 +20,8 @@ function erpal_timetracking_helper_views_query_alter(&$view, &$query) {
         foreach ($where['conditions'] as $condition_key => $condition) {
           // unset where condition for field_data_field_timetracking_subject field
           if (strpos($condition['field'], 'field_data_field_timetracking_subject') !== false) {
-            $parent_task = array_shift(array_values($condition['value']));
+            $values = array_values($condition['value']);
+            $parent_task = array_shift($values);
             // Collect nids of subtasks
             $child_nids = _erpal_timetracking_helper_get_children($parent_task);
             unset($query->where[$where_key]);
