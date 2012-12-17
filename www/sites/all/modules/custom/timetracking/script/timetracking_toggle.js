@@ -61,17 +61,21 @@
             hoursText = defaultText.split('.').slice(0)[0];
             this.hours = hoursText;
             // default minutes
-            minutesText = defaultText.split('.').slice(-1)[0];
+            minutesText = defaultText.replace(/\d+\./, '');;
             minutesText = minutesText.replace(/ +[a+-z]+/, '');
             if(!minutesText)
               return
+            if(minutesText.indexOf('0') == -1 && minutesText < 10)
+              minutesText = minutesText * 10;
             min = 60 * minutesText / 100;
             min = min + '';
             // default seconds
-            this.mimutes = min.split('.').slice(0)[0];
-            if(secondsText = min.split('.').slice(-1)[0]){
-              sec = 60 * secondsText / 100;
-              this.seconds = Math.round(sec);
+            this.minutes = min.split('.').slice(0)[0];
+            if(min.indexOf('.') != -1){
+              if(secondsText = min.split('.').slice(-1)[0]){
+                sec = 60 * secondsText / 100;
+                this.seconds = Math.round(sec);
+              }
             }
           } else {
             hoursText = defaultText.replace(/ +[a+-z]+/, '');
