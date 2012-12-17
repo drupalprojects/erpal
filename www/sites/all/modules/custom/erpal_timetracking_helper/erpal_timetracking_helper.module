@@ -12,20 +12,25 @@ function erpal_timetracking_helper_views_api() {
  */
 function erpal_timetracking_helper_views_query_alter(&$view, &$query) {
   if ($view->name == 'timetrackings') {
+    dpm($view);
+    dpm($view->filter['timetracking_subtasks']);
+
     // get timetrackings of current task if the filter is set
-    if (isset($view->filter['timetracking_subtasks']->value) && $view->filter['timetracking_subtasks']->value) {
+    if (isset($view->filter['timetracking_subtasks']->value) && $view->filter['timetracking_subtasks']->value[0]) {
       $child_nids = array();
       $add_where = FALSE;
       foreach ($query->where as $where_key => $where) {
         foreach ($where['conditions'] as $condition_key => $condition) {
           // unset where condition for field_data_field_timetracking_subject field
           if (strpos($condition['field'], 'field_data_field_timetracking_subject') !== false) {
-            $values = array_values($condition['value']);
-            $parent_task = array_shift($values);
-            // Collect nids of subtasks
-            $child_nids = _erpal_timetracking_helper_get_children($parent_task);
-            unset($query->where[$where_key]);
-            $add_where = TRUE;
+            if (!empty($condition['value'])) {
+              $values = array_values($condition['value']);
+              $parent_task = array_shift($values);
+              // Collect nids of subtasks
+              $child_nids = _erpal_timetracking_helper_get_children($parent_task);
+              unset($query->where[$where_key]);
+              $add_where = TRUE;
+            }
           }
         }
       }
@@ -53,7 +58,7 @@ function _erpal_timetracking_helper_get_children($parent_nid) {
   $parent_node->nid = $parent_nid;
   $children = array();
   $children[] = (int) $parent_nid;
-  $child_nids = _erpal_timetracking_helper_get_tasks_child_nodes($parent_node, array(), TRUE);
+  $child_nids = _erpal_projects_helper_get_tasks_child_nodes($parent_node, array(), TRUE);
   if (!empty($child_nids)) {
     foreach ($child_nids as $child_nid) {
       foreach (_erpal_timetracking_helper_get_children($child_nid) as $child_value) {
@@ -62,51 +67,4 @@ function _erpal_timetracking_helper_get_children($parent_nid) {
     }
   }
   return $children;
-}
-
-/**
- * Return all Task children
- */
-function _erpal_timetracking_helper_get_tasks_child_nodes($parent_node, $options, $nids_only) {
-  //we return all tasks that have the given parent_node as parent
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', 'erpal_task')
-    ->propertyCondition('status', 1)
-    ->fieldCondition('field_parent', 'target_id', $parent_node->nid, '=')
-    ->fieldOrderBy('field_weight', 'value', 'ASC');
-
-  //set some default values
-  if (!isset($options['ignore_exclude']['pdf']))
-    $options['ignore_exclude']['pdf'] = true;
-
-  if (!$options['ignore_exclude']['pdf']) {
-    //exclude some node from export
-    $exclude = array('pdf');
-
-    //normally we would do it like
-    //$query->fieldCondition('field_task_exclude_from', 'value', 'pdf', '!=');
-    //but that doenst work if field has no value, not even NULL at all. So we get all excluded nids and
-    //exclude them in the query.
-    $field['field'] = 'field_task_exclude_from';
-    $field['column'] = 'value';
-    $excluded = _erpal_book_helper_get_excluded_nodes_by_parent($parent_node, $exclude, $field);
-
-    if (count($excluded) > 0)
-      $query->propertyCondition('nid', $excluded, 'NOT IN');
-  }
-
-  $result = $query->execute();
-
-  $child_task_nodes = array();
-  if (isset($result['node'])) {
-    $child_nids = array_keys($result['node']);
-
-    if (!$nids_only)
-      $child_task_nodes = entity_load('node', $child_nids);
-    else
-      $child_task_nodes = $child_nids;
-  }
-
-  return $child_task_nodes;
 }
