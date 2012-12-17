@@ -12,9 +12,6 @@ function erpal_timetracking_helper_views_api() {
  */
 function erpal_timetracking_helper_views_query_alter(&$view, &$query) {
   if ($view->name == 'timetrackings') {
-    dpm($view);
-    dpm($view->filter['timetracking_subtasks']);
-
     // get timetrackings of current task if the filter is set
     if (isset($view->filter['timetracking_subtasks']->value) && $view->filter['timetracking_subtasks']->value[0]) {
       $child_nids = array();

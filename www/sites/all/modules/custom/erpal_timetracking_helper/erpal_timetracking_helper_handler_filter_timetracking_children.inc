@@ -13,6 +13,13 @@ class erpal_timetracking_helper_handler_filter_timetracking_children extends vie
     
   }
 
+  function options_form(&$form, &$form_state) {
+    parent::options_form($form, $form_state);
+    $form['expose']['required']['#prefix'] = '<div class="element-invisible">';
+    $form['expose']['required']['#value'] = TRUE;
+    $form['expose']['required']['#suffix'] = '</div>';
+  }
+  
   /**
    * Subtasks checkbox. Provides show/hide choise
    */
