@@ -24,7 +24,7 @@ function _erpal_asterisk_menu(){
 }
 
 /*
- * This function is callback for configuration of cor module
+ * This function is callback for configuration of core module
  */
 function _erpal_asterisk_config(){
   
@@ -86,4 +86,26 @@ function _erpal_asterisk_config_form() {
   
 }
 
+
+/**
+ * Implements form validate function for _asterisk_config_form
+ * 
+ */
+function _erpal_asterisk_contig_form_validate(&$form, &$form_state){
+  // @TODO: implement
+  
+}
+
+/**
+ *  Implemtents form Submit Function for _asterisk_config_form
+ */
+function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
+
+  variable_set('asterisk_nodejs_host'    , $form_state['values']['host']);
+  variable_set('asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
+  variable_set('asterisk_nodejs_socket_port'    , $form_state['values']['socket_port']);
+  variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
+  
+   
+}
 
