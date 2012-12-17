@@ -87,6 +87,7 @@ function theme_views_calc_ui_table($variables) {
  */
 function template_preprocess_views_calc_table(&$vars) {
   $view = $vars['view'];
+  $view->row_index = "";
   if (!empty($view->views_calc_calculation)) {
     $vars['rows'] = array();
     return;
@@ -256,7 +257,7 @@ function views_calc_table_total(&$vars, $key, $totals) {
     else {
       $query_alias = $field->field_alias;
     }
-    $baserow->{$query_alias} = $totals->{$query_alias};
+    $baserow->{$query_alias} = isset($totals->{$query_alias}) ? $totals->{$query_alias} : '';
   }
   // Build aggregation rows, one per function.
   foreach ($view->views_calc_fields as $calc => $calc_fields) {
@@ -307,7 +308,7 @@ function views_calc_table_total(&$vars, $key, $totals) {
             // and in ->options for other fields that are based on the numeric field handler.
             if (isset($fields[$field]->field_info)) {
               $separator = !empty($fields[$field]->options['settings']['thousands_separator']) ? $fields[$field]->options['settings']['thousands_separator'] : $options['separator'];
-              $$decimal = !empty($fields[$field]->options['settings']['decimal_separator']) ? $fields[$field]->options['settings']['decimal_separator'] : $options['decimal'];
+              $decimal = !empty($fields[$field]->options['settings']['decimal_separator']) ? $fields[$field]->options['settings']['decimal_separator'] : $options['decimal'];
               $precision = !empty($fields[$field]->options['settings']['scale']) ? $fields[$field]->options['settings']['scale'] : $options['precision'];
             }
             else {
