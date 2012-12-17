@@ -9,127 +9,199 @@ Purpose of the stylesheet follows.
 TODO customize this sample style
 Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 */
+/*******************/
+/* IMPORTS
+/*******************/
 
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/images";
 
-/* color variables */
-$bg_grey: #E5E5E5;         /* main background*/
-$bg_white: #ffffff;
-$title_color: #525252;
-$bg_light_grey: #EEEEEE;   /* background*/
-$bg_dark_white: #F6F6F6; /*background for quicktabs li*/
-$dark_grey: #888888;
-$light_grey: #dedede;
-$background_image: none;
-$border_style: 1px solid;
-$bg_dark_grey: #AFAFAF; /*background for pane titles, table th*/
-$bg_none: none;
-$color_black: #202020; /* color for right sidebar, pane title*/
-$user_menu_border_color: #847C76;
-$bg_alert_color: #FFDFE4;
-$bg_bg_alert: #eed0d5;
-$alert_color: #CC000C;
-$font-size_12: 12px;
-$completed_color: #088A58;
+/*******************/
+/* VARIABLES
+/*******************/
 
-$comment_border_bottom: 1px solid #F4F4F4;
-
-$user_menu_border-bottom: 1px solid #908984;
-$menu_top_link: #7b726b;        /* left sidebar link*/
-$menu_color_top_shadow: #b6b6b6; 
-$menu_border_grey: #908984;
-
-$border_right: 1px solid #d9d9d9; /* right navigation border*/
-$left_menu_link_hover: #fdf8f4; /* menu link hover*/
-$arrow_url: url("../images/arrows/arrow.gif") no-repeat 100% center #ffa800;
-$left_menu_link_active: #000000;
-$left_menu_item_border_top: 2px solid #fd8300;
-$left_menu_item_border_bottom: 2px solid #fd8300;
-$left_menu_link_border_active: #ffa800;
-$left_menu_link_border_bottom: #756c65;
-$radius_8: 8px;
-$radius_5: 5px;
-$padding_10: 10px;
-$padding_15: 15px;
-
-@mixin rounded_corners_8{
-	-webkit-border-radius: $radius_8;
-	-moz-border-radius: $radius_8; 
-	border-radius: $radius_8;
-}
-@mixin rounded_corners_8{/*styles for filter box*/ 
-	padding: $padding_10;
-	background-color: $bg_light_grey;
-	-webkit-border-top-left-radius: $radius_8;
-	-moz-border-radius-topleft: $radius_8;
-	border-top-left-radius: $radius_8;
-	-webkit-border-top-right-radius: $radius_8;
-	-moz-border-radius-rightleft: $radius_8;
-	border-top-right-radius: $radius_8;
-}
-@mixin rounded_corners_5{
-	-webkit-border-radius: $radius_5;
-	-moz-border-radius: $radius_5; 
-	border-radius: $radius_5;
-}
-
-@mixin content_box{
-	-webkit-border-radius: $radius_5;
-	-moz-border-radius: $radius_5; 
-	border-radius: $radius_5;
-	background-color: $bg_white;
-}
-/* default styles */
-
-$font_weight: normal;
-
-$h1_size: 32px;
-$h1_height: 32px;
-$h1_margin_bottom: 20px;
-
-$h2_size: 36px;
-
-@mixin h2_style{
-	font: {
-      weight: $font_weight;
-      line-height: $h2_size;
-	  size: $h2_size;
-    }
-	margin-bottom: $h1_margin_bottom;
-}
-  
-@mixin h2_pane_title{
-	padding-right: 5px;
-	color: $color_black;
-	font:{
-		size: $font-size_12;
-	}
-	background-color: none;
-}
-
-@mixin grey_box{ /*for comment-form*/
-	padding: $padding_10;
-	-webkit-border-radius: $radius_5;
-	-moz-border-radius: $radius_5; 
-	border-radius: $radius_5;
-	background-color: $bg_light_grey;
-}
-
-$body_family: Arial, Helvetica, sans-serif;
 $body_align: left;
 $body_height: 1.5em;
 
-$body_strong_weight: bold;
-$body_em_style: italic;
+$padding_10: 10px;
+$padding_15: 15px;
+$center: center;
+$weight_normal: normal;
 
+/* color variables */
+$bright_grey: #E5E5E5;         /* main background*/
+$white: #ffffff;
+$grey: #525252;
+$light_grey: #EEEEEE;   /* background*/
+$dark_white: #F6F6F6; /*background for quicktabs li*/
+$dark_grey: #888888;
+$silver: #dedede;
+$dark_silver: #AFAFAF; /*background for pane titles, table th*/
+$dark_black: #202020; /* color for right sidebar, pane title*/
+$light_brown: #847C76;
+
+/*for left menu*/
+$light: #fdf8f4; /*for menu hover*/
+$black_grey: #756c65;  /*for menu item grey border*/
+$grey_orange: #e7d4c5; /*link color*/
+/*styles for alert*/
+$pink: #eed0d5;
+$red: #CC000C;
+$light_pink: #FFDFE4;
+$green: #088A58;
+
+$dark_brown: #7b726b;        /* left sidebar link*/
+$silver_gray: #b6b6b6; 
+$brown: #908984;
+$black: #000000;
+$orange: #FFA800;
+$dark_orange: #fd8300;
+
+
+/*styles for border*/
+$radius_8: 8px;
+$radius_5: 5px;
+
+/*styles for text*/
+$h1_size: 32px;
+$h1_height: 32px;
+$font_family: Arial, Helvetica, sans-serif;
+$bold: bold;
+$block: block;
+$body_em_style: italic;
+$left: left;
+$absolute: absolute;
+$value100: 100%;
+
+/*styles for ul*/
 $ul_line_height: 1.4em;
 
 $ol_style: decimal;
 $ol_position: inside;
 $ol_weight: bold;
 $ol_height: 2em;
-
-$list_style_image: none;
-$list_style_type: none;
-
-$border_bottom: none;
 $width_item: 200px;
+
+/*styles for mixins*/
+@mixin rounded_corners_10{/*styles for filter box*/ 
+	padding: $padding_10;
+	background-color: $bg_light_grey;
+	@include border-radius(4px, 4px, 0, 0); 
+}
+@mixin rounded_corners_11{
+	@include border-radius(11px); 
+}
+@mixin content_box{
+	@include border-radius($radius_5, $radius_5); 
+	background-color: $white;
+}
+@mixin text_bold_12{
+	font-size: 12px;
+	font-weight: $bold;
+	text-decoration: none;
+	display: $block;
+	float: $left;
+}
+
+
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+@mixin h1_style{
+	margin: 0px 0px 5px 0px;
+	font:{
+		weight: $weight_normal;
+		size: 20px;
+	}
+	line-height: 20px;
+}
+@mixin h2_style{
+	margin: 0px 0px 5px 0px;
+	font: {
+      weight: $weight_normal;
+      size: 18px;
+    }
+	line-height: 18px;
+}
+@mixin h3_style{
+	margin: 0px 0px 5px 0px;
+	font: {
+      weight: $weight_normal;
+      size: 17px;
+    }
+	line-height: 17px;
+}
+@mixin h4_style{
+	margin: 0px 0px 5px 0px;
+	font: {
+      weight: $weight_normal;
+      size: 16px;
+    }
+	line-height: 16px;
+}
+@mixin h5_style{
+	margin: 0px 0px 5px 0px;
+	font: {
+      weight: $weight_normal;
+      size: 15px;
+    }
+	line-height: 15px;
+}
+@mixin h6_style{
+	margin: 0px 0px 5px 0px;
+	font: {
+      weight: $weight_normal;
+      size: 14px;
+    }
+	line-height: 14px;
+}
+@mixin h2_pane_title{
+	margin: 0px 0px 20px 0px;
+	font: {
+      weight: $weight_normal;
+      size: 36px;
+    }
+	line-height: 36px;
+}
+/*@mixin h2_pane_titcle{
+	padding-right: 5px;
+	color: $dark_black;
+	font:{
+		size: 12px;
+	}
+	background-color: none;
+}*/
+
+@mixin grey_box{ /*for comment-form*/
+	padding: $padding_10;
+	@include border-radius($radius_5, $radius_5); 
+	background-color: $light_grey;
+}
+
+@mixin a_black{
+	margin: 0;
+	padding: 0 20px;
+	letter-spacing: 1px;
+	text-align: $center;
+	@include text_bold_12;
+	height: 42px;
+	line-height: 42px;
+	min-width: 80px;
+	background: $white;
+	border: none;
+}
+@mixin a_orange{
+	*zoom: 1;
+	background-color: $orange;
+	color: $black;
+}
+@mixin dist_zero{
+    margin: 0px;
+	padding: 0px;
+}
+@mixin padding_zero{
+	padding: 10px;
+}
+@mixin orange_border{
+	border-top: 2px solid $dark_orange;
+	border-bottom: 2px solid $dark_orange !important;
+}

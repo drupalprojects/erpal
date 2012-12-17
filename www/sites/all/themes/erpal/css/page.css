@@ -1,931 +1,1469 @@
-body.panels-ipe{
-	margin-bottom: 0 !important;
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
+/* left sidebar link*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+/*@mixin h2_pane_titcle{
+	padding-right: 5px;
+	color: $dark_black;
+	font:{
+		size: 12px;
+	}
+	background-color: none;
+}*/
+/* line 3, ../sass/page.scss */
+body {
+  /*----------end node task-----------*/
+  /*----------end node ticket-----------*/
 }
-/* =============================================================================
- *  Top region
- * ========================================================================== */
-.pane-page-tabs{
-    width: 100%;
-}
-
-/* =============================================================================
- *   Logo
- * ========================================================================== */
-.pane-page-logo {
-	margin-bottom: 10px;
-	padding: 0;
-	text-align: center;
-}
-
-
-/* =============================================================================
- *   Left region
- * ========================================================================== */
-#erpal_wrapper>.panel-col-first{
-  width: 150px;
-	max-width:none;
-	margin:0;
-	float: left;
-	position: absolute;
-	left: 0;
-}
-#erpal_wrapper>.panel-col-first>.inside {
-  margin:0;
-  padding-right: 0;
-  box-shadow: 1px 2px 2px #888888;
-}
-#erpal_wrapper>.panel-col-first,
-#erpal_wrapper>.panel-col-first .inside {
-	height: 100%
-} 
-.pane-menu-menu-erpal-menu {
+/* line 4, ../sass/page.scss */
+body.panels-ipe {
   margin-bottom: 0 !important;
 }
-.pane-menu-menu-erpal-menu ul,
-.pane-menu-menu-erpal-menu ul li ul {
-    margin: 0;
-    padding: 0;
+/* line 7, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first {
+  margin: 0;
+  background-color: #7b726b;
+  width: 150px;
+  max-width: none;
+  height: 100%;
+  float: left;
+  position: absolute;
+  left: 0;
 }
-.pane-menu-menu-erpal-menu ul li {
-    padding: 0;
-    list-style-image: none;
-    list-style-type: none;
+/* line 16, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside {
+  margin: 0;
+  padding-right: 0;
+  height: 100%;
+  -webkit-box-shadow: #888888 1px 2px 2px;
+  -moz-box-shadow: #888888 1px 2px 2px;
+  box-shadow: #888888 1px 2px 2px;
+  /*----------end Logo-------------*/
+  /*----------end Search Block-------------*/
+  /*----------end Erpal menu-------------*/
 }
-.pane-menu-menu-erpal-menu ul li ul li.last,
-.pane-menu-menu-erpal-menu ul li.expanded.active-trail ul li a,
-.pane-menu-menu-erpal-menu ul li.expanded.active-trail{
-	border-bottom: none;
+/* line 22, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-page-logo {
+  /*----------Logo-------------*/
+  margin-bottom: 10px;
+  text-align: center;
 }
-.pane-menu-menu-erpal-menu ul li ul li a {
-	padding-left: 25px;
+/* line 25, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-page-logo img {
+  vertical-align: bottom;
 }
-.pane-menu-menu-erpal-menu ul li a {
-    padding: 9px 17px 9px 10px;
-	display: block;
-	font-size: 14px;
+/* line 29, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-search-form {
+  margin-bottom: 0px;
 }
-.pane-system-user-menu ul{
-	margin: 0px;
-	padding: 0;
-	overflow: hidden;
+/* line 31, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-search-form #search-block-form {
+  /*----------begin Search Block-------------*/
+  margin-bottom: 12px;
 }
-.pane-system-user-menu li{
-	padding: 0;
-	float: right;
-	width: 74px;
-	text-align: center;
+/* line 33, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-search-form #search-block-form .form-text {
+  margin-left: 5px;
+  width: 130px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  color: #C0C0C0;
+  font-size: 11px;
 }
-
-.tabs-region .block {
-	margin-bottom: 0px;
+/* line 42, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu {
+  /*----------begin User menu-------------*/
+  /*----------end User menu-------------*/
 }
-
-.pane-search-form{
-	margin-bottom: 12px;
+/* line 43, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul {
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  border-bottom: 1px solid #908984;
 }
-.ui-tabs .ui-tabs-nav li {
-	margin: 0px;
+/* line 47, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li {
+  padding: 0;
+  float: right;
+  width: 74px;
+  text-align: center;
 }
-/*-----------------Search Block-------------------------------*/
-#search-block-form .form-text{
-	margin-left: 5px;
-	width: 130px;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	color: #C0C0C0;
-    font-size: 11px;
+/* line 52, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li.last {
+  border-right: 1px solid #847c76;
 }
-/* =============================================================================
- *   Tabs
- * ========================================================================== */
-/*.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside{
-	margin-left: 150px;
-	height: 52px;
+/* line 55, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li a {
+  color: #e7d4c5;
 }
-.panels-flexible-row .tabs-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside .panels-ipe-region{
-	height: 42px;
-}*/
+/* line 57, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li a:hover {
+  color: #fdf8f4;
+}
+/* line 64, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu {
+  /*----------begin Erpal menu-------------*/
+  width: 150px;
+}
+/* line 66, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul {
+  margin: 0px;
+  padding: 0px;
+}
+/* line 68, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li {
+  padding: 0;
+  list-style-image: none;
+  list-style-type: none;
+  border-top: 1px solid #908984;
+}
+/* line 74, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail a {
+  color: black;
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+/* line 77, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail a:hover {
+  color: black;
+}
+/* line 80, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+/* line 84, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail .active {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+/* line 87, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail.active-trail {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+/* line 92, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.last a {
+  border-bottom: 1px solid #908984;
+}
+/* line 95, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.last.last {
+  border-bottom: 1px solid #756c65;
+}
+/* line 99, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li a {
+  padding: 9px 17px 9px 10px;
+  display: block;
+  font-size: 14px;
+  color: #e7d4c5;
+  border-top: 1px solid #756c65;
+}
+/* line 105, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li a:hover {
+  color: #fdf8f4;
+}
+/* line 108, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li a.active {
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+/* line 113, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul {
+  margin: 0px;
+  padding: 0px;
+}
+/* line 116, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul li.last {
+  border-bottom: none;
+}
+/* line 118, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul li.last .active {
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+/* line 122, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul li a {
+  padding-left: 25px;
+}
+/* line 131, ../sass/page.scss */
+body.page-node-tasks {
+  /*----------begin node task-----------*/
+}
+/* line 132, ../sass/page.scss */
+body.page-node-tasks li {
+  list-style-type: none;
+}
+/* line 135, ../sass/page.scss */
+body.page-node-tasks .content-inner {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* line 138, ../sass/page.scss */
+body.page-node-tasks .region-sidebar-left {
+  padding: 10px;
+  max-width: 620px;
+}
+/* line 142, ../sass/page.scss */
+body.page-node-tasks .region-sidebar-right {
+  padding: 10px;
+  width: 380px;
+}
+/* line 148, ../sass/page.scss */
+body.page-node-tickets {
+  /*----------begin node ticket-----------*/
+}
+/* line 149, ../sass/page.scss */
+body.page-node-tickets li {
+  list-style-type: none;
+}
+/* line 152, ../sass/page.scss */
+body.page-node-tickets .content-inner {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* line 155, ../sass/page.scss */
+body.page-node-tickets .region-sidebar-left {
+  padding: 10px;
+  max-width: 620px;
+}
+/* line 159, ../sass/page.scss */
+body.page-node-tickets .region-sidebar-right {
+  padding: 10px;
+  width: 380px;
+}
 
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
+/* line 168, ../sass/page.scss */
 #user-login input.form-text {
-	width: 200px;
+  width: 200px;
 }
-.panel-2col-stacked .inside {
-  margin: 0 !important;
-}
-.panel-2col-stacked .inside .inside/*, 
-.pane-content .panels-flexible-region .panels-flexible-region-erpal_panel_layout-tabs_region-inside*/ {
-    background: none;
-    border: none;
-}
-/*.panels-flexible-row{
-	padding: 0px;
-}
-.panels-flexible-column-inside-last {
-    padding: 0;
-}*/
-.pane-page-content {
-	margin-right: 20px;
-	margin-left: 30px;
-	margin-top: 30px;
-	max-width: 1070px;
-}
-/**.panels-flexible-row-erpal_panel_layout-1 .tabs-region, .panels-flexible-row-erpal_panel_layout-main-row .tabs-region{
-	display: none;
-}*/
-#erpal_wrapper>.panel-col-last{
-  float: left;
-	width: 100%;
-}
-#erpal_wrapper>.panel-col-last>.inside {
-  min-width: 440px;
-  margin-left: 150px;
-}
-/*.panels-flexible-erpal_panel_layout {
-    height: 100%;
-}*/
 
-/* =============================================================================
- *   first row - middle section
- * ========================================================================== */
+/* line 171, ../sass/page.scss */
+.pane-page-content {
+  margin-top: 30px;
+  margin-right: 20px;
+  margin-left: 30px;
+  max-width: 1070px;
+  /*----------end comments------------------------*/
+}
+/* line 179, ../sass/page.scss */
 .pane-page-content .panel-2col-stacked .panel-col-first {
   width: 700px;
 }
- .pane-page-content .panel-2col-stacked .panel-col-last {
-  width: 340px;
+/* line 182, ../sass/page.scss */
+.pane-page-content .panel-2col-stacked .panel-col-last {
   margin-left: 30px;
+  width: 340px;
 }
- /*.panels-flexible-region-erpal_panel_layout-row_first_right {
-    margin-left: 20px;
+/* line 186, ../sass/page.scss */
+.pane-page-content .panel-2col-stacked .inside {
+  margin: 0 !important;
 }
-.row-first-left{
-	min-width: 360px;
-}*/
+/* line 188, ../sass/page.scss */
+.pane-page-content .panel-2col-stacked .inside .inside {
+  background: none;
+  border: none;
+}
+/* line 195, ../sass/page.scss */
+.pane-page-content h2.pane-title {
+  margin: 0px 0px 20px 0px;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 36px;
+}
+/* line 199, ../sass/page.scss */
+.pane-page-content .rel-register-build {
+  padding: 10px;
+  -webkit-border-radius: 8px 8px 0 0;
+  -moz-border-radius: 8px 8px 0 0;
+  -ms-border-radius: 8px 8px 0 0;
+  -o-border-radius: 8px 8px 0 0;
+  border-radius: 8px 8px 0 0;
+}
+/* line 202, ../sass/page.scss */
+.pane-page-content .rel-register-build .views-exposed-widgets {
+  margin-bottom: 0px;
+}
+/* line 206, ../sass/page.scss */
+.pane-page-content .views-table {
+  margin-top: 0;
+  border: none;
+}
+/* line 209, ../sass/page.scss */
+.pane-page-content .views-table th {
+  padding: 15px 15px 15px 12px;
+  font-size: 14px;
+}
+/* line 213, ../sass/page.scss */
+.pane-page-content .views-table td {
+  padding: 15px 15px 15px 12px;
+}
+/* line 216, ../sass/page.scss */
+.pane-page-content .views-table td.views-field-title a {
+  text-decoration: underline;
+}
+/* line 220, ../sass/page.scss */
+.pane-page-content .views-table td.views-field-field-customer-ref {
+  text-decoration: underline;
+}
+/* line 225, ../sass/page.scss */
+.pane-page-content .comment {
+  /*----------begin comments------------------------*/
+  padding-top: 15px;
+  padding-bottom: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+/* line 232, ../sass/page.scss */
+.pane-page-content .comment .field-name-comment-body p {
+  font-size: 16px;
+}
+/* line 236, ../sass/page.scss */
+.pane-page-content .comment .comment-header {
+  padding-right: 10px;
+  padding-left: 15px;
+  float: left;
+}
+/* line 243, ../sass/page.scss */
+.pane-page-content .comment .submitted {
+  padding-right: 15px;
+}
+/* line 245, ../sass/page.scss */
+.pane-page-content .comment .submitted .author-datetime {
+  margin-bottom: 12px;
+}
+/* line 249, ../sass/page.scss */
+.pane-page-content .comment .comment-content {
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+/* line 256, ../sass/page.scss */
+.pane-page-content .comment .comment-form {
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+/* line 266, ../sass/page.scss */
+.pane-page-content #comment-form {
+  background: #eeeeee;
+}
+
+/* line 273, ../sass/page.scss */
+.view-filters .rel-register-build .views-exposed-widget .rel-register-link {
+  padding-top: 12px;
+  padding-right: 20px;
+  float: left;
+}
 
 /* =============================================================================
  *   erpal_content_layout
  * ========================================================================== */
-.erpal-content-layout-template .region-sidebar-left{
-	float: left;
+/* line 282, ../sass/page.scss */
+.region-sidebar-left {
+  /*----------------begin side-bar-left-----------------*/
+  max-width: 800px;
+  min-width: 360px;
+  width: 100%;
+  float: left;
+  /*----------------end red alert-----------------*/
+  /*----------------end alert completed-----------------*/
 }
-.erpal-content-layout-template .region-sidebar-right{
-	float: right;
+/* line 287, ../sass/page.scss */
+.region-sidebar-left.single-row {
+  max-width: 1050px !important;
 }
-.erpal-content-layout-template .region-sidebar-right{
-    margin: 0 0 0 10px;
-    width: 250px;
+/* line 290, ../sass/page.scss */
+.region-sidebar-left .alert {
+  /*----------------begin red alert-----------------*/
 }
-.erpal-content-layout-template .content-inner{
-	padding-bottom: 30px;
-	clear: both;
-	max-width: 1100px;
-	min-width: 1100px;
-	overflow: hidden;
+/* line 291, ../sass/page.scss */
+.region-sidebar-left .alert .field_item .field-name-field-task-status-term {
+  color: #cc000c;
 }
-.erpal-content-layout-template .region-sidebar-left{
-	max-width: 800px;
-	min-width: 360px;
-    width: 100%;
+/* line 294, ../sass/page.scss */
+.region-sidebar-left .alert .field_item .field-name-field-date {
+  color: #cc000c;
 }
-.pane-page-title.block{
-	margin-bottom: 0;
+/* line 297, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-date {
+  color: #cc000c;
 }
+/* line 300, ../sass/page.scss */
+.region-sidebar-left .alert .field-item {
+  color: #cc000c;
+}
+/* line 303, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-date-1 {
+  color: #cc000c;
+}
+/* line 306, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-next-contact {
+  color: #cc000c;
+}
+/* line 309, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-task-status-term {
+  color: #cc000c;
+}
+/* line 312, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-project-status-term {
+  color: #cc000c;
+}
+/* line 315, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-activity-status-term {
+  color: #cc000c;
+}
+/* line 319, ../sass/page.scss */
+.region-sidebar-left .completed {
+  /*----------------begin alert completed-----------------*/
+}
+/* line 320, ../sass/page.scss */
+.region-sidebar-left .completed .field-name-field-task-status-term {
+  color: #088a58;
+}
+/* line 323, ../sass/page.scss */
+.region-sidebar-left .completed .field-name-field-completed {
+  color: #088a58;
+}
+/* line 326, ../sass/page.scss */
+.region-sidebar-left .completed .field-item {
+  color: #088a58;
+}
+/* line 329, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-date {
+  color: #088a58;
+}
+/* line 332, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-date-1 {
+  color: #088a58;
+}
+/* line 335, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-next-contact {
+  color: #088a58;
+}
+/* line 338, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-task-status-term {
+  color: #088a58;
+}
+/* line 341, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-project-status-term {
+  color: #088a58;
+}
+/* line 344, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-activity-status-term {
+  color: #088a58;
+}
+/* line 349, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .columns-inner {
+  margin-bottom: 12px;
+}
+/* line 352, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .field-label {
+  float: left;
+}
+/* line 355, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .field-items {
+  float: left;
+}
+/* line 358, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .field-items .field-item div {
+  float: left;
+}
+/* line 365, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs {
+  margin: 0;
+  padding-left: 0;
+  background: none;
+  overflow: hidden;
+  border: none;
+}
+/* line 371, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li {
+  margin: 0px;
+  padding: 0px;
+  float: left;
+  background-image: none;
+  background-color: #dedede;
+  border-top: 1px solid #eeeeee;
+  border-left: 1px solid #eeeeee;
+}
+/* line 382, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li.active {
+  background-color: #f6f6f6 !important;
+}
+/* line 384, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li.active a {
+  color: #525252 !important;
+}
+/* line 388, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li.last {
+  border-right: 1px solid #eeeeee;
+}
+/* line 391, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li a {
+  padding: 1px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  float: left;
+  min-width: 100px;
+  color: #888888;
+}
+
+/*----------------end side-bar-left-----------------*/
+/* line 401, ../sass/page.scss */
+.region-sidebar-right {
+  /*----------------begin side-bar-right-----------------*/
+  margin-left: 10px;
+  width: 250px;
+  float: right;
+  color: #202020;
+  /*----------------end side-bar-right-----------------*/
+}
+/* line 406, ../sass/page.scss */
+.region-sidebar-right .local_tasks {
+  margin-top: 2px;
+  margin-bottom: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+/* line 413, ../sass/page.scss */
+.region-sidebar-right .local_tasks li {
+  margin: 0 2px 7px;
+  list-style-type: none;
+}
+/* line 416, ../sass/page.scss */
+.region-sidebar-right .local_tasks li a {
+  padding-top: 5px;
+  padding-bottom: 6px;
+  display: block;
+  -webkit-border-radius: 11px;
+  -moz-border-radius: 11px;
+  -ms-border-radius: 11px;
+  -o-border-radius: 11px;
+  border-radius: 11px;
+  -webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+  -moz-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+  box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+  color: #525252;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(44%, #e6e6e6), color-stop(72%, #efefef));
+  background-image: -webkit-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  background-image: -moz-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  background-image: -o-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  background-image: linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+/* line 421, ../sass/page.scss */
+.region-sidebar-right .local_tasks li a:hover {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
+  background-image: -webkit-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -moz-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -o-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+}
+/* line 435, ../sass/page.scss */
+.region-sidebar-right .content-inner {
+  padding-bottom: 30px;
+  clear: both;
+  max-width: 1100px;
+  min-width: 1100px;
+  overflow: hidden;
+}
+
+/*----------------end erpal_content_layout-----------------------*/
+/* line 444, ../sass/page.scss */
+.pane-page-title.block {
+  margin-bottom: 0;
+}
+
 /* =============================================================================
  *   Projects
  * ========================================================================== */
-.region-sidebar-right .pane-page-actions li{
-	margin: 0 2px 7px;
-	list-style-type: none;
-}
-.region-sidebar-right .pane-page-actions li a{
-	padding: 6px 0px;
-	display: block;
-	-webkit-border-radius: 11px;
-	-moz-border-radius: 11px; 
-	border-radius: 11px;
-	-webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-	-moz-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-	box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-	text-align: center;
-	font-size: 1.1em;
-	font-weight: bold;
-}
+/* line 453, ../sass/page.scss */
 #mini-panel-task_status_panel,
-#mini-panel-activity_status_panel{
-	padding: 10px 20px;
-	-webkit-border-radius: 11px;
-	-moz-border-radius: 11px; 
-	border-radius: 11px;
+#mini-panel-activity_status_panel {
+  padding: 10px 20px;
+  -webkit-border-radius: 11px;
+  -moz-border-radius: 11px;
+  -ms-border-radius: 11px;
+  -o-border-radius: 11px;
+  border-radius: 11px;
+  background-color: #eeeeee;
+  color: #525252;
 }
+
+/* line 459, ../sass/page.scss */
 .panel-display .pane-entity-field h2.pane-title {
-	padding-right: 5px;
-	font-size: 12px;
+  padding-right: 5px;
+  font-size: 12px;
+  color: #525252;
 }
-.panel-display .pane-entity-field .block-content{
-	float: left;
+
+/* line 464, ../sass/page.scss */
+.panel-display .pane-entity-field .block-content {
+  float: left;
 }
-.panel-display .pane-entity-field  .ds-form .group-left {
-    width: auto;
-	float: none;
+
+/* line 467, ../sass/page.scss */
+.panel-display .pane-entity-field .ds-form .group-left {
+  width: auto;
+  float: none;
 }
-.ctools-collapsible-content .panel-display .pane-entity-field .block-content, 
-.ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title{
-	float: none;
+
+/* line 472, ../sass/page.scss */
+.ctools-collapsible-content .panel-display .pane-entity-field .block-content,
+.ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title {
+  float: none;
 }
+
+/* line 476, ../sass/page.scss */
 .panel-display .pane-entity-field .form-item label,
 .panel-display .pane-entity-field .rel-register-link {
-    float: left;
+  float: left;
 }
-.panel-display .pane-entity-field  .field-type-taxonomy-term-reference{
-	margin: 0px;
+
+/* line 479, ../sass/page.scss */
+.panel-display .pane-entity-field .field-type-taxonomy-term-reference {
+  margin: 0px;
 }
+
+/* line 482, ../sass/page.scss */
 .panel-display .pane-entity-field .form-item {
-	margin-bottom: 0px;
+  margin-bottom: 0px;
 }
-ul.quicktabs-tabs{
-	margin: 0;
-	padding-left: 0;
-	background: none;
-	overflow: hidden;
-	border: none;
+
+/* line 485, ../sass/page.scss */
+.panel-display .ui-widget-content {
+  background: none;
+  border: none;
 }
-.panel-display .ui-widget-content{
-	background: none;
-	border: none;
+
+/* line 489, ../sass/page.scss */
+.panel-display .ui-tabs .ui-tabs-panel {
+  -webkit-border-radius: 11px;
+  -moz-border-radius: 11px;
+  -ms-border-radius: 11px;
+  -o-border-radius: 11px;
+  border-radius: 11px;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius-topleft: 0;
+  border-top-left-radius: 0;
+  display: block;
+  float: left;
+  background-color: #eeeeee;
 }
-.panel-display .ui-tabs .ui-tabs-panel{
-	-webkit-border-radius: 11px;
-	-moz-border-radius: 11px; 
-	border-radius: 11px;
-	-webkit-border-top-left-radius: 0;
-	-moz-border-radius-topleft: 0;
-	border-top-left-radius: 0;
-	display: block;
-	float: left;
-}
-ul.quicktabs-tabs li a {
-    padding: 1px 12px;
-    text-decoration: none;
-	font-size: 12px;
-	font-weight: bold;
-	min-width: 100px;
-	display: block;
-    float: left;
-}
-ul.quicktabs-tabs li{
-	margin: 0px;
-	padding: 0;
-	float: left;
-}
+
+/* line 499, ../sass/page.scss */
 .ctools-collapsible-container .ctools-collapsible-handle {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /*
  *  collapsible
  */
- .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle{
-	padding: 3px 5px 3px 30px;
- }
- .ctools-collapsible-processed h2.pane-title {
-    margin: 0;
-    padding: 3px 5px 0px 30px;
-	font-size: 12px;
-	line-height: 12px;
-}
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
-	padding-left: 0;
-	font-weight: bold;
-}
-.ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
-	margin: 0;
-	clear: both;
-	line-height: 12px;
-}
-.ctools-collapsible-container .block-content a{
-	text-decoration: underline;
-}
-.ctools-collapsible-processed section,
-.ctools-collapsible-processed .field-name-field-books-ref{
-	margin-bottom: 10px;
-	padding-left: 10px;
-}
-.ctools-collapsible-processed .field-name-field-task-assigned-users{
-	padding-left: 0px;
-}
-.ctools-collapsible-processed .panel-separator{
-	height: 1px;
-	overflow: hidden;
-}
-.ctools-collapsible-processed ul{
-	margin: 0;
-	padding: 0px;
-}
-.ctools-collapsible-processed ul li{
-	list-style-type: none;
-}
-.ctools-collapsible-processed .field-type-taxonomy-term-reference{
-	margin: 0;
-}
-.ctools-collapsible-processed .field-name-field-asset-files{
-	margin-bottom: 10px;
-}
-.ctools-collapsible-processed .field-name-field-asset-files .field-item{
-    margin-left: 20px;
-    padding-left: 0 !important;
-	display: list-item;
-}
-.ctools-collapsible-processed .field-name-field-asset-files .field-item a,
-.ctools-collapsible-processed .field-name-field-books-ref a{
-    text-decoration: underline;
-}
-.ctools-collapsible-container .ctools-collapsible-content .field-items{
-	clear: both;
-}
-.ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item{
-	padding-left: 10px;
+/* line 506, ../sass/page.scss */
+.ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
+  padding: 3px 5px 3px 30px;
 }
 
+/* line 509, ../sass/page.scss */
+.ctools-collapsible-processed h2.pane-title {
+  margin: 0;
+  padding: 3px 5px 0px 30px;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+/* line 515, ../sass/page.scss */
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
+  padding-left: 0;
+  font-weight: bold;
+}
+
+/* line 519, ../sass/page.scss */
+.ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label {
+  margin: 0;
+  clear: both;
+  line-height: 12px;
+}
+
+/* line 524, ../sass/page.scss */
+.ctools-collapsible-container .block-content a {
+  text-decoration: underline;
+}
+
+/* line 528, ../sass/page.scss */
+.ctools-collapsible-processed section,
+.ctools-collapsible-processed .field-name-field-books-ref {
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+/* line 532, ../sass/page.scss */
+.ctools-collapsible-processed .field-name-field-task-assigned-users {
+  padding-left: 0px;
+}
+
+/* line 535, ../sass/page.scss */
+.ctools-collapsible-processed .panel-separator {
+  height: 1px;
+  overflow: hidden;
+}
+
+/* line 539, ../sass/page.scss */
+.ctools-collapsible-processed ul {
+  margin: 0;
+  padding: 0px;
+}
+
+/* line 543, ../sass/page.scss */
+.ctools-collapsible-processed ul li {
+  list-style-type: none;
+}
+
+/* line 546, ../sass/page.scss */
+.ctools-collapsible-processed .field-type-taxonomy-term-reference {
+  margin: 0;
+}
+
+/* line 549, ../sass/page.scss */
+.ctools-collapsible-processed .field-name-field-asset-files {
+  margin-bottom: 10px;
+}
+
+/* line 552, ../sass/page.scss */
+.ctools-collapsible-processed .field-name-field-asset-files .field-item {
+  margin-left: 20px;
+  padding-left: 0 !important;
+  display: list-item;
+}
+
+/* line 558, ../sass/page.scss */
+.ctools-collapsible-processed .field-name-field-asset-files .field-item a,
+.ctools-collapsible-processed .field-name-field-books-ref a {
+  text-decoration: underline;
+}
+
+/* line 561, ../sass/page.scss */
+.ctools-collapsible-container .ctools-collapsible-content .field-items {
+  clear: both;
+}
+
+/* line 564, ../sass/page.scss */
+.ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item {
+  padding-left: 10px;
+}
+
+/* line 569, ../sass/page.scss */
 #mini-panel-task_status_panel .panel-separator,
-#mini-panel-activity_status_panel .panel-separator{
-	display: none;
+#mini-panel-activity_status_panel .panel-separator {
+  display: none;
 }
+
+/* line 573, ../sass/page.scss */
 #mini-panel-task_status_panel section,
-#mini-panel-activity_status_panel section{
-	margin-bottom: 0;
-	margin-right: 30px;
-	float: left;
+#mini-panel-activity_status_panel section {
+  margin-bottom: 0;
+  margin-right: 30px;
+  float: left;
 }
-.block-content .local_tasks, #mini-panel-task_status_panel li{
-	padding: 0px;
-	list-style-type: none;
+
+/* line 578, ../sass/page.scss */
+#mini-panel-task_status_panel li {
+  padding: 0px;
+  list-style-type: none;
 }
-#mini-panel-task_status_panel  ul,
-#mini-panel-activity_status_panel ul{
-	padding-left: 5px;
+
+/* line 583, ../sass/page.scss */
+#mini-panel-task_status_panel ul,
+#mini-panel-activity_status_panel ul {
+  padding-left: 5px;
 }
-.region-sidebar-right .panel-separator{
-	display: none;
+
+/* line 586, ../sass/page.scss */
+.region-sidebar-right .panel-separator {
+  display: none;
 }
-.ctools-collapsible-container .panel-separator{
-	display: block;
+
+/* line 589, ../sass/page.scss */
+.ctools-collapsible-container .panel-separator {
+  display: block;
 }
-.ctools-collapsible-container .no-title{
-	padding-left: 10px;
+
+/* line 592, ../sass/page.scss */
+.ctools-collapsible-container .no-title {
+  padding-left: 10px;
 }
-.ctools-collapsible-container .ctools-toggle{
-	background-position: 7px 8px;
+
+/* line 595, ../sass/page.scss */
+.ctools-collapsible-container .ctools-toggle {
+  background-position: 7px 8px;
 }
+
 /*
  *  table
  */
-.block-content .view-content .views-table th{
-	font-size: 14px;
-}
-.block-content .view-content .views-table td, .block-content .view-content .views-table th{
-	padding: 15px 15px 15px 12px;
-}
-.block-content .view-content .views-table{
-	margin-top: 0;
-	border: none;
-}
-.view-filters .rel-register-build{
-	padding: 10px;
-	-webkit-border-top-left-radius: 8px;
-	-moz-border-radius-topleft: 8px;
-	border-top-left-radius: 8px;
-	-webkit-border-top-right-radius: 8px;
-	-moz-border-radius-rightleft: 8px;
-	border-top-right-radius: 8px;
-}
-.view-filters .rel-register-build .views-exposed-widgets{
-	margin-bottom: 0px;
-}
-.block-content .view-content .views-table td.views-field-title a,
-.block-content .view-content .views-table td.views-field-field-customer-ref{
-	text-decoration: underline;
-}
-.view-filters .rel-register-build  .views-exposed-widget .rel-register-link{
-	padding-top: 12px;
-	padding-right: 20px;
-	float: left;
-}
+/* line 602, ../sass/page.scss */
 .views-exposed-form .views-exposed-widget .form-submit {
-    margin-top: 1.3em;
+  margin-top: 1.3em;
 }
-.view-empty{
-	padding: 15px;
-}
-.local_tasks{
-	margin: 2px 0 0;
-}
-.quicktabs-tabpage .views-table .views-field-title{
-	 width: 115px;
-}
-.quicktabs-tabpage .views-field-field-task-status-term{
-	width: 70px;
-}
-.page-projects .views-field-title{
-	width: 200px;
-}
-.page-projects .views-field-field-customer-ref{
-	width: 200px;
-}
-.page-projects .views-field-field-project-status-term, 
-.page-projects .views-field-field-priority-term{
-	width: 100px;
-}
-.page-projects #edit-field-customer-ref-target-id-wrapper{
-	margin-left: 45px;
-}
-.page-projects #edit-field-project-status-term-tid-wrapper{
-	margin-left: 23px;
-}
-.page-projects #edit-field-project-status-term-tid-wrapper{
 
+/* line 605, ../sass/page.scss */
+.view-empty {
+  padding: 15px;
 }
+
+/* line 608, ../sass/page.scss */
+.quicktabs-tabpage .views-table .views-field-title {
+  width: 115px;
+}
+
+/* line 611, ../sass/page.scss */
+.quicktabs-tabpage .views-field-field-task-status-term {
+  width: 70px;
+}
+
+/* line 614, ../sass/page.scss */
+.page-projects .views-field-title {
+  width: 200px;
+}
+
+/* line 617, ../sass/page.scss */
+.page-projects .views-field-field-customer-ref {
+  width: 200px;
+}
+
+/* line 621, ../sass/page.scss */
+.page-projects .views-field-field-project-status-term,
+.page-projects .views-field-field-priority-term {
+  width: 100px;
+}
+
+/* line 624, ../sass/page.scss */
+.page-projects #edit-field-customer-ref-target-id-wrapper {
+  margin-left: 45px;
+}
+
+/* line 627, ../sass/page.scss */
+.page-projects #edit-field-project-status-term-tid-wrapper {
+  margin-left: 23px;
+}
+
 /*--------------------------------for erpal task view row layout------------------------------------------*/
-.erpal-task-view-row-layout .region-sidebar-left{
-	width: 70%;
-	float: left;
+/* line 634, ../sass/page.scss */
+.erpal-task-view-row-layout .region-sidebar-left {
+  width: 70%;
+  float: left;
 }
-.erpal-task-view-row-layout .region-sidebar-right{
-    margin-left: 20px;
-    width: 28%;
-	float: left;
+
+/* line 638, ../sass/page.scss */
+.erpal-task-view-row-layout .region-sidebar-right {
+  margin-left: 20px;
+  width: 28%;
+  float: left;
 }
-.erpal-task-view-row-layout .content-inner{
-	margin-bottom: 20px;
-	clear: both;
-	max-width: 1100px;
-	min-width: 1100px;
+
+/* line 643, ../sass/page.scss */
+.erpal-task-view-row-layout .content-inner {
+  margin-bottom: 20px;
+  clear: both;
+  max-width: 1100px;
+  min-width: 1100px;
 }
 
 /*---------------ticket details-----------*/
-.field-name-task-title .field-item a{
-	font-weight: bold;
-	font-size: 16px;
-}
-.field-name-task-title .field-item p{
-	margin-bottom: 0px;
-}
-.node-erpal-task .columns-inner{
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
-}
-#tabs-tasks_by_project_panel-middle ul.field-items{
-	padding: 0px;
-	margin: 0px;
+/* line 651, ../sass/page.scss */
+.field-name-task-title .field-item a {
+  font-weight: bold;
+  font-size: 16px;
 }
 
-#tabs-tasks_by_project_panel-middle-1,
-#tabs-tasks_by_project_panel-middle-2,
-#quicktabs-tabpage-tickets_by_project_tabs-2,
-#tabs-tickets_by_project_panel-middle-1,
-#tabs-tickets_by_project_panel-middle-2 {
-    background: transparent;
-    border-radius: 0 0 0 0;
-    padding: 0;
+/* line 655, ../sass/page.scss */
+.field-name-task-title .field-item p {
+  margin-bottom: 0px;
 }
-#quicktabs-tabpage-tickets_by_project_tabs-2  .content-column .content-inner,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner{
-	overflow: hidden;
+
+/* line 658, ../sass/page.scss */
+.node-erpal-task .columns-inner {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
-.quicktabs-tabpage .view-mode-view_row_details .field-label,
-.quicktabs-tabpage .view-mode-view_row_details .field-items,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div, 
-.quicktabs-tabpage .field-collection-item-field-pricing .field-label, 
-.quicktabs-tabpage .field-collection-item-field-pricing .field-items{
-	float: left;
+
+/* line 663, ../sass/page.scss */
+#tabs-tasks_by_project_panel-middle ul.field-items {
+  padding: 0px;
+  margin: 0px;
 }
+
+/* line 669, ../sass/page.scss */
+#quicktabs-tabpage-tickets_by_project_tabs-2 .content-column .content-inner,
+#quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner {
+  overflow: hidden;
+}
+
+/* line 674, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above{
-	width: 100%;
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above {
+  width: 100%;
 }
-.quicktabs-tabpage .field-label{
-    margin: 0px !important;
+
+/* line 677, ../sass/page.scss */
+.quicktabs-tabpage .field-label {
+  margin: 0px !important;
 }
+
+/* line 681, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
-	font-weight: bold;
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div {
+  font-weight: bold;
 }
+
+/* line 687, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a{
-	font-weight: normal;
-	text-decoration: underline;
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a {
+  font-weight: normal;
+  text-decoration: underline;
 }
+
+/* line 694, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field .field-label,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field .field-label,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
-	padding-right: 5px;
+#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div {
+  padding-right: 5px;
 }
+
+/* line 698, ../sass/page.scss */
 .quicktabs-tabpage .field-group-format section.field,
-#quicktabs-tabpage-tasks_by_project_tabs-2 section.field{
-	overflow: hidden;
-	clear: both;
+#quicktabs-tabpage-tasks_by_project_tabs-2 section.field {
+  overflow: hidden;
+  clear: both;
 }
-.page-node-tasks ul li{
-	list-style-type: none;
-}
-.page-node-tasks .quicktabs-tabpage .article.view-mode-view_row_details .columns-inner{
-	padding: 0;
-}
-.page-node-tasks .content-inner{
-	border-bottom: 1px solid #e5e5e5;
-}
-.page-node-tasks .region-sidebar-left, 
-.page-node-tasks .region-sidebar-right{
-	padding: 10px;
-}
-.page-node-tasks .region-sidebar-left{
-	max-width: 650px;
-}
-.page-node-tasks .region-sidebar-right{
-	width: 400px;
-}
-.page-node-tasks .node-erpal-task a{
-	text-decoration: underline;
-}
-#quicktabs-tabpage-tickets_by_project_tabs-2 .view-content .item-list ul li.field-item,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .view-content .item-list ul li.field-item{
-	margin: 0px;
-}
-#quicktabs-tabpage-tickets_by_project_tabs-2  .item-list ul,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .item-list ul{
-	padding: 0px;
-}
-#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-container,
-#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-container {
-    background-color: transparent;
-    border: none;
-}
-#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-content,
-#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-content{
-	padding-top: 0px;
-}
-.erpal-content-layout-template .single-row{
-	max-width: 100%;
-}
+
+/* line 704, ../sass/page.scss */
 .field-name-files-count .field-items,
-.field-name-comment-count .field-items{
-	padding-top: 5px;
-	width: 50%;
+.field-name-comment-count .field-items {
+  padding-top: 5px;
+  width: 50%;
 }
-.inline_fields .field{
-	margin-right: 50px;
-	clear: none !important;
-	float: left;
+
+/* line 708, ../sass/page.scss */
+.inline_fields .field {
+  margin-right: 50px;
+  clear: none !important;
+  float: left;
 }
-.inline_fields{
-	clear: both;
+
+/* line 713, ../sass/page.scss */
+.inline_fields {
+  clear: both;
 }
+
+/* line 716, ../sass/page.scss */
 ul.pager li a, ul.pager li.pager-current {
-    font-size: 1.2em;
+  font-size: 1.2em;
 }
-.quicktabs-tabpage  .article.view-mode-view_row_details .columns-inner{
-	padding: 15px;
+
+/* line 719, ../sass/page.scss */
+.view-mode-view_row_details .content-inner {
+  padding-bottom: 0px;
 }
-#quicktabs-tabpage-tasks_by_project_tabs-2 .item-list ul li,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .item-list ul li{
-	margin: 0 0 12px 0;
+
+/* line 722, ../sass/page.scss */
+.pane-node-body {
+  padding: 20px;
+  min-height: 350px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
-#quicktabs-tabpage-tasks_by_project_tabs-1 .view-content,
-#quicktabs-tabpage-tickets_by_project_tabs-1 .view-content{
-	padding: 15px 15px 15px 10px;
-	background-color: #FFFFFF;
+
+/* line 729, ../sass/page.scss */
+.pane-node-body p {
+  font-size: 16px;
 }
-.view-mode-view_row_details .content-inner{
-	padding-bottom: 0px;
+
+/* line 733, ../sass/page.scss */
+.quicktabs-tabpage #edit-nid {
+  width: 40px;
 }
-.pane-node-body{
-	padding: 20px;
-	min-height: 350px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
+
+/* line 736, ../sass/page.scss */
+.quicktabs-tabpage #edit-title {
+  width: 120px;
 }
-article.comment{
-	padding: 15px 0px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
+
+/* line 739, ../sass/page.scss */
+.quicktabs-tabpage #edit-field-priority-term-tid {
+  width: 75px;
 }
-.comment .comment-header{
-	padding-right: 10px;
-	padding-left: 15px;
-	float: left;
+
+/* line 742, ../sass/page.scss */
+.quicktabs-tabpage #edit-field-task-type-term-tid {
+  width: 60px;
 }
-.comment .comment-content{
-	padding: 15px 15px 0;
+
+/* line 745, ../sass/page.scss */
+.page-projects-timetrackings #edit-field-date-time-value-wrapper {
+  margin-left: 45px;
 }
-.comment .submitted {
-    padding-right: 15px;
+
+/* line 748, ../sass/page.scss */
+.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper {
+  margin-left: 440px;
 }
-.comment .author-datetime{
-	margin-bottom: 12px;
+
+/* line 751, ../sass/page.scss */
+.page-projects-timetrackings #edit-field-project-ref-target-id {
+  width: 120px;
 }
-.pane-node-body p,
-.comment .field-name-comment-body p{
-	font-size: 16px;
+
+/* line 754, ../sass/page.scss */
+.page-projects-timetrackings .views-field-field-date-time {
+  width: 140px;
 }
-.comment-form{
-	padding: 15px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
+
+/* line 757, ../sass/page.scss */
+.page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2 {
+  width: 120px;
 }
-.quicktabs-tabpage  #edit-nid{
-	width: 40px;
+
+/* line 760, ../sass/page.scss */
+.page-projects-timetrackings #edit-uid {
+  width: 90px;
 }
-.quicktabs-tabpage  #edit-title{
-	width: 120px;
+
+/* line 763, ../sass/page.scss */
+.page-projects-timetrackings .views-submit-button {
+  clear: both;
 }
-.quicktabs-tabpage #edit-field-priority-term-tid{
-	width: 75px;
+
+/* line 766, ../sass/page.scss */
+.page-projects-timetrackings #edit-uid-wrapper {
+  width: 140px;
 }
-.quicktabs-tabpage #edit-field-task-type-term-tid{
-	width: 60px;
+
+/* line 769, ../sass/page.scss */
+.page-projects-timetrackings #edit-uid-wrapper .description {
+  line-height: 12px;
 }
-.page-projects-timetrackings #edit-field-date-time-value-wrapper{
-	margin-left: 45px;
+
+/* line 772, ../sass/page.scss */
+.page-node-edit div.autocomplete-deluxe-multiple {
+  width: auto;
 }
-.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper{
-	margin-left: 440px;
-}
-.page-projects-timetrackings #edit-field-project-ref-target-id{
-	width: 120px;
-}
-.page-projects-timetrackings .views-field-field-date-time{
-	width: 140px;
-}
-.page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2{
-	width: 120px;
-}
-.page-projects-timetrackings #edit-uid{
-	width: 90px;
-}
-.page-projects-timetrackings .views-submit-button{
-	clear: both;
-}
-.page-projects-timetrackings #edit-uid-wrapper{
-	width: 140px;
-}
-.page-projects-timetrackings #edit-uid-wrapper .description{
-	line-height: 12px;
-}
-.page-node-edit div.autocomplete-deluxe-multiple{
-	width: auto;
-}
+
 /* crm */
+/* line 777, ../sass/page.scss */
+.field-type-datetime fieldset .date-padding {
+  width: 270px;
+}
 
-.field-type-datetime  fieldset .date-padding {
-	width: 270px;
+/* line 781, ../sass/page.scss */
+.field-type-datetime fieldset,
+.field-type-datetime fieldset .date-padding {
+  padding: 0;
+  margin: 0;
 }
-.field-type-datetime  fieldset,
-.field-type-datetime  fieldset .date-padding {
-	padding: 0;
-	margin: 0;
+
+/* line 785, ../sass/page.scss */
+.field-name-field-next-contact form {
+  width: 500px;
 }
-.field-name-field-next-contact form{
-	width: 500px;
-}
+
+/* line 788, ../sass/page.scss */
 .field-name-field-next-contact form #edit-field-next-contact {
-	float: left;
+  float: left;
 }
 
+/* line 792, ../sass/page.scss */
 .field-name-field-next-contact form .form-actions {
-	width: 70px;
-	float: left; 
+  width: 70px;
+  float: left;
 }
 
 /* comments */
-
-article.comment{
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
-}
-article.comment .field-name-comment-body p{
-	font-size: 16px;
-}
+/* line 800, ../sass/page.scss */
 #comment-form {
-	padding: 15px;
-	margin-top: 20px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
-}
-#comment-form .field-type-datetime {
-	width: 300px;
-	float: left;
-}
-#comment-form #edit-author--2 {
-	clear: both;
-}
-#comment-form #edit-field-contacts-ref {
-	width: 350px;
-	float: left;
-	margin-right: 40px;
-}
-#comment-form #edit-field-contacts-ref  table,
-#comment-form #edit-field-contacts-ref  table input,
-#comment-form #edit-field-asset-files table,
-#comment-form #edit-field-asset-files table input{
-	width: 310px;
-}
-#comment-form #edit-field-asset-files {
-	width: 350px;
-	float: left;
-}
-#comment-form #edit-actions {
-	clear: both;
-}
-#comment-form .field-widget-options-select {
-	width: 100px;
-	float: left;
-	margin-right: 15px;
-}
-#comment-form .field-name-field-activity-status-term  {
-	width: 160px !important;
-	float: left;
-}
-.comment-content section{
-	width: 250px;
-	float: left;
-}
-.comment nav {
-	padding: 0 15px;
-	clear: both;
+  padding: 15px;
+  margin-top: 20px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
+/* line 807, ../sass/page.scss */
+#comment-form .field-type-datetime {
+  width: 300px;
+  float: left;
+}
+
+/* line 811, ../sass/page.scss */
+#comment-form #edit-author--2 {
+  clear: both;
+}
+
+/* line 814, ../sass/page.scss */
+#comment-form #edit-field-contacts-ref {
+  width: 350px;
+  float: left;
+  margin-right: 40px;
+}
+
+/* line 822, ../sass/page.scss */
+#comment-form #edit-field-contacts-ref table,
+#comment-form #edit-field-contacts-ref table input,
+#comment-form #edit-field-asset-files table,
+#comment-form #edit-field-asset-files table input {
+  width: 310px;
+}
+
+/* line 825, ../sass/page.scss */
+#comment-form #edit-field-asset-files {
+  width: 350px;
+  float: left;
+}
+
+/* line 829, ../sass/page.scss */
+#comment-form #edit-actions {
+  clear: both;
+}
+
+/* line 832, ../sass/page.scss */
+#comment-form .field-widget-options-select {
+  width: 100px;
+  float: left;
+  margin-right: 15px;
+}
+
+/* line 837, ../sass/page.scss */
+#comment-form .field-name-field-activity-status-term {
+  width: 160px !important;
+  float: left;
+}
+
+/* line 841, ../sass/page.scss */
+.comment-content section {
+  width: 250px;
+  float: left;
+}
+
+/* line 845, ../sass/page.scss */
+.comment nav {
+  padding: 0 15px;
+  clear: both;
+}
 
 /*****DELETE****/
-	.rel-register-link {
-		display: none;
-	}
+/* line 852, ../sass/page.scss */
+.rel-register-link {
+  display: none;
+}
 
 /****DELEEETE****/
-
-
 /* multi select boxes */
+/* line 860, ../sass/page.scss */
 .views-exposed-form .views-exposed-widget {
-	padding-right: 10px !important;
+  padding-right: 7px !important;
 }
-.views-exposed-form button span:not(.ui-icon){
-	position: absolute;
-	overflow: hidden;
-	width: 105px !important;
-	height: 19px;
-	line-height: 13px;
+
+/* line 863, ../sass/page.scss */
+.views-exposed-form button span:not(.ui-icon) {
+  position: absolute;
+  overflow: hidden;
+  width: 105px !important;
+  height: 19px;
+  line-height: 13px;
 }
+
+/* line 870, ../sass/page.scss */
 .views-exposed-form button {
-	font-size: 11px;
-	height: 25px;
-	width: 130px !important;
-	overflow: hidden;
+  font-size: 11px;
+  height: 25px;
+  width: 130px !important;
+  overflow: hidden;
 }
-#edit-field-task-status-term-tid-wrapper ,
+
+/* line 881, ../sass/page.scss */
+#edit-field-task-status-term-tid-wrapper,
 #edit-field-activity-status-term-tid-wrapper,
 #edit-field-priority-term-tid-wrapper,
 #edit-field-task-type-term-tid-wrapper,
 #edit-field-project-tags-tid-wrapper,
-#edit-field-task-assigned-users-target-id-wrapper  {
-	width: 130px !important;
-}
-.ui-multiselect-menu {
-	width: 200px !important;
-}
-.ui-helper-reset {
-	position: relative;
-}
-.ui-multiselect-close {
-	position: absolute;
-	right: 0;
-}
-.ui-multiselect-header {
-	padding: 3px 0;
-}
-/*---------------------------------dashboard styles-----------------------------------------*/
-#homebox .portlet-content {
-    padding: 0px;
-}
-#homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
-    border: none;
-}
-#homebox .more-link {
-    padding: 4px 10px;
-}
-#homebox .homebox-column{
-	margin: 0;
-	padding: 0;
-}
-#homebox .homebox-column-wrapper-1{
-	margin-right: 20px;
-}
-#homebox .homebox-column-wrapper {
-    float: left;
-    width: 48% !important;
-}
-#homebox .homebox-column-wrapper-1 {
-    margin-right: 25px;
-}
-#homebox .homebox-column-wrapper {
-    width: 48% !important;
-}
-#homebox .portlet-header{
-	font-weight: normal;
-}
-#homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption{
-	padding-left: 12px;
-}
-#homebox .form-submit{
-	margin-left: 12px;
-}
-#homebox .homebox-portlet .portlet-header .portlet-title {
-    padding-left: 8px;
-}
-#homebox .homebox-portlet .portlet-header{
-	border: none;
-}
-/*-------------------------------------crm styles-------------------------------------*/
-.node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title{
-    margin-bottom: 7px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
-    margin: 0;
-    padding: 0;
-	border: medium none;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th{
-	padding: 10px;
-	font-size: 14px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li{
-	list-style-type: none;
-	padding-right: 7px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul{
-	margin: 0;
-    padding: 0;
-	float: none;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane table{
-	margin: 0;
-	border: none;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane table td{
-	padding: 10px;
+#edit-field-task-assigned-users-target-id-wrapper {
+  width: 130px !important;
 }
 
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container{
-	border: none;
+/* line 884, ../sass/page.scss */
+.ui-multiselect-menu {
+  width: 200px !important;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a{
-	font-size: 1.2em;
-    text-decoration: underline;
+
+/* line 887, ../sass/page.scss */
+.ui-helper-reset {
+  position: relative;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item{
-	margin: 0px;
+
+/* line 890, ../sass/page.scss */
+.ui-multiselect-close {
+  position: absolute;
+  right: 0;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li{
-	padding: 10px;
-	text-align: right;
-	-webkit-border-bottom-left-radius: 2px;
-	-moz-border-radius-bottomleft: 2px;
-	border-bottom-left-radius: 2px;
-	-webkit-border-bottom-right-radius: 2px;
-	-moz-border-radius-bottomright: 2px;
-	border-bottom-right-radius: 2px;
+
+/* line 894, ../sass/page.scss */
+.ui-multiselect-header {
+  padding: 3px 0;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference{
-	margin: 0px;
+
+/*---------------------------------dashboard styles-----------------------------------------*/
+/* line 898, ../sass/page.scss */
+#homebox .portlet-content {
+  padding: 0px;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title{
-	font-size: 26px;
+
+/* line 901, ../sass/page.scss */
+#homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
+  border: none;
 }
+
+/* line 904, ../sass/page.scss */
+#homebox .more-link {
+  padding: 4px 10px;
+}
+
+/* line 907, ../sass/page.scss */
+#homebox .homebox-column {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 911, ../sass/page.scss */
+#homebox .homebox-column-wrapper-1 {
+  margin-right: 20px;
+}
+
+/* line 914, ../sass/page.scss */
+#homebox .homebox-column-wrapper {
+  float: left;
+  width: 48% !important;
+}
+
+/* line 918, ../sass/page.scss */
+#homebox .homebox-column-wrapper-1 {
+  margin-right: 25px;
+}
+
+/* line 921, ../sass/page.scss */
+#homebox .homebox-column-wrapper {
+  width: 48% !important;
+}
+
+/* line 924, ../sass/page.scss */
+#homebox .portlet-header {
+  font-weight: normal;
+}
+
+/* line 927, ../sass/page.scss */
+#homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption {
+  padding-left: 12px;
+}
+
+/* line 930, ../sass/page.scss */
+#homebox .form-submit {
+  margin-left: 12px;
+}
+
+/* line 933, ../sass/page.scss */
+#homebox .homebox-portlet .portlet-header .portlet-title {
+  padding-left: 8px;
+}
+
+/* line 936, ../sass/page.scss */
+#homebox .homebox-portlet .portlet-header {
+  border: none;
+}
+
+/*-------------------------------------crm styles-------------------------------------*/
+/* line 940, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
+  margin-bottom: 7px;
+}
+
+/* line 943, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
+  margin: 0;
+  padding: 0;
+  border: medium none;
+}
+
+/* line 948, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* line 952, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li {
+  list-style-type: none;
+  padding-right: 7px;
+}
+
+/* line 956, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul {
+  margin: 0;
+  padding: 0;
+  float: none;
+}
+
+/* line 961, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane table {
+  margin: 0;
+  border: none;
+}
+
+/* line 965, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane table td {
+  padding: 10px;
+}
+
+/* line 969, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container {
+  border: none;
+}
+
+/* line 972, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a {
+  font-size: 1.2em;
+  text-decoration: underline;
+}
+
+/* line 976, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
+  margin: 0px;
+}
+
+/* line 979, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
+  padding: 10px;
+  text-align: right;
+  -webkit-border-bottom-left-radius: 2px;
+  -moz-border-radius-bottomleft: 2px;
+  border-bottom-left-radius: 2px;
+  -webkit-border-bottom-right-radius: 2px;
+  -moz-border-radius-bottomright: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+/* line 989, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference {
+  margin: 0px;
+}
+
+/* line 992, ../sass/page.scss */
+.node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title {
+  font-size: 26px;
+}
+
+/* line 995, ../sass/page.scss */
 .node-type-erpal-contact .panel-display .pane-entity-field .block-content {
-    float: none;
+  float: none;
 }
-.page-crm-contacts table .views-field-field-contact-image{
-	width: 160px;
+
+/* line 998, ../sass/page.scss */
+.page-crm-contacts table .views-field-field-contact-image {
+  width: 160px;
 }
-.page-crm-contacts table .views-field-title{
-	width: 345px;
+
+/* line 1001, ../sass/page.scss */
+.page-crm-contacts table .views-field-title {
+  width: 345px;
 }
+
+/* line 1004, ../sass/page.scss */
 .region-sidebar-right .ctools-collapsible-container figure {
-    text-align: center;
+  text-align: center;
 }
-#mini-panel-contact_details_panel{
-	margin-top: 2px;
+
+/* line 1007, ../sass/page.scss */
+#mini-panel-contact_details_panel {
+  margin-top: 2px;
 }
-.ctools-collapsible-processed .ctools-collapsible-content{
-	padding-top: 10px;
+
+/* line 1010, ../sass/page.scss */
+.ctools-collapsible-processed .ctools-collapsible-content {
+  padding-top: 10px;
+}
+
+/*
+ *  Buttons
+ */
+/* line 1020, ../sass/page.scss */
+a.button:link,
+a.button:visited,
+a.button:hover,
+a.button:focus,
+a.button:active {
+  color: #5a5a5a;
+}
+
+/* line 1024, ../sass/page.scss */
+input.form-submit,
+a.button {
+  background: white url(../images/buttons.png) 0 0 repeat-x;
+  border: 1px solid #e4e4e4;
+  border-bottom: 1px solid #b4b4b4;
+  border-left-color: #d2d2d2;
+  border-right-color: #d2d2d2;
+  color: #3a3a3a;
+}
+
+/* line 1034, ../sass/page.scss */
+input.form-submit:hover,
+input.form-submit:focus {
+  background: #dedede;
 }

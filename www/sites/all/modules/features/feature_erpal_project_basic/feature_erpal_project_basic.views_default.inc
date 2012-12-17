@@ -7322,7 +7322,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Duration */
+  /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_date_time']['id'] = 'field_date_time';
   $handler->display->display_options['fields']['field_date_time']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['fields']['field_date_time']['field'] = 'field_date_time';
@@ -7413,7 +7413,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
-  /* Filter criterion: Content: Duration -  start date (field_date_time) */
+  /* Filter criterion: Content: Date and time -  start date (field_date_time) */
   $handler->display->display_options['filters']['field_date_time_value']['id'] = 'field_date_time_value';
   $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
@@ -7755,7 +7755,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Duration */
+  /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_date_time']['id'] = 'field_date_time';
   $handler->display->display_options['fields']['field_date_time']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['fields']['field_date_time']['field'] = 'field_date_time';
@@ -7839,7 +7839,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
-  /* Filter criterion: Content: Duration -  start date (field_date_time) */
+  /* Filter criterion: Content: Date and time -  start date (field_date_time) */
   $handler->display->display_options['filters']['field_date_time_value']['id'] = 'field_date_time_value';
   $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
@@ -7897,6 +7897,27 @@ function feature_erpal_project_basic_views_default_views() {
     'erpal_timetracking' => 'erpal_timetracking',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Timetracking: Show subtasks */
+  $handler->display->display_options['filters']['timetracking_subtasks']['id'] = 'timetracking_subtasks';
+  $handler->display->display_options['filters']['timetracking_subtasks']['table'] = 'field_data_field_timetracking_subject';
+  $handler->display->display_options['filters']['timetracking_subtasks']['field'] = 'timetracking_subtasks';
+  $handler->display->display_options['filters']['timetracking_subtasks']['value'] = 0;
+  $handler->display->display_options['filters']['timetracking_subtasks']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['label'] = 'Show subtasks';
+  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['operator'] = 'timetracking_subtasks_op';
+  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['identifier'] = 'timetracking_subtasks';
+  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
   $handler->display->display_options['argument_input'] = array(
     'field_timetracking_subject_target_id' => array(
       'type' => 'panel',
@@ -8114,7 +8135,7 @@ function feature_erpal_project_basic_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Timetracking title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Duration */
+  /* Field: Content: Date and time */
   $handler->display->display_options['fields']['field_date_time']['id'] = 'field_date_time';
   $handler->display->display_options['fields']['field_date_time']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['fields']['field_date_time']['field'] = 'field_date_time';
@@ -8200,7 +8221,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
-  /* Filter criterion: Content: Duration -  start date (field_date_time) */
+  /* Filter criterion: Content: Date and time -  start date (field_date_time) */
   $handler->display->display_options['filters']['field_date_time_value']['id'] = 'field_date_time_value';
   $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
@@ -8341,7 +8362,7 @@ function feature_erpal_project_basic_views_default_views() {
     5 => 0,
     7 => 0,
   );
-  /* Filter criterion: Content: Duration -  start date (field_date_time) */
+  /* Filter criterion: Content: Date and time -  start date (field_date_time) */
   $handler->display->display_options['filters']['field_date_time_value']['id'] = 'field_date_time_value';
   $handler->display->display_options['filters']['field_date_time_value']['table'] = 'field_data_field_date_time';
   $handler->display->display_options['filters']['field_date_time_value']['field'] = 'field_date_time_value';
@@ -8393,6 +8414,7 @@ function feature_erpal_project_basic_views_default_views() {
     t('author'),
     t('field_timetracking_subject'),
     t('Select'),
+    t('Date and time'),
     t('Duration'),
     t('Billing Duration'),
     t('Task'),
@@ -8404,6 +8426,7 @@ function feature_erpal_project_basic_views_default_views() {
     t('field_project_ref'),
     t('Timetrackings by task'),
     t('Content'),
+    t('Show subtasks'),
     t('View panes'),
     t('Timetracking by project pane'),
     t('Timetracking title'),

@@ -163,8 +163,8 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-6';
     $pane->panel = 'right';
-    $pane->type = 'pane_messages';
-    $pane->subtype = 'pane_messages';
+    $pane->type = 'page_breadcrumb';
+    $pane->subtype = 'page_breadcrumb';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
@@ -181,6 +181,24 @@ function feature_erpal_layout_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-7';
     $pane->panel = 'right';
+    $pane->type = 'pane_messages';
+    $pane->subtype = 'pane_messages';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $display->content['new-7'] = $pane;
+    $display->panels['right'][2] = 'new-7';
+    $pane = new stdClass();
+    $pane->pid = 'new-8';
+    $pane->panel = 'right';
     $pane->type = 'page_content';
     $pane->subtype = 'page_content';
     $pane->shown = TRUE;
@@ -196,10 +214,10 @@ function feature_erpal_layout_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['right'][2] = 'new-7';
+    $display->content['new-8'] = $pane;
+    $display->panels['right'][3] = 'new-8';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

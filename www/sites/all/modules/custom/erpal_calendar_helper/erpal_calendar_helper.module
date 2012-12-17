@@ -55,12 +55,16 @@ function _erpal_calendar_helper_set_tag($date_item) {
   $src_field_name = $date_item->src_field_name;
   $term_to_set = _erpal_calendar_helper_field_tag($src_type, $src_bundle, $src_field_name);
 
+  //allow other modules to alter the set term. In case of a erpal_date node, we want another term if the date node is not e real date but a holiday
+  $context = array('src' => array('type' => $src_type, 'bundle' => $src_bundle, 'entity' => $src_entity));
+  drupal_alter('date_term', $term_to_set, $context);
+  
   if (!$term_to_set)
     return;  //no term to set!
   
   $tag_is_set = false;
   foreach ($current_tags as $delta => $term_arr) {
-    if ($term_arr['name'] == $term_to_set) {
+    if (isset($term_arr['name']) && $term_arr['name'] == $term_to_set) {
       $tag_is_set = true;
     }    
   }
@@ -107,4 +111,65 @@ function _erpal_calendar_helper_set_tag($date_item) {
     $date_item->field_date_item_tags[LANGUAGE_NONE][0]['tid'] = $term->tid;
   }
   
+}
+
+/**
+* Returns all date_item entities with a subject of type = holiday in field_date_type, which means that this date item entity is tagged with the tag used in settings of this module for holidays
+* @param $date_only if set the result array contains only the dates, otherwise the complete date_item entity is returned
+*/
+function erpal_calendar_get_holidays($year, $month) {
+  /*$days = array();
+	$monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+	$res = db_query('SELECT d.field_termin_date_value AS adate FROM {content_type_termin} t LEFT JOIN {content_field_termin_date} d ON t.vid=d.vid WHERE field_termin_typ_value=4 AND field_termin_date_value >= "%s" AND field_termin_date_value <= "%s"', $range_from, $range_till);
+	while ($tag = db_fetch_array($res))
+	{
+		$adate = $tag['adate'];
+		$days[] = $adate;
+	}
+	
+  ACHTUNG: WIR MÜSSEN immer die range eines entites berücksichtigen, nicht nur das Start- oder Enddatum, Weihnachten geht über mehrere Tage!
+	
+	return $days;*/
+}
+
+/**
+* Implements hook_date_term_alter to alter a term set on an date_item entity. This hook is provided by the erpal_calendar_helper module.
+* @param $term_string the string that should be set as tag to the entity given in $context
+*/
+function erpal_calendar_helper_date_term_alter(&$term_string, $context) {
+  $entity_type = $context['src']['type'];
+  $bundle = $context['src']['bundle'];
+  $entity = $context['src']['entity'];
+  
+  if ($entity_type == 'node' && $bundle == 'erpal_date') {
+    $date_type = isset($entity->field_date_type[LANGUAGE_NONE][0]['value']);
+
+    if ($date_type == 'holiday')
+      $term_string = _erpal_calendar_helper_field_tag_holiday_date();
+  }
+}
+
+/**
+* Returns the term_string that should be set for user holidays
+*/
+function _erpal_calendar_helper_field_tag_holiday_date() {
+  return variable_get('erpal_calendar_user_holiday_string', 'holiday');
+}
+
+/**
+* Return the last day of a given month
+*/
+function erpal_calendar_ldom($month = '', $year = '') {
+   if (empty($month)) {
+    $month = date('m');
+   }
+   if (empty($year)) {
+    $year = date('Y');
+   }
+   $result = strtotime("{$year}-{$month}-01");
+   $result = strtotime('-1 second', strtotime('+1 month', $result));
+   return date('Y-m-d', $result);
 }

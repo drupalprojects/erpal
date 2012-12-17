@@ -15,18 +15,28 @@ function erpal_employee_helper_schema() {
   $schema['working_times'] = array(
     'description' => 'The base table for working_times entities.',
     'fields' => array(            
+      'id' => array(
+        'description' => 'The id of the working_times entity',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
       'uid' => array(
         'description' => 'The uid for whom the working times is for',
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
       ),
-      'booking_type' => array(
-        'description' => 'Wether this data is aggregated for a month or a year',
+      'type' => array(
+        'description' => 'Wether this data is aggregated for a month or a year or an offset',
         'type' => 'varchar',
-        'length' => 5,
         'not null' => TRUE,
         'default' => '',
+      ),
+      'dirty' => array(
+        'description' => 'If this is set, the dataset should be recalculated',
+        'type' => 'int',       
+        'not null' => TRUE,
+        'default' => 0,
       ),
       'month' => array(
         'description' => 'The month for the booked working_times',
@@ -68,6 +78,12 @@ function erpal_employee_helper_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'holidays_available_till' => array(
+        'description' => 'The date when hilidays expire',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'total_hours' => array(
         'description' => 'Total working hours for a user in the booking period',
         'type' => 'numeric',
@@ -89,11 +105,24 @@ function erpal_employee_helper_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'created' => array(
+        'description' => 'The date when the entity was created',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The date when the entity was changed',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),      
     ),
-    'primary key' => array('uid', 'month', 'year'),
+    'primary key' => array('id'),
     'indexes' => array(
-      'booking_type' => array('booking_type'),
+      'type' => array('type'),
       'uid' => array('uid'),
+      'ui_month_year' => array('uid', 'month', 'year'),
     ),
   );
 
