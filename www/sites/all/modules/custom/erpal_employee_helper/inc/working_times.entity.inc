@@ -64,8 +64,8 @@ function working_times_load_by_user($type, $uid, $year=false, $month=false) {
  * @see working_times_load()
  */
 function working_times_load_multiple($working_times_ids = array(), $conditions = array(), $reset = FALSE) {
-  $working_timess = entity_load('working_times', $working_times_ids, $conditions, $reset);
-  return $working_timess;
+  $working_times = entity_load('working_times', $working_times_ids, $conditions, $reset);
+  return $working_times;
 }
 
 
@@ -491,7 +491,8 @@ function working_times_edit_form_submit(&$form, &$form_state) {
  * @todo Remove hard-coded path
  */
 function working_times_form_submit_delete(&$form, &$form_state) {
-  $form_state['redirect'] = 'working_times/' . $form_state['working_times']->id . '/delete';
+  $form_state['redirect'] = '';
+  //@TODO set message here?
 }
 
 

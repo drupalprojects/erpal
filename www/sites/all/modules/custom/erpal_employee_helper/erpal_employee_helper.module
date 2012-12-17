@@ -17,9 +17,25 @@ function erpal_employee_helper_menu(){
   require_once 'inc/config.inc';
   $config_items = _erpal_employee_helper_config_menu();
   
+  $items['employee/test'] = array(
+    'page callback' => '_erpal_employee_helper_test',
+    'access callback' => '_erpal_employee_helper_test_access',
+  );
+  
   $items = array_merge($items, $config_items);
   return $items;
 } 
+
+//########### ONLY FOR TEST AND DEBUGGING ############
+function _erpal_employee_helper_test() {
+  _erpal_employee_helper_calculate_working_times();
+}
+
+function _erpal_employee_helper_test_access() {
+  global $user;
+  return $user->uid == 1;
+}
+//####################################################
 
 /**
 * Implements hook_cron

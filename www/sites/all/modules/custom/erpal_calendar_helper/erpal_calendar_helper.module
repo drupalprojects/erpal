@@ -108,3 +108,39 @@ function _erpal_calendar_helper_set_tag($date_item) {
   }
   
 }
+
+/**
+* Returns all dates nodes with type = holiday
+* @para $date_only if set the result array contains only the dates, otherwise the complete erpal_date node is returned
+*/
+function erpal_calendar_get_holidays($year, $month) {
+  /*$days = array();
+	$monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+	$res = db_query('SELECT d.field_termin_date_value AS adate FROM {content_type_termin} t LEFT JOIN {content_field_termin_date} d ON t.vid=d.vid WHERE field_termin_typ_value=4 AND field_termin_date_value >= "%s" AND field_termin_date_value <= "%s"', $range_from, $range_till);
+	while ($tag = db_fetch_array($res))
+	{
+		$adate = $tag['adate'];
+		$days[] = $adate;
+	}
+	
+	
+	return $days;*/
+}
+
+/**
+* Return the last day of a given month
+*/
+function erpal_calendar_ldom($month = '', $year = '') {
+   if (empty($month)) {
+    $month = date('m');
+   }
+   if (empty($year)) {
+    $year = date('Y');
+   }
+   $result = strtotime("{$year}-{$month}-01");
+   $result = strtotime('-1 second', strtotime('+1 month', $result));
+   return date('Y-m-d', $result);
+}
