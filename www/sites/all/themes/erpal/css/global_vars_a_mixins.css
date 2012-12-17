@@ -20,12 +20,22 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*background for quicktabs li*/
 /*background for pane titles, table th*/
 /* color for right sidebar, pane title*/
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
 /* left sidebar link*/
-/*@mixin h2_pane_title{
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+/*@mixin h2_pane_titcle{
 	padding-right: 5px;
 	color: $dark_black;
 	font:{
-		size: $font-size_12;
+		size: 12px;
 	}
 	background-color: none;
 }*/

@@ -606,9 +606,6 @@ header[role=banner],
 .element-hidden {
   display: none;
 }
-h2.pane-title.block-title {
-	@include h2_pane_title;
-}
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected{
 	padding-bottom: 0;

@@ -21,6 +21,14 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /* VARIABLES
 /*******************/
 
+$body_align: left;
+$body_height: 1.5em;
+
+$padding_10: 10px;
+$padding_15: 15px;
+$center: center;
+$weight_normal: normal;
+
 /* color variables */
 $bright_grey: #E5E5E5;         /* main background*/
 $white: #ffffff;
@@ -32,41 +40,50 @@ $silver: #dedede;
 $dark_silver: #AFAFAF; /*background for pane titles, table th*/
 $dark_black: #202020; /* color for right sidebar, pane title*/
 $light_brown: #847C76;
-$light_pink: #FFDFE4;
+
+/*for left menu*/
+$light: #fdf8f4; /*for menu hover*/
+$black_grey: #756c65;  /*for menu item grey border*/
+$grey_orange: #e7d4c5; /*link color*/
+/*styles for alert*/
 $pink: #eed0d5;
 $red: #CC000C;
-$font-size_12: 12px;
+$light_pink: #FFDFE4;
 $green: #088A58;
+
 $dark_brown: #7b726b;        /* left sidebar link*/
 $silver_gray: #b6b6b6; 
 $brown: #908984;
 $black: #000000;
 $orange: #FFA800;
 $dark_orange: #fd8300;
+
+
+/*styles for border*/
 $radius_8: 8px;
 $radius_5: 5px;
-$padding_10: 10px;
-$padding_15: 15px;
-$align_center: center;
-$weight_normal: normal;
+
+/*styles for text*/
 $h1_size: 32px;
 $h1_height: 32px;
 $font_family: Arial, Helvetica, sans-serif;
-$body_align: left;
-$body_height: 1.5em;
-
-$weight_strong: bold;
+$bold: bold;
+$block: block;
 $body_em_style: italic;
+$left: left;
+$absolute: absolute;
+$value100: 100%;
 
+/*styles for ul*/
 $ul_line_height: 1.4em;
 
 $ol_style: decimal;
 $ol_position: inside;
 $ol_weight: bold;
 $ol_height: 2em;
-
 $width_item: 200px;
 
+/*styles for mixins*/
 @mixin rounded_corners_10{/*styles for filter box*/ 
 	padding: $padding_10;
 	background-color: $bg_light_grey;
@@ -80,12 +97,15 @@ $width_item: 200px;
 	background-color: $white;
 }
 @mixin text_bold_12{
-	font-size: $font-size_12;
-	font-weight: $weight_strong;
+	font-size: 12px;
+	font-weight: $bold;
 	text-decoration: none;
-	display: block;
-	float: left;
+	display: $block;
+	float: $left;
 }
+
+
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
 @mixin h1_style{
 	margin: 0px 0px 5px 0px;
 	font:{
@@ -142,11 +162,11 @@ $width_item: 200px;
     }
 	line-height: 36px;
 }
-/*@mixin h2_pane_title{
+/*@mixin h2_pane_titcle{
 	padding-right: 5px;
 	color: $dark_black;
 	font:{
-		size: $font-size_12;
+		size: 12px;
 	}
 	background-color: none;
 }*/
@@ -157,4 +177,31 @@ $width_item: 200px;
 	background-color: $light_grey;
 }
 
-
+@mixin a_black{
+	margin: 0;
+	padding: 0 20px;
+	letter-spacing: 1px;
+	text-align: $center;
+	@include text_bold_12;
+	height: 42px;
+	line-height: 42px;
+	min-width: 80px;
+	background: $white;
+	border: none;
+}
+@mixin a_orange{
+	*zoom: 1;
+	background-color: $orange;
+	color: $black;
+}
+@mixin dist_zero{
+    margin: 0px;
+	padding: 0px;
+}
+@mixin padding_zero{
+	padding: 10px;
+}
+@mixin orange_border{
+	border-top: 2px solid $dark_orange;
+	border-bottom: 2px solid $dark_orange !important;
+}
