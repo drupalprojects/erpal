@@ -14,12 +14,11 @@ use com\google\i18n\phonenumbers\NumberParseException;
  */
 function _libphonenumber_include_library(){
   
-  $path = libraries_get_path('libphonenumber');
+  $libphonenumber_path = libraries_get_path('libphonenumber');
   
 
   if (!file_exists($path)) {
     $libphonenumber_link = l('download', 'https://github.com/davideme/libphonenumber-for-PHP');
-    $libphonenumber_path = libraries_get_path('libphonenumber');
     drupal_set_message(
       t('The libphonenumber-module can not work without libphonenumber-for-PHP. Please !link and extract to !path.', 
         array('!link' => $libphonenumber_link, '!path' => $libphonenumber_path)), 'warning');    
@@ -27,7 +26,7 @@ function _libphonenumber_include_library(){
   }
   
   
-  require_once $path . '/PhoneNumberUtil.php';
+  require_once $libphonenumber_path . '/PhoneNumberUtil.php';
   
   return true;
 
