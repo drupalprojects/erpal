@@ -20,336 +20,562 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*background for quicktabs li*/
 /*background for pane titles, table th*/
 /* color for right sidebar, pane title*/
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
 /* left sidebar link*/
-/*@mixin h2_pane_title{
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+/*@mixin h2_pane_titcle{
 	padding-right: 5px;
 	color: $dark_black;
 	font:{
-		size: $font-size_12;
+		size: 12px;
 	}
 	background-color: none;
 }*/
 /* line 3, ../sass/page.scss */
+body {
+  /*----------end node task-----------*/
+  /*----------end node ticket-----------*/
+}
+/* line 4, ../sass/page.scss */
 body.panels-ipe {
   margin-bottom: 0 !important;
 }
-
-/* =============================================================================
- *  Top region
- * ========================================================================== */
-/* line 9, ../sass/page.scss */
-.pane-page-tabs {
-  width: 100%;
-  background-color: #eeeeee;
-}
-
-/* =============================================================================
- *   Logo
- * ========================================================================== */
-/* line 17, ../sass/page.scss */
-.pane-page-logo {
-  margin-bottom: 10px;
-  padding: 0;
-  text-align: center;
-}
-
-/* =============================================================================
- *   Left region
- * ========================================================================== */
-/* line 27, ../sass/page.scss */
-#erpal_wrapper > .panel-col-first {
+/* line 7, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first {
+  margin: 0;
+  background-color: #7b726b;
   width: 150px;
   max-width: none;
-  margin: 0;
+  height: 100%;
   float: left;
   position: absolute;
   left: 0;
 }
-
-/* line 35, ../sass/page.scss */
-#erpal_wrapper > .panel-col-first > .inside {
+/* line 16, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside {
   margin: 0;
   padding-right: 0;
+  height: 100%;
   -webkit-box-shadow: #888888 1px 2px 2px;
   -moz-box-shadow: #888888 1px 2px 2px;
   box-shadow: #888888 1px 2px 2px;
+  /*----------end Logo-------------*/
+  /*----------end Search Block-------------*/
+  /*----------end Erpal menu-------------*/
 }
-
-/* line 41, ../sass/page.scss */
-#erpal_wrapper > .panel-col-first,
-#erpal_wrapper > .panel-col-first .inside {
-  height: 100%;
+/* line 22, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-page-logo {
+  /*----------Logo-------------*/
+  margin-bottom: 10px;
+  text-align: center;
 }
-
-/* line 44, ../sass/page.scss */
-.pane-menu-menu-erpal-menu {
-  margin-bottom: 0 !important;
+/* line 25, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-page-logo img {
+  vertical-align: bottom;
 }
-
-/* line 48, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul,
-.pane-menu-menu-erpal-menu ul li ul {
-  margin: 0;
-  padding: 0;
+/* line 29, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-search-form {
+  margin-bottom: 0px;
 }
-
-/* line 52, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li {
-  padding: 0;
-  list-style-image: none;
-  list-style-type: none;
+/* line 31, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-search-form #search-block-form {
+  /*----------begin Search Block-------------*/
+  margin-bottom: 12px;
 }
-
-/* line 59, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li ul li.last,
-.pane-menu-menu-erpal-menu ul li.expanded.active-trail ul li a,
-.pane-menu-menu-erpal-menu ul li.expanded.active-trail {
-  border-bottom: none;
+/* line 33, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-search-form #search-block-form .form-text {
+  margin-left: 5px;
+  width: 130px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  color: #C0C0C0;
+  font-size: 11px;
 }
-
-/* line 62, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li ul li a {
-  padding-left: 25px;
+/* line 42, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu {
+  /*----------begin User menu-------------*/
+  /*----------end User menu-------------*/
 }
-
-/* line 65, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li a {
-  padding: 9px 17px 9px 10px;
-  display: block;
-  font-size: 14px;
-  border-top: 1px solid #756c65;
-}
-
-/* line 72, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li a:hover,
-.pane-system-user-menu li a:hover {
-  color: #fdf8f4;
-}
-
-/* line 75, ../sass/page.scss */
-.pane-system-user-menu ul {
+/* line 43, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul {
   margin: 0px;
-  padding: 0;
+  padding: 0px;
   overflow: hidden;
+  border-bottom: 1px solid #908984;
 }
-
-/* line 80, ../sass/page.scss */
-.pane-system-user-menu li {
+/* line 47, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li {
   padding: 0;
   float: right;
   width: 74px;
   text-align: center;
 }
-
-/* line 86, ../sass/page.scss */
-.pane-system-user-menu li.last {
-  border-right: 1px solid #847C76;
+/* line 52, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li.last {
+  border-right: 1px solid #847c76;
 }
-
-/* line 89, ../sass/page.scss */
-.tabs-region .block {
-  margin-bottom: 0px;
-}
-
-/* line 93, ../sass/page.scss */
-.pane-search-form {
-  margin-bottom: 12px;
-}
-
-/* line 96, ../sass/page.scss */
-.ui-tabs .ui-tabs-nav li {
-  margin: 0px;
-}
-
-/* line 102, ../sass/page.scss */
-.pane-system-user-menu ul,
-.pane-menu-menu-erpal-menu ul li,
-.pane-menu-menu-erpal-menu ul li.last ul li.last a,
-.pane-menu-menu-erpal-menu ul li.last a {
-  border-bottom: 1px solid #908984;
-}
-
-/* line 105, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li.last {
-  border-bottom: 1px solid #756c65;
-}
-
-/* line 109, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail,
-.pane-menu-menu-erpal-menu ul li.active-trail.active {
-  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
-}
-
-/* line 113, ../sass/page.scss */
-.pane-system-user-menu li a,
-.pane-menu-menu-erpal-menu ul li a {
+/* line 55, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li a {
   color: #e7d4c5;
 }
-
-/* line 117, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li.active-trail.active a,
-.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
+/* line 57, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-system-user-menu ul li a:hover {
+  color: #fdf8f4;
+}
+/* line 64, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu {
+  /*----------begin Erpal menu-------------*/
+  width: 150px;
+}
+/* line 66, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul {
+  margin: 0px;
+  padding: 0px;
+}
+/* line 68, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li {
+  padding: 0;
+  list-style-image: none;
+  list-style-type: none;
+  border-top: 1px solid #908984;
+}
+/* line 74, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail a {
+  color: black;
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+/* line 77, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail a:hover {
   color: black;
 }
-
-/* line 125, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li a.active,
-.pane-menu-menu-erpal-menu ul li a.active:hover,
-.pane-menu-menu-erpal-menu ul li ul li.last a.active-trail,
-.pane-menu-menu-erpal-menu ul li.expanded.active-trail a.active-trail,
-.pane-menu-menu-erpal-menu ul li.active-trail.active a,
-.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
+/* line 80, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+/* line 84, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail .active {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+/* line 87, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.active-trail.active-trail {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+/* line 92, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.last a {
+  border-bottom: 1px solid #908984;
+}
+/* line 95, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li.last.last {
+  border-bottom: 1px solid #756c65;
+}
+/* line 99, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li a {
+  padding: 9px 17px 9px 10px;
+  display: block;
+  font-size: 14px;
+  color: #e7d4c5;
+  border-top: 1px solid #756c65;
+}
+/* line 105, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li a:hover {
+  color: #fdf8f4;
+}
+/* line 108, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul li a.active {
   border-top: 2px solid #fd8300;
-  border-bottom: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
 }
-
+/* line 113, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul {
+  margin: 0px;
+  padding: 0px;
+}
+/* line 116, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul li.last {
+  border-bottom: none;
+}
+/* line 118, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul li.last .active {
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+/* line 122, ../sass/page.scss */
+body #erpal_wrapper > .panel-col-first > .inside .pane-menu-menu-erpal-menu ul ul li a {
+  padding-left: 25px;
+}
 /* line 131, ../sass/page.scss */
-.pane-menu-menu-erpal-menu ul li.last ul li.last a.active-trail,
-.pane-menu-menu-erpal-menu ul li.last a.active-trail.active,
-.pane-menu-menu-erpal-menu ul li.expanded a.active-trail.active {
-  border-bottom: 2px solid #fd8300;
+body.page-node-tasks {
+  /*----------begin node task-----------*/
 }
-
-/* line 134, ../sass/page.scss */
-#erpal_wrapper > .panel-col-first {
-  background-color: #7B726B;
+/* line 132, ../sass/page.scss */
+body.page-node-tasks li {
+  list-style-type: none;
 }
-
-/*-----------------Search Block-------------------------------*/
+/* line 135, ../sass/page.scss */
+body.page-node-tasks .content-inner {
+  border-bottom: 1px solid #e5e5e5;
+}
 /* line 138, ../sass/page.scss */
-#search-block-form .form-text {
-  margin-left: 5px;
-  width: 130px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: #C0C0C0;
-  font-size: 11px;
+body.page-node-tasks .region-sidebar-left {
+  padding: 10px;
+  max-width: 620px;
+}
+/* line 142, ../sass/page.scss */
+body.page-node-tasks .region-sidebar-right {
+  padding: 10px;
+  width: 380px;
+}
+/* line 148, ../sass/page.scss */
+body.page-node-tickets {
+  /*----------begin node ticket-----------*/
+}
+/* line 149, ../sass/page.scss */
+body.page-node-tickets li {
+  list-style-type: none;
+}
+/* line 152, ../sass/page.scss */
+body.page-node-tickets .content-inner {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* line 155, ../sass/page.scss */
+body.page-node-tickets .region-sidebar-left {
+  padding: 10px;
+  max-width: 620px;
+}
+/* line 159, ../sass/page.scss */
+body.page-node-tickets .region-sidebar-right {
+  padding: 10px;
+  width: 380px;
 }
 
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
-/* line 151, ../sass/page.scss */
+/* line 168, ../sass/page.scss */
 #user-login input.form-text {
   width: 200px;
 }
 
-/* line 154, ../sass/page.scss */
-.panel-2col-stacked .inside {
-  margin: 0 !important;
-}
-
-/* line 158, ../sass/page.scss */
-.panel-2col-stacked .inside .inside {
-  background: none;
-  border: none;
-}
-
-/*.panels-flexible-row{
-	padding: 0px;
-}
-.panels-flexible-column-inside-last {
-    padding: 0;
-}*/
-/* line 168, ../sass/page.scss */
+/* line 171, ../sass/page.scss */
 .pane-page-content {
+  margin-top: 30px;
   margin-right: 20px;
   margin-left: 30px;
-  margin-top: 30px;
   max-width: 1070px;
+  /*----------end comments------------------------*/
 }
-
-/**.panels-flexible-row-erpal_panel_layout-1 .tabs-region, .panels-flexible-row-erpal_panel_layout-main-row .tabs-region{
-	display: none;
-}*/
-/* line 177, ../sass/page.scss */
-#erpal_wrapper > .panel-col-last {
-  float: left;
-  width: 100%;
-}
-
-/* line 181, ../sass/page.scss */
-#erpal_wrapper > .panel-col-last > .inside {
-  min-width: 440px;
-  margin-left: 150px;
-}
-
-/*.panels-flexible-erpal_panel_layout {
-    height: 100%;
-}*/
-/* =============================================================================
- *   first row - middle section
- * ========================================================================== */
-/* line 192, ../sass/page.scss */
+/* line 179, ../sass/page.scss */
 .pane-page-content .panel-2col-stacked .panel-col-first {
   width: 700px;
 }
-
-/* line 195, ../sass/page.scss */
+/* line 182, ../sass/page.scss */
 .pane-page-content .panel-2col-stacked .panel-col-last {
-  width: 340px;
   margin-left: 30px;
+  width: 340px;
+}
+/* line 186, ../sass/page.scss */
+.pane-page-content .panel-2col-stacked .inside {
+  margin: 0 !important;
+}
+/* line 188, ../sass/page.scss */
+.pane-page-content .panel-2col-stacked .inside .inside {
+  background: none;
+  border: none;
+}
+/* line 195, ../sass/page.scss */
+.pane-page-content h2.pane-title {
+  margin: 0px 0px 20px 0px;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 36px;
+}
+/* line 199, ../sass/page.scss */
+.pane-page-content .rel-register-build {
+  padding: 10px;
+  -webkit-border-radius: 8px 8px 0 0;
+  -moz-border-radius: 8px 8px 0 0;
+  -ms-border-radius: 8px 8px 0 0;
+  -o-border-radius: 8px 8px 0 0;
+  border-radius: 8px 8px 0 0;
+}
+/* line 202, ../sass/page.scss */
+.pane-page-content .rel-register-build .views-exposed-widgets {
+  margin-bottom: 0px;
+}
+/* line 206, ../sass/page.scss */
+.pane-page-content .views-table {
+  margin-top: 0;
+  border: none;
+}
+/* line 209, ../sass/page.scss */
+.pane-page-content .views-table th {
+  padding: 15px 15px 15px 12px;
+  font-size: 14px;
+}
+/* line 213, ../sass/page.scss */
+.pane-page-content .views-table td {
+  padding: 15px 15px 15px 12px;
+}
+/* line 216, ../sass/page.scss */
+.pane-page-content .views-table td.views-field-title a {
+  text-decoration: underline;
+}
+/* line 220, ../sass/page.scss */
+.pane-page-content .views-table td.views-field-field-customer-ref {
+  text-decoration: underline;
+}
+/* line 225, ../sass/page.scss */
+.pane-page-content .comment {
+  /*----------begin comments------------------------*/
+  padding-top: 15px;
+  padding-bottom: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+/* line 232, ../sass/page.scss */
+.pane-page-content .comment .field-name-comment-body p {
+  font-size: 16px;
+}
+/* line 236, ../sass/page.scss */
+.pane-page-content .comment .comment-header {
+  padding-right: 10px;
+  padding-left: 15px;
+  float: left;
+}
+/* line 243, ../sass/page.scss */
+.pane-page-content .comment .submitted {
+  padding-right: 15px;
+}
+/* line 245, ../sass/page.scss */
+.pane-page-content .comment .submitted .author-datetime {
+  margin-bottom: 12px;
+}
+/* line 249, ../sass/page.scss */
+.pane-page-content .comment .comment-content {
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+/* line 256, ../sass/page.scss */
+.pane-page-content .comment .comment-form {
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+/* line 266, ../sass/page.scss */
+.pane-page-content #comment-form {
+  background: #eeeeee;
 }
 
- /*.panels-flexible-region-erpal_panel_layout-row_first_right {
-    margin-left: 20px;
-}
-.row-first-left{
-	min-width: 360px;
-}*/
-/* =============================================================================
- *   erpal_content_layout
- * ========================================================================== */
-/* line 209, ../sass/page.scss */
-.erpal-content-layout-template .region-sidebar-left {
+/* line 273, ../sass/page.scss */
+.view-filters .rel-register-build .views-exposed-widget .rel-register-link {
+  padding-top: 12px;
+  padding-right: 20px;
   float: left;
 }
 
-/* line 212, ../sass/page.scss */
-.erpal-content-layout-template .region-sidebar-right {
-  float: right;
-}
-
-/* line 215, ../sass/page.scss */
-.erpal-content-layout-template .region-sidebar-right {
-  margin: 0 0 0 10px;
-  width: 250px;
-}
-
-/* line 219, ../sass/page.scss */
-.erpal-content-layout-template .content-inner {
-  padding-bottom: 30px;
-  clear: both;
-  max-width: 1100px;
-  min-width: 1100px;
-  overflow: hidden;
-}
-
-/* line 226, ../sass/page.scss */
-.erpal-content-layout-template .region-sidebar-left {
+/* =============================================================================
+ *   erpal_content_layout
+ * ========================================================================== */
+/* line 282, ../sass/page.scss */
+.region-sidebar-left {
+  /*----------------begin side-bar-left-----------------*/
   max-width: 800px;
   min-width: 360px;
   width: 100%;
+  float: left;
+  /*----------------end red alert-----------------*/
+  /*----------------end alert completed-----------------*/
+}
+/* line 287, ../sass/page.scss */
+.region-sidebar-left.single-row {
+  max-width: 1050px !important;
+}
+/* line 290, ../sass/page.scss */
+.region-sidebar-left .alert {
+  /*----------------begin red alert-----------------*/
+}
+/* line 291, ../sass/page.scss */
+.region-sidebar-left .alert .field_item .field-name-field-task-status-term {
+  color: #cc000c;
+}
+/* line 294, ../sass/page.scss */
+.region-sidebar-left .alert .field_item .field-name-field-date {
+  color: #cc000c;
+}
+/* line 297, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-date {
+  color: #cc000c;
+}
+/* line 300, ../sass/page.scss */
+.region-sidebar-left .alert .field-item {
+  color: #cc000c;
+}
+/* line 303, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-date-1 {
+  color: #cc000c;
+}
+/* line 306, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-next-contact {
+  color: #cc000c;
+}
+/* line 309, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-task-status-term {
+  color: #cc000c;
+}
+/* line 312, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-project-status-term {
+  color: #cc000c;
+}
+/* line 315, ../sass/page.scss */
+.region-sidebar-left .alert .views-field-field-activity-status-term {
+  color: #cc000c;
+}
+/* line 319, ../sass/page.scss */
+.region-sidebar-left .completed {
+  /*----------------begin alert completed-----------------*/
+}
+/* line 320, ../sass/page.scss */
+.region-sidebar-left .completed .field-name-field-task-status-term {
+  color: #088a58;
+}
+/* line 323, ../sass/page.scss */
+.region-sidebar-left .completed .field-name-field-completed {
+  color: #088a58;
+}
+/* line 326, ../sass/page.scss */
+.region-sidebar-left .completed .field-item {
+  color: #088a58;
+}
+/* line 329, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-date {
+  color: #088a58;
+}
+/* line 332, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-date-1 {
+  color: #088a58;
+}
+/* line 335, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-next-contact {
+  color: #088a58;
+}
+/* line 338, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-task-status-term {
+  color: #088a58;
+}
+/* line 341, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-project-status-term {
+  color: #088a58;
+}
+/* line 344, ../sass/page.scss */
+.region-sidebar-left .completed .views-field-field-activity-status-term {
+  color: #088a58;
+}
+/* line 349, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .columns-inner {
+  margin-bottom: 12px;
+}
+/* line 352, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .field-label {
+  float: left;
+}
+/* line 355, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .field-items {
+  float: left;
+}
+/* line 358, ../sass/page.scss */
+.region-sidebar-left .quicktabs-tabpage .field-items .field-item div {
+  float: left;
+}
+/* line 365, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs {
+  margin: 0;
+  padding-left: 0;
+  background: none;
+  overflow: hidden;
+  border: none;
+}
+/* line 371, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li {
+  margin: 0px;
+  padding: 0px;
+  float: left;
+  background-image: none;
+  background-color: #dedede;
+  border-top: 1px solid #eeeeee;
+  border-left: 1px solid #eeeeee;
+}
+/* line 382, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li.active {
+  background-color: #f6f6f6 !important;
+}
+/* line 384, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li.active a {
+  color: #525252 !important;
+}
+/* line 388, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li.last {
+  border-right: 1px solid #eeeeee;
+}
+/* line 391, ../sass/page.scss */
+.region-sidebar-left ul.quicktabs-tabs li a {
+  padding: 1px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  float: left;
+  min-width: 100px;
+  color: #888888;
 }
 
-/* line 231, ../sass/page.scss */
-.pane-page-title.block {
-  margin-bottom: 0;
+/*----------------end side-bar-left-----------------*/
+/* line 401, ../sass/page.scss */
+.region-sidebar-right {
+  /*----------------begin side-bar-right-----------------*/
+  margin-left: 10px;
+  width: 250px;
+  float: right;
+  color: #202020;
+  /*----------------end side-bar-right-----------------*/
 }
-
-/* =============================================================================
- *   Projects
- * ========================================================================== */
-/* line 237, ../sass/page.scss */
-.region-sidebar-right .pane-page-actions li {
+/* line 406, ../sass/page.scss */
+.region-sidebar-right .local_tasks {
+  margin-top: 2px;
+  margin-bottom: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+/* line 413, ../sass/page.scss */
+.region-sidebar-right .local_tasks li {
   margin: 0 2px 7px;
   list-style-type: none;
 }
-
-/* line 241, ../sass/page.scss */
-.region-sidebar-right .pane-page-actions li a {
-  padding: 6px 0px;
+/* line 416, ../sass/page.scss */
+.region-sidebar-right .local_tasks li a {
+  padding-top: 5px;
+  padding-bottom: 6px;
   display: block;
   -webkit-border-radius: 11px;
   -moz-border-radius: 11px;
@@ -365,22 +591,37 @@ body.panels-ipe {
   background-image: -moz-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
   background-image: -o-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
   background-image: linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, #e6e6e6), color-stop(0.72, #efefef));
   text-align: center;
-  font-size: 1.1em;
+  font-size: 13px;
   font-weight: bold;
 }
-
-/* line 260, ../sass/page.scss */
-.region-sidebar-right .pane-page-actions li a:hover {
-  background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
-  background-image: -moz-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+/* line 421, ../sass/page.scss */
+.region-sidebar-right .local_tasks li a:hover {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
   background-image: -webkit-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
-  background-image: -ms-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.37, #dbd8db), color-stop(0.69, #e8e8e8));
+  background-image: -moz-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -o-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+}
+/* line 435, ../sass/page.scss */
+.region-sidebar-right .content-inner {
+  padding-bottom: 30px;
+  clear: both;
+  max-width: 1100px;
+  min-width: 1100px;
+  overflow: hidden;
 }
 
-/* line 275, ../sass/page.scss */
+/*----------------end erpal_content_layout-----------------------*/
+/* line 444, ../sass/page.scss */
+.pane-page-title.block {
+  margin-bottom: 0;
+}
+
+/* =============================================================================
+ *   Projects
+ * ========================================================================== */
+/* line 453, ../sass/page.scss */
 #mini-panel-task_status_panel,
 #mini-panel-activity_status_panel {
   padding: 10px 20px;
@@ -393,62 +634,53 @@ body.panels-ipe {
   color: #525252;
 }
 
-/* line 281, ../sass/page.scss */
+/* line 459, ../sass/page.scss */
 .panel-display .pane-entity-field h2.pane-title {
   padding-right: 5px;
   font-size: 12px;
   color: #525252;
 }
 
-/* line 286, ../sass/page.scss */
+/* line 464, ../sass/page.scss */
 .panel-display .pane-entity-field .block-content {
   float: left;
 }
 
-/* line 289, ../sass/page.scss */
+/* line 467, ../sass/page.scss */
 .panel-display .pane-entity-field .ds-form .group-left {
   width: auto;
   float: none;
 }
 
-/* line 294, ../sass/page.scss */
+/* line 472, ../sass/page.scss */
 .ctools-collapsible-content .panel-display .pane-entity-field .block-content,
 .ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title {
   float: none;
 }
 
-/* line 298, ../sass/page.scss */
+/* line 476, ../sass/page.scss */
 .panel-display .pane-entity-field .form-item label,
 .panel-display .pane-entity-field .rel-register-link {
   float: left;
 }
 
-/* line 301, ../sass/page.scss */
+/* line 479, ../sass/page.scss */
 .panel-display .pane-entity-field .field-type-taxonomy-term-reference {
   margin: 0px;
 }
 
-/* line 304, ../sass/page.scss */
+/* line 482, ../sass/page.scss */
 .panel-display .pane-entity-field .form-item {
   margin-bottom: 0px;
 }
 
-/* line 307, ../sass/page.scss */
-ul.quicktabs-tabs {
-  margin: 0;
-  padding-left: 0;
-  background: none;
-  overflow: hidden;
-  border: none;
-}
-
-/* line 314, ../sass/page.scss */
+/* line 485, ../sass/page.scss */
 .panel-display .ui-widget-content {
   background: none;
   border: none;
 }
 
-/* line 318, ../sass/page.scss */
+/* line 489, ../sass/page.scss */
 .panel-display .ui-tabs .ui-tabs-panel {
   -webkit-border-radius: 11px;
   -moz-border-radius: 11px;
@@ -463,25 +695,7 @@ ul.quicktabs-tabs {
   background-color: #eeeeee;
 }
 
-/* line 327, ../sass/page.scss */
-ul.quicktabs-tabs li a {
-  padding: 1px 12px;
-  font-size: 12px;
-  font-weight: bold;
-  text-decoration: none;
-  display: block;
-  float: left;
-  min-width: 100px;
-}
-
-/* line 332, ../sass/page.scss */
-ul.quicktabs-tabs li {
-  margin: 0px;
-  padding: 0;
-  float: left;
-}
-
-/* line 337, ../sass/page.scss */
+/* line 499, ../sass/page.scss */
 .ctools-collapsible-container .ctools-collapsible-handle {
   cursor: pointer;
 }
@@ -489,12 +703,12 @@ ul.quicktabs-tabs li {
 /*
  *  collapsible
  */
-/* line 344, ../sass/page.scss */
+/* line 506, ../sass/page.scss */
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
   padding: 3px 5px 3px 30px;
 }
 
-/* line 347, ../sass/page.scss */
+/* line 509, ../sass/page.scss */
 .ctools-collapsible-processed h2.pane-title {
   margin: 0;
   padding: 3px 5px 0px 30px;
@@ -502,93 +716,93 @@ ul.quicktabs-tabs li {
   line-height: 12px;
 }
 
-/* line 353, ../sass/page.scss */
+/* line 515, ../sass/page.scss */
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
   padding-left: 0;
   font-weight: bold;
 }
 
-/* line 357, ../sass/page.scss */
+/* line 519, ../sass/page.scss */
 .ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label {
   margin: 0;
   clear: both;
   line-height: 12px;
 }
 
-/* line 362, ../sass/page.scss */
+/* line 524, ../sass/page.scss */
 .ctools-collapsible-container .block-content a {
   text-decoration: underline;
 }
 
-/* line 366, ../sass/page.scss */
+/* line 528, ../sass/page.scss */
 .ctools-collapsible-processed section,
 .ctools-collapsible-processed .field-name-field-books-ref {
   margin-bottom: 10px;
   padding-left: 10px;
 }
 
-/* line 370, ../sass/page.scss */
+/* line 532, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-task-assigned-users {
   padding-left: 0px;
 }
 
-/* line 373, ../sass/page.scss */
+/* line 535, ../sass/page.scss */
 .ctools-collapsible-processed .panel-separator {
   height: 1px;
   overflow: hidden;
 }
 
-/* line 377, ../sass/page.scss */
+/* line 539, ../sass/page.scss */
 .ctools-collapsible-processed ul {
   margin: 0;
   padding: 0px;
 }
 
-/* line 381, ../sass/page.scss */
+/* line 543, ../sass/page.scss */
 .ctools-collapsible-processed ul li {
   list-style-type: none;
 }
 
-/* line 384, ../sass/page.scss */
+/* line 546, ../sass/page.scss */
 .ctools-collapsible-processed .field-type-taxonomy-term-reference {
   margin: 0;
 }
 
-/* line 387, ../sass/page.scss */
+/* line 549, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-asset-files {
   margin-bottom: 10px;
 }
 
-/* line 390, ../sass/page.scss */
+/* line 552, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-asset-files .field-item {
   margin-left: 20px;
   padding-left: 0 !important;
   display: list-item;
 }
 
-/* line 396, ../sass/page.scss */
+/* line 558, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a,
 .ctools-collapsible-processed .field-name-field-books-ref a {
   text-decoration: underline;
 }
 
-/* line 399, ../sass/page.scss */
+/* line 561, ../sass/page.scss */
 .ctools-collapsible-container .ctools-collapsible-content .field-items {
   clear: both;
 }
 
-/* line 402, ../sass/page.scss */
+/* line 564, ../sass/page.scss */
 .ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item {
   padding-left: 10px;
 }
 
-/* line 407, ../sass/page.scss */
+/* line 569, ../sass/page.scss */
 #mini-panel-task_status_panel .panel-separator,
 #mini-panel-activity_status_panel .panel-separator {
   display: none;
 }
 
-/* line 411, ../sass/page.scss */
+/* line 573, ../sass/page.scss */
 #mini-panel-task_status_panel section,
 #mini-panel-activity_status_panel section {
   margin-bottom: 0;
@@ -596,34 +810,34 @@ ul.quicktabs-tabs li {
   float: left;
 }
 
-/* line 416, ../sass/page.scss */
-.block-content .local_tasks, #mini-panel-task_status_panel li {
+/* line 578, ../sass/page.scss */
+#mini-panel-task_status_panel li {
   padding: 0px;
   list-style-type: none;
 }
 
-/* line 421, ../sass/page.scss */
+/* line 583, ../sass/page.scss */
 #mini-panel-task_status_panel ul,
 #mini-panel-activity_status_panel ul {
   padding-left: 5px;
 }
 
-/* line 424, ../sass/page.scss */
+/* line 586, ../sass/page.scss */
 .region-sidebar-right .panel-separator {
   display: none;
 }
 
-/* line 427, ../sass/page.scss */
+/* line 589, ../sass/page.scss */
 .ctools-collapsible-container .panel-separator {
   display: block;
 }
 
-/* line 430, ../sass/page.scss */
+/* line 592, ../sass/page.scss */
 .ctools-collapsible-container .no-title {
   padding-left: 10px;
 }
 
-/* line 433, ../sass/page.scss */
+/* line 595, ../sass/page.scss */
 .ctools-collapsible-container .ctools-toggle {
   background-position: 7px 8px;
 }
@@ -631,117 +845,67 @@ ul.quicktabs-tabs li {
 /*
  *  table
  */
-/* line 439, ../sass/page.scss */
-.block-content .view-content .views-table th {
-  font-size: 14px;
-}
-
-/* line 442, ../sass/page.scss */
-.block-content .view-content .views-table td, .block-content .view-content .views-table th {
-  padding: 15px 15px 15px 12px;
-}
-
-/* line 445, ../sass/page.scss */
-.block-content .view-content .views-table {
-  margin-top: 0;
-  border: none;
-}
-
-/* line 449, ../sass/page.scss */
-.view-filters .rel-register-build {
-  padding: 10px;
-  -webkit-border-top-left-radius: 8px;
-  -moz-border-radius-topleft: 8px;
-  border-top-left-radius: 8px;
-  -webkit-border-top-right-radius: 8px;
-  -moz-border-radius-rightleft: 8px;
-  border-top-right-radius: 8px;
-}
-
-/* line 458, ../sass/page.scss */
-.view-filters .rel-register-build .views-exposed-widgets {
-  margin-bottom: 0px;
-}
-
-/* line 462, ../sass/page.scss */
-.block-content .view-content .views-table td.views-field-title a,
-.block-content .view-content .views-table td.views-field-field-customer-ref {
-  text-decoration: underline;
-}
-
-/* line 465, ../sass/page.scss */
-.view-filters .rel-register-build .views-exposed-widget .rel-register-link {
-  padding-top: 12px;
-  padding-right: 20px;
-  float: left;
-}
-
-/* line 470, ../sass/page.scss */
+/* line 602, ../sass/page.scss */
 .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 1.3em;
 }
 
-/* line 473, ../sass/page.scss */
+/* line 605, ../sass/page.scss */
 .view-empty {
   padding: 15px;
 }
 
-/* line 476, ../sass/page.scss */
-.local_tasks {
-  margin: 2px 0 0;
-}
-
-/* line 479, ../sass/page.scss */
+/* line 608, ../sass/page.scss */
 .quicktabs-tabpage .views-table .views-field-title {
   width: 115px;
 }
 
-/* line 482, ../sass/page.scss */
+/* line 611, ../sass/page.scss */
 .quicktabs-tabpage .views-field-field-task-status-term {
   width: 70px;
 }
 
-/* line 485, ../sass/page.scss */
+/* line 614, ../sass/page.scss */
 .page-projects .views-field-title {
   width: 200px;
 }
 
-/* line 488, ../sass/page.scss */
+/* line 617, ../sass/page.scss */
 .page-projects .views-field-field-customer-ref {
   width: 200px;
 }
 
-/* line 492, ../sass/page.scss */
+/* line 621, ../sass/page.scss */
 .page-projects .views-field-field-project-status-term,
 .page-projects .views-field-field-priority-term {
   width: 100px;
 }
 
-/* line 495, ../sass/page.scss */
+/* line 624, ../sass/page.scss */
 .page-projects #edit-field-customer-ref-target-id-wrapper {
   margin-left: 45px;
 }
 
-/* line 498, ../sass/page.scss */
+/* line 627, ../sass/page.scss */
 .page-projects #edit-field-project-status-term-tid-wrapper {
   margin-left: 23px;
 }
 
 /*--------------------------------for erpal task view row layout------------------------------------------*/
-/* line 505, ../sass/page.scss */
+/* line 634, ../sass/page.scss */
 .erpal-task-view-row-layout .region-sidebar-left {
   width: 70%;
   float: left;
 }
 
-/* line 509, ../sass/page.scss */
+/* line 638, ../sass/page.scss */
 .erpal-task-view-row-layout .region-sidebar-right {
   margin-left: 20px;
   width: 28%;
   float: left;
 }
 
-/* line 514, ../sass/page.scss */
+/* line 643, ../sass/page.scss */
 .erpal-task-view-row-layout .content-inner {
   margin-bottom: 20px;
   clear: both;
@@ -750,75 +914,54 @@ ul.quicktabs-tabs li {
 }
 
 /*---------------ticket details-----------*/
-/* line 522, ../sass/page.scss */
+/* line 651, ../sass/page.scss */
 .field-name-task-title .field-item a {
   font-weight: bold;
   font-size: 16px;
 }
 
-/* line 526, ../sass/page.scss */
+/* line 655, ../sass/page.scss */
 .field-name-task-title .field-item p {
   margin-bottom: 0px;
 }
 
-/* line 529, ../sass/page.scss */
+/* line 658, ../sass/page.scss */
 .node-erpal-task .columns-inner {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
 
-/* line 534, ../sass/page.scss */
+/* line 663, ../sass/page.scss */
 #tabs-tasks_by_project_panel-middle ul.field-items {
   padding: 0px;
   margin: 0px;
 }
 
-/* line 543, ../sass/page.scss */
-#tabs-tasks_by_project_panel-middle-1,
-#tabs-tasks_by_project_panel-middle-2,
-#quicktabs-tabpage-tickets_by_project_tabs-2,
-#tabs-tickets_by_project_panel-middle-1,
-#tabs-tickets_by_project_panel-middle-2 {
-  background: transparent;
-  border-radius: 0 0 0 0;
-  padding: 0;
-}
-
-/* line 549, ../sass/page.scss */
+/* line 669, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .content-column .content-inner,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner {
   overflow: hidden;
 }
 
-/* line 557, ../sass/page.scss */
-.quicktabs-tabpage .view-mode-view_row_details .field-label,
-.quicktabs-tabpage .view-mode-view_row_details .field-items,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-.quicktabs-tabpage .field-collection-item-field-pricing .field-label,
-.quicktabs-tabpage .field-collection-item-field-pricing .field-items {
-  float: left;
-}
-
-/* line 561, ../sass/page.scss */
+/* line 674, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above {
   width: 100%;
 }
 
-/* line 564, ../sass/page.scss */
+/* line 677, ../sass/page.scss */
 .quicktabs-tabpage .field-label {
   margin: 0px !important;
 }
 
-/* line 568, ../sass/page.scss */
+/* line 681, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div {
   font-weight: bold;
 }
 
-/* line 574, ../sass/page.scss */
+/* line 687, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
@@ -827,7 +970,7 @@ ul.quicktabs-tabs li {
   text-decoration: underline;
 }
 
-/* line 581, ../sass/page.scss */
+/* line 694, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field .field-label,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field .field-label,
@@ -835,127 +978,43 @@ ul.quicktabs-tabs li {
   padding-right: 5px;
 }
 
-/* line 585, ../sass/page.scss */
+/* line 698, ../sass/page.scss */
 .quicktabs-tabpage .field-group-format section.field,
 #quicktabs-tabpage-tasks_by_project_tabs-2 section.field {
   overflow: hidden;
   clear: both;
 }
 
-/* line 589, ../sass/page.scss */
-.page-node-tasks ul li {
-  list-style-type: none;
-}
-
-/* line 592, ../sass/page.scss */
-.page-node-tasks .quicktabs-tabpage .article.view-mode-view_row_details .columns-inner {
-  padding: 0;
-}
-
-/* line 595, ../sass/page.scss */
-.page-node-tasks .content-inner {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-/* line 599, ../sass/page.scss */
-.page-node-tasks .region-sidebar-left,
-.page-node-tasks .region-sidebar-right {
-  padding: 10px;
-}
-
-/* line 602, ../sass/page.scss */
-.page-node-tasks .region-sidebar-left {
-  max-width: 650px;
-}
-
-/* line 605, ../sass/page.scss */
-.page-node-tasks .region-sidebar-right {
-  width: 400px;
-}
-
-/* line 608, ../sass/page.scss */
-.page-node-tasks .node-erpal-task a {
-  text-decoration: underline;
-}
-
-/* line 612, ../sass/page.scss */
-#quicktabs-tabpage-tickets_by_project_tabs-2 .view-content .item-list ul li.field-item,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .view-content .item-list ul li.field-item {
-  margin: 0px;
-}
-
-/* line 616, ../sass/page.scss */
-#quicktabs-tabpage-tickets_by_project_tabs-2 .item-list ul,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .item-list ul {
-  padding: 0px;
-}
-
-/* line 620, ../sass/page.scss */
-#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-container,
-#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-container {
-  background-color: transparent;
-  border: none;
-}
-
-/* line 625, ../sass/page.scss */
-#tabs-tasks_by_project_panel-middle-2 .ctools-collapsible-content,
-#tabs-tickets_by_project_panel-middle-2 .ctools-collapsible-content {
-  padding-top: 0px;
-}
-
-/* line 628, ../sass/page.scss */
-.erpal-content-layout-template .single-row {
-  max-width: 100%;
-}
-
-/* line 632, ../sass/page.scss */
+/* line 704, ../sass/page.scss */
 .field-name-files-count .field-items,
 .field-name-comment-count .field-items {
   padding-top: 5px;
   width: 50%;
 }
 
-/* line 636, ../sass/page.scss */
+/* line 708, ../sass/page.scss */
 .inline_fields .field {
   margin-right: 50px;
   clear: none !important;
   float: left;
 }
 
-/* line 641, ../sass/page.scss */
+/* line 713, ../sass/page.scss */
 .inline_fields {
   clear: both;
 }
 
-/* line 644, ../sass/page.scss */
+/* line 716, ../sass/page.scss */
 ul.pager li a, ul.pager li.pager-current {
   font-size: 1.2em;
 }
 
-/* line 647, ../sass/page.scss */
-.quicktabs-tabpage .article.view-mode-view_row_details .columns-inner {
-  padding: 15px;
-}
-
-/* line 651, ../sass/page.scss */
-#quicktabs-tabpage-tasks_by_project_tabs-2 .item-list ul li,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .item-list ul li {
-  margin: 0 0 12px 0;
-}
-
-/* line 655, ../sass/page.scss */
-#quicktabs-tabpage-tasks_by_project_tabs-1 .view-content,
-#quicktabs-tabpage-tickets_by_project_tabs-1 .view-content {
-  padding: 15px 15px 15px 10px;
-  background-color: #FFFFFF;
-}
-
-/* line 659, ../sass/page.scss */
+/* line 719, ../sass/page.scss */
 .view-mode-view_row_details .content-inner {
   padding-bottom: 0px;
 }
 
-/* line 662, ../sass/page.scss */
+/* line 722, ../sass/page.scss */
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
@@ -964,163 +1023,112 @@ ul.pager li a, ul.pager li.pager-current {
   border-radius: 5px;
 }
 
-/* line 669, ../sass/page.scss */
-article.comment {
-  padding: 15px 0px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-
-/* line 675, ../sass/page.scss */
-.comment .comment-header {
-  padding-right: 10px;
-  padding-left: 15px;
-  float: left;
-}
-
-/* line 680, ../sass/page.scss */
-.comment .comment-content {
-  padding: 15px 15px 0;
-}
-
-/* line 683, ../sass/page.scss */
-.comment .submitted {
-  padding-right: 15px;
-}
-
-/* line 686, ../sass/page.scss */
-.comment .author-datetime {
-  margin-bottom: 12px;
-}
-
-/* line 690, ../sass/page.scss */
-.pane-node-body p,
-.comment .field-name-comment-body p {
+/* line 729, ../sass/page.scss */
+.pane-node-body p {
   font-size: 16px;
 }
 
-/* line 693, ../sass/page.scss */
-.comment-form {
-  padding: 15px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-
-/* line 699, ../sass/page.scss */
+/* line 733, ../sass/page.scss */
 .quicktabs-tabpage #edit-nid {
   width: 40px;
 }
 
-/* line 702, ../sass/page.scss */
+/* line 736, ../sass/page.scss */
 .quicktabs-tabpage #edit-title {
   width: 120px;
 }
 
-/* line 705, ../sass/page.scss */
+/* line 739, ../sass/page.scss */
 .quicktabs-tabpage #edit-field-priority-term-tid {
   width: 75px;
 }
 
-/* line 708, ../sass/page.scss */
+/* line 742, ../sass/page.scss */
 .quicktabs-tabpage #edit-field-task-type-term-tid {
   width: 60px;
 }
 
-/* line 711, ../sass/page.scss */
+/* line 745, ../sass/page.scss */
 .page-projects-timetrackings #edit-field-date-time-value-wrapper {
   margin-left: 45px;
 }
 
-/* line 714, ../sass/page.scss */
+/* line 748, ../sass/page.scss */
 .page-projects-timetrackings #edit-field-project-ref-target-id-wrapper {
   margin-left: 440px;
 }
 
-/* line 717, ../sass/page.scss */
+/* line 751, ../sass/page.scss */
 .page-projects-timetrackings #edit-field-project-ref-target-id {
   width: 120px;
 }
 
-/* line 720, ../sass/page.scss */
+/* line 754, ../sass/page.scss */
 .page-projects-timetrackings .views-field-field-date-time {
   width: 140px;
 }
 
-/* line 723, ../sass/page.scss */
+/* line 757, ../sass/page.scss */
 .page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2 {
   width: 120px;
 }
 
-/* line 726, ../sass/page.scss */
+/* line 760, ../sass/page.scss */
 .page-projects-timetrackings #edit-uid {
   width: 90px;
 }
 
-/* line 729, ../sass/page.scss */
+/* line 763, ../sass/page.scss */
 .page-projects-timetrackings .views-submit-button {
   clear: both;
 }
 
-/* line 732, ../sass/page.scss */
+/* line 766, ../sass/page.scss */
 .page-projects-timetrackings #edit-uid-wrapper {
   width: 140px;
 }
 
-/* line 735, ../sass/page.scss */
+/* line 769, ../sass/page.scss */
 .page-projects-timetrackings #edit-uid-wrapper .description {
   line-height: 12px;
 }
 
-/* line 738, ../sass/page.scss */
+/* line 772, ../sass/page.scss */
 .page-node-edit div.autocomplete-deluxe-multiple {
   width: auto;
 }
 
 /* crm */
-/* line 743, ../sass/page.scss */
+/* line 777, ../sass/page.scss */
 .field-type-datetime fieldset .date-padding {
   width: 270px;
 }
 
-/* line 747, ../sass/page.scss */
+/* line 781, ../sass/page.scss */
 .field-type-datetime fieldset,
 .field-type-datetime fieldset .date-padding {
   padding: 0;
   margin: 0;
 }
 
-/* line 751, ../sass/page.scss */
+/* line 785, ../sass/page.scss */
 .field-name-field-next-contact form {
   width: 500px;
 }
 
-/* line 754, ../sass/page.scss */
+/* line 788, ../sass/page.scss */
 .field-name-field-next-contact form #edit-field-next-contact {
   float: left;
 }
 
-/* line 758, ../sass/page.scss */
+/* line 792, ../sass/page.scss */
 .field-name-field-next-contact form .form-actions {
   width: 70px;
   float: left;
 }
 
 /* comments */
-/* line 765, ../sass/page.scss */
-article.comment {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-
-/* line 770, ../sass/page.scss */
-article.comment .field-name-comment-body p {
-  font-size: 16px;
-}
-
-/* line 773, ../sass/page.scss */
+/* line 800, ../sass/page.scss */
 #comment-form {
   padding: 15px;
   margin-top: 20px;
@@ -1129,25 +1137,25 @@ article.comment .field-name-comment-body p {
   border-radius: 5px;
 }
 
-/* line 780, ../sass/page.scss */
+/* line 807, ../sass/page.scss */
 #comment-form .field-type-datetime {
   width: 300px;
   float: left;
 }
 
-/* line 784, ../sass/page.scss */
+/* line 811, ../sass/page.scss */
 #comment-form #edit-author--2 {
   clear: both;
 }
 
-/* line 787, ../sass/page.scss */
+/* line 814, ../sass/page.scss */
 #comment-form #edit-field-contacts-ref {
   width: 350px;
   float: left;
   margin-right: 40px;
 }
 
-/* line 795, ../sass/page.scss */
+/* line 822, ../sass/page.scss */
 #comment-form #edit-field-contacts-ref table,
 #comment-form #edit-field-contacts-ref table input,
 #comment-form #edit-field-asset-files table,
@@ -1155,56 +1163,56 @@ article.comment .field-name-comment-body p {
   width: 310px;
 }
 
-/* line 798, ../sass/page.scss */
+/* line 825, ../sass/page.scss */
 #comment-form #edit-field-asset-files {
   width: 350px;
   float: left;
 }
 
-/* line 802, ../sass/page.scss */
+/* line 829, ../sass/page.scss */
 #comment-form #edit-actions {
   clear: both;
 }
 
-/* line 805, ../sass/page.scss */
+/* line 832, ../sass/page.scss */
 #comment-form .field-widget-options-select {
   width: 100px;
   float: left;
   margin-right: 15px;
 }
 
-/* line 810, ../sass/page.scss */
+/* line 837, ../sass/page.scss */
 #comment-form .field-name-field-activity-status-term {
   width: 160px !important;
   float: left;
 }
 
-/* line 814, ../sass/page.scss */
+/* line 841, ../sass/page.scss */
 .comment-content section {
   width: 250px;
   float: left;
 }
 
-/* line 818, ../sass/page.scss */
+/* line 845, ../sass/page.scss */
 .comment nav {
   padding: 0 15px;
   clear: both;
 }
 
 /*****DELETE****/
-/* line 825, ../sass/page.scss */
+/* line 852, ../sass/page.scss */
 .rel-register-link {
   display: none;
 }
 
 /****DELEEETE****/
 /* multi select boxes */
-/* line 833, ../sass/page.scss */
+/* line 860, ../sass/page.scss */
 .views-exposed-form .views-exposed-widget {
-  padding-right: 10px !important;
+  padding-right: 7px !important;
 }
 
-/* line 836, ../sass/page.scss */
+/* line 863, ../sass/page.scss */
 .views-exposed-form button span:not(.ui-icon) {
   position: absolute;
   overflow: hidden;
@@ -1213,7 +1221,7 @@ article.comment .field-name-comment-body p {
   line-height: 13px;
 }
 
-/* line 843, ../sass/page.scss */
+/* line 870, ../sass/page.scss */
 .views-exposed-form button {
   font-size: 11px;
   height: 25px;
@@ -1221,7 +1229,7 @@ article.comment .field-name-comment-body p {
   overflow: hidden;
 }
 
-/* line 854, ../sass/page.scss */
+/* line 881, ../sass/page.scss */
 #edit-field-task-status-term-tid-wrapper,
 #edit-field-activity-status-term-tid-wrapper,
 #edit-field-priority-term-tid-wrapper,
@@ -1231,155 +1239,155 @@ article.comment .field-name-comment-body p {
   width: 130px !important;
 }
 
-/* line 857, ../sass/page.scss */
+/* line 884, ../sass/page.scss */
 .ui-multiselect-menu {
   width: 200px !important;
 }
 
-/* line 860, ../sass/page.scss */
+/* line 887, ../sass/page.scss */
 .ui-helper-reset {
   position: relative;
 }
 
-/* line 863, ../sass/page.scss */
+/* line 890, ../sass/page.scss */
 .ui-multiselect-close {
   position: absolute;
   right: 0;
 }
 
-/* line 867, ../sass/page.scss */
+/* line 894, ../sass/page.scss */
 .ui-multiselect-header {
   padding: 3px 0;
 }
 
 /*---------------------------------dashboard styles-----------------------------------------*/
-/* line 871, ../sass/page.scss */
+/* line 898, ../sass/page.scss */
 #homebox .portlet-content {
   padding: 0px;
 }
 
-/* line 874, ../sass/page.scss */
+/* line 901, ../sass/page.scss */
 #homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
   border: none;
 }
 
-/* line 877, ../sass/page.scss */
+/* line 904, ../sass/page.scss */
 #homebox .more-link {
   padding: 4px 10px;
 }
 
-/* line 880, ../sass/page.scss */
+/* line 907, ../sass/page.scss */
 #homebox .homebox-column {
   margin: 0;
   padding: 0;
 }
 
-/* line 884, ../sass/page.scss */
+/* line 911, ../sass/page.scss */
 #homebox .homebox-column-wrapper-1 {
   margin-right: 20px;
 }
 
-/* line 887, ../sass/page.scss */
+/* line 914, ../sass/page.scss */
 #homebox .homebox-column-wrapper {
   float: left;
   width: 48% !important;
 }
 
-/* line 891, ../sass/page.scss */
+/* line 918, ../sass/page.scss */
 #homebox .homebox-column-wrapper-1 {
   margin-right: 25px;
 }
 
-/* line 894, ../sass/page.scss */
+/* line 921, ../sass/page.scss */
 #homebox .homebox-column-wrapper {
   width: 48% !important;
 }
 
-/* line 897, ../sass/page.scss */
+/* line 924, ../sass/page.scss */
 #homebox .portlet-header {
   font-weight: normal;
 }
 
-/* line 900, ../sass/page.scss */
+/* line 927, ../sass/page.scss */
 #homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption {
   padding-left: 12px;
 }
 
-/* line 903, ../sass/page.scss */
+/* line 930, ../sass/page.scss */
 #homebox .form-submit {
   margin-left: 12px;
 }
 
-/* line 906, ../sass/page.scss */
+/* line 933, ../sass/page.scss */
 #homebox .homebox-portlet .portlet-header .portlet-title {
   padding-left: 8px;
 }
 
-/* line 909, ../sass/page.scss */
+/* line 936, ../sass/page.scss */
 #homebox .homebox-portlet .portlet-header {
   border: none;
 }
 
 /*-------------------------------------crm styles-------------------------------------*/
-/* line 913, ../sass/page.scss */
+/* line 940, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
   margin-bottom: 7px;
 }
 
-/* line 916, ../sass/page.scss */
+/* line 943, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
   margin: 0;
   padding: 0;
   border: medium none;
 }
 
-/* line 921, ../sass/page.scss */
+/* line 948, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
   padding: 10px;
   font-size: 14px;
 }
 
-/* line 925, ../sass/page.scss */
+/* line 952, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li {
   list-style-type: none;
   padding-right: 7px;
 }
 
-/* line 929, ../sass/page.scss */
+/* line 956, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul {
   margin: 0;
   padding: 0;
   float: none;
 }
 
-/* line 934, ../sass/page.scss */
+/* line 961, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane table {
   margin: 0;
   border: none;
 }
 
-/* line 938, ../sass/page.scss */
+/* line 965, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane table td {
   padding: 10px;
 }
 
-/* line 942, ../sass/page.scss */
+/* line 969, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container {
   border: none;
 }
 
-/* line 945, ../sass/page.scss */
+/* line 972, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a {
   font-size: 1.2em;
   text-decoration: underline;
 }
 
-/* line 949, ../sass/page.scss */
+/* line 976, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
   margin: 0px;
 }
 
-/* line 952, ../sass/page.scss */
+/* line 979, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
   padding: 10px;
   text-align: right;
@@ -1391,42 +1399,42 @@ article.comment .field-name-comment-body p {
   border-bottom-right-radius: 2px;
 }
 
-/* line 962, ../sass/page.scss */
+/* line 989, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference {
   margin: 0px;
 }
 
-/* line 965, ../sass/page.scss */
+/* line 992, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title {
   font-size: 26px;
 }
 
-/* line 968, ../sass/page.scss */
+/* line 995, ../sass/page.scss */
 .node-type-erpal-contact .panel-display .pane-entity-field .block-content {
   float: none;
 }
 
-/* line 971, ../sass/page.scss */
+/* line 998, ../sass/page.scss */
 .page-crm-contacts table .views-field-field-contact-image {
   width: 160px;
 }
 
-/* line 974, ../sass/page.scss */
+/* line 1001, ../sass/page.scss */
 .page-crm-contacts table .views-field-title {
   width: 345px;
 }
 
-/* line 977, ../sass/page.scss */
+/* line 1004, ../sass/page.scss */
 .region-sidebar-right .ctools-collapsible-container figure {
   text-align: center;
 }
 
-/* line 980, ../sass/page.scss */
+/* line 1007, ../sass/page.scss */
 #mini-panel-contact_details_panel {
   margin-top: 2px;
 }
 
-/* line 983, ../sass/page.scss */
+/* line 1010, ../sass/page.scss */
 .ctools-collapsible-processed .ctools-collapsible-content {
   padding-top: 10px;
 }
@@ -1434,7 +1442,7 @@ article.comment .field-name-comment-body p {
 /*
  *  Buttons
  */
-/* line 993, ../sass/page.scss */
+/* line 1020, ../sass/page.scss */
 a.button:link,
 a.button:visited,
 a.button:hover,
@@ -1443,7 +1451,7 @@ a.button:active {
   color: #5a5a5a;
 }
 
-/* line 997, ../sass/page.scss */
+/* line 1024, ../sass/page.scss */
 input.form-submit,
 a.button {
   background: white url(../images/buttons.png) 0 0 repeat-x;
@@ -1454,18 +1462,8 @@ a.button {
   color: #3a3a3a;
 }
 
-/* line 1007, ../sass/page.scss */
+/* line 1034, ../sass/page.scss */
 input.form-submit:hover,
 input.form-submit:focus {
   background: #dedede;
-}
-
-/* line 1010, ../sass/page.scss */
-.pane-page-tabs {
-  -webkit-box-shadow: 2px 3px 4px #b6b6b6;
-  -moz-box-shadow: 2px 3px 4px #b6b6b6;
-  box-shadow: 2px 3px 4px #b6b6b6;
-  height: 42px;
-  background-color: white;
-  border-bottom: 2px solid #ffa800;
 }

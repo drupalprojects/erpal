@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
 Document   : global_vars_a_mixins
 Created on : December, 2012, 
@@ -21,45 +20,22 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*background for quicktabs li*/
 /*background for pane titles, table th*/
 /* color for right sidebar, pane title*/
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
 /* left sidebar link*/
-/*@mixin h2_pane_title{
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+/*@mixin h2_pane_titcle{
 	padding-right: 5px;
 	color: $dark_black;
 	font:{
-		size: $font-size_12;
+		size: 12px;
 	}
 	background-color: none;
 }*/
-=======
-/*
-Document   : global_vars_a_mixins
-Created on : December, 2012, 
-Description:
-Purpose of the stylesheet follows.
-*/
-/*
-TODO customize this sample style
-Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
-*/
-/*******************/
-/* IMPORTS
-/*******************/
-/*******************/
-/* VARIABLES
-/*******************/
-/* color variables */
-/* main background*/
-/* background*/
-/*background for quicktabs li*/
-/*background for pane titles, table th*/
-/* color for right sidebar, pane title*/
-/* left sidebar link*/
-/*@mixin h2_pane_title{
-	padding-right: 5px;
-	color: $dark_black;
-	font:{
-		size: $font-size_12;
-	}
-	background-color: none;
-}*/
->>>>>>> 63fb14df39709f96b134c0c5cb96afb12a6b8683
