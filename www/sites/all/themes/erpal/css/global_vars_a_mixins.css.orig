@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 Document   : global_vars_a_mixins
 Created on : December, 2012, 
@@ -32,6 +33,40 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
+=======
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
+/* left sidebar link*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
 /*@mixin h2_pane_titcle{
 	padding-right: 5px;
 	color: $dark_black;
@@ -40,3 +75,4 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 	}
 	background-color: none;
 }*/
+>>>>>>> 81b817d60ee853c77a9db40f9ffd720b9cf1c253
