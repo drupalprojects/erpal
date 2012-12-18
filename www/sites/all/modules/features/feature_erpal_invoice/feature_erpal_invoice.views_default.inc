@@ -622,6 +622,180 @@ function feature_erpal_invoice_views_default_views() {
   /* Display: billables pane */
   $handler = $view->new_display('panel_pane', 'billables pane', 'panel_pane_3');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'views_calc';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'billable_id' => 'billable_id',
+    'subject_nid' => 'subject_nid',
+    'subject' => 'subject',
+    'billed' => 'billed',
+    'date_delivery' => 'date_delivery',
+    'quantity' => 'quantity',
+    'single_price' => 'single_price',
+    'total_price_no_vat' => 'total_price_no_vat',
+    'total_vat' => 'total_vat',
+    'total_price' => 'total_price',
+    'currency' => 'currency',
+    'title_1' => 'title_1',
+    'title' => 'title',
+    'field_service_category_term' => 'field_service_category_term',
+    'edit_billable' => 'edit_billable',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'billable_id' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'subject_nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'subject' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'billed' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'date_delivery' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'quantity' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'single_price' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 1,
+      'calc' => array(
+        'SUM' => 'SUM',
+      ),
+    ),
+    'total_price_no_vat' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'total_vat' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 1,
+      'calc' => array(
+        'SUM' => 'SUM',
+      ),
+    ),
+    'total_price' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'currency' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'title_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_service_category_term' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'edit_billable' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+  );
+  $handler->display->display_options['style_options']['detailed_values'] = '0';
+  $handler->display->display_options['style_options']['precision'] = '2';
+  $handler->display->display_options['style_options']['decimal'] = ',';
+  $handler->display->display_options['style_options']['separator'] = '';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['billables'] = array(
     t('Master'),
@@ -690,9 +864,18 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
-  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_plugin'] = 'views_calc';
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
+    'field_invoice_date' => 'field_invoice_date',
+    'field_invoice_number' => 'field_invoice_number',
+    'field_payed' => 'field_payed',
+    'field_payment_date' => 'field_payment_date',
+    'field_price_no_vat' => 'field_price_no_vat',
+    'field_invoice_total' => 'field_invoice_total',
+    'field_currency' => 'field_currency',
+    'field_contractor_ref' => 'field_contractor_ref',
+    'field_customer_ref' => 'field_customer_ref',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -702,8 +885,99 @@ function feature_erpal_invoice_views_default_views() {
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_invoice_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_invoice_number' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_payed' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_payment_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_price_no_vat' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 1,
+      'calc' => array(
+        'SUM' => 'SUM',
+      ),
+    ),
+    'field_invoice_total' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 1,
+      'calc' => array(
+        'SUM' => 'SUM',
+      ),
+    ),
+    'field_currency' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_contractor_ref' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_customer_ref' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
     ),
   );
+  $handler->display->display_options['style_options']['detailed_values'] = '0';
+  $handler->display->display_options['style_options']['precision'] = '0';
+  $handler->display->display_options['style_options']['decimal'] = ',';
+  $handler->display->display_options['style_options']['separator'] = '';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -714,7 +988,7 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['label'] = 'Invoice title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Field: Content: Invoice Date */
@@ -762,8 +1036,8 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['field_price_no_vat']['field'] = 'field_price_no_vat';
   $handler->display->display_options['fields']['field_price_no_vat']['label'] = 'Summe Netto';
   $handler->display->display_options['fields']['field_price_no_vat']['settings'] = array(
-    'thousand_separator' => ' ',
-    'decimal_separator' => '.',
+    'thousand_separator' => '.',
+    'decimal_separator' => ',',
     'scale' => '2',
     'prefix_suffix' => 1,
   );
@@ -772,8 +1046,8 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['field_invoice_total']['table'] = 'field_data_field_invoice_total';
   $handler->display->display_options['fields']['field_invoice_total']['field'] = 'field_invoice_total';
   $handler->display->display_options['fields']['field_invoice_total']['settings'] = array(
-    'thousand_separator' => ' ',
-    'decimal_separator' => '.',
+    'thousand_separator' => '.',
+    'decimal_separator' => ',',
     'scale' => '2',
     'prefix_suffix' => 1,
   );
@@ -796,10 +1070,6 @@ function feature_erpal_invoice_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );
-  /* Field: Content: Exported */
-  $handler->display->display_options['fields']['field_invoice_exported']['id'] = 'field_invoice_exported';
-  $handler->display->display_options['fields']['field_invoice_exported']['table'] = 'field_data_field_invoice_exported';
-  $handler->display->display_options['fields']['field_invoice_exported']['field'] = 'field_invoice_exported';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -1535,6 +1805,7 @@ function feature_erpal_invoice_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No invoices available'),
+    t('Invoice title'),
     t('Invoice Date'),
     t('Invoice Number'),
     t('Paid'),
@@ -1544,8 +1815,8 @@ function feature_erpal_invoice_views_default_views() {
     t('Währung'),
     t('Contractor'),
     t('Customer'),
-    t('Exported'),
     t('Paid (field_payed)'),
+    t('Exported'),
     t('Invoices to contact pane'),
     t('All'),
     t('Payed'),

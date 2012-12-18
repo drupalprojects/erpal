@@ -5,7 +5,6 @@
  */
 
 
-
 /*
 * Implements hook_menu
 */ 
@@ -17,90 +16,6 @@ function erpal_asterisk_menu(){
 } 
 
 
-/*
- * This function is callback for configuration of cor module
- */
-function _erpal_asterisk_config(){
-  
-  return drupal_get_form('_erpal_asterisk_config_form');
-
-}
-
-
-/*
- * Forms wich list all views in erpal
- * @return array $form  Forms  
- */
-
-function _erpal_asterisk_config_form() {
-  
-  $form= array();
-  
-  $form['description'] = array(
-    '#type' => 'fieldset', 
-    '#title' => t('Configurations of asterisk core'),
-    '#collapsible' => TRUE, // Added 
-    '#collapsed' => FALSE, // Added
-  );
-    
-  $form['description']['host'] = array(
-    '#type'    	   => 'textfield', 
-    '#title'       => t('HOST:'),
-    '#default_value'		 => variable_get('asterisk_nodejs_host'),
-    '#description' => t('Host of NodeJs Server'),
-  );
-  
-  $form['description']['http_port'] = array(
-    '#type' => 'textfield', 
-    '#title' => t('HTTP Port'),
-    '#default_value'		 => variable_get('asterisk_nodejs_http_port'),
-    '#description' => t('HTTP Port of NodeJs Server'),
-  );
-  
-  $form['description']['socket_port'] = array(
-    '#type' => 'textfield', 
-    '#title' => t('Socket Port'),
-    '#default_value'		 => variable_get('asterisk_nodejs_socket_port'),
-    '#description' => t('Socket Port of NodeJs Server'),
-  );
-  
-  $form['description']['lifetime'] = array(
-    '#type' => 'textfield', 
-    '#title' => t('Lifetime'),
-    '#default_value'		 => variable_get('asterisk_nodejs_lifetime'),
-    '#description' => t('Lifetime of call'),
-  );
-  
-  $form['submit'] = array(
-    '#type' => 'submit', 
-    '#value' => t('Save configurations'),
-  );
- 
-  return $form;
-  
-}
-
-/**
- * Implements form validate function for _asterisk_config_form
- * 
- */
-function _erpal_asterisk_contig_form_validate(&$form, &$form_state){
-  // @TODO: implement
-  
-}
-
-/**
- *  Implemtents form Submit Function for _asterisk_config_form
- */
-function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
-
-  variable_set('asterisk_nodejs_host'  	 , $form_state['values']['host']);
-  variable_set('asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
-  variable_set('asterisk_nodejs_socket_port'    , $form_state['values']['socket_port']);
-  variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
-  
-   
-}
 
 /*
  *	Send data to the data dispatch server
@@ -137,33 +52,6 @@ function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
   drupal_http_request($url, $options);
 }
 
-
-/**
- * Implements hook_entity_update()
- */
-function erpal_asterisk_entity_update($entity, $type) {
-  if($type == 'field_collection_item' && $entity->field_name == 'field_phone') {
-    $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
-    
-    if(!isset($entity->field_phone_number_normali[LANGUAGE_NONE][0])) {
-      $phone_number_normalized_old = "";
-    }
-    else {
-      $phone_number_normalized_old = $entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'];
-    }
-    
-    // TODO: find out why libphonenumber is not working correctly or use own
-    // function (-> _erpal_asterisk_normalize_phone_number())
-    $phone_number_normalized =  libphonenumber_format($phone_number);
-
-    if($phone_number_normalized != $phone_number_normalized_old) {
-      //$entity->field_phone_number_normali[LANGUAGE_NONE][0]['value'] = $phone_number_normalized;
-      //$entity->save(TRUE);
-    }
-  }
-}
-
-
 /*
  * This function implements hook of asterisknotify module and get view of an contact
  */
@@ -176,7 +64,7 @@ function _erpal_asterisk_call($destination, $source = NULL){
     . $destination 
     . ' and source ' 
     . $s 
-    . ' forwarded to asterisk_notify.';
+    . ' forwarded to asterisk_notify.';
     
   return implode (
   	'', 
@@ -192,8 +80,5 @@ function _erpal_asterisk_request($destination, $source = False, $html){
    return $html; 
 }
 
-function _erpal_asterisk_normalize_phone_number($phone_number) {
-
-}
 
 

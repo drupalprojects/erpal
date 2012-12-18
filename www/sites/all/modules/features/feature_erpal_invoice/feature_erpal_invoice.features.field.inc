@@ -1590,8 +1590,9 @@ function feature_erpal_invoice_field_default_fields() {
       'locked' => '0',
       'module' => 'number',
       'settings' => array(
-        'decimal_separator' => '.',
+        'decimal_separator' => ',',
         'precision' => '10',
+        'profile2_private' => FALSE,
         'scale' => '2',
       ),
       'translatable' => '0',
@@ -1599,6 +1600,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_invoice',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -2054,8 +2056,9 @@ function feature_erpal_invoice_field_default_fields() {
       'locked' => '0',
       'module' => 'number',
       'settings' => array(
-        'decimal_separator' => '.',
+        'decimal_separator' => ',',
         'precision' => '10',
+        'profile2_private' => FALSE,
         'scale' => '2',
       ),
       'translatable' => '0',
@@ -2063,6 +2066,7 @@ function feature_erpal_invoice_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_invoice',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
