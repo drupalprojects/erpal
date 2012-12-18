@@ -1,11 +1,12 @@
 (function ($) {
-
+  
   Drupal.behaviors.timetracking = {
     attach: function (context, settings) {
       // Timer Class
-      Timer = function(timetrackingId){
+      Timer = function(timetrackingId, button){
         this.timerId;
         this.timetrackingId = timetrackingId;
+        this.button = button;
         // time
         this.hours = 0;
         this.minutes = 0;
@@ -48,39 +49,43 @@
           timeText = this.implode(':', time);
           // Print time
           var id = this.timetrackingId;
-          $('.timetracking_button_' + id).find('.timetracking_duration').text(timeText);
+          $('.timetracking_button_' + id).find('.timetracking-time-suffix').text('');
+          $('.timetracking_button_' + id).find('.timetracking-time').text(timeText);
         },
         // Convert default time in format 9.99 in h:mm:ss and set default values
-        setDefaultTime: function(){
-          var hoursText, minutesText, defaultText, min, secondsText, sec;
-          var id = this.timetrackingId;
-          defaultText = $('.timetracking_button_' + id).find('.timetracking_duration').text();
-          defaultText = defaultText.replace(/\s*/, '');
-          // default hours
-          if(defaultText.indexOf('.') != -1){
-            hoursText = defaultText.split('.').slice(0)[0];
-            this.hours = hoursText;
-            // default minutes
-            minutesText = defaultText.replace(/\d+\./, '');;
-            minutesText = minutesText.replace(/ +[a+-z]+/, '');
-            if(!minutesText)
-              return
-            if(minutesText.indexOf('0') == -1 && minutesText < 10)
-              minutesText = minutesText * 10;
-            min = 60 * minutesText / 100;
-            min = min + '';
-            // default seconds
-            this.minutes = min.split('.').slice(0)[0];
-            if(min.indexOf('.') != -1){
-              if(secondsText = min.split('.').slice(-1)[0]){
-                sec = 60 * secondsText / 100;
-                this.seconds = Math.round(sec);
-              }
+        convertTime: function(timeText){
+          var minutesDecimal, timeDecimal, secondsDecimal, time = {
+            hours:0,
+            minutes:0,
+            seconds:0
+          };
+          // trim time
+          timeDecimal = timeText.replace(/\s*/, '');
+          // check time format
+          if(timeText.indexOf('.') != -1){
+            // hours
+            time.hours = timeDecimal.split('.').slice(0)[0];
+            
+            // minutes
+            minutesDecimal = 60 * (timeDecimal - time.hours);
+            minutesDecimal = minutesDecimal + '';
+            time.minutes =  minutesDecimal.split('.').slice(0)[0];
+            
+            // seconds
+            if(minutesDecimal.indexOf('.') != -1){
+              secondsDecimal = 60 * (minutesDecimal - time.minutes);
+              time.seconds = Math.round(secondsDecimal);
             }
-          } else {
-            hoursText = defaultText.replace(/ +[a+-z]+/, '');
-            this.hours = hoursText;
           }
+          return time;
+        },
+        setDefaultTime: function(){
+          var timeText = this.button.find('.timetracking-time').text();
+          var time = this.convertTime(timeText);
+          this.hours = time.hours;
+          this.minutes = time.minutes;
+          this.seconds = time.seconds;
+          this.updateTime();
         },
         // Digitals in format 01
         formatDigital: function(number){
@@ -96,6 +101,7 @@
           return ( ( pieces instanceof Array ) ? pieces.join ( glue ) : pieces );
         }
       }
+      
       var timers = [];
       
       // Autostart
@@ -103,11 +109,14 @@
         // get id of timer
         var lastClass = $(this).attr('class').split(' ').slice(-1);
         var id = lastClass[0].split('timetracking_button_').join(''); 
-        currentState = $(this).attr("rel");
-        if(currentState == 'on' && !timers[id]){
-          timer = new Timer(id);
+        if(!timers[id]){
+          timer = new Timer(id, $(this));
           timers[id] = timer;
-          timer.start();
+          // start enabled timer
+          currentState = $(this).attr("rel");
+          if(currentState == 'on'){
+            timer.start();
+          }
         }
       });
       
@@ -119,7 +128,7 @@
         $(this).addClass('in-progress');
         // initialize timer if undefined
         if(!timers[id]){
-          timer = new Timer(id);
+          timer = new Timer(id, $(this));
           timers[id] = timer;
         }
         // track time
@@ -134,7 +143,7 @@
     var currentState;
     //the current state is set in link, so get it
     currentState = button.attr("rel");
-
+    
     //prepare variables
     if (currentState == 'on')
     {
@@ -162,7 +171,7 @@
         var newText = Drupal.settings.timetracking.on.linktext;
         var newImage = Drupal.settings.timetracking.on.imagepath;
       }
-    
+      
       // first stop all timetrackings
       $('.timetracking_button[rel="on"]').each(function(index, button_element){
         $(this).attr("rel", 'off');  //set off state
@@ -187,5 +196,5 @@
       $('.timetracking_button_' + id).removeClass('in-progress');
     });
   }
-  
+
 })(jQuery);
