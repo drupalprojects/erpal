@@ -81,7 +81,7 @@ function _erpal_crm_mailaction_cron_page_wrapper () {
   
   erpal_crm_mailaction_cron ();
   
-  drupal_set_message (t('All Emails were imported.'));
+  drupal_set_message (t('All emails have been imported.'));
   
   drupal_goto ('admin/erpal/crm-mailaction');
   
