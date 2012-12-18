@@ -26,6 +26,7 @@ dependencies[] = rel
 dependencies[] = strongarm
 dependencies[] = views
 dependencies[] = views_bulk_operations
+dependencies[] = views_calc
 features[ctools][] = ds:ds:1
 features[ctools][] = field_group:field_group:1
 features[ctools][] = page_manager:pages_default:1

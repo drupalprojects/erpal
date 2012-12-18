@@ -29,6 +29,7 @@
  * element. If you need to set default font properties of any kind use the BODY
  * element as these can be overridden using font theme settings.
  */
+@import "global_vars_a_mixins";
 
 body {
   margin: 0;
@@ -39,6 +40,8 @@ body {
   min-width: 1020px;
   min-height: 100%;
   position: relative;
+  color: $grey;
+  background: $bright_grey;
 }
 
 
@@ -53,66 +56,6 @@ body.admin-menu {
  *   HTML Elements
  * ========================================================================== */
 
-h1 {
-    font-size: 3.3em;
-    font-weight: normal;
-    margin-top: 0;
-}
-
-h2 {}
-
-h3 {}
-
-h4 {}
-
-h5 {}
-
-h6 {}
-
-p {
-	
-}
-
-b,
-strong {}
-
-i,
-em {}
-
-dfn {}
-
-sup {}
-
-sub {}
-
-del {}
-
-ins {}
-
-blockquote {}
-
-cite {}
-
-q {}
-
-address {}
-
-ul {}
-
-ol {}
-
-li {}
-
-dl {}
-
-dd {}
-
-dt {}
-
-abbr {}
-
-acronym {}
-
 pre,
 code,
 tt,
@@ -122,47 +65,6 @@ var {
   font-family: Consolas, Monaco, 'Courier New', Courier, monospace, sans-serif;
 }
 
-
-/* =============================================================================
- *   Wrappers
- * ========================================================================== */
-
-/*
- * Page wrapper, includes the .container class which sets the overall page or section width
- * Main wrapper in page.tpl.php, the .container class sets the width of the page, do not add width to it!
- */
-#page {}
-#page .container {}
-
-/*
- * Wraps all header elements - branding and .region-header
- */
-#header {}
-
-/*
- * Wraps the sidebars the content column
- */
-#columns {}
-
-/*
- * Main content column wrapper
- */
-#content-column {}
-
-/*
- * Wraps the main-content-header, the content region and feed-icons. Use this wrapper to style the entire main content column
- */
-#main-content {}
-
-/*
- * Wraps the content region, avoid applying styles to this wrapper, its used mainly for position and invisible gutters and can be problematic to style
- */
-#content {}
-
-/*
- * Footer wrapper
- */
-#footer {}
 
 /*
  * Panels may need additional margin wrangling when in the $content region
@@ -179,9 +81,6 @@ var {
 /*
  * Wraps #page
  */
-#page-wrapper {}
-#page-wrapper .container {}
-
 /*
  * Wraps the leaderboard
  */
@@ -195,44 +94,6 @@ var {
   /* Debug styles, is this working */
   background: rgba(255, 192, 203, 0.5);
 }
-#header-wrapper .container {}
-
-/*
- * Wraps the nav elements
- */
-#nav-wrapper {}
-#nav-wrapper .container {}
-
-/*
- * Wraps breadcrumb
- */
-#breadcrumb-wrapper {}
-#breadcrumb-wrapper .container {}
-
-/*
- * Wraps messages and help
- */
-#messages-help-wrapper {}
-#messages-help-wrapper .container {}
-
-/*
- * Wraps the secondary content/preface region
- */
-#secondary-content-wrapper {}
-#secondary-content-wrapper .container {}
-
-/*
- * Wraps the main content column
- */
-#content-wrapper {}
-#content-wrapper .container {}
-
-/*
- * Wraps the tertiary content/postfix region
- */
-#tertiary-content-wrapper {}
-#tertiary-content-wrapper .container {}
-
 /*
  * Footer wrapper
  */
@@ -240,31 +101,9 @@ var {
   /* Debug styles, is this working? */
   background: rgba(255, 192, 203, 0.5);
 }
-#footer-wrapper .container {}
-
-
 /* =============================================================================
  *   Branding
  * ========================================================================== */
-
-/*
- * Wraps all the branding elements, logo, name and slogan
- */
-#branding {}
-
-/*
- * Logo
- */
-
-#logo img {
-  vertical-align: bottom;
-}
-
-/*
- * Wrapper for the site name and slogan (hgroup)
- */
-#name-and-slogan {}
-
 /*
  * Site name (h1)
  */
@@ -363,77 +202,6 @@ ul.links li {
   margin: 0;
 }
 
-
-/* =============================================================================
- *   Regions
- * ========================================================================== */
-
-/*
- * Standard region wrapper, don't add width to any regions, you will bork the layout - no margin, padding or borders etc
- */
-.region {}
-
-/*
- * Regions have an inner div - perfect for adding margin, padding or borders
- */
-.region-inner {}
-
-/*
- * Regions can be nested, such as when using Panels
- */
-.region-inner .region-inner {}
-
-/*
- * Header region, embedded in the #header
- */
-.region-header {}
-
-/*
- * Generally used to output Drupals help block, if the help module is enabled
- */
-.region-help {}
-
-/*
- * Secondary content
- */
-.region-secondary-content {}
-
-/*
- * Sits above the main content header, like a content-top region
- */
-.region-highlighted {}
-
-/*
- * Sits below the main content, like a content-bottom region
- */
-.region-content-aside {}
-
-/*
- * Sidebars - targets both
- */
-.sidebar {}
-
-/*
- * First sidebar
- */
-.region-sidebar-first {}
-
-/*
- * Second sidebar
- */
-.region-sidebar-second {}
-
-/*
- * Tertiary content
- */
-.region-tertiary-content {}
-
-/*
- * Footer region
- */
-.region-footer {}
-
-
 /* =============================================================================
  *   Links
  * ========================================================================== */
@@ -447,9 +215,6 @@ a:link,
 a:visited {
  color: #525252;
 }
-
-a:active,
-a.active {}
 
 a:hover,
 a:focus {
@@ -496,14 +261,6 @@ a:focus {
   padding: 0 10px;
 }
 
-.nav li a:visited,
-.nav ul.menu li a:visited {}
-
-.nav li a:hover,
-.nav li a:focus,
-.nav ul.menu li a:hover,
-.nav ul.menu li a:focus {}
-
 .nav .block {
   margin-bottom: 0;
 }
@@ -525,18 +282,10 @@ ul.sf-menu a {
   height: 2.5em;
   line-height: 2.5em;
 }
-
-ul.sf-menu a:link,
-ul.sf-menu a:visited {}
-
-ul.sf-menu li {}
-
 ul.sf-menu li:hover,
 ul.sf-menu li.sfHover {
   outline: 0;
 }
-
-ul.sf-menu a {}
 
 ul.sf-menu a:focus,
 ul.sf-menu a:hover,
@@ -555,13 +304,6 @@ ul.sf-menu a:active {
   margin: 0 !important;
   padding: 0 !important;
 }
-
-.block-superfish ul ul {}
-
-.block-superfish ul ul ul {}
-
-.block-superfish ul ul ul ul {}
-
 .block-superfish li {
   margin: 0 !important;
   padding: 0 !important;
@@ -618,36 +360,6 @@ ul.menu {
 ul.menu ul {
   padding-left: 15px;
 }
-
-ul.menu ul ul {}
-
-ul.menu ul ul ul {}
-
-ul.menu li {
-  margin: 0;
-}
-
-ul.menu li.collapsed,
-ul.menu li.expanded,
-ul.menu li.leaf {}
-
-ul.menu li a {}
-
-ul.menu li a:link,
-ul.menu li a:visited {}
-
-ul.menu li a:active,
-ul.menu li a.active {}
-
-ul.menu li a:hover,
-ul.menu li a:focus {}
-
-ul.menu li.active a,
-ul.menu li.active-trail a {}
-
-ul.menu li.first,
-ul.menu li.last {}
-
 /* If li.content exists it's a problem, so reset the padding */
 .block .menu li.content {
   padding: 0;
@@ -710,22 +422,6 @@ ul.menu li.last {}
   display: inline;
 }
 
-#breadcrumb li.crumb-first {}
-
-#breadcrumb li.crumb-last {}
-
-#breadcrumb a {}
-
-#breadcrumb a:link,
-#breadcrumb a:visited {}
-
-#breadcrumb a:active,
-#breadcrumb a.active {}
-
-#breadcrumb a:hover,
-#breadcrumb a:focus {}
-
-
 /* =============================================================================
  *   Pagers
  * ========================================================================== */
@@ -758,34 +454,6 @@ ul.pager li.pager-current {
 .block ul.pager li {
   margin: 0;
 }
-
-/*
- * Theme the various states of pager links
- */
-ul.pager li {
-	
-}
-
-
-
-ul.pager li a:link,
-ul.pager li a:visited {}
-
-ul.pager li a:active,
-ul.pager li a.active {}
-
-ul.pager li a:hover,
-ul.pager li a:focus {}
-
-ul.pager li.pager-item {}
-ul.pager li.first {}
-ul.pager li.last {}
-ul.pager li.pager-current {}
-ul.pager li.pager-first {}
-ul.pager li.pager-previous {}
-ul.pager li.pager-next {}
-ul.pager li.pager-last {}
-
 
 /* =============================================================================
  *   Skip Navigation
@@ -839,27 +507,6 @@ ul.pager li.pager-last {}
   margin-bottom: 15px;
 }
 
-ul.primary {
-  border-bottom-color: #ccc;
-  margin: 20px 0;
-  padding: 0 0 0 5px;
-}
-
-ul.primary li {
-  display: block;
-  float: left;
-  margin: 0 1px -1px;
-}
-
-ul.primary li a {
-  margin-right: 1px;
-  padding: 0 10px;
-  display: block;
-  float: left;
-  height: 1.5em;
-  line-height: 1.5em;
-}
-
 ul.secondary {
   border-bottom: 1px solid #ccc;
   margin: 1em 0 0;
@@ -890,28 +537,6 @@ ul.action-links {
   list-style: none;
 }
 
-ul.action-links li {}
-
-
-/* =============================================================================
- *  Field Styling
- * ========================================================================== */
-
-/*
- * Wrapper for any field
- */
-.field {}
-
-/*
- * Above and inline classes are on the field wrapper
- */
-.field-label-above {}
-
-/*
- * When labels are set to inline in field display settings the clearfix class is automatically added
- */
-.field-label-inline {}
-
 /*
  * Labels are h2 in Adaptivetheme. Use a strong selector to mitigate unwanted ineritance issues
  */
@@ -922,22 +547,6 @@ ul.action-links li {}
   line-height: inherit;
   margin-bottom: 0;
 }
-
-
-/*
- * Field types (Core)
- */
-
-/*
- * Image fields use the <figure> and <figcaption> elements from HTML5
- */
-.field-type-image {}
-
-.field-type-image .caption {}
-
-.field-type-image .full-caption {}
-
-.field-type-image .teaser-caption {}
 
 /*
  * Taxonomy
@@ -1409,28 +1018,6 @@ h2.pane-title {
 }
 
 /*
- * Comment states
- */
-.comment-new {}
-
-.comment-by-anonymous {}
-
-.comment-by-node-author {}
-
-.comment-by-viewer {}
-
-.comment-title-hidden {}
-
-.comment-with-picture {}
-
-.comment-with-signature {}
-
-/*
- * Preview of the comment before submitting new or updated comment
- */
-.comment-preview {}
-
-/*
  * "New" marker for comments that are new for the current user
  */
 .new {
@@ -1478,14 +1065,6 @@ h2.pane-title {
   font-size: 0.85em;
 }
 
-.form-checkboxes .form-item,
-.form-radios .form-item {}
-
-/*
- * The submit button
- */
-.form-submit {}
-
 .container-inline div,
 .container-inline label {
   display: inline;
@@ -1498,14 +1077,6 @@ fieldset {
   border: 1px solid #ccc;
 }
 
-/*
- * Tips for Drupal's input formats
- */
-.tips {}
-
-/*
- * Buttons used by contrib modules like Media
- */
 a.button {
   -webkit-appearance: button;
   -moz-appearance: button;
@@ -1639,28 +1210,6 @@ div.messages ul {
   margin-bottom: 0;
 }
 
-div.status {}
-
-div.warning {}
-
-tr.warning {}
-
-div.error,
-tr.error {}
-
-.error {}
-
-.warning {}
-
-/*
- * Unpublished nodes
- */
-.node-unpublished,
-.comment-unpublished {}
-
-.node-unpublished,
-.comment-unpublished {}
-
 .node-unpublished p.unpublished,
 .comment-unpublished p.unpublished {
   color: pink;
@@ -1677,11 +1226,6 @@ tr.error {}
   text-transform: uppercase;
   word-wrap: break-word;
 }
-
-/*
- * Otherwise these elements will appear below the "Unpublished" text
- */
-.lt-ie8 {}
 
 .lt-ie8 .node-unpublished > *,
 .lt-ie8 .comment-unpublished > * {
@@ -1702,8 +1246,6 @@ tr.error {}
 .maintenance-page #page-title {
   margin: 0;
 }
-
-.db-offline {}
 
 .db-offline .container {
   margin: 0 auto;

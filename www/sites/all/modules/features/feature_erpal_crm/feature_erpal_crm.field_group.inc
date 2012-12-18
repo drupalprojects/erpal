@@ -21,7 +21,7 @@ function feature_erpal_crm_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Chance and financials',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(
       0 => 'field_chance',
       1 => 'field_volume',

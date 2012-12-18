@@ -1,59 +1,138 @@
-ul.primary,
-ul.secondary {
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
+/* left sidebar link*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+/*@mixin h2_pane_titcle{
+	padding-right: 5px;
+	color: $dark_black;
+	font:{
+		size: 12px;
+	}
+	background-color: none;
+}*/
+/* line 3, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last {
+  float: left;
+  width: 100%;
+}
+/* line 6, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside {
+  margin-left: 150px;
+  min-width: 440px;
+}
+/* line 9, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs {
+  -webkit-box-shadow: 2px 3px 4px #b6b6b6;
+  -moz-box-shadow: 2px 3px 4px #b6b6b6;
+  box-shadow: 2px 3px 4px #b6b6b6;
+  background-color: white;
+  width: 100%;
+  background-color: #eeeeee;
+  border-bottom: 2px solid #ffa800;
+}
+/* line 15, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary {
+  margin: 0px;
+  padding: 0px;
   overflow: hidden;
   *zoom: 1;
   list-style: none;
-  margin: 0;
-  padding: 0;
   white-space: nowrap;
-  border: medium none
+  background-color: white;
+  border: medium none;
 }
-
-ul.primary li,
-ul.secondary li {
-  float: left; /* LTR */
-  margin: 0.5em 3px 0;
-}
-
-ul.primary a,
-ul.secondary a {
+/* line 23, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li {
+  margin: 0;
+  float: left;
   display: block;
-  line-height: 1.5em;
+  border-right: 1px solid #D9D9D9;
 }
-
-/*
- * Primary tabs
- */
-
-ul.primary li {
-  margin: 0; /* LTR */
-}
-
-
-ul.primary a:link,
-ul.primary a:visited {
+/* line 28, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
   padding: 0 20px;
   letter-spacing: 1px;
   text-align: center;
   font-size: 12px;
   font-weight: bold;
+  text-decoration: none;
+  display: block;
+  float: left;
   height: 42px;
   line-height: 42px;
   min-width: 80px;
+  background: white;
   border: none;
 }
-
-
-ul.primary a.active {
+/* line 30, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
+  margin: 0;
+  padding: 0 20px;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  float: left;
+  height: 42px;
+  line-height: 42px;
+  min-width: 80px;
+  background: white;
+  border: none;
+  color: #7b726b;
+}
+/* line 34, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a:hover {
+  background-color: white;
+  color: black;
+}
+/* line 38, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a.active {
   *zoom: 1;
+  background-color: #ffa800;
+  color: black;
+  border: medium none;
 }
-ul.primary li.active a, 
-ul.primary li.active a:hover, 
-ul.primary li.active a:focus{
-	border: none;
+/* line 41, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
+  *zoom: 1;
+  background-color: #ffa800;
+  color: black;
+  background-color: #ffa800;
 }
-/*
- * Secondary tabs
- */
-
+/* line 48, ../sass/tabs.scss */
+#erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary .active {
+  border-left: 2px solid #fd8300;
+  border-right: 2px solid #fd8300;
+}

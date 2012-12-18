@@ -30,6 +30,7 @@ dependencies[] = page_manager
 dependencies[] = php
 dependencies[] = strongarm
 dependencies[] = views
+dependencies[] = views_calc
 features[ctools][] = features_plumber:features_plumber_records:1
 features[ctools][] = field_group:field_group:1
 features[ctools][] = page_manager:pages_default:1
