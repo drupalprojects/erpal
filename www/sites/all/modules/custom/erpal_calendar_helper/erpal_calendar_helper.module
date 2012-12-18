@@ -125,7 +125,8 @@ function erpal_calendar_get_holidays($year, $month, $holiday_tid) {
   //get all erpal_date nodes that have field_date_type set to "holiday" in the given range above
   //we get all date items that have starting date in our date range. After that we call a function to get all the single dates from these ranges, so if a date_item goes over the given month (see function argument), only the days in the given month count.
   $date_items = _erpal_calendar_helper_get_date_items_in_month($year, $month, $holiday_tid);
-  $days = _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items);
+  dpm($date_items);
+  $days = _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, 'date_from', 'date_till');
 
 	return $days;
 }
@@ -191,8 +192,9 @@ function _erpal_calendar_helper_get_date_items_in_month($year, $month, $tid) {
 
 /**
 * Return all dates as unix timestamp from $date_items that are in the month and year. If date_items have date ranges (from, till) then we return only these date strings that match the given month and year
+*  @param $value_key if set, we use this array keys to get the nested value of date_items
 */
-function _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items) {
+function _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, $field_name_from, $field_name_till, $value_key_from=array(), $value_key_till=array()) {
   $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
 	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
 	$range_from = "$year-$monthNull-01 00:00:00";
@@ -210,9 +212,17 @@ function _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items) {
     //get all date items that match the day, if we found on, we add the date to the result array!
     if ($date_items && is_array($date_items)) {
       foreach ($date_items as $date_item) {
-        
-        $date_item_from_start = strtotime(date('Y-m-d 00:00:00', $date_item->date_from)); //get the start of the day, ignore the time
-        $date_item_till_start = strtotime(date('Y-m-d 00:00:00', $date_item->date_till)); //get the start of the day, ignore the time
+      
+        $from_value = $date_item->{$field_name_from};
+        if ($value_key_from)
+          $from_value = drupal_array_get_nested_value($from_value, $value_key_from);
+          
+        $till_value = $date_item->{$field_name_till};
+        if ($value_key_till)
+          $till_value = drupal_array_get_nested_value($till_value, $value_key_till);  
+          
+        $date_item_from_start = strtotime(date('Y-m-d 00:00:00', $from_value)); //get the start of the day, ignore the time
+        $date_item_till_start = strtotime(date('Y-m-d 00:00:00', $till_value)); //get the start of the day, ignore the time
         if ($date_item_from_start <= $date_current && $date_current <= $date_item_till_start) {
           //add this day!
           $days[] = $date_current;        

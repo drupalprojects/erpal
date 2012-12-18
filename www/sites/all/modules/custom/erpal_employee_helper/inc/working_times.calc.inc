@@ -18,16 +18,10 @@ function _erpal_employee_helper_calculate_working_times() {
     //return false;
     
   //get all user IDs
-  $uids = _erpal_profile_helper_get_users();
+  $uids = _erpal_profile_helper_get_users(); //loads only active users
   
   //loop through all users
   foreach ($uids as $uid) {      
-    
-    //get the contract data for each user with data that is valid for the current date.
-    $contract_data = _erpal_profile_helper_get_current_contract($uid);
-
-    if ($contract_data['member_type'] != 'full_employee')
-      continue;
     
     //get all invalid month working times (dirty==1) and get the one with the lowest year and month.
     $dirty_working_times = _erpal_employee_helper_get_dirty_working_times($uid, 'month');
@@ -45,7 +39,12 @@ function _erpal_employee_helper_calculate_working_times() {
     $current_year = date('Y');    
     $current_month = date('m');
     
-    //now recalculate the months
+    //if the user has never had an employee contract
+    $contract_data = _erpal_profile_helper_user_contracts($uid, 'full_employee');
+    if (!$contract_data)
+      continue;
+   
+    //now recalculate the months from "from" to current
     $years = _erpal_employee_helper_recalculate_month($uid, $from_year, $current_year, $from_month, $current_month);
     
     //@TODO: now recalculate the years in the result array, using the data from the calculated month
@@ -125,16 +124,188 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
     
     for ($month=$start_month; $month<=$end_month; $month++) {
       //get the time the user must work according to his contract
-      $must_working_time_sec = _erpal_employee_helper_get_must_working_time($uid, $year, $month);
+      $working_days_unix = array();  //this will be filled with all days where the user has to work
+      $must_working_time_h = _erpal_employee_helper_get_must_working_time($uid, $year, $month, $working_days_unix);
+
+      //get the time the user really worked in hours
+      $worked_time_h = _erpal_employee_helper_get_worked_time($uid, $year, $month);
+
+      //get the ill days of the user and the time that is booked for these holidays (in $holiday_hours) to add them to the worked time of the user
+      $ill_hours = 0;
+      $user_ill_days = _erpal_employee_helper_user_ill_days($uid, $year, $month, $ill_hours, $working_days_unix);
+      $worked_time_h += $ill_hours; //cause ill days count as working time
       
+      //get the holidays of the user and the time that is booked for these holidays (in $holiday_hours) to add them to the worked time of the user. Here we have only holidays that are on general working days
+      $holiday_hours = 0;
+      $user_holidays = _erpal_employee_helper_user_holidays($uid, $year, $month, $holiday_hours, $user_ill_days, $working_days_unix);
+      $worked_time_h += $holiday_hours; // cause user holidays count as working time
+
+     
+   /*      
+      dann die projektzeit (auch wieder unter der Berücksichtiung dass er employee war)
+    */
     }
   }
 }
 
 /**
-* Returns the must working time in seconds the user has to work in the given month
+* Returns the ill days a user had in the given date range but only if he was an employee at the time
+* ill days will be only returned if they are on a real working day
+* @params $ill_hours this will return the hours that the ill days will add to the working time account of the user
+* because ill days count as working time
+* @param $working_days_unix is an array of unix timestamps describing all days a user has to work, means it is a general working day (mo-fr etc.) and there is no global holiday
 */
-function _erpal_employee_helper_get_must_working_time($uid, $year, $month) {
+function _erpal_employee_helper_user_ill_days($uid, $year, $month, &$ill_hours, $working_days_unix) {
+  $ill_day_nodes = _erpal_employee_helper_get_working_time_nodes_employee_by_type($uid, $year, $month, 'ill');
+  
+  $ill_days = _erpal_calendar_helper_get_dates_in_range($year, $month, $ill_day_nodes, 'field_date_time', 'field_date_time', array(LANGUAGE_NONE, 0, 'value'), array(LANGUAGE_NONE, 0, 'value2'));
+
+  $ill_days_nodes_on_working_days = array();
+  
+  foreach ($ill_days as $ill_day_unix) {
+    //take the ill days of the user that are on a general working day
+    $ill_day_string = date('Ymd', $ill_day_unix);
+    $is_ill_day = false;
+    foreach ($working_days_unix as $working_day) {
+      $working_day_string = date('Ymd', $working_day);
+
+      if ($working_day_string == $ill_day_string) {
+        $is_ill_day = true;
+        break;
+      }
+    }
+    
+    if ($is_ill_day) {
+      //get the contract to check ho many hours a day user has to work and these are the hours that are added as working time for a holiday day      
+      $hours_to_work = _erpal_profile_helper_get_hours_to_work_a_day($uid, $ill_day_unix);
+      $ill_hours += $hours_to_work;
+      $ill_days_nodes_on_working_days[] = $ill_day_unix;
+    }
+  }  
+  
+  return $ill_days_nodes_on_working_days;
+}
+
+/**
+* Returns the holidays a user took in the given date range but only if he was an employee at the time
+* holidays will be only returned if they are on a real working day
+* @param $holiday_hours this will return the hours that the holidays will add to the working time account of the user
+* because holidays count as working time
+* @param $user_ill_days array with unix timestamps of days the user was ill. We need this because holidays on illdays are not respected!
+* @param $working_days_unix all working days that means general working day (mo-fr. etc.) and not a global holiday
+*/
+function _erpal_employee_helper_user_holidays($uid, $year, $month, &$holiday_hours, $user_ill_days, $working_days_unix) {
+  
+  $holiday_nodes = _erpal_employee_helper_get_working_time_nodes_employee_by_type($uid, $year, $month, 'holiday');
+  
+  $holiday_days = _erpal_calendar_helper_get_dates_in_range($year, $month, $holiday_nodes, 'field_date_time', 'field_date_time', array(LANGUAGE_NONE, 0, 'value'), array(LANGUAGE_NONE, 0, 'value2'));
+
+  $holiday_nodes_on_working_days = array();
+  
+  foreach ($holiday_days as $holiday_unix) {
+    $holiday_string = date('Ymd', $holiday_unix);
+    //if the holiday is on an ill day, we dont respect the holiday, it is not added to working time and not substracted from available holidays
+    $is_ill_day = false;
+    foreach ($user_ill_days as $ill_day_unix) {
+      $ill_day_string = date('Ymd', $ill_day_unix);
+      if ($ill_day_string == $holiday_string) {
+        $is_ill_day = true;
+        break;
+      }
+    }
+        
+    if ($is_ill_day)    
+      continue;
+    
+    //take the holiday days of the user that are on a general working and not on a global holiday day
+    $is_working_day = false;
+    foreach ($working_days_unix as $working_day) {
+      $working_day_string = date('Ymd', $working_day);
+      if ($working_day_string == $holiday_string) {
+        $is_working_day = true;
+        break;
+      }
+    }
+    
+    if ($is_working_day) {
+      //get the contract to check ho many hours a day user has to work and these are the hours that are added as working time for a holiday day
+      $hours_to_work = _erpal_profile_helper_get_hours_to_work_a_day($uid, $holiday_unix);
+      $holiday_hours += $hours_to_work;
+      $holiday_nodes_on_working_days[] = $holiday_unix;
+    }
+  }  
+  return $holiday_nodes_on_working_days;
+  
+}
+
+/**
+* Returns working time nodes of a user in a given date range with respecting if the user was an employee at the given time
+*/
+function _erpal_employee_helper_get_working_time_nodes_employee_by_type($uid, $year, $month, $type) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+  $date_till_unix = strtotime($range_till);
+  $date_from_unix = strtotime($range_from);
+  
+  //get all working time of the user and always check if he is employee at the time of the working time node entry
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_working_time')
+    ->propertyCondition('status', 1)
+    ->propertyCondition('uid', $uid)
+    ->fieldCondition('field_date_time', 'value', $date_from_unix, '>=')
+    ->fieldCondition('field_date_time', 'value', $date_till_unix, '<=')
+    ->fieldCondition('field_working_time_type', 'value', $type)
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  $working_time_nodes = array();
+  if (isset($result['node'])) {
+    $working_time_nids = array_keys($result['node']);
+    $working_time_nodes = entity_load('node', $working_time_nids);
+  }
+  
+  //now filter the nodes and keep only the once at the time when user was employee
+  $nodes = array();
+  foreach ($working_time_nodes as $working_time_node) {
+    $booking_time_from = $working_time_node->field_date_time[LANGUAGE_NONE][0]['value2'];  //use value2 because this is the latest day the contract could be committed to be valid for this date.
+    
+    //add this only, if user is emplyee at the time of the timetracking entity.
+    $contract_data = _erpal_profile_helper_get_current_contract($uid, array(), $booking_time_from);
+    if (!$contract_data || !is_array($contract_data) || $contract_data['member_type'] != 'full_employee')
+      continue; //no contract or no full employee, no "must working hours" this day (may be he has a contract later)!!  
+
+    $nodes[] = $working_time_node;
+  }
+  
+  return $nodes;
+}
+
+/**
+* Returns the worked time in hours of a user while he is employee in the given month. We only add the time if the user had an employee contract at this time
+*/
+function _erpal_employee_helper_get_worked_time($uid, $year, $month) {
+   
+  $working_time_nodes = _erpal_employee_helper_get_working_time_nodes_employee_by_type($uid, $year, $month, 'work');
+
+  $total_worked_time_h = 0;
+  foreach ($working_time_nodes as $working_time_node) {
+    $duration = isset($working_time_node->field_duration_calc[LANGUAGE_NONE][0]['value']) ? $working_time_node->field_duration_calc[LANGUAGE_NONE][0]['value'] : 0;    
+    $total_worked_time_h += $duration;
+  }
+  
+  return $total_worked_time_h;
+}
+
+/**
+* Returns the must working time in hours the user has to work in the given month
+* @param $must_working_days_arr is filled as array with all days that are working days, no global_non_working_day and n global holiday
+*/
+function _erpal_employee_helper_get_must_working_time($uid, $year, $month, &$must_working_days_arr) {
   //get the contract data of the user in every days loop and then recalculate the time with respect to he current date (if a contract starts in the middle of a month, calculate must working days pro rata
   
   //get tid for holiday
@@ -148,28 +319,26 @@ function _erpal_employee_helper_get_must_working_time($uid, $year, $month) {
   
   //get all general working days
   $working_days = _erpal_employee_get_general_working_days($year, $month);
-  
-  //get the working time a day, this is hours per week divided by the number of general working days
-  $general_working_days = _erpal_employee_helper_general_working_days();
-  
-  //get the users contract
-  $contract_data = _erpal_profile_helper_get_current_contract($uid);
-
-  if (!$contract_data || !is_array($contract_data))
-    return 0; //no contract, no "must working hours"!
-
-  $working_time_week = $contract_data['hours'];
-  $working_time_day = round($working_time_week / count($general_working_days), 2);
-  
+ 
   //calculate the time in seconds the user has to work according to his contract profile in this month but not on holidays
+  //but respect the start date in the contract as offset!
   $total_working_hours = 0;
+
   foreach ($working_days as $day_unix) {
-    $day_str = date('ymd', $day_unix);
+    
+    //get the users contract
+    $contract_data = _erpal_profile_helper_get_current_contract($uid, array(), $day_unix);
+    if (!$contract_data || !is_array($contract_data) || $contract_data['member_type'] != 'full_employee')
+      continue; //no contract or no full employee, no "must working hours" this day (may be he has a contract later)!!
+    
+    $working_time_day = _erpal_profile_helper_get_hours_to_work_a_day($uid, $day_unix, $contract_data);
+    
+    $day_str = date('Ymd', $day_unix);
     //is this a holiday?
     $is_holiday = false;
     foreach ($holidays as $holiday_unix) {
       $holiday_str = date('Ymd', $holiday_unix);
-      
+
       if ($day_str == $holiday_str) {
         $is_holiday = true;
         break;
@@ -178,6 +347,7 @@ function _erpal_employee_helper_get_must_working_time($uid, $year, $month) {
     
     if (!$is_holiday) {
       $total_working_hours += $working_time_day; //add the working hours for this day
+      $must_working_days_arr[] = $day_unix;      
     }
   }
   

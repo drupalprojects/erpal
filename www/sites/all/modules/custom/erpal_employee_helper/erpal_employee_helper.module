@@ -204,7 +204,7 @@ function erpal_employee_helper_date_term_alter(&$term_string, $context) {
   if ($entity_type == 'node' && $bundle == 'erpal_working_time') {
     $working_time_type = $entity->field_working_time_type[LANGUAGE_NONE][0]['value'];
     $types_to_tag = _erpal_employee_helper_get_working_time_types_date_item_creating();
-    if (in_array($working_time_type, $holiday_term)) {
+    if (in_array($working_time_type, $types_to_tag)) {
       $term_string = _erpal_employee_helper_field_tag_working_time_type($working_time_type);
     }
   }
