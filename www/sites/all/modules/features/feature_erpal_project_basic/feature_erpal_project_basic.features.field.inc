@@ -1399,9 +1399,11 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_project',
+      'comment_enabled' => 0,
       'date_item' => array(
-        'create_date_item' => 0,
+        'create_date_item' => 1,
         'date_item_type' => 'simple_date',
+        'handle_range' => 'single',
       ),
       'deleted' => '0',
       'description' => 'When will the project be developed? Only for planing purpose.',
@@ -2126,9 +2128,11 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'comment_enabled' => 0,
       'date_item' => array(
-        'create_date_item' => 0,
+        'create_date_item' => 1,
         'date_item_type' => 'simple_date',
+        'handle_range' => 'single',
       ),
       'deleted' => '0',
       'description' => '',
