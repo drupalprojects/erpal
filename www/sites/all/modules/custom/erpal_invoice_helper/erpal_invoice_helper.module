@@ -296,18 +296,6 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
     //and now set all the other defaults
     _erpal_invoice_helper_set_invoice_form_defaults($form, $form_state);
   }  
-
-  //add available tokens to the form
-  //show available Tokens  
-  if (module_exists('token')) {
-    $form['token_tree'] = array(
-      '#theme' => 'token_tree',   
-      '#token_types' => array('erpal_invoice'),
-      '#global_types' => FALSE,
-      '#click_insert' => TRUE,
-      '#recursion_limit' => 1,
-    );
-  }
   
   //add token information for order numbers
   if (module_exists('token')) {
@@ -357,6 +345,16 @@ function _erpal_invoice_helper_invoice_node_form_alter(&$form, &$form_state) {
     '#weight' => 100, //at the very bottom
     '#default_value' => true,
   );
+}
+
+function erpal_invoice_helper_field_widget_form_alter(&$element, &$form_state, $context) {
+  $field_name = isset($element['#field_name']) ? $element['#field_name'] : false;
+  if ($field_name == 'field_note') {
+    $types = array('erpal_invoice');
+    $tokens = theme('token_tree', array('global_types' => FALSE, 'token_types' => $types));
+    $element['#suffix'] = $tokens;
+  }
+  
 }
 
 /**
