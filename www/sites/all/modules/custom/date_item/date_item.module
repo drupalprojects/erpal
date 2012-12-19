@@ -404,6 +404,17 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
     
     $create_items = isset($field_instance['date_item']['create_date_item']) ? $field_instance['date_item']['create_date_item'] : false;
 
+    //if there is not flag set, let other modules decide if the date_item entity should be created any way implementing this hook
+    $context = array('entity_type' => $entity_type, 'field_name' => $field_name, 'bundle' => $bundle, 'entity' => $entity);
+    
+    drupal_alter('create_date_item', $create_items, $context);
+    
+    // if there is a date_item_type set in context, use this one
+    if (isset($context['date_item_type']))
+      $field_instance['date_item']['date_item_type'] = $context['date_item_type'];
+    if (isset($context['handle_range']))
+      $field_instance['date_item']['handle_range'] = $context['handle_range'];
+    
     if (!$create_items)
       return;  //this field should not create date items
       

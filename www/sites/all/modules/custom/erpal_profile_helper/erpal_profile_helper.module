@@ -213,13 +213,14 @@ function _erpal_profile_helper_contract_validate_all_set($contract_entity) {
 /**
 * Returns contract data for a given user since or at a given date
 * @param $date_match if true, the date must be exact the given date, orherwise it the closes bevore that date
-* @param $only_current if true, we return only one contract, the currently newes active one
+* @param $only_current if true, we return only one contract, the currently newest active one
 * @param $date_since only contracts that are enabled after this date are returned. If you want any contrct, set -1
 * @uid the uid for whom we are querying the contract 
 * @param $project_tag_tids only if the project has tags that match the given tids in this param, return the contract. OR values, not AND!
+* @param $member_type only contracts of the given type
 * @return array contract data for a given user since or at a given data
 */
-function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_tag_tids=array(), $only_current=true, $date_match=false) {
+function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_tag_tids=array(), $only_current=true, $date_match=false, $member_type = false) {
   if (!$date_since)
     $date_since = time();
   elseif ($date_since < 0)
@@ -251,11 +252,20 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
       
       //load the field collection entity
       $contract_data_entity = entity_load('field_collection_item', array($contract_id));
-      $contract_data_entity = $contract_data_entity[$contract_id];
+      $contract_data_entity = isset($contract_data_entity[$contract_id]) ?  $contract_data_entity[$contract_id] : false;
+      
+      if (!is_object($contract_data_entity))
+        continue;
+      
+      //get contract type
+      $contract_member_type = isset($contract_data_entity->field_member_type[LANGUAGE_NONE][0]) ? $contract_data_entity->field_member_type[LANGUAGE_NONE][0]['value'] : false;
       
       //check the date
       $contract_date_since = $contract_data_entity->field_valid_since[LANGUAGE_NONE][0]['value'];
 
+      if ($member_type && $contract_member_type != $member_type)
+        continue;
+      
       if ($date_match && $date_since != $contract_date_since)
         continue;  //do not add this entity
       
@@ -288,7 +298,7 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
     }
   }
   
-  //now return only the current contract if param is set
+  //now return only the current (nearest to the date offset) contract if param is set
   if ($only_current) {
     if (count($contract_datas) >= 0)
       return $contract_datas;
@@ -305,10 +315,21 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
 }
 
 /**
-* Returns the current active contract. If there are multiple, only the newest will be returned
+* Returns all contracts the given user has ever had of the give type
 */
-function _erpal_profile_helper_get_current_contract($uid, $project_tag_tids=array(), $flat_array=true) {
-  $contract_arr = _erpal_profile_helper_get_contract($uid, time(), $project_tag_tids);
+function _erpal_profile_helper_user_contracts($uid, $member_type) {
+  return _erpal_profile_helper_get_current_contract($uid, array(), false, $member_type, false);
+}
+
+/**
+* Returns the current active contract (from the perspective of the date offset). If there are multiple, only the newest will be returned
+*/
+function _erpal_profile_helper_get_current_contract($uid, $project_tag_tids=array(), $date_offset=false, $member_type = false, $only_current=true, $flat_array=true) {
+  
+  if (!$date_offset)
+    $date_offset = time();
+    
+  $contract_arr = _erpal_profile_helper_get_contract($uid, $date_offset, $project_tag_tids, $only_current, false, $member_type);
 
   foreach ($contract_arr as $nid=>$contract) {
     if ($flat_array) {
@@ -340,6 +361,30 @@ function _erpal_profile_helper_get_current_contract($uid, $project_tag_tids=arra
   }
     
   return false;
+}
+
+/**
+*  Returns the hours a user has to work a day according tu his contract at the given date. 
+* DOES NOT RESPECT GLOBAL HOLIDAYS but general working days as mo-fr.
+* if a contract is given as @param $contract_data_arr, we use this contract to calculate, only returns a value > 0 if the user is employee at the given time
+*/
+function _erpal_profile_helper_get_hours_to_work_a_day($uid, $date_unix, $contract_data_arr=false) {
+  
+  //get the working time a day, this is hours per week divided by the number of general working days
+  $general_working_days = _erpal_employee_helper_general_working_days();
+  
+  //if there is no contract data given, load a contract for the user at the given date_unix
+  if (!$contract_data_arr) {
+    $contract_data_arr = _erpal_profile_helper_get_current_contract($uid, array(), $date_unix);
+    if (!$contract_data_arr || !is_array($contract_data_arr) || $contract_data_arr['member_type'] != 'full_employee')
+      return 0; //no contract or no full employee, no "must working hours"
+    
+  }
+  
+  $working_time_week = $contract_data_arr['hours'];
+  $working_time_day = round($working_time_week / count($general_working_days), 2);
+  
+  return $working_time_day;
 }
 
 /**

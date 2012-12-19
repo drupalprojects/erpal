@@ -36,12 +36,14 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '9';
-  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_plugin'] = 'views_calc';
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
     'field_customer_ref' => 'field_customer_ref',
     'field_activity_status_term' => 'field_activity_status_term',
     'field_next_contact' => 'field_next_contact',
+    'field_volume' => 'field_volume',
+    'field_chance' => 'field_chance',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -51,6 +53,8 @@ function feature_erpal_crm_views_default_views() {
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
     ),
     'field_customer_ref' => array(
       'sortable' => 1,
@@ -58,6 +62,8 @@ function feature_erpal_crm_views_default_views() {
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
     ),
     'field_activity_status_term' => array(
       'sortable' => 1,
@@ -65,6 +71,8 @@ function feature_erpal_crm_views_default_views() {
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
     ),
     'field_next_contact' => array(
       'sortable' => 1,
@@ -72,8 +80,34 @@ function feature_erpal_crm_views_default_views() {
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_volume' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 1,
+      'calc' => array(
+        'SUM' => 'SUM',
+      ),
+    ),
+    'field_chance' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
     ),
   );
+  $handler->display->display_options['style_options']['detailed_values'] = '0';
+  $handler->display->display_options['style_options']['precision'] = '0';
+  $handler->display->display_options['style_options']['decimal'] = ',';
+  $handler->display->display_options['style_options']['separator'] = '';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -116,6 +150,20 @@ function feature_erpal_crm_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
+  /* Field: Content: Volume */
+  $handler->display->display_options['fields']['field_volume']['id'] = 'field_volume';
+  $handler->display->display_options['fields']['field_volume']['table'] = 'field_data_field_volume';
+  $handler->display->display_options['fields']['field_volume']['field'] = 'field_volume';
+  $handler->display->display_options['fields']['field_volume']['settings'] = array(
+    'thousand_separator' => '.',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Chance */
+  $handler->display->display_options['fields']['field_chance']['id'] = 'field_chance';
+  $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
+  $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
   /* Sort criterion: Content: Updated/commented date */
   $handler->display->display_options['sorts']['last_updated']['id'] = 'last_updated';
   $handler->display->display_options['sorts']['last_updated']['table'] = 'node_comment_statistics';
@@ -129,7 +177,6 @@ function feature_erpal_crm_views_default_views() {
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
-  $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_action'] = 'default';
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['default_argument_type'] = 'node';
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_customer_ref_target_id']['summary']['format'] = 'default_summary';
@@ -540,6 +587,20 @@ function feature_erpal_crm_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
+  /* Field: Content: Volume */
+  $handler->display->display_options['fields']['field_volume']['id'] = 'field_volume';
+  $handler->display->display_options['fields']['field_volume']['table'] = 'field_data_field_volume';
+  $handler->display->display_options['fields']['field_volume']['field'] = 'field_volume';
+  $handler->display->display_options['fields']['field_volume']['settings'] = array(
+    'thousand_separator' => '.',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Chance */
+  $handler->display->display_options['fields']['field_chance']['id'] = 'field_chance';
+  $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
+  $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Field: Contacts (field_contacts_ref) */
   $handler->display->display_options['arguments']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
@@ -649,6 +710,20 @@ function feature_erpal_crm_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
+  /* Field: Content: Volume */
+  $handler->display->display_options['fields']['field_volume']['id'] = 'field_volume';
+  $handler->display->display_options['fields']['field_volume']['table'] = 'field_data_field_volume';
+  $handler->display->display_options['fields']['field_volume']['field'] = 'field_volume';
+  $handler->display->display_options['fields']['field_volume']['settings'] = array(
+    'thousand_separator' => '.',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Chance */
+  $handler->display->display_options['fields']['field_chance']['id'] = 'field_chance';
+  $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
+  $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -744,6 +819,8 @@ function feature_erpal_crm_views_default_views() {
     t('Customer'),
     t('Status'),
     t('Next Contact'),
+    t('Volume'),
+    t('Chance'),
     t('All'),
     t('Title'),
     t('Activities by customer'),

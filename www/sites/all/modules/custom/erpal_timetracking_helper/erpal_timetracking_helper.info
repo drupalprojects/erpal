@@ -4,6 +4,7 @@ package = ERPAL
 core = 7.x
 
 dependencies[] = "views"
+dependencies[] = "erpal_projects_helper"
 
 files[] = erpal_timetracking_helper.module
 files[] = erpal_timetracking_helper.views.inc
