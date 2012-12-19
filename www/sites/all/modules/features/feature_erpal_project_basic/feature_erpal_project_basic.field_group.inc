@@ -13,36 +13,6 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
-  $field_group->identifier = 'group_advanced|node|erpal_timetracking|form';
-  $field_group->group_name = 'group_advanced';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'erpal_timetracking';
-  $field_group->mode = 'form';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Advanced',
-    'weight' => '6',
-    'children' => array(
-      0 => 'field_billing_duration',
-      1 => 'field_budget',
-      2 => 'field_date_time',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'label' => 'Advanced',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => '',
-        'description' => '',
-      ),
-      'formatter' => 'collapsed',
-    ),
-  );
-  $export['group_advanced|node|erpal_timetracking|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
   $field_group->identifier = 'group_budgets|field_collection_item|field_pricing|form';
   $field_group->group_name = 'group_budgets';
   $field_group->entity_type = 'field_collection_item';
@@ -143,19 +113,20 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Time information',
-    'weight' => '6',
+    'weight' => '18',
     'children' => array(
       0 => 'field_date',
       1 => 'field_estimated_time',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Time information',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_task_time_group|node|erpal_task|form'] = $field_group;
