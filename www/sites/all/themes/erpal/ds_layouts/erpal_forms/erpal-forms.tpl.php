@@ -20,5 +20,8 @@
 		</div>
     </fieldset>
   <?php endif; ?>
-
+  <?php
+    // Print the rest of the form.
+    print drupal_render_children($form);
+  ?>
 </div>
