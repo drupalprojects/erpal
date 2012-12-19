@@ -263,7 +263,7 @@ function feature_erpal_invoice_default_panels_mini() {
     $pane->access = array();
     $pane->configuration = array(
       'label' => 'title',
-      'formatter' => 'text_default',
+      'formatter' => 'note_invoice_token_replace',
       'delta_limit' => 0,
       'delta_offset' => '0',
       'delta_reversed' => FALSE,
