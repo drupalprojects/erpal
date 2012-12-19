@@ -874,7 +874,8 @@ function feature_erpal_invoice_views_default_views() {
     'field_price_no_vat' => 'field_price_no_vat',
     'field_invoice_total' => 'field_invoice_total',
     'field_currency' => 'field_currency',
-    'field_invoice_exported' => 'field_invoice_exported',
+    'field_contractor_ref' => 'field_contractor_ref',
+    'field_customer_ref' => 'field_customer_ref',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -954,7 +955,16 @@ function feature_erpal_invoice_views_default_views() {
       'has_calc' => 0,
       'calc' => array(),
     ),
-    'field_invoice_exported' => array(
+    'field_contractor_ref' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'field_customer_ref' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
