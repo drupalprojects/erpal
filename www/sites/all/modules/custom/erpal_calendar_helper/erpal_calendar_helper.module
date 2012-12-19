@@ -117,24 +117,126 @@ function _erpal_calendar_helper_set_tag($date_item) {
 * Returns all date_item entities with a subject of type = holiday in field_date_type, which means that this date item entity is tagged with the tag used in settings of this module for holidays
 * @param $date_only if set the result array contains only the dates, otherwise the complete date_item entity is returned
 */
-//hier weiter. Wir brauchen noch tags für working_time aber nur wenn type = holiday und dann diese funktion implementieren!
-//wir setzen das feld http://local.erpal.brightsolutions.de/admin/structure/types/manage/erpal_working_time/fields/field_date_time so, dass es date_items erstellt und "unsetten" das tag, wenn der type working_time ist. In der Config maske nehmen wir das automatische config feld raus und ersetzen es durch ein manuelles pro Kategorie
-function erpal_calendar_get_holidays($year, $month) {
-  /*$days = array();
-	$monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+function erpal_calendar_get_holidays($year, $month, $holiday_tid) {
+  
+  if(!$holiday_tid)
+    return $days;  //return because the term for holidays set on a date node is unknown!
+    
+  //get all erpal_date nodes that have field_date_type set to "holiday" in the given range above
+  //we get all date items that have starting date in our date range. After that we call a function to get all the single dates from these ranges, so if a date_item goes over the given month (see function argument), only the days in the given month count.
+  $date_items = _erpal_calendar_helper_get_date_items_in_month($year, $month, $holiday_tid);
+  dpm($date_items);
+  $days = _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, 'date_from', 'date_till');
+
+	return $days;
+}
+
+/**
+* Returns all dat_item entities with a given tag in the given month of the given year
+*/
+function _erpal_calendar_helper_get_date_items_in_month($year, $month, $tid) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
 	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
 	$range_from = "$year-$monthNull-01 00:00:00";
 	$range_till = "$ldom 23:59:59";
-	$res = db_query('SELECT d.field_termin_date_value AS adate FROM {content_type_termin} t LEFT JOIN {content_field_termin_date} d ON t.vid=d.vid WHERE field_termin_typ_value=4 AND field_termin_date_value >= "%s" AND field_termin_date_value <= "%s"', $range_from, $range_till);
-	while ($tag = db_fetch_array($res))
-	{
-		$adate = $tag['adate'];
-		$days[] = $adate;
-	}
-	
-  ACHTUNG: WIR MÜSSEN immer die range eines entites berücksichtigen, nicht nur das Start- oder Enddatum, Weihnachten geht über mehrere Tage!
-	
-	return $days;*/
+  $date_from_unix = strtotime($range_from);
+  $date_till_unix = strtotime($range_till);
+  
+  $date_items = array(); //initialise result array
+  $date_item_ids = array();
+  //get the dates where date_from is in range
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'date_item')
+  ->entityCondition('bundle', 'simple_date')
+  ->fieldCondition('field_date_item_tags', 'tid', $tid)
+  ->propertyCondition('date_from', $date_from_unix, '>=')
+  ->propertyCondition('date_from', $date_till_unix, '<=')
+  ->addMetaData('account', user_load(1))  // run the query as user 1
+  ->execute(); 
+  
+  if (isset($result['date_item'])) {
+    $date_item_ids = array_merge($date_item_ids, array_keys($result['date_item']));   
+  }
+ 
+  //now get the dates where date_till is in range
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'date_item')
+  ->entityCondition('bundle', 'simple_date')
+  ->fieldCondition('field_date_item_tags', 'tid', $tid)
+  ->propertyCondition('date_till', $date_from_unix, '>=')
+  ->propertyCondition('date_till', $date_till_unix, '<=')
+  ->addMetaData('account', user_load(1))  // run the query as user 1
+  ->execute(); 
+   
+  if (isset($result['date_item'])) {
+    $date_item_ids = array_merge($date_item_ids, array_keys($result['date_item']));   
+  }
+  
+  //now get the dates where date_from is before date_from_unix and date_till is after date_till_unix
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'date_item')
+  ->entityCondition('bundle', 'simple_date')
+  ->fieldCondition('field_date_item_tags', 'tid', $tid)
+  ->propertyCondition('date_from', $date_from_unix, '<=')
+  ->propertyCondition('date_till', $date_till_unix, '>=')
+  ->addMetaData('account', user_load(1))  // run the query as user 1
+  ->execute(); 
+   
+  if (isset($result['date_item'])) {
+    $date_item_ids = array_merge($date_item_ids, array_keys($result['date_item']));    
+  }
+  $date_items = entity_load('date_item', array_unique($date_item_ids));
+
+  return $date_items;
+}
+
+/**
+* Return all dates as unix timestamp from $date_items that are in the month and year. If date_items have date ranges (from, till) then we return only these date strings that match the given month and year
+*  @param $value_key if set, we use this array keys to get the nested value of date_items
+*/
+function _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, $field_name_from, $field_name_till, $value_key_from=array(), $value_key_till=array()) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+  $date_till_unix = strtotime($range_till);
+
+  if (!$year || !$month)
+    return array(); //then its not possible
+
+  $day_count = 0;
+  $date_current = strtotime($range_from.' +'.$day_count.' days'); //initalised get day
+  $days = array();
+  while ($date_current <= $date_till_unix) {    
+    
+    //get all date items that match the day, if we found on, we add the date to the result array!
+    if ($date_items && is_array($date_items)) {
+      foreach ($date_items as $date_item) {
+      
+        $from_value = $date_item->{$field_name_from};
+        if ($value_key_from)
+          $from_value = drupal_array_get_nested_value($from_value, $value_key_from);
+          
+        $till_value = $date_item->{$field_name_till};
+        if ($value_key_till)
+          $till_value = drupal_array_get_nested_value($till_value, $value_key_till);  
+          
+        $date_item_from_start = strtotime(date('Y-m-d 00:00:00', $from_value)); //get the start of the day, ignore the time
+        $date_item_till_start = strtotime(date('Y-m-d 00:00:00', $till_value)); //get the start of the day, ignore the time
+        if ($date_item_from_start <= $date_current && $date_current <= $date_item_till_start) {
+          //add this day!
+          $days[] = $date_current;        
+        }       
+      }
+    } 
+    
+    //go to the next day
+    $day_count++;
+    //get the day
+    $date_current = strtotime($range_from.' +'.$day_count.' days');
+  }
+  
+  return array_unique($days);
 }
 
 /**
@@ -158,7 +260,7 @@ function erpal_calendar_helper_date_term_alter(&$term_string, $context) {
 * Returns the term_string that should be set for user holidays
 */
 function _erpal_calendar_helper_field_tag_holiday_date() {
-  return variable_get('erpal_calendar_user_holiday_string', 'holiday');
+  return variable_get('erpal_calendar_user_holiday_tag_string', 'holiday');
 }
 
 /**

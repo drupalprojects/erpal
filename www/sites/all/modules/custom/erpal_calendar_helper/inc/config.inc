@@ -90,7 +90,7 @@ function erpal_calendar_helper_config_form($form, &$form_state){
     '#collapsed' => false,
   );
   
-  $form['date_item_tags_special']['erpal_calendar_holiday_tag_string'] = array(
+  $form['date_item_tags_special']['erpal_calendar_user_holiday_tag_string'] = array(
     '#type' => 'textfield',
     '#title' => t('Tags for holiday date nodes'),
     '#description' => t('This tag will be added as category to date nodes of category "holiday"'),
@@ -137,7 +137,7 @@ function _erpal_calendar_helper_config_form_submit($form, $form_state){
       }
     }
   }
-
+dpm($values);
   //now set the special tags
   $user_holiday_tag_string = $values['date_item_tags_special']['erpal_calendar_user_holiday_tag_string'];
   variable_set('erpal_calendar_user_holiday_tag_string', $user_holiday_tag_string);

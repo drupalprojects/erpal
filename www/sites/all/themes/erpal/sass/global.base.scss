@@ -130,28 +130,24 @@ a:active {
  * Addresses font sizes and margins set differently in IE6/7
  * Addresses font sizes within 'section' and 'article' in FF4+, Chrome, S5
  */
+
 h1 {
-   @include h1_style;
+	@include headline(20px, 20px, 5px, normal);
 }
-
 h2 {
-  @include h2_style;
-}
-
+	@include headline(18px, 18px, 5px, normal);
+}	
 h3 {
-  @include h3_style;
+	@include headline(17px, 17px, 5px, bold);
 }
-
 h4 {
-  @include h4_style;
+	@include headline(16px, 16px, 5px, bold);
 }
-
 h5 {
-  @include h5_style;
+	@include headline(15px, 15px, 5px, bold);
 }
-
 h6 {
-  @include h6_style;
+	@include headline(14px, 14px, 5px, bold);
 }
 
 /*

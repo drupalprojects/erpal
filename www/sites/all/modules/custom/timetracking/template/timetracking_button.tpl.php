@@ -6,7 +6,8 @@
     <img class="timetracking_button_image timetracking_button_image_<?php echo $entity_id; ?>" src="<?php echo $image; ?>" />
     <span class="timetracking_text timetracking_text_<?php echo $entity_id; ?>"><?php echo $linktext;?></span>
     <span class="timetracking_duration timetracking_duration_<?php echo $entity_id; ?>">
-      <?php print $duration ?> h
+      <span class="timetracking-time"><?php print $duration ?></span>
+      <span class="timetracking-time-suffix">h</span>
     </span>
   </a>
 </div>

@@ -299,7 +299,7 @@ function feature_erpal_calendar_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_date_type',
-      'label' => 'date_type',
+      'label' => 'date type',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -460,7 +460,7 @@ function feature_erpal_calendar_field_default_fields() {
   t('Date');
   t('Date tags');
   t('Participants');
-  t('date_type');
+  t('date type');
 
   return $fields;
 }

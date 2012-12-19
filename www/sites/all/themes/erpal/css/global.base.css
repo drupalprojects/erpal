@@ -20,6 +20,7 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*background for quicktabs li*/
 /*background for pane titles, table th*/
 /* color for right sidebar, pane title*/
+/* for pain search */
 /*for left menu*/
 /*for menu hover*/
 /*for menu item grey border*/
@@ -31,14 +32,6 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
-/*@mixin h2_pane_titcle{
-	padding-right: 5px;
-	color: $dark_black;
-	font:{
-		size: 12px;
-	}
-	background-color: none;
-}*/
 /*
  * @file
  * global.base
@@ -179,7 +172,7 @@ a:active {
  * Addresses font sizes and margins set differently in IE6/7
  * Addresses font sizes within 'section' and 'article' in FF4+, Chrome, S5
  */
-/* line 133, ../sass/global.base.scss */
+/* line 134, ../sass/global.base.scss */
 h1 {
   margin: 0px 0px 5px 0px;
   font-weight: normal;
@@ -195,34 +188,34 @@ h2 {
   line-height: 18px;
 }
 
-/* line 141, ../sass/global.base.scss */
+/* line 140, ../sass/global.base.scss */
 h3 {
   margin: 0px 0px 5px 0px;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 17px;
   line-height: 17px;
 }
 
-/* line 145, ../sass/global.base.scss */
+/* line 143, ../sass/global.base.scss */
 h4 {
   margin: 0px 0px 5px 0px;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 16px;
   line-height: 16px;
 }
 
-/* line 149, ../sass/global.base.scss */
+/* line 146, ../sass/global.base.scss */
 h5 {
   margin: 0px 0px 5px 0px;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 15px;
   line-height: 15px;
 }
 
-/* line 153, ../sass/global.base.scss */
+/* line 149, ../sass/global.base.scss */
 h6 {
   margin: 0px 0px 5px 0px;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 14px;
   line-height: 14px;
 }
@@ -230,7 +223,7 @@ h6 {
 /*
  * Addresses styling not present in IE7/8/9, S5, Chrome
  */
-/* line 160, ../sass/global.base.scss */
+/* line 156, ../sass/global.base.scss */
 abbr[title] {
   border-bottom: 1px dotted;
 }
@@ -238,13 +231,13 @@ abbr[title] {
 /*
  * Addresses style set to 'bolder' in FF3+, S4/5, Chrome
  */
-/* line 168, ../sass/global.base.scss */
+/* line 164, ../sass/global.base.scss */
 b,
 strong {
   font-weight: 700;
 }
 
-/* line 172, ../sass/global.base.scss */
+/* line 168, ../sass/global.base.scss */
 blockquote {
   margin: 1em 40px;
 }
@@ -252,7 +245,7 @@ blockquote {
 /*
  * Addresses styling not present in S5, Chrome
  */
-/* line 179, ../sass/global.base.scss */
+/* line 175, ../sass/global.base.scss */
 dfn {
   font-style: italic;
 }
@@ -260,7 +253,7 @@ dfn {
 /*
  * Addresses styling not present in IE6/7/8/9
  */
-/* line 186, ../sass/global.base.scss */
+/* line 182, ../sass/global.base.scss */
 mark {
   background: #ff0;
   color: #000;
@@ -269,7 +262,7 @@ mark {
 /*
  * Addresses margins set differently in IE6/7
  */
-/* line 195, ../sass/global.base.scss */
+/* line 191, ../sass/global.base.scss */
 p,
 pre {
   margin: 0 0 1.5em;
@@ -279,7 +272,7 @@ pre {
  * Corrects font family set oddly in IE6, S4/5, Chrome
  * en.wikipedia.org/wiki/User:Davidgothberg/Test59
  */
-/* line 206, ../sass/global.base.scss */
+/* line 202, ../sass/global.base.scss */
 pre,
 code,
 kbd,
@@ -292,7 +285,7 @@ samp {
 /*
  * Improves readability of pre-formatted text in all browsers
  */
-/* line 215, ../sass/global.base.scss */
+/* line 211, ../sass/global.base.scss */
 pre {
   white-space: pre;
   white-space: pre-wrap;
@@ -303,19 +296,19 @@ pre {
  * 1. Addresses CSS quotes not supported in IE6/7
  * 2. Addresses quote property not supported in S4
  */
-/* line 225, ../sass/global.base.scss */
+/* line 221, ../sass/global.base.scss */
 q {
   quotes: none;
 }
 
-/* line 230, ../sass/global.base.scss */
+/* line 226, ../sass/global.base.scss */
 q:before,
 q:after {
   content: '';
   content: none;
 }
 
-/* line 235, ../sass/global.base.scss */
+/* line 231, ../sass/global.base.scss */
 small {
   font-size: 75%;
 }
@@ -324,7 +317,7 @@ small {
  * Prevents sub and sup affecting line-height in all browsers
  * gist.github.com/413930
  */
-/* line 244, ../sass/global.base.scss */
+/* line 240, ../sass/global.base.scss */
 sub,
 sup {
   font-size: 75%;
@@ -333,12 +326,12 @@ sup {
   vertical-align: baseline;
 }
 
-/* line 251, ../sass/global.base.scss */
+/* line 247, ../sass/global.base.scss */
 sup {
   top: -0.5em;
 }
 
-/* line 255, ../sass/global.base.scss */
+/* line 251, ../sass/global.base.scss */
 sub {
   bottom: -0.25em;
 }
@@ -349,7 +342,7 @@ sub {
 /*
  * Addresses margins set differently in IE6/7
  */
-/* line 268, ../sass/global.base.scss */
+/* line 264, ../sass/global.base.scss */
 dl,
 menu,
 ol,
@@ -357,7 +350,7 @@ ul {
   margin: 1em 0;
 }
 
-/* line 272, ../sass/global.base.scss */
+/* line 268, ../sass/global.base.scss */
 dd {
   margin: 0 0 0 40px;
 }
@@ -365,7 +358,7 @@ dd {
 /*
  * Addresses paddings set differently in IE6/7
  */
-/* line 281, ../sass/global.base.scss */
+/* line 277, ../sass/global.base.scss */
 menu,
 ol,
 ul {
@@ -375,7 +368,7 @@ ul {
 /*
  * Corrects list images handled incorrectly in IE7
  */
-/* line 289, ../sass/global.base.scss */
+/* line 285, ../sass/global.base.scss */
 nav ul,
 nav ol {
   list-style: none;
@@ -390,7 +383,7 @@ nav ol {
  * 2. Improves image quality when scaled in IE7
  *    code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/
  */
-/* line 302, ../sass/global.base.scss */
+/* line 298, ../sass/global.base.scss */
 img {
   /* border: 0; */
   /* Drupal core already does this, uncomment if you need it */
@@ -400,7 +393,7 @@ img {
 /*
  * Corrects overflow displayed oddly in IE9
  */
-/* line 311, ../sass/global.base.scss */
+/* line 307, ../sass/global.base.scss */
 svg:not(:root) {
   overflow: hidden;
 }
@@ -411,7 +404,7 @@ svg:not(:root) {
 /*
  * Addresses margin not present in IE6/7/8/9, S5, O11
  */
-/* line 321, ../sass/global.base.scss */
+/* line 317, ../sass/global.base.scss */
 figure {
   margin: 0;
 }
@@ -422,7 +415,7 @@ figure {
 /*
  * Corrects margin displayed oddly in IE6/7
  */
-/* line 331, ../sass/global.base.scss */
+/* line 327, ../sass/global.base.scss */
 form {
   margin: 0;
 }
@@ -430,7 +423,7 @@ form {
 /*
  * Define consistent border, margin, and padding
  */
-/* line 338, ../sass/global.base.scss */
+/* line 334, ../sass/global.base.scss */
 fieldset {
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em;
@@ -441,7 +434,7 @@ fieldset {
  * 2. Corrects text not wrapping in FF3
  * 3. Corrects alignment displayed oddly in IE6/7
  */
-/* line 348, ../sass/global.base.scss */
+/* line 344, ../sass/global.base.scss */
 legend {
   border: 0;
   padding: 0;
@@ -454,7 +447,7 @@ legend {
  * 2. Addresses margins set differently in IE6/7, FF3+, S5, Chrome
  * 3. Improves appearance and consistency in all browsers
  */
-/* line 363, ../sass/global.base.scss */
+/* line 359, ../sass/global.base.scss */
 button,
 input,
 select,
@@ -468,7 +461,7 @@ textarea {
 /*
  * Addresses FF3/4 setting line-height on 'input' using !important in the UA stylesheet
  */
-/* line 374, ../sass/global.base.scss */
+/* line 370, ../sass/global.base.scss */
 button,
 input {
   line-height: normal;
@@ -481,7 +474,7 @@ input {
  * 3. Removes inner spacing in IE7 without affecting normal text inputs
  *    Known issue: inner spacing remains in IE6
  */
-/* line 388, ../sass/global.base.scss */
+/* line 384, ../sass/global.base.scss */
 button,
 input[type="button"],
 input[type="reset"],
@@ -494,7 +487,7 @@ input[type="submit"] {
 /*
  * Re-set default cursor for disabled elements
  */
-/* line 398, ../sass/global.base.scss */
+/* line 394, ../sass/global.base.scss */
 button[disabled],
 input[disabled] {
   cursor: default;
@@ -506,7 +499,7 @@ input[disabled] {
  * 3. Removes excess padding in IE7
  *    Known issue: excess padding remains in IE6
  */
-/* line 409, ../sass/global.base.scss */
+/* line 405, ../sass/global.base.scss */
 input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
@@ -519,7 +512,7 @@ input[type="radio"] {
  * 1. Addresses appearance set to searchfield in S5, Chrome
  * 2. Addresses box-sizing set to border-box in S5, Chrome (include -moz to future-proof)
  */
-/* line 420, ../sass/global.base.scss */
+/* line 416, ../sass/global.base.scss */
 input[type="search"] {
   -webkit-appearance: textfield;
   -moz-box-sizing: content-box;
@@ -530,7 +523,7 @@ input[type="search"] {
 /*
  * Removes inner padding and search cancel button in S5, Chrome on OS X
  */
-/* line 431, ../sass/global.base.scss */
+/* line 427, ../sass/global.base.scss */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
@@ -540,7 +533,7 @@ input[type="search"]::-webkit-search-cancel-button {
  * Removes inner padding and border in FF3+
  * www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/
  */
-/* line 440, ../sass/global.base.scss */
+/* line 436, ../sass/global.base.scss */
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;
@@ -551,7 +544,7 @@ input::-moz-focus-inner {
  * 1. Removes default vertical scrollbar in IE6/7/8/9
  * 2. Improves readability and alignment in all browsers
  */
-/* line 449, ../sass/global.base.scss */
+/* line 445, ../sass/global.base.scss */
 textarea {
   overflow: auto;
   vertical-align: top;
@@ -563,7 +556,7 @@ textarea {
 /*
  * 1. Remove most spacing between table cells
  */
-/* line 460, ../sass/global.base.scss */
+/* line 456, ../sass/global.base.scss */
 table {
   border: 1px solid;
   border-spacing: 0;
@@ -584,7 +577,7 @@ table {
  * Panel pages need negative margin equal to the gutter width applied to #content,
  * this is taken care of in theme settings as per above for normal gutters
  */
-/* line 482, ../sass/global.base.scss */
+/* line 478, ../sass/global.base.scss */
 #content .panel-display,
 #content .panel-flexible {
   margin-left: -10px;
@@ -601,14 +594,14 @@ table {
  *   the "dissappering images" bug in IE8.
  * - Mapping services such as Google Maps may break also, see below for fixes.
  */
-/* line 497, ../sass/global.base.scss */
+/* line 493, ../sass/global.base.scss */
 img {
   height: auto;
   -ms-interpolation-mode: bicubic;
 }
 
 /* Ethan Marcotte - http://front.ie/l8rJaA */
-/* line 506, ../sass/global.base.scss */
+/* line 502, ../sass/global.base.scss */
 img,
 embed,
 object,
@@ -617,7 +610,7 @@ video {
 }
 
 /* Disable flexiblity for IE8 and below */
-/* line 514, ../sass/global.base.scss */
+/* line 510, ../sass/global.base.scss */
 .lt-ie9 img,
 .lt-ie9 object,
 .lt-ie9 embed,
@@ -626,7 +619,7 @@ video {
 }
 
 /* Override max-width 100% for map displays */
-/* line 526, ../sass/global.base.scss */
+/* line 522, ../sass/global.base.scss */
 #map img,
 .gmap img,
 .view-gmap img,
@@ -642,7 +635,7 @@ video {
     Misc helpers, Accessibility classes etc
    ========================================================================== */
 /* Prevent overflowing content */
-/* line 541, ../sass/global.base.scss */
+/* line 537, ../sass/global.base.scss */
 header[role=banner],
 .content-inner,
 .nav,
@@ -664,7 +657,7 @@ header[role=banner],
  * Kellum Method: http://www.zeldman.com/2012/03/01/replacing-the-9999px-hack-new-image-replacement
  * Additional helpers from http://html5boilerplate.com/docs/css/
  */
-/* line 555, ../sass/global.base.scss */
+/* line 551, ../sass/global.base.scss */
 .ir {
   /* Kellum Method */
   display: block !important;
@@ -684,7 +677,7 @@ header[role=banner],
 }
 
 /* More robust element-invisible and element-focuable classes */
-/* line 574, ../sass/global.base.scss */
+/* line 570, ../sass/global.base.scss */
 .element-invisible {
   border: 0;
   clip: rect(1px 1px 1px 1px);
@@ -697,7 +690,7 @@ header[role=banner],
   width: 1px;
 }
 
-/* line 587, ../sass/global.base.scss */
+/* line 583, ../sass/global.base.scss */
 .element-invisible.element-focusable:active,
 .element-invisible.element-focusable:focus {
   clip: auto;
@@ -708,7 +701,7 @@ header[role=banner],
 }
 
 /* Shift content offscreen, can be usefull when you reall need to do this */
-/* line 596, ../sass/global.base.scss */
+/* line 592, ../sass/global.base.scss */
 .offscreen {
   position: absolute;
   top: -99999em;
@@ -719,12 +712,12 @@ header[role=banner],
 }
 
 /* Hide content from all users */
-/* line 606, ../sass/global.base.scss */
+/* line 602, ../sass/global.base.scss */
 .element-hidden {
   display: none;
 }
 
-/* line 610, ../sass/global.base.scss */
+/* line 606, ../sass/global.base.scss */
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
   padding-bottom: 0;
 }
