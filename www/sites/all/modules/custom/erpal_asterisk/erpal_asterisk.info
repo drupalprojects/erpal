@@ -1,5 +1,5 @@
 core = "7.x"
-description = "ERPAL Asterisk Cor"
+description = "ERPAL Asterisk Core"
 name = "erpal_asterisk"
 package = "ERPAL"
 php = "5.2.4"
@@ -7,3 +7,4 @@ project = "erpal_asterisk"
 version = "7.x-1.0-dev"
 
 files[] = erpal_asterisk.module
+dependecies[] = libphonenumber

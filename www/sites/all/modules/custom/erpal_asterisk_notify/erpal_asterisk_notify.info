@@ -9,3 +9,4 @@ version = "7.x-1.0-dev"
 files[] = erpal_asterisk_notify.module
 stylesheets[all][] = /css/erpal_asterisk_notify.css
 dependencies[] = views
+dependencies[] = erpal_asterisk
