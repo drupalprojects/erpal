@@ -513,21 +513,24 @@ body.page-node-tickets .region-sidebar-right {
   /*----------------end side-bar-right-----------------*/
 }
 /* line 387, ../sass/page.scss */
+.region-sidebar-right .local_tasks_menu .local_tasks {
+  position: absolute;
+  width: 248px;
+  z-index: 10;
+}
+/* line 392, ../sass/page.scss */
 .region-sidebar-right .local_tasks {
   margin-top: 2px;
   margin-bottom: 0px;
   padding: 0px;
   list-style-type: none;
-  position: absolute;
-  width: 248px;
-  z-index: 10;
 }
-/* line 397, ../sass/page.scss */
+/* line 399, ../sass/page.scss */
 .region-sidebar-right .local_tasks li {
   margin: 0 2px 7px;
   list-style-type: none;
 }
-/* line 400, ../sass/page.scss */
+/* line 402, ../sass/page.scss */
 .region-sidebar-right .local_tasks li a {
   padding-top: 5px;
   padding-bottom: 6px;
@@ -550,7 +553,7 @@ body.page-node-tickets .region-sidebar-right {
   font-size: 13px;
   font-weight: bold;
 }
-/* line 405, ../sass/page.scss */
+/* line 407, ../sass/page.scss */
 .region-sidebar-right .local_tasks li a:hover {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
   background-image: -webkit-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
@@ -558,7 +561,7 @@ body.page-node-tickets .region-sidebar-right {
   background-image: -o-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
   background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
 }
-/* line 419, ../sass/page.scss */
+/* line 421, ../sass/page.scss */
 .region-sidebar-right .content-inner {
   padding-bottom: 30px;
   clear: both;
@@ -568,7 +571,7 @@ body.page-node-tickets .region-sidebar-right {
 }
 
 /*----------------end erpal_content_layout-----------------------*/
-/* line 429, ../sass/page.scss */
+/* line 431, ../sass/page.scss */
 .pane-page-title.block {
   margin-bottom: 0;
 }
@@ -576,12 +579,12 @@ body.page-node-tickets .region-sidebar-right {
 /* =============================================================================
  *   Projects
  * ========================================================================== */
-/* line 436, ../sass/page.scss */
+/* line 438, ../sass/page.scss */
 .view-crm-activities table {
   border-collapse: collapse;
 }
 
-/* line 442, ../sass/page.scss */
+/* line 444, ../sass/page.scss */
 #mini-panel-task_status_panel,
 #mini-panel-activity_status_panel {
   padding: 10px 20px;
@@ -594,53 +597,53 @@ body.page-node-tickets .region-sidebar-right {
   color: #525252;
 }
 
-/* line 448, ../sass/page.scss */
+/* line 450, ../sass/page.scss */
 .panel-display .pane-entity-field h2.pane-title {
   padding-right: 5px;
   font-size: 12px;
   color: #525252;
 }
 
-/* line 453, ../sass/page.scss */
+/* line 455, ../sass/page.scss */
 .panel-display .pane-entity-field .block-content {
   float: left;
 }
 
-/* line 456, ../sass/page.scss */
+/* line 458, ../sass/page.scss */
 .panel-display .pane-entity-field .ds-form .group-left {
   width: auto;
   float: none;
 }
 
-/* line 461, ../sass/page.scss */
+/* line 463, ../sass/page.scss */
 .ctools-collapsible-content .panel-display .pane-entity-field .block-content,
 .ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title {
   float: none;
 }
 
-/* line 465, ../sass/page.scss */
+/* line 467, ../sass/page.scss */
 .panel-display .pane-entity-field .form-item label,
 .panel-display .pane-entity-field .rel-register-link {
   float: left;
 }
 
-/* line 468, ../sass/page.scss */
+/* line 470, ../sass/page.scss */
 .panel-display .pane-entity-field .field-type-taxonomy-term-reference {
   margin: 0px;
 }
 
-/* line 471, ../sass/page.scss */
+/* line 473, ../sass/page.scss */
 .panel-display .pane-entity-field .form-item {
   margin-bottom: 0px;
 }
 
-/* line 474, ../sass/page.scss */
+/* line 476, ../sass/page.scss */
 .panel-display .ui-widget-content {
   background: none;
   border: none;
 }
 
-/* line 478, ../sass/page.scss */
+/* line 480, ../sass/page.scss */
 .panel-display .ui-tabs .ui-tabs-panel {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -655,7 +658,7 @@ body.page-node-tickets .region-sidebar-right {
   background-color: #eeeeee;
 }
 
-/* line 488, ../sass/page.scss */
+/* line 490, ../sass/page.scss */
 .ctools-collapsible-container .ctools-collapsible-handle {
   cursor: pointer;
 }
@@ -663,12 +666,12 @@ body.page-node-tickets .region-sidebar-right {
 /*
  *  collapsible
  */
-/* line 495, ../sass/page.scss */
+/* line 497, ../sass/page.scss */
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
   padding: 3px 5px 3px 30px;
 }
 
-/* line 498, ../sass/page.scss */
+/* line 500, ../sass/page.scss */
 .ctools-collapsible-processed h2.pane-title {
   margin: 0;
   padding: 3px 5px 0px 30px;
@@ -676,93 +679,93 @@ body.page-node-tickets .region-sidebar-right {
   line-height: 12px;
 }
 
-/* line 504, ../sass/page.scss */
+/* line 506, ../sass/page.scss */
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
   padding-left: 0;
   font-weight: bold;
 }
 
-/* line 508, ../sass/page.scss */
+/* line 510, ../sass/page.scss */
 .ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label {
   margin: 0;
   clear: both;
   line-height: 12px;
 }
 
-/* line 513, ../sass/page.scss */
+/* line 515, ../sass/page.scss */
 .ctools-collapsible-container .block-content a {
   text-decoration: underline;
 }
 
-/* line 517, ../sass/page.scss */
+/* line 519, ../sass/page.scss */
 .ctools-collapsible-processed section,
 .ctools-collapsible-processed .field-name-field-books-ref {
   margin-bottom: 10px;
   padding-left: 10px;
 }
 
-/* line 521, ../sass/page.scss */
+/* line 523, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-task-assigned-users {
   padding-left: 0px;
 }
 
-/* line 524, ../sass/page.scss */
+/* line 526, ../sass/page.scss */
 .ctools-collapsible-processed .panel-separator {
   height: 1px;
   overflow: hidden;
 }
 
-/* line 528, ../sass/page.scss */
+/* line 530, ../sass/page.scss */
 .ctools-collapsible-processed ul {
   margin: 0;
   padding: 0px;
 }
 
-/* line 532, ../sass/page.scss */
+/* line 534, ../sass/page.scss */
 .ctools-collapsible-processed ul li {
   list-style-type: none;
 }
 
-/* line 535, ../sass/page.scss */
+/* line 537, ../sass/page.scss */
 .ctools-collapsible-processed .field-type-taxonomy-term-reference {
   margin: 0;
 }
 
-/* line 538, ../sass/page.scss */
+/* line 540, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-asset-files {
   margin-bottom: 10px;
 }
 
-/* line 541, ../sass/page.scss */
+/* line 543, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-asset-files .field-item {
   margin-left: 20px;
   padding-left: 0 !important;
   display: list-item;
 }
 
-/* line 547, ../sass/page.scss */
+/* line 549, ../sass/page.scss */
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a,
 .ctools-collapsible-processed .field-name-field-books-ref a {
   text-decoration: underline;
 }
 
-/* line 550, ../sass/page.scss */
+/* line 552, ../sass/page.scss */
 .ctools-collapsible-container .ctools-collapsible-content .field-items {
   clear: both;
 }
 
-/* line 553, ../sass/page.scss */
+/* line 555, ../sass/page.scss */
 .ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item {
   padding-left: 10px;
 }
 
-/* line 558, ../sass/page.scss */
+/* line 560, ../sass/page.scss */
 #mini-panel-task_status_panel .panel-separator,
 #mini-panel-activity_status_panel .panel-separator {
   display: none;
 }
 
-/* line 562, ../sass/page.scss */
+/* line 564, ../sass/page.scss */
 #mini-panel-task_status_panel section,
 #mini-panel-activity_status_panel section {
   margin-bottom: 0;
@@ -770,34 +773,34 @@ body.page-node-tickets .region-sidebar-right {
   float: left;
 }
 
-/* line 567, ../sass/page.scss */
+/* line 569, ../sass/page.scss */
 #mini-panel-task_status_panel li {
   padding: 0px;
   list-style-type: none;
 }
 
-/* line 572, ../sass/page.scss */
+/* line 574, ../sass/page.scss */
 #mini-panel-task_status_panel ul,
 #mini-panel-activity_status_panel ul {
   padding-left: 5px;
 }
 
-/* line 575, ../sass/page.scss */
+/* line 577, ../sass/page.scss */
 .region-sidebar-right .panel-separator {
   display: none;
 }
 
-/* line 578, ../sass/page.scss */
+/* line 580, ../sass/page.scss */
 .ctools-collapsible-container .panel-separator {
   display: block;
 }
 
-/* line 581, ../sass/page.scss */
+/* line 583, ../sass/page.scss */
 .ctools-collapsible-container .no-title {
   padding-left: 10px;
 }
 
-/* line 584, ../sass/page.scss */
+/* line 586, ../sass/page.scss */
 .ctools-collapsible-container .ctools-toggle {
   background-position: 7px 8px;
 }
@@ -805,67 +808,67 @@ body.page-node-tickets .region-sidebar-right {
 /*
  *  table
  */
-/* line 591, ../sass/page.scss */
+/* line 593, ../sass/page.scss */
 .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 1.3em;
 }
 
-/* line 594, ../sass/page.scss */
+/* line 596, ../sass/page.scss */
 .view-empty {
   padding: 15px;
 }
 
-/* line 597, ../sass/page.scss */
+/* line 599, ../sass/page.scss */
 .quicktabs-tabpage .views-table .views-field-title {
   width: 115px;
 }
 
-/* line 600, ../sass/page.scss */
+/* line 602, ../sass/page.scss */
 .quicktabs-tabpage .views-field-field-task-status-term {
   width: 70px;
 }
 
-/* line 603, ../sass/page.scss */
+/* line 605, ../sass/page.scss */
 .page-projects .views-field-title {
   width: 200px;
 }
 
-/* line 606, ../sass/page.scss */
+/* line 608, ../sass/page.scss */
 .page-projects .views-field-field-customer-ref {
   width: 200px;
 }
 
-/* line 610, ../sass/page.scss */
+/* line 612, ../sass/page.scss */
 .page-projects .views-field-field-project-status-term,
 .page-projects .views-field-field-priority-term {
   width: 100px;
 }
 
-/* line 613, ../sass/page.scss */
+/* line 615, ../sass/page.scss */
 .page-projects #edit-field-customer-ref-target-id-wrapper {
   margin-left: 45px;
 }
 
-/* line 616, ../sass/page.scss */
+/* line 618, ../sass/page.scss */
 .page-projects #edit-field-project-status-term-tid-wrapper {
   margin-left: 23px;
 }
 
 /*--------------------------------for erpal task view row layout------------------------------------------*/
-/* line 623, ../sass/page.scss */
+/* line 625, ../sass/page.scss */
 .erpal-task-view-row-layout .region-sidebar-left {
   width: 70%;
   float: left;
 }
 
-/* line 627, ../sass/page.scss */
+/* line 629, ../sass/page.scss */
 .erpal-task-view-row-layout .region-sidebar-right {
   margin-left: 20px;
   width: 28%;
   float: left;
 }
 
-/* line 632, ../sass/page.scss */
+/* line 634, ../sass/page.scss */
 .erpal-task-view-row-layout .content-inner {
   margin-bottom: 20px;
   clear: both;
@@ -874,54 +877,54 @@ body.page-node-tickets .region-sidebar-right {
 }
 
 /*---------------ticket details-----------*/
-/* line 640, ../sass/page.scss */
+/* line 642, ../sass/page.scss */
 .field-name-task-title .field-item a {
   font-weight: bold;
   font-size: 16px;
 }
 
-/* line 644, ../sass/page.scss */
+/* line 646, ../sass/page.scss */
 .field-name-task-title .field-item p {
   margin-bottom: 0px;
 }
 
-/* line 647, ../sass/page.scss */
+/* line 649, ../sass/page.scss */
 .node-erpal-task .columns-inner {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
 
-/* line 652, ../sass/page.scss */
+/* line 654, ../sass/page.scss */
 #tabs-tasks_by_project_panel-middle ul.field-items {
   padding: 0px;
   margin: 0px;
 }
 
-/* line 657, ../sass/page.scss */
+/* line 659, ../sass/page.scss */
 .quicktabs-tabpage .content-column .content-inner {
   padding: 10px;
   overflow: hidden;
 }
 
-/* line 663, ../sass/page.scss */
+/* line 665, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above {
   width: 100%;
 }
 
-/* line 666, ../sass/page.scss */
+/* line 668, ../sass/page.scss */
 .quicktabs-tabpage .field-label {
   margin: 0px !important;
 }
 
-/* line 670, ../sass/page.scss */
+/* line 672, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div {
   font-weight: bold;
 }
 
-/* line 676, ../sass/page.scss */
+/* line 678, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
@@ -930,7 +933,7 @@ body.page-node-tickets .region-sidebar-right {
   text-decoration: underline;
 }
 
-/* line 683, ../sass/page.scss */
+/* line 685, ../sass/page.scss */
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field .field-label,
 #quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
 #quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field .field-label,
@@ -938,43 +941,43 @@ body.page-node-tickets .region-sidebar-right {
   padding-right: 5px;
 }
 
-/* line 687, ../sass/page.scss */
+/* line 689, ../sass/page.scss */
 .quicktabs-tabpage .field-group-format section.field,
 #quicktabs-tabpage-tasks_by_project_tabs-2 section.field {
   overflow: hidden;
   clear: both;
 }
 
-/* line 693, ../sass/page.scss */
+/* line 695, ../sass/page.scss */
 .field-name-files-count .field-items,
 .field-name-comment-count .field-items {
   padding-top: 5px;
   width: 50%;
 }
 
-/* line 697, ../sass/page.scss */
+/* line 699, ../sass/page.scss */
 .inline_fields .field {
   margin-right: 50px;
   clear: none !important;
   float: left;
 }
 
-/* line 702, ../sass/page.scss */
+/* line 704, ../sass/page.scss */
 .inline_fields {
   clear: both;
 }
 
-/* line 705, ../sass/page.scss */
+/* line 707, ../sass/page.scss */
 ul.pager li a, ul.pager li.pager-current {
   font-size: 1.2em;
 }
 
-/* line 708, ../sass/page.scss */
+/* line 710, ../sass/page.scss */
 .view-mode-view_row_details .content-inner {
   padding-bottom: 0px;
 }
 
-/* line 711, ../sass/page.scss */
+/* line 713, ../sass/page.scss */
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
@@ -983,112 +986,112 @@ ul.pager li a, ul.pager li.pager-current {
   border-radius: 5px;
 }
 
-/* line 718, ../sass/page.scss */
+/* line 720, ../sass/page.scss */
 .pane-node-body p {
   font-size: 16px;
 }
 
-/* line 722, ../sass/page.scss */
+/* line 724, ../sass/page.scss */
 .quicktabs-tabpage #edit-nid {
   width: 40px;
 }
 
-/* line 725, ../sass/page.scss */
+/* line 727, ../sass/page.scss */
 .quicktabs-tabpage #edit-title {
   width: 120px;
 }
 
-/* line 728, ../sass/page.scss */
+/* line 730, ../sass/page.scss */
 .quicktabs-tabpage #edit-field-priority-term-tid {
   width: 75px;
 }
 
-/* line 731, ../sass/page.scss */
+/* line 733, ../sass/page.scss */
 .quicktabs-tabpage #edit-field-task-type-term-tid {
   width: 60px;
 }
 
-/* line 734, ../sass/page.scss */
+/* line 736, ../sass/page.scss */
 .page-projects-timetrackings #edit-field-date-time-value-wrapper {
   margin-left: 45px;
 }
 
-/* line 737, ../sass/page.scss */
+/* line 739, ../sass/page.scss */
 .page-projects-timetrackings #edit-field-project-ref-target-id-wrapper {
   margin-left: 440px;
 }
 
-/* line 740, ../sass/page.scss */
+/* line 742, ../sass/page.scss */
 .page-projects-timetrackings #edit-field-project-ref-target-id {
   width: 120px;
 }
 
-/* line 743, ../sass/page.scss */
+/* line 745, ../sass/page.scss */
 .page-projects-timetrackings .views-field-field-date-time {
   width: 140px;
 }
 
-/* line 746, ../sass/page.scss */
+/* line 748, ../sass/page.scss */
 .page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2 {
   width: 120px;
 }
 
-/* line 749, ../sass/page.scss */
+/* line 751, ../sass/page.scss */
 .page-projects-timetrackings #edit-uid {
   width: 90px;
 }
 
-/* line 752, ../sass/page.scss */
+/* line 754, ../sass/page.scss */
 .page-projects-timetrackings .views-submit-button {
   clear: both;
 }
 
-/* line 755, ../sass/page.scss */
+/* line 757, ../sass/page.scss */
 .page-projects-timetrackings #edit-uid-wrapper {
   width: 140px;
 }
 
-/* line 758, ../sass/page.scss */
+/* line 760, ../sass/page.scss */
 .page-projects-timetrackings #edit-uid-wrapper .description {
   line-height: 12px;
 }
 
-/* line 761, ../sass/page.scss */
+/* line 763, ../sass/page.scss */
 .page-node-edit div.autocomplete-deluxe-multiple {
   width: auto;
 }
 
 /* crm */
-/* line 766, ../sass/page.scss */
+/* line 768, ../sass/page.scss */
 .field-type-datetime fieldset .date-padding {
   width: 270px;
 }
 
-/* line 770, ../sass/page.scss */
+/* line 772, ../sass/page.scss */
 .field-type-datetime fieldset,
 .field-type-datetime fieldset .date-padding {
   padding: 0;
   margin: 0;
 }
 
-/* line 774, ../sass/page.scss */
+/* line 776, ../sass/page.scss */
 .field-name-field-next-contact form {
   width: 500px;
 }
 
-/* line 777, ../sass/page.scss */
+/* line 779, ../sass/page.scss */
 .field-name-field-next-contact form #edit-field-next-contact {
   float: left;
 }
 
-/* line 781, ../sass/page.scss */
+/* line 783, ../sass/page.scss */
 .field-name-field-next-contact form .form-actions {
   width: 70px;
   float: left;
 }
 
 /* comments */
-/* line 789, ../sass/page.scss */
+/* line 791, ../sass/page.scss */
 #comment-form {
   padding: 15px;
   margin-top: 20px;
@@ -1097,25 +1100,25 @@ ul.pager li a, ul.pager li.pager-current {
   border-radius: 5px;
 }
 
-/* line 796, ../sass/page.scss */
+/* line 798, ../sass/page.scss */
 #comment-form .field-type-datetime {
   width: 300px;
   float: left;
 }
 
-/* line 800, ../sass/page.scss */
+/* line 802, ../sass/page.scss */
 #comment-form #edit-author--2 {
   clear: both;
 }
 
-/* line 803, ../sass/page.scss */
+/* line 805, ../sass/page.scss */
 #comment-form #edit-field-contacts-ref {
   width: 350px;
   float: left;
   margin-right: 40px;
 }
 
-/* line 811, ../sass/page.scss */
+/* line 813, ../sass/page.scss */
 #comment-form #edit-field-contacts-ref table,
 #comment-form #edit-field-contacts-ref table input,
 #comment-form #edit-field-asset-files table,
@@ -1123,56 +1126,56 @@ ul.pager li a, ul.pager li.pager-current {
   width: 310px;
 }
 
-/* line 814, ../sass/page.scss */
+/* line 816, ../sass/page.scss */
 #comment-form #edit-field-asset-files {
   width: 350px;
   float: left;
 }
 
-/* line 818, ../sass/page.scss */
+/* line 820, ../sass/page.scss */
 #comment-form #edit-actions {
   clear: both;
 }
 
-/* line 821, ../sass/page.scss */
+/* line 823, ../sass/page.scss */
 #comment-form .field-widget-options-select {
   width: 100px;
   float: left;
   margin-right: 15px;
 }
 
-/* line 826, ../sass/page.scss */
+/* line 828, ../sass/page.scss */
 #comment-form .field-name-field-activity-status-term {
   width: 160px !important;
   float: left;
 }
 
-/* line 830, ../sass/page.scss */
+/* line 832, ../sass/page.scss */
 .comment-content section {
   width: 250px;
   float: left;
 }
 
-/* line 834, ../sass/page.scss */
+/* line 836, ../sass/page.scss */
 .comment nav {
   padding: 0 15px;
   clear: both;
 }
 
 /*****DELETE****/
-/* line 841, ../sass/page.scss */
+/* line 843, ../sass/page.scss */
 .rel-register-link {
   display: none;
 }
 
 /****DELEEETE****/
 /* multi select boxes */
-/* line 849, ../sass/page.scss */
+/* line 851, ../sass/page.scss */
 .views-exposed-form .views-exposed-widget {
   padding-right: 7px !important;
 }
 
-/* line 852, ../sass/page.scss */
+/* line 854, ../sass/page.scss */
 .views-exposed-form button span:not(.ui-icon) {
   position: absolute;
   overflow: hidden;
@@ -1181,7 +1184,7 @@ ul.pager li a, ul.pager li.pager-current {
   line-height: 13px;
 }
 
-/* line 859, ../sass/page.scss */
+/* line 861, ../sass/page.scss */
 .views-exposed-form button {
   font-size: 11px;
   height: 25px;
@@ -1189,7 +1192,7 @@ ul.pager li a, ul.pager li.pager-current {
   overflow: hidden;
 }
 
-/* line 870, ../sass/page.scss */
+/* line 872, ../sass/page.scss */
 #edit-field-task-status-term-tid-wrapper,
 #edit-field-activity-status-term-tid-wrapper,
 #edit-field-priority-term-tid-wrapper,
@@ -1199,155 +1202,155 @@ ul.pager li a, ul.pager li.pager-current {
   width: 130px !important;
 }
 
-/* line 873, ../sass/page.scss */
+/* line 875, ../sass/page.scss */
 .ui-multiselect-menu {
   width: 200px !important;
 }
 
-/* line 876, ../sass/page.scss */
+/* line 878, ../sass/page.scss */
 .ui-helper-reset {
   position: relative;
 }
 
-/* line 879, ../sass/page.scss */
+/* line 881, ../sass/page.scss */
 .ui-multiselect-close {
   position: absolute;
   right: 0;
 }
 
-/* line 883, ../sass/page.scss */
+/* line 885, ../sass/page.scss */
 .ui-multiselect-header {
   padding: 3px 0;
 }
 
 /*---------------------------------dashboard styles-----------------------------------------*/
-/* line 887, ../sass/page.scss */
+/* line 889, ../sass/page.scss */
 #homebox .portlet-content {
   padding: 0px;
 }
 
-/* line 890, ../sass/page.scss */
+/* line 892, ../sass/page.scss */
 #homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
   border: none;
 }
 
-/* line 893, ../sass/page.scss */
+/* line 895, ../sass/page.scss */
 #homebox .more-link {
   padding: 4px 10px;
 }
 
-/* line 896, ../sass/page.scss */
+/* line 898, ../sass/page.scss */
 #homebox .homebox-column {
   margin: 0;
   padding: 0;
 }
 
-/* line 900, ../sass/page.scss */
+/* line 902, ../sass/page.scss */
 #homebox .homebox-column-wrapper-1 {
   margin-right: 20px;
 }
 
-/* line 903, ../sass/page.scss */
+/* line 905, ../sass/page.scss */
 #homebox .homebox-column-wrapper {
   float: left;
   width: 48% !important;
 }
 
-/* line 907, ../sass/page.scss */
+/* line 909, ../sass/page.scss */
 #homebox .homebox-column-wrapper-1 {
   margin-right: 25px;
 }
 
-/* line 910, ../sass/page.scss */
+/* line 912, ../sass/page.scss */
 #homebox .homebox-column-wrapper {
   width: 48% !important;
 }
 
-/* line 913, ../sass/page.scss */
+/* line 915, ../sass/page.scss */
 #homebox .portlet-header {
   font-weight: normal;
 }
 
-/* line 916, ../sass/page.scss */
+/* line 918, ../sass/page.scss */
 #homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption {
   padding-left: 12px;
 }
 
-/* line 919, ../sass/page.scss */
+/* line 921, ../sass/page.scss */
 #homebox .form-submit {
   margin-left: 12px;
 }
 
-/* line 922, ../sass/page.scss */
+/* line 924, ../sass/page.scss */
 #homebox .homebox-portlet .portlet-header .portlet-title {
   padding-left: 8px;
 }
 
-/* line 925, ../sass/page.scss */
+/* line 927, ../sass/page.scss */
 #homebox .homebox-portlet .portlet-header {
   border: none;
 }
 
 /*-------------------------------------crm styles-------------------------------------*/
-/* line 929, ../sass/page.scss */
+/* line 931, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
   margin-bottom: 7px;
 }
 
-/* line 932, ../sass/page.scss */
+/* line 934, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
   margin: 0;
   padding: 0;
   border: medium none;
 }
 
-/* line 937, ../sass/page.scss */
+/* line 939, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
   padding: 10px;
   font-size: 14px;
 }
 
-/* line 941, ../sass/page.scss */
+/* line 943, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li {
   list-style-type: none;
   padding-right: 7px;
 }
 
-/* line 945, ../sass/page.scss */
+/* line 947, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul {
   margin: 0;
   padding: 0;
   float: none;
 }
 
-/* line 950, ../sass/page.scss */
+/* line 952, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane table {
   margin: 0;
   border: none;
 }
 
-/* line 954, ../sass/page.scss */
+/* line 956, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane table td {
   padding: 10px;
 }
 
-/* line 958, ../sass/page.scss */
+/* line 960, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container {
   border: none;
 }
 
-/* line 961, ../sass/page.scss */
+/* line 963, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a {
   font-size: 1.2em;
   text-decoration: underline;
 }
 
-/* line 965, ../sass/page.scss */
+/* line 967, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
   margin: 0px;
 }
 
-/* line 968, ../sass/page.scss */
+/* line 970, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
   padding: 10px;
   text-align: right;
@@ -1359,42 +1362,42 @@ ul.pager li a, ul.pager li.pager-current {
   border-bottom-right-radius: 2px;
 }
 
-/* line 978, ../sass/page.scss */
+/* line 980, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference {
   margin: 0px;
 }
 
-/* line 981, ../sass/page.scss */
+/* line 983, ../sass/page.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title {
   font-size: 26px;
 }
 
-/* line 984, ../sass/page.scss */
+/* line 986, ../sass/page.scss */
 .node-type-erpal-contact .panel-display .pane-entity-field .block-content {
   float: none;
 }
 
-/* line 987, ../sass/page.scss */
+/* line 989, ../sass/page.scss */
 .page-crm-contacts table .views-field-field-contact-image {
   width: 160px;
 }
 
-/* line 990, ../sass/page.scss */
+/* line 992, ../sass/page.scss */
 .page-crm-contacts table .views-field-title {
   width: 345px;
 }
 
-/* line 993, ../sass/page.scss */
+/* line 995, ../sass/page.scss */
 .region-sidebar-right .ctools-collapsible-container figure {
   text-align: center;
 }
 
-/* line 996, ../sass/page.scss */
+/* line 998, ../sass/page.scss */
 #mini-panel-contact_details_panel {
   margin-top: 2px;
 }
 
-/* line 999, ../sass/page.scss */
+/* line 1001, ../sass/page.scss */
 .ctools-collapsible-processed .ctools-collapsible-content {
   padding-top: 10px;
 }
@@ -1402,7 +1405,7 @@ ul.pager li a, ul.pager li.pager-current {
 /*
  *  Buttons
  */
-/* line 1009, ../sass/page.scss */
+/* line 1011, ../sass/page.scss */
 a.button:link,
 a.button:visited,
 a.button:hover,
@@ -1411,7 +1414,7 @@ a.button:active {
   color: #5a5a5a;
 }
 
-/* line 1013, ../sass/page.scss */
+/* line 1015, ../sass/page.scss */
 input.form-submit,
 a.button {
   background: white url(../images/buttons.png) 0 0 repeat-x;
@@ -1422,7 +1425,7 @@ a.button {
   color: #3a3a3a;
 }
 
-/* line 1023, ../sass/page.scss */
+/* line 1025, ../sass/page.scss */
 input.form-submit:hover,
 input.form-submit:focus {
   background: #dedede;

@@ -384,6 +384,11 @@ body {
     width: 250px;
 	float: right;
 	color: $dark_black;
+	  .local_tasks_menu .local_tasks{
+		position: absolute;
+		width: 248px;
+        z-index: 10;
+	  }
 	  .local_tasks{
 		margin:{
 		  top: 2px;
@@ -391,9 +396,6 @@ body {
 		};
 	    padding: 0px;
 	    list-style-type: none;
-		position: absolute;
-		width: 248px;
-        z-index: 10;
 		li{
 		  margin: 0 2px 7px;
 		  list-style-type: none;

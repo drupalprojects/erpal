@@ -14,33 +14,34 @@
   background: none;
 }
 
-/* line 12, ../sass/color.scss */
+/* line 13, ../sass/color.scss */
 .ctools-collapsible-processed h2.pane-title,
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title,
+h2.field-label {
   color: #525252;
 }
 
-/* line 15, ../sass/color.scss */
+/* line 16, ../sass/color.scss */
 .ctools-collapsible-processed .panel-separator {
   border-bottom: 1px solid #EEEEEE;
 }
 
-/* line 18, ../sass/color.scss */
+/* line 19, ../sass/color.scss */
 .block-content .view-content .views-table td {
   border-bottom: 1px solid #E5E5E5;
 }
 
-/* line 21, ../sass/color.scss */
+/* line 22, ../sass/color.scss */
 .view-filters .rel-register-build {
   background-color: #EEEEEE;
 }
 
-/* line 24, ../sass/color.scss */
+/* line 25, ../sass/color.scss */
 .block-content .view-content .views-table th {
   background-color: #AFAFAF;
 }
 
-/* line 29, ../sass/color.scss */
+/* line 30, ../sass/color.scss */
 .block-content .view-content .views-table tr.info,
 .block-content .view-content .views-table tr.even,
 .block-content .view-content .views-table tr:nth-child(2n+2) {
@@ -48,87 +49,87 @@
 }
 
 /*---------------ticket details-----------*/
-/* line 34, ../sass/color.scss */
+/* line 35, ../sass/color.scss */
 .node-erpal-task .columns-inner {
   background-color: #ffffff;
 }
 
-/* line 38, ../sass/color.scss */
+/* line 39, ../sass/color.scss */
 #tabs-tasks_by_project_panel-middle-3 #content-column .content-inner,
 #tabs-tickets_by_project_panel-middle-3 #content-column .content-inner {
   border-bottom: 1px solid #E5E5E5;
 }
 
-/* line 42, ../sass/color.scss */
+/* line 43, ../sass/color.scss */
 .item-list .pager {
   background: #AFAFAF;
 }
 
-/* line 45, ../sass/color.scss */
+/* line 46, ../sass/color.scss */
 ul.pager li a {
   color: #525252 !important;
 }
 
-/* line 48, ../sass/color.scss */
+/* line 49, ../sass/color.scss */
 #tabs-tasks_by_project_panel-middle-1 th a {
   color: #525252;
 }
 
 /* hightlight of different states of tasks/projects */
-/* line 55, ../sass/color.scss */
+/* line 56, ../sass/color.scss */
 tr.odd.alert,
 tr.even.alert {
   background-color: #FFDFE4 !important;
 }
 
-/* line 60, ../sass/color.scss */
+/* line 61, ../sass/color.scss */
 tr.odd.alert .active,
 tr.even.alert .active {
   background-color: #eed0d5 !important;
 }
 
-/* line 67, ../sass/color.scss */
+/* line 68, ../sass/color.scss */
 tr.odd.completed,
 tr.even.completed {
   background-color: #EEEEEE !important;
 }
 
-/* line 74, ../sass/color.scss */
+/* line 75, ../sass/color.scss */
 .pane-node-body,
 article.comment {
   background-color: #ffffff;
 }
 
-/* line 77, ../sass/color.scss */
+/* line 78, ../sass/color.scss */
 .comment .submitted {
   border-bottom: 1px solid #F4F4F4;
 }
 
 /* crm activity */
-/* line 82, ../sass/color.scss */
+/* line 83, ../sass/color.scss */
 .field-type-datetime fieldset {
   border: none;
 }
 
 /*---------------------------------dashboard styles-----------------------------------------*/
-/* line 86, ../sass/color.scss */
+/* line 87, ../sass/color.scss */
 #homebox .homebox-column {
   background: none;
 }
 
-/* line 89, ../sass/color.scss */
+/* line 90, ../sass/color.scss */
 #homebox .more-link, #homebox .portlet-title, #homebox .homebox-portlet .portlet-header {
   background-color: #F6F6F6;
 }
 
 /*-------------------------------------crm styles-------------------------------------*/
-/* line 95, ../sass/color.scss */
+/* line 96, ../sass/color.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th,
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
   background-color: #AFAFAF;
 }
 
-/* line 98, ../sass/color.scss */
+/* line 99, ../sass/color.scss */
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td {
   border-bottom: 1px solid #e7e7e7;
 }
