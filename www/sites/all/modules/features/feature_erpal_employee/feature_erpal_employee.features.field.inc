@@ -283,6 +283,7 @@ function feature_erpal_employee_field_default_fields() {
           'holiday' => 'Holiday',
           'ill' => 'Ill',
           'day_off' => 'Day off',
+          'reduce_hours' => 'Reduce hours (got paid)',
         ),
         'allowed_values_function' => '',
         'profile2_private' => FALSE,
