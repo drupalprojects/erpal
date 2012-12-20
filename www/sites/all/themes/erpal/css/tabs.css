@@ -32,17 +32,14 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
-/* line 3, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last {
   float: left;
   width: 100%;
 }
-/* line 6, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside {
   margin-left: 150px;
   min-width: 440px;
 }
-/* line 9, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs {
   -webkit-box-shadow: 2px 3px 4px #b6b6b6;
   -moz-box-shadow: 2px 3px 4px #b6b6b6;
@@ -52,7 +49,6 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   background-color: #eeeeee;
   border-bottom: 2px solid #ffa800;
 }
-/* line 15, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary {
   margin: 0px;
   padding: 0px;
@@ -63,14 +59,12 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   background-color: white;
   border: none;
 }
-/* line 23, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li {
   margin: 0;
   float: left;
   display: block;
   border-right: 1px solid #D9D9D9;
 }
-/* line 28, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
   padding: 0 20px;
@@ -87,7 +81,6 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   background: white;
   border: none;
 }
-/* line 30, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
   margin: 0;
   padding: 0 20px;
@@ -105,26 +98,22 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   border: none;
   color: #7b726b;
 }
-/* line 34, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a:hover {
   background-color: white;
   color: black;
 }
-/* line 38, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a.active {
   *zoom: 1;
   background-color: #ffa800;
   color: black;
   border: medium none;
 }
-/* line 41, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
   *zoom: 1;
   background-color: #ffa800;
   color: black;
   background-color: #ffa800;
 }
-/* line 48, ../sass/tabs.scss */
 #erpal_wrapper .panel-col-last .inside .pane-page-tabs ul.primary .active {
   border-left: 2px solid #fd8300;
   border-right: 2px solid #fd8300;

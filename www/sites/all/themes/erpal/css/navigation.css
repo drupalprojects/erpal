@@ -1,9 +1,7 @@
-/* line 1, ../sass/navigation.scss */
 ul.menu li {
   margin: 0;
 }
 
-/* line 4, ../sass/navigation.scss */
 .pane-system-user-menu li {
   display: block;
   list-style-image: none;
