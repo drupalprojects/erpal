@@ -61,6 +61,8 @@ function og_relations_list_og_users() {
   $handler->display->display_options['fields']['name']['label'] = '';
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
   /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
