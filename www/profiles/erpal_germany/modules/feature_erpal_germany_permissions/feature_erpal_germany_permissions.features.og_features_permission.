@@ -118,9 +118,7 @@ function feature_erpal_germany_permissions_og_features_default_permissions() {
 
   // Exported og permission: 'node:erpal_space:update any erpal_file content'
   $permissions['node:erpal_space:update any erpal_file content'] = array(
-    'roles' => array(
-      'customer' => 'customer',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:erpal_space:update any erpal_project content'
@@ -130,9 +128,7 @@ function feature_erpal_germany_permissions_og_features_default_permissions() {
 
   // Exported og permission: 'node:erpal_space:update any erpal_task content'
   $permissions['node:erpal_space:update any erpal_task content'] = array(
-    'roles' => array(
-      'customer' => 'customer',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:erpal_space:update group'
@@ -144,9 +140,7 @@ function feature_erpal_germany_permissions_og_features_default_permissions() {
 
   // Exported og permission: 'node:erpal_space:update own erpal_file content'
   $permissions['node:erpal_space:update own erpal_file content'] = array(
-    'roles' => array(
-      'customer' => 'customer',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:erpal_space:update own erpal_project content'
@@ -156,9 +150,7 @@ function feature_erpal_germany_permissions_og_features_default_permissions() {
 
   // Exported og permission: 'node:erpal_space:update own erpal_task content'
   $permissions['node:erpal_space:update own erpal_task content'] = array(
-    'roles' => array(
-      'customer' => 'customer',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:erpal_task:add user'

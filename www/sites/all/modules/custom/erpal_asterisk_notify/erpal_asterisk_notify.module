@@ -28,7 +28,7 @@ function erpal_asterisk_notify_init() {
     foreach($fields as $item){
     // load field collections and get numbers to store in array $phone_numbers
     $field_collection = entity_load('field_collection_item', array($item['value']));
-    $phone_numbers[] = $field_collection[$item['value']]->field_phone_number[LANGUAGE_NONE][0]['value'];
+    $phone_numbers[] = $field_collection[$item['value']]->field_phone_number_normalized[LANGUAGE_NONE][0]['value'];
   }
   
   // Attach javascript to etablish connection to nodejs-server
@@ -121,7 +121,7 @@ function erpal_asterisk_notify_ingoing_call($destination, $source) {
     $out	= theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
   }
 //    $out  = theme('erpal_asterisk_view', array('output' => $view));
-  erpal_asterisk_send_dispatch_data( $out, $source, $destination );
+  erpal_asterisk_send_dispatch_data($out, $source, $destination);
     
 }
 
@@ -146,7 +146,8 @@ function _erpal_asterisk_notify_get_view($phone_number){
   $arguments = array($phone_number);
   $view = views_get_view($name);
   $view->display['default']->display_options['header']['area']['content'] = $phone_number;
-  return $view->preview($display_id, $arguments);  
+  
+  return $view->preview($display_id, $arguments);  
 }
 
 

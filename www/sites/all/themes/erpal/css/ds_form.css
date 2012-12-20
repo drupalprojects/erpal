@@ -1,7 +1,6 @@
 /****************************
 	General
 ****************************/
-
 .group-form-left,
 .group-form-right,
 .group-form-advanced-onecolumn,
@@ -22,13 +21,12 @@ div.group-form-right:empty,
 div.group-form-advanced-onecolumn:empty,
 div.group-form-advanced-left:empty,
 div.group-form-advanced-right:empty {
-	display: none;
+  display: none;
 }
 
 /****************************
 	Group top
 ****************************/
-
 .group-form-left {
   width: 68%;
   float: left;
@@ -51,7 +49,6 @@ div.group-form-advanced-right:empty {
 }
 
 /* fields in group right */
-
 .form-item-group-content-access-und {
   margin-top: 0px;
 }
@@ -59,17 +56,17 @@ div.group-form-advanced-right:empty {
 .group-form-right select,
 .group-form-right input:not([type='checkbox']),
 .group-form-advanced-right select,
-.group-form-advanced-right input:not([type='checkbox']){
+.group-form-advanced-right input:not([type='checkbox']) {
   width: 100%;
 }
 
 .edit-field-customer-ref-und-0-target-id ul.references-dialog-links li a {
   display: block;
 }
+
 /****************************
 	Group advanced
 ****************************/
-
 .group-advanced {
   clear: both;
 }
@@ -83,17 +80,20 @@ div.group-form-advanced-right:empty {
   padding: 20px 5px 10px;
 }
 
-.group-advanced h3 a{
+.group-advanced h3 a {
   background: url(../images/forms-advanced-arrow-open.png) no-repeat 2px 50%;
   padding-left: 15px;
 }
-.group-advanced.collapsed h3 a{
+
+.group-advanced.collapsed h3 a {
   background: url(../images/forms-advanced-arrow-collapsed.png) no-repeat 2px 50%;
   padding-left: 15px;
 }
+
 .group-form-advanced-onecolumn {
   margin-bottom: 20px;
 }
+
 .group-form-advanced-left {
   width: 68%;
   float: left;
@@ -105,7 +105,6 @@ div.group-form-advanced-right:empty {
 }
 
 /* only visible for admin */
-
 .vertical-tabs {
   clear: both;
 }
@@ -113,28 +112,24 @@ div.group-form-advanced-right:empty {
 /****************************
 	Invoices
 ****************************/
-
 /*** Group left ***/
-
 .group-invoice-left {
   width: 50%;
   float: left;
 }
 
 /*** Group right ***/
-
 .group-invoice-right {
   width: 50%;
   float: right;
 }
 
 /*** Group bottom ***/
-
 .group-invoice-bottom {
-	clear: both;
+  clear: both;
 }
 
 .group-invoice-sonstiges {
-	clear: both;
-	display: none;
+  clear: both;
+  display: none;
 }

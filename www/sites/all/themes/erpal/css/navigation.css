@@ -1,25 +1,9 @@
-<<<<<<< HEAD
-/* line 1, ../sass/navigation.scss */
 ul.menu li {
   margin: 0;
 }
 
-/* line 4, ../sass/navigation.scss */
 .pane-system-user-menu li {
-  display: inline;
+  display: block;
   list-style-image: none;
   list-style-type: none;
 }
-=======
-/* line 1, ../sass/navigation.scss */
-ul.menu li {
-  margin: 0;
-}
-
-/* line 4, ../sass/navigation.scss */
-.pane-system-user-menu li {
-  display: inline;
-  list-style-image: none;
-  list-style-type: none;
-}
->>>>>>> 63fb14df39709f96b134c0c5cb96afb12a6b8683
