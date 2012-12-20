@@ -26,20 +26,17 @@ function views_jstree_token_info() {
     }
 
     foreach ($view->display as $display) {
-      //add a type for each display with each field of the display is a token
-      $type = $type_prefix."_".$view->name."_".$display->id;
+      if ($fields && is_array($fields)) {
+        //add a type for each display with each field of the display is a token
+        $type = $type_prefix . "_" . $view->name . "_" . $display->id;
 
-      $types[$type] = array(
-        'name' => $type_name,
-        'description' => $type_desc,
-        'needs-data' => $needs_data,
-      );
-      
-      //now add the tokens for this type      
-      $fields = views_jstree_get_fields_of_view($view, $display);
-      if ($fields && is_array($fields))  
-      {
-        foreach ($fields as $fieldname=>$field) {        
+        $types[$type] = array(
+          'name' => $type_name,
+          'description' => $type_desc,
+          'needs-data' => $needs_data,
+        );
+
+        foreach ($fields as $fieldname => $field) {
           $field_label = isset($field['label']) && $field['label'] ? $field['label'] : $field['field'];
           $tokens[$type][$field['id']] = array(
             'name' => $field_label,
