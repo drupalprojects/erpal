@@ -19,7 +19,42 @@ body {
      height: $value100;
 	 @include box-shadow($dark_grey 1px 2px 2px);
 	   
-	 .pane-system-user-menu{ /*----------begin User menu-------------*/
+	 
+   }
+}
+  &.page-node-tasks { /*----------begin node task-----------*/
+    li{
+	   list-style-type: none;
+	  } 
+    .content-inner {
+	  border-bottom: 1px solid $bright_grey;
+	}
+	.region-sidebar-left {
+	  max-width: 620px;
+	}
+	.region-sidebar-right {
+	  padding: 10px;
+	  width: 380px;
+	}
+  } /*----------end node task-----------*/
+	
+  &.page-node-tickets { /*----------begin node ticket-----------*/
+    li {
+	  list-style-type: none;
+	} 
+    .content-inner {
+	  border-bottom: 1px solid $bright_grey;
+	}
+	.region-sidebar-left {
+	  max-width: 620px;
+	}
+	.region-sidebar-right {
+	  padding: 10px;
+	  width: 380px;
+	}
+  } /*----------end node ticket-----------*/
+}
+.pane-system-user-menu{ /*----------begin User menu-------------*/
 	   ul {
 	     @include dist_zero;
 	     overflow: hidden;
@@ -41,42 +76,6 @@ body {
 		  }
 	    }  /*----------end User menu-------------*/
 	  }
-   }
-}
-  &.page-node-tasks { /*----------begin node task-----------*/
-    li{
-	   list-style-type: none;
-	  } 
-    .content-inner {
-	  border-bottom: 1px solid $bright_grey;
-	}
-	.region-sidebar-left {
-	  @include padding_zero;
-	  max-width: 620px;
-	}
-	.region-sidebar-right {
-	  @include padding_zero;
-	  width: 380px;
-	}
-  } /*----------end node task-----------*/
-	
-  &.page-node-tickets { /*----------begin node ticket-----------*/
-    li {
-	  list-style-type: none;
-	} 
-    .content-inner {
-	  border-bottom: 1px solid $bright_grey;
-	}
-	.region-sidebar-left {
-	  @include padding_zero;
-	  max-width: 620px;
-	}
-	.region-sidebar-right {
-	  @include padding_zero;
-	  width: 380px;
-	}
-  } /*----------end node ticket-----------*/
-}
 /*----------Logo-------------*/
 .pane-page-logo {  
   margin-bottom: 10px;
@@ -109,6 +108,7 @@ body {
   ul {
 	@include dist_zero;
 	li {
+	  margin-left: 0;
 	  padding: 0;
 	  list-style-image: none;
       list-style-type: none;
@@ -284,17 +284,6 @@ body {
 	float: left;
 }
 
-/* =============================================================================
- *   erpal_content_layout
- * ========================================================================== */
-.region-sidebar-left{ /*----------------begin side-bar-left-----------------*/
-  max-width: 800px;
-  min-width: 360px;
-  width: $value100;
-  float: left;
-  &.single-row {
-	max-width: 1050px !important;
-  }
   .alert { /*----------------begin red alert-----------------*/
     .field-name-field-task-status-term,
 	.field_item .field-name-field-date,
@@ -321,40 +310,49 @@ body {
 		  color: $green;
 	}
   }   /*----------------end alert completed-----------------*/
-	    .quicktabs-tabpage {
-	    .columns-inner{
-		  margin-bottom: 12px;
-		}
-      .field-label {
+/* =============================================================================
+ *   erpal_content_layout
+ * ========================================================================== */
+ 
+.region-sidebar-left{ /*----------------begin side-bar-left-----------------*/
+  max-width: 800px;
+  min-width: 360px;
+  width: $value100;
+  float: left;
+  &.single-row {
+	max-width: 100% !important;
+  }
+  .quicktabs-tabpage {
+	.columns-inner{
+	margin-bottom: 12px;
+    }
+    .view-mode-view_row_details .field-label, 
+    .view-mode-view_row_details .field-items, 
+    .region-sidebar-right .field-name-task-customer-node div, 
+    .region-sidebar-right .field-name-task-customer-node div, 
+    .field-collection-item-field-pricing .field-label, 
+    .field-collection-item-field-pricing .field-items {
+	  float: left;
+	}
+  }
+  ul{
+	&.quicktabs-tabs {
+	  margin: 0;
+	  padding-left: 0;
+	  background: none;
+	  overflow: hidden;
+	  border: none;
+	  li {
+	    @include dist_zero;
 	    float: left;
-	  }
-      .field-items {
-	    float: left;
-		.field-item {
-		  div {
-		    float: left;
-		  }
-		}
-	  } 	  
-	  }
-	  ul{
-	    &.quicktabs-tabs {
-		  margin: 0;
-		  padding-left: 0;
-		  background: none;
-		  overflow: hidden;
-		  border: none;
-		  li {
-		    @include dist_zero;
-		    float: left;
-				background: {
-				  image: none;
-				  color: $silver;
-				}
-				border:  {
-				  top: 1px solid $light_grey;
-				  left: 1px solid $light_grey;
-				}
+		  background: {
+		    image: none;
+			  color: $silver;
+			}
+			border: {
+			  top: 1px solid $light_grey;
+			  left: 1px solid $light_grey;
+			}
 			&.active {
 			  background-color: $dark_white !important;
 			  a {
@@ -369,11 +367,18 @@ body {
 			  @include text_bold_12;
 			  min-width: 100px;
 			  color: $dark_grey;
-			}
+		    }
 		  }
-		}
+	   }
      }
-	} /*----------------end side-bar-left-----------------*/
+  .region-sidebar-right {
+    section {
+	  &.field {
+	    overflow: hidden;
+	  }
+	}
+  }
+} /*----------------end side-bar-left-----------------*/
   .region-sidebar-right { /*----------------begin side-bar-right-----------------*/
     margin-left: 10px;
     width: 250px;
@@ -386,6 +391,9 @@ body {
 		};
 	    padding: 0px;
 	    list-style-type: none;
+		position: absolute;
+		width: 248px;
+        z-index: 10;
 		li{
 		  margin: 0 2px 7px;
 		  list-style-type: none;
@@ -415,6 +423,7 @@ body {
 		min-width: 1100px;
 		overflow: hidden;
 	  }
+	   
 }  
  /*----------------end erpal_content_layout-----------------------*/
 .pane-page-title.block{
@@ -423,7 +432,11 @@ body {
 /* =============================================================================
  *   Projects
  * ========================================================================== */
-
+.view-crm-activities {
+  table {
+    border-collapse: collapse;
+  }
+}
 
 #mini-panel-task_status_panel,
 #mini-panel-activity_status_panel{
@@ -641,8 +654,8 @@ body {
 	margin: 0px;
 }
 
-#quicktabs-tabpage-tickets_by_project_tabs-2  .content-column .content-inner,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner{
+.quicktabs-tabpage  .content-column .content-inner{
+	padding: 10px;
 	overflow: hidden;
 }
 
