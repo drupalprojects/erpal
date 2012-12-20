@@ -514,7 +514,7 @@ function feature_erpal_project_basic_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '7',
         ),
       ),
       'display' => array(),

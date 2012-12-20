@@ -13,6 +13,35 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_advanced|node|erpal_timetracking|form';
+  $field_group->group_name = 'group_advanced';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'erpal_timetracking';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Advanced',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_billing_duration',
+      1 => 'field_date_time',
+      2 => 'field_budget',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_advanced|node|erpal_timetracking|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_budgets|field_collection_item|field_pricing|form';
   $field_group->group_name = 'group_budgets';
   $field_group->entity_type = 'field_collection_item';
