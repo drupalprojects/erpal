@@ -125,7 +125,7 @@ function erpal_calendar_get_holidays($year, $month, $holiday_tid) {
   //get all erpal_date nodes that have field_date_type set to "holiday" in the given range above
   //we get all date items that have starting date in our date range. After that we call a function to get all the single dates from these ranges, so if a date_item goes over the given month (see function argument), only the days in the given month count.
   $date_items = _erpal_calendar_helper_get_date_items_in_month($year, $month, $holiday_tid);
-  dpm($date_items);
+
   $days = _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, 'date_from', 'date_till');
 
 	return $days;
