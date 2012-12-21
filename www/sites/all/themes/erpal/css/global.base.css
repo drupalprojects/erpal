@@ -27,6 +27,8 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*link color*/
 /*styles for alert*/
 /* left sidebar link*/
+/*grey link color*/
+/*grey link hover*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -659,4 +661,19 @@ header[role=banner],
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
   padding-bottom: 0;
+}
+
+input.form-submit,
+a.button {
+  background: white url(../images/buttons.png) 0 0 repeat-x;
+  border: 1px solid #e4e4e4;
+  border-bottom: 1px solid #b4b4b4;
+  border-left-color: #d2d2d2;
+  border-right-color: #d2d2d2;
+  color: #3a3a3a;
+}
+
+input.form-submit:hover,
+input.form-submit:focus {
+  background: #dedede;
 }

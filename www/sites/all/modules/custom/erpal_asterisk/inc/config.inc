@@ -19,9 +19,9 @@ function _erpal_asterisk_menu(){
     'page arguments' => array(2,3),
     'access callback' => TRUE,
   );
-
   return $items;
 }
+
 
 /*
  * This function is callback for configuration of core module
@@ -42,40 +42,64 @@ function _erpal_asterisk_config_form() {
   
   $form= array();
   
-  $form['description'] = array(
+  $form['asterisk'] = array(
     '#type' => 'fieldset', 
-    '#title' => t('Configurations of asterisk core'),
+    '#title' => t('Nodejs-server settings'),
     '#collapsible' => TRUE, // Added 
     '#collapsed' => FALSE, // Added
   );
     
-  $form['description']['host'] = array(
+  $form['asterisk']['host'] = array(
     '#type'        => 'textfield', 
-    '#title'       => t('HOST:'),
+    '#title'       => t('HOST-IP:'),
     '#default_value'     => variable_get('asterisk_nodejs_host'),
     '#description' => t('Host of NodeJs Server'),
   );
   
-  $form['description']['http_port'] = array(
+  $form['asterisk']['http_port'] = array(
     '#type' => 'textfield', 
     '#title' => t('HTTP Port'),
     '#default_value'     => variable_get('asterisk_nodejs_http_port'),
     '#description' => t('HTTP Port of NodeJs Server'),
   );
   
-  $form['description']['socket_port'] = array(
+  $form['asterisk']['socket_port'] = array(
     '#type' => 'textfield', 
     '#title' => t('Socket Port'),
     '#default_value'     => variable_get('asterisk_nodejs_socket_port'),
     '#description' => t('Socket Port of NodeJs Server'),
   );
   
-  $form['description']['lifetime'] = array(
+  $form['asterisk']['lifetime'] = array(
     '#type' => 'textfield', 
     '#title' => t('Lifetime'),
     '#default_value'     => variable_get('asterisk_nodejs_lifetime'),
     '#description' => t('Lifetime of call'),
   );
+  
+  $form['libphonenumber'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Libphonenumber config'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+  
+  $form['libphonenumber']['country'] = array(
+      '#type' => 'select',
+      '#title' => t('Default country'),
+      '#description' => t('Select the default country-code for phonenumber normalisation'),
+      '#options' => libphonenumber_get_regions(),
+      '#default_value' => variable_get('libphonenumber_default_country'), 
+    );
+    
+    
+  $form['libphonenumber']['format'] = array(
+      '#type' => 'select', 
+      '#title' => t('Default format for your phone numbers'), 
+      '#description' => t('Select the default format for phonenumber normalisation'),
+      '#options' => libphonenumber_get_formats(),
+      '#default_value' => variable_get('libphonenumber_default_format'),
+    );
   
   $form['submit'] = array(
     '#type' => 'submit', 
@@ -91,9 +115,20 @@ function _erpal_asterisk_config_form() {
  * Implements form validate function for _asterisk_config_form
  * 
  */
-function _erpal_asterisk_contig_form_validate(&$form, &$form_state){
-  // @TODO: implement
-  
+function _erpal_asterisk_config_form_validate(&$form, &$form_state){
+  if(!filter_var($form_state['values']['host'], FILTER_VALIDATE_IP)){
+    form_set_error('host', t('The entered Host is not a valid IP-Address'));
+  }
+  if(!is_numeric($form_state['values']['http_port'])){
+    form_set_error('http_port', t('HTTP-Port has to be numeric'));
+  }
+  if(!is_numeric($form_state['values']['socket_port'])){
+    form_set_error('socket_port', t('Socket-Port has to be numeric'));
+  }
+  if(!is_numeric($form_state['values']['lifetime'])){
+    form_set_error('lifetime', t('Lifetime has to be numeric'));
+  }
+    
 }
 
 /**
@@ -106,6 +141,12 @@ function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
   variable_set('asterisk_nodejs_socket_port'    , $form_state['values']['socket_port']);
   variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
   
+   // Save default country number in 'libphonenumber_default_country'  
+  $country = $form_state['values']['country'];
+  variable_set('libphonenumber_default_country', $country);
+  
+  $format = $form_state['values']['format'];
+  variable_set('libphonenumber_default_format', $format);
    
 }
 

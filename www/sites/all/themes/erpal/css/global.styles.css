@@ -56,6 +56,8 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*link color*/
 /*styles for alert*/
 /* left sidebar link*/
+/*grey link color*/
+/*grey link hover*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -92,22 +94,13 @@ var {
   font-family: Consolas, Monaco, 'Courier New', Courier, monospace, sans-serif;
 }
 
-/*
- * Panels may need additional margin wrangling when in the $content region
- */
-/*
- * Full Width Wrappers
- * These are used in the optional page--full-width-wrappers.tpl.php template.
- * All have internal .container classes. In the full width wrapper template the
- * .container classes set the width or max-width of the contained element - you
- * can style this but never add any width/margin/padding/borders etc to .container
- */
-/*
- * Wraps #page
- */
-/*
- * Wraps the leaderboard
- */
+a:link, a:visited, a:hover, a:focus, a:active {
+  color: #5a5a5a;
+}
+a:hover {
+  color: #756c65;
+}
+
 /*
  * Wraps the header
  */
@@ -398,27 +391,26 @@ ul.pager {
   text-align: center;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
+  background: #afafaf;
 }
-
-.item-list ul.pager li {
-  margin: 0;
-}
-
 ul.pager li {
+  margin: 0;
+  padding: .5em;
   background-image: none;
   display: inline;
   list-style-type: none;
-  padding: .5em;
   line-height: 50px;
 }
-
 ul.pager li.pager-current {
   font-weight: 700;
+  font-size: 1.2em;
 }
-
-.block ul.pager li {
-  margin: 0;
+ul.pager li a {
+  font-size: 1.2em;
+  color: #525252 !important;
 }
 
 /* =============================================================================

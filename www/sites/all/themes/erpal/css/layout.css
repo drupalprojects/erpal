@@ -1,6 +1,7 @@
 /*
  * left region
  */
+/* line 8, ../sass/layout.scss */
 .pane-system-user-menu li a {
   font-size: 11px;
 }
@@ -8,20 +9,24 @@
 /*
  * middle region
  */
+/* line 14, ../sass/layout.scss */
 .panels-ipe-display-container {
   height: 100%;
 }
 
+/* line 17, ../sass/layout.scss */
 .panels-flexible-row-erpal_panel_layout-main-row-middle {
   margin-right: 0;
 }
 
+/* line 20, ../sass/layout.scss */
 .panels-flexible-region-erpal_panel_layout-center {
   float: left;
   width: 100%;
   height: 100%;
 }
 
+/* line 25, ../sass/layout.scss */
 #erpal_wrapper > .panel-col-first .inside {
   margin: 0 0 1em;
 }

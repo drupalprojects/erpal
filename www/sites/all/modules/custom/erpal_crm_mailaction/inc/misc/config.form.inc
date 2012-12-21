@@ -99,9 +99,11 @@ function submit($form, &$form_state) {
 function _form_section_mailbox_settings (&$form, &$form_state) {
  
   $form['erpal_crm_mailaction']['mailbox_settings'] = array (
-    '#type'   => 'fieldset',
-    '#title'  => t('Mailbox settings'),
-    '#tree'   => TRUE
+    '#type'           => 'fieldset',
+    '#title'          => t('Mailbox settings'),
+    '#tree'           => TRUE,
+    '#collapsible'    => TRUE,
+    '#collapsed'      => TRUE
   );
  
   $form['erpal_crm_mailaction']['mailbox_settings']['host'] = array (
@@ -294,6 +296,10 @@ function _form_section_test (&$form, &$form_state) {
   
   $form['erpal_crm_mailaction']['test']['link'] = array (
     '#markup'       => l(t('Start import'), 'admin/erpal/crm-mailaction/run-import'),
+  ); 
+
+  $form['erpal_crm_mailaction']['test']['link2'] = array (
+    '#markup'       => l(t('import testmail nodes'), 'admin/erpal/crm-mailaction/create-testmail-nodes'),
   ); 
   
   return;

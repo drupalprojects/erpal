@@ -27,6 +27,8 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*link color*/
 /*styles for alert*/
 /* left sidebar link*/
+/*grey link color*/
+/*grey link hover*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -88,6 +90,26 @@ body.page-node-tickets .region-sidebar-left {
 body.page-node-tickets .region-sidebar-right {
   padding: 10px;
   width: 380px;
+}
+body .inline_fields {
+  clear: both;
+}
+body .inline_fields .field {
+  margin-right: 50px;
+  clear: none !important;
+  float: left;
+}
+body.page-crm-contacts table .views-field-field-contact-image {
+  width: 160px;
+}
+body.page-crm-contacts table .views-field-title {
+  width: 345px;
+}
+body .view-crm-activities table {
+  border-collapse: collapse;
+}
+body #user-login input.form-text {
+  width: 200px;
 }
 
 .pane-system-user-menu {
@@ -217,15 +239,17 @@ body.page-node-tickets .region-sidebar-right {
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
-#user-login input.form-text {
-  width: 200px;
-}
-
 .pane-page-content {
   margin-top: 30px;
   margin-right: 20px;
   margin-left: 30px;
   max-width: 1070px;
+}
+.pane-page-content .content-inner {
+  clear: both;
+}
+.pane-page-content .pane-page-title.block {
+  margin-bottom: 0;
 }
 .pane-page-content .panel-2col-stacked .panel-col-first {
   width: 700px;
@@ -275,9 +299,6 @@ body.page-node-tickets .region-sidebar-right {
 .pane-page-content .views-table td.views-field-field-customer-ref {
   text-decoration: underline;
 }
-.pane-page-content #comment-form {
-  background: #eeeeee;
-}
 
 /*----------begin comments------------------------*/
 .comment {
@@ -288,6 +309,7 @@ body.page-node-tickets .region-sidebar-right {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+  background-color: white;
 }
 .comment .field-name-comment-body p {
   font-size: 16px;
@@ -299,6 +321,7 @@ body.page-node-tickets .region-sidebar-right {
 }
 .comment .submitted {
   padding-right: 15px;
+  border-bottom: 1px solid #f4f4f4;
 }
 .comment .submitted .author-datetime {
   margin-bottom: 12px;
@@ -307,6 +330,10 @@ body.page-node-tickets .region-sidebar-right {
   padding-top: 15px;
   padding-right: 15px;
   padding-left: 15px;
+}
+.comment .comment-content section {
+  width: 250px;
+  float: left;
 }
 .comment .comment-form {
   padding-top: 15px;
@@ -319,8 +346,15 @@ body.page-node-tickets .region-sidebar-right {
   -o-border-radius: 5px;
   border-radius: 5px;
 }
+.comment nav {
+  padding: 0 15px;
+  clear: both;
+}
 
 /*----------end comments------------------------*/
+.view-filters .rel-register-build {
+  background-color: #eeeeee;
+}
 .view-filters .rel-register-build .views-exposed-widget .rel-register-link {
   padding-top: 12px;
   padding-right: 20px;
@@ -359,9 +393,6 @@ body.page-node-tickets .region-sidebar-right {
 }
 
 /*----------------end alert completed-----------------*/
-/* =============================================================================
- *   erpal_content_layout
- * ========================================================================== */
 .region-sidebar-left {
   /*----------------begin side-bar-left-----------------*/
   max-width: 800px;
@@ -372,8 +403,34 @@ body.page-node-tickets .region-sidebar-right {
 .region-sidebar-left.single-row {
   max-width: 100% !important;
 }
+.region-sidebar-left #mini-panel-contact_details_panel {
+  margin-top: 2px;
+}
 .region-sidebar-left .quicktabs-tabpage .columns-inner {
   margin-bottom: 12px;
+}
+.region-sidebar-left .quicktabs-tabpage .views-table .views-field-title {
+  width: 115px;
+}
+.region-sidebar-left .quicktabs-tabpage .views-field-field-task-status-term {
+  width: 70px;
+}
+.region-sidebar-left .quicktabs-tabpage .content-column .content-inner {
+  padding: 10px;
+  overflow: hidden;
+}
+.region-sidebar-left .quicktabs-tabpage .field-label {
+  margin: 0px !important;
+  padding-right: 5px;
+}
+.region-sidebar-left .quicktabs-tabpage .field-group-format section.field {
+  overflow: hidden;
+  clear: both;
+}
+.region-sidebar-left .quicktabs-tabpage .field-name-files-count .field-items,
+.region-sidebar-left .quicktabs-tabpage .field-name-comment-count .field-items {
+  padding-top: 5px;
+  width: 50%;
 }
 .region-sidebar-left .quicktabs-tabpage .view-mode-view_row_details .field-label,
 .region-sidebar-left .quicktabs-tabpage .view-mode-view_row_details .field-items,
@@ -381,7 +438,20 @@ body.page-node-tickets .region-sidebar-right {
 .region-sidebar-left .quicktabs-tabpage .region-sidebar-right .field-name-task-customer-node div,
 .region-sidebar-left .quicktabs-tabpage .field-collection-item-field-pricing .field-label,
 .region-sidebar-left .quicktabs-tabpage .field-collection-item-field-pricing .field-items {
+  padding-right: 5px;
   float: left;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-nid {
+  width: 40px;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-title {
+  width: 120px;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-field-priority-term-tid {
+  width: 75px;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-field-task-type-term-tid {
+  width: 60px;
 }
 .region-sidebar-left ul.quicktabs-tabs {
   margin: 0;
@@ -417,6 +487,13 @@ body.page-node-tickets .region-sidebar-right {
   float: left;
   min-width: 100px;
   color: #888888;
+}
+.region-sidebar-left ul .field-name-task-title .field-item a {
+  font-weight: bold;
+  font-size: 16px;
+}
+.region-sidebar-left ul .field-name-task-title .field-item p {
+  margin-bottom: 0px;
 }
 .region-sidebar-left .region-sidebar-right section.field {
   overflow: hidden;
@@ -485,25 +562,160 @@ body.page-node-tickets .region-sidebar-right {
   min-width: 1100px;
   overflow: hidden;
 }
+.region-sidebar-right .panel-separator {
+  display: none;
+}
+.region-sidebar-right .ctools-collapsible-container {
+  background-color: #dedede;
+  border: 1px solid #eeeeee;
+}
+.region-sidebar-right .ctools-collapsible-container figure {
+  text-align: center;
+}
 
 /*----------------end erpal_content_layout-----------------------*/
-.content-inner {
+/*----------------begin .panel-display-----------------------*/
+.panel-display .pane-entity-field h2.pane-title {
+  padding-right: 5px;
+  margin: 0px 0px 0 0px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 12px;
+  color: #525252;
+}
+.panel-display .pane-entity-field .block-content {
+  float: left;
+}
+.panel-display .pane-entity-field .block-content .rel-register-link {
+  float: left;
+}
+.panel-display .pane-entity-field .field-type-taxonomy-term-reference {
+  margin: 0px;
+}
+.panel-display .pane-entity-field .form-item {
+  margin-bottom: 0px;
+}
+.panel-display .pane-entity-field .ds-form .group-left {
+  width: auto;
+  float: none;
+}
+.panel-display .pane-entity-field .form-item label {
+  float: left;
+}
+.panel-display .ui-widget-content {
+  background: none;
+  border: none;
+}
+.panel-display .ui-tabs .ui-tabs-panel {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  display: block;
+  float: left;
+  background-color: #eeeeee;
+}
+
+/*----------------end panel-display-----------------------*/
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+.ctools-collapsible-processed .ctools-collapsible-handle {
+  cursor: pointer;
+}
+.ctools-collapsible-processed .block-content a {
+  text-decoration: underline;
+}
+.ctools-collapsible-processed h2.pane-title {
+  margin: 0;
+  padding: 3px 5px 0px 30px;
+  background-color: #AFAFAF;
+  margin: 0px 0px 0 0px;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 12px;
+  color: #525252;
+}
+.ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
+  padding: 3px 5px 3px 30px;
+}
+.ctools-collapsible-processed .ctools-collapsible-content {
+  padding-top: 10px;
+}
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
+  padding-left: 0;
+  font-weight: bold;
+  color: #525252;
+  background: none;
+}
+.ctools-collapsible-processed .ctools-collapsible-content .field-items {
   clear: both;
 }
-
-.pane-page-title.block {
-  margin-bottom: 0;
+.ctools-collapsible-processed .field-name-field-pricing h2.field-label {
+  margin: 0;
+  clear: both;
+  line-height: 12px;
+  color: #525252;
+}
+.ctools-collapsible-processed section, .ctools-collapsible-processed .field-name-field-books-ref {
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+.ctools-collapsible-processed section a, .ctools-collapsible-processed .field-name-field-books-ref a {
+  text-decoration: underline;
+}
+.ctools-collapsible-processed .field-name-field-task-assigned-users {
+  padding-left: 0px;
+}
+.ctools-collapsible-processed .panel-separator {
+  height: 1px;
+  overflow: hidden;
+  border-bottom: 1px solid #eeeeee;
+}
+.ctools-collapsible-processed ul {
+  margin: 0px;
+  padding: 0px;
+}
+.ctools-collapsible-processed ul li {
+  list-style-type: none;
+}
+.ctools-collapsible-processed .field-type-taxonomy-term-reference {
+  margin: 0;
+}
+.ctools-collapsible-processed .field-name-field-asset-files {
+  margin-bottom: 10px;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item {
+  margin-left: 20px;
+  padding-left: 0 !important;
+  display: list-item;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item a {
+  text-decoration: underline;
+}
+.ctools-collapsible-processed .field-name-field-contacts-ref .field-item {
+  padding-left: 10px;
+}
+.ctools-collapsible-processed .panel-display .pane-entity-field .block-content,
+.ctools-collapsible-processed .panel-display .pane-entity-field h2.pane-title {
+  float: none;
+}
+.ctools-collapsible-processed .panel-separator {
+  display: block;
+}
+.ctools-collapsible-processed .no-title {
+  padding-left: 10px;
+}
+.ctools-collapsible-processed .ctools-toggle {
+  background-position: 7px 8px;
 }
 
-/* =============================================================================
- *   Projects
- * ========================================================================== */
-.view-crm-activities table {
-  border-collapse: collapse;
-}
-
-#mini-panel-task_status_panel,
-#mini-panel-activity_status_panel {
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+#mini-panel-task_status_panel {
   padding: 10px 20px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -513,233 +725,76 @@ body.page-node-tickets .region-sidebar-right {
   background-color: #eeeeee;
   color: #525252;
 }
-
-.panel-display .pane-entity-field h2.pane-title {
-  padding-right: 5px;
-  font-size: 12px;
-  color: #525252;
+#mini-panel-task_status_panel .panel-separator {
+  display: none;
 }
-
-.panel-display .pane-entity-field .block-content {
+#mini-panel-task_status_panel section {
+  margin-bottom: 0;
+  margin-right: 30px;
   float: left;
 }
-
-.panel-display .pane-entity-field .ds-form .group-left {
-  width: auto;
-  float: none;
+#mini-panel-task_status_panel ul {
+  padding-left: 5px;
+}
+#mini-panel-task_status_panel ul li {
+  padding: 0px;
+  list-style-type: none;
 }
 
-.ctools-collapsible-content .panel-display .pane-entity-field .block-content,
-.ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title {
-  float: none;
-}
-
-.panel-display .pane-entity-field .form-item label,
-.panel-display .pane-entity-field .rel-register-link {
-  float: left;
-}
-
-.panel-display .pane-entity-field .field-type-taxonomy-term-reference {
-  margin: 0px;
-}
-
-.panel-display .pane-entity-field .form-item {
-  margin-bottom: 0px;
-}
-
-.panel-display .ui-widget-content {
-  background: none;
-  border: none;
-}
-
-.panel-display .ui-tabs .ui-tabs-panel {
+#mini-panel-activity_status_panel {
+  padding: 10px 20px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
   border-radius: 10px;
-  -webkit-border-top-left-radius: 0;
-  -moz-border-radius-topleft: 0;
-  border-top-left-radius: 0;
-  display: block;
-  float: left;
   background-color: #eeeeee;
 }
-
-.ctools-collapsible-container .ctools-collapsible-handle {
-  cursor: pointer;
-}
-
-/*
- *  collapsible
- */
-.ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
-  padding: 3px 5px 3px 30px;
-}
-
-.ctools-collapsible-processed h2.pane-title {
-  margin: 0;
-  padding: 3px 5px 0px 30px;
-  font-size: 12px;
-  line-height: 12px;
-}
-
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
-  padding-left: 0;
-  font-weight: bold;
-}
-
-.ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label {
-  margin: 0;
-  clear: both;
-  line-height: 12px;
-}
-
-.ctools-collapsible-container .block-content a {
-  text-decoration: underline;
-}
-
-.ctools-collapsible-processed section,
-.ctools-collapsible-processed .field-name-field-books-ref {
-  margin-bottom: 10px;
-  padding-left: 10px;
-}
-
-.ctools-collapsible-processed .field-name-field-task-assigned-users {
-  padding-left: 0px;
-}
-
-.ctools-collapsible-processed .panel-separator {
-  height: 1px;
-  overflow: hidden;
-}
-
-.ctools-collapsible-processed ul {
-  margin: 0;
-  padding: 0px;
-}
-
-.ctools-collapsible-processed ul li {
-  list-style-type: none;
-}
-
-.ctools-collapsible-processed .field-type-taxonomy-term-reference {
-  margin: 0;
-}
-
-.ctools-collapsible-processed .field-name-field-asset-files {
-  margin-bottom: 10px;
-}
-
-.ctools-collapsible-processed .field-name-field-asset-files .field-item {
-  margin-left: 20px;
-  padding-left: 0 !important;
-  display: list-item;
-}
-
-.ctools-collapsible-processed .field-name-field-asset-files .field-item a,
-.ctools-collapsible-processed .field-name-field-books-ref a {
-  text-decoration: underline;
-}
-
-.ctools-collapsible-container .ctools-collapsible-content .field-items {
-  clear: both;
-}
-
-.ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item {
-  padding-left: 10px;
-}
-
-#mini-panel-task_status_panel .panel-separator,
 #mini-panel-activity_status_panel .panel-separator {
   display: none;
 }
-
-#mini-panel-task_status_panel section,
+#mini-panel-activity_status_panel ul {
+  padding-left: 5px;
+}
 #mini-panel-activity_status_panel section {
   margin-bottom: 0;
   margin-right: 30px;
   float: left;
 }
 
-#mini-panel-task_status_panel li {
-  padding: 0px;
-  list-style-type: none;
-}
-
-#mini-panel-task_status_panel ul,
-#mini-panel-activity_status_panel ul {
-  padding-left: 5px;
-}
-
-.region-sidebar-right .panel-separator {
-  display: none;
-}
-
-.ctools-collapsible-container .panel-separator {
-  display: block;
-}
-
-.ctools-collapsible-container .no-title {
-  padding-left: 10px;
-}
-
-.ctools-collapsible-container .ctools-toggle {
-  background-position: 7px 8px;
-}
-
-/*
- *  table
- */
-.views-exposed-form .views-exposed-widget .form-submit {
-  margin-top: 1.3em;
-}
-
 .view-empty {
   padding: 15px;
 }
 
-.quicktabs-tabpage .views-table .views-field-title {
-  width: 115px;
-}
-
-.quicktabs-tabpage .views-field-field-task-status-term {
-  width: 70px;
-}
-
+/*-------------------begin project page----------------------*/
 .page-projects .views-field-title {
   width: 200px;
 }
-
 .page-projects .views-field-field-customer-ref {
   width: 200px;
 }
-
 .page-projects .views-field-field-project-status-term,
-.page-projects .views-field-field-priority-term {
+.page-projects .page-projects .views-field-field-priority-term {
   width: 100px;
 }
-
 .page-projects #edit-field-customer-ref-target-id-wrapper {
   margin-left: 45px;
 }
-
 .page-projects #edit-field-project-status-term-tid-wrapper {
   margin-left: 23px;
 }
 
+/*-------------------end project page----------------------*/
 /*--------------------------------for erpal task view row layout------------------------------------------*/
 .erpal-task-view-row-layout .region-sidebar-left {
   width: 70%;
   float: left;
 }
-
 .erpal-task-view-row-layout .region-sidebar-right {
   margin-left: 20px;
   width: 28%;
   float: left;
 }
-
 .erpal-task-view-row-layout .content-inner {
   margin-bottom: 20px;
   clear: both;
@@ -748,84 +803,13 @@ body.page-node-tickets .region-sidebar-right {
 }
 
 /*---------------ticket details-----------*/
-.field-name-task-title .field-item a {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.field-name-task-title .field-item p {
-  margin-bottom: 0px;
-}
-
 .node-erpal-task .columns-inner {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
-}
-
-#tabs-tasks_by_project_panel-middle ul.field-items {
-  padding: 0px;
-  margin: 0px;
-}
-
-.quicktabs-tabpage .content-column .content-inner {
-  padding: 10px;
-  overflow: hidden;
-}
-
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above {
-  width: 100%;
-}
-
-.quicktabs-tabpage .field-label {
-  margin: 0px !important;
-}
-
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div {
-  font-weight: bold;
-}
-
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a {
-  font-weight: normal;
-  text-decoration: underline;
-}
-
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field .field-label,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field .field-label,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div {
-  padding-right: 5px;
-}
-
-.quicktabs-tabpage .field-group-format section.field,
-#quicktabs-tabpage-tasks_by_project_tabs-2 section.field {
-  overflow: hidden;
-  clear: both;
-}
-
-.field-name-files-count .field-items,
-.field-name-comment-count .field-items {
-  padding-top: 5px;
-  width: 50%;
-}
-
-.inline_fields .field {
-  margin-right: 50px;
-  clear: none !important;
-  float: left;
-}
-
-.inline_fields {
-  clear: both;
-}
-
-ul.pager li a, ul.pager li.pager-current {
-  font-size: 1.2em;
+  background-color: white;
 }
 
 .view-mode-view_row_details .content-inner {
@@ -835,167 +819,118 @@ ul.pager li a, ul.pager li.pager-current {
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
+  background-color: white;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
 }
-
 .pane-node-body p {
   font-size: 16px;
 }
 
-.quicktabs-tabpage #edit-nid {
-  width: 40px;
-}
-
-.quicktabs-tabpage #edit-title {
-  width: 120px;
-}
-
-.quicktabs-tabpage #edit-field-priority-term-tid {
-  width: 75px;
-}
-
-.quicktabs-tabpage #edit-field-task-type-term-tid {
-  width: 60px;
-}
-
+/*-----------------------begin projects-timetrackings--------------------*/
 .page-projects-timetrackings #edit-field-date-time-value-wrapper {
   margin-left: 45px;
 }
-
 .page-projects-timetrackings #edit-field-project-ref-target-id-wrapper {
   margin-left: 440px;
 }
-
 .page-projects-timetrackings #edit-field-project-ref-target-id {
   width: 120px;
 }
-
 .page-projects-timetrackings .views-field-field-date-time {
   width: 140px;
 }
-
-.page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2 {
+.page-projects-timetrackings .views-field-title-1,
+.page-projects-timetrackings .views-field-title-2 {
   width: 120px;
 }
-
 .page-projects-timetrackings #edit-uid {
   width: 90px;
 }
-
 .page-projects-timetrackings .views-submit-button {
   clear: both;
 }
-
 .page-projects-timetrackings #edit-uid-wrapper {
   width: 140px;
 }
-
 .page-projects-timetrackings #edit-uid-wrapper .description {
   line-height: 12px;
 }
 
-.page-node-edit div.autocomplete-deluxe-multiple {
-  width: auto;
-}
-
-/* crm */
-.field-type-datetime fieldset .date-padding {
-  width: 270px;
-}
-
-.field-type-datetime fieldset,
-.field-type-datetime fieldset .date-padding {
-  padding: 0;
-  margin: 0;
-}
-
-.field-name-field-next-contact form {
-  width: 500px;
-}
-
-.field-name-field-next-contact form #edit-field-next-contact {
-  float: left;
-}
-
-.field-name-field-next-contact form .form-actions {
-  width: 70px;
-  float: left;
-}
-
-/* comments */
+/*-----------------------begin projects-timetrackings--------------------*/
+/*-------------begin comments------------------- */
 #comment-form {
   padding: 15px;
   margin-top: 20px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
+  background: #eeeeee;
 }
-
 #comment-form .field-type-datetime {
   width: 300px;
   float: left;
 }
-
+#comment-form .field-type-datetime fieldset {
+  margin: 0px;
+  padding: 0px;
+  border: none;
+}
+#comment-form .field-type-datetime fieldset .date-padding {
+  margin: 0px;
+  padding: 0px;
+  width: 270px;
+}
 #comment-form #edit-author--2 {
   clear: both;
 }
-
 #comment-form #edit-field-contacts-ref {
+  margin-right: 40px;
   width: 350px;
   float: left;
-  margin-right: 40px;
 }
-
-#comment-form #edit-field-contacts-ref table,
-#comment-form #edit-field-contacts-ref table input,
-#comment-form #edit-field-asset-files table,
-#comment-form #edit-field-asset-files table input {
+#comment-form #edit-field-contacts-ref table {
   width: 310px;
 }
-
+#comment-form #edit-field-contacts-ref table input {
+  width: 310px;
+}
 #comment-form #edit-field-asset-files {
   width: 350px;
   float: left;
 }
-
+#comment-form #edit-field-asset-files table {
+  width: 310px;
+}
+#comment-form #edit-field-asset-files table input {
+  width: 310px;
+}
 #comment-form #edit-actions {
   clear: both;
 }
-
 #comment-form .field-widget-options-select {
+  margin-right: 15px;
   width: 100px;
   float: left;
-  margin-right: 15px;
 }
-
 #comment-form .field-name-field-activity-status-term {
   width: 160px !important;
   float: left;
 }
 
-.comment-content section {
-  width: 250px;
-  float: left;
+/*-------------end comments------------------- */
+/*--------------begin multi select boxes--------------*/
+.views-exposed-form .form-submit {
+  margin-top: 1.3em;
 }
-
-.comment nav {
-  padding: 0 15px;
-  clear: both;
-}
-
-/*****DELETE****/
-.rel-register-link {
-  display: none;
-}
-
-/****DELEEETE****/
-/* multi select boxes */
 .views-exposed-form .views-exposed-widget {
   padding-right: 7px !important;
 }
-
 .views-exposed-form button span:not(.ui-icon) {
   position: absolute;
   overflow: hidden;
@@ -1003,7 +938,6 @@ ul.pager li a, ul.pager li.pager-current {
   height: 19px;
   line-height: 13px;
 }
-
 .views-exposed-form button {
   font-size: 11px;
   height: 25px;
@@ -1037,175 +971,151 @@ ul.pager li a, ul.pager li.pager-current {
   padding: 3px 0;
 }
 
-/*---------------------------------dashboard styles-----------------------------------------*/
-#homebox .portlet-content {
-  padding: 0px;
-}
-
-#homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
-  border: none;
-}
-
-#homebox .more-link {
-  padding: 4px 10px;
-}
-
-#homebox .homebox-column {
-  margin: 0;
-  padding: 0;
-}
-
-#homebox .homebox-column-wrapper-1 {
+/*--------------end multi select boxes--------------*/
+/*-------------begin dashboard styles--------------*/
+#homebox .homebox-column-wrapper-1 .homebox-column {
   margin-right: 20px;
 }
-
-#homebox .homebox-column-wrapper {
+#homebox .homebox-column {
+  margin: 0px;
+  padding: 0px;
+  background: none;
+}
+#homebox .homebox-portlet {
+  border: none;
+}
+#homebox .homebox-portlet .homebox-portlet-inner {
+  border: none;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-header {
+  font-weight: normal;
+  background-color: #f6f6f6;
+  border: none;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-header .portlet-title {
+  padding-left: 8px;
+  background-color: #f6f6f6;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content {
+  padding: 0px;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-item, #homebox .homebox-portlet .homebox-portlet-inner .portlet-content .view-grouping-header, #homebox .homebox-portlet .homebox-portlet-inner .portlet-content caption {
+  padding-left: 12px;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .more-link {
+  padding: 4px 10px;
+  background-color: #f6f6f6;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-submit {
+  margin-left: 12px;
+  padding-left: 12px;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column-wrapper {
   float: left;
   width: 48% !important;
 }
-
-#homebox .homebox-column-wrapper-1 {
-  margin-right: 25px;
-}
-
-#homebox .homebox-column-wrapper {
-  width: 48% !important;
-}
-
-#homebox .portlet-header {
-  font-weight: normal;
-}
-
-#homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption {
-  padding-left: 12px;
-}
-
-#homebox .form-submit {
-  margin-left: 12px;
-}
-
-#homebox .homebox-portlet .portlet-header .portlet-title {
-  padding-left: 8px;
-}
-
-#homebox .homebox-portlet .portlet-header {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content fieldset {
   border: none;
 }
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column {
+  margin: 0px;
+  padding: 0px;
+}
 
-/*-------------------------------------crm styles-------------------------------------*/
+/*-------------end dashboard styles--------------*/
+/*-------------begin home styles------------------*/
 .node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
-  margin-bottom: 7px;
+  margin: 0px 0px 7px 0px;
+  font-weight: normal;
+  font-size: 26px;
+  line-height: 26px;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
-  margin: 0;
-  padding: 0;
-  border: medium none;
+  margin: 0px;
+  padding: 0px;
+  border: none;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
   padding: 10px;
   font-size: 14px;
+  background-color: #afafaf;
 }
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li {
-  list-style-type: none;
-  padding-right: 7px;
-}
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul {
-  margin: 0;
-  padding: 0;
+.node-type-erpal-contact .region-sidebar-left .panel-pane ul {
+  margin: 0px;
+  padding: 0px;
   float: none;
 }
-
+.node-type-erpal-contact .region-sidebar-left .panel-pane ul li {
+  padding-right: 7px;
+  list-style-type: none;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane table {
   margin: 0;
   border: none;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane table td {
   padding: 10px;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container {
   border: none;
 }
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a {
-  font-size: 1.2em;
-  text-decoration: underline;
-}
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
   margin: 0px;
 }
-
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td {
+  border-bottom: 1px solid #e7e7e7;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
   padding: 10px;
   text-align: right;
-  -webkit-border-bottom-left-radius: 2px;
-  -moz-border-radius-bottomleft: 2px;
-  border-bottom-left-radius: 2px;
-  -webkit-border-bottom-right-radius: 2px;
-  -moz-border-radius-bottomright: 2px;
-  border-bottom-right-radius: 2px;
+  -webkit-border-radius: 0 0 2px 2px;
+  -moz-border-radius: 0 0 2px 2px;
+  -ms-border-radius: 0 0 2px 2px;
+  -o-border-radius: 0 0 2px 2px;
+  border-radius: 0 0 2px 2px;
+  background-color: #afafaf;
 }
-
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li a {
+  font-size: 1.2em;
+  text-decoration: underline;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference {
   margin: 0px;
 }
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title {
-  font-size: 26px;
-}
-
-.node-type-erpal-contact .panel-display .pane-entity-field .block-content {
+.node-type-erpal-contact .region-sidebar-left .panel-pane .pane-entity-field .block-content {
   float: none;
 }
 
-.page-crm-contacts table .views-field-field-contact-image {
-  width: 160px;
+/*-------------end home styles------------------*/
+/* begin hightlight of different states of tasks/projects */
+.block-content .view-content td {
+  border-bottom: 1px solid #e5e5e5;
+}
+.block-content .view-content th {
+  background-color: #afafaf;
+}
+.block-content .view-content tr.info,
+.block-content .view-content tr.even,
+.block-content .view-content tr:nth-child(2n+2) {
+  background-color: white;
+}
+.block-content .view-content tr.odd.alert,
+.block-content .view-content tr.even.alert {
+  background-color: #ffdfe4 !important;
+}
+.block-content .view-content tr.odd.alert .active,
+.block-content .view-content tr.even.alert .active {
+  background-color: #eed0d5 !important;
+}
+.block-content .view-content tr.odd.completed,
+.block-content .view-content tr.even.completed {
+  background-color: #eeeeee !important;
 }
 
-.page-crm-contacts table .views-field-title {
-  width: 345px;
+/* end hightlight of different states of tasks/projects */
+/*****DELETE****/
+.rel-register-link {
+  display: none;
 }
 
-.region-sidebar-right .ctools-collapsible-container figure {
-  text-align: center;
-}
-
-#mini-panel-contact_details_panel {
-  margin-top: 2px;
-}
-
-.ctools-collapsible-processed .ctools-collapsible-content {
-  padding-top: 10px;
-}
-
-/*
- *  Buttons
- */
-a.button:link,
-a.button:visited,
-a.button:hover,
-a.button:focus,
-a.button:active {
-  color: #5a5a5a;
-}
-
-input.form-submit,
-a.button {
-  background: white url(../images/buttons.png) 0 0 repeat-x;
-  border: 1px solid #e4e4e4;
-  border-bottom: 1px solid #b4b4b4;
-  border-left-color: #d2d2d2;
-  border-right-color: #d2d2d2;
-  color: #3a3a3a;
-}
-
-input.form-submit:hover,
-input.form-submit:focus {
-  background: #dedede;
-}
+/****DELEEETE****/

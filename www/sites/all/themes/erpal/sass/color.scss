@@ -1,21 +1,3 @@
-.ctools-collapsible-container {
-	background-color: #DEDEDE;
-	border: 1px solid #EEEEEE;
-}
-.ctools-collapsible-processed h2.pane-title {
-    background-color: #AFAFAF;
-}
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
-	background: none;
-}
-.ctools-collapsible-processed h2.pane-title,
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title, 
-h2.field-label{
-	color: #525252;
-}
-.ctools-collapsible-processed .panel-separator{
-	border-bottom: 1px solid #EEEEEE;
-}
 .block-content .view-content .views-table td{
 	border-bottom: 1px solid #E5E5E5;
 }
@@ -31,25 +13,12 @@ h2.field-label{
     background-color: #ffffff;
 }
 
-/*---------------ticket details-----------*/
-.node-erpal-task .columns-inner{
-	background-color: #ffffff;
-}
-#tabs-tasks_by_project_panel-middle-3  #content-column .content-inner,
-#tabs-tickets_by_project_panel-middle-3 #content-column .content-inner{
-	border-bottom: 1px solid #E5E5E5;
-}
-
 .item-list .pager {
     background: #AFAFAF;
 }
 ul.pager li a {
 	color: #525252 !important;
 }
-#tabs-tasks_by_project_panel-middle-1 th a{
-	color: #525252;
-}
-
 /* hightlight of different states of tasks/projects */
 
 tr.odd.alert,
