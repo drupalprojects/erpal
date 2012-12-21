@@ -20,6 +20,7 @@ class MailEntityWrapper extends EntityWrapperBase {
   /**
    * CTor.
    * Creates a mail entity.
+   * 
    * @param integer   $fromUID   The database ID of the sender (contact).
    * @param integer   $toID      The database ID of the receiver .
    * @param string    $subject   The mail subject.
