@@ -137,7 +137,7 @@ function _erpal_calendar_helper_config_form_submit($form, $form_state){
       }
     }
   }
-dpm($values);
+
   //now set the special tags
   $user_holiday_tag_string = $values['date_item_tags_special']['erpal_calendar_user_holiday_tag_string'];
   variable_set('erpal_calendar_user_holiday_tag_string', $user_holiday_tag_string);
