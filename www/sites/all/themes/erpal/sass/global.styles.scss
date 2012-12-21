@@ -65,26 +65,18 @@ var {
 }
 
 
-/*
- * Panels may need additional margin wrangling when in the $content region
- */
-#content .panel-display {}
-
-/*
- * Full Width Wrappers
- * These are used in the optional page--full-width-wrappers.tpl.php template.
- * All have internal .container classes. In the full width wrapper template the
- * .container classes set the width or max-width of the contained element - you
- * can style this but never add any width/margin/padding/borders etc to .container
- */
-/*
- * Wraps #page
- */
-/*
- * Wraps the leaderboard
- */
-#leaderboard-wrapper {}
-#leaderboard-wrapper .container {}
+a {
+  &:link,
+  &:visited,
+  &:hover,
+  &:focus,
+  &:active {
+    color: $grey_dark;
+  }
+  &:hover {
+    color: $grey_light;
+  }
+}
 
 /*
  * Wraps the header
@@ -404,34 +396,28 @@ ul.menu ul {
 /* =============================================================================
  *   Pagers
  * ========================================================================== */
-
 ul.pager {
   clear: both;
   margin: 13px 0 0 0;
   text-align: center;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px; 
-  border-radius: 5px;
-}
-
-.item-list ul.pager li {
-  margin: 0;
-}
-
-ul.pager li {
-  background-image: none;
-  display: inline;
-  list-style-type: none;
-  padding: .5em;
-  line-height: 50px;
-}
-
-ul.pager li.pager-current {
-  font-weight: 700;
-}
-
-.block ul.pager li {
-  margin: 0;
+  @include border-radius(5px); 
+  background: $dark_silver;
+  li {
+    margin: 0;
+	padding: .5em;
+    background-image: none;
+    display: inline;
+    list-style-type: none;
+    line-height: 50px;
+	&.pager-current {
+	   font-weight: 700;
+	   font-size: 1.2em;
+	}
+	a {
+	  font-size: 1.2em;
+	  color: $grey !important;
+	}
+  }
 }
 
 /* =============================================================================

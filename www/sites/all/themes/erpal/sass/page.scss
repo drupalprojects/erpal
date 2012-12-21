@@ -59,13 +59,29 @@ body {
 	  float: left;
 	}
   }
+  &.page-crm-contacts table {
+    .views-field-field-contact-image {
+      width: 160px;
+    }
+    .views-field-title {
+      width: 345px;
+    }
+  }
+  .view-crm-activities {
+    table {
+      border-collapse: collapse;
+    }
+  }
+  #user-login input.form-text {
+	width: 200px;
+  }
 }
-.pane-system-user-menu{ /*----------begin User menu-------------*/
+.pane-system-user-menu { /*----------begin User menu-------------*/
   ul {
 	@include dist_zero;
 	overflow: hidden;
 	border-bottom: 1px solid $brown;
-	li{
+	li {
 	  padding: 0;
 	  float: right;
 	  width: 74px;
@@ -151,13 +167,13 @@ body {
 		font-size: 14px;
 		color: $grey_orange;
 		border-top: 1px solid $black_grey;
-		  &:hover {
-		    color: $light;
-		  }
-		  &.active {
-		    @include orange_border;
-		  }
-	    }
+		&:hover {
+		  color: $light;
+		}
+		&.active {
+		  @include orange_border;
+		}
+	  }
 	}
 	ul {
 	  @include dist_zero;
@@ -179,9 +195,6 @@ body {
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
-#user-login input.form-text {
-	width: 200px;
-}
 .pane-page-content {
   margin:{
 	top: 30px;
@@ -251,6 +264,7 @@ body {
 	bottom: 15px;
   }
   @include border-radius(5px);
+  background-color: $white;
   .field-name-comment-body {
 	p {
 	  font-size: 16px;
@@ -265,6 +279,7 @@ body {
   }
   .submitted {
 	padding-right: 15px;
+	border-bottom: 1px solid $white_light;
 	  .author-datetime {
 	     margin-bottom: 12px;
 	   }
@@ -296,12 +311,14 @@ body {
 } 
 
 /*----------end comments------------------------*/	
-.view-filters .rel-register-build  .views-exposed-widget .rel-register-link{
-	padding-top: 12px;
+.view-filters .rel-register-build  {
+  background-color: $light_grey;
+  .views-exposed-widget .rel-register-link{
+    padding-top: 12px;
 	padding-right: 20px;
 	float: left;
+ }
 }
-
   .alert { /*----------------begin red alert-----------------*/
     .field-name-field-task-status-term,
 	.field_item .field-name-field-date,
@@ -336,6 +353,9 @@ body {
   float: left;
   &.single-row {
 	max-width: 100% !important;
+  }
+  #mini-panel-contact_details_panel {
+	margin-top: 2px;
   }
   .quicktabs-tabpage {
    .columns-inner{
@@ -444,76 +464,68 @@ body {
   width: 250px;
   float: right;
   color: $dark_black;
-	.local_tasks_menu .local_tasks{
-	  position: absolute;
-	  width: 248px;
-      z-index: 10;
-	}
-	.local_tasks{
-	  margin:{
-		top: 2px;
-		bottom: 0px;
-	  };
-	padding: 0px;
-	list-style-type: none;
-	  li{
-	    margin: 0 2px 7px;
-		list-style-type: none;
-		  a {
-		    padding: {
-			  top: 5px;
-			  bottom: 6px;
-			}
-			&:hover {
-			  @include background-image(linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%));
-			}
-			display: block;
-			@include rounded_corners_10;
-			@include box-shadow(0px 1px 3px rgba(50, 50, 50, 0.5));
-			color: $grey;
-			@include background-image(linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%));
-			text-align: center;
-			font-size: 13px;
-			font-weight: bold;
-		  }
-		  ul {
-		    display: none;
-		  }
-        } 
-	  }   /*----------------end side-bar-right-----------------*/
-  .content-inner {
-    padding-bottom: 30px;
-	clear: both;
-	max-width: 1100px;
-	min-width: 1100px;
-	overflow: hidden;
+  .local_tasks_menu .local_tasks{
+	position: absolute;
+	width: 248px;
+    z-index: 10;
   }
-  .panel-separator {
-    display: none;
-   }
-   .ctools-collapsible-container {
-     figure {
-       text-align: center;
-	 }
-	background-color: $silver;
-	border: 1px solid $light_grey;
-   }    
+  .local_tasks{
+	margin:{
+	  top: 2px;
+	  bottom: 0px;
+    };
+    padding: 0px;
+    list-style-type: none;
+    li{
+	  margin: 0 2px 7px;
+	  list-style-type: none;
+	  a {
+	    padding: {
+	      top: 5px;
+		  bottom: 6px;
+	  }
+	  &:hover {
+	    @include background-image(linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%));
+	  }
+	  display: block;
+	  @include rounded_corners_10;
+	  @include box-shadow(0px 1px 3px rgba(50, 50, 50, 0.5));
+	  color: $grey;
+	  @include background-image(linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%));
+	  text-align: center;
+	  font-size: 13px;
+	  font-weight: bold;
+	}
+	ul {
+	  display: none;
+	}
+  } 
+}   /*----------------end side-bar-right-----------------*/
+.content-inner {
+  padding-bottom: 30px;
+  clear: both;
+  max-width: 1100px;
+  min-width: 1100px;
+  overflow: hidden;
+}
+.panel-separator {
+  display: none;
+}
+.ctools-collapsible-container {
+  figure {
+    text-align: center;
+  }
+  background-color: $silver;
+  border: 1px solid $light_grey;
+}    
 }  
  /*----------------end erpal_content_layout-----------------------*/
-/* =============================================================================
- *   Projects
- * ========================================================================== */
-.view-crm-activities {
-  table {
-    border-collapse: collapse;
-  }
-}
 
 /*----------------begin .panel-display-----------------------*/
 .panel-display {
   .pane-entity-field h2.pane-title {
     padding-right: 5px;
-	font-size: 12px;
+	@include headline(12px, 12px, 0, normal);
 	color: $grey;
   }
   .pane-entity-field {
@@ -543,9 +555,7 @@ body {
   }
   .ui-tabs .ui-tabs-panel {
     @include rounded_corners_10;
-	-webkit-border-top-left-radius: 0;
-	-moz-border-radius-topleft: 0;
-	border-top-left-radius: 0;
+	@include border-radius(5px); 
 	display: block;
 	float: left;
 	background-color: $light_grey;
@@ -727,24 +737,18 @@ body {
 /*---------------ticket details-----------*/
 
 .node-erpal-task .columns-inner{
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
+	@include border-radius(5px); 
 	background-color: $white;
 }
 
-ul.pager li a, ul.pager li.pager-current {
-    font-size: 1.2em;
-}
 .view-mode-view_row_details .content-inner{
 	padding-bottom: 0px;
 }
 .pane-node-body{
 	padding: 20px;
 	min-height: 350px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
+	background-color: $white;
+	@include border-radius(5px); 
 	p {
 	  font-size: 16px;
 	}
@@ -783,30 +787,6 @@ ul.pager li a, ul.pager li.pager-current {
 }
 /*-----------------------begin projects-timetrackings--------------------*/
 
-
-.page-node-edit div.autocomplete-deluxe-multiple{
-	width: auto;
-}
-/* crm */
-
-.field-type-datetime  fieldset {
-  @include dist_zero;
-  .date-padding {
-    @include dist_zero;
-	width: 270px;
-  }
-}
-.field-name-field-next-contact form{
-	width: 500px;
-	#edit-field-next-contact {
-	  float: left;
-	}
-	.form-actions {
-	  float: left;
-	  width: 70px;
-	}
-}
-
 /*-------------begin comments------------------- */
 #comment-form {
   padding: 15px;
@@ -816,6 +796,14 @@ ul.pager li a, ul.pager li.pager-current {
   .field-type-datetime {
     width: 300px;
 	float: left;
+	fieldset {
+      @include dist_zero;
+	  border: none;
+     .date-padding {
+       @include dist_zero;
+	   width: 270px;
+     }
+    }
   }
   #edit-author--2 {
 	clear: both;
@@ -856,14 +844,6 @@ ul.pager li a, ul.pager li.pager-current {
 }
 
 /*-------------end comments------------------- */
-
-/*****DELETE****/
-	.rel-register-link {
-		display: none;
-	}
-
-/****DELEEETE****/
-
 
 /*--------------begin multi select boxes--------------*/
 .views-exposed-form  {
@@ -916,39 +896,43 @@ ul.pager li a, ul.pager li.pager-current {
   }
   .homebox-column {
     @include dist_zero;
-    .homebox-portlet {
+	background: none;
+  }
+  .homebox-portlet {
+    border: none;
+    .homebox-portlet-inner {
       border: none;
-      .homebox-portlet-inner {
-        border: none;
-        .portlet-header {
-          font-weight: normal;
-	      border: none;
-	      .portlet-title {
-		    padding-left: 8px;
-	      }
+      .portlet-header {
+        font-weight: normal;
+		background-color: $dark_white;
+	    border: none;
+	    .portlet-title {
+	      padding-left: 8px;
+		  background-color: $dark_white;
 	    }
-        .portlet-content {
-          padding: 0px;
-          .form-item, .view-grouping-header, caption {
-            padding-left: 12px;
-          }
-          .more-link {
-            padding: 4px 10px;
-          }
-          .form-submit {
-            margin-left: 12px;
-            padding-left: 12px;
-          }
-          .homebox-column-wrapper {
-            float: left;
-            width: 48% !important;
-          }
-          fieldset {
-            border: none;
-          }
-         .homebox-column {
-           @include dist_zero;
-         }
+	  }
+      .portlet-content {
+        padding: 0px;
+        .form-item, .view-grouping-header, caption {
+          padding-left: 12px;
+        }
+        .more-link {
+          padding: 4px 10px;
+		  background-color: $dark_white;
+        }
+        .form-submit {
+          margin-left: 12px;
+          padding-left: 12px;
+        }
+        .homebox-column-wrapper {
+          float: left;
+          width: 48% !important;
+        }
+        fieldset {
+          border: none;
+        }
+        .homebox-column {
+          @include dist_zero;
         }
       }
     }
@@ -957,96 +941,103 @@ ul.pager li a, ul.pager li.pager-current {
 /*-------------end dashboard styles--------------*/
 
 /*-------------begin home styles------------------*/
-.node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title{
-    margin-bottom: 7px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
-    margin: 0;
-    padding: 0;
-	border: medium none;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th{
-	padding: 10px;
-	font-size: 14px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li{
-	list-style-type: none;
-	padding-right: 7px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul{
-	margin: 0;
-    padding: 0;
-	float: none;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane table{
-	margin: 0;
-	border: none;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane table td{
-	padding: 10px;
-}
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container{
-	border: none;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a{
-	font-size: 1.2em;
-    text-decoration: underline;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item{
-	margin: 0px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li{
-	padding: 10px;
-	text-align: right;
-	-webkit-border-bottom-left-radius: 2px;
-	-moz-border-radius-bottomleft: 2px;
-	border-bottom-left-radius: 2px;
-	-webkit-border-bottom-right-radius: 2px;
-	-moz-border-radius-bottomright: 2px;
-	border-bottom-right-radius: 2px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference{
-	margin: 0px;
-}
-.node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title{
-	font-size: 26px;
-}
-.node-type-erpal-contact .panel-display .pane-entity-field .block-content {
-    float: none;
-}
-.page-crm-contacts table .views-field-field-contact-image{
-	width: 160px;
+.node-type-erpal-contact {
+  .region-sidebar-left {
+    .panel-pane {
+	  h2.pane-title.block-title {
+		@include headline(26px, 26px, 7px, normal);
+	  }
+	  .field-collection-view {
+	    @include dist_zero;
+	    border: none;
+	  }
+	  .field-collection-view table th {
+	    padding: 10px;
+	    font-size: 14px;
+		background-color: $dark_silver;
+	  }
+	  ul {
+	    @include dist_zero;
+	    float: none;
+		li {
+		  padding-right: 7px;
+		  list-style-type: none;
+		}
+	  }
+	  table {
+	    margin: 0;
+	    border: none;
+		td {
+		  padding: 10px;
+		}
+	  }
+	  .field-collection-container {
+	    border: none;
+		.field-items {
+		  .field-item {
+		    margin: 0px;
+		  }
+		}
+		td {
+		  border-bottom: 1px solid $light_silver;
+		}
+	  }
+	  .action-links {
+	    li {
+		  padding: 10px;
+	      text-align: right;
+		  @include border-radius(0 0 2px 2px);
+		  background-color: $dark_silver;
+		  a {
+		    font-size: 1.2em;
+			text-decoration: underline;
+		  }
+		}
+	  }
+	  .field-type-taxonomy-term-reference {
+	    margin: 0px;
+	  }
+	  .pane-entity-field {
+	    .block-content {
+		  float: none;
+		}
+	  }
+	}
+  }
 }
 /*-------------end home styles------------------*/
-.page-crm-contacts table .views-field-title{
-	width: 345px;
-}
 
-#mini-panel-contact_details_panel{
-	margin-top: 2px;
+/* begin hightlight of different states of tasks/projects */
+.block-content .view-content {
+  td {
+    border-bottom: 1px solid $bright_grey;
+  }
+  th {
+    background-color: $dark_silver;
+  }
+  tr.info, 
+  tr.even,
+  tr:nth-child(2n+2) {
+    background-color: $white;
+  }
+  tr.odd.alert,
+  tr.even.alert{
+	background-color: $light_pink !important;
+  }
+  tr.odd.alert .active,
+  tr.even.alert .active {
+	background-color: $pink !important;
+  }
+  tr.odd.completed,
+  tr.even.completed {
+	background-color: $light_grey !important;
+  }
 }
-/*
- *  Buttons
- */
-a.button:link,
-a.button:visited,
-a.button:hover,
-a.button:focus,
-a.button:active {
-  color: #5a5a5a;
-}
-input.form-submit,
-a.button {
-  background: $white url(../images/buttons.png) 0 0 repeat-x;
-  border: 1px solid #e4e4e4;
-  border-bottom: 1px solid #b4b4b4;
-  border-left-color: #d2d2d2;
-  border-right-color: #d2d2d2;
-  color: #3a3a3a;
-}
+/* end hightlight of different states of tasks/projects */
 
-input.form-submit:hover,
-input.form-submit:focus {
-  background: #dedede;
-}
+/*****DELETE****/
+	.rel-register-link {
+		display: none;
+	}
+
+/****DELEEETE****/

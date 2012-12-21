@@ -27,6 +27,8 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*link color*/
 /*styles for alert*/
 /* left sidebar link*/
+/*grey link color*/
+/*grey link hover*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -96,6 +98,18 @@ body .inline_fields .field {
   margin-right: 50px;
   clear: none !important;
   float: left;
+}
+body.page-crm-contacts table .views-field-field-contact-image {
+  width: 160px;
+}
+body.page-crm-contacts table .views-field-title {
+  width: 345px;
+}
+body .view-crm-activities table {
+  border-collapse: collapse;
+}
+body #user-login input.form-text {
+  width: 200px;
 }
 
 .pane-system-user-menu {
@@ -225,10 +239,6 @@ body .inline_fields .field {
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
-#user-login input.form-text {
-  width: 200px;
-}
-
 .pane-page-content {
   margin-top: 30px;
   margin-right: 20px;
@@ -299,6 +309,7 @@ body .inline_fields .field {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+  background-color: white;
 }
 .comment .field-name-comment-body p {
   font-size: 16px;
@@ -310,6 +321,7 @@ body .inline_fields .field {
 }
 .comment .submitted {
   padding-right: 15px;
+  border-bottom: 1px solid #f4f4f4;
 }
 .comment .submitted .author-datetime {
   margin-bottom: 12px;
@@ -340,6 +352,9 @@ body .inline_fields .field {
 }
 
 /*----------end comments------------------------*/
+.view-filters .rel-register-build {
+  background-color: #eeeeee;
+}
 .view-filters .rel-register-build .views-exposed-widget .rel-register-link {
   padding-top: 12px;
   padding-right: 20px;
@@ -387,6 +402,9 @@ body .inline_fields .field {
 }
 .region-sidebar-left.single-row {
   max-width: 100% !important;
+}
+.region-sidebar-left #mini-panel-contact_details_panel {
+  margin-top: 2px;
 }
 .region-sidebar-left .quicktabs-tabpage .columns-inner {
   margin-bottom: 12px;
@@ -556,17 +574,13 @@ body .inline_fields .field {
 }
 
 /*----------------end erpal_content_layout-----------------------*/
-/* =============================================================================
- *   Projects
- * ========================================================================== */
-.view-crm-activities table {
-  border-collapse: collapse;
-}
-
 /*----------------begin .panel-display-----------------------*/
 .panel-display .pane-entity-field h2.pane-title {
   padding-right: 5px;
+  margin: 0px 0px 0 0px;
+  font-weight: normal;
   font-size: 12px;
+  line-height: 12px;
   color: #525252;
 }
 .panel-display .pane-entity-field .block-content {
@@ -598,9 +612,11 @@ body .inline_fields .field {
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
   border-radius: 10px;
-  -webkit-border-top-left-radius: 0;
-  -moz-border-radius-topleft: 0;
-  border-top-left-radius: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
   display: block;
   float: left;
   background-color: #eeeeee;
@@ -790,12 +806,10 @@ body .inline_fields .field {
 .node-erpal-task .columns-inner {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
   background-color: white;
-}
-
-ul.pager li a, ul.pager li.pager-current {
-  font-size: 1.2em;
 }
 
 .view-mode-view_row_details .content-inner {
@@ -805,8 +819,11 @@ ul.pager li a, ul.pager li.pager-current {
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
+  background-color: white;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
 }
 .pane-node-body p {
@@ -844,32 +861,6 @@ ul.pager li a, ul.pager li.pager-current {
 }
 
 /*-----------------------begin projects-timetrackings--------------------*/
-.page-node-edit div.autocomplete-deluxe-multiple {
-  width: auto;
-}
-
-/* crm */
-.field-type-datetime fieldset {
-  margin: 0px;
-  padding: 0px;
-}
-.field-type-datetime fieldset .date-padding {
-  margin: 0px;
-  padding: 0px;
-  width: 270px;
-}
-
-.field-name-field-next-contact form {
-  width: 500px;
-}
-.field-name-field-next-contact form #edit-field-next-contact {
-  float: left;
-}
-.field-name-field-next-contact form .form-actions {
-  float: left;
-  width: 70px;
-}
-
 /*-------------begin comments------------------- */
 #comment-form {
   padding: 15px;
@@ -884,6 +875,16 @@ ul.pager li a, ul.pager li.pager-current {
 #comment-form .field-type-datetime {
   width: 300px;
   float: left;
+}
+#comment-form .field-type-datetime fieldset {
+  margin: 0px;
+  padding: 0px;
+  border: none;
+}
+#comment-form .field-type-datetime fieldset .date-padding {
+  margin: 0px;
+  padding: 0px;
+  width: 270px;
 }
 #comment-form #edit-author--2 {
   clear: both;
@@ -923,12 +924,6 @@ ul.pager li a, ul.pager li.pager-current {
 }
 
 /*-------------end comments------------------- */
-/*****DELETE****/
-.rel-register-link {
-  display: none;
-}
-
-/****DELEEETE****/
 /*--------------begin multi select boxes--------------*/
 .views-exposed-form .form-submit {
   margin-top: 1.3em;
@@ -984,41 +979,45 @@ ul.pager li a, ul.pager li.pager-current {
 #homebox .homebox-column {
   margin: 0px;
   padding: 0px;
+  background: none;
 }
-#homebox .homebox-column .homebox-portlet {
+#homebox .homebox-portlet {
   border: none;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner {
+#homebox .homebox-portlet .homebox-portlet-inner {
   border: none;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-header {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-header {
   font-weight: normal;
+  background-color: #f6f6f6;
   border: none;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-header .portlet-title {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-header .portlet-title {
   padding-left: 8px;
+  background-color: #f6f6f6;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content {
   padding: 0px;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content .form-item, #homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content .view-grouping-header, #homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content caption {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-item, #homebox .homebox-portlet .homebox-portlet-inner .portlet-content .view-grouping-header, #homebox .homebox-portlet .homebox-portlet-inner .portlet-content caption {
   padding-left: 12px;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content .more-link {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .more-link {
   padding: 4px 10px;
+  background-color: #f6f6f6;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content .form-submit {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-submit {
   margin-left: 12px;
   padding-left: 12px;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column-wrapper {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column-wrapper {
   float: left;
   width: 48% !important;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content fieldset {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content fieldset {
   border: none;
 }
-#homebox .homebox-column .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column {
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column {
   margin: 0px;
   padding: 0px;
 }
@@ -1026,111 +1025,97 @@ ul.pager li a, ul.pager li.pager-current {
 /*-------------end dashboard styles--------------*/
 /*-------------begin home styles------------------*/
 .node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
-  margin-bottom: 7px;
+  margin: 0px 0px 7px 0px;
+  font-weight: normal;
+  font-size: 26px;
+  line-height: 26px;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
-  margin: 0;
-  padding: 0;
-  border: medium none;
+  margin: 0px;
+  padding: 0px;
+  border: none;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
   padding: 10px;
   font-size: 14px;
+  background-color: #afafaf;
 }
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content li {
-  list-style-type: none;
-  padding-right: 7px;
-}
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content ul {
-  margin: 0;
-  padding: 0;
+.node-type-erpal-contact .region-sidebar-left .panel-pane ul {
+  margin: 0px;
+  padding: 0px;
   float: none;
 }
-
+.node-type-erpal-contact .region-sidebar-left .panel-pane ul li {
+  padding-right: 7px;
+  list-style-type: none;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane table {
   margin: 0;
   border: none;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane table td {
   padding: 10px;
 }
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container {
   border: none;
 }
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links a {
-  font-size: 1.2em;
-  text-decoration: underline;
-}
-
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
   margin: 0px;
 }
-
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td {
+  border-bottom: 1px solid #e7e7e7;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
   padding: 10px;
   text-align: right;
-  -webkit-border-bottom-left-radius: 2px;
-  -moz-border-radius-bottomleft: 2px;
-  border-bottom-left-radius: 2px;
-  -webkit-border-bottom-right-radius: 2px;
-  -moz-border-radius-bottomright: 2px;
-  border-bottom-right-radius: 2px;
+  -webkit-border-radius: 0 0 2px 2px;
+  -moz-border-radius: 0 0 2px 2px;
+  -ms-border-radius: 0 0 2px 2px;
+  -o-border-radius: 0 0 2px 2px;
+  border-radius: 0 0 2px 2px;
+  background-color: #afafaf;
 }
-
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li a {
+  font-size: 1.2em;
+  text-decoration: underline;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference {
   margin: 0px;
 }
-
-.node-type-erpal-contact .region-sidebar-left .panel-pane.pane-entity-field h2.pane-title.block-title {
-  font-size: 26px;
-}
-
-.node-type-erpal-contact .panel-display .pane-entity-field .block-content {
+.node-type-erpal-contact .region-sidebar-left .panel-pane .pane-entity-field .block-content {
   float: none;
 }
 
-.page-crm-contacts table .views-field-field-contact-image {
-  width: 160px;
-}
-
 /*-------------end home styles------------------*/
-.page-crm-contacts table .views-field-title {
-  width: 345px;
+/* begin hightlight of different states of tasks/projects */
+.block-content .view-content td {
+  border-bottom: 1px solid #e5e5e5;
+}
+.block-content .view-content th {
+  background-color: #afafaf;
+}
+.block-content .view-content tr.info,
+.block-content .view-content tr.even,
+.block-content .view-content tr:nth-child(2n+2) {
+  background-color: white;
+}
+.block-content .view-content tr.odd.alert,
+.block-content .view-content tr.even.alert {
+  background-color: #ffdfe4 !important;
+}
+.block-content .view-content tr.odd.alert .active,
+.block-content .view-content tr.even.alert .active {
+  background-color: #eed0d5 !important;
+}
+.block-content .view-content tr.odd.completed,
+.block-content .view-content tr.even.completed {
+  background-color: #eeeeee !important;
 }
 
-#mini-panel-contact_details_panel {
-  margin-top: 2px;
+/* end hightlight of different states of tasks/projects */
+/*****DELETE****/
+.rel-register-link {
+  display: none;
 }
 
-/*
- *  Buttons
- */
-a.button:link,
-a.button:visited,
-a.button:hover,
-a.button:focus,
-a.button:active {
-  color: #5a5a5a;
-}
-
-input.form-submit,
-a.button {
-  background: white url(../images/buttons.png) 0 0 repeat-x;
-  border: 1px solid #e4e4e4;
-  border-bottom: 1px solid #b4b4b4;
-  border-left-color: #d2d2d2;
-  border-right-color: #d2d2d2;
-  color: #3a3a3a;
-}
-
-input.form-submit:hover,
-input.form-submit:focus {
-  background: #dedede;
-}
+/****DELEEETE****/
