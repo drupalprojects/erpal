@@ -17,10 +17,12 @@ function erpal_employee_helper_menu(){
   require_once 'inc/config.inc';
   $config_items = _erpal_employee_helper_config_menu();
   
+  //######## DEBUG ###########
   $items['employee/test'] = array(
     'page callback' => '_erpal_employee_helper_test',
     'access callback' => '_erpal_employee_helper_test_access',
   );
+  //####### END DEBUG ########
   
   $items = array_merge($items, $config_items);
   return $items;
@@ -244,7 +246,7 @@ function erpal_employee_helper_create_date_item_alter(&$create_items, &$context)
 * Returns the tag string for date entites from node type erpal_working_time with given type
 */
 function _erpal_employee_helper_field_tag_working_time_type($type) {
-  return variable_get('erpal_employee_working_time_'.$type, $type);  //@TODO better to use the label of the field_value with the $type
+  return variable_get('erpal_employee_working_time_'.$type, $type);  //@TODO better to use the label of the field_value with the $type as default result
 }
 
 /**

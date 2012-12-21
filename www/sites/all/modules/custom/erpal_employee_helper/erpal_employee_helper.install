@@ -27,8 +27,9 @@ function erpal_employee_helper_schema() {
         'default' => 0,
       ),
       'type' => array(
-        'description' => 'Wether this data is aggregated for a month or a year or an offset',
+        'description' => 'Wether this data is aggregated for a month or a year',
         'type' => 'varchar',
+        'length' => 25,
         'not null' => TRUE,
         'default' => '',
       ),
@@ -66,6 +67,13 @@ function erpal_employee_helper_schema() {
       ),
       'holidays_used' => array(
         'description' => 'Used holidays for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'holidays_used_from_before' => array(
+        'description' => 'Used holidays from the year before for a user in the booking period',
         'type' => 'numeric',
         'precicion' => 2,
         'not null' => TRUE,

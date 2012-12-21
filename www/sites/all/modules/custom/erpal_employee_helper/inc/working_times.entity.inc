@@ -36,6 +36,10 @@ function working_times_load_by_user($type, $uid, $year=false, $month=false) {
   if ($month)
     $query->propertyCondition('month', $month);
   
+  //order by year, month ascending
+  $query->propertyOrderBy('year', 'ASC');
+  $query->propertyOrderBy('month', 'ASC');
+  
   $result = $query->execute();
 
   $items = array();
@@ -140,6 +144,17 @@ class WorkingTimes extends Entity {
   
   public function defaultLabel() {
     return working_times_page_title($this);
+  }
+  
+  public function save() {
+    //set the changed date
+    $this->changed = time();
+ 
+    if (isset($this->is_new) && $this->is_new) {
+      $this->created = time();
+    }
+    
+    parent::save();
   }
   
   /*
@@ -367,7 +382,6 @@ function working_times_edit_form($form, &$form_state, $working_times) {
   $format = _erpal_basic_helper_date_format_date_only();
   $end_of_the_year = date('Y').'-12-31';
 
-  dpm($working_times);
   $holidays_available_till = isset($working_times->holidays_available_till) ? $working_times->holidays_available_till : false;
   
   if (!$holidays_available_till) {

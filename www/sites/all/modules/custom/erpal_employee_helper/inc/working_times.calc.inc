@@ -25,72 +25,132 @@ function _erpal_employee_helper_calculate_working_times() {
     
     //get all invalid month working times (dirty==1) and get the one with the lowest year and month.
     $dirty_working_times = _erpal_employee_helper_get_dirty_working_times($uid, 'month');
-    if (!count($dirty_working_times))
+    
+    $from_month = false;
+    $from_year = false;
+    if (!count($dirty_working_times)) {
+      //get the earliest contract when we didn't find a working time entity yet. From this point we start recalculating all working_times entities
+      $earliest_contract = _erpal_employee_helper_get_earliest_contract();
+      //get the date
+
+      $valid_since_unix = isset($earliest_contract->field_valid_since[LANGUAGE_NONE][0]['value']) ? $earliest_contract->field_valid_since[LANGUAGE_NONE][0]['value'] : 0;
+      $from_year = date('Y', $valid_since_unix);
+      $from_month = date('m', $valid_since_unix);
+      
+    } else {
+      $keys = array_keys($dirty_working_times);
+      $first_element_key = $keys[0];
+      $first_element = $dirty_working_times[$first_element_key];
+      
+      $from_year = $first_element->year;
+      $from_month = $first_element->month;
+    }
+    
+    if (!$from_year && !$from_month)
       continue;
-    
-    $keys = array_keys($dirty_working_times);
-    $first_element_key = $keys[0];
-    $first_element = $dirty_working_times[$first_element_key];
-    
-    $recalculate_years = array();
-    $from_year = $first_element->year;
-    $from_month = $first_element->month;
     
     $current_year = date('Y');    
     $current_month = date('m');
+    
+    //Performance security: earliest date should not be more than 10 years away!
+    if ($current_year - $from_year > 10)
+      $from_year = $current_year -10;  //set at maximum 10 years before
     
     //if the user has never had an employee contract
     $contract_data = _erpal_profile_helper_user_contracts($uid, 'full_employee');
     if (!$contract_data)
       continue;
-   
+
     //now recalculate the months from "from" to current
-    $years = _erpal_employee_helper_recalculate_month($uid, $from_year, $current_year, $from_month, $current_month);
+    $recalculate_years = _erpal_employee_helper_recalculate_month($uid, $from_year, $current_year, $from_month, $current_month);
     
-    //@TODO: now recalculate the years in the result array, using the data from the calculated month
+    //now recalculate the years in the result array, using the data from the calculated month
+    sort($recalculate_years);
+    foreach ($recalculate_years as $recalculate_year) {
+      _erpal_employee_helper_recalculate_year($uid, $recalculate_year);
+    }
   }
 
-  
-  die();
- 
- 
-  //If we have holidays or illdays given as a period, we only count these days if they are regular working days. And when we have a range, only use the days in the range that match the current month that is calculated
- 
-  //calculate: The real working time in seconds according to the working time nodes with type "working_time" of the user, we just sum the duration field, no need to repsect pause times in calculation. 
-  
-  //calculate: ill days and holidays in seconds, they are added to the total real working time to be compared with the needed working time (see below)
-  
-  //@TODO: we need a setting "working days" in the employee settings where we can set the general working days (mo-fr for example, but could be different)
-  //calculate: Calculate the "must working days" of the current month. This is every day set in the "working days" settings of the module. erpal_date nodes with type "holiday" are not working days and excluded from this calculation
-  
-  //calculate: the needed Working Time in seconds according to the contract data of the user. If user started in the middle of a month or a week, this is respected in the needed working time because we add the beginning of the contract to the function that calculates the needed working time.
-  //@see _bsi_filter_get_days_in_range in bsi_controling module
-  //@see bs_ldom to get last day of month in old intranet
-  
-  
-  //calculate: The working time tracked on projects with timetracking nodes
-  
-  //Calculate: ill_days off the user
-  
-  //calculate holidays of the user: Respect to when the user started in the first year, he only has holidays relative to his days in the year. 
-  //if user has holidays from year before and it is still valid according to the property holidays_available_till we reduce them first. If he hasn't we reduce holidays available of the current year.
-  //The function returns the rest holidays in the current year, in the year before and the used holidays in the month.
-  
- 
-  
-  
-  
-  //calculate: overhour reduce of the user
-  
-  //
-  
-  
-  
-  //if next year is another than the year we processed before, calculate the year working_time entites as sum of the month working_time entities
-  
   //set the time of last run
   _erpal_employee_helper_set_last_run();
 
+}
+
+/**
+* recalculates a complete year, no matter if it is dirty or not. Just SUM the month working_times entities values
+*/
+function _erpal_employee_helper_recalculate_year($uid, $year) {
+  $working_times = working_times_load_by_user('month', $uid, $year);
+  
+  //get the working_times entity for the year. If there is none, create one.
+  $working_times_year = working_times_load_by_user('year', $uid, $year);
+  if (!count($working_times_year)) {
+    //create a new one
+    $values = array('type' => 'year', 'uid' => $uid, 'year' => $year, 'month' => 0);
+    $working_times_year = working_times_create($values);
+  } else {
+    $working_times_year = array_shift($working_times_year);
+  }
+  
+  
+  //initialise variables
+  $overtime = 0;
+  $ill_days = 0;
+  $holidays_used = 0;
+  $holidays_used_from_before = 0;
+  $total_hours = 0;
+  $project_time = 0;
+  $overtime_reduce = 0;  
+  foreach ($working_times as $working_time) {    
+    $holidays_available = $working_time->holidays_available;  //yes, this will be updated every foreach run because we need the value of the latest month
+    $holidays_available_till = $working_time->holidays_available_till;
+    
+    $overtime += $working_time->overtime;
+    $ill_days += $working_time->ill_days;
+    $holidays_used += $working_time->holidays_used;
+    $overtime_reduce += $working_time->overtime_reduce;
+    $holidays_used_from_before += $working_time->holidays_used_from_before;
+    $total_hours += $working_time->total_hours;
+    $project_time += $working_time->project_time;
+  }
+  
+  //save summed values to entity
+  $working_times_year->overtime = $overtime;
+  $working_times_year->ill_days = $ill_days;
+  $working_times_year->holidays_used = $holidays_used;
+  $working_times_year->overtime_reduce = $overtime_reduce;
+  $working_times_year->holidays_used_from_before = $holidays_used_from_before;
+  $working_times_year->total_hours = $total_hours;
+  $working_times_year->project_time = $project_time;
+  $working_times_year->holidays_available = $holidays_available;
+  $working_times_year->holidays_available_till = $holidays_available_till;
+  
+  $working_times_year->save();
+}
+
+/**
+* Return the contract with the earliest valid_since date
+*/
+function _erpal_employee_helper_get_earliest_contract() {
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'field_collection_item')
+  ->entityCondition('bundle', 'field_contract_data')
+  ->fieldOrderBy('field_valid_since', 'value', 'ASC')
+  ->range(0,1)  //only one, the oldest one
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+
+  $result = $query->execute();
+  
+  $contract_data = false;
+  if (isset($result['field_collection_item'])) {
+    $contract_data_ids = array_keys($result['field_collection_item']);
+    //load them
+    $contract_data = entity_load('field_collection_item', $contract_data_ids);
+    $contract_data = array_shift($contract_data);
+  }
+
+  return $contract_data;
 }
 
 /**
@@ -101,8 +161,9 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
   if (!$from_year && !$from_month)
     continue;
   if (!$from_month)
-    $from_month = 1;
+    $from_month = 1;  
   
+  $years = array();  //result all years we have calculated
   //now loop through years and month till the current date and recalculate them. If the year changes recalculate the year from the working_times month entites in this year
   for ($year=$from_year; $year<=$to_year; $year++) {
           
@@ -121,7 +182,7 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
       $start_month = 1;
       $end_month = 12;
     }
-    
+        
     for ($month=$start_month; $month<=$end_month; $month++) {
       //get the time the user must work according to his contract
       $working_days_unix = array();  //this will be filled with all days where the user has to work
@@ -140,12 +201,270 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
       $user_holidays = _erpal_employee_helper_user_holidays($uid, $year, $month, $holiday_hours, $user_ill_days, $working_days_unix);
       $worked_time_h += $holiday_hours; // cause user holidays count as working time
 
-     
-   /*      
-      dann die projektzeit (auch wieder unter der Berücksichtiung dass er employee war)
-    */
+      //Get the project time a user booked as erpal_timetracking nodes
+      $user_project_time_h = _erpal_employee_helper_get_user_project_time($uid, $year, $month);   
+
+      //calculate: overhour reduce of the user, the time that he reduced his over hours because he got them paid
+      $reduce_hours = _erpal_employee_helper_get_reduce_hours($uid, $year, $month);
+      
+      //###########################################################################
+      //now load the entity if one exists and update it, otherwise create a new one
+      //###########################################################################
+      $working_times_entity = working_times_load_by_user('month', $uid, $year, $month);
+      $working_times_entity = array_shift($working_times_entity);
+      if (!$working_times_entity) {
+        //create a new one!
+        $values = array('uid' => $uid, 'type' => 'month', 'month' => $month, 'year' => $year);
+        $working_times_entity = working_times_create($values);
+      }
+      
+      //now update all the values
+      //if it is the current month, its always dirty and will be recalculated
+      if ($month == $to_month && $year == $to_year)
+        $working_times_entity->dirty = 1; //the working_times in the current month are alway dirty and have to be recalculated
+      
+      //set ill days
+      $working_times_entity->ill_days = count($user_ill_days);
+      
+      $holidays_used = count($user_holidays);
+      $rest_holiday_to_book = _erpal_employee_helper_book_user_holidays($uid, $holidays_used, $month, $year, $working_times_entity);
+      
+      //save the amount of booked days to the year before to the current entity. Otherwise if the current month will be recreated, the holiday booked on the rest holidays of the year before will be decreased with every run!
+      $holidays_used_from_before = $holidays_used - $rest_holiday_to_book;
+      $working_times_entity->holidays_used_from_before = $holidays_used_from_before;
+      $working_times_entity->holidays_used = $rest_holiday_to_book;
+      
+      //for holiday calculation we need to get the contract
+      //we need to know how many days a year the user should work (general working time, global holidays excluded), then we need to know how many days
+      //@TODO thats difficult. We need to know on which days the user work from ressource planing because if he is only part time employee (new category in working_time nodes?) he can always put his working days on global holidays so he doesn't have to work...Should we add the days when a user comes in the contract? It must be valid since....
+    
+      //user has holidays in his profile and dependend on the valid_since date of the users contract, we simply calculate the days relative to the total working days in the year....need a simple solution!
+      
+      //get the year / month before
+      $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+      $year_month_str = $year.'-'.$monthNull.'-01 00:00:00';  //we don't have an exact date so take the middle of the month
+      $year_month_unix = strtotime($year_month_str);
+      $year_month_before_unix = strtotime($year_month_str.' -1 month');
+      $year_before = date('Y', $year_month_before_unix);
+      $month_before = date('m', $year_month_before_unix);
+      $working_times_entity->holidays_available = _erpal_employee_get_holidays_available($uid, $year_before, $month_before, 'month', $year_month_unix) - $working_times_entity->holidays_used;//this is the total amount of available holidays in the total year of this month where as all other values are absolute values only in the current month.
+
+      //holiday is always avalilable from the beginning of the year +1 year + x month set in adminsettings      
+      //get the last day of the year
+      $last_year_day = $year.'-12-31 23:59:59';
+      $holiday_transfer_month = _erpal_employee_get_holiday_month_transfer();
+ 
+      $holidays_available_till = strtotime($last_year_day.' +'.$holiday_transfer_month.' month');
+      $working_times_entity->holidays_available_till = $holidays_available_till;
+      
+      $working_times_entity->total_hours = round($worked_time_h, 2);
+      $working_times_entity->project_time = round($user_project_time_h, 2);
+      
+      $working_times_entity->overtime_reduce = round($reduce_hours, 2);
+      
+      //calculate and set overtime
+      $overtime = $worked_time_h - $must_working_time_h - $reduce_hours;
+      $working_times_entity->overtime = round($overtime, 2);
+      
+      $working_times_entity->save();
+    }
+    
+    $years[] = $year;
+  }
+  
+  return $years;
+}
+
+/**
+* Books the given holidays to a users working times in the given date. First we try to finde some available "old" holiday in the year before if it is not more than the holidays expiration months away. We book it there and return the rest holiday as result of the function
+*/
+function _erpal_employee_helper_book_user_holidays($uid, $holidays, $month, $year, $working_times_entity_month) {
+  
+  //get working_times from year before and see if the available holidays there are not yet expired.
+  $working_times = working_times_load_by_user('year', $uid, $year-1);
+  if (!count($working_times)) {
+    //no rest holidays found in the last year
+    return $holidays;
+  }
+  
+  $working_times = array_shift($working_times);
+  
+  //because in the previous run, we already substracted the holidays from the rest holidays of the last year if there were some. So we add them here again, otherwise, they will be substracted again, which will result in wrong data
+  $working_times->holidays_available += $working_times_entity_month->holidays_used_from_before;  
+  
+  $holidays_available_till = $working_times->holidays_available_till;
+
+  $current_date = erpal_calendar_ldom($month, $year);  //take the last date of the given month
+  $current_date_unix = strtotime($current_date);
+  if ($current_date_unix > $holidays_available_till)
+    return $holidays;
+    
+  //here we have some rest holiday. Book it, save it and return the difference
+  $holidays_available = $working_times->holidays_available;
+  if ($holidays_available >= $holidays) {
+    $holidays_available = $holidays_available - $holidays;
+    $rest_days = 0;  //everything could be booked to this working_times entity
+  } else {
+    $rest_days = $holidays - $holidays_available;
+    $holidays_available = 0;    
+  }
+
+  //now book the holidays available
+  $working_times->holidays_available = $holidays_available;
+  $working_times->save();
+  
+  return $rest_days;  
+}
+
+/**
+* Returns the available holidays for a user in the given month. So we return just the holidays_available of the working_times entity from the month / year.
+* if there is no entity, we take the total holidays of the user and calculate the available holidays relative to the valid_since date of the contract if this date is int the same year as the given year. Otherwise, if the valid_since year of the contract is not in the current year, we return the full holidays
+* @param $valid_till_unix a unix_timestamp that sets a time until the holidays returned should not expire. This is the offset when we fetch the contract data and calculate the holidays from contract
+*/
+function _erpal_employee_get_holidays_available($uid, $year, $month, $type, $valid_till_unix=false) {
+  $working_times = working_times_load_by_user($type, $uid, $year, $month);
+  if (count($working_times)) {
+    
+    //there is a working_times entity
+    $working_times = array_shift($working_times);
+    //we only return the available holidays if they are not expired (holidays_available_till)
+    if ($valid_till_unix) {
+      if ($working_times->holidays_available_till < $valid_till_unix)
+        return 0; //holidays already expired!
+    }
+    return $working_times->holidays_available;
+  } else {
+    //get the contract and take the holidays relative to the current month because holidays are for one complete year, but if users contract started in the middle of the year, he only should have a part (half in this case) of that total holidays
+    $contract_data = _erpal_profile_helper_get_current_contract($uid, array(), $valid_till_unix, 'full_employee');
+    $total_holidays = $contract_data['holiday_per_year'];
+
+    $valid_since_unix = $contract_data['valid_since'];
+    $valid_since_str = date('Y-m-d', $valid_since_unix);
+    //check if this is the month where the users contract started
+    if (date('Y', $valid_since_unix) == date('Y', $valid_till_unix)) {
+      $valid_since_day_in_year = date('z', $valid_since_unix);      
+      $available_holidays = ceil(($total_holidays / 365) * (365 - $valid_since_day_in_year)); //rounding (ceil) with positive effekt to the employee
+      return $available_holidays;
+    } else {
+      //not the year where the users contract started, so return all holidays
+      return $total_holidays;
     }
   }
+  
+  return 0;
+}
+
+/**
+* Returns the hours a user booked to reduce his over hours, for example because he got them paid
+* They may be on holiday and so on, because the total amount will jus be substracted from his monthly hours, no matter if he was an employee the date is on a holiday, not on a general working time and so on.
+*/
+function _erpal_employee_helper_get_reduce_hours($uid, $year, $month) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+  $date_till_unix = strtotime($range_till);
+  $date_from_unix = strtotime($range_from);
+  
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_working_time')
+    ->propertyCondition('status', 1)
+    ->propertyCondition('uid', $uid)
+    ->fieldCondition('field_date_time', 'value', $date_from_unix, '>=')
+    ->fieldCondition('field_date_time', 'value', $date_till_unix, '<=')
+    ->fieldCondition('field_working_time_type', 'value', 'reduce_hours')    
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  $timetracking_nodes = array();
+  if (isset($result['node'])) {
+    $timetracking_nids = array_keys($result['node']);
+    $timetracking_nodes = entity_load('node', $timetracking_nids);
+  }
+  
+  //get only the timetrackings that the user booked as employee!
+  $timetracking_dates = _erpal_calendar_helper_get_dates_in_range($year, $month, $timetracking_nodes, 'field_date_time', 'field_date_time', array(LANGUAGE_NONE, 0, 'value'), array(LANGUAGE_NONE, 0, 'value'));
+  
+  //get the sum of all timetrackings (duration, not billing duration)
+  $total_duration = 0;
+  foreach ($timetracking_nodes as $node) {
+    //take only these that are in timetracking_dates!
+    $timetracking_date = $node->field_date_time[LANGUAGE_NONE][0]['value'];
+    $timetracking_date_str = date('Y-m-d', $timetracking_date);
+    $is_valid_date = false;
+    foreach ($timetracking_dates as $date) {
+      $date_str = date('Y-m-d', $date);    
+      if ($date_str == $timetracking_date_str) {        
+        $is_valid_date = true;
+        break;
+      }
+    }
+    
+    if ($is_valid_date) {
+      $duration = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+      $total_duration += $duration;
+    }
+  }
+  
+  return $total_duration;
+
+}
+
+/**
+* Returns the sum in hours on which a user worked on projects (timetracking nodes on tasks)
+*/
+function _erpal_employee_helper_get_user_project_time($uid, $year, $month) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+  $date_till_unix = strtotime($range_till);
+  $date_from_unix = strtotime($range_from);
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_timetracking')
+    ->propertyCondition('uid', $uid)
+    ->fieldCondition('field_date_time', 'value', $date_from_unix, '>=')
+    ->fieldCondition('field_date_time', 'value', $date_till_unix, '<=')
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  $timetracking_nodes = array();
+  if (isset($result['node'])) {
+    $timetracking_nids = array_keys($result['node']);
+    $timetracking_nodes = entity_load('node', $timetracking_nids);
+  }
+  
+  //get only the timetrackings that the user booked as employee!
+  $timetracking_dates = _erpal_calendar_helper_get_dates_in_range($year, $month, $timetracking_nodes, 'field_date_time', 'field_date_time', array(LANGUAGE_NONE, 0, 'value'), array(LANGUAGE_NONE, 0, 'value'));
+  
+  //get the sum of all timetrackings (duration, not billing duration)
+  $total_duration = 0;
+  foreach ($timetracking_nodes as $node) {
+    //take only these that are in timetracking_dates!
+    $timetracking_date = $node->field_date_time[LANGUAGE_NONE][0]['value'];
+    $timetracking_date_str = date('Y-m-d', $timetracking_date);
+    $is_valid_date = false;
+    foreach ($timetracking_dates as $date) {
+      $date_str = date('Y-m-d', $date);    
+      if ($date_str == $timetracking_date_str) {        
+        $is_valid_date = true;
+        break;
+      }
+    }
+    
+    if ($is_valid_date) {
+      $duration = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+      $total_duration += $duration;
+    }
+  }
+  
+  return $total_duration;
 }
 
 /**
@@ -201,26 +520,28 @@ function _erpal_employee_helper_user_holidays($uid, $year, $month, &$holiday_hou
   $holiday_days = _erpal_calendar_helper_get_dates_in_range($year, $month, $holiday_nodes, 'field_date_time', 'field_date_time', array(LANGUAGE_NONE, 0, 'value'), array(LANGUAGE_NONE, 0, 'value2'));
 
   $holiday_nodes_on_working_days = array();
-  
+
   foreach ($holiday_days as $holiday_unix) {
     $holiday_string = date('Ymd', $holiday_unix);
     //if the holiday is on an ill day, we dont respect the holiday, it is not added to working time and not substracted from available holidays
     $is_ill_day = false;
     foreach ($user_ill_days as $ill_day_unix) {
-      $ill_day_string = date('Ymd', $ill_day_unix);
+      $ill_day_string = date('Ymd', $ill_day_unix);      
       if ($ill_day_string == $holiday_string) {
         $is_ill_day = true;
         break;
       }
     }
         
-    if ($is_ill_day)    
+    if ($is_ill_day) {   
       continue;
+    }
     
     //take the holiday days of the user that are on a general working and not on a global holiday day
     $is_working_day = false;
     foreach ($working_days_unix as $working_day) {
       $working_day_string = date('Ymd', $working_day);
+
       if ($working_day_string == $holiday_string) {
         $is_working_day = true;
         break;
@@ -230,10 +551,11 @@ function _erpal_employee_helper_user_holidays($uid, $year, $month, &$holiday_hou
     if ($is_working_day) {
       //get the contract to check ho many hours a day user has to work and these are the hours that are added as working time for a holiday day
       $hours_to_work = _erpal_profile_helper_get_hours_to_work_a_day($uid, $holiday_unix);
-      $holiday_hours += $hours_to_work;
+      $holiday_hours += $hours_to_work;      
       $holiday_nodes_on_working_days[] = $holiday_unix;
     }
   }  
+  
   return $holiday_nodes_on_working_days;
   
 }
@@ -319,7 +641,7 @@ function _erpal_employee_helper_get_must_working_time($uid, $year, $month, &$mus
   
   //get all general working days
   $working_days = _erpal_employee_get_general_working_days($year, $month);
- 
+
   //calculate the time in seconds the user has to work according to his contract profile in this month but not on holidays
   //but respect the start date in the contract as offset!
   $total_working_hours = 0;
