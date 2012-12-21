@@ -68,10 +68,16 @@ function _erpal_hacks_exposed_form_reset_submit($form, &$form_state) {
     $pos = strpos($name, 'qt-');
     if ($pos === 0) {
       //redirect to q and add all the qtab state parameters to have the correct quickt tab active after reset
-      $query[$name] = $value;
+      $query[$name] = $value;      
     }
   }
-  
+
+  //unset the exposed filter values in the session, otherwise they will still appear as defaults in the exposed filter form
+  $view_name = isset($form_state['view']->name) ? $form_state['view']->name : false;
+  $display_name = isset($form_state['view']->current_display) ? $form_state['view']->current_display : false;
+  if (isset($_SESSION['views'][$view_name][$display_name])) {
+    unset($_SESSION['views'][$view_name][$display_name]);
+  }
   drupal_goto($_GET['q'], array('query' => $query));
 }
 

@@ -124,7 +124,7 @@ function erpal_calendar_get_holidays($year, $month, $holiday_tid) {
     
   //get all erpal_date nodes that have field_date_type set to "holiday" in the given range above
   //we get all date items that have starting date in our date range. After that we call a function to get all the single dates from these ranges, so if a date_item goes over the given month (see function argument), only the days in the given month count.
-  $date_items = _erpal_calendar_helper_get_date_items_in_month($year, $month, $holiday_tid);
+  $date_items = _erpal_calendar_helper_get_date_items_in_month($year, $month, $holiday_tid, 'node', 'erpal_date');
 
   $days = _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, 'date_from', 'date_till');
 
@@ -134,7 +134,7 @@ function erpal_calendar_get_holidays($year, $month, $holiday_tid) {
 /**
 * Returns all dat_item entities with a given tag in the given month of the given year
 */
-function _erpal_calendar_helper_get_date_items_in_month($year, $month, $tid) {
+function _erpal_calendar_helper_get_date_items_in_month($year, $month, $tid, $subject_entity_type, $subject_entity_bundle) {
   $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
 	$ldom = erpal_calendar_ldom($month, $year);  //last day of month
 	$range_from = "$year-$monthNull-01 00:00:00";
@@ -186,8 +186,40 @@ function _erpal_calendar_helper_get_date_items_in_month($year, $month, $tid) {
     $date_item_ids = array_merge($date_item_ids, array_keys($result['date_item']));    
   }
   $date_items = entity_load('date_item', array_unique($date_item_ids));
+  
+  //now loop through them and check that they have the given entity types and bundle
+  $final_date_items = array();
+  foreach ($date_items as $delta => $date_item) {
+    $entity_type = $date_item->src_type;
+    
+    if ($entity_type != $subject_entity_type)
+      continue;
+    
+    $entity_id = $date_item->src_id;
+    $entity_info = entity_get_info($entity_type);
+    
+    //no get the bundle info
+    $bundle_key = $entity_info['entity keys']['bundle'];
+    $id_key = $entity_info['entity keys']['id'];
+    $base_table = $entity_info['base table'];
+    $query = db_select($base_table, 'base');
+    $query
+      ->fields('base', array($bundle_key))
+      ->condition('base.'.$id_key, $entity_id);
+    
+    $result = $query->execute();
+    
+    foreach ($result as $record) {
+      // Do something with each $record
+      $bundle = $record->{$bundle_key};
+      if ($bundle == $subject_entity_bundle) {
+        $final_date_items[] = $date_item;
+      } 
+        
+    }
+  }
 
-  return $date_items;
+  return $final_date_items;
 }
 
 /**
@@ -264,7 +296,7 @@ function _erpal_calendar_helper_field_tag_holiday_date() {
 }
 
 /**
-* Return the last day of a given month
+* Return the last day of a given month in format Y-m-d
 */
 function erpal_calendar_ldom($month = '', $year = '') {
    if (empty($month)) {
