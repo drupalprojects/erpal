@@ -14,9 +14,9 @@ function _erpal_employee_helper_calculate_working_times() {
   $last_run = _erpal_employee_helper_get_last_run();
 
   //@TODO uncomment again
-  //if (date('Y-m-d', $last_run) == date('Y-m-d'))
-    //return false;
-    
+  if (date('Y-m-d', $last_run) == date('Y-m-d') && _erpal_employee_helper_employee_report_run_only_once_a_day())
+    return false;
+
   //get all user IDs
   $uids = _erpal_profile_helper_get_users(); //loads only active users
   

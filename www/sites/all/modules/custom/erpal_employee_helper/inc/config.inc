@@ -94,6 +94,13 @@ function erpal_employee_helper_config_form($form, &$form_state){
     '#default_value' => _erpal_employee_helper_general_working_days(),
     '#description' => t('These weekdays are working days in general, according to the country or the individual company'),
   );
+  
+  $form['employee_reports_only_once_a_day'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Run employe times reports only once a day'),
+    '#default_value' => _erpal_employee_helper_employee_report_run_only_once_a_day(),
+    '#description' => t('If this is not checked, the employee reports will run with every cron run.'),
+  );
 
   $form['submit'] = array(
     '#value' => t('save'),
@@ -102,6 +109,13 @@ function erpal_employee_helper_config_form($form, &$form_state){
   );
   
   return $form;
+}
+
+/**
+* Returns if the employee times report should run only once a day or with every cron run
+*/
+function _erpal_employee_helper_employee_report_run_only_once_a_day() {
+  return variable_get('employee_reports_only_once_a_day', true);
 }
 
 /**
@@ -135,6 +149,9 @@ function _erpal_employee_helper_config_form_submit($form, $form_state) {
   $general_working_days = array_unique(($general_working_days));
 
   variable_set('erpal_emplyee_general_working_days', serialize($general_working_days));
+  
+  $employee_reports_only_once_a_day = $values['employee_reports_only_once_a_day'];
+  variable_set('employee_reports_only_once_a_day', $employee_reports_only_once_a_day);
 }
 
 /**
