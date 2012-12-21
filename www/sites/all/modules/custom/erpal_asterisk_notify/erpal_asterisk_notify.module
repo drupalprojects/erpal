@@ -61,18 +61,6 @@ function erpal_asterisk_notify_menu(){
 } 
 
 
-
-/*
- *  Implemtent form Submit Function 
- */
-function _erpal_asterisk_notify_get_view_form_submit(&$form, &$form_state) {
-
-  variable_set('asterisk_default_view'   , $form_state['values']['views']);
-  variable_set('asterisk_default_message', $form_state['values']['default_message']);
-  variable_set('asterisk_unknown_number_message', $form_state['values']['unknown_number_message']);
- 
-}
-
 /*
  * Function witch get all views in erpal of erpal_contact
  * @return array $views  Array with views
@@ -113,16 +101,14 @@ function _erpal_asterisk_notify_get_views_of_type_erpal_contact(){
 
 function erpal_asterisk_notify_ingoing_call($destination, $source) {
   
-  $view = _erpal_asterisk_notify_get_view($source);  
-
   if($source!=NULL) {
+    $view = _erpal_asterisk_notify_get_view($source);
     $out	= theme('erpal_asterisk_view', array('output' => $view));
   }else{
     $out	= theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
   }
-//    $out  = theme('erpal_asterisk_view', array('output' => $view));
-  erpal_asterisk_send_dispatch_data($out, $source, $destination);
-    
+
+  erpal_asterisk_send_dispatch_data($out, $source, $destination);    
 }
 
 /*
@@ -142,12 +128,12 @@ function _erpal_asterisk_notify_get_default_message($phone_number){
  */
 function _erpal_asterisk_notify_get_view($phone_number){
   
-  $display_id = 'default_notification';  $name = variable_get('asterisk_default_view');
-  $arguments = array($phone_number);
-  $view = views_get_view($name);
-  $view->display['default']->display_options['header']['area']['content'] = $phone_number;
-  
-  return $view->preview($display_id, $arguments);  
+  $display_id = 'default_notification';  $name = 'asterisk_notification';
+  $message = _erpal_asterisk_notify_get_default_message($phone_number);
+  $arguments = array(libphonenumber_normalize($phone_number));
+  $view = views_get_view($name);  
+  $view->display['default']->display_options['header']['area']['content'] = $message;
+  return $view->preview($display_id, $arguments); 
 }
 
 
@@ -192,113 +178,117 @@ function erpal_asterisk_notify_views_default_views(){
  * 
  */
 function erpal_asterisk_notify_notification_view(){
-  $export = array();
-  $view = new view();
-  $view->name = 'asterisk_notification';
-  $view->description = '';
-  $view->tag = 'default';
-  $view->base_table = 'node';
-  $view->human_name = 'Asterisk notification';
-  $view->core = 7;
-  $view->api_version = '3.0';
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  
-  /* Display: Master */
-  $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Default notify';
-  $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['cache']['type'] = 'none';
-  $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
-  );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['label'] = 'From Number:';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
-  $handler->display->display_options['header']['area']['tokenize'] = TRUE;
-  /* Relationship: Field: Listening numbers (field_phone) */
-  $handler->display->display_options['relationships']['field_phone_value']['id'] = 'field_phone_value';
-  $handler->display->display_options['relationships']['field_phone_value']['table'] = 'field_data_field_phone';
-  $handler->display->display_options['relationships']['field_phone_value']['field'] = 'field_phone_value';
-  $handler->display->display_options['relationships']['field_phone_value']['delta'] = '-1';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Contact Type */
-  $handler->display->display_options['fields']['field_contact_type']['id'] = 'field_contact_type';
-  $handler->display->display_options['fields']['field_contact_type']['table'] = 'field_data_field_contact_type';
-  $handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
-  $handler->display->display_options['fields']['field_contact_type']['label'] = '';
-  $handler->display->display_options['fields']['field_contact_type']['element_label_colon'] = FALSE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = '';
-  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['text'] = 'Create activity';
-  $handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['path'] = 'node/add/erpal-crm-activity?field_customer_ref=[nid]';
-  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Field collection item: Number (field_phone_number) */
-  $handler->display->display_options['arguments']['field_phone_number_value']['id'] = 'field_phone_number_value';
-  $handler->display->display_options['arguments']['field_phone_number_value']['table'] = 'field_data_field_phone_number';
-  $handler->display->display_options['arguments']['field_phone_number_value']['field'] = 'field_phone_number_value';
-  $handler->display->display_options['arguments']['field_phone_number_value']['relationship'] = 'field_phone_value';
-  $handler->display->display_options['arguments']['field_phone_number_value']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_phone_number_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_phone_number_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_phone_number_value']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_phone_number_value']['limit'] = '0';
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'erpal_contact' => 'erpal_contact',
-  );
-  
-  /* Display: Default notify */
-  $handler = $view->new_display('panel_pane', 'Default notify', 'default_notification');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+$view = new view();
+$view->name = 'asterisk_notification';
+$view->description = '';
+$view->tag = 'default';
+$view->base_table = 'node';
+$view->human_name = 'Asterisk notification';
+$view->core = 7;
+$view->api_version = '3.0';
+$view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+/* Display: Master */
+$handler = $view->new_display('default', 'Master', 'default');
+$handler->display->display_options['title'] = 'Default notify';
+$handler->display->display_options['use_more_always'] = FALSE;
+$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['cache']['type'] = 'none';
+$handler->display->display_options['query']['type'] = 'views_query';
+$handler->display->display_options['exposed_form']['type'] = 'basic';
+$handler->display->display_options['pager']['type'] = 'full';
+$handler->display->display_options['style_plugin'] = 'table';
+$handler->display->display_options['style_options']['columns'] = array(
+  'title' => 'title',
+);
+$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['info'] = array(
+  'title' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+);
+/* Header: Global: Text area */
+$handler->display->display_options['header']['area']['id'] = 'area';
+$handler->display->display_options['header']['area']['table'] = 'views';
+$handler->display->display_options['header']['area']['field'] = 'area';
+$handler->display->display_options['header']['area']['label'] = 'From Number:';
+$handler->display->display_options['header']['area']['empty'] = TRUE;
+$handler->display->display_options['header']['area']['format'] = 'filtered_html';
+$handler->display->display_options['header']['area']['tokenize'] = TRUE;
+/* Relationship: Field: Listening numbers (field_phone) */
+$handler->display->display_options['relationships']['field_phone_value']['id'] = 'field_phone_value';
+$handler->display->display_options['relationships']['field_phone_value']['table'] = 'field_data_field_phone';
+$handler->display->display_options['relationships']['field_phone_value']['field'] = 'field_phone_value';
+$handler->display->display_options['relationships']['field_phone_value']['delta'] = '-1';
+/* Field: Content: Title */
+$handler->display->display_options['fields']['title']['id'] = 'title';
+$handler->display->display_options['fields']['title']['table'] = 'node';
+$handler->display->display_options['fields']['title']['field'] = 'title';
+$handler->display->display_options['fields']['title']['label'] = '';
+$handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+$handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+/* Field: Content: Contact Type */
+$handler->display->display_options['fields']['field_contact_type']['id'] = 'field_contact_type';
+$handler->display->display_options['fields']['field_contact_type']['table'] = 'field_data_field_contact_type';
+$handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
+$handler->display->display_options['fields']['field_contact_type']['label'] = '';
+$handler->display->display_options['fields']['field_contact_type']['element_label_colon'] = FALSE;
+/* Field: Content: Nid */
+$handler->display->display_options['fields']['nid']['id'] = 'nid';
+$handler->display->display_options['fields']['nid']['table'] = 'node';
+$handler->display->display_options['fields']['nid']['field'] = 'nid';
+$handler->display->display_options['fields']['nid']['label'] = '';
+$handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
+$handler->display->display_options['fields']['nid']['alter']['text'] = 'Create activity';
+$handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
+$handler->display->display_options['fields']['nid']['alter']['path'] = 'node/add/erpal-crm-activity?field_customer_ref=[nid]';
+$handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+/* Sort criterion: Content: Post date */
+$handler->display->display_options['sorts']['created']['id'] = 'created';
+$handler->display->display_options['sorts']['created']['table'] = 'node';
+$handler->display->display_options['sorts']['created']['field'] = 'created';
+$handler->display->display_options['sorts']['created']['order'] = 'DESC';
+/* Contextual filter: Field collection item: Normalized Number (field_phone_number_normalized) */
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['id'] = 'field_phone_number_normalized_value';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['table'] = 'field_data_field_phone_number_normalized';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['field'] = 'field_phone_number_normalized_value';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['relationship'] = 'field_phone_value';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['default_argument_type'] = 'fixed';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['summary']['number_of_records'] = '0';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['summary']['format'] = 'default_summary';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['summary_options']['items_per_page'] = '25';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['limit'] = '0';
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 1;
+$handler->display->display_options['filters']['status']['group'] = 1;
+$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+/* Filter criterion: Content: Type */
+$handler->display->display_options['filters']['type']['id'] = 'type';
+$handler->display->display_options['filters']['type']['table'] = 'node';
+$handler->display->display_options['filters']['type']['field'] = 'type';
+$handler->display->display_options['filters']['type']['value'] = array(
+  'erpal_contact' => 'erpal_contact',
+);
+
+/* Display: Default notify */
+$handler = $view->new_display('panel_pane', 'Default notify', 'default_notification');
+$handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+
   
     
   $export['asterisk_notification'] = $view;
   
   return $export;
 }
+
+
+
+ 
   

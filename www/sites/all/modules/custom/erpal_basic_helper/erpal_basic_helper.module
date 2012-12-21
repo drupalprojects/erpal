@@ -148,9 +148,7 @@ function _erpal_basic_helper_contact_node_form_alter(&$form, &$form_state) {
   
   _erpal_basic_helper_contact_node_form_field_conditions($form, $form_state);
  
-  //Hide field_phone_number_normalized
-  $form['field_phone'][LANGUAGE_NONE][0]['field_phone_number_normalized']['#access'] = FALSE;
-  $form['field_phone'][LANGUAGE_NONE][0]['field_phone_number_normalized'][LANGUAGE_NONE]['#title'] = '';
+  
 }
 
 /**
@@ -158,6 +156,18 @@ function _erpal_basic_helper_contact_node_form_alter(&$form, &$form_state) {
 */
 function _erpal_basic_helper_contact_form_submit($form, &$form_state) {
   _erpal_basic_helper_postprocess_conditional_fields($form, $form_state);
+}
+
+/**
+ * implements hook_field_attach_form() to hide the normalized phone number field from the form 
+ * of field_phone_number entity collections
+ */
+function erpal_basic_helper_field_attach_form($entity_type, $entity, &$form, &$form_state, $langcode) {
+  
+  if($entity_type == 'field_collection_item' && $entity->field_name == 'field_phone'){
+    $form['field_phone_number_normalized']['#access'] = FALSE;
+    $form['field_phone_number_normalized'][LANGUAGE_NONE]['#title'] = '';
+  }
 }
 
 

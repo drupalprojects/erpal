@@ -99,11 +99,11 @@ function submit($form, &$form_state) {
 function _form_section_mailbox_settings (&$form, &$form_state) {
  
   $form['erpal_crm_mailaction']['mailbox_settings'] = array (
-    '#type'   => 'fieldset',
-    '#title'  => t('Mailbox settings'),
+    '#type'           => 'fieldset',
+    '#title'          => t('Mailbox settings'),
+    '#tree'           => TRUE,
     '#collapsible'    => TRUE,
-    '#collapsed'      => TRUE,
-    '#tree'   => TRUE
+    '#collapsed'      => TRUE
   );
  
   $form['erpal_crm_mailaction']['mailbox_settings']['host'] = array (
