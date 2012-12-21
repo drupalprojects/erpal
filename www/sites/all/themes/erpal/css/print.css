@@ -89,8 +89,7 @@ ul.links,
 .action-links,
 .pager,
 .messages,
-.help,
-.panels-flexible-erpal_panel_layout-left {
+.help {
   display: none;
 }
 

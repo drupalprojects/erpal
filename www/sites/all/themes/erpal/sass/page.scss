@@ -1,48 +1,25 @@
 @import "global_vars_a_mixins";
 
 body {
- &.panels-ipe {
-   margin-bottom: 0 !important;
- }
- #erpal_wrapper>.panel-col-first {
-   margin:0;
-   background-color: $dark_brown;
-   width: 150px;
-   max-width: none;
-   height: $value100;
-   float: left;
-   position: absolute;
-   left: 0;
-   >.inside { 
-     margin:0;
-	 padding-right: 0;
-     height: $value100;
-	 @include box-shadow($dark_grey 1px 2px 2px);
-	   
-	 .pane-system-user-menu{ /*----------begin User menu-------------*/
-	   ul {
-	     @include dist_zero;
-	     overflow: hidden;
-		 border-bottom: 1px solid $brown;
-		   li{
-		     padding: 0;
-		     float: right;
-	         width: 74px;
-	         text-align: center;
-		     &.last{
-		       border-right: 1px solid $light_brown;
-		     }
-			 a {
-			   color: $grey_orange;
-			   &:hover{
-			    color: $light;
-			   }
-			 }
-		  }
-	    }  /*----------end User menu-------------*/
-	  }
-   }
-}
+  &.panels-ipe {
+    margin-bottom: 0 !important;
+  }
+  #erpal_wrapper>.panel-col-first {
+    margin:0;
+    background-color: $dark_brown;
+    width: 150px;
+    max-width: none;
+    height: $value100;
+    float: left;
+    position: absolute;
+    left: 0;
+    >.inside { 
+      margin:0;
+	  padding-right: 0;
+      height: $value100;
+	  @include box-shadow($dark_grey 1px 2px 2px);
+	}
+  }
   &.page-node-tasks { /*----------begin node task-----------*/
     li{
 	   list-style-type: none;
@@ -51,11 +28,10 @@ body {
 	  border-bottom: 1px solid $bright_grey;
 	}
 	.region-sidebar-left {
-	  @include padding_zero;
 	  max-width: 620px;
 	}
 	.region-sidebar-right {
-	  @include padding_zero;
+	  padding: 10px;
 	  width: 380px;
 	}
   } /*----------end node task-----------*/
@@ -68,14 +44,43 @@ body {
 	  border-bottom: 1px solid $bright_grey;
 	}
 	.region-sidebar-left {
-	  @include padding_zero;
 	  max-width: 620px;
 	}
 	.region-sidebar-right {
-	  @include padding_zero;
+	  padding: 10px;
 	  width: 380px;
 	}
   } /*----------end node ticket-----------*/
+  .inline_fields {
+    clear: both;
+    .field{
+	  margin-right: 50px;
+	  clear: none !important;
+	  float: left;
+	}
+  }
+}
+.pane-system-user-menu{ /*----------begin User menu-------------*/
+  ul {
+	@include dist_zero;
+	overflow: hidden;
+	border-bottom: 1px solid $brown;
+	li{
+	  padding: 0;
+	  float: right;
+	  width: 74px;
+	  text-align: center;
+	  &.last{
+		border-right: 1px solid $light_brown;
+	  }
+	  a {
+		color: $grey_orange;
+		&:hover{
+		  color: $light;
+		}
+	  }
+	}
+  }  /*----------end User menu-------------*/
 }
 /*----------Logo-------------*/
 .pane-page-logo {  
@@ -109,6 +114,7 @@ body {
   ul {
 	@include dist_zero;
 	li {
+	  margin-left: 0;
 	  padding: 0;
 	  list-style-image: none;
       list-style-type: none;
@@ -183,6 +189,12 @@ body {
 	left: 30px;
   }
   max-width: 1070px;
+  .content-inner {
+    clear: both;
+  }
+  .pane-page-title.block{
+	margin-bottom: 0;
+  }
   .panel-2col-stacked {
     .panel-col-first {
 	  width: 700px;
@@ -230,9 +242,6 @@ body {
 		}
 	  }
 	}
-  #comment-form {
-   background: $light_grey;
-  }
 }
 
  /*----------begin comments------------------------*/
@@ -261,11 +270,15 @@ body {
 	   }
 	}
   .comment-content {
-     padding: {
-	   top: 15px;
-	   right: 15px;
-	   left: 15px;
-	 }
+    padding: {
+	  top: 15px;
+	  right: 15px;
+	  left: 15px;
+	}
+	section {
+	  width: 250px;
+	  float: left;
+	}
   }
   .comment-form {
     padding: {
@@ -276,25 +289,19 @@ body {
 	}
 	@include border-radius(5px);
   }
+  nav {
+    padding: 0 15px;
+	clear: both;
+  }
 } 
- /*----------end comments------------------------*/	
+
+/*----------end comments------------------------*/	
 .view-filters .rel-register-build  .views-exposed-widget .rel-register-link{
 	padding-top: 12px;
 	padding-right: 20px;
 	float: left;
 }
 
-/* =============================================================================
- *   erpal_content_layout
- * ========================================================================== */
-.region-sidebar-left{ /*----------------begin side-bar-left-----------------*/
-  max-width: 800px;
-  min-width: 360px;
-  width: $value100;
-  float: left;
-  &.single-row {
-	max-width: 1050px !important;
-  }
   .alert { /*----------------begin red alert-----------------*/
     .field-name-field-task-status-term,
 	.field_item .field-name-field-date,
@@ -321,74 +328,137 @@ body {
 		  color: $green;
 	}
   }   /*----------------end alert completed-----------------*/
-	    .quicktabs-tabpage {
-	    .columns-inner{
-		  margin-bottom: 12px;
+
+.region-sidebar-left{ /*----------------begin side-bar-left-----------------*/
+  max-width: 800px;
+  min-width: 360px;
+  width: $value100;
+  float: left;
+  &.single-row {
+	max-width: 100% !important;
+  }
+  .quicktabs-tabpage {
+   .columns-inner{
+	margin-bottom: 12px;
+    }
+	.views-table .views-field-title {
+	   width: 115px;
+	}
+	.views-field-field-task-status-term {
+	  width: 70px;
+	}
+	.content-column .content-inner {
+	  padding: 10px;
+	  overflow: hidden;
+	}
+	.field-label {
+	   margin: 0px !important;
+	   padding-right: 5px;
+	}
+	.field-group-format section.field {
+	  overflow: hidden;
+	  clear: both;
+	}
+	.field-name-files-count .field-items,
+    .field-name-comment-count .field-items{
+	  padding-top: 5px;
+	  width: 50%;
+    }
+    .view-mode-view_row_details .field-label, 
+    .view-mode-view_row_details .field-items, 
+    .region-sidebar-right .field-name-task-customer-node div, 
+    .region-sidebar-right .field-name-task-customer-node div, 
+    .field-collection-item-field-pricing .field-label, 
+    .field-collection-item-field-pricing .field-items {
+	  padding-right: 5px;
+	  float: left;
+	}
+	#edit-nid {
+	  width: 40px;
+    }
+	#edit-title {
+	  width: 120px;
+    }
+	#edit-field-priority-term-tid {
+	  width: 75px;
+    }
+	#edit-field-task-type-term-tid {
+	  width: 60px;
+    }
+  }
+  ul{
+	&.quicktabs-tabs {
+	  margin: 0;
+	  padding-left: 0;
+	  background: none;
+	  overflow: hidden;
+	  border: none;
+	  li {
+	    @include dist_zero;
+	    float: left;
+		background: {
+		  image: none;
+		  color: $silver;
 		}
-      .field-label {
-	    float: left;
-	  }
-      .field-items {
-	    float: left;
-		.field-item {
-		  div {
-		    float: left;
+	    border: {
+		  top: 1px solid $light_grey;
+		  left: 1px solid $light_grey;
+		}
+	    &.active {
+		  background-color: $dark_white !important;
+	      a {
+		    color: $grey !important;
 		  }
 		}
-	  } 	  
-	  }
-	  ul{
-	    &.quicktabs-tabs {
-		  margin: 0;
-		  padding-left: 0;
-		  background: none;
-		  overflow: hidden;
-		  border: none;
-		  li {
-		    @include dist_zero;
-		    float: left;
-				background: {
-				  image: none;
-				  color: $silver;
-				}
-				border:  {
-				  top: 1px solid $light_grey;
-				  left: 1px solid $light_grey;
-				}
-			&.active {
-			  background-color: $dark_white !important;
-			  a {
-			    color: $grey !important;
-			  }
-			}
-			&.last{
-			  border-right: 1px solid $light_grey;
-			}
-		    a{
-			  padding: 1px 12px;
-			  @include text_bold_12;
-			  min-width: 100px;
-			  color: $dark_grey;
-			}
-		  }
+		&.last{
+		  border-right: 1px solid $light_grey;
 		}
-     }
-	} /*----------------end side-bar-left-----------------*/
-  .region-sidebar-right { /*----------------begin side-bar-right-----------------*/
-    margin-left: 10px;
-    width: 250px;
-	float: right;
-	color: $dark_black;
-	  .local_tasks{
-		margin:{
-		  top: 2px;
-		  bottom: 0px;
-		};
-	    padding: 0px;
-	    list-style-type: none;
-		li{
-		  margin: 0 2px 7px;
-		  list-style-type: none;
+	    a{
+	      padding: 1px 12px;
+		  @include text_bold_12;
+		  min-width: 100px;
+		  color: $dark_grey;
+	    }
+	  }
+   }
+  .field-name-task-title  {
+    .field-item a{
+	  font-weight: bold;
+	  font-size: 16px;
+    }
+	.field-item p{
+	  margin-bottom: 0px;
+    }
+  }
+}
+  .region-sidebar-right {
+    section {
+	  &.field {
+	    overflow: hidden;
+	  }
+	}
+  }
+} /*----------------end side-bar-left-----------------*/
+.region-sidebar-right { /*----------------begin side-bar-right-----------------*/
+  margin-left: 10px;
+  width: 250px;
+  float: right;
+  color: $dark_black;
+	.local_tasks_menu .local_tasks{
+	  position: absolute;
+	  width: 248px;
+      z-index: 10;
+	}
+	.local_tasks{
+	  margin:{
+		top: 2px;
+		bottom: 0px;
+	  };
+	padding: 0px;
+	list-style-type: none;
+	  li{
+	    margin: 0 2px 7px;
+		list-style-type: none;
 		  a {
 		    padding: {
 			  top: 5px;
@@ -406,289 +476,263 @@ body {
 			font-size: 13px;
 			font-weight: bold;
 		  }
+		  ul {
+		    display: none;
+		  }
         } 
 	  }   /*----------------end side-bar-right-----------------*/
-	  .content-inner {
-	    padding-bottom: 30px;
-		clear: both;
-		max-width: 1100px;
-		min-width: 1100px;
-		overflow: hidden;
-	  }
+  .content-inner {
+    padding-bottom: 30px;
+	clear: both;
+	max-width: 1100px;
+	min-width: 1100px;
+	overflow: hidden;
+  }
+  .panel-separator {
+    display: none;
+   }
+   .ctools-collapsible-container {
+     figure {
+       text-align: center;
+	 }
+	background-color: $silver;
+	border: 1px solid $light_grey;
+   }    
 }  
  /*----------------end erpal_content_layout-----------------------*/
-.pane-page-title.block{
-	margin-bottom: 0;
-}
 /* =============================================================================
  *   Projects
  * ========================================================================== */
-
-
-#mini-panel-task_status_panel,
-#mini-panel-activity_status_panel{
-	padding: 10px 20px;
-	@include rounded_corners_10;
-	background-color: $light_grey;
-	color: $grey;
+.view-crm-activities {
+  table {
+    border-collapse: collapse;
+  }
 }
-.panel-display .pane-entity-field h2.pane-title {
-	padding-right: 5px;
+
+/*----------------begin .panel-display-----------------------*/
+.panel-display {
+  .pane-entity-field h2.pane-title {
+    padding-right: 5px;
 	font-size: 12px;
 	color: $grey;
-}
-.panel-display .pane-entity-field .block-content{
-	float: left;
-}
-.panel-display .pane-entity-field  .ds-form .group-left {
-    width: auto;
-	float: none;
-}
-.ctools-collapsible-content .panel-display .pane-entity-field .block-content, 
-.ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title{
-	float: none;
-}
-.panel-display .pane-entity-field .form-item label,
-.panel-display .pane-entity-field .rel-register-link {
-    float: left;
-}
-.panel-display .pane-entity-field  .field-type-taxonomy-term-reference{
-	margin: 0px;
-}
-.panel-display .pane-entity-field .form-item {
-	margin-bottom: 0px;
-}
-.panel-display .ui-widget-content{
-	background: none;
+  }
+  .pane-entity-field {
+    .block-content {
+	  float: left;
+	  .rel-register-link {
+	    float: left;
+	  }
+	}
+	.field-type-taxonomy-term-reference {
+	  margin: 0px;
+	}
+	.form-item {
+	  margin-bottom: 0px;
+	}
+    .ds-form .group-left {
+      width: auto;
+	  float: none;
+    }
+	.form-item label {
+	  float: left;
+	}
+  }
+  .ui-widget-content {
+    background: none;
 	border: none;
-}
-.panel-display .ui-tabs .ui-tabs-panel{
-	@include rounded_corners_10;
+  }
+  .ui-tabs .ui-tabs-panel {
+    @include rounded_corners_10;
 	-webkit-border-top-left-radius: 0;
 	-moz-border-radius-topleft: 0;
 	border-top-left-radius: 0;
 	display: block;
 	float: left;
 	background-color: $light_grey;
+  }
 }
-
-.ctools-collapsible-container .ctools-collapsible-handle {
+ /*----------------end panel-display-----------------------*/
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+.ctools-collapsible-processed  {
+  .ctools-collapsible-handle {
     cursor: pointer;
-}
-
-/*
- *  collapsible
- */
- .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle{
-	padding: 3px 5px 3px 30px;
- }
- .ctools-collapsible-processed h2.pane-title {
-    margin: 0;
-    padding: 3px 5px 0px 30px;
-	font-size: 12px;
-	line-height: 12px;
-}
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
-	padding-left: 0;
-	font-weight: bold;
-}
-.ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
-	margin: 0;
-	clear: both;
-	line-height: 12px;
-}
-.ctools-collapsible-container .block-content a{
-	text-decoration: underline;
-}
-.ctools-collapsible-processed section,
-.ctools-collapsible-processed .field-name-field-books-ref{
-	margin-bottom: 10px;
-	padding-left: 10px;
-}
-.ctools-collapsible-processed .field-name-field-task-assigned-users{
-	padding-left: 0px;
-}
-.ctools-collapsible-processed .panel-separator{
-	height: 1px;
-	overflow: hidden;
-}
-.ctools-collapsible-processed ul{
-	margin: 0;
-	padding: 0px;
-}
-.ctools-collapsible-processed ul li{
-	list-style-type: none;
-}
-.ctools-collapsible-processed .field-type-taxonomy-term-reference{
-	margin: 0;
-}
-.ctools-collapsible-processed .field-name-field-asset-files{
-	margin-bottom: 10px;
-}
-.ctools-collapsible-processed .field-name-field-asset-files .field-item{
-    margin-left: 20px;
-    padding-left: 0 !important;
-	display: list-item;
-}
-.ctools-collapsible-processed .field-name-field-asset-files .field-item a,
-.ctools-collapsible-processed .field-name-field-books-ref a{
+  }
+  .block-content a {
     text-decoration: underline;
-}
-.ctools-collapsible-container .ctools-collapsible-content .field-items{
+  }
+  h2.pane-title {
+    &.ctools-collapsible-handle {
+      padding: 3px 5px 3px 30px;
+	}
+	margin: 0;
+    padding: 3px 5px 0px 30px;
+    background-color: #AFAFAF;
+	@include headline(12px, 12px, 0, bold);
+	color: $grey;
+   }
+  .ctools-collapsible-content {
+    padding-top: 10px;
+    h2.pane-title {
+      padding-left: 0;
+	  font-weight: bold;
+	  color: $grey;
+	  background: none;
+	}
+	.field-items  {
+	  clear: both;
+	}
+  }
+  .field-name-field-pricing h2.field-label {
+    margin: 0;
 	clear: both;
-}
-.ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item{
+	line-height: 12px;
+	color: $grey;
+  }
+  section, .field-name-field-books-ref {
+    margin-bottom: 10px;
 	padding-left: 10px;
+	a {
+	  text-decoration: underline;
+	} 
+  }
+  .field-name-field-task-assigned-users {
+    padding-left: 0px;
+  }
+  .panel-separator {
+    height: 1px;
+	overflow: hidden;
+	border-bottom: 1px solid $light_grey;
+  }
+  ul {
+    @include dist_zero;
+	li {
+	  list-style-type: none;
+	}
+  }
+  .field-type-taxonomy-term-reference {
+    margin: 0;
+  }
+  .field-name-field-asset-files {
+    margin-bottom: 10px;
+	.field-item  {
+	  margin-left: 20px;
+      padding-left: 0 !important;
+	  display: list-item;
+	  a {
+	    text-decoration: underline;
+	  } 
+	}
+  }
+  .field-name-field-contacts-ref .field-item {
+    padding-left: 10px;
+  }
+  .panel-display .pane-entity-field  {
+    .block-content, 
+	h2.pane-title {
+	  float: none;
+	}
+  }
+  .panel-separator {
+    display: block;
+  }
+  .no-title {
+    padding-left: 10px;
+  }
+  .ctools-toggle {
+    background-position: 7px 8px;
+  }
 }
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
 
-#mini-panel-task_status_panel .panel-separator,
-#mini-panel-activity_status_panel .panel-separator{
-	display: none;
-}
-#mini-panel-task_status_panel section,
-#mini-panel-activity_status_panel section{
-	margin-bottom: 0;
+#mini-panel-task_status_panel {
+  padding: 10px 20px;
+  @include rounded_corners_10;
+  background-color: $light_grey;
+  color: $grey;
+  .panel-separator {
+    display: none;
+  }
+  section {
+    margin-bottom: 0;
 	margin-right: 30px;
 	float: left;
+  }
+  ul {
+    padding-left: 5px;
+    li {
+      padding: 0px;
+	  list-style-type: none;
+    }
+  }
 }
-#mini-panel-task_status_panel li{
-	padding: 0px;
-	list-style-type: none;
+#mini-panel-activity_status_panel {
+  padding: 10px 20px;
+  @include rounded_corners_10;
+  background-color: $light_grey;
+  .panel-separator {
+    display: none;
+  }
+  ul {
+    padding-left: 5px;
+  }
+  section {
+    margin-bottom: 0;
+	margin-right: 30px;
+	float: left;
+  }
 }
-#mini-panel-task_status_panel  ul,
-#mini-panel-activity_status_panel ul{
-	padding-left: 5px;
-}
-.region-sidebar-right .panel-separator{
-	display: none;
-}
-.ctools-collapsible-container .panel-separator{
-	display: block;
-}
-.ctools-collapsible-container .no-title{
-	padding-left: 10px;
-}
-.ctools-collapsible-container .ctools-toggle{
-	background-position: 7px 8px;
-}
-/*
- *  table
- */
 
-.views-exposed-form .views-exposed-widget .form-submit {
-    margin-top: 1.3em;
-}
 .view-empty{
 	padding: 15px;
 }
-.quicktabs-tabpage .views-table .views-field-title{
-	 width: 115px;
-}
-.quicktabs-tabpage .views-field-field-task-status-term{
-	width: 70px;
-}
-.page-projects .views-field-title{
-	width: 200px;
-}
-.page-projects .views-field-field-customer-ref{
-	width: 200px;
-}
-.page-projects .views-field-field-project-status-term, 
-.page-projects .views-field-field-priority-term{
-	width: 100px;
-}
-.page-projects #edit-field-customer-ref-target-id-wrapper{
-	margin-left: 45px;
-}
-.page-projects #edit-field-project-status-term-tid-wrapper{
-	margin-left: 23px;
-}
-.page-projects #edit-field-project-status-term-tid-wrapper{
 
+/*-------------------begin project page----------------------*/
+.page-projects {
+  .views-field-title{
+	width: 200px;
+  }
+  .views-field-field-customer-ref {
+    width: 200px;
+  }
+  .views-field-field-project-status-term,
+  .page-projects .views-field-field-priority-term {
+    width: 100px;
+  }
+  #edit-field-customer-ref-target-id-wrapper {
+    margin-left: 45px;
+  }  
+  #edit-field-project-status-term-tid-wrapper {
+    margin-left: 23px;
+  }
 }
+/*-------------------end project page----------------------*/
 /*--------------------------------for erpal task view row layout------------------------------------------*/
-.erpal-task-view-row-layout .region-sidebar-left{
+.erpal-task-view-row-layout {
+  .region-sidebar-left {
 	width: 70%;
 	float: left;
-}
-.erpal-task-view-row-layout .region-sidebar-right{
+  }
+  .region-sidebar-right{
     margin-left: 20px;
     width: 28%;
 	float: left;
-}
-.erpal-task-view-row-layout .content-inner{
+  }
+  .content-inner{
 	margin-bottom: 20px;
 	clear: both;
 	max-width: 1100px;
 	min-width: 1100px;
+  }
 }
-
 /*---------------ticket details-----------*/
-.field-name-task-title .field-item a{
-	font-weight: bold;
-	font-size: 16px;
-}
-.field-name-task-title .field-item p{
-	margin-bottom: 0px;
-}
+
 .node-erpal-task .columns-inner{
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
-}
-#tabs-tasks_by_project_panel-middle ul.field-items{
-	padding: 0px;
-	margin: 0px;
+	background-color: $white;
 }
 
-#quicktabs-tabpage-tickets_by_project_tabs-2  .content-column .content-inner,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner{
-	overflow: hidden;
-}
-
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above{
-	width: $value100;
-}
-.quicktabs-tabpage .field-label{
-    margin: 0px !important;
-}
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
-	font-weight: bold;
-}
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node .field_customer a,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-label-above .field-items a{
-	font-weight: normal;
-	text-decoration: underline;
-}
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field .field-label,
-#quicktabs-tabpage-tickets_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field .field-label,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .region-sidebar-right .field-name-task-customer-node div{
-	padding-right: 5px;
-}
-.quicktabs-tabpage .field-group-format section.field,
-#quicktabs-tabpage-tasks_by_project_tabs-2 section.field{
-	overflow: hidden;
-	clear: both;
-}
-
-.field-name-files-count .field-items,
-.field-name-comment-count .field-items{
-	padding-top: 5px;
-	width: 50%;
-}
-.inline_fields .field{
-	margin-right: 50px;
-	clear: none !important;
-	float: left;
-}
-.inline_fields{
-	clear: both;
-}
 ul.pager li a, ul.pager li.pager-current {
     font-size: 1.2em;
 }
@@ -701,128 +745,117 @@ ul.pager li a, ul.pager li.pager-current {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
-}
-.pane-node-body p{
-	font-size: 16px;
+	p {
+	  font-size: 16px;
+	}
 }
 
-.quicktabs-tabpage  #edit-nid{
-	width: 40px;
-}
-.quicktabs-tabpage  #edit-title{
-	width: 120px;
-}
-.quicktabs-tabpage #edit-field-priority-term-tid{
-	width: 75px;
-}
-.quicktabs-tabpage #edit-field-task-type-term-tid{
-	width: 60px;
-}
-.page-projects-timetrackings #edit-field-date-time-value-wrapper{
+/*-----------------------begin projects-timetrackings--------------------*/
+.page-projects-timetrackings {
+  #edit-field-date-time-value-wrapper{
 	margin-left: 45px;
+  }
+  #edit-field-project-ref-target-id-wrapper {
+    margin-left: 440px;
+  }
+  #edit-field-project-ref-target-id {
+    width: 120px;
+  }
+  .views-field-field-date-time {
+    width: 140px;
+  }
+  .views-field-title-1,
+  .views-field-title-2 {
+    width: 120px;
+  }
+  #edit-uid {
+    width: 90px;
+  }
+  .views-submit-button {
+    clear: both;
+  }
+  #edit-uid-wrapper {
+    width: 140px;
+	.description {
+	  line-height: 12px;
+	}
+  }
 }
-.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper{
-	margin-left: 440px;
-}
-.page-projects-timetrackings #edit-field-project-ref-target-id{
-	width: 120px;
-}
-.page-projects-timetrackings .views-field-field-date-time{
-	width: 140px;
-}
-.page-projects-timetrackings .views-field-title-1, .page-projects-timetrackings .views-field-title-2{
-	width: 120px;
-}
-.page-projects-timetrackings #edit-uid{
-	width: 90px;
-}
-.page-projects-timetrackings .views-submit-button{
-	clear: both;
-}
-.page-projects-timetrackings #edit-uid-wrapper{
-	width: 140px;
-}
-.page-projects-timetrackings #edit-uid-wrapper .description{
-	line-height: 12px;
-}
+/*-----------------------begin projects-timetrackings--------------------*/
+
+
 .page-node-edit div.autocomplete-deluxe-multiple{
 	width: auto;
 }
 /* crm */
 
-.field-type-datetime  fieldset .date-padding {
+.field-type-datetime  fieldset {
+  @include dist_zero;
+  .date-padding {
+    @include dist_zero;
 	width: 270px;
-}
-.field-type-datetime  fieldset,
-.field-type-datetime  fieldset .date-padding {
-	padding: 0;
-	margin: 0;
+  }
 }
 .field-name-field-next-contact form{
 	width: 500px;
+	#edit-field-next-contact {
+	  float: left;
+	}
+	.form-actions {
+	  float: left;
+	  width: 70px;
+	}
 }
-.field-name-field-next-contact form #edit-field-next-contact {
-	float: left;
-}
 
-.field-name-field-next-contact form .form-actions {
-	width: 70px;
-	float: left; 
-}
-
-/* comments */
-
-
+/*-------------begin comments------------------- */
 #comment-form {
-	padding: 15px;
-	margin-top: 20px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px; 
-	border-radius: 5px;
-}
-#comment-form .field-type-datetime {
-	width: 300px;
+  padding: 15px;
+  margin-top: 20px;
+  @include border-radius(5px); 
+  background: $light_grey;
+  .field-type-datetime {
+    width: 300px;
 	float: left;
-}
-#comment-form #edit-author--2 {
+  }
+  #edit-author--2 {
 	clear: both;
-}
-#comment-form #edit-field-contacts-ref {
-	width: 350px;
-	float: left;
+  }
+  #edit-field-contacts-ref {
 	margin-right: 40px;
-}
-#comment-form #edit-field-contacts-ref  table,
-#comment-form #edit-field-contacts-ref  table input,
-#comment-form #edit-field-asset-files table,
-#comment-form #edit-field-asset-files table input{
-	width: 310px;
-}
-#comment-form #edit-field-asset-files {
 	width: 350px;
 	float: left;
-}
-#comment-form #edit-actions {
-	clear: both;
-}
-#comment-form .field-widget-options-select {
-	width: 100px;
+	table {
+	  width: 310px;
+	  input {
+	     width: 310px;
+	  }
+	}
+  }
+  #edit-field-asset-files {
+    width: 350px;
 	float: left;
-	margin-right: 15px;
-}
-#comment-form .field-name-field-activity-status-term  {
-	width: 160px !important;
+    table {
+	  width: 310px;
+	  input {
+	    width: 310px;
+	  }
+	}
+  }
+  #edit-actions {
+    clear: both;
+  }
+  .field-widget-options-select {
+    margin-right: 15px;
+    width: 100px;
 	float: left;
-}
-.comment-content section{
-	width: 250px;
+  }
+  .field-name-field-activity-status-term  {
+    width: 160px !important;
 	float: left;
-}
-.comment nav {
-	padding: 0 15px;
-	clear: both;
+  }
 }
 
+/*-------------end comments------------------- */
 
 /*****DELETE****/
 	.rel-register-link {
@@ -832,22 +865,27 @@ ul.pager li a, ul.pager li.pager-current {
 /****DELEEETE****/
 
 
-/* multi select boxes */
-.views-exposed-form .views-exposed-widget {
-	padding-right: 7px !important;
-}
-.views-exposed-form button span:not(.ui-icon){
-	position: absolute;
+/*--------------begin multi select boxes--------------*/
+.views-exposed-form  {
+  .form-submit {
+    margin-top: 1.3em;
+  }
+  .views-exposed-widget {
+    padding-right: 7px !important;
+  }
+  button span:not(.ui-icon) {
+    position: absolute;
 	overflow: hidden;
 	width: 105px !important;
 	height: 19px;
 	line-height: 13px;
-}
-.views-exposed-form button {
-	font-size: 11px;
+  }
+  button {
+    font-size: 11px;
 	height: 25px;
 	width: 130px !important;
 	overflow: hidden;
+  }
 }
 #edit-field-task-status-term-tid-wrapper ,
 #edit-field-activity-status-term-tid-wrapper,
@@ -870,49 +908,55 @@ ul.pager li a, ul.pager li.pager-current {
 .ui-multiselect-header {
 	padding: 3px 0;
 }
-/*---------------------------------dashboard styles-----------------------------------------*/
-#homebox .portlet-content {
-    padding: 0px;
+/*--------------end multi select boxes--------------*/
+/*-------------begin dashboard styles--------------*/
+#homebox {
+  .homebox-column-wrapper-1 .homebox-column{
+     margin-right: 20px;
+  }
+  .homebox-column {
+    @include dist_zero;
+    .homebox-portlet {
+      border: none;
+      .homebox-portlet-inner {
+        border: none;
+        .portlet-header {
+          font-weight: normal;
+	      border: none;
+	      .portlet-title {
+		    padding-left: 8px;
+	      }
+	    }
+        .portlet-content {
+          padding: 0px;
+          .form-item, .view-grouping-header, caption {
+            padding-left: 12px;
+          }
+          .more-link {
+            padding: 4px 10px;
+          }
+          .form-submit {
+            margin-left: 12px;
+            padding-left: 12px;
+          }
+          .homebox-column-wrapper {
+            float: left;
+            width: 48% !important;
+          }
+          fieldset {
+            border: none;
+          }
+         .homebox-column {
+           @include dist_zero;
+         }
+        }
+      }
+    }
+  }
 }
-#homebox .homebox-portlet, #homebox .homebox-portlet .homebox-portlet-inner, #homebox fieldset {
-    border: none;
-}
-#homebox .more-link {
-    padding: 4px 10px;
-}
-#homebox .homebox-column{
-	margin: 0;
-	padding: 0;
-}
-#homebox .homebox-column-wrapper-1{
-	margin-right: 20px;
-}
-#homebox .homebox-column-wrapper {
-    float: left;
-    width: 48% !important;
-}
-#homebox .homebox-column-wrapper-1 {
-    margin-right: 25px;
-}
-#homebox .homebox-column-wrapper {
-    width: 48% !important;
-}
-#homebox .portlet-header{
-	font-weight: normal;
-}
-#homebox .form-item, #homebox .form-submit, #homebox .view-grouping-header, #homebox caption{
-	padding-left: 12px;
-}
-#homebox .form-submit{
-	margin-left: 12px;
-}
-#homebox .homebox-portlet .portlet-header .portlet-title {
-    padding-left: 8px;
-}
-#homebox .homebox-portlet .portlet-header{
-	border: none;
-}
-/*-------------------------------------crm styles-------------------------------------*/
+/*-------------end dashboard styles--------------*/
+
+/*-------------begin home styles------------------*/
 .node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title{
     margin-bottom: 7px;
 }
@@ -974,17 +1018,13 @@ ul.pager li a, ul.pager li.pager-current {
 .page-crm-contacts table .views-field-field-contact-image{
 	width: 160px;
 }
+/*-------------end home styles------------------*/
 .page-crm-contacts table .views-field-title{
 	width: 345px;
 }
-.region-sidebar-right .ctools-collapsible-container figure {
-    text-align: center;
-}
+
 #mini-panel-contact_details_panel{
 	margin-top: 2px;
-}
-.ctools-collapsible-processed .ctools-collapsible-content{
-	padding-top: 10px;
 }
 /*
  *  Buttons

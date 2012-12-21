@@ -32,11 +32,3 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
-/*@mixin h2_pane_titcle{
-	padding-right: 5px;
-	color: $dark_black;
-	font:{
-		size: 12px;
-	}
-	background-color: none;
-}*/

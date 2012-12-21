@@ -24,7 +24,6 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 $body_align: left;
 $body_height: 1.5em;
 
-$padding_10: 10px;
 $padding_15: 15px;
 $weight_normal: normal;
 
@@ -85,7 +84,7 @@ $width_item: 200px;
 }
 /*styles for mixins*/
 @mixin rounded_corners{/*styles for filter box*/ 
-	padding: $padding_10;
+	padding: 10px;
 	background-color: $bg_light_grey;
 	@include border-radius(4px, 4px, 0, 0); 
 }
@@ -107,17 +106,17 @@ $width_item: 200px;
 
 
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
-@mixin headline($font_style, $size_line-height, $margin_bottom, $font-weight) {
+@mixin headline($font_size, $size_line-height, $margin_bottom, $font-weight) {
 	margin: 0px 0px $margin_bottom 0px;
 	  font: {
 		weight: $font-weight;
-		size: $font_style;
+		size: $font_size;
 	  }
 	line-height: $size_line-height;
 }
 
 @mixin grey_box{ /*for comment-form*/
-	padding: $padding_10;
+	padding: 10px;
 	@include border-radius($radius_5, $radius_5); 
 	background-color: $light_grey;
 }
@@ -142,9 +141,6 @@ $width_item: 200px;
 @mixin dist_zero{
     margin: 0px;
 	padding: 0px;
-}
-@mixin padding_zero{
-	padding: 10px;
 }
 @mixin orange_border{
 	border-top: 2px solid $dark_orange;

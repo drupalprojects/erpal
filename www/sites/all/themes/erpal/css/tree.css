@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* line 1, ../sass/tree.scss */
 .jstree-default li.filter_matching a {
   color: #000 !important;
@@ -8,14 +7,3 @@
 .jstree-default li.no_filter_matching a {
   color: #999;
 }
-=======
-/* line 1, ../sass/tree.scss */
-.jstree-default li.filter_matching a {
-  color: #000 !important;
-}
-
-/* line 5, ../sass/tree.scss */
-.jstree-default li.no_filter_matching a {
-  color: #999;
-}
->>>>>>> 63fb14df39709f96b134c0c5cb96afb12a6b8683
