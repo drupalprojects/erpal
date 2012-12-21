@@ -20,6 +20,14 @@ function erpal_basic_helper_update_7001() {
 }
 
 /**
+* Do some datebase refactoring because of deleted rel module
+*/
+function erpal_basic_helper_update_7002() {
+  db_query("DELETE FROM {system} WHERE name = 'rel'");
+  cache_clear_all(); //clear cache so the system will forgett the rel module
+}
+
+/**
 * Insert neccessary date formats if they don't exist
 */
 function _erpal_basic_helper_insert_format_types() {

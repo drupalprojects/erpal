@@ -105,6 +105,9 @@ function feature_erpal_crm_strongarm() {
         'title' => array(
           'weight' => '0',
         ),
+        'path' => array(
+          'weight' => '12',
+        ),
       ),
       'display' => array(),
     ),

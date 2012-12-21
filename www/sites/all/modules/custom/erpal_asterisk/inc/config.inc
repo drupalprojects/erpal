@@ -11,6 +11,7 @@ function _erpal_asterisk_menu(){
     'title' => 'Asterisk Core Config',
     'page callback' => '_erpal_asterisk_config',    
     'access arguments' => array('config erpal asterisk'),
+    'file' => 'inc/config.inc',
     'type' => MENU_LOCAL_TASK,
   );
   $items['asterisk/ingoingcall/%'] = array(
@@ -22,5 +23,89 @@ function _erpal_asterisk_menu(){
   return $items;
 }
 
+/*
+ * This function is callback for configuration of core module
+ */
+function _erpal_asterisk_config(){
+  
+  return drupal_get_form('_erpal_asterisk_config_form');
 
+}
+
+
+/*
+ * Forms wich list all views in erpal
+ * @return array $form  Forms  
+ */
+
+function _erpal_asterisk_config_form() {
+  
+  $form= array();
+  
+  $form['description'] = array(
+    '#type' => 'fieldset', 
+    '#title' => t('Configurations of asterisk core'),
+    '#collapsible' => TRUE, // Added 
+    '#collapsed' => FALSE, // Added
+  );
+    
+  $form['description']['host'] = array(
+    '#type'        => 'textfield', 
+    '#title'       => t('HOST:'),
+    '#default_value'     => variable_get('asterisk_nodejs_host'),
+    '#description' => t('Host of NodeJs Server'),
+  );
+  
+  $form['description']['http_port'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('HTTP Port'),
+    '#default_value'     => variable_get('asterisk_nodejs_http_port'),
+    '#description' => t('HTTP Port of NodeJs Server'),
+  );
+  
+  $form['description']['socket_port'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('Socket Port'),
+    '#default_value'     => variable_get('asterisk_nodejs_socket_port'),
+    '#description' => t('Socket Port of NodeJs Server'),
+  );
+  
+  $form['description']['lifetime'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('Lifetime'),
+    '#default_value'     => variable_get('asterisk_nodejs_lifetime'),
+    '#description' => t('Lifetime of call'),
+  );
+  
+  $form['submit'] = array(
+    '#type' => 'submit', 
+    '#value' => t('Save configurations'),
+  );
+ 
+  return $form;
+  
+}
+
+
+/**
+ * Implements form validate function for _asterisk_config_form
+ * 
+ */
+function _erpal_asterisk_contig_form_validate(&$form, &$form_state){
+  // @TODO: implement
+  
+}
+
+/**
+ *  Implemtents form Submit Function for _asterisk_config_form
+ */
+function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
+
+  variable_set('asterisk_nodejs_host'    , $form_state['values']['host']);
+  variable_set('asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
+  variable_set('asterisk_nodejs_socket_port'    , $form_state['values']['socket_port']);
+  variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
+  
+   
+}
 

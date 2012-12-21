@@ -1,97 +1,138 @@
 @import "global_vars_a_mixins";
 
 body {
- &.panels-ipe {
-   margin-bottom: 0 !important;
- }
- #erpal_wrapper>.panel-col-first {
-	margin:0;
+  &.panels-ipe {
+    margin-bottom: 0 !important;
+  }
+  #erpal_wrapper>.panel-col-first {
+    margin:0;
     background-color: $dark_brown;
-	width: 150px;
-	max-width: none;
-	height: $value100;
-	float: $left;
-	position: $absolute;
-	left: 0;
-	>.inside { 
-	  margin:0;
+    width: 150px;
+    max-width: none;
+    height: $value100;
+    float: left;
+    position: absolute;
+    left: 0;
+    >.inside { 
+      margin:0;
 	  padding-right: 0;
       height: $value100;
 	  @include box-shadow($dark_grey 1px 2px 2px);
-	  
-	  .pane-page-logo {  /*----------Logo-------------*/
-		margin-bottom: 10px;
-		text-align: center;
-		img {
-		   vertical-align: bottom;
-		}
-	  }                /*----------end Logo-------------*/
-	   .pane-search-form {
-	     margin-bottom: 0px;
-	  	  #search-block-form {   /*----------begin Search Block-------------*/
-	      margin-bottom: 12px;
-	      .form-text{
-		    margin-left: 5px;
-		    width: 130px;
-		    @include border-radius(2px); 
-		    color: #C0C0C0;
-		    font-size: 11px;
-	       }
-         }       
-	    }	  /*----------end Search Block-------------*/
-	  .pane-system-user-menu{ /*----------begin User menu-------------*/
-	    ul {
-	      @include dist_zero;
-	      overflow: hidden;
-		  border-bottom: 1px solid $brown;
-		  li{
-		    padding: 0;
-		    float: right;
-	        width: 74px;
-	        text-align: $center;
-		    &.last{
-		      border-right: 1px solid $light_brown;
-		    }
-			a {
-			  color: $grey_orange;
-			  &:hover{
+	}
+  }
+  &.page-node-tasks { /*----------begin node task-----------*/
+    li{
+	   list-style-type: none;
+	  } 
+    .content-inner {
+	  border-bottom: 1px solid $bright_grey;
+	}
+	.region-sidebar-left {
+	  max-width: 620px;
+	}
+	.region-sidebar-right {
+	  padding: 10px;
+	  width: 380px;
+	}
+  } /*----------end node task-----------*/
+	
+  &.page-node-tickets { /*----------begin node ticket-----------*/
+    li {
+	  list-style-type: none;
+	} 
+    .content-inner {
+	  border-bottom: 1px solid $bright_grey;
+	}
+	.region-sidebar-left {
+	  max-width: 620px;
+	}
+	.region-sidebar-right {
+	  padding: 10px;
+	  width: 380px;
+	}
+  } /*----------end node ticket-----------*/
+}
+.pane-system-user-menu{ /*----------begin User menu-------------*/
+	   ul {
+	     @include dist_zero;
+	     overflow: hidden;
+		 border-bottom: 1px solid $brown;
+		   li{
+		     padding: 0;
+		     float: right;
+	         width: 74px;
+	         text-align: center;
+		     &.last{
+		       border-right: 1px solid $light_brown;
+		     }
+			 a {
+			   color: $grey_orange;
+			   &:hover{
 			    color: $light;
-			  }
-			}
+			   }
+			 }
 		  }
 	    }  /*----------end User menu-------------*/
 	  }
-  .pane-menu-menu-erpal-menu { /*----------begin Erpal menu-------------*/
-    width: 150px;
-	ul {
-	  @include dist_zero;
+/*----------Logo-------------*/
+.pane-page-logo {  
+  margin-bottom: 10px;
+  text-align: center;
+    img {
+	  vertical-align: bottom;
+	}
+}                
+/*----------end Logo-------------*/
+
+/*----------begin Search Block-------------*/
+.pane-search-form { 
+  margin-bottom: 0px;
+    #search-block-form {   
+	  margin-bottom: 12px;
+	  .form-text {
+		margin-left: 5px;
+		  width: 130px;
+		  @include border-radius(2px); 
+		  color: $white_grey;
+		  font-size: 11px;
+	   }
+    }        
+}	
+ /*----------end Search Block-------------*/ 
+ 
+ /*----------begin Erpal menu-------------*/
+.pane-menu-menu-erpal-menu { 
+  width: 150px;
+  ul {
+	@include dist_zero;
 	li {
+	  margin-left: 0;
 	  padding: 0;
 	  list-style-image: none;
       list-style-type: none;
 	  border-top: 1px solid $brown;
 	  &.active-trail {
-	  a {
-	    color: $black;
-		@include orange_border;
-		&:hover {
-		  color: $black;
-		}
-	   &.active-trail {
-	     background: url("../images/arrow.gif") no-repeat $value100 center $orange;
-	  }		
-	  }
-	  .active{
-	    background: url("../images/arrow.gif") no-repeat $value100 center $orange;
-	  } 
-	    &.active-trail{
-		background: url("../images/arrow.gif") no-repeat $value100 center $orange;
+	    a {
+	      color: $black;
+		  @include orange_border;
+		  &:hover {
+		    color: $black;
+		  }
+	      &.active-trail {
+	        background: url("../images/arrow.gif") no-repeat $value100 center $orange;
+	      }		
+	    }
+	   .active {
+	      background: url("../images/arrow.gif") no-repeat $value100 center $orange;
+	    } 
+	    &.active-trail {
+		  background: url("../images/arrow.gif") no-repeat $value100 center $orange;
 		}
 	  }
 	  &.last{
-	  a {
-	    border-bottom: 1px solid $brown;
-	  }
+	    a {
+	      border-bottom: 1px solid $brown;
+	    }
 	  &.last {
 	    border-bottom: 1px solid $black_grey;
 	   }
@@ -102,13 +143,13 @@ body {
 		font-size: 14px;
 		color: $grey_orange;
 		border-top: 1px solid $black_grey;
-		&:hover {
-		  color: $light;
-		}
-		&.active {
-		  @include orange_border;
-		}
-	  }
+		  &:hover {
+		    color: $light;
+		  }
+		  &.active {
+		    @include orange_border;
+		  }
+	    }
 	}
 	ul {
 	  @include dist_zero;
@@ -119,49 +160,14 @@ body {
 		     @include orange_border;
 		  }
 	  }
-	  a {
-	    padding-left: 25px;
+	    a {
+	      padding-left: 25px;
+	    }
 	  }
-	  }
 	}
-	}
-  } /*----------end Erpal menu-------------*/
- }
-}
-  &.page-node-tasks { /*----------begin node task-----------*/
-    li{
-	   list-style-type: none;
-	  } 
-    .content-inner {
-	  border-bottom: 1px solid $bright_grey;
-	}
-	.region-sidebar-left {
-	  @include padding_zero;
-	  max-width: 620px;
-	}
-	.region-sidebar-right {
-	  @include padding_zero;
-	  width: 380px;
-	}
-	} /*----------end node task-----------*/
-	
-	&.page-node-tickets { /*----------begin node ticket-----------*/
-    li{
-	   list-style-type: none;
-	  } 
-    .content-inner {
-	  border-bottom: 1px solid $bright_grey;
-	}
-	.region-sidebar-left {
-	  @include padding_zero;
-	  max-width: 620px;
-	}
-	.region-sidebar-right {
-	  @include padding_zero;
-	  width: 380px;
-	}
-	} /*----------end node ticket-----------*/
-}
+  }
+} 
+ /*----------end Erpal menu-------------*/
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
@@ -169,23 +175,29 @@ body {
 	width: 200px;
 }
 .pane-page-content {
-	margin:{
-	  top: 30px;
-	  right: 20px;
-	  left: 30px;
+  margin:{
+	top: 30px;
+	right: 20px;
+	left: 30px;
+  }
+  max-width: 1070px;
+  .content-inner {
+    clear: both;
+  }
+  .pane-page-title.block{
+	margin-bottom: 0;
+  }
+  .panel-2col-stacked {
+    .panel-col-first {
+	  width: 700px;
 	}
-	max-width: 1070px;
-	.panel-2col-stacked {
-	  .panel-col-first {
-	    width: 700px;
-	  }
-	  .panel-col-last {
-	      margin-left: 30px;
-		  width: 340px;
-	  }
+	.panel-col-last {
+	  margin-left: 30px;
+	  width: 340px;
+    }
+	.inside {
+	  margin: 0 !important;
 	  .inside {
-	    margin: 0 !important;
-		.inside {
 		  background: none;
 		  border: none;
 		}
@@ -193,7 +205,7 @@ body {
 	}
 	h2{
 	  &.pane-title{
-	    @include h2_pane_title;
+	    @include headline(36px, 36px, 20px, normal);
 	  }
 	}
 	.rel-register-build {
@@ -222,197 +234,187 @@ body {
 		}
 	  }
 	}
-	.comment {  /*----------begin comments------------------------*/
-	padding: {
-	  top: 15px;
-	  bottom: 15px;
+  #comment-form {
+   background: $light_grey;
+  }
+}
+
+ /*----------begin comments------------------------*/
+.comment { 
+  padding: {
+	top: 15px;
+	bottom: 15px;
+  }
+  @include border-radius(5px);
+  .field-name-comment-body {
+	p {
+	  font-size: 16px;
 	}
-	@include border-radius(5px);
-	.field-name-comment-body {
-	  p {
-	    font-size: 16px;
-	  }
-	}
-	.comment-header {
+  }
+  .comment-header {
 	  padding: {
 	    right: 10px;
 		left: 15px;
 	  }
-	  float: $left;
-	}
-	.submitted {
-	   padding-right: 15px;
-	   .author-datetime {
+	  float: left;
+  }
+  .submitted {
+	padding-right: 15px;
+	  .author-datetime {
 	     margin-bottom: 12px;
 	   }
 	}
-	.comment-content {
-	  padding: {
-		top: 15px;
-		right: 15px;
-		left: 15px;
-	  }
-	}
-	.comment-form {
-	 padding: {
-		top: 15px;
-		right: 15px;
-		bottom: 15px;
-		left: 15px;
+  .comment-content {
+     padding: {
+	   top: 15px;
+	   right: 15px;
+	   left: 15px;
 	 }
-	 @include border-radius(5px);
+  }
+  .comment-form {
+    padding: {
+	  top: 15px;
+	  right: 15px;
+	  bottom: 15px;
+	  left: 15px;
 	}
-    }    /*----------end comments------------------------*/
-	#comment-form {
-	  background: $light_grey;
-	}
-}
-
-
-
+	@include border-radius(5px);
+  }
+} 
+ /*----------end comments------------------------*/	
 .view-filters .rel-register-build  .views-exposed-widget .rel-register-link{
 	padding-top: 12px;
 	padding-right: 20px;
 	float: left;
 }
 
+  .alert { /*----------------begin red alert-----------------*/
+    .field-name-field-task-status-term,
+	.field_item .field-name-field-date,
+    .views-field-field-date,
+    .field-item,
+    .views-field-field-date-1,
+    .views-field-field-next-contact,
+    .views-field-field-task-status-term,
+    .views-field-field-project-status-term,
+    .views-field-field-activity-status-term {
+	  color: $red;
+	}
+  }  /*----------------end red alert-----------------*/
+  .completed { /*----------------begin alert completed-----------------*/
+    .field-name-field-task-status-term,
+    .field-name-field-completed,
+    .field-item,
+    .views-field-field-date,
+    .views-field-field-date-1,
+    .views-field-field-next-contact,
+    .views-field-field-task-status-term,
+    .views-field-field-project-status-term,
+    .views-field-field-activity-status-term	{
+		  color: $green;
+	}
+  }   /*----------------end alert completed-----------------*/
 /* =============================================================================
  *   erpal_content_layout
  * ========================================================================== */
+ 
 .region-sidebar-left{ /*----------------begin side-bar-left-----------------*/
-	  max-width: 800px;
-	  min-width: 360px;
-      width: $value100;
-	  float: $left;
-	  &.single-row {
-	  max-width: 1050px !important;
-	  }
-	 .alert { /*----------------begin red alert-----------------*/
-	   .field_item .field-name-field-task-status-term {
-	     color: $red;
-	   }
-	   .field_item .field-name-field-date {
-	     color: $red;
-	   }
-	   .views-field-field-date{
-	     color: $red;
-	   }
-	   .field-item {
-	     color: $red;
-	   }
-	   .views-field-field-date-1 {
-	     color: $red;
-	   }
-	   .views-field-field-next-contact {
-	     color: $red;
-	   }
-	   .views-field-field-task-status-term {
-	     color: $red;
-	   }
-	   .views-field-field-project-status-term {
-	     color: $red;
-	   }
-	   .views-field-field-activity-status-term {
-	     color: $red;
-	   }
-	 }  /*----------------end red alert-----------------*/
-	  .completed { /*----------------begin alert completed-----------------*/
-	    .field-name-field-task-status-term {
-		  color: $green;
+  max-width: 800px;
+  min-width: 360px;
+  width: $value100;
+  float: left;
+  &.single-row {
+	max-width: 100% !important;
+  }
+  .quicktabs-tabpage {
+	.columns-inner{
+	margin-bottom: 12px;
+    }
+    .view-mode-view_row_details .field-label, 
+    .view-mode-view_row_details .field-items, 
+    .region-sidebar-right .field-name-task-customer-node div, 
+    .region-sidebar-right .field-name-task-customer-node div, 
+    .field-collection-item-field-pricing .field-label, 
+    .field-collection-item-field-pricing .field-items {
+	  float: left;
+	}
+	#edit-nid {
+	  width: 40px;
+    }
+	#edit-title {
+	  width: 120px;
+    }
+	#edit-field-priority-term-tid {
+	  width: 75px;
+    }
+	#edit-field-task-type-term-tid {
+	  width: 60px;
+    }
+  }
+  ul{
+	&.quicktabs-tabs {
+	  margin: 0;
+	  padding-left: 0;
+	  background: none;
+	  overflow: hidden;
+	  border: none;
+	  li {
+	    @include dist_zero;
+	    float: left;
+		background: {
+		  image: none;
+		  color: $silver;
 		}
-		.field-name-field-completed {
-		color: $green;
+	    border: {
+		  top: 1px solid $light_grey;
+		  left: 1px solid $light_grey;
 		}
-		.field-item {
-		color: $green;
-		}
-		.views-field-field-date {
-		  color: $green;
-		}
-		.views-field-field-date-1 {
-		   color: $green;
-		}
-		.views-field-field-next-contact {
-		  color: $green;
-		}
-		.views-field-field-task-status-term {
-		  color: $green;
-		}
-		.views-field-field-project-status-term {
-		  color: $green;
-		}
-		.views-field-field-activity-status-term {
-		  color: $green;
-		}
-	  }   /*----------------end alert completed-----------------*/
-	    .quicktabs-tabpage {
-	    .columns-inner{
-		  margin-bottom: 12px;
-		}
-      .field-label {
-	    float: $left;
-	  }
-      .field-items {
-	    float: $left;
-		.field-item {
-		  div {
-		    float: $left;
+	    &.active {
+		  background-color: $dark_white !important;
+	      a {
+		    color: $grey !important;
 		  }
 		}
-	  } 	  
-	  }
-	  ul{
-	    &.quicktabs-tabs {
-		  margin: 0;
-		  padding-left: 0;
-		  background: none;
-		  overflow: hidden;
-		  border: none;
-		  li {
-		    @include dist_zero;
-		    float: $left;
-				background: {
-				  image: none;
-				  color: $silver;
-				}
-				border:  {
-				  top: 1px solid $light_grey;
-				  left: 1px solid $light_grey;
-				}
-			&.active {
-			  background-color: $dark_white !important;
-			  a {
-			    color: $grey !important;
-			  }
-			}
-			&.last{
-			  border-right: 1px solid $light_grey;
-			}
-		    a{
-			  padding: 1px 12px;
-			  @include text_bold_12;
-			  min-width: 100px;
-			  color: $dark_grey;
-			}
-		  }
+		&.last{
+		  border-right: 1px solid $light_grey;
 		}
-     }
-	} /*----------------end side-bar-left-----------------*/
-  .region-sidebar-right { /*----------------begin side-bar-right-----------------*/
-    margin-left: 10px;
-    width: 250px;
-	float: right;
-	color: $dark_black;
-	  .local_tasks{
-		margin:{
-		  top: 2px;
-		  bottom: 0px;
-		};
-	    padding: 0px;
-	    list-style-type: none;
-		li{
-		  margin: 0 2px 7px;
-		  list-style-type: none;
+	    a{
+	      padding: 1px 12px;
+		  @include text_bold_12;
+		  min-width: 100px;
+		  color: $dark_grey;
+	    }
+	  }
+   }
+}
+  .region-sidebar-right {
+    section {
+	  &.field {
+	    overflow: hidden;
+	  }
+	}
+  }
+} /*----------------end side-bar-left-----------------*/
+.region-sidebar-right { /*----------------begin side-bar-right-----------------*/
+  margin-left: 10px;
+  width: 250px;
+  float: right;
+  color: $dark_black;
+	.local_tasks_menu .local_tasks{
+	  position: absolute;
+	  width: 248px;
+      z-index: 10;
+	}
+	.local_tasks{
+	  margin:{
+		top: 2px;
+		bottom: 0px;
+	  };
+	padding: 0px;
+	list-style-type: none;
+	  li{
+	    margin: 0 2px 7px;
+		list-style-type: none;
 		  a {
 		    padding: {
 			  top: 5px;
@@ -421,183 +423,220 @@ body {
 			&:hover {
 			  @include background-image(linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%));
 			}
-			display: $block;
-			@include rounded_corners_11;
+			display: block;
+			@include rounded_corners_10;
 			@include box-shadow(0px 1px 3px rgba(50, 50, 50, 0.5));
 			color: $grey;
 			@include background-image(linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%));
-			text-align: $center;
+			text-align: center;
 			font-size: 13px;
-			font-weight: $bold;
+			font-weight: bold;
+		  }
+		  ul {
+		    display: none;
 		  }
         } 
 	  }   /*----------------end side-bar-right-----------------*/
-	  .content-inner {
-	    padding-bottom: 30px;
-		clear: both;
-		max-width: 1100px;
-		min-width: 1100px;
-		overflow: hidden;
-	  }
+  .content-inner {
+    padding-bottom: 30px;
+	clear: both;
+	max-width: 1100px;
+	min-width: 1100px;
+	overflow: hidden;
+  }
+  .panel-separator {
+    display: none;
+   }
+   .ctools-collapsible-container {
+     figure {
+       text-align: center;
+	 }
+	background-color: $silver;
+	border: 1px solid $light_grey;
+   }    
 }  
  /*----------------end erpal_content_layout-----------------------*/
-.pane-page-title.block{
-	margin-bottom: 0;
-}
 /* =============================================================================
  *   Projects
  * ========================================================================== */
-
-
-#mini-panel-task_status_panel,
-#mini-panel-activity_status_panel{
-	padding: 10px 20px;
-	@include rounded_corners_11;
-	background-color: $light_grey;
-	color: $grey;
+.view-crm-activities {
+  table {
+    border-collapse: collapse;
+  }
 }
-.panel-display .pane-entity-field h2.pane-title {
-	padding-right: 5px;
+
+/*----------------begin .panel-display-----------------------*/
+.panel-display {
+  .pane-entity-field h2.pane-title {
+    padding-right: 5px;
 	font-size: 12px;
 	color: $grey;
-}
-.panel-display .pane-entity-field .block-content{
-	float: $left;
-}
-.panel-display .pane-entity-field  .ds-form .group-left {
-    width: auto;
-	float: none;
-}
-.ctools-collapsible-content .panel-display .pane-entity-field .block-content, 
-.ctools-collapsible-content .panel-display .pane-entity-field h2.pane-title{
-	float: none;
-}
-.panel-display .pane-entity-field .form-item label,
-.panel-display .pane-entity-field .rel-register-link {
-    float: $left;
-}
-.panel-display .pane-entity-field  .field-type-taxonomy-term-reference{
-	margin: 0px;
-}
-.panel-display .pane-entity-field .form-item {
-	margin-bottom: 0px;
-}
-.panel-display .ui-widget-content{
-	background: none;
+  }
+  .pane-entity-field {
+    .block-content {
+	  float: left;
+	  .rel-register-link {
+	    float: left;
+	  }
+	}
+	.field-type-taxonomy-term-reference {
+	  margin: 0px;
+	}
+	.form-item {
+	  margin-bottom: 0px;
+	}
+    .ds-form .group-left {
+      width: auto;
+	  float: none;
+    }
+	.form-item label {
+	  float: left;
+	}
+  }
+  .ui-widget-content {
+    background: none;
 	border: none;
-}
-.panel-display .ui-tabs .ui-tabs-panel{
-	@include rounded_corners_11;
+  }
+  .ui-tabs .ui-tabs-panel {
+    @include rounded_corners_10;
 	-webkit-border-top-left-radius: 0;
 	-moz-border-radius-topleft: 0;
 	border-top-left-radius: 0;
 	display: block;
 	float: left;
 	background-color: $light_grey;
+  }
 }
-
-.ctools-collapsible-container .ctools-collapsible-handle {
+ /*----------------end panel-display-----------------------*/
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+.ctools-collapsible-processed  {
+  .ctools-collapsible-handle {
     cursor: pointer;
-}
-
-/*
- *  collapsible
- */
- .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle{
-	padding: 3px 5px 3px 30px;
- }
- .ctools-collapsible-processed h2.pane-title {
-    margin: 0;
-    padding: 3px 5px 0px 30px;
-	font-size: 12px;
-	line-height: 12px;
-}
-.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title{
-	padding-left: 0;
-	font-weight: bold;
-}
-.ctools-collapsible-processed .ctools-collapsible-content .field-name-field-pricing h2.field-label{
-	margin: 0;
-	clear: both;
-	line-height: 12px;
-}
-.ctools-collapsible-container .block-content a{
-	text-decoration: underline;
-}
-.ctools-collapsible-processed section,
-.ctools-collapsible-processed .field-name-field-books-ref{
-	margin-bottom: 10px;
-	padding-left: 10px;
-}
-.ctools-collapsible-processed .field-name-field-task-assigned-users{
-	padding-left: 0px;
-}
-.ctools-collapsible-processed .panel-separator{
-	height: 1px;
-	overflow: hidden;
-}
-.ctools-collapsible-processed ul{
-	margin: 0;
-	padding: 0px;
-}
-.ctools-collapsible-processed ul li{
-	list-style-type: none;
-}
-.ctools-collapsible-processed .field-type-taxonomy-term-reference{
-	margin: 0;
-}
-.ctools-collapsible-processed .field-name-field-asset-files{
-	margin-bottom: 10px;
-}
-.ctools-collapsible-processed .field-name-field-asset-files .field-item{
-    margin-left: 20px;
-    padding-left: 0 !important;
-	display: list-item;
-}
-.ctools-collapsible-processed .field-name-field-asset-files .field-item a,
-.ctools-collapsible-processed .field-name-field-books-ref a{
+  }
+  .block-content a {
     text-decoration: underline;
-}
-.ctools-collapsible-container .ctools-collapsible-content .field-items{
+  }
+  h2.pane-title {
+    &.ctools-collapsible-handle {
+      padding: 3px 5px 3px 30px;
+	}
+	margin: 0;
+    padding: 3px 5px 0px 30px;
+    background-color: #AFAFAF;
+	@include headline(12px, 12px, 0, bold);
+	color: $grey;
+   }
+  .ctools-collapsible-content {
+    padding-top: 10px;
+    h2.pane-title {
+      padding-left: 0;
+	  font-weight: bold;
+	  color: $grey;
+	  background: none;
+	}
+	.field-items  {
+	  clear: both;
+	}
+  }
+  .field-name-field-pricing h2.field-label {
+    margin: 0;
 	clear: both;
-}
-.ctools-collapsible-container .ctools-collapsible-content .field-name-field-contacts-ref .field-item{
+	line-height: 12px;
+	color: $grey;
+  }
+  section, .field-name-field-books-ref {
+    margin-bottom: 10px;
 	padding-left: 10px;
+	a {
+	  text-decoration: underline;
+	} 
+  }
+  .field-name-field-task-assigned-users {
+    padding-left: 0px;
+  }
+  .panel-separator {
+    height: 1px;
+	overflow: hidden;
+	border-bottom: 1px solid $light_grey;
+  }
+  ul {
+    @include dist_zero;
+	li {
+	  list-style-type: none;
+	}
+  }
+  .field-type-taxonomy-term-reference {
+    margin: 0;
+  }
+  .field-name-field-asset-files {
+    margin-bottom: 10px;
+	.field-item  {
+	  margin-left: 20px;
+      padding-left: 0 !important;
+	  display: list-item;
+	  a {
+	    text-decoration: underline;
+	  } 
+	}
+  }
+  .field-name-field-contacts-ref .field-item {
+    padding-left: 10px;
+  }
+  .panel-display .pane-entity-field  {
+    .block-content, 
+	h2.pane-title {
+	  float: none;
+	}
+  }
+  .panel-separator {
+    display: block;
+  }
+  .no-title {
+    padding-left: 10px;
+  }
+  .ctools-toggle {
+    background-position: 7px 8px;
+  }
 }
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
 
-#mini-panel-task_status_panel .panel-separator,
-#mini-panel-activity_status_panel .panel-separator{
-	display: none;
-}
-#mini-panel-task_status_panel section,
-#mini-panel-activity_status_panel section{
-	margin-bottom: 0;
+#mini-panel-task_status_panel {
+  padding: 10px 20px;
+  @include rounded_corners_10;
+  background-color: $light_grey;
+  color: $grey;
+  .panel-separator {
+    display: none;
+  }
+  section {
+    margin-bottom: 0;
 	margin-right: 30px;
-	float: $left;
+	float: left;
+  }
+  ul {
+    padding-left: 5px;
+    li {
+      padding: 0px;
+	  list-style-type: none;
+    }
+  }
 }
-#mini-panel-task_status_panel li{
-	padding: 0px;
-	list-style-type: none;
+#mini-panel-activity_status_panel {
+  padding: 10px 20px;
+  @include rounded_corners_10;
+  background-color: $light_grey;
+  .panel-separator {
+    display: none;
+  }
+  ul {
+    padding-left: 5px;
+  }
+  section {
+    margin-bottom: 0;
+	margin-right: 30px;
+	float: left;
+  }
 }
-#mini-panel-task_status_panel  ul,
-#mini-panel-activity_status_panel ul{
-	padding-left: 5px;
-}
-.region-sidebar-right .panel-separator{
-	display: none;
-}
-.ctools-collapsible-container .panel-separator{
-	display: block;
-}
-.ctools-collapsible-container .no-title{
-	padding-left: 10px;
-}
-.ctools-collapsible-container .ctools-toggle{
-	background-position: 7px 8px;
-}
-/*
- *  table
- */
 
 .views-exposed-form .views-exposed-widget .form-submit {
     margin-top: 1.3em;
@@ -659,14 +698,15 @@ body {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px; 
 	border-radius: 5px;
+	background-color: $white;
 }
 #tabs-tasks_by_project_panel-middle ul.field-items{
 	padding: 0px;
 	margin: 0px;
 }
 
-#quicktabs-tabpage-tickets_by_project_tabs-2  .content-column .content-inner,
-#quicktabs-tabpage-tasks_by_project_tabs-2 .content-column .content-inner{
+.quicktabs-tabpage  .content-column .content-inner{
+	padding: 10px;
 	overflow: hidden;
 }
 
@@ -708,7 +748,7 @@ body {
 .inline_fields .field{
 	margin-right: 50px;
 	clear: none !important;
-	float: $left;
+	float: left;
 }
 .inline_fields{
 	clear: both;
@@ -730,18 +770,7 @@ ul.pager li a, ul.pager li.pager-current {
 	font-size: 16px;
 }
 
-.quicktabs-tabpage  #edit-nid{
-	width: 40px;
-}
-.quicktabs-tabpage  #edit-title{
-	width: 120px;
-}
-.quicktabs-tabpage #edit-field-priority-term-tid{
-	width: 75px;
-}
-.quicktabs-tabpage #edit-field-task-type-term-tid{
-	width: 60px;
-}
+
 .page-projects-timetrackings #edit-field-date-time-value-wrapper{
 	margin-left: 45px;
 }
@@ -786,12 +815,12 @@ ul.pager li a, ul.pager li.pager-current {
 	width: 500px;
 }
 .field-name-field-next-contact form #edit-field-next-contact {
-	float: $left;
+	float: left;
 }
 
 .field-name-field-next-contact form .form-actions {
 	width: 70px;
-	float: $left; 
+	float: left; 
 }
 
 /* comments */
@@ -806,14 +835,14 @@ ul.pager li a, ul.pager li.pager-current {
 }
 #comment-form .field-type-datetime {
 	width: 300px;
-	float: $left;
+	float: left;
 }
 #comment-form #edit-author--2 {
 	clear: both;
 }
 #comment-form #edit-field-contacts-ref {
 	width: 350px;
-	float: $left;
+	float: left;
 	margin-right: 40px;
 }
 #comment-form #edit-field-contacts-ref  table,
@@ -824,23 +853,23 @@ ul.pager li a, ul.pager li.pager-current {
 }
 #comment-form #edit-field-asset-files {
 	width: 350px;
-	float: $left;
+	float: left;
 }
 #comment-form #edit-actions {
 	clear: both;
 }
 #comment-form .field-widget-options-select {
 	width: 100px;
-	float: $left;
+	float: left;
 	margin-right: 15px;
 }
 #comment-form .field-name-field-activity-status-term  {
 	width: 160px !important;
-	float: $left;
+	float: left;
 }
 .comment-content section{
 	width: 250px;
-	float: $left;
+	float: left;
 }
 .comment nav {
 	padding: 0 15px;
@@ -912,7 +941,7 @@ ul.pager li a, ul.pager li.pager-current {
 	margin-right: 20px;
 }
 #homebox .homebox-column-wrapper {
-    float: $left;
+    float: left;
     width: 48% !important;
 }
 #homebox .homebox-column-wrapper-1 {
@@ -1001,14 +1030,9 @@ ul.pager li a, ul.pager li.pager-current {
 .page-crm-contacts table .views-field-title{
 	width: 345px;
 }
-.region-sidebar-right .ctools-collapsible-container figure {
-    text-align: center;
-}
+
 #mini-panel-contact_details_panel{
 	margin-top: 2px;
-}
-.ctools-collapsible-processed .ctools-collapsible-content{
-	padding-top: 10px;
 }
 /*
  *  Buttons
