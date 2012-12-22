@@ -21,7 +21,7 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Advanced',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_billing_duration',
       1 => 'field_date_time',

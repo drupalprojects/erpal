@@ -1020,7 +1020,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 11,
+        'weight' => 10,
       ),
     ),
   );
@@ -1360,7 +1360,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 3,
+        'weight' => 2,
       ),
     ),
   );
@@ -1723,7 +1723,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'relation_dummy_field',
         'settings' => array(),
         'type' => 'relation_default',
-        'weight' => 10,
+        'weight' => 9,
       ),
     ),
   );
@@ -1872,7 +1872,7 @@ function feature_erpal_project_basic_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_project_tags',
-      'label' => 'Categories',
+      'label' => 'Project category',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -1882,7 +1882,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 8,
+        'weight' => 3,
       ),
     ),
   );
@@ -2520,7 +2520,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 9,
+        'weight' => 10,
       ),
     ),
   );
@@ -2781,7 +2781,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 10,
+        'weight' => 11,
       ),
     ),
   );
@@ -2960,6 +2960,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_task',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -2994,20 +2995,17 @@ function feature_erpal_project_basic_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_project_tags',
-      'label' => 'Categories',
+      'label' => 'Tsak categories',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 0,
+        'active' => 1,
         'module' => 'options',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'size' => 60,
-        ),
+        'settings' => array(),
         'type' => 'options_select',
-        'weight' => 16,
+        'weight' => 4,
       ),
     ),
   );
@@ -3248,7 +3246,7 @@ function feature_erpal_project_basic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => 11,
+        'weight' => 12,
       ),
     ),
   );
@@ -3671,7 +3669,7 @@ function feature_erpal_project_basic_field_default_fields() {
           'og_hide' => TRUE,
         ),
         'type' => 'options_onoff',
-        'weight' => 0,
+        'weight' => 20,
       ),
     ),
   );
@@ -3928,6 +3926,79 @@ function feature_erpal_project_basic_field_default_fields() {
         ),
         'type' => 'date_popup',
         'weight' => 4,
+      ),
+    ),
+  );
+
+  // Exported field: 'node-erpal_timetracking-field_project_tags'.
+  $fields['node-erpal_timetracking-field_project_tags'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_project_tags',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'project_tags',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_timetracking',
+      'comment_enabled' => 0,
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 6,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_project_tags',
+      'label' => 'Timetracking category',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 3,
       ),
     ),
   );
@@ -4682,7 +4753,6 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Budget time billing');
   t('Budgets');
   t('CRM activity');
-  t('Categories');
   t('Check this checkbox if this is e ticket');
   t('Check, if this is the default value on fields where to select on of the terms in this vocabulary');
   t('Choose contacts that are involved in this project');
@@ -4710,6 +4780,7 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Priority');
   t('Progress');
   t('Project');
+  t('Project category');
   t('Role in project');
   t('Semantic process');
   t('Service category');
@@ -4722,6 +4793,8 @@ function feature_erpal_project_basic_field_default_fields() {
   t('This gives the status tag a semantic meaning');
   t('Time estimated for this task');
   t('Timetracking button');
+  t('Timetracking category');
+  t('Tsak categories');
   t('Type');
   t('Weight');
   t('When will the project be developed? Only for planing purpose.');
