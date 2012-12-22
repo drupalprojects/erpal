@@ -1811,7 +1811,7 @@ function feature_erpal_project_basic_field_default_fields() {
   $fields['node-erpal_project-field_project_tags'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_project_tags',
@@ -1844,6 +1844,7 @@ function feature_erpal_project_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_project',
+      'comment_enabled' => 0,
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -1877,12 +1878,9 @@ function feature_erpal_project_basic_field_default_fields() {
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 0,
+        'active' => 1,
         'module' => 'options',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'size' => 60,
-        ),
+        'settings' => array(),
         'type' => 'options_select',
         'weight' => 8,
       ),
@@ -2929,7 +2927,7 @@ function feature_erpal_project_basic_field_default_fields() {
   $fields['node-erpal_task-field_project_tags'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_project_tags',
