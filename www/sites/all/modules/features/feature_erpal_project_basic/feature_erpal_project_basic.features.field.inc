@@ -2995,7 +2995,7 @@ function feature_erpal_project_basic_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_project_tags',
-      'label' => 'Tsak categories',
+      'label' => 'Task categories',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -4788,13 +4788,13 @@ function feature_erpal_project_basic_field_default_fields() {
   t('Start and end time of your work');
   t('Status');
   t('Subject');
+  t('Task categories');
   t('The description of a task');
   t('The duration that will be billed to the customer');
   t('This gives the status tag a semantic meaning');
   t('Time estimated for this task');
   t('Timetracking button');
   t('Timetracking category');
-  t('Tsak categories');
   t('Type');
   t('Weight');
   t('When will the project be developed? Only for planing purpose.');
