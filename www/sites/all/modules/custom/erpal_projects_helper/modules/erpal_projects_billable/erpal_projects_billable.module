@@ -544,6 +544,7 @@ function _erpal_projects_billable_subject_billable_information_timetracking_subj
 * @param $process_tree if true, the tree will be seach
 */
 function _erpal_projects_get_pricing_entity($node, $process_tree, &$pricing_nid) {
+  //@TODO may be replace with function @see _erpal_projects_node_with_value_in_tree
   if (!isset($node->field_pricing[LANGUAGE_NONE][0]['value']))
       return array();
       

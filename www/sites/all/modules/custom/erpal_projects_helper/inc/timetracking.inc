@@ -29,7 +29,33 @@ function _erpal_projects_helper_timetracking_node_form_alter(&$form, $form_state
     $default_title = _erpal_projects_helper_get_timetracking_default_title();
     $default_title = token_replace($default_title, array('subject' => $subject_node));
     $form['title']['#default_value'] = $default_title;
+    
+    //prefill the category
+    $node = node_load($nid);
+    $category_tid = _erpal_projects_helper_get_project_category($node, true);  
+    if ($category_tid) {
+      $form['field_project_tags'][LANGUAGE_NONE]['#default_value'] = $category_tid;
+    }
   }
+}
+
+/**
+* called in @see erpal_projects_helper_entity_presave - sets the project tags to the timetracking entity
+*/
+function _erpal_projects_helper_timetracking_entity_set_project_tags($timetracking_entity) {
+  if (!isset($timetracking_entity->is_new))
+    return;
+  
+  $task_nid = $timetracking_entity->subject_id;
+  
+  if (!$task_nid)
+    return false;
+  
+  $task_node = node_load($task_nid);
+ 
+  $category_tid = _erpal_projects_helper_get_project_category($task_node, true); 
+  if ($category_tid)
+    $timetracking_entity->field_project_tags[LANGUAGE_NONE][0]['tid'] = $category_tid;
 }
 
 /**
@@ -316,6 +342,10 @@ function _erpal_projects_helper_timetracking_finalise($timetracking) {
   $tt->uid = $timetracking->uid;
   $tt->created = $timetracking->created;
   $tt->changed = $timetracking->changed;
+ 
+  //add the project_tags value from the timetracking entity
+  if (isset($timetracking->field_project_tags[LANGUAGE_NONE][0]['tid']))
+    $tt->field_project_tags[LANGUAGE_NONE][0]['tid'] = $timetracking->field_project_tags[LANGUAGE_NONE][0]['tid'];
  
   node_object_prepare($tt);
   node_save($tt); 
