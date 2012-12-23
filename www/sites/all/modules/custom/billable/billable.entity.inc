@@ -206,7 +206,7 @@ class Billable extends Entity {
   
   /**
   * Returns a value of a filed. Why? If we have fields attached to this entiy, we need to get the values
-  * not by calling just ->fieldname, but in some cases 'field_name[und][0]['nid'] etc. Things tha callee should not
+  * not by calling just ->fieldname, but in some cases 'field_name[und][0]['nid'] etc. Things the callee should not
   * care about
   */
   function field_by_name($field_name) {

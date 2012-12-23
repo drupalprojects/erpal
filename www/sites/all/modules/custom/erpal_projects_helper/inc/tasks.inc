@@ -258,8 +258,13 @@ function _erpal_projects_helper_field_automation($task_node) {
   $task_status = _erpal_basic_helper_get_tid_semantic($task_node, 'field_task_status_term');
 
   if ($task_status == 'completed') {
-    $original_node = $task_node->original; //check if status really changed!
-    $task_status_original = _erpal_basic_helper_get_tid_semantic($original_node, 'field_task_status_term');
+    $original_node = isset($task_node->original) ? $task_node->original : false; //check if status really changed!
+    
+    if (!$original_node)
+      $task_status_original = false;
+    else      
+      $task_status_original = _erpal_basic_helper_get_tid_semantic($original_node, 'field_task_status_term');
+      
     if ($task_status_original != $task_status) {
       //status has changed, so we change the percent, too
       $task_node->field_progress_percent[LANGUAGE_NONE][0]['value'] = 100; //this means completed

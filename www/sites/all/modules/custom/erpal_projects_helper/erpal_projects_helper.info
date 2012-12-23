@@ -7,6 +7,7 @@ project = "erpal_projects_helper"
 version = "7.x-1.0-dev"
 
 files[] = erpal_projects_helper.module
+files[] = erpal_projects_helper.install
 files[] = inc/config.inc
 files[] = inc/book.inc
 files[] = inc/budget.inc

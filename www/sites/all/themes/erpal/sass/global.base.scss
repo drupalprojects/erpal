@@ -1,3 +1,4 @@
+@import "global_vars_a_mixins";
 /*
  * @file
  * global.base
@@ -129,34 +130,24 @@ a:active {
  * Addresses font sizes and margins set differently in IE6/7
  * Addresses font sizes within 'section' and 'article' in FF4+, Chrome, S5
  */
+
 h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
+	@include headline(20px, 20px, 5px, normal);
 }
-
 h2 {
-  font-size: 1.5em;
-  margin: 0.83em 0;
-}
-
+	@include headline(18px, 18px, 5px, normal);
+}	
 h3 {
-  font-size: 1.17em;
-  margin: 1em 0;
+	@include headline(17px, 17px, 5px, bold);
 }
-
 h4 {
-  font-size: 1em;
-  margin: 1.33em 0;
+	@include headline(16px, 16px, 5px, bold);
 }
-
 h5 {
-  font-size: 0.83em;
-  margin: 1.67em 0;
+	@include headline(15px, 15px, 5px, bold);
 }
-
 h6 {
-  font-size: 0.75em;
-  margin: 2.33em 0;
+	@include headline(14px, 14px, 5px, bold);
 }
 
 /*
@@ -611,13 +602,24 @@ header[role=banner],
 .element-hidden {
   display: none;
 }
-h2.pane-title.block-title {
-	margin: 0 0 20px;
-    font-size: 36px;
-    font-weight: normal;
-    line-height: 1.1em;
-}
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected{
 	padding-bottom: 0;
+}
+a.button{
+
+}
+input.form-submit,
+a.button {
+  background: $white url(../images/buttons.png) 0 0 repeat-x;
+  border: 1px solid #e4e4e4;
+  border-bottom: 1px solid #b4b4b4;
+  border-left-color: #d2d2d2;
+  border-right-color: #d2d2d2;
+  color: #3a3a3a;
+}
+
+input.form-submit:hover,
+input.form-submit:focus {
+  background: #dedede;
 }

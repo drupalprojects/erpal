@@ -13,7 +13,7 @@ define("VIEWCONTENTTYPE", "erpal_contact");
 */
 function erpal_asterisk_notify_init() {
   
-	$path	= drupal_get_path( 'module', 'erpal_asterisk_notify' ); 
+  $path	= drupal_get_path( 'module', 'erpal_asterisk_notify' ); 
   global $user; 
   $profile = profile2_load_by_user($user);
     
@@ -28,7 +28,7 @@ function erpal_asterisk_notify_init() {
     foreach($fields as $item){
     // load field collections and get numbers to store in array $phone_numbers
     $field_collection = entity_load('field_collection_item', array($item['value']));
-    $phone_numbers[] = $field_collection[$item['value']]->field_phone_number[LANGUAGE_NONE][0]['value'];
+    $phone_numbers[] = $field_collection[$item['value']]->field_phone_number_normalized[LANGUAGE_NONE][0]['value'];
   }
   
   // Attach javascript to etablish connection to nodejs-server
@@ -40,11 +40,15 @@ function erpal_asterisk_notify_init() {
     'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port'),
   );
   
-  //@todo externe libraries mit dem libraries modul einbinden, d�rfen nicht in der Distribution mitgeliefert werden
-  drupal_add_js( $path . '/js/socketio/socket.io.min.js', Array( 'every_page'=>TRUE ) );
-  drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting' );
+    
+  $socketio_path = libraries_get_path('socketio') . '/socket.io.min.js';
+  $asterisk_path = libraries_get_path('erpal_asterisk') . '/erpal_asterisk.js';
+  
+  drupal_add_js($socketio_path, Array('every_page'=>TRUE));
+  drupal_add_js($asterisk_path, Array('every_page'=>TRUE));
+  drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting');
 }
-
+  
 
 /*
 * Implements hook_menu
@@ -56,69 +60,6 @@ function erpal_asterisk_notify_menu(){
   return $items;
 } 
 
-/*
- * Forms wich list all views in erpal
- * @return array $form  Forms  
- */
-
-function _erpal_asterisk_notify_get_view_form() {
-  
-  $form= array();
-  
-  $form['description'] = array(
-    '#type' => 'fieldset', 
-    '#title' => t('Select view wich you want to set as default'),
-    '#collapsible' => TRUE, // Added 
-    '#collapsed' => FALSE, // Added
-  );
-  
-  $form['description']['views'] = array(
-    '#type' => 'radios',
-    '#title' => t('Views'),
-    '#options' => _erpal_asterisk_notify_get_views_of_type_erpal_contact(),
-    '#default_value' => variable_get('asterisk_default_view'),
-    '#required' => TRUE,
-  );
-  
-  $form['description']['default_message'] = array(
-    '#title' => t('Default message'),
-    '#type' => 'textarea',
-    '#description' => t('This message will set, if number in not found / For number set: %number%'),
-    '#default_value' => variable_get('asterisk_default_message'),
-    '#rows' => 10,
-    '#cols' => 60,
-    '#resizable' => TRUE,
-  );
-  
-  $form['description']['unknown_number_message'] = array(
-    '#title' => t('Unknown number message'),
-    '#type' => 'textarea',
-    '#description' => t('This message will set no number is given'),
-    '#default_value' => variable_get('asterisk_unknown_number_message'),
-    '#rows' => 10,
-    '#cols' => 60,
-    '#resizable' => TRUE,
-  );
-  
-  $form['submit'] = array(
-    '#type' => 'submit', 
-    '#value' => t('Save as default'),
-  );
- 
-  return $form;
-  
-}
-
-/*
- *  Implemtent form Submit Function 
- */
-function _erpal_asterisk_notify_get_view_form_submit(&$form, &$form_state) {
-
-  variable_set('asterisk_default_view'   , $form_state['values']['views']);
-  variable_set('asterisk_default_message', $form_state['values']['default_message']);
-  variable_set('asterisk_unknown_number_message', $form_state['values']['unknown_number_message']);
- 
-}
 
 /*
  * Function witch get all views in erpal of erpal_contact
@@ -147,16 +88,7 @@ function _erpal_asterisk_notify_get_views_of_type_erpal_contact(){
   return $views_array;
 }
 
-/*
- * This is a callback function for configuration of erpal 
- */
 
-function _erpal_asterisk_notify_config(){
-  
-   //return _erpal_notify_ingoing_call('01574463596');
-   return drupal_get_form('_erpal_asterisk_notify_get_view_form');
-  
-}
 
 /*
  * Implements hook_ingoing_call()
@@ -169,16 +101,14 @@ function _erpal_asterisk_notify_config(){
 
 function erpal_asterisk_notify_ingoing_call($destination, $source) {
   
-  $view = _erpal_asterisk_get_view($source);  
+  if($source!=NULL) {
+    $view = _erpal_asterisk_notify_get_view($source);
+    $out	= theme('erpal_asterisk_view', array('output' => $view));
+  }else{
+    $out	= theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
+  }
 
-  // if($source!=NULL) {
-    // $out	= theme('erpal_asterisk_view', array('output' => $view));
-  // } else {
-    // $out	= theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
-  // }
-//    $out  = theme('erpal_asterisk_view', array('output' => $view));
-  erpal_asterisk_send_dispatch_data( $out, $source, $destination );
-    
+  erpal_asterisk_send_dispatch_data($out, $source, $destination);    
 }
 
 /*
@@ -196,12 +126,14 @@ function _erpal_asterisk_notify_get_default_message($phone_number){
  * @param   string $phone_number ingiong phone number
  * @return  string $view Html of given view 
  */
-function _erpal_asterisk_get_view($phone_number){
+function _erpal_asterisk_notify_get_view($phone_number){
   
-  $display_id = 'default_notification';  $name = variable_get('asterisk_default_view');
-  $arguments = array($phone_number);
-  $view = views_get_view($name);
-  return $view->preview($display_id, $arguments);  
+  $display_id = 'default_notification';  $name = 'asterisk_notification';
+  $message = _erpal_asterisk_notify_get_default_message($phone_number);
+  $arguments = array(libphonenumber_normalize($phone_number));
+  $view = views_get_view($name);  
+  $view->display['default']->display_options['header']['area']['content'] = $message;
+  return $view->preview($display_id, $arguments); 
 }
 
 
@@ -246,9 +178,7 @@ function erpal_asterisk_notify_views_default_views(){
  * 
  */
 function erpal_asterisk_notify_notification_view(){
-  $export = array();
-  
-  $view = new view();
+$view = new view();
 $view->name = 'asterisk_notification';
 $view->description = '';
 $view->tag = 'default';
@@ -281,6 +211,14 @@ $handler->display->display_options['style_options']['info'] = array(
     'empty_column' => 0,
   ),
 );
+/* Header: Global: Text area */
+$handler->display->display_options['header']['area']['id'] = 'area';
+$handler->display->display_options['header']['area']['table'] = 'views';
+$handler->display->display_options['header']['area']['field'] = 'area';
+$handler->display->display_options['header']['area']['label'] = 'From Number:';
+$handler->display->display_options['header']['area']['empty'] = TRUE;
+$handler->display->display_options['header']['area']['format'] = 'filtered_html';
+$handler->display->display_options['header']['area']['tokenize'] = TRUE;
 /* Relationship: Field: Listening numbers (field_phone) */
 $handler->display->display_options['relationships']['field_phone_value']['id'] = 'field_phone_value';
 $handler->display->display_options['relationships']['field_phone_value']['table'] = 'field_data_field_phone';
@@ -314,16 +252,16 @@ $handler->display->display_options['sorts']['created']['id'] = 'created';
 $handler->display->display_options['sorts']['created']['table'] = 'node';
 $handler->display->display_options['sorts']['created']['field'] = 'created';
 $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-/* Contextual filter: Field collection item: Number (field_phone_number) */
-$handler->display->display_options['arguments']['field_phone_number_value']['id'] = 'field_phone_number_value';
-$handler->display->display_options['arguments']['field_phone_number_value']['table'] = 'field_data_field_phone_number';
-$handler->display->display_options['arguments']['field_phone_number_value']['field'] = 'field_phone_number_value';
-$handler->display->display_options['arguments']['field_phone_number_value']['relationship'] = 'field_phone_value';
-$handler->display->display_options['arguments']['field_phone_number_value']['default_argument_type'] = 'fixed';
-$handler->display->display_options['arguments']['field_phone_number_value']['summary']['number_of_records'] = '0';
-$handler->display->display_options['arguments']['field_phone_number_value']['summary']['format'] = 'default_summary';
-$handler->display->display_options['arguments']['field_phone_number_value']['summary_options']['items_per_page'] = '25';
-$handler->display->display_options['arguments']['field_phone_number_value']['limit'] = '0';
+/* Contextual filter: Field collection item: Normalized Number (field_phone_number_normalized) */
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['id'] = 'field_phone_number_normalized_value';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['table'] = 'field_data_field_phone_number_normalized';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['field'] = 'field_phone_number_normalized_value';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['relationship'] = 'field_phone_value';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['default_argument_type'] = 'fixed';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['summary']['number_of_records'] = '0';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['summary']['format'] = 'default_summary';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['summary_options']['items_per_page'] = '25';
+$handler->display->display_options['arguments']['field_phone_number_normalized_value']['limit'] = '0';
 /* Filter criterion: Content: Published */
 $handler->display->display_options['filters']['status']['id'] = 'status';
 $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -342,9 +280,15 @@ $handler->display->display_options['filters']['type']['value'] = array(
 /* Display: Default notify */
 $handler = $view->new_display('panel_pane', 'Default notify', 'default_notification');
 $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+
   
-
+    
   $export['asterisk_notification'] = $view;
-
+  
   return $export;
 }
+
+
+
+ 
+  

@@ -42,7 +42,9 @@ function feature_erpal_mail_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'type' => 'none',
+            'direction' => 'ASC',
+            'property' => 'created',
+            'type' => 'property',
           ),
           'target_bundles' => array(
             'erpal_mail' => 'erpal_mail',
@@ -80,7 +82,7 @@ function feature_erpal_mail_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_mails',
-      'label' => 'Mails',
+      'label' => 'Referenced mails',
       'required' => 0,
       'settings' => array(
         'behaviors' => array(
@@ -97,13 +99,13 @@ function feature_erpal_mail_field_default_fields() {
           'match_operator' => 'CONTAINS',
           'path' => '',
           'references_dialog_add' => 0,
-          'references_dialog_edit' => 0,
-          'references_dialog_search' => 0,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
           'references_dialog_search_view' => '',
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 31,
+        'weight' => 13,
       ),
     ),
   );
@@ -509,12 +511,124 @@ function feature_erpal_mail_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_task-field_mails'.
+  $fields['node-erpal_task-field_mails'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_mails',
+      'foreign keys' => array(
+        'node' => array(
+          'columns' => array(
+            'target_id' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'target_id' => array(
+          0 => 'target_id',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'entityreference',
+      'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'direction' => 'ASC',
+            'property' => 'created',
+            'type' => 'property',
+          ),
+          'target_bundles' => array(
+            'erpal_mail' => 'erpal_mail',
+          ),
+        ),
+        'profile2_private' => FALSE,
+        'target_type' => 'node',
+      ),
+      'translatable' => '0',
+      'type' => 'entityreference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_task',
+      'comment_enabled' => 0,
+      'default_value' => NULL,
+      'default_value_function' => '',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => 31,
+        ),
+        'full' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'view_row_details' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_mails',
+      'label' => 'Referenced mails',
+      'required' => 0,
+      'settings' => array(
+        'behaviors' => array(
+          'prepopulate' => array(
+            'status' => 0,
+          ),
+        ),
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'references_dialog_add' => 0,
+          'references_dialog_edit' => 1,
+          'references_dialog_search' => 1,
+          'references_dialog_search_view' => '',
+          'size' => '60',
+        ),
+        'type' => 'entityreference_autocomplete',
+        'weight' => 21,
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Attachments');
   t('Body');
   t('From');
-  t('Mails');
+  t('Referenced mails');
   t('To');
 
   return $fields;

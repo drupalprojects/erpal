@@ -25,6 +25,6 @@ function erpal_layout_helper_form_alter(&$form, $form_state, $form_id) {
 function _erpal_layout_helper_search_form_block_alter(&$form, $form_state) {
 
   if (isset($form['actions']['submit'])) {
-    unset($form['actions']['submit']);
+    $form['actions']['#attributes']['class'][] = 'element-invisible';
   }
 }

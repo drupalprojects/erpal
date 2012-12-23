@@ -1,59 +1,58 @@
-ul.primary,
-ul.secondary {
-  overflow: hidden;
-  *zoom: 1;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  white-space: nowrap;
-  border: medium none
+@import "global_vars_a_mixins";
+
+#erpal_wrapper .panel-col-last {
+  float: left;
+  width: $value100;
+  .inside {
+    margin-left: 150px;
+	min-width: 440px;
+    .pane-page-tabs {
+	  @include box-shadow(2px 3px 4px $silver_grey);
+	  background-color: $white;
+	  width: $value100;
+	  background-color: $light_grey;
+	  border-bottom: 2px solid $orange;
+	  ul.primary {
+	    @include dist_zero;
+		overflow: hidden;
+		*zoom: 1;
+		list-style: none;
+		white-space: nowrap;
+		background-color: $white;
+		border: none;
+		li {
+		  margin: 0;
+	      float: left;
+		  display: block;
+	      border-right: 1px solid #D9D9D9;
+	      a{
+		    @include a_black;
+			&:visited {
+			  @include a_black;
+			  color: $dark_brown;
+			}
+			&:hover {
+			  background-color: $white;
+			  color: $black;
+			}
+			&.active {
+			  @include a_orange;
+			  border: medium none;
+			  &:hover{
+			    @include a_orange;
+			    background-color: $orange;
+			  }
+			}
+		  }		
+		}
+		.active {
+		  border-left: 2px solid $dark_orange;
+		  border-right: 2px solid $dark_orange;
+		}
+	  }
+	} 
+  }
 }
 
-ul.primary li,
-ul.secondary li {
-  float: left; /* LTR */
-  margin: 0.5em 3px 0;
-}
 
-ul.primary a,
-ul.secondary a {
-  display: block;
-  line-height: 1.5em;
-}
-
-/*
- * Primary tabs
- */
-
-ul.primary li {
-  margin: 0; /* LTR */
-}
-
-
-ul.primary a:link,
-ul.primary a:visited {
-  margin: 0;
-  padding: 0 20px;
-  letter-spacing: 1px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  height: 42px;
-  line-height: 42px;
-  min-width: 80px;
-  border: none;
-}
-
-
-ul.primary a.active {
-  *zoom: 1;
-}
-ul.primary li.active a, 
-ul.primary li.active a:hover, 
-ul.primary li.active a:focus{
-	border: none;
-}
-/*
- * Secondary tabs
- */
 

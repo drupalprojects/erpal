@@ -1,4 +1,40 @@
 /*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/* for pain search */
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
+/* left sidebar link*/
+/*grey link color*/
+/*grey link hover*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+/*
  * @file
  * global.base
  *
@@ -130,33 +166,45 @@ a:active {
  * Addresses font sizes within 'section' and 'article' in FF4+, Chrome, S5
  */
 h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
+  margin: 0px 0px 5px 0px;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 20px;
 }
 
 h2 {
-  font-size: 1.5em;
-  margin: 0.83em 0;
+  margin: 0px 0px 5px 0px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 18px;
 }
 
 h3 {
-  font-size: 1.17em;
-  margin: 1em 0;
+  margin: 0px 0px 5px 0px;
+  font-weight: bold;
+  font-size: 17px;
+  line-height: 17px;
 }
 
 h4 {
-  font-size: 1em;
-  margin: 1.33em 0;
+  margin: 0px 0px 5px 0px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 16px;
 }
 
 h5 {
-  font-size: 0.83em;
-  margin: 1.67em 0;
+  margin: 0px 0px 5px 0px;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 15px;
 }
 
 h6 {
-  font-size: 0.75em;
-  margin: 2.33em 0;
+  margin: 0px 0px 5px 0px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 14px;
 }
 
 /*
@@ -478,7 +526,6 @@ table {
  * see Extensions > Modify Output > Design
  * $gutter-width is set in _base.scss
  */
-
 /*
  * Panel pages need negative margin equal to the gutter width applied to #content,
  * this is taken care of in theme settings as per above for normal gutters
@@ -611,13 +658,22 @@ header[role=banner],
 .element-hidden {
   display: none;
 }
-h2.pane-title.block-title {
-	margin: 0 0 20px;
-    font-size: 36px;
-    font-weight: normal;
-    line-height: 1.1em;
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+  padding-bottom: 0;
 }
 
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected{
-	padding-bottom: 0;
+input.form-submit,
+a.button {
+  background: white url(../images/buttons.png) 0 0 repeat-x;
+  border: 1px solid #e4e4e4;
+  border-bottom: 1px solid #b4b4b4;
+  border-left-color: #d2d2d2;
+  border-right-color: #d2d2d2;
+  color: #3a3a3a;
+}
+
+input.form-submit:hover,
+input.form-submit:focus {
+  background: #dedede;
 }

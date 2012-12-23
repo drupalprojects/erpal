@@ -81,10 +81,10 @@ function feature_erpal_basic_field_group_info() {
     'weight' => '9',
     'children' => array(
       0 => 'field_facebook',
-      1 => 'field_twitter',
-      2 => 'field_website',
-      3 => 'field_xing',
-      4 => 'field_google_plus',
+      1 => 'field_google_plus',
+      2 => 'field_twitter',
+      3 => 'field_website',
+      4 => 'field_xing',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

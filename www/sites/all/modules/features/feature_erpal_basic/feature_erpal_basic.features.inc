@@ -42,7 +42,7 @@ function feature_erpal_basic_ctools_plugin_api() {
  * Implements hook_views_api().
  */
 function feature_erpal_basic_views_api() {
-  return array("version" => "3.0");
+  return array("api" => "3.0");
 }
 
 /**
@@ -55,8 +55,7 @@ function feature_erpal_basic_default_date_item_type() {
     "label" : "simple date",
     "locked" : "0",
     "weight" : "0",
-    "data" : null,
-    "rdf_mapping" : []
+    "data" : null
   }');
   return $items;
 }

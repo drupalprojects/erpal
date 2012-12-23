@@ -30,7 +30,7 @@ function feature_erpal_docs_ctools_plugin_api() {
  * Implements hook_views_api().
  */
 function feature_erpal_docs_views_api() {
-  return array("version" => "3.0");
+  return array("api" => "3.0");
 }
 
 /**

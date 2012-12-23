@@ -81,7 +81,6 @@ dependencies[] = profile2
 dependencies[] = profile2_page
 dependencies[] = quicktabs
 dependencies[] = references_dialog
-dependencies[] = rel
 dependencies[] = relation
 dependencies[] = relation_add
 dependencies[] = relation_dummy_field

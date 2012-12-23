@@ -37,10 +37,6 @@ function feature_erpal_project_basic_ctools_plugin_api() {
     return array("version" => "1");
   }
   list($module, $api) = func_get_args();
-  if ($module == "rel" && $api == "rel") {
-    return array("version" => "1");
-  }
-  list($module, $api) = func_get_args();
   if ($module == "relation" && $api == "relation_type_default") {
     return array("version" => "1");
   }
@@ -54,7 +50,7 @@ function feature_erpal_project_basic_ctools_plugin_api() {
  * Implements hook_views_api().
  */
 function feature_erpal_project_basic_views_api() {
-  return array("version" => "3.0");
+  return array("api" => "3.0");
 }
 
 /**

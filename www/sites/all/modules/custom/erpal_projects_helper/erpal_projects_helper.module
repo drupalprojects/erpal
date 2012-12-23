@@ -268,6 +268,15 @@ function erpal_projects_helper_field_attach_validate($entity_type, $entity, &$er
 }
 
 /**
+* Implements hook_entity_presave
+*/
+function erpal_projects_helper_entity_presave($entity, $type) {
+  if ($type == 'timetracking') {
+    _erpal_projects_helper_timetracking_entity_set_project_tags($entity);
+  }
+}
+
+/**
 * Implementes hook_field_attach_presave() 
 */
 function erpal_projects_helper_field_attach_presave($entity_type, $entity) {
@@ -1186,5 +1195,57 @@ function _erpal_projects_helper_can_delete($node, $check_children, &$messages) {
   }
 
   return true;
+}
+
+/**
+* Returns the term ID of a category from the given node. If the given node has no category set, we check for a category in the parent tree
+*/
+function _erpal_projects_helper_get_project_category($node, $process_tree) {
+  $category_node = _erpal_projects_node_with_value_in_tree($node, '_erpal_projects_helper_node_has_category', $process_tree); 
+  
+  $tid = _erpal_projects_helper_node_has_category($category_node);
+  
+  return $tid;
+}
+
+/**
+* Callback for function @see _erpal_projects_node_with_value_in_tree in @see _erpal_projects_helper_get_project_category
+* We check if the node has a project_category tag set
+* @return if there is a category set, return the term id, otherwise false
+*/
+function _erpal_projects_helper_node_has_category($node) {
+  $tid = isset($node->field_project_tags[LANGUAGE_NONE][0]['tid']) ? $node->field_project_tags[LANGUAGE_NONE][0]['tid'] : false;
+  
+  return $tid;
+}
+
+/**
+* Returns a nid in the parent tree of a project if it has a value compared with $op in the parent set at the given field
+* @param $process_tree if true, no only the given $node will be processed but all of its parents.
+* @param $node the node where to start processing
+* @param $compare_callback a name of a function that is called to check if the node matches and should be returned
+*/
+function _erpal_projects_node_with_value_in_tree($node, $compare_callback, $process_tree) {  
+  
+  if (!$node)
+    return false; //no node
+  
+  if (function_exists($compare_callback))
+    $value_match = call_user_func($compare_callback, $node);
+  else
+    return $node; //no compare function given, so return the node
+  
+  if ($value_match)
+    return $node;
+  
+  //did not match so start recursion if we should
+  
+  if (!$process_tree) {    
+    return false;
+  }
+  
+  $parent_node = _erpal_project_task_parent($node);
+  
+  return _erpal_projects_node_with_value_in_tree($parent_node, $compare_callback, $process_tree);
 }
 

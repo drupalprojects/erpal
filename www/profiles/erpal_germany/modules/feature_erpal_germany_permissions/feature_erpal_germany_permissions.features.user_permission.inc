@@ -2130,13 +2130,6 @@ function feature_erpal_germany_permissions_user_default_permissions() {
     'module' => 'comment',
   );
 
-  // Exported permission: rel_build_registration.
-  $permissions['rel_build_registration'] = array(
-    'name' => 'rel_build_registration',
-    'roles' => array(),
-    'module' => 'rel',
-  );
-
   // Exported permission: revert revisions.
   $permissions['revert revisions'] = array(
     'name' => 'revert revisions',

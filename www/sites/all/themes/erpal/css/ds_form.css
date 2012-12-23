@@ -1,0 +1,158 @@
+/****************************
+	General
+****************************/
+/* line 9, ../sass/ds_form.scss */
+.group-form-left,
+.group-form-right,
+.group-form-advanced-onecolumn,
+.group-form-advanced-left,
+.group-form-advanced-right {
+  background-color: #EEEEEE;
+  padding: 10px;
+}
+
+/* line 15, ../sass/ds_form.scss */
+#erpal-project-node-form,
+#erpal-task-node-form {
+  max-width: 1070px;
+  margin-top: 20px;
+}
+
+/* line 24, ../sass/ds_form.scss */
+div.group-form-left:empty,
+div.group-form-right:empty,
+div.group-form-advanced-onecolumn:empty,
+div.group-form-advanced-left:empty,
+div.group-form-advanced-right:empty {
+  display: none;
+}
+
+/****************************
+	Group top
+****************************/
+/* line 32, ../sass/ds_form.scss */
+.group-form-left {
+  width: 68%;
+  float: left;
+  margin-bottom: 30px;
+}
+
+/* line 38, ../sass/ds_form.scss */
+.group-form-right {
+  width: 25%;
+  float: right;
+  margin-bottom: 30px;
+}
+
+/* fields in group left */
+/* line 45, ../sass/ds_form.scss */
+.group-form-left .form-item-title {
+  margin-top: 0px;
+}
+
+/* line 49, ../sass/ds_form.scss */
+.group-form-left #edit-title {
+  width: 100%;
+}
+
+/* fields in group right */
+/* line 55, ../sass/ds_form.scss */
+.form-item-group-content-access-und {
+  margin-top: 0px;
+}
+
+/* line 62, ../sass/ds_form.scss */
+.group-form-right select,
+.group-form-right input:not([type='checkbox']),
+.group-form-advanced-right select,
+.group-form-advanced-right input:not([type='checkbox']) {
+  width: 100%;
+}
+
+/* line 66, ../sass/ds_form.scss */
+.edit-field-customer-ref-und-0-target-id ul.references-dialog-links li a {
+  display: block;
+}
+
+/****************************
+	Group advanced
+****************************/
+/* line 73, ../sass/ds_form.scss */
+.group-advanced {
+  clear: both;
+}
+
+/* line 77, ../sass/ds_form.scss */
+.group-advanced > legend {
+  font-size: 16px;
+}
+
+/* line 81, ../sass/ds_form.scss */
+.group-advanced h3 {
+  border-bottom: 1px solid #525252;
+  padding: 20px 5px 10px;
+}
+
+/* line 86, ../sass/ds_form.scss */
+.group-advanced h3 a {
+  background: url(../images/forms-advanced-arrow-open.png) no-repeat 2px 50%;
+  padding-left: 15px;
+}
+
+/* line 90, ../sass/ds_form.scss */
+.group-advanced.collapsed h3 a {
+  background: url(../images/forms-advanced-arrow-collapsed.png) no-repeat 2px 50%;
+  padding-left: 15px;
+}
+
+/* line 94, ../sass/ds_form.scss */
+.group-form-advanced-onecolumn {
+  margin-bottom: 20px;
+}
+
+/* line 97, ../sass/ds_form.scss */
+.group-form-advanced-left {
+  width: 68%;
+  float: left;
+}
+
+/* line 102, ../sass/ds_form.scss */
+.group-form-advanced-right {
+  width: 25%;
+  float: right;
+}
+
+/* only visible for admin */
+/* line 109, ../sass/ds_form.scss */
+.vertical-tabs {
+  clear: both;
+}
+
+/****************************
+	Invoices
+****************************/
+/*** Group left ***/
+/* line 119, ../sass/ds_form.scss */
+.group-invoice-left {
+  width: 50%;
+  float: left;
+}
+
+/*** Group right ***/
+/* line 126, ../sass/ds_form.scss */
+.group-invoice-right {
+  width: 50%;
+  float: right;
+}
+
+/*** Group bottom ***/
+/* line 133, ../sass/ds_form.scss */
+.group-invoice-bottom {
+  clear: both;
+}
+
+/* line 137, ../sass/ds_form.scss */
+.group-invoice-sonstiges {
+  clear: both;
+  display: none;
+}

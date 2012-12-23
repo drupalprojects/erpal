@@ -171,6 +171,10 @@ function erpal_germany_create_taxonomy(){
       'vat_rates' => '19',
     ),
     array(
+      'name' => 'India',
+      'vat_rates' => '19',
+    ),
+    array(
       'name' => 'Ireland',
       'vat_rates' => '19',
     ),

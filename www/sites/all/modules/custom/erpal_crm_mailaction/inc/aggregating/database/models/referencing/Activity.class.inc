@@ -44,4 +44,20 @@ class Activity implements ReferencingModel {
     
     return empty ($this->lastError);
   }
+  
+  /**
+   * Implements erpal_crm_mailaction\aggregating\database\import_models\ImportModel::getRelevantContentTypeMachineName.
+   */
+  public static function getRelevantContentTypeMachineName () {
+    
+    return 'erpal_activity'; // Do not use the t-function, here!!!
+  }
+  
+  /**
+   * Implements erpal_crm_mailaction\aggregating\database\import_models\ImportModel::getRelevantContentTypeHumanReadableName.
+   */
+  public static function getRelevantContentTypeHumanReadableName () {
+    
+    return t('Activity');
+  }
 }

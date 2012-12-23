@@ -17,11 +17,9 @@
  * See global.base also which includes normalize.css and some additional
  * helper classes and base styles.
  */
-
 /* =============================================================================
  *   Base
  * ========================================================================== */
-
 /*
  * To preserve theme settings never apply font properties to the HTML element.
  * This is critically important if you are using the Responsive JavaScript
@@ -29,7 +27,42 @@
  * element. If you need to set default font properties of any kind use the BODY
  * element as these can be overridden using font theme settings.
  */
-
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/* for pain search */
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border*/
+/*link color*/
+/*styles for alert*/
+/* left sidebar link*/
+/*grey link color*/
+/*grey link hover*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
 body {
   margin: 0;
   padding: 0;
@@ -39,80 +72,19 @@ body {
   min-width: 1020px;
   min-height: 100%;
   position: relative;
+  color: #525252;
+  background: #e5e5e5;
 }
-
 
 /*if the admin menu is used change margin-top to padding-top */
 body.admin-menu {
-	margin-top: 0 !important;
-	padding-top: 20px !important;
+  margin-top: 0 !important;
+  padding-top: 20px !important;
 }
-
 
 /* =============================================================================
  *   HTML Elements
  * ========================================================================== */
-
-h1 {
-    font-size: 3.3em;
-    font-weight: normal;
-    margin-top: 0;
-}
-
-h2 {}
-
-h3 {}
-
-h4 {}
-
-h5 {}
-
-h6 {}
-
-p {
-	
-}
-
-b,
-strong {}
-
-i,
-em {}
-
-dfn {}
-
-sup {}
-
-sub {}
-
-del {}
-
-ins {}
-
-blockquote {}
-
-cite {}
-
-q {}
-
-address {}
-
-ul {}
-
-ol {}
-
-li {}
-
-dl {}
-
-dd {}
-
-dt {}
-
-abbr {}
-
-acronym {}
-
 pre,
 code,
 tt,
@@ -122,71 +94,12 @@ var {
   font-family: Consolas, Monaco, 'Courier New', Courier, monospace, sans-serif;
 }
 
-
-/* =============================================================================
- *   Wrappers
- * ========================================================================== */
-
-/*
- * Page wrapper, includes the .container class which sets the overall page or section width
- * Main wrapper in page.tpl.php, the .container class sets the width of the page, do not add width to it!
- */
-#page {}
-#page .container {}
-
-/*
- * Wraps all header elements - branding and .region-header
- */
-#header {}
-
-/*
- * Wraps the sidebars the content column
- */
-#columns {}
-
-/*
- * Main content column wrapper
- */
-#content-column {}
-
-/*
- * Wraps the main-content-header, the content region and feed-icons. Use this wrapper to style the entire main content column
- */
-#main-content {}
-
-/*
- * Wraps the content region, avoid applying styles to this wrapper, its used mainly for position and invisible gutters and can be problematic to style
- */
-#content {}
-
-/*
- * Footer wrapper
- */
-#footer {}
-
-/*
- * Panels may need additional margin wrangling when in the $content region
- */
-#content .panel-display {}
-
-/*
- * Full Width Wrappers
- * These are used in the optional page--full-width-wrappers.tpl.php template.
- * All have internal .container classes. In the full width wrapper template the
- * .container classes set the width or max-width of the contained element - you
- * can style this but never add any width/margin/padding/borders etc to .container
- */
-/*
- * Wraps #page
- */
-#page-wrapper {}
-#page-wrapper .container {}
-
-/*
- * Wraps the leaderboard
- */
-#leaderboard-wrapper {}
-#leaderboard-wrapper .container {}
+a:link, a:visited, a:hover, a:focus, a:active {
+  color: #5a5a5a;
+}
+a:hover {
+  color: #756c65;
+}
 
 /*
  * Wraps the header
@@ -195,43 +108,6 @@ var {
   /* Debug styles, is this working */
   background: rgba(255, 192, 203, 0.5);
 }
-#header-wrapper .container {}
-
-/*
- * Wraps the nav elements
- */
-#nav-wrapper {}
-#nav-wrapper .container {}
-
-/*
- * Wraps breadcrumb
- */
-#breadcrumb-wrapper {}
-#breadcrumb-wrapper .container {}
-
-/*
- * Wraps messages and help
- */
-#messages-help-wrapper {}
-#messages-help-wrapper .container {}
-
-/*
- * Wraps the secondary content/preface region
- */
-#secondary-content-wrapper {}
-#secondary-content-wrapper .container {}
-
-/*
- * Wraps the main content column
- */
-#content-wrapper {}
-#content-wrapper .container {}
-
-/*
- * Wraps the tertiary content/postfix region
- */
-#tertiary-content-wrapper {}
-#tertiary-content-wrapper .container {}
 
 /*
  * Footer wrapper
@@ -240,39 +116,16 @@ var {
   /* Debug styles, is this working? */
   background: rgba(255, 192, 203, 0.5);
 }
-#footer-wrapper .container {}
-
 
 /* =============================================================================
  *   Branding
  * ========================================================================== */
-
-/*
- * Wraps all the branding elements, logo, name and slogan
- */
-#branding {}
-
-/*
- * Logo
- */
-
-#logo img {
-  vertical-align: bottom;
-}
-
-/*
- * Wrapper for the site name and slogan (hgroup)
- */
-#name-and-slogan {}
-
 /*
  * Site name (h1)
  */
 #site-name {
   margin: 0;
 }
-
-#site-name a {}
 
 #site-name a:link,
 #site-name a:visited {
@@ -291,16 +144,12 @@ var {
   margin: 0;
 }
 
-
 /* =============================================================================
  *   Page content header
  * ========================================================================== */
-
 /*
  * Main content header wraps the page title, tabs and actions links
  */
-#main-content-header {}
-
 /*
  * The main page title (h1)
  */
@@ -308,16 +157,12 @@ var {
   margin: 0;
 }
 
-
 /* =============================================================================
  *   Misc Global Styles
  * ========================================================================== */
-
 /*
  * Feed icons
  */
-.feed-icon {}
-
 /*
  * Aggregator feed source
  */
@@ -336,8 +181,6 @@ var {
 /*
  * Generic styles for the more link
  */
-.more-link {}
-
 /*
  * Generic styles for links. See the ul.links declaration in node and comment stylesheets
  */
@@ -363,93 +206,18 @@ ul.links li {
   margin: 0;
 }
 
-
-/* =============================================================================
- *   Regions
- * ========================================================================== */
-
-/*
- * Standard region wrapper, don't add width to any regions, you will bork the layout - no margin, padding or borders etc
- */
-.region {}
-
-/*
- * Regions have an inner div - perfect for adding margin, padding or borders
- */
-.region-inner {}
-
-/*
- * Regions can be nested, such as when using Panels
- */
-.region-inner .region-inner {}
-
-/*
- * Header region, embedded in the #header
- */
-.region-header {}
-
-/*
- * Generally used to output Drupals help block, if the help module is enabled
- */
-.region-help {}
-
-/*
- * Secondary content
- */
-.region-secondary-content {}
-
-/*
- * Sits above the main content header, like a content-top region
- */
-.region-highlighted {}
-
-/*
- * Sits below the main content, like a content-bottom region
- */
-.region-content-aside {}
-
-/*
- * Sidebars - targets both
- */
-.sidebar {}
-
-/*
- * First sidebar
- */
-.region-sidebar-first {}
-
-/*
- * Second sidebar
- */
-.region-sidebar-second {}
-
-/*
- * Tertiary content
- */
-.region-tertiary-content {}
-
-/*
- * Footer region
- */
-.region-footer {}
-
-
 /* =============================================================================
  *   Links
  * ========================================================================== */
-
 a {
   text-decoration: none;
-   color: #525252;
+  color: #525252;
 }
 
 a:link,
 a:visited {
- color: #525252;
+  color: #525252;
 }
-
-a:active,
-a.active {}
 
 a:hover,
 a:focus {
@@ -457,11 +225,9 @@ a:focus {
   cursor: pointer;
 }
 
-
 /* =============================================================================
  *   Primary, Secondary and Menu Bar region menus
  * ========================================================================== */
-
 /*
  * Use one of the following id's for granular control:
  *  - #menu-bar (menu bar region)
@@ -496,23 +262,13 @@ a:focus {
   padding: 0 10px;
 }
 
-.nav li a:visited,
-.nav ul.menu li a:visited {}
-
-.nav li a:hover,
-.nav li a:focus,
-.nav ul.menu li a:hover,
-.nav ul.menu li a:focus {}
-
 .nav .block {
   margin-bottom: 0;
 }
 
-
 /* =============================================================================
  *   Superfish
  * ========================================================================== */
-
 ul.sf-menu {
   margin-bottom: 0;
 }
@@ -526,17 +282,10 @@ ul.sf-menu a {
   line-height: 2.5em;
 }
 
-ul.sf-menu a:link,
-ul.sf-menu a:visited {}
-
-ul.sf-menu li {}
-
 ul.sf-menu li:hover,
 ul.sf-menu li.sfHover {
   outline: 0;
 }
-
-ul.sf-menu a {}
 
 ul.sf-menu a:focus,
 ul.sf-menu a:hover,
@@ -547,20 +296,10 @@ ul.sf-menu a:active {
 /*
  * Superfish blocks
  */
-.block-superfish {}
-
-.block-superfish .block-inner .content {}
-
 .block-superfish ul {
   margin: 0 !important;
   padding: 0 !important;
 }
-
-.block-superfish ul ul {}
-
-.block-superfish ul ul ul {}
-
-.block-superfish ul ul ul ul {}
 
 .block-superfish li {
   margin: 0 !important;
@@ -577,8 +316,6 @@ ul.sf-menu a:active {
 .sf-vertical li {
   width: 100%;
 }
-
-.sf-vertical li.last {}
 
 .sf-vertical li:hover ul,
 .sf-vertical li.sfHover ul {
@@ -606,11 +343,9 @@ ul.sf-menu a:active {
   padding: 0 10px;
 }
 
-
 /* =============================================================================
  *   Menus, usually blocks
  * ========================================================================== */
-
 ul.menu {
   padding-left: 15px;
 }
@@ -619,53 +354,14 @@ ul.menu ul {
   padding-left: 15px;
 }
 
-ul.menu ul ul {}
-
-ul.menu ul ul ul {}
-
-ul.menu li {
-  margin: 0;
-}
-
-ul.menu li.collapsed,
-ul.menu li.expanded,
-ul.menu li.leaf {}
-
-ul.menu li a {}
-
-ul.menu li a:link,
-ul.menu li a:visited {}
-
-ul.menu li a:active,
-ul.menu li a.active {}
-
-ul.menu li a:hover,
-ul.menu li a:focus {}
-
-ul.menu li.active a,
-ul.menu li.active-trail a {}
-
-ul.menu li.first,
-ul.menu li.last {}
-
 /* If li.content exists it's a problem, so reset the padding */
 .block .menu li.content {
   padding: 0;
 }
 
-
 /* =============================================================================
  *   Book navigation menu
  * ========================================================================== */
-
-.book-navigation {}
-
-.book-navigation .page-links {}
-
-.book-navigation .page-previous {}
-
-.book-navigation .page-next {}
-
 .book-navigation .page-up {
   /* Prevent text wrapping to a new line, assumes English "up" is used (two characters) */
   min-width: 2em;
@@ -676,121 +372,50 @@ ul.menu li.last {}
   margin-left: 0;
 }
 
-
 /* =============================================================================
  *   Breadcrumbs
  * ========================================================================== */
-
-#breadcrumb {
-  margin: 10px 0;
+.pane-page-breadcrumb.block {
+  margin-bottom: 0px;
 }
-
-/* If the label is set to show in theme settings the label class is added */
-#breadcrumb .breadcrumb-label {
-  font-size: 1em;
-  display: inline;
-  padding-right: 10px;
+.pane-page-breadcrumb.block .breadcrumb {
+  margin-left: 30px;
 }
-
-#breadcrumb .breadcrumb-label:after {
-  content: ":";
-}
-
-#breadcrumb ol {
-  margin: 0;
-  padding: 0;
-}
-
-#breadcrumb .with-breadcrumb-label ol {
-  display: inline;
-}
-
-#breadcrumb li {
-  list-style: none;
-  display: inline;
-}
-
-#breadcrumb li.crumb-first {}
-
-#breadcrumb li.crumb-last {}
-
-#breadcrumb a {}
-
-#breadcrumb a:link,
-#breadcrumb a:visited {}
-
-#breadcrumb a:active,
-#breadcrumb a.active {}
-
-#breadcrumb a:hover,
-#breadcrumb a:focus {}
-
 
 /* =============================================================================
  *   Pagers
  * ========================================================================== */
-
 ul.pager {
   clear: both;
   margin: 13px 0 0 0;
   text-align: center;
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px; 
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
+  background: #afafaf;
 }
-
-.item-list ul.pager li {
-  margin: 0;
-}
-
 ul.pager li {
+  margin: 0;
+  padding: .5em;
   background-image: none;
   display: inline;
   list-style-type: none;
-  padding: .5em;
   line-height: 50px;
 }
-
 ul.pager li.pager-current {
   font-weight: 700;
+  font-size: 1.2em;
 }
-
-.block ul.pager li {
-  margin: 0;
+ul.pager li a {
+  font-size: 1.2em;
+  color: #525252 !important;
 }
-
-/*
- * Theme the various states of pager links
- */
-ul.pager li {
-	
-}
-
-
-
-ul.pager li a:link,
-ul.pager li a:visited {}
-
-ul.pager li a:active,
-ul.pager li a.active {}
-
-ul.pager li a:hover,
-ul.pager li a:focus {}
-
-ul.pager li.pager-item {}
-ul.pager li.first {}
-ul.pager li.last {}
-ul.pager li.pager-current {}
-ul.pager li.pager-first {}
-ul.pager li.pager-previous {}
-ul.pager li.pager-next {}
-ul.pager li.pager-last {}
-
 
 /* =============================================================================
  *   Skip Navigation
  * ========================================================================== */
-
 #skip-link {
   left: 50%;
   margin-left: -6.5em;
@@ -803,7 +428,7 @@ ul.pager li.pager-last {}
 
 #skip-link a {
   background: #444;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   display: block;
   line-height: 2;
@@ -815,7 +440,7 @@ ul.pager li.pager-last {}
 #skip-link a:link,
 #skip-link a:visited {
   background: #444;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   display: block;
   line-height: 2;
@@ -830,34 +455,11 @@ ul.pager li.pager-last {}
   outline: 0;
 }
 
-
 /* =============================================================================
  *   Tabs (local tasks)
  * ========================================================================== */
-
 #tasks {
   margin-bottom: 15px;
-}
-
-ul.primary {
-  border-bottom-color: #ccc;
-  margin: 20px 0;
-  padding: 0 0 0 5px;
-}
-
-ul.primary li {
-  display: block;
-  float: left;
-  margin: 0 1px -1px;
-}
-
-ul.primary li a {
-  margin-right: 1px;
-  padding: 0 10px;
-  display: block;
-  float: left;
-  height: 1.5em;
-  line-height: 1.5em;
 }
 
 ul.secondary {
@@ -872,45 +474,19 @@ ul.secondary li {
   padding: 0 10px 0 0;
 }
 
-ul.secondary li a {}
-
 ul.secondary li a:hover,
 ul.secondary li a.active {
   border-bottom: none;
   text-decoration: underline;
 }
 
-
 /* =============================================================================
  *   Action links
  * ========================================================================== */
-
 ul.action-links {
   margin: 20px 0 0;
   list-style: none;
 }
-
-ul.action-links li {}
-
-
-/* =============================================================================
- *  Field Styling
- * ========================================================================== */
-
-/*
- * Wrapper for any field
- */
-.field {}
-
-/*
- * Above and inline classes are on the field wrapper
- */
-.field-label-above {}
-
-/*
- * When labels are set to inline in field display settings the clearfix class is automatically added
- */
-.field-label-inline {}
 
 /*
  * Labels are h2 in Adaptivetheme. Use a strong selector to mitigate unwanted ineritance issues
@@ -922,22 +498,6 @@ ul.action-links li {}
   line-height: inherit;
   margin-bottom: 0;
 }
-
-
-/*
- * Field types (Core)
- */
-
-/*
- * Image fields use the <figure> and <figcaption> elements from HTML5
- */
-.field-type-image {}
-
-.field-type-image .caption {}
-
-.field-type-image .full-caption {}
-
-.field-type-image .teaser-caption {}
 
 /*
  * Taxonomy
@@ -961,90 +521,51 @@ ul.action-links li {}
 /*
  * Text
  */
-.field-type-text {}
-
 /*
  * Long text
  */
-.field-type-text-long {}
-
 /*
  * Text with summary
  */
-.field-type-text-with-summary {}
-
 /*
  * File
  */
-.field-type-file {}
-
 /*
  * Number/Integer
  */
-.field-type-number-integer {}
-
 /*
  * Decimal
  */
-.field-type-number-decimal {}
-
 /*
  * Number float
  */
-.field-type-number-float {}
-
 /*
  * List
  */
-.field-type-list-text {}
-
 /*
  * List boolean
  */
-.field-type-list-boolean {}
-
 /*
  * List integer
  */
-.field-type-list-integer {}
-
 /*
  * List float
  */
-.field-type-list-float {}
-
 /*
  * Field types (Contrib)
  */
-.field-type-datetime {}
-
-.field-type-node-reference {}
-
-.field-type-user-reference {}
-
 /*
  * Named fields
  */
-.field-name-body {}
-
-.field-name-field-image {}
-
-.field-name-field-tags {}
-
 /*
  * Underscores in field name are replaced with dashes
  */
-.field-name-field-FIELDNAME {}
-
 /*
  * Image Alignment Theme Settings - included here so you can easily override
  */
 /*
  * Float none setting
  */
-.ia-n .field-type-image,
-.iat-n .field-type-image {}
-
 /*
  * Float left setting
  */
@@ -1069,11 +590,9 @@ ul.action-links li {}
   margin: 5px 0 15px 20px;
 }
 
-
 /* =============================================================================
  *   Block Styling
  * ========================================================================== */
-
 /*
  * Main wrapper for most blocks, block_system_main does not have it
  */
@@ -1084,28 +603,18 @@ ul.action-links li {}
 /*
  * Inner wrapper for most blocks, good for margin, padding and borders, block_system_main does not have it
  */
-.block-inner {}
-
 /*
  * The first block in the region
  */
-.block.first {}
-
 /*
  * The last block in the region
  */
-.block.last {}
-
 /*
  * Zebra striping for each block in the region
  */
-.block.odd {}
-
 /*
  * Zebra striping for each block in the region
  */
-.block.even {}
-
 /*
  * Block title
  */
@@ -1116,13 +625,9 @@ ul.action-links li {}
 /*
  * Block content wrapper
  */
-.block-content {}
-
 /*
  * Match item list and block menu margin and padding
  */
-.block-content {}
-
 .block-content ul,
 .block-content ol {
   padding: 0;
@@ -1137,230 +642,110 @@ ul.action-links li {}
 /*
  * Block for the latest news items in the first category
  */
-#block-aggregator-category-1 {}
-
 /*
  * Block for the latest news items in the first feed
  */
-#block-aggregator-feed-1 {}
-
 /*
  * First block created with "Add block" link
  */
-#block-block-1 {}
-
 /*
  * "Recent blog posts" block
  */
-#block-blog-recent {}
-
 /*
  * "Book navigation" block for the current book's table of contents
  */
-#block-book-navigation {}
-
 /*
  * "Recent comments" block
  */
-#block-comment-recent {}
-
 /*
  * "Active forum topics" block
  */
-#block-forum-active {}
-
 /*
  * "New forum topics" block
  */
-#block-forum-new {}
-
 /*
  * Language switcher block
  */
-#block-locale-language {}
-
 /*
  * Custom menu block
  */
-#block-menu-menu-NAME {}
-
 /*
  * "Recent content" block
  */
-#block-node-recent {}
-
 /*
  * "Syndicate" block for primary RSS feed; see also page.css's .feed-icon
  */
-#block-node-syndicate {}
-
 /*
  * "Most recent poll" block
  */
-#block-poll-recent {}
-
 /*
  * "Author information" block for the profile of the page's author
  */
-#block-profile-author-information {}
-
 /*
  * "Search form" block
  */
-#block-search-form {}
-
 /*
  * "Shortcuts" block
  */
-#block-shortcut-shortcuts {}
-
 /*
  * "Popular content" block
  */
-#block-statistics-popular {}
-
 /*
  * "Main menu" block
  */
-#block-system-main-menu {}
-
 /*
  * "Management" block for Drupal management menu
  */
-#block-system-management {}
-
 /*
  * "Navigation" block for Drupal navigation menu
  */
-#block-system-navigation {}
-
 /*
  * "User menu" block for Drupal user menu
  */
-#block-system-user-menu {}
-
 /*
  * "System help" block
  */
-#block-system-help {}
-
 /*
  * "Main page content" block
  */
-#block-system-main {}
-
 /*
  * "Powered by Drupal" block
  */
-#block-system-powered-by {}
-
 /*
  * "User login form" block
  */
-#block-user-login {}
-
 /*
  * "Who's new" block for a list of the newest users
  */
-#block-user-new {}
-
 /*
  * "Who's online" block for a list of the online users
  */
-#block-user-online {}
-
-
 /* =============================================================================
  *   Node Styling
  * ========================================================================== */
-
 .node {
   margin-bottom: 20px;
 }
-
-.node.node-promoted {}
-
-.node.node-sticky {}
-
-.node.node-by-viewer {}
-
-.node.node-teaser {}
-
-.node.node-full {}
-
-.node.odd {}
-
-.node.even {}
 
 .node .node-title {
   margin: 0;
   line-height: 50px;
 }
-h2.pane-title {
- 
-}
-.node .user-picture {}
-
-.node .submitted {}
-
-.node .submitted .username {}
-
-.node .submitted time {}
-
-.node .node-content {}
-
-.node ul.links {}
-
-.node ul.links li {}
-
-.node ul.links li a {}
-
-.node ul.links li.node-read-more a {}
-
-.node ul.links li.comment-add a {}
-
-.node ul.links li.comment-comments a {}
-
-.node ul.links li.comment-new-comments a {}
-
-.node ul.links li.blog-sernames-blog a {}
-
-.node ul.links li.print-html a {}
-
-.node ul.links li.print-email a {}
-
-.node ul.links li.print-pdf a {}
-
-.preview .node {}
 
 /*
  * All nodes are given a node-FOO class that describes the type of content that
  * it is. If you create a new content type called "my-custom-type", it will
  * receive a "node-my-custom-type" class.
  */
-.node-page {}
-
-.node-article {}
-
-.node-book {}
-
-.node-forum {}
-
-.node-poll {}
-
-
 /* =============================================================================
  *   Comment Styling - Comments, comment wrapper, comment form
  * ========================================================================== */
-
 /*
  * Wrapper for the list of comments and its titles
  */
 #comments {
   margin: 1.5em 0;
 }
-
-#comments h2 {}
 
 #comments h2.comment-title {
   margin: 0;
@@ -1377,29 +762,9 @@ h2.pane-title {
   margin-bottom: 10px;
 }
 
-.comment.first {}
-
-.comment.last {}
-
-.comment.odd {}
-
-.comment.even {}
-
-.comment .user-picture {}
-
-.comment .submitted {}
-
-.comment .submitted p {}
-
-.comment .submitted .username {}
-
 .comment .submitted time {
-	float: right;
+  float: right;
 }
-
-.comment .user-signature {}
-
-.comment ul.links {}
 
 /*
  * Comment title
@@ -1407,28 +772,6 @@ h2.pane-title {
 .comment-title {
   margin: 0;
 }
-
-/*
- * Comment states
- */
-.comment-new {}
-
-.comment-by-anonymous {}
-
-.comment-by-node-author {}
-
-.comment-by-viewer {}
-
-.comment-title-hidden {}
-
-.comment-with-picture {}
-
-.comment-with-signature {}
-
-/*
- * Preview of the comment before submitting new or updated comment
- */
-.comment-preview {}
 
 /*
  * "New" marker for comments that are new for the current user
@@ -1444,16 +787,12 @@ h2.pane-title {
   margin-left: 40px;
 }
 
-
 /* =============================================================================
  *   Forms
  * ========================================================================== */
-
 /*
  * Wrapper for a form element (or group of form elements) and its label
  */
-.form-item {}
-
 .form-item input.error,
 .form-item textarea.error,
 .form-item select.error {
@@ -1463,8 +802,6 @@ h2.pane-title {
 .form-item label {
   font-weight: 700;
 }
-
-.form-item label.option {}
 
 /*
  * Highlight marks and form required mark
@@ -1478,14 +815,6 @@ h2.pane-title {
   font-size: 0.85em;
 }
 
-.form-checkboxes .form-item,
-.form-radios .form-item {}
-
-/*
- * The submit button
- */
-.form-submit {}
-
 .container-inline div,
 .container-inline label {
   display: inline;
@@ -1498,14 +827,6 @@ fieldset {
   border: 1px solid #ccc;
 }
 
-/*
- * Tips for Drupal's input formats
- */
-.tips {}
-
-/*
- * Buttons used by contrib modules like Media
- */
 a.button {
   -webkit-appearance: button;
   -moz-appearance: button;
@@ -1520,11 +841,9 @@ a.button {
   margin: 0;
 }
 
-
 /* =============================================================================
  *   Tables
  * ========================================================================== */
-
 table {
   margin: 10px 0;
   padding: 0;
@@ -1559,7 +878,6 @@ td {
 thead tr {
   font-weight: 700;
   background-color: #e5e5e5;
-
 }
 
 td,
@@ -1568,8 +886,6 @@ th {
   margin: 0;
   padding: 5px 7px;
 }
-
-tbody {}
 
 tbody tr {
   border-top: 1px solid #ccc;
@@ -1586,10 +902,6 @@ tr:nth-child(2n+2) {
   background-color: #f5f5f5;
 }
 
-tr.drag {}
-
-tr.drag-previous {}
-
 tr.odd td.active {
   background-color: #eee;
 }
@@ -1598,23 +910,10 @@ tr.even td.active {
   background-color: #ebebeb;
 }
 
-.lt-ie8 tr {}
-
-.lt-ie8 tr.even,
-.lt-ie8 tr.odd {}
-
-.lt-ie8 tr.even th,
-.lt-ie8 tr.even td,
-.lt-ie8 tr.odd th,
-.lt-ie8 tr.odd td {
-}
-
 /*
  * Forum tables
  * Core sets white-space to nowrap, which makes no sense
  */
-#forum td {}
-
 #forum td .created,
 #forum td .posts,
 #forum td .topics,
@@ -1624,11 +923,9 @@ tr.even td.active {
   white-space: normal;
 }
 
-
 /* =============================================================================
  *   Messages
  * ========================================================================== */
-
 /* Left and right margin are set by the global gutter width */
 div.messages {
   margin-bottom: 10px;
@@ -1638,28 +935,6 @@ div.messages ul {
   margin-top: 0;
   margin-bottom: 0;
 }
-
-div.status {}
-
-div.warning {}
-
-tr.warning {}
-
-div.error,
-tr.error {}
-
-.error {}
-
-.warning {}
-
-/*
- * Unpublished nodes
- */
-.node-unpublished,
-.comment-unpublished {}
-
-.node-unpublished,
-.comment-unpublished {}
 
 .node-unpublished p.unpublished,
 .comment-unpublished p.unpublished {
@@ -1678,22 +953,14 @@ tr.error {}
   word-wrap: break-word;
 }
 
-/*
- * Otherwise these elements will appear below the "Unpublished" text
- */
-.lt-ie8 {}
-
 .lt-ie8 .node-unpublished > *,
 .lt-ie8 .comment-unpublished > * {
   position: relative;
 }
 
-
 /* =============================================================================
  *    Maintenance pages
  * ========================================================================== */
-
-.maintenance-page {}
 .maintenance-page .container {
   padding: 40px 0;
 }
@@ -1702,8 +969,6 @@ tr.error {}
 .maintenance-page #page-title {
   margin: 0;
 }
-
-.db-offline {}
 
 .db-offline .container {
   margin: 0 auto;
@@ -1720,11 +985,9 @@ tr.error {}
   padding: 20px 0;
 }
 
-
 /* =============================================================================
  *   Misc overrides for contrib modules
  * ========================================================================== */
-
 /*
  * Admin menu overrides
  */
@@ -1756,14 +1019,12 @@ tr.error {}
 }
 
 input.form-text, textarea.form-textarea, select.form-select {
-    border: 1px solid #CCCCCC;
+  border: 1px solid #CCCCCC;
 }
-
 
 /*
  *  Buttons
  */
-
 input.form-submit,
 a.button {
   cursor: pointer;
@@ -1771,13 +1032,15 @@ a.button {
   font-weight: normal;
   text-align: center;
   margin-bottom: 1em;
-  margin-right: 0.6em; /* LTR */
+  margin-right: 0.6em;
+  /* LTR */
   padding: 4px 17px;
   -khtml-border-radius: 15px;
   -moz-border-radius: 20px;
   -webkit-border-radius: 15px;
   border-radius: 15px;
 }
+
 a.button:link,
 a.button:visited,
 a.button:hover,
@@ -1787,8 +1050,9 @@ a.button:active {
 }
 
 .panel-flexible .panel-separator {
-    margin: 0 0 0.6em;
+  margin: 0 0 0.6em;
 }
-.item-list ul li{
-	margin: 0;
+
+.item-list ul li {
+  margin: 0;
 }

@@ -58,7 +58,9 @@ function field_features_export($data, &$export, $module_name = '') {
       else {
         $export['features']['field'][$identifier] = $identifier;
         $export['dependencies'][$field['field_config']['module']] = $field['field_config']['module'];
-        $export['dependencies'][$field['field_config']['storage']['module']] = $field['field_config']['storage']['module'];
+        if ($field['field_config']['storage']['type'] != variable_get('field_storage_default', 'field_sql_storage')) {
+          $export['dependencies'][$field['field_config']['storage']['module']] = $field['field_config']['storage']['module'];
+        }
         $export['dependencies'][$field['field_instance']['widget']['module']] = $field['field_instance']['widget']['module'];
         foreach ($field['field_instance']['display'] as $key => $display) {
           if (isset($display['module'])) {
@@ -212,15 +214,7 @@ function features_field_load($identifier) {
     unset($field_info['id']);
     unset($field_info['bundles']);
     unset($instance_info['id']);
-    unset($instance_info['field_id']);    
-    // Fix weights that FieldAPI seems to store sometimes as integers and
-    // sometimes as strings. This prevents the feature incorrectly reporting
-    // as overridden and 'feature ping-pong'.
-    $instance_info['widget']['weight'] = (int) $instance_info['widget']['weight'];
-    foreach ($instance_info['display'] as &$view_mode_settings) {
-      $view_mode_settings['weight'] = (int) $view_mode_settings['weight'];
-    }
-
+    unset($instance_info['field_id']);
     return array(
       'field_config' => $field_info,
       'field_instance' => $instance_info,

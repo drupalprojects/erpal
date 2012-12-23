@@ -1,7 +1,9 @@
-.jstree-default li.filter_matching a{
+/* line 1, ../sass/tree.scss */
+.jstree-default li.filter_matching a {
   color: #000 !important;
 }
 
-.jstree-default li.no_filter_matching a{
+/* line 5, ../sass/tree.scss */
+.jstree-default li.no_filter_matching a {
   color: #999;
 }

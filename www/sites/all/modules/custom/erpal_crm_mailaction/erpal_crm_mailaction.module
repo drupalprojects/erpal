@@ -42,12 +42,12 @@ function erpal_crm_mailaction_permission(){
   
   return array(
     'config erpal crm mailaction' => array(
-      'title'       => t('Administer ERPAL mail action handler'), 
-      'description' => t('Perform administration tasks for ERPAL crm mail action module.'),
+      'title'       => t('Administer ERPAL email action handler'), 
+      'description' => t('Perform administration tasks for ERPAL crm email action module.'),
     ),
     'reply mails erpal crm mailaction' => array(
-      'title'       => t('Mail reply from node'), 
-      'description' => t('Shows a mailto reply link for the specific user..'),
+      'title'       => t('Email reply from node'), 
+      'description' => t('Allows the user to reply to emails and shows a reply link.'),
     ),
   );
 } 
@@ -58,7 +58,7 @@ function erpal_crm_mailaction_permission(){
 function erpal_crm_mailaction_cron () {
   
   if (! lock_acquire('erpal_crm_mailaction')) {
-    watchdog ('erpal_crm_mailaction', t('Can not run mail action cron. Because, of a concurrent cron process.'));
+    watchdog ('erpal_crm_mailaction', t('Can not run email action cron. Currently a cron process is running already.'));
     return;
   }
 
@@ -81,7 +81,7 @@ function _erpal_crm_mailaction_cron_page_wrapper () {
   
   erpal_crm_mailaction_cron ();
   
-  drupal_set_message (t('Mails were imported.'));
+  drupal_set_message (t('All emails have been imported.'));
   
   drupal_goto ('admin/erpal/crm-mailaction');
   
@@ -115,9 +115,17 @@ function erpal_crm_mailaction_boot () {
 
 /**
  * Creates an instance of the autoloader, configured for this module.
+ * 
+ * @return Autoloader   An object of the autoloader class.
  */
 function _erpal_crm_mailaction_load_autoloader () {
-
+  
+  static $autoloader = NULL;
+  
+  if ($autoloader != NULL) {
+    return $autoloader;
+  }
+  
   /*
    * This function will be called on hook_boot.
    * At this runtime level, it is not possible to get access to
@@ -125,7 +133,7 @@ function _erpal_crm_mailaction_load_autoloader () {
    */
   require_once 'inc/autoloading/Autoloader.class.inc';
   
-  new erpal_crm_mailaction\autoloading\Autoloader (
+  $autoloader = new erpal_crm_mailaction\autoloading\Autoloader (
     substr (
       __DIR__,
       strlen ($_SERVER['DOCUMENT_ROOT'] . '/')
@@ -134,6 +142,6 @@ function _erpal_crm_mailaction_load_autoloader () {
     'erpal_crm_mailaction'
   );
 
-  return;
+  return $autoloader;
 }
 

@@ -21,11 +21,11 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Advanced',
-    'weight' => '6',
+    'weight' => '4',
     'children' => array(
       0 => 'field_billing_duration',
-      1 => 'field_budget',
-      2 => 'field_date_time',
+      1 => 'field_date_time',
+      2 => 'field_budget',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -143,19 +143,20 @@ function feature_erpal_project_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Time information',
-    'weight' => '6',
+    'weight' => '18',
     'children' => array(
       0 => 'field_date',
       1 => 'field_estimated_time',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Time information',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_task_time_group|node|erpal_task|form'] = $field_group;
