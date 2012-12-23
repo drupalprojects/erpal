@@ -642,7 +642,7 @@ function _erpal_employee_helper_get_must_working_time($uid, $year, $month, &$mus
   //get all general working days
   $working_days = _erpal_employee_get_general_working_days($year, $month);
 
-  //calculate the time in seconds the user has to work according to his contract profile in this month but not on holidays
+  //calculate the time in hours the user has to work according to his contract profile in this month but not on holidays
   //but respect the start date in the contract as offset!
   $total_working_hours = 0;
 
