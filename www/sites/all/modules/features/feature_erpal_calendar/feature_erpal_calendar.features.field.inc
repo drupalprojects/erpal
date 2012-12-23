@@ -76,7 +76,7 @@ function feature_erpal_calendar_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => 1,
+        'weight' => '1',
       ),
     ),
   );
@@ -149,7 +149,7 @@ function feature_erpal_calendar_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => 31,
+        'weight' => '31',
       ),
     ),
   );
@@ -240,7 +240,7 @@ function feature_erpal_calendar_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => 32,
+        'weight' => '32',
       ),
     ),
   );
@@ -449,7 +449,7 @@ function feature_erpal_calendar_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 33,
+        'weight' => '33',
       ),
     ),
   );

@@ -65,7 +65,7 @@ function feature_erpal_employee_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => 1,
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -98,7 +98,7 @@ function feature_erpal_employee_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => 33,
+        'weight' => '33',
       ),
     ),
   );
@@ -191,7 +191,7 @@ function feature_erpal_employee_field_default_fields() {
           'year_range' => '-1:+1',
         ),
         'type' => 'date_popup',
-        'weight' => 35,
+        'weight' => '35',
       ),
     ),
   );
@@ -256,7 +256,7 @@ function feature_erpal_employee_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => 34,
+        'weight' => '34',
       ),
     ),
   );
@@ -307,7 +307,7 @@ function feature_erpal_employee_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 0,
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -328,7 +328,7 @@ function feature_erpal_employee_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 31,
+        'weight' => '31',
       ),
     ),
   );
