@@ -6,7 +6,7 @@
  */  
 
 module_load_include('inc', 'budget', 'budget.entity');   
- 
+
 /**
  * Implements hook_views_api().
  */
@@ -126,7 +126,7 @@ function budget_access($op, $budget = NULL, $account = NULL) {
  */
 function budget_theme() {
   //themes for our budget entity
-  require_once('budget.entity.inc');
+  module_load_include('inc', 'budget', 'budget.entity'); 
   $themes = _budget_entity_theme();
   return $themes;
 }  
