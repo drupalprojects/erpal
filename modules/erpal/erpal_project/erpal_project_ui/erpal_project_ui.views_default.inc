@@ -6558,12 +6558,13 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'nid_1' => 'nid_1',
     'title' => 'title',
-    'field_task_type_term' => 'field_task_type_term',
     'field_task_status_term' => 'field_task_status_term',
     'field_priority_term' => 'field_priority_term',
+    'field_task_type_term' => 'field_task_type_term',
     'created' => 'created',
     'changed' => 'changed',
     'field_date' => 'field_date',
+    'name' => 'name',
     'field_parent' => 'field_parent',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
@@ -6582,13 +6583,6 @@ function erpal_project_ui_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_task_type_term' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'field_task_status_term' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -6597,6 +6591,13 @@ function erpal_project_ui_views_default_views() {
       'empty_column' => 0,
     ),
     'field_priority_term' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_task_type_term' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -6618,6 +6619,13 @@ function erpal_project_ui_views_default_views() {
       'empty_column' => 0,
     ),
     'field_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
