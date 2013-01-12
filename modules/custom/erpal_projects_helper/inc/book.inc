@@ -20,8 +20,9 @@ function erpal_projects_helper_book_child_nodes($parent_node, $book_node, $optio
 
 /**
 * Return all Task children
+* @param $skipp_access if set all tasks are returned no matter if the user has access or not
 */
-function _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $nids_only) {
+function _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $nids_only, $skipp_access=false) {
   //we return all tasks that have the given parent_node as parent
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
@@ -29,6 +30,9 @@ function _erpal_projects_helper_get_tasks_child_nodes($parent_node, $options, $n
   ->propertyCondition('status', 1)
   ->fieldCondition('field_parent', 'target_id', $parent_node->nid, '=')
   ->fieldOrderBy('field_weight', 'value', 'ASC');
+  
+  if ($skipp_access)
+    $query->addMetaData('account', user_load(1)); // Run the query as user 1 to skipp access
 
   //set some default values
   if (!isset($options['ignore_exclude']['pdf']))

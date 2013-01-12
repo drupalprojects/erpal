@@ -3,12 +3,6 @@
  * @file
  * Code for the erpal_projects_helper module.
  */
-
-
-/**
-* Implements hook_init
-*/
-function erpal_projects_helper_init() {
   module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
   module_load_include('inc', 'erpal_projects_helper', 'inc/tasks');
   module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
@@ -22,6 +16,11 @@ function erpal_projects_helper_init() {
   module_load_include('inc', 'erpal_projects_helper', 'inc/notifications');
   module_load_include('inc', 'erpal_projects_helper', 'inc/token');
   module_load_include('inc', 'erpal_projects_helper', 'inc/theme');
+
+/**
+* Implements hook_init
+*/
+function erpal_projects_helper_init() {
 
   $mod_path = drupal_get_path('module', 'erpal_projects_helper');
   $css_path = $mod_path.'/erpal_projects_helper.css';

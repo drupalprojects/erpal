@@ -29,6 +29,24 @@ function _erpal_configure_layout(&$context){
   variable_set('site_frontpage', 'user/login');
   variable_set('panels_everywhere_site_template_enabled', TRUE);
   variable_set('front_page_enable', TRUE);
+  
+  ///set front page dashboard of front page module
+  //get rid for authenticated user
+  $query = db_select('role', 'r')
+    ->fields('r', array('rid'))
+    ->condition('r.name', 'authenticated user')
+    ->execute();
+  $rid = $query->fetchAssoc();
+  $rid = $rid['rid'];
+             
+  db_merge('front_page')
+    ->key(array('rid' => $rid))
+    ->fields(array(
+      'mode' => 'alias',
+      'data' => 'dashboard',
+      'filter_format' => '',
+    ))
+    ->execute();
 }
 
 /**
