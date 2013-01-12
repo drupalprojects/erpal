@@ -2,7 +2,7 @@
 |                                            |
 |        Erpal makefile installation         |
 |                                            |
-|	2013, Bright Solutions GmbH, Germany     |
+|   2013, Bright Solutions GmbH, Germany     |
 ----------------------------------------------
 
 How to install Erpal using drush make:
