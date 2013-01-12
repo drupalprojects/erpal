@@ -665,7 +665,7 @@ thead tr {
 }
 
 tr {
-  font-weight: 700;
+  /*font-weight: 700;*/
   background-color: #e5e5e5;
 }
 tr.odd {

@@ -1284,120 +1284,6 @@ function erpal_project_ui_views_default_views() {
     ),
   );
 
-  /* Display: Projects and tasks reference dialog search */
-  $handler = $view->new_display('references_dialog', 'Projects and tasks reference dialog search', 'references_dialog_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Projects and tasks';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
-  $handler->display->display_options['relationships']['field_project_ref_target_id']['table'] = 'field_data_field_project_ref';
-  $handler->display->display_options['relationships']['field_project_ref_target_id']['field'] = 'field_project_ref_target_id';
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Field: Customer */
-  $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
-  $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
-    'link' => 0,
-  );
-  /* Field: Content: Type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'node';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'erpal_project' => 'erpal_project',
-    'erpal_task' => 'erpal_task',
-  );
-  /* Filter criterion: Field: Customer (field_customer_ref) */
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-  );
-  /* Filter criterion: Content: Title */
-  $handler->display->display_options['filters']['title']['id'] = 'title';
-  $handler->display->display_options['filters']['title']['table'] = 'node';
-  $handler->display->display_options['filters']['title']['field'] = 'title';
-  $handler->display->display_options['filters']['title']['operator'] = 'allwords';
-  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
-  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
-  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-  );
-  /* Filter criterion: Content: Project (field_project_ref) */
-  $handler->display->display_options['filters']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
-  $handler->display->display_options['filters']['field_project_ref_target_id']['table'] = 'field_data_field_project_ref';
-  $handler->display->display_options['filters']['field_project_ref_target_id']['field'] = 'field_project_ref_target_id';
-  $handler->display->display_options['filters']['field_project_ref_target_id']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['operator_id'] = 'field_project_ref_target_id_op';
-  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['label'] = 'Tasks by project';
-  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['operator'] = 'field_project_ref_target_id_op';
-  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['identifier'] = 'field_project_ref_target_id';
-  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_project_ref_target_id']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-  );
-  $handler->display->display_options['attach'] = array(
-    0 => 'field_collection_item:field_budget_destination:field_budget_booking',
-  );
-
   /* Display: Projects pane */
   $handler = $view->new_display('panel_pane', 'Projects pane', 'panel_pane_2');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
@@ -6558,12 +6444,13 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'nid_1' => 'nid_1',
     'title' => 'title',
-    'field_task_type_term' => 'field_task_type_term',
     'field_task_status_term' => 'field_task_status_term',
     'field_priority_term' => 'field_priority_term',
+    'field_task_type_term' => 'field_task_type_term',
     'created' => 'created',
     'changed' => 'changed',
     'field_date' => 'field_date',
+    'name' => 'name',
     'field_parent' => 'field_parent',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
@@ -6582,13 +6469,6 @@ function erpal_project_ui_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_task_type_term' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'field_task_status_term' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -6597,6 +6477,13 @@ function erpal_project_ui_views_default_views() {
       'empty_column' => 0,
     ),
     'field_priority_term' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_task_type_term' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -6618,6 +6505,13 @@ function erpal_project_ui_views_default_views() {
       'empty_column' => 0,
     ),
     'field_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',

@@ -9,17 +9,20 @@
  * Implements hook_install().
  */
 function date_item_calendar_install() {
+  try {
+    // create all the fields we are adding to our entity
+    foreach (_date_item_calendar_fields() as $field) {
+      field_create_field($field);
+    }
 
-  // create all the fields we are adding to our entity
-  foreach (_date_item_calendar_fields() as $field) {
-    field_create_field($field);
-  }
-
-  // create all the instances for our fields
-  foreach (_date_item_calendar_instances() as $instance) {
-    $instance['entity_type'] = 'date_item';
-    $instance['bundle'] = 'simple_date';
-    field_create_instance($instance);
+    // create all the instances for our fields
+    foreach (_date_item_calendar_instances() as $instance) {
+      $instance['entity_type'] = 'date_item';
+      $instance['bundle'] = 'simple_date';
+      field_create_instance($instance);
+    }
+  } catch (Exception $e) {
+    //may be set some information here if this fails
   }
 }
 
