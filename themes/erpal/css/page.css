@@ -61,35 +61,35 @@ body #erpal_wrapper > .panel-col-first > .inside {
 }
 body.page-node-tasks {
   /*----------begin node task-----------*/
+    /*.content-inner {
+	  border-bottom: 1px solid $bright_grey; commentlk: same color as background?! why is it even there?! 
+	}*/
+  /*.region-sidebar-left {
+    max-width: 620px; commentlk: why is it smaller than on other pages?
+  }*/
+  	/*.region-sidebar-right {
+  	  padding: 10px;
+  	  width: 380px; commentlk: why is it bigger than on other pages?
+      }*/
 }
 body.page-node-tasks li {
   list-style-type: none;
 }
-body.page-node-tasks .content-inner {
-  border-bottom: 1px solid #e5e5e5;
-}
-body.page-node-tasks .region-sidebar-left {
-  max-width: 620px;
-}
-body.page-node-tasks .region-sidebar-right {
-  padding: 10px;
-  width: 380px;
-}
 body.page-node-tickets {
   /*----------begin node ticket-----------*/
+                                         /*.content-inner {
+  border-bottom: 1px solid $bright_grey; /* lk: same color as background?! why is it even there?! 
+}*/
+  /*.region-sidebar-left {
+    max-width: 620px; commentlk: why is it smaller than on other pages?
+  }*/
+  /*.region-sidebar-right {
+    padding: 10px;
+    width: 380px; commentlk: why is it bigger than on other pages?
+  }*/
 }
 body.page-node-tickets li {
   list-style-type: none;
-}
-body.page-node-tickets .content-inner {
-  border-bottom: 1px solid #e5e5e5;
-}
-body.page-node-tickets .region-sidebar-left {
-  max-width: 620px;
-}
-body.page-node-tickets .region-sidebar-right {
-  padding: 10px;
-  width: 380px;
 }
 body .inline_fields {
   clear: both;
@@ -239,6 +239,7 @@ body #user-login input.form-text {
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
+/*----------begin .pane-page-content -------------*/
 .pane-page-content {
   margin-top: 30px;
   margin-right: 20px;
@@ -300,6 +301,7 @@ body #user-login input.form-text {
   text-decoration: underline;
 }
 
+/*----------end .pane-page-content -------------*/
 /*----------begin comments------------------------*/
 .comment {
   padding-top: 15px;
@@ -393,74 +395,75 @@ body #user-login input.form-text {
 }
 
 /*----------------end alert completed-----------------*/
-.region-sidebar-left {
+/*.region-sidebar-left,*/
+.erpal-content-left {
   /*----------------begin side-bar-left-----------------*/
   max-width: 800px;
   min-width: 360px;
   width: 100%;
   float: left;
 }
-.region-sidebar-left.single-row {
+.erpal-content-left.single-row {
   max-width: 100% !important;
 }
-.region-sidebar-left #mini-panel-contact_details_panel {
+.erpal-content-left #mini-panel-contact_details_panel {
   margin-top: 2px;
 }
-.region-sidebar-left .quicktabs-tabpage .columns-inner {
+.erpal-content-left .quicktabs-tabpage .columns-inner {
   margin-bottom: 12px;
 }
-.region-sidebar-left .quicktabs-tabpage .views-table .views-field-title {
+.erpal-content-left .quicktabs-tabpage .views-table .views-field-title {
   width: 115px;
 }
-.region-sidebar-left .quicktabs-tabpage .views-field-field-task-status-term {
+.erpal-content-left .quicktabs-tabpage .views-field-field-task-status-term {
   width: 70px;
 }
-.region-sidebar-left .quicktabs-tabpage .content-column .content-inner {
+.erpal-content-left .quicktabs-tabpage .content-column .content-inner {
   padding: 10px;
   overflow: hidden;
 }
-.region-sidebar-left .quicktabs-tabpage .field-label {
+.erpal-content-left .quicktabs-tabpage .field-label {
   margin: 0px !important;
   padding-right: 5px;
 }
-.region-sidebar-left .quicktabs-tabpage .field-group-format section.field {
+.erpal-content-left .quicktabs-tabpage .field-group-format section.field {
   overflow: hidden;
   clear: both;
 }
-.region-sidebar-left .quicktabs-tabpage .field-name-files-count .field-items,
-.region-sidebar-left .quicktabs-tabpage .field-name-comment-count .field-items {
+.erpal-content-left .quicktabs-tabpage .field-name-files-count .field-items,
+.erpal-content-left .quicktabs-tabpage .field-name-comment-count .field-items {
   padding-top: 5px;
   width: 50%;
 }
-.region-sidebar-left .quicktabs-tabpage .view-mode-view_row_details .field-label,
-.region-sidebar-left .quicktabs-tabpage .view-mode-view_row_details .field-items,
-.region-sidebar-left .quicktabs-tabpage .region-sidebar-right .field-name-task-customer-node div,
-.region-sidebar-left .quicktabs-tabpage .region-sidebar-right .field-name-task-customer-node div,
-.region-sidebar-left .quicktabs-tabpage .field-collection-item-field-pricing .field-label,
-.region-sidebar-left .quicktabs-tabpage .field-collection-item-field-pricing .field-items {
+.erpal-content-left .quicktabs-tabpage .view-mode-view_row_details .field-label,
+.erpal-content-left .quicktabs-tabpage .view-mode-view_row_details .field-items,
+.erpal-content-left .quicktabs-tabpage .region-sidebar-right .field-name-task-customer-node div,
+.erpal-content-left .quicktabs-tabpage .region-sidebar-right .field-name-task-customer-node div,
+.erpal-content-left .quicktabs-tabpage .field-collection-item-field-pricing .field-label,
+.erpal-content-left .quicktabs-tabpage .field-collection-item-field-pricing .field-items {
   padding-right: 5px;
   float: left;
 }
-.region-sidebar-left .quicktabs-tabpage #edit-nid {
+.erpal-content-left .quicktabs-tabpage #edit-nid {
   width: 40px;
 }
-.region-sidebar-left .quicktabs-tabpage #edit-title {
+.erpal-content-left .quicktabs-tabpage #edit-title {
   width: 120px;
 }
-.region-sidebar-left .quicktabs-tabpage #edit-field-priority-term-tid {
+.erpal-content-left .quicktabs-tabpage #edit-field-priority-term-tid {
   width: 75px;
 }
-.region-sidebar-left .quicktabs-tabpage #edit-field-task-type-term-tid {
+.erpal-content-left .quicktabs-tabpage #edit-field-task-type-term-tid {
   width: 60px;
 }
-.region-sidebar-left ul.quicktabs-tabs {
+.erpal-content-left ul.quicktabs-tabs {
   margin: 0;
   padding-left: 0;
   background: none;
   overflow: hidden;
   border: none;
 }
-.region-sidebar-left ul.quicktabs-tabs li {
+.erpal-content-left ul.quicktabs-tabs li {
   margin: 0px;
   padding: 0px;
   float: left;
@@ -469,16 +472,16 @@ body #user-login input.form-text {
   border-top: 1px solid #eeeeee;
   border-left: 1px solid #eeeeee;
 }
-.region-sidebar-left ul.quicktabs-tabs li.active {
+.erpal-content-left ul.quicktabs-tabs li.active {
   background-color: #f6f6f6 !important;
 }
-.region-sidebar-left ul.quicktabs-tabs li.active a {
+.erpal-content-left ul.quicktabs-tabs li.active a {
   color: #525252 !important;
 }
-.region-sidebar-left ul.quicktabs-tabs li.last {
+.erpal-content-left ul.quicktabs-tabs li.last {
   border-right: 1px solid #eeeeee;
 }
-.region-sidebar-left ul.quicktabs-tabs li a {
+.erpal-content-left ul.quicktabs-tabs li a {
   padding: 1px 12px;
   font-size: 12px;
   font-weight: bold;
@@ -488,19 +491,20 @@ body #user-login input.form-text {
   min-width: 100px;
   color: #888888;
 }
-.region-sidebar-left ul .field-name-task-title .field-item a {
+.erpal-content-left ul .field-name-task-title .field-item a {
   font-weight: bold;
   font-size: 16px;
 }
-.region-sidebar-left ul .field-name-task-title .field-item p {
+.erpal-content-left ul .field-name-task-title .field-item p {
   margin-bottom: 0px;
 }
-.region-sidebar-left .region-sidebar-right section.field {
+.erpal-content-left .region-sidebar-right section.field {
   overflow: hidden;
 }
 
 /*----------------end side-bar-left-----------------*/
-.region-sidebar-right {
+/*.region-sidebar-right,*/
+.erpal-content-right {
   /*----------------begin side-bar-right-----------------*/
   margin-left: 10px;
   width: 250px;
@@ -508,22 +512,22 @@ body #user-login input.form-text {
   color: #202020;
   /*----------------end side-bar-right-----------------*/
 }
-.region-sidebar-right .local_tasks_menu .local_tasks {
+.erpal-content-right .local_tasks_menu .local_tasks {
   position: absolute;
   width: 248px;
   z-index: 10;
 }
-.region-sidebar-right .local_tasks {
+.erpal-content-right .local_tasks {
   margin-top: 2px;
   margin-bottom: 0px;
   padding: 0px;
   list-style-type: none;
 }
-.region-sidebar-right .local_tasks li {
+.erpal-content-right .local_tasks li {
   margin: 0 2px 7px;
   list-style-type: none;
 }
-.region-sidebar-right .local_tasks li a {
+.erpal-content-right .local_tasks li a {
   padding-top: 5px;
   padding-bottom: 6px;
   display: block;
@@ -545,31 +549,31 @@ body #user-login input.form-text {
   font-size: 13px;
   font-weight: bold;
 }
-.region-sidebar-right .local_tasks li a:hover {
+.erpal-content-right .local_tasks li a:hover {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
   background-image: -webkit-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
   background-image: -moz-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
   background-image: -o-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
   background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
 }
-.region-sidebar-right .local_tasks li ul {
+.erpal-content-right .local_tasks li ul {
   display: none;
 }
-.region-sidebar-right .content-inner {
+.erpal-content-right .content-inner {
   padding-bottom: 30px;
   clear: both;
   max-width: 1100px;
   min-width: 1100px;
   overflow: hidden;
 }
-.region-sidebar-right .panel-separator {
+.erpal-content-right .panel-separator {
   display: none;
 }
-.region-sidebar-right .ctools-collapsible-container {
+.erpal-content-right .ctools-collapsible-container {
   background-color: #dedede;
   border: 1px solid #eeeeee;
 }
-.region-sidebar-right .ctools-collapsible-container figure {
+.erpal-content-right .ctools-collapsible-container figure {
   text-align: center;
 }
 

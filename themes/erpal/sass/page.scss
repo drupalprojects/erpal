@@ -19,37 +19,38 @@ body {
       height: $value100;
 	  @include box-shadow($dark_grey 1px 2px 2px);
 	}
+	
   }
   &.page-node-tasks { /*----------begin node task-----------*/
     li{
-	   list-style-type: none;
-	  } 
-    .content-inner {
-	  border-bottom: 1px solid $bright_grey;
-	}
-	.region-sidebar-left {
-	  max-width: 620px;
-	}
-	.region-sidebar-right {
+	  list-style-type: none;
+	} 
+    /*.content-inner {
+	  border-bottom: 1px solid $bright_grey; commentlk: same color as background?! why is it even there?! 
+	}*/
+	/*.region-sidebar-left {
+	  max-width: 620px; commentlk: why is it smaller than on other pages?
+	}*/
+	/*.region-sidebar-right {
 	  padding: 10px;
-	  width: 380px;
-	}
+	  width: 380px; commentlk: why is it bigger than on other pages?
+    }*/
   } /*----------end node task-----------*/
 	
   &.page-node-tickets { /*----------begin node ticket-----------*/
     li {
 	  list-style-type: none;
 	} 
-    .content-inner {
-	  border-bottom: 1px solid $bright_grey;
-	}
-	.region-sidebar-left {
-	  max-width: 620px;
-	}
-	.region-sidebar-right {
+    /*.content-inner {
+	  border-bottom: 1px solid $bright_grey; /* lk: same color as background?! why is it even there?! 
+	}*/
+	/*.region-sidebar-left {
+	  max-width: 620px; commentlk: why is it smaller than on other pages?
+	}*/
+	/*.region-sidebar-right {
 	  padding: 10px;
-	  width: 380px;
-	}
+	  width: 380px; commentlk: why is it bigger than on other pages?
+	}*/
   } /*----------end node ticket-----------*/
   .inline_fields {
     clear: both;
@@ -195,8 +196,10 @@ body {
 /* =============================================================================
  *   Middle region
  * ========================================================================== */
-.pane-page-content {
-  margin:{
+
+ /*----------begin .pane-page-content -------------*/
+ .pane-page-content { 
+  margin: {
 	top: 30px;
 	right: 20px;
 	left: 30px;
@@ -205,7 +208,7 @@ body {
   .content-inner {
     clear: both;
   }
-  .pane-page-title.block{
+  .pane-page-title.block {
 	margin-bottom: 0;
   }
   .panel-2col-stacked {
@@ -219,43 +222,43 @@ body {
 	.inside {
 	  margin: 0 !important;
 	  .inside {
-		  background: none;
-		  border: none;
-		}
+		background: none;
+		border: none;
 	  }
 	}
-	h2{
-	  &.pane-title{
-	    @include headline(36px, 36px, 20px, normal);
-	  }
+  }
+  h2 {
+    &.pane-title {
+	  @include headline(36px, 36px, 20px, normal);
 	}
-	.rel-register-build {
-	  padding: 10px;
-	  @include border-radius(8px 8px 0 0);
-	  .views-exposed-widgets {
-	    margin-bottom: 0px;
-	  }
+  }
+  .rel-register-build {
+	padding: 10px;
+	@include border-radius(8px 8px 0 0);
+	.views-exposed-widgets {
+	  margin-bottom: 0px;
 	}
-	.views-table {
-	  margin-top: 0;
-	  border: none;
-	  th {
-	    padding: 15px 15px 15px 12px;
-	    font-size: 14px;
-	  }
-	  td{
-	    padding: 15px 15px 15px 12px;
-		&.views-field-title{
-		  a {
-		    text-decoration: underline;
-		  }
-		}
-		&.views-field-field-customer-ref {
+  }
+  .views-table {
+	margin-top: 0;
+	border: none;
+	th {
+	  padding: 15px 15px 15px 12px;
+	  font-size: 14px;
+	}
+	td {
+	  padding: 15px 15px 15px 12px;
+	  &.views-field-title {
+		a {
 		  text-decoration: underline;
 		}
 	  }
+	  &.views-field-field-customer-ref {
+		text-decoration: underline;
+	  }
 	}
-}
+  }
+} /*----------end .pane-page-content -------------*/
 
  /*----------begin comments------------------------*/
 .comment { 
@@ -271,11 +274,11 @@ body {
 	}
   }
   .comment-header {
-	  padding: {
-	    right: 10px;
-		left: 15px;
-	  }
-	  float: left;
+	padding: {
+	  right: 10px;
+	  left: 15px;
+	}
+	float: left;
   }
   .submitted {
 	padding-right: 15px;
@@ -308,45 +311,46 @@ body {
     padding: 0 15px;
 	clear: both;
   }
-} 
+} /*----------end comments------------------------*/	
 
-/*----------end comments------------------------*/	
+
 .view-filters .rel-register-build  {
   background-color: $light_grey;
-  .views-exposed-widget .rel-register-link{
+  .views-exposed-widget .rel-register-link {
     padding-top: 12px;
 	padding-right: 20px;
 	float: left;
- }
+  }
 }
-  .alert { /*----------------begin red alert-----------------*/
-    .field-name-field-task-status-term,
-	.field_item .field-name-field-date,
-    .views-field-field-date,
-    .field-item,
-    .views-field-field-date-1,
-    .views-field-field-next-contact,
-    .views-field-field-task-status-term,
-    .views-field-field-project-status-term,
-    .views-field-field-activity-status-term {
-	  color: $red;
-	}
-  }  /*----------------end red alert-----------------*/
-  .completed { /*----------------begin alert completed-----------------*/
-    .field-name-field-task-status-term,
-    .field-name-field-completed,
-    .field-item,
-    .views-field-field-date,
-    .views-field-field-date-1,
-    .views-field-field-next-contact,
-    .views-field-field-task-status-term,
-    .views-field-field-project-status-term,
-    .views-field-field-activity-status-term	{
-		  color: $green;
-	}
-  }   /*----------------end alert completed-----------------*/
+.alert { /*----------------begin red alert-----------------*/
+  .field-name-field-task-status-term,
+  .field_item .field-name-field-date,
+  .views-field-field-date,
+  .field-item,
+  .views-field-field-date-1,
+  .views-field-field-next-contact,
+  .views-field-field-task-status-term,
+  .views-field-field-project-status-term,
+  .views-field-field-activity-status-term {
+	color: $red;
+  }
+}  /*----------------end red alert-----------------*/
+.completed { /*----------------begin alert completed-----------------*/
+  .field-name-field-task-status-term,
+  .field-name-field-completed,
+  .field-item,
+  .views-field-field-date,
+  .views-field-field-date-1,
+  .views-field-field-next-contact,
+  .views-field-field-task-status-term,
+  .views-field-field-project-status-term,
+  .views-field-field-activity-status-term	{
+    color: $green;
+  }
+}   /*----------------end alert completed-----------------*/
 
-.region-sidebar-left{ /*----------------begin side-bar-left-----------------*/
+/*.region-sidebar-left,*/
+.erpal-content-left { /*----------------begin side-bar-left-----------------*/
   max-width: 800px;
   min-width: 360px;
   width: $value100;
@@ -358,8 +362,8 @@ body {
 	margin-top: 2px;
   }
   .quicktabs-tabpage {
-   .columns-inner{
-	margin-bottom: 12px;
+    .columns-inner {
+  	  margin-bottom: 12px;
     }
 	.views-table .views-field-title {
 	   width: 115px;
@@ -380,7 +384,7 @@ body {
 	  clear: both;
 	}
 	.field-name-files-count .field-items,
-    .field-name-comment-count .field-items{
+    .field-name-comment-count .field-items {
 	  padding-top: 5px;
 	  width: 50%;
     }
@@ -406,7 +410,7 @@ body {
 	  width: 60px;
     }
   }
-  ul{
+  ul {
 	&.quicktabs-tabs {
 	  margin: 0;
 	  padding-left: 0;
@@ -440,17 +444,17 @@ body {
 		  color: $dark_grey;
 	    }
 	  }
-   }
-  .field-name-task-title  {
-    .field-item a{
-	  font-weight: bold;
-	  font-size: 16px;
     }
-	.field-item p{
-	  margin-bottom: 0px;
+    .field-name-task-title  {
+      .field-item a {
+	    font-weight: bold;
+	    font-size: 16px;
+      }
+  	  .field-item p{
+	    margin-bottom: 0px;
+      }
     }
   }
-}
   .region-sidebar-right {
     section {
 	  &.field {
@@ -459,67 +463,68 @@ body {
 	}
   }
 } /*----------------end side-bar-left-----------------*/
-.region-sidebar-right { /*----------------begin side-bar-right-----------------*/
+
+/*.region-sidebar-right,*/
+.erpal-content-right { /*----------------begin side-bar-right-----------------*/
   margin-left: 10px;
   width: 250px;
   float: right;
   color: $dark_black;
-  .local_tasks_menu .local_tasks{
+  .local_tasks_menu .local_tasks {
 	position: absolute;
 	width: 248px;
     z-index: 10;
   }
-  .local_tasks{
-	margin:{
+  .local_tasks {
+	margin: {
 	  top: 2px;
 	  bottom: 0px;
     };
     padding: 0px;
     list-style-type: none;
-    li{
+    li {
 	  margin: 0 2px 7px;
 	  list-style-type: none;
 	  a {
 	    padding: {
 	      top: 5px;
-		  bottom: 6px;
+	      bottom: 6px;
+	    }
+	    &:hover {
+	      @include background-image(linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%));
+	    }
+	    display: block;
+	    @include rounded_corners_10;
+	    @include box-shadow(0px 1px 3px rgba(50, 50, 50, 0.5));
+	    color: $grey;
+	    @include background-image(linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%));
+	    text-align: center;
+	    font-size: 13px;
+	    font-weight: bold;
 	  }
-	  &:hover {
-	    @include background-image(linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%));
+	  ul {
+	    display: none;
 	  }
-	  display: block;
-	  @include rounded_corners_10;
-	  @include box-shadow(0px 1px 3px rgba(50, 50, 50, 0.5));
-	  color: $grey;
-	  @include background-image(linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%));
-	  text-align: center;
-	  font-size: 13px;
-	  font-weight: bold;
-	}
-	ul {
-	  display: none;
-	}
-  } 
-}   /*----------------end side-bar-right-----------------*/
-.content-inner {
-  padding-bottom: 30px;
-  clear: both;
-  max-width: 1100px;
-  min-width: 1100px;
-  overflow: hidden;
-}
-.panel-separator {
-  display: none;
-}
-.ctools-collapsible-container {
-  figure {
-    text-align: center;
+    } 
+  }   /*----------------end side-bar-right-----------------*/
+  .content-inner {
+    padding-bottom: 30px;
+    clear: both;
+    max-width: 1100px;
+    min-width: 1100px;
+    overflow: hidden;
   }
-  background-color: $silver;
-  border: 1px solid $light_grey;
-}    
-}  
- /*----------------end erpal_content_layout-----------------------*/
+  .panel-separator {
+    display: none;
+  }
+  .ctools-collapsible-container {
+    figure {
+      text-align: center;
+    }
+    background-color: $silver;
+    border: 1px solid $light_grey;
+  }    
+} /*----------------end erpal_content_layout-----------------------*/
 
 /*----------------begin .panel-display-----------------------*/
 .panel-display {
@@ -560,8 +565,7 @@ body {
 	float: left;
 	background-color: $light_grey;
   }
-}
- /*----------------end panel-display-----------------------*/
+} /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
 .ctools-collapsible-processed  {
   .ctools-collapsible-handle {
@@ -675,6 +679,7 @@ body {
     }
   }
 }
+
 #mini-panel-activity_status_panel {
   padding: 10px 20px;
   @include rounded_corners_10;
@@ -692,13 +697,13 @@ body {
   }
 }
 
-.view-empty{
+.view-empty {
 	padding: 15px;
 }
 
 /*-------------------begin project page----------------------*/
 .page-projects {
-  .views-field-title{
+  .views-field-title {
 	width: 200px;
   }
   .views-field-field-customer-ref {
@@ -714,20 +719,20 @@ body {
   #edit-field-project-status-term-tid-wrapper {
     margin-left: 23px;
   }
-}
-/*-------------------end project page----------------------*/
+}/*-------------------end project page----------------------*/
+
 /*--------------------------------for erpal task view row layout------------------------------------------*/
 .erpal-task-view-row-layout {
   .region-sidebar-left {
 	width: 70%;
 	float: left;
   }
-  .region-sidebar-right{
+  .region-sidebar-right {
     margin-left: 20px;
     width: 28%;
 	float: left;
   }
-  .content-inner{
+  .content-inner {
 	margin-bottom: 20px;
 	clear: both;
 	max-width: 1100px;
@@ -736,22 +741,22 @@ body {
 }
 /*---------------ticket details-----------*/
 
-.node-erpal-task .columns-inner{
+.node-erpal-task .columns-inner {
 	@include border-radius(5px); 
 	background-color: $white;
 }
 
-.view-mode-view_row_details .content-inner{
+.view-mode-view_row_details .content-inner {
 	padding-bottom: 0px;
 }
-.pane-node-body{
-	padding: 20px;
-	min-height: 350px;
-	background-color: $white;
-	@include border-radius(5px); 
-	p {
-	  font-size: 16px;
-	}
+.pane-node-body {
+  padding: 20px;
+  min-height: 350px;
+  background-color: $white;
+  @include border-radius(5px); 
+  p {
+	font-size: 16px;
+  }
 }
 
 /*-----------------------begin projects-timetrackings--------------------*/
@@ -799,10 +804,10 @@ body {
 	fieldset {
       @include dist_zero;
 	  border: none;
-     .date-padding {
-       @include dist_zero;
-	   width: 270px;
-     }
+      .date-padding {
+        @include dist_zero;
+	    width: 270px;
+      }
     }
   }
   #edit-author--2 {
@@ -815,7 +820,7 @@ body {
 	table {
 	  width: 310px;
 	  input {
-	     width: 310px;
+	    width: 310px;
 	  }
 	}
   }

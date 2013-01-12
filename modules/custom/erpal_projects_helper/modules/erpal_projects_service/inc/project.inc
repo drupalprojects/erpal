@@ -11,44 +11,75 @@
  * @return object
  */
 function _erpal_projects_service_project_retrieve($id) {
-  $project_node = _erpal_projects_service_get_project($id, false);
+  $project_node = _erpal_projects_service_project_out($id,TRUE);
 
   return $project_node;
 }
 
 /**
 * Callback for returning a list of projects resprecting a given filter
-* @param $parameter are given in the URL as GET parameters. Possible keys in the array are
-* uids, the uids that are assigned to the tasks, only projects with assigned tasks are returned
-* task_states only projects that contain tasks with the given state are returned.
+* @param $start Deliver data from "start"th element, defaults to 0.
 */
-function _erpal_projects_service_project_index($parameters=array()) {
+function _erpal_projects_service_project_index($start=0, $count=PHP_INT_MAX, $changed_since=0, $details=false) {
+  dpm($changed_since);
+  dpm($details);
+  
   module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
 
-  $task_states = array();
-  $uids = array();
-  $changed = 0;
-  if (isset($parameters['uids']))
-    $uids = $parameters['uids'];
-  if (isset($parameters['states']))
-    $task_states = $parameters['states'];
-  if (isset($parameters['task_changed']))
-    $task_changed = $parameters['task_changed'];
-  if (isset($parameters['project_changed']))
-    $project_changed = $parameters['project_changed'];
-   
-  $projects = _erpal_projects_helper_get_projects_with_assigned_tasks($task_states, $uids, $task_changed, $project_changed);
-  
+  // $task_states = array();
+  // $uids = array();
+  // $changed = 0;
+  // if (isset($parameters['uids']))
+    // $uids = $parameters['uids'];
+  // if (isset($parameters['states']))
+    // $task_states = $parameters['states'];
+  // if (isset($parameters['task_changed']))
+    // $task_changed = $parameters['task_changed'];
+  // if (isset($parameters['project_changed']))
+    // $project_changed = $parameters['project_changed'];
+//    
+  // $projects = _erpal_projects_helper_get_projects_with_assigned_tasks($task_states, $uids, $task_changed, $project_changed);
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('type', 'erpal_project');
+    $query ->range($start, $count);
+  // if(isset($parameters['start']))
+  $entities = $query->execute();
+
   $projects_out = array();
-  //prepare for output!
-  foreach ($projects as $project) {
-    $project = _erpal_projects_service_project_out($project);
-    $projects_out[] = $project;
+
+  if (!empty($entities['node'])) {
+    //prepare for output!
+    foreach (array_keys($entities['node']) as $nid) {
+      $projects_out[] = _erpal_projects_service_project_out($nid,$details);
+    }
   }
-  
+
+      // $project = _erpal_projects_service_project_out($project);
+
   return $projects_out;
 }
 
+
+/**
+ * retrieves a project node and returns only simple data
+ *
+ * @return array with title and url
+ * @author  Oskar Bechtold
+ */
+function _erpal_projects_service_project_out($nid, $details=FALSE) {
+  $project = node_load($nid);
+  dpm($project);
+  $project_out = array();
+  $project_out['title'] = $project->title;
+  $project_out['project'] = url('rest/projects/project/'.$project->nid, array('absolute'=>TRUE) );
+  if($details){
+    $project_out['tasks'] = url('rest/projects/project/'.$project->nid.'/tasks', array('absolute'=>TRUE) );
+    $project_out['description'] = $project->body[LANGUAGE_NONE][0]['value'];
+  }
+  return $project_out;
+}
 
 /**
 * Access callback for retrieving a erpal_project object
@@ -97,36 +128,36 @@ function _erpal_projects_service_get_project($id, $return_real_node=true) {
   return $project_node;
 }
 
-/**
-* Prepares a project node to an easy output
-*/
-function _erpal_projects_service_project_out($project_node) {
-  $customer_nid = 0;
-  if (isset($project_node->field_customer_ref[LANGUAGE_NONE][0]['target_id']))
-    $customer_nid = $project_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
-
-  $customer_title = '';
-  if ($customer_nid) {
-    $customer_node = node_load($customer_nid);
-    $customer_title = $customer_node->title;
-  }
-
-  //get project status term
-  $status_tid = isset($project_node->field_project_status_term[LANGUAGE_NONE][0]['tid']) ? $project_node->field_project_status_term[LANGUAGE_NONE][0]['tid'] : false;
-  
-  $status = '';
-  if ($status_tid) {
-    $term = taxonomy_term_load($status_tid);
-    $status = $term->name;
-  }
-  
-  return array(
-    'id' => $project_node->nid,
-    'title' => $project_node->title,
-    'status' => $status,
-    'date_start' => isset($project_node->field_date[LANGUAGE_NONE][0]['value']) ? $project_node->field_date[LANGUAGE_NONE][0]['value'] : 0,
-    'date_end' => isset($project_node->field_date[LANGUAGE_NONE][0]['value2']) ? $project_node->field_date[LANGUAGE_NONE][0]['value2'] : 0,
-    'body' => $project_node->body[LANGUAGE_NONE][0]['value'],
-    'customer' => $customer_title,
-  );
-}
+///**
+//* Prepares a project node to an easy output
+//*/
+//function _erpal_projects_service_project_out($project_node) {
+//  $customer_nid = 0;
+//  if (isset($project_node->field_customer_ref[LANGUAGE_NONE][0]['target_id']))
+//    $customer_nid = $project_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
+//
+//  $customer_title = '';
+//  if ($customer_nid) {
+//    $customer_node = node_load($customer_nid);
+//    $customer_title = $customer_node->title;
+//  }
+//
+//  //get project status term
+//  $status_tid = isset($project_node->field_project_status_term[LANGUAGE_NONE][0]['tid']) ? $project_node->field_project_status_term[LANGUAGE_NONE][0]['tid'] : false;
+//  
+//  $status = '';
+//  if ($status_tid) {
+//    $term = taxonomy_term_load($status_tid);
+//    $status = $term->name;
+//  }
+//  
+//  return array(
+//    'id' => $project_node->nid,
+//    'title' => $project_node->title,
+//    'status' => $status,
+//    'date_start' => isset($project_node->field_date[LANGUAGE_NONE][0]['value']) ? $project_node->field_date[LANGUAGE_NONE][0]['value'] : 0,
+//    'date_end' => isset($project_node->field_date[LANGUAGE_NONE][0]['value2']) ? $project_node->field_date[LANGUAGE_NONE][0]['value2'] : 0,
+//    'body' => $project_node->body[LANGUAGE_NONE][0]['value'],
+//    'customer' => $customer_title,
+//  );
+//}
