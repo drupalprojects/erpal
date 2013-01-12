@@ -87,7 +87,11 @@ function do_migrate_check_migrated() {
 function do_migrate_flush() {
   $cache_tables = array('cache', 'cache_block', 'cache_bootstrap', 'cache_field', 'cache_filter', 'cache_form', 'cache_image', 'cache_menu', 'cache_page', 'cache_path', 'cache_token', 'cache_update', 'cache_views', 'cache_views_data');
   foreach ($cache_tables as $table) {
-    cache_clear_all('*', $table, TRUE);
+    try {
+      cache_clear_all('*', $table, TRUE);
+    } catch (Exception $e) {
+      echo "Table ".$table." doesn't exist";
+    }
   }
 }
 
@@ -146,7 +150,10 @@ function migrate_do_refactored_modules($name) {
 
 function migrate_do_finish() {
   print "Flushing all caches<br/>\n";
-  drupal_flush_all_caches();
+
+  //drupal_flush_all_caches();
+  cache_clear_all();
+
   //set variable to let drupal know which installation profile to use
   variable_set('install_profile', 'erpal');
   print "Ready to go!";
@@ -158,14 +165,16 @@ function migrate_do_revert_all_features($modules) {
   
   features_include();
   foreach ($modules as $module) {
-    if (($feature = feature_load($module, TRUE)) && module_exists($module)) {
-      $components = array();
+    $components = array();
+    if (($feature = feature_load($module, TRUE)) && module_exists($module)) {      
       // Forcefully revert all components of a feature.
       foreach (array_keys($feature->info['features']) as $component) {
         if (features_hook($component, 'features_revert')) {
           $components[] = $component;
         }
       }
+    } else {
+      echo "Module ".$module." does not exist<br/>";
     }
     foreach ($components as $component) {
       features_revert(array($module => array($component)));

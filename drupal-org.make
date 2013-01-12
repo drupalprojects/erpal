@@ -162,7 +162,7 @@ projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"
 projects[views_php][download][type] = "git"
 projects[views_php][download][url] = "http://git.drupal.org/project/views_php.git"
-projects[views_php][download][revision] = "6ee043fd3dd9c19e37a0a94aeaf325144f90d572"
+projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa6f6"
 
 projects[views_bulk_operations][version] = "3.0-rc1"
 projects[views_bulk_operations][subdir] = "contrib"
