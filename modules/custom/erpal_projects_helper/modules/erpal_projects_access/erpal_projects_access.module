@@ -104,7 +104,6 @@ function _erpal_projects_access_manage_project_acl($node, $op) {
   }
 
   //here, the project node is updated with changes or inserted
-
   //Ensure ACLs existence
   $project_view_acl = _erpal_projects_access_init_project_acl($node->nid, 'view', 'project', true);
   
@@ -114,12 +113,12 @@ function _erpal_projects_access_manage_project_acl($node, $op) {
   if (!count($project_team_uids)) {
     return; //no users in the project, no access is granted
   }
-    
+
   //assign these users to the ACL
   foreach($project_team_uids as $uid) {  
-    acl_add_user($project_view_acl, $uid['uid']);
+    acl_add_user($project_view_acl, $uid['uid']);    
   }
-  //assign the ACL to the department (View Yes, Write No, Delete No, prio=5)
+  //assign the ACL to the project (View Yes, Write No, Delete No, prio)
   acl_node_add_acl($node->nid,$project_view_acl,1,0,0,PROJECTS_ACL_PRIO);    
   $project_node = $node;
   _erpal_project_access_manage_projects_file_access($project_node);
@@ -127,14 +126,12 @@ function _erpal_projects_access_manage_project_acl($node, $op) {
   
   //add all users to the list that are referenced to the project team  
   //get all tasks of the project
-  $all_tasks = _erpal_projects_helper_get_tasks($node->nid, true, true);
+  $all_tasks = _erpal_projects_helper_get_tasks($node->nid, true, true, true);
   $all_tasks = array_keys($all_tasks);
-
   //$tickets = _erpal_projects_get_tickets_from_tasks($all_tasks);  
   foreach ($all_tasks as $task_nid) {
-    
     $task_node = node_load($task_nid);
-    _erpal_projects_access_manage_task_acl_process($task_node, $op);    
+    _erpal_projects_access_manage_task_acl_process($task_node, $op, $node);    
   }
 }
 
@@ -161,11 +158,13 @@ function _erpal_projects_helper_team_changes($project_nid, $delta_to_add = false
 /**
 * manage the ACL of a task
 */
-function _erpal_projects_access_manage_task_acl_process($task_node, $op) {
+function _erpal_projects_access_manage_task_acl_process($task_node, $op, $project_node=false) {
   static $initialised = array();
 
-  $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
-  $project_node = node_load($project_nid);
+  if (!$project_node) {
+    $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+    $project_node = node_load($project_nid);
+  }
   
   if (!isset($initialised[$task_node->nid])) {
     $recreate_acl = true;
@@ -179,9 +178,9 @@ function _erpal_projects_access_manage_task_acl_process($task_node, $op) {
   $ticket_view_acl = _erpal_projects_access_init_project_acl($task_node->nid, 'view', 'ticket', $recreate_acl);
   module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
   $ticket_update_acl = _erpal_projects_access_init_project_acl($task_node->nid, 'update', 'ticket', $recreate_acl);
-  
+  dpm($project_node);
   $project_team_uids = _erpal_projects_helper_get_project_team_uids($project_node);
-  
+
   //add the task node to all ACLs that are neccessary
   $is_ticket = _erpal_projects_helper_is_ticket($task_node);
   
@@ -192,13 +191,13 @@ function _erpal_projects_access_manage_task_acl_process($task_node, $op) {
     acl_node_add_acl($task_node->nid, $task_view_acl, 1, 0, 0, PROJECTS_ACL_PRIO);  
     acl_node_add_acl($task_node->nid, $task_update_acl, 0, 1, 0, PROJECTS_ACL_PRIO);
   }
-  
+
   //users that are assigned to a task are able to view and update!
   $assigned_field = isset($task_node->field_task_assigned_users[LANGUAGE_NONE]) ? $task_node->field_task_assigned_users[LANGUAGE_NONE] : array();   
  //add this node to ACL for assigned users to this task
   $task_assigned_acl = _erpal_projects_access_init_project_acl($task_node->nid, 'assigned', 'task', $recreate_acl);
   acl_node_add_acl($task_node->nid, $task_assigned_acl, 1, 1, 0, PROJECTS_ACL_PRIO); //view and update
-    
+
   foreach ($assigned_field as $delta=>$assigned_user) {
     $uid = $assigned_user['target_id'];     
     acl_add_user($task_assigned_acl, $uid);   
