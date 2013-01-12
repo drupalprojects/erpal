@@ -1,0 +1,27 @@
+----------------------------------------------
+|                                            |
+|        Erpal makefile installation         |
+|                                            |
+|	2013, Bright Solutions GmbH, Germany     |
+----------------------------------------------
+
+How to install Erpal using drush make:
+
+1. Clone this repository - Success!
+
+// FOR WINDOWS 
+If you want to install on windows make sure you have the newest dev release of "Drush 5.x".
+You can download it here: http://drupal.org/project/drush
+Replace your existing drush files in "C:/Program Data/Drush" with the downloaded ones.
+Make sure, drush is set as a path variable in windows:
+ - Go to System settings -> Advanced system settings -> Environment Variables
+ - Create a new variable "PATH" with the value "C:\ProgramData\Drush\"
+// END Windows
+
+2. Go to the erpal folder where the makefile is:
+Execute "drush make build-erpal.make ../www" in your console/bash. It will now download all necessary files and put them in the folder "../www".
+
+3. The root directory of the erpal installation should be the "www" folder just created.
+
+4. Setup erpal and go!
+ 
