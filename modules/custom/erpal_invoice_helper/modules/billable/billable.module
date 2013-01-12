@@ -1,0 +1,356 @@
+<?php
+
+/**
+ * @file
+ * Module for the Billable Entity - developed within erpal to create billing line 
+ * items and items to bill in general
+ */  
+ 
+module_load_include('inc', 'billable', 'billable.entity');   
+ 
+/**
+* Implements hook_init()
+*/ 
+function billable_init() {
+  module_load_include('inc', 'billable', 'billable.vat');  
+  module_load_include('inc', 'billable', 'billable.actions');  
+}
+ 
+/**
+ * Implements hook_action_info().
+ */
+function billable_action_info() {
+  return array(
+    'billable_reduce_action' => array(
+      'type' => 'entity',
+      'label' => t('Group billables'),
+      'description' => t('Groups billables with parent and child billables.'),
+      'configurable' => TRUE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'billable_delete_action' => array(
+      'type' => 'entity',
+      'label' => t('Delete billables'),
+      'description' => t('Delete billables'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'billable_billed_action' => array(
+      'type' => 'entity',
+      'label' => t('Set billables billed'),
+      'description' => t('Sets billables to billed'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'billable_unbilled_action' => array(
+      'type' => 'entity',
+      'label' => t('Set billables unbilled'),
+      'description' => t('Sets billables to unbilled'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+  ); 
+}
+ 
+/**
+ * Implements hook_views_api().
+ */
+function billable_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'billable') . '/views',
+  );
+} 
+ 
+/**
+ * Implement hook_entity_info().
+ *
+ * We define two entities here - the actual entity that will hold our domain
+ * specific information 
+ */
+function billable_entity_info() {
+  $return['billable'] = array(
+    'label' => t('Billable'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'Billable',
+    'controller class' => 'BillableController',
+    'base table' => 'billable',
+    'file' => 'billable.entity.inc',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+        'id' => 'billable_id',
+        'bundle' => 'type',
+    ),
+    'bundles' => array(
+      'billable'=> array(
+        'label' => 'Billable',        
+      ),
+    ),
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => 'billable_create',
+    'access callback' => 'billable_access',
+    'module' => 'billable',
+    // The information below is used by the BillableUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/billables',
+      'file' => 'billable.admin.inc',
+      'controller class' => 'BillableUIController',
+      'menu wildcard' => '%billable',
+    ),
+  );
+
+  return $return;
+}
+ 
+/**
+* Implements hook_menu
+*/
+function billable_menu() {
+  
+  $items = array();
+  $items['admin/config/billable'] = array(
+    'title' => 'Billable config',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('billable_adminsettings'),
+    'access arguments' => array('administer billable'),
+    'file' => 'billable.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+ 
+/**
+ * Implements hook_permission().
+ */
+function billable_permission() {
+  // We set up permisssions to manage entity types, manage all entities and the
+  // permissions for each individual entity
+  $permissions = array(
+    'administer billable types' => array(
+      'title' => t('Administer billable types'),
+      'description' => t('Create and delete fields for billable types, and set their permissions.'),
+    ),
+    'administer billables' => array(
+      'title' => t('Administer billables'),
+      'description' => t('Edit and delete all billables'),
+    ),  
+    'administer billable' => array(
+      'title' => t('Administer billable settings'),
+      'description' => t('Access the administration area of the billable module'),
+    ),
+  );
+  
+  $permissions += array(
+    "edit any billable" => array(
+      'title' => t('Edit any billable'),
+    ),
+    "view any billable" => array(
+      'title' => t('View any billable'),
+    ),
+  );
+  return $permissions;  
+}
+
+
+/**
+ * Determines whether the given user has access to a billable.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $billable
+ *   Optionally a billable or a billable type to check access for. If nothing is
+ *   given, access for all billables is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function billable_access($op, $billable = NULL, $account = NULL) {
+ 
+  if (user_access('administer billables', $account)) {
+    return TRUE;
+  }
+
+  if (isset($billable) && is_object($billable) && $type_name = $billable->type) {
+    $op = ($op == 'view') ? 'view' : 'edit';
+    if (user_access("$op any billable", $account)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Implement hook_theme().
+ */
+function billable_theme() {
+  //themes for our billable entity
+  require_once('billable.entity.inc');
+  $themes = _billable_entity_theme();
+  return $themes;
+}  
+
+/**
+* Returns the currency used
+* @todo we have to let the user choose his available currencies
+*/
+function _billable_get_currencies() {
+  
+  //ask other modules for currencies
+  return module_invoke_all('billable_currencies');
+}
+
+/**
+* So we can make the user change the date format by changing this variable 
+*/
+function _billable_get_date_format($time = true){
+  return erpal_lib_get_date_format($time);
+}
+
+/**
+* Preprocess function für theme billable_view
+*/
+function template_preprocess_billable_view(&$variables) {
+  //get a list of reduced entites if there are other items that have this one as parent item
+  $reduced_billables = _billable_get_reduced_billables($variables['billable']); 
+
+  $header = array(
+    t('Billable ID'),
+    t('Subject'),
+    t('Billed'),
+    t('Date delivery'),
+    t('Quantity'),
+    t('Single price'),
+    t('Total excl. VAT'),
+    t('Total VAT'),
+    t('Total'),
+    t('Currency'),
+  );
+  
+  //prepare the reduced billables for display in theme table
+  if (count($reduced_billables) > 0) {
+    //now order the rows
+    $rows = array();
+    
+    //load all billables
+    $billable_ids = array_keys($reduced_billables);
+    $reduced_billables = billable_load_multiple($billable_ids);
+    
+    foreach ($reduced_billables as $billable) {
+      $subject_nid = $billable->subject_nid;
+      $subject_node = node_load($billable->subject_nid);
+      $rows[] = array(
+        l($billable->billable_id, 'billable/'.$billable->billable_id.'/view'),
+        is_object($subject_node) ? l($subject_node->title, 'node/'.$subject_nid) : '',
+        $billable->billed,
+        erpal_date_formatted($billable->date_delivery),
+        $billable->quantity,
+        $billable->single_price,
+        $billable->total_price_no_vat,
+        $billable->total_vat,
+        $billable->total_price,
+        $billable->currency
+      );
+    }
+    
+    $table_data['header'] = $header;
+    $table_data['rows'] = $rows;
+    $variables['reduced_list'] = theme('table', $table_data);  
+  } else
+    $variables['reduced_list'] = '';
+}
+
+/**
+ * Implements hook_references_dialog_entity_admin_paths().
+ * Needed to provide a link path to create a new billable at an entity reference field in reference dialog widget
+ */
+function billable_references_dialog_entity_admin_paths() {
+  // We define the add and edit page callbacks for core entities here.
+  $admin_paths = array(
+    'billable' => array(
+      'add' => 'billable/add',
+      'edit' => 'billable/[entity_id]/edit',
+    ),
+  );
+  return $admin_paths;
+}
+
+/**
+* Get all billables by subject
+* @param $nids array with nids of subjects to get billables for
+*/
+function _billable_get_billables_by_subject($nids, $field_conditions=array()) {
+  $query = db_select('billable', 'b')
+    ->fields('b', array('billable_id'))
+    ->condition('subject_nid', $nids,'IN');
+    
+  //add further field conditions
+  foreach ($field_conditions as $condition) {
+    $query->condition($condition['field'], $condition['value'], $condition['operation']);
+  }
+
+  $result = $query->execute();
+  $billables = array();
+  while($record = $result->fetchAssoc()) {
+      $billables[$record['billable_id']] = $record['billable_id'];
+  }
+  
+  return $billables;
+}
+
+/**
+* get ids of reduced billables that reference the given billable as a parent
+*/
+function _billable_get_reduced_billables($parent_billable) {
+  $billables = array();
+  
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'billable') // select nodes
+		          ->propertyCondition('parent_billable', $parent_billable->billable_id) // node referenced so the 2nd parameter is nid
+		          ->propertyOrderBy('created', 'desc') //most recent first
+		          ->execute();
+  
+  if (isset($result['billable']))
+    $billables = $result['billable'];
+  return $billables;
+}
+
+/**
+* Return all customers that can be refernces to a billable
+*/
+function _billable_get_customers() {
+  $customers = array();
+
+  $type = _billable_customer_type();
+  $query = db_select('node', 'n');
+  $query
+    ->fields('n', array('nid', 'title'))
+    ->condition('n.type', $type)
+    ->condition('n.status', '1')
+    ->orderBy('n.title', 'DESC')
+    ->addTag('node_access');
+  
+  $result = $query->execute();
+  
+  foreach ($result as $record) {
+    // Do something with each $record
+    $customers[$record->nid] = $record->title;
+  }
+  
+  return $customers;
+}
+
+/**
+* Returns the current selected node type for customers
+*/
+function _billable_customer_type() {
+  return variable_get('billable_customer_type', false);
+}

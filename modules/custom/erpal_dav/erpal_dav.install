@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * @author Roman Sztyler
+ * @created December 2012
+ * @copyright 2012 © Bright Solutions GmbH - All rights reserved.
+ * 
+ */
+
+/**
+ * Implements hook_schema()
+ */
+
+function erpal_dav_schema() {
+	
+  $schema['erpal_dav_carduris'] = array(
+    'description' => 'Nodes and their carduris',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'type' => 'int',
+       	'length' => 11,
+        'not null' => TRUE,
+      ),
+	  'carduri' => array(
+	    'type' => 'varchar',
+		'length' => 200,
+      ),  
+	),
+	'primary key' => array('id'),
+  );
+   
+  $schema['erpal_dav_principals'] = array(
+    'description' => 'Principals in ErpalDAV',
+    'fields' => array(
+	  'id' => array(
+	    'type' => 'serial',
+	    'unsigned' => TRUE,
+	    'not null' => TRUE
+	  ),
+	  'uri' => array(
+	    'type' => 'varchar',
+	    'length' => 200,
+	    'not null' => TRUE,
+	  ),
+	  'email' => array(
+	    'type' => 'varchar',
+	    'length' => 80,
+	  ),
+	  'displayname' => array(
+	    'type' => 'varchar',
+	    'length' => 80,
+	  ),
+	  'vcardurl' => array(
+	    'type' => 'varchar',
+	    'length' => 80,
+	  ),
+	),
+	'unique keys' => array( array('uri' => 'uri')),
+	'primary key' => array('id')
+  );
+  
+  /*$schema['erpal_dav_groupmembers'] = array(
+    'description' => 'GroupMembers in ErpalDAV',
+    'fields' => array(
+	  'id' => array(
+	    'type' => 'serial',
+	    'unsigned' => TRUE,
+	    'not null' => TRUE
+	  ),
+	  'principal_id' => array(
+	    'type' => 'int',
+	    'unsigned' => TRUE,
+	    'not null' => TRUE,
+	  ),
+	  'member_id' => array(
+	    'type' => 'int',
+	    'unsigned' => TRUE,
+	    'not null' => TRUE,
+	  ),
+	),
+	'unique keys' => array( 
+	  array('principal_id' => 'principal_id'),
+	  array('member_id' => 'member_id'),
+	),
+	'primary key' => array('id')
+  );
+  */
+  $schema['erpal_dav_addressbooks'] = array(
+    'description' => 'Addressbooks in ErpalDAV',
+    'fields' => array(
+	  'id' => array(
+	    'type' => 'serial',
+	    'length' => 11,
+	    'unsigned' => TRUE,
+	    'not null' => TRUE
+	  ),
+	  'uri' => array(
+	    'type' => 'varchar',
+	    'length' => 200,
+	  ),
+	  'description' => array(
+	    'type' => 'text',
+	  ),
+	  'displayname' => array(
+	    'type' => 'varchar',
+	    'length' => 255,
+	  ),
+	  'principaluri' => array(
+	    'type' => 'varchar',
+	    'length' => 255,
+	  ),
+	  'ctag' => array(
+	    'type' => 'int',
+	    'length' => 11,
+	    'unsigned' => TRUE,
+	    'not null' => TRUE,
+	    'default' => 1
+	  ),
+	),
+	'unique keys' => array( 
+	  array('principaluri' => 'principaluri'),
+	  array('uri' => 'uri')
+	),
+	'primary key' => array('id')
+  );
+
+  $schema['erpal_dav_cards'] = array(
+    'description' => 'VCard table for ERPAL',
+    'fields' => array( 
+      'id' => array(
+        'type' => 'serial',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'addressbookid' => array(
+        'type' => 'int',
+        'length' => 11,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'carddata' => array(
+        'type' => 'blob',
+      ),
+      'uri' => array(
+        'type' => 'varchar',
+        'length' => 200,
+      ),
+      'lastmodified' => array(
+        'type' => 'int',
+        'length' => 11,
+        'unsigned' => TRUE,
+      ),
+    ),  
+    'primary key' => array('id'),
+  );
+  return $schema;
+}

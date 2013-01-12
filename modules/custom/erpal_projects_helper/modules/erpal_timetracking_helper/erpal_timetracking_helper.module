@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_timetracking_helper_views_api() {
+  return array('api' => 3);
+}
+
+/**
+ * Implements of hook_views_query_alter().
+ */
+function erpal_timetracking_helper_views_query_alter(&$view, &$query) {
+  if ($view->name == 'timetrackings') {
+    // get timetrackings of current task if the filter is set
+    if (isset($view->filter['timetracking_subtasks']->value) && $view->filter['timetracking_subtasks']->value[0]) {
+      $child_nids = array();
+      $add_where = FALSE;
+      foreach ($query->where as $where_key => $where) {
+        foreach ($where['conditions'] as $condition_key => $condition) {
+          // unset where condition for field_data_field_timetracking_subject field
+          if (strpos($condition['field'], 'field_data_field_timetracking_subject') !== false) {
+            if (!empty($condition['value'])) {
+              $values = array_values($condition['value']);
+              $parent_task = array_shift($values);
+              // Collect nids of subtasks
+              $child_nids = _erpal_timetracking_helper_get_children($parent_task);
+              unset($query->where[$where_key]);
+              $add_where = TRUE;
+            }
+          }
+        }
+      }
+      if ($add_where) {
+        $query->add_where(
+          'field_data_field_timetracking_subject', 'field_data_field_timetracking_subject.field_timetracking_subject_target_id', $child_nids, 'IN'
+        );
+      }
+    }
+  }
+}
+
+/**
+ * Get the children of the current task:
+ * 1. Get directly subtasks;
+ * 2. Loop through the results of subtasks;
+ * 3. Execute search of subtasks for each children again on each child level.
+ * @param int $parent_nid
+ *  nid of parent task
+ * @return array
+ *  array of all subtasks of all levels
+ */
+function _erpal_timetracking_helper_get_children($parent_nid) {
+  $parent_node = new stdClass;
+  $parent_node->nid = $parent_nid;
+  $children = array();
+  $children[] = (int) $parent_nid;
+  $child_nids = _erpal_projects_helper_get_tasks_child_nodes($parent_node, array(), TRUE);
+  if (!empty($child_nids)) {
+    foreach ($child_nids as $child_nid) {
+      foreach (_erpal_timetracking_helper_get_children($child_nid) as $child_value) {
+        $children[] = (int) $child_value;
+      }
+    }
+  }
+  return $children;
+}

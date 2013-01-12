@@ -1,0 +1,14 @@
+
+- unterstützung für uuid?
+- Rechte für view / edit OWN billabes?
+
+- wenn ein billable entity gelöscht wird, müssen alle gelöscht werden, die ihn refernzieren (durch verdichten z.B.)
+
+
+- Eingabeformular: Kunde MUSS gewählt sein / als Argument in URL, Betreff, Menge, einzelpreis, mwst satz
+
+- ganzen Entity kram in eine Datei entity.inc auslagern
+
+- mit Rules integrierbar machen und mit Tokens (siehe Modul commerce - commerce_line_intem submodul)
+
+- unsinstall und install des Moduls klappt noch nicht, wenn schon Daten da sind

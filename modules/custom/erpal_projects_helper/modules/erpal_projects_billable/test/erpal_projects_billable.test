@@ -1,0 +1,290 @@
+<?php
+/**
+ * @file
+ * erpal_invoice tests.
+ */
+
+//require a file with some testfunctions
+require_once 'erpal_projects_billable.test.helper';
+require_once 'erpal_projects_billable.costs.test';
+
+class FeatureProjectsBillableTestCase extends DrupalFixtureTestCase  {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Feature ERPAL project billable unit tests',
+      'description' => 'Unit test to ensure that the erpal projects billable feature functions properly.',
+      'group' => 'Invoice',
+    );
+  }
+  
+  function setUp() {    
+    parent::setUp('erpal_project', 'erpal_invoice'); //these features will be enabled and use this module
+    
+    // Run a features rebuild to ensure our feature is fully installed.
+    features_rebuild();
+    
+    // Clear all caches so everything from the feature is recognized now that it is fully loaded.
+    cache_clear_all();
+  }
+  
+  
+  /**
+  * Test for caclulating values when a project is saved
+  * ###########################################
+  * WARNING WARNING!!!! THe order of the testcases is important because we reuse data to get smaler tests, 
+  * DO NOT INSERT tests between the lines but only at the end!
+  * if change, consider add changes to testTaskCreateBillables
+  * ###########################################
+  */
+  function testProjectCreateBillables() {
+    //create billables for the project
+    $group= 'feature projects billable';    
+    
+    $pricing['price_mode'] = 'fixed_price';
+    $pricing['price'] = '1220';
+    $pricing['currency'] = 'EUR';
+    $pricing['vat_rate'] = '19';
+    $pricing['quantity'] = 1;
+    
+    $project = _erpal_projects_billable_test_create_project($pricing, 'inserted');
+    //no billable entity should be kicked!
+    $billable = _erpal_projects_billable_test_get_billable($project);
+    $this->assertFalse(count($billable) > 0, 'Not completed project kicks no billable on insert.', $group);    
+    //set state to completed and update it -> billable entity should be kicked
+    
+    //@TODO this is broken because we dont use this field anymore. Now it is a term field, so change the fallowing line to a term with a semantic meaning of "completed".
+    $project->field_project_status[LANGUAGE_NONE][0]['value'] = 'completed';
+    node_save($project);
+    $billable = _erpal_projects_billable_test_get_billable($project);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $project);       
+    $this->assertTrue($billableOK, 'Billable kicked after completing existing project', $group);
+    
+    //change price, update, the billable price must be updated, too!
+    $pricing_entity_id = $project->field_pricing[LANGUAGE_NONE][0]['value'];
+    $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
+    $pricing_entity = $pricing_entity[$pricing_entity_id];  
+    $pricing['price'] = 1000;
+    $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] = $pricing['price'];
+    $pricing_entity->save(true); //save entity without saving the host entity    
+    node_save($project);
+    $billable2 = _erpal_projects_billable_test_get_billable($project);
+    $billableOK = false;
+    $billable2 = array_shift($billable2);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable2, $pricing, $project);
+    $billableOK = $billableOK && $billable->billable_id == $billable2->billable_id;
+          //other calculated values of the billable are ensured in the billables module tests       
+    $this->assertTrue($billableOK, 'Billable price changed after changing pricing entity collection of existing project', $group);
+    
+    //update price mode of project to per_hour -> billable entity must be delete
+    $pricing['price_mode'] = 'per_hour';
+    $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] = $pricing['price_mode'];
+    $pricing_entity->save(true); //save entity without saving the host entity
+    node_save($project);
+    $billables = _erpal_projects_billable_test_get_billable($project);
+    $this->assertTrue(count($billables) <= 0, 'Billable price mode not "fixed price" - billable deleted if exists', $group);
+    
+    //insert new one with state completed -> create a new billable
+    $pricing['price_mode'] = 'fixed_price';
+    $pricing['price'] = 1200;
+    $project = _erpal_projects_billable_test_create_project($pricing, 'completed');
+    $billable = _erpal_projects_billable_test_get_billable($project);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $project);
+    $this->assertTrue($billableOK, 'Billable ok after inserting completed project', $group);
+    
+    //set billable to billed and
+    //update project to price mode per_hour and save, the billable must NOT BE DELETEd cause it is already billed
+    $billable->set_billed(true);
+    $billable->save(true); //save but skipp saving host entity
+    $pricing['price_mode'] = 'fiexd_price';
+    $pricing['price'] = 5000; //we want to set the price to 5000 (after billable has already been billed) ...
+    $pricing_entity_id = $project->field_pricing[LANGUAGE_NONE][0]['value'];
+    $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));
+    $pricing_entity = $pricing_entity[$pricing_entity_id];
+    $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] = $pricing['price'];
+    $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] = $pricing['price_mode'];
+    $pricing_entity->save(true); //save entity without saving the host entity
+    node_save($project);
+    //because the the billable is already billed there must be only one billable and the price should not have changed!
+    $billable2 = _erpal_projects_billable_test_get_billable($project);
+    $billable_count = count($billable2);
+    $billable2_detail = array_shift($billable2);
+    $pricing['price'] = 1200; //... but we want the price not to be changed after the billable has already been billed
+    $billableOK = $billable_count == 1 && projectsbillable_check_billable($billable2_detail, $pricing, $project);
+    $this->assertTrue($billableOK, 'Billable not changed after it has been billed and project changed', $group);
+      
+       
+  }
+  
+  /**
+  * Test for caclulating values when a task is saved
+  * ###########################################
+  * WARNING WARNING!!!! THe order of the testcases is important because we reuse data to get smaler tests, 
+  * DO NOT INSERT tests between the lines but only at the end!
+  * if change, consider add changes to testTaskCreateBillables
+  * ###########################################
+  */
+  function testTaskCreateBillables() {
+    //create billables for the task
+    $group= 'feature project billable';    
+    
+    $pricing['price_mode'] = 'fixed_price';
+    $pricing['price'] = '950';
+    $pricing['currency'] = 'EUR';
+    $pricing['vat_rate'] = '7';
+    $pricing['quantity'] = 1;
+    
+    $task = _erpal_projects_billable_test_create_task($pricing, 'inserted');
+    //no billable entity should be kicked!
+    $billable = _erpal_projects_billable_test_get_billable($task);
+    $this->assertFalse(count($billable) > 0, 'Not completed task kicks no billable on insert.', $group);    
+    //set state to completed and update it -> billable entity should be kicked
+    //@TODO da das status feld nun ein term reference feld ist, muss das geändert werden. Vorher die Terms füllen und dann hier einen Term mit der semantischen bedeutung "completed" setzen als tid
+    $task->field_task_status[LANGUAGE_NONE][0]['value'] = 'completed';
+    node_save($task);
+    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);       
+    $this->assertTrue($billableOK, 'Billable kicked after completing existing task', $group);
+    
+    //change price, update, the billable price must be updated, too!
+    $pricing_entity_id = $task->field_pricing[LANGUAGE_NONE][0]['value'];
+    $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));  
+    $pricing_entity = $pricing_entity[$pricing_entity_id];  
+    $pricing['price'] = 1000;
+    $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] = $pricing['price'];
+    $pricing_entity->save(true); //save entity without saving the host entity    
+    node_save($task);
+    $billable2 = _erpal_projects_billable_test_get_billable($task);
+    $billableOK = false;
+    $billable2 = array_shift($billable2);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable2, $pricing, $task);
+    $billableOK = $billableOK && $billable->billable_id == $billable2->billable_id;
+          //other calculated values of the billable are ensured in the billables module tests       
+    $this->assertTrue($billableOK, 'Billable price changed after changing pricing entity collection of existing task', $group);
+    
+    //update price mode of task to per_hour -> billable entity must be delete
+    $pricing['price_mode'] = 'per_hour';
+    $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] = $pricing['price_mode'];
+    $pricing_entity->save(true); //save entity without saving the host entity
+    node_save($task);
+    $billables = _erpal_projects_billable_test_get_billable($task);
+    $this->assertTrue(count($billables) <= 0, 'Billable price mode not fixed - billable deleted if exists', $group);
+    
+    //insert new one with state completed -> create a new billable
+    $pricing['price_mode'] = 'fixed_price';
+    $pricing['price'] = 1200;
+    $task = _erpal_projects_billable_test_create_task($pricing, 'completed');
+    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $task);
+    $this->assertTrue($billableOK, 'Billable ok after inserting completed task', $group);
+    
+    //set billable to billed and
+    //update task to price mode per_hour and save, the billable must NOT BE DELETEd cause it is already billed
+    $billable->set_billed(true);
+    $billable->save(true); //save but skipp saving host entity
+    $pricing['price_mode'] = 'fiexd_price';
+    $pricing['price'] = 5000; //we want to set the price to 5000 (after billable has already been billed) ...
+    $pricing_entity_id = $task->field_pricing[LANGUAGE_NONE][0]['value'];
+    $pricing_entity = entity_load('field_collection_item', array($pricing_entity_id));
+    $pricing_entity = $pricing_entity[$pricing_entity_id];
+    $pricing_entity->field_price[LANGUAGE_NONE][0]['value'] = $pricing['price'];
+    $pricing_entity->field_price_mode[LANGUAGE_NONE][0]['value'] = $pricing['price_mode'];
+    $pricing_entity->save(true); //save entity without saving the host entity
+    node_save($task);
+    //because the the billable is already billed there must be only one billable and the price should not have changed!
+    $billable2 = _erpal_projects_billable_test_get_billable($task);
+    $billable_count = count($billable2);
+    $billable2_detail = array_shift($billable2);
+    $pricing['price'] = 1200; //... but we want the price not to be changed after the billable has already been billed
+    $billableOK = $billable_count == 1 && projectsbillable_check_billable($billable2_detail, $pricing, $task);
+    $this->assertTrue($billableOK, 'Billable not changed after it has been billed and task changed', $group);
+      
+       
+  }
+ 
+  /**
+  * Validate that billables are created correctly on inserting timetrackings
+  */
+  function testTimetrackingCreateBillables() {
+    //create billables for the task
+    $group= 'feature project billable';    
+    
+    $pricing['price_mode'] = 'fixed_price';
+    $pricing['price'] = '95';
+    $pricing['currency'] = 'EUR';
+    $pricing['vat_rate'] = '7';
+    $pricing['quantity'] = 3.5; //hours
+    
+    //no billable entity should be kicked!
+    $task = _erpal_projects_billable_test_create_task($pricing, 'inserted');    
+    $tt = _erpal_projects_billable_test_create_timetracking($pricing['quantity'], $task);    
+    $billable = _erpal_projects_billable_test_get_billable($task);
+    $billableOK = count($billable) <= 0;
+    $this->assertTrue($billableOK, 'Billable is not kicked on timetracking to a fiexd_price project', $group);
+      
+    //add a timetracking to a task with price mode per_hour -> billable should be kicked
+    $pricing['price_mode'] = 'per_hour';
+    $task = _erpal_projects_billable_test_create_task($pricing, 'inserted');
+    $tt = _erpal_projects_billable_test_create_timetracking($pricing['quantity'], $task);         
+    $billable = _erpal_projects_billable_test_get_billable($tt);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $tt);       
+    $this->assertTrue($billableOK, 'Billable kicked on task with price mode is per hour', $group);
+    
+    //change the duration of the task, the billable should change, too
+    $pricing['quantity'] = 2; //hours
+    $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $pricing['quantity'];
+    node_save($tt);
+    $billable = _erpal_projects_billable_test_get_billable($tt);
+    $billableOK = false;
+    $billable = array_shift($billable);    
+    //check values of the billable
+    $billableOK = projectsbillable_check_billable($billable, $pricing, $tt);       
+    $this->assertTrue($billableOK, 'Billable price changed after timetracking duration changed', $group);
+
+      
+  }
+ 
+  /**
+  * Validate that cost billables are created correctly
+  */
+  function testCostCreateBillables() {
+    billable_test_check_costs();
+  }
+ 
+  /**
+  * Check the validation of invoice creation
+  */
+  function testInvoiceValidate() {
+    //@TODO
+    //using node_validate
+    
+  }
+}
+
+
+//########## HELPER FUNCTIONS FOR TESTS ###############
+
+
+/**
+* Formats a message with values that should be calculated (must) and that are really calculated (is)
+*/
+function projectsbillable_format_message($message, $must, $is) {
+  return $message.' - is '.$is.' should be '.$must;
+}

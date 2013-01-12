@@ -1,0 +1,55 @@
+<?php
+/*
+ * @author Sebastian Kauschke, Bright Solutions GmbH
+ * 
+ */
+
+module_load_include("inc", "bs_syncml", "includes/BsSyncMlDataHandler");
+module_load_include("inc", "bs_syncml", "includes/BsSyncJobHandler");
+
+
+function bs_syncml_init() {
+  
+
+}
+
+
+/*
+ * implements hook_menu()
+ */
+function bs_syncml_menu() {
+  
+  /* The administration page */
+  $items['admin/config/system/bs_syncml'] = array(
+    'title' => 'BS Sync ML Administration',
+    'description' =>  'Administer Synchronization Settings.',
+    'page callback' => 'bs_syncml_administration_page',
+    'access arguments' => array('administer bs_syncml'),
+    'file' => 'includes/bs_syncml.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['bssyncml'] = array(
+    'title' => 'Sync the stuff',
+    'description' =>  '',
+    'page callback' => 'bs_syncml_sync_page',
+    'access arguments' => array('administer bs_syncml'),
+    'file' => 'includes/bs_syncml.sync.inc',
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+
+/*
+ * implements hook_permissions()
+ */
+function bs_syncml_permission() {
+  return array(
+    'administer bs_syncml' => array(
+      'title' => t('Administer BS SyncML Module'), 
+      'description' => t('Adjust Server and User Settings.'),
+    ),
+  );
+}

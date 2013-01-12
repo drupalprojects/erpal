@@ -1,0 +1,855 @@
+/*
+ * @file
+ * global.styles
+ *
+ * Styles you add here will load for all device sizes, they are "global", as
+ * opposed to "responsive" styles, which only load for a given breakpoint (media
+ * query) that you set in theme settings. See the README for more details.
+ *
+ *
+ * How to use this file:
+ * --------------------
+ *
+ * There are many empty selectors and some basic styles to act as a guide.
+ * Nothing is set in stone and you can change anything - even delete all of it
+ * and start with your own clean slate.
+ *
+ * See global.base also which includes normalize.css and some additional
+ * helper classes and base styles.
+ */
+
+/* =============================================================================
+ *   Base
+ * ========================================================================== */
+
+/*
+ * To preserve theme settings never apply font properties to the HTML element.
+ * This is critically important if you are using the Responsive JavaScript
+ * feature as this relies on being able to set a pseudo font family on the HTML
+ * element. If you need to set default font properties of any kind use the BODY
+ * element as these can be overridden using font theme settings.
+ */
+@import "global_vars_a_mixins";
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5em;
+  font-size: 12px;
+  font-family: Arial,Helvetica,sans-serif;
+  min-width: 1020px;
+  min-height: 100%;
+  position: relative;
+  color: $grey;
+  background: $bright_grey;
+  &.admin-menu { /*if the admin menu is used change margin-top to padding-top */
+	margin-top: 0 !important;
+	padding-top: 20px !important;
+  }
+}
+
+/* =============================================================================
+ *   HTML Elements
+ * ========================================================================== */
+
+pre,
+code,
+tt,
+samp,
+kbd,
+var {
+  font-family: Consolas, Monaco, 'Courier New', Courier, monospace, sans-serif;
+}
+
+
+a {
+  &:link,
+  &:visited,
+  &:hover,
+  &:focus,
+  &:active {
+    color: $grey_dark;
+  }
+  &:hover {
+    color: $grey_light;
+  }
+}
+
+/*
+ * Wraps the header
+ */
+#header-wrapper {
+  /* Debug styles, is this working */
+  background: rgba(255, 192, 203, 0.5);
+}
+/*
+ * Footer wrapper
+ */
+#footer-wrapper {
+  /* Debug styles, is this working? */
+  background: rgba(255, 192, 203, 0.5);
+}
+/* =============================================================================
+ *   Branding
+ * ========================================================================== */
+/*
+ * Site name (h1)
+ */
+#site-name {
+  margin: 0;
+  a {
+    &:link, &:visited {
+	  text-decoration: none;
+	}
+	&:hover, &:focus {
+	  text-decoration: underline;
+	}
+  }
+}
+
+
+/*
+ * Site slogan (h2)
+ */
+#site-slogan {
+  margin: 0;
+}
+
+#page-title {
+  margin: 0;
+}
+
+
+/* =============================================================================
+ *   Misc Global Styles
+ * ========================================================================== */
+
+
+/*
+ * Aggregator feed source
+ */
+#aggregator .feed-source .feed-icon {
+  display: inline;
+  float: none;
+  margin-right: 10px;
+}
+
+.feed-details {
+  dt, dd {
+    display: inline;
+    margin: 0;
+  }
+}
+
+/*
+ * Generic styles for links. See the ul.links declaration in node and comment stylesheets
+ */
+ul.links {
+  margin: 0;
+  padding: 0;
+  &.inline {
+    display: block;
+  }
+  li {
+    display: inline;
+    list-style: none;
+    padding: 0 10px 0 0;
+  }
+}
+
+/*
+ * Search results are an ordered list so reset the margin
+ */
+.search-results {
+  margin: 0;
+}
+
+/* =============================================================================
+ *   Links
+ * ========================================================================== */
+
+a {
+  text-decoration: none;
+  color: $grey;
+  &:link, &:visited {
+    color: $grey;
+  }
+  &:hover, &:focus {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+/* =============================================================================
+ *   Primary, Secondary and Menu Bar region menus
+ * ========================================================================== */
+
+/*
+ * Use one of the following id's for granular control:
+ *  - #menu-bar (menu bar region)
+ *  - #primary-menu (main menu)
+ *  - #secondary-menu (secondary/user menu)
+ * You can target all of these with .nav or div[id$="menu-bar"]
+ */
+.nav {
+  clear: both;
+  margin: 10px 0;
+  ul {
+    @include dist_zero;
+    &.menu {
+      @include dist_zero;
+	  li {
+	    display: inline;
+        float: left;
+        list-style: none;
+	    @include dist_zero;
+		a {
+	      display: block;
+          white-space: nowrap;
+          padding: 0 10px;
+	    }
+	  }
+    }
+  }
+  li {
+    display: inline;
+    float: left;
+    list-style: none;
+	@include dist_zero;
+	a {
+	  display: block;
+      white-space: nowrap;
+      padding: 0 10px;
+	}
+  }
+  .block  {
+    margin-bottom: 0;
+  }
+}
+
+
+/* =============================================================================
+ *   Superfish
+ * ========================================================================== */
+
+ul.sf-menu {
+  margin-bottom: 0;
+  a {
+    border-left: 0;
+    border-top: 0;
+    padding: 0 10px;
+    text-decoration: none;
+    height: 2.5em;
+    line-height: 2.5em;
+  }
+  li:hover, li.sfHover {
+    outline: 0;
+  }
+  a {
+    &:focus, 
+	&:hover, 
+	&:active {
+	  outline: 0;
+	}
+  }
+}
+
+/*
+ * Superfish blocks
+ */
+.block-superfish ul {
+  margin: 0 !important;
+  padding: 0 !important;
+  li {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+/*
+ * Vertical style
+ */
+.sf-vertical {
+  width: 100%;
+  li {
+    width: 100%;
+    &:hover ul,
+	&.sfHover ul {
+	  left: 100%;
+      top: 0;
+	  @include dist_zero;
+	 }
+	 a {
+       padding: 0 10px;
+    }
+  }
+}
+
+/*
+ * Navbar style
+ */
+.sf-navbar {
+  padding-bottom: 0 !important;
+}
+
+/*
+ * Sensible padding for the default style
+ */
+.sf-menu.sf-style-default a {
+  padding: 0 10px;
+}
+
+
+/* =============================================================================
+ *   Menus, usually blocks
+ * ========================================================================== */
+
+ul.menu {
+  padding-left: 15px;
+  ul {
+    padding-left: 15px;
+  }
+}
+
+/* If li.content exists it's a problem, so reset the padding */
+.block .menu li.content {
+  padding: 0;
+}
+
+
+/* =============================================================================
+ *   Book navigation menu
+ * ========================================================================== */
+.book-navigation {
+  .page-up {
+    min-width: 2em;
+    white-space: nowrap;
+  }
+  .menu {
+    margin-left: 0;
+  }
+}
+
+/* =============================================================================
+ *   Breadcrumbs
+ * ========================================================================== */
+.pane-page-breadcrumb {
+ &.block {
+   margin-bottom: 0px;
+    .breadcrumb {
+      margin-left: 30px;
+  }
+  }
+}
+
+
+/* =============================================================================
+ *   Pagers
+ * ========================================================================== */
+ul.pager {
+  clear: both;
+  margin: 13px 0 0 0;
+  text-align: center;
+  @include border-radius(5px); 
+  background: $dark_silver;
+  li {
+    margin: 0;
+	padding: .5em;
+    background-image: none;
+    display: inline;
+    list-style-type: none;
+    line-height: 50px;
+	&.pager-current {
+	   font-weight: 700;
+	   font-size: 1.2em;
+	}
+	a {
+	  font-size: 1.2em;
+	  color: $grey !important;
+	}
+  }
+}
+
+/* =============================================================================
+ *   Skip Navigation
+ * ========================================================================== */
+
+#skip-link {
+  left: 50%;
+  margin-left: -6.5em;
+  margin-top: 0;
+  padding: 0 0.5em;
+  position: absolute;
+  width: 12em;
+  z-index: 50;
+  a,
+  a:link,
+  a:visited  {
+    background: #444;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    display: block;
+    line-height: 2;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus,
+  a:active {
+    outline: 0;
+  }
+}
+
+/* =============================================================================
+ *   Tabs (local tasks)
+ * ========================================================================== */
+
+#tasks {
+  margin-bottom: 15px;
+}
+
+ul.secondary {
+  border-bottom: 1px solid #ccc;
+  margin: 1em 0 0;
+  padding: 0 .3em 1em;
+  li {
+    border-right: 0;
+    list-style: none;
+    padding: 0 10px 0 0;
+	a:hover,
+	a.active {
+	  border-bottom: none;
+      text-decoration: underline;
+	}
+  }
+}
+
+/* =============================================================================
+ *   Action links
+ * ========================================================================== */
+
+ul.action-links {
+  margin: 20px 0 0;
+  list-style: none;
+}
+
+/*
+ * Labels are h2 in Adaptivetheme. Use a strong selector to mitigate unwanted ineritance issues
+ */
+.field-label {
+  font-size: 1em;
+  font-weight: 700;
+  font-family: inherit;
+  line-height: inherit;
+  margin-bottom: 0;
+}
+
+/*
+ * Taxonomy
+ */
+.field-type-taxonomy-term-reference {
+  /* The same bottom margin as p, blockquote, ul, ol and dl */
+  margin-bottom: 1.5em;
+  &.field-label-inline {
+    .field-items {
+	  @include dist_zero;
+	}
+	.field-item  {
+	  display: inline;
+      list-style: none;
+      padding: 0 10px 0 0;
+	}
+  }
+}
+
+/*
+ * Float left setting
+ */
+.ia-l .field-type-image figure,
+.iat-l .field-type-image figure {
+  margin: 5px 20px 15px 0;
+}
+
+/*
+ * Centered setting
+ */
+.ia-c .field-type-image figure,
+.iat-c .field-type-image figure {
+  margin: 5px auto 15px;
+}
+
+/*
+ * Float right setting
+ */
+.ia-r .field-type-image figure,
+.iat-r .field-type-image figure {
+  margin: 5px 0 15px 20px;
+}
+
+
+/* =============================================================================
+ *   Block Styling
+ * ========================================================================== */
+
+/*
+ * Main wrapper for most blocks, block_system_main does not have it
+ */
+.block {
+  margin-bottom: 20px;
+}
+
+.block-title {
+  margin: 0;
+}
+
+.block-content {
+  ul,
+  ol {
+    padding: 0;
+	li {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+  }
+}
+
+/* =============================================================================
+ *   Node Styling
+ * ========================================================================== */
+
+.node {
+  margin-bottom: 20px;
+  .node-title {
+    margin: 0;
+    line-height: 50px;
+  }
+}
+/* =============================================================================
+ *   Comment Styling - Comments, comment wrapper, comment form
+ * ========================================================================== */
+
+/*
+ * Wrapper for the list of comments and its titles
+ */
+#comments {
+  margin: 1.5em 0;
+  h2 {
+    &.comment-title,
+    &.comment-form	{
+	  margin: 0;
+	}
+  }
+}
+
+/*
+ * Wrapper for a single comment
+ */
+.comment {
+  margin-bottom: 10px;
+  .submitted time {
+	float: right;
+  }
+}
+
+/*
+ * Comment title
+ */
+.comment-title {
+  margin: 0;
+}
+
+/*
+ * "New" marker for comments that are new for the current user
+ */
+.new {
+  color: #c00;
+}
+
+/*
+ * Nested comments are indented
+ */
+.indented {
+  margin-left: 40px;
+}
+
+
+/* =============================================================================
+ *   Forms
+ * ========================================================================== */
+
+/*
+ * Wrapper for a form element (or group of form elements) and its label
+ */
+.form-item {
+  input.error,
+  textarea.error,
+  select.error {
+    border: 1px solid #c00;
+  }
+  label {
+    font-weight: 700;
+  }
+  .description {
+    font-size: 0.85em;
+  }
+}
+
+/*
+ * Highlight marks and form required mark
+ */
+.marker,
+.form-required {
+  color: #c00;
+}
+
+.container-inline {
+  div,
+  label {
+    display: inline;
+  }
+}
+
+/*
+ * Define consistent borders
+ */
+fieldset {
+  border: 1px solid #ccc;
+}
+
+a.button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+}
+
+/*
+ * Password confirmation
+ */
+.password-parent,
+.confirm-parent {
+  margin: 0;
+}
+
+
+/* =============================================================================
+ *   Tables
+ * ========================================================================== */
+
+table {
+  margin: 10px 0;
+  padding: 0;
+  width: 100%;
+  &.sticky-header {
+    z-index: 10;
+  }
+}
+
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+  border-color: #ccc;
+}
+
+table,
+td,
+th {
+  vertical-align: middle;
+}
+
+caption,
+th,
+td {
+  text-align: left;
+}
+
+thead tr {
+  font-weight: 700;
+  background-color: $bright_grey;
+}
+tr {
+  font-weight: 700;
+  background-color: $bright_grey;
+  &.odd {
+    background: $white;
+    td.active {
+      background-color: #eee;
+    }
+  }
+  &.info,
+  &.even,
+  &:nth-child(2n+2) {
+    border-bottom: 0;
+    background-color: #f5f5f5;
+  }
+  &.even td.active {
+    background-color: #ebebeb;
+  }
+}
+
+td,
+th {
+  border-bottom: 0;
+  margin: 0;
+  padding: 5px 7px;
+}
+
+tbody {
+  tr {
+    border-top: 1px solid #ccc;
+  }
+}
+
+/*
+ * Forum tables
+ * Core sets white-space to nowrap, which makes no sense
+ */
+#forum td {
+  .created,
+  .posts,
+  .topics,
+  .last-reply,
+  .replies,
+  .pager {
+    white-space: normal;
+  }
+}
+
+/* =============================================================================
+ *   Messages
+ * ========================================================================== */
+
+/* Left and right margin are set by the global gutter width */
+div.messages {
+  margin: 0 30px 10px;
+  ul {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+.node-unpublished p.unpublished,
+.comment-unpublished p.unpublished {
+  color: pink;
+  color: rgba(239, 170, 170, 0.4);
+  font-family: Impact,"Arial Narrow",Helvetica,sans-serif;
+  font-size: 75px;
+  font-weight: bold;
+  height: 0;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  text-align: center;
+  text-transform: uppercase;
+  word-wrap: break-word;
+}
+
+.lt-ie8 .node-unpublished > *,
+.lt-ie8 .comment-unpublished > * {
+  position: relative;
+}
+
+
+/* =============================================================================
+ *    Maintenance pages
+ * ========================================================================== */
+
+.maintenance-page {
+  .container {
+    padding: 40px 0;
+  }
+  #site-name,
+  #page-title {
+    margin: 0;
+  }
+}
+
+.db-offline {
+  .container {
+    margin: 0 auto;
+    padding: 40px 0;
+    width: 100%;
+    max-width: 960px;
+  }
+  div.messages {
+    margin: 20px 0 0;
+  }
+   #content {
+     padding: 20px 0;
+  }
+}
+
+/* =============================================================================
+ *   Misc overrides for contrib modules
+ * ========================================================================== */
+
+/*
+ * Admin menu overrides
+ */
+#admin-menu {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Devel Module
+ */
+.dev-query {
+  background: #eee;
+  padding: 30px;
+}
+
+/*
+ * Styleguide module tweaks
+ */
+#styleguide-header {
+  padding: 0 10px;
+  .item-list {
+    font-family: inherit;
+    margin: 0 20px 20px 0;
+    min-height: 260px;
+    width: auto;
+  }
+}
+
+input.form-text, 
+textarea.form-textarea, 
+select.form-select {
+  border: 1px solid #CCCCCC;
+}
+
+
+/*
+ *  Buttons
+ */
+
+input.form-submit {
+  cursor: pointer;
+  font-size: 0.929em;
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 1em;
+  margin-right: 0.6em; /* LTR */
+  padding: 4px 17px;
+  @include border-radius(15px);
+}
+a.button {
+  @extend input.form-submit;
+  &:link,
+  &:visited,
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.panel-flexible .panel-separator {
+    margin: 0 0 0.6em;
+}
+.item-list ul li{
+	margin: 0;
+}

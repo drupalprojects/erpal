@@ -1,0 +1,117 @@
+<?php
+
+//@file helper functions for automated test in module erpal_invoice
+
+/**
+* Creates some test billables
+*/
+function _erpal_invoice_test_create_billables($only_unique_customers=false) {
+  //load functions from billable test
+  module_load_include('helper', 'billable', 'test/billable.test');
+  
+  $reduce_test_data = _billable_create_reduce_test_data($only_unique_customers);
+  
+  //prepare date which we need for invoice testing in erpal_invoice
+  unset($reduce_test_data['c1']);
+  unset($reduce_test_data['c2']);
+  
+  $ret = array();
+  foreach ($reduce_test_data as $billable) {
+    $ret[] = $billable->billable_id;
+  }
+  
+  return $ret;
+}
+
+/**
+* Check if an invoice has been create from params and from some billables with the function
+* _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced, $params)
+*/
+function _erpal_invoice_test_check_invoice($invoice, $params) {
+  //load billables of the invoice
+  $billable_ids = array();
+  foreach ($invoice->field_billables_ref[LANGUAGE_NONE] as $target_id) {
+    $billable_ids[] = $target_id['target_id'];
+  }
+    
+  $billables = billable_load_multiple($billable_ids);
+
+  //get the needed customer of the invoice!  
+  if (isset($params['customer_nid']))
+    $customer_nid = $params['customer_nid'];
+  else {
+    $customer_nid = 0; //init
+    foreach ($billables as $billable) {
+      $customer_nid_new = $billable->customer_nid;
+      if (!$customer_nid)
+        $customer_nid = $customer_nid_new;
+      else
+        if ($customer_nid <> $customer_nid_new) {
+          //BAD! There are different customers in the billables. We cannot create an invoice with that information!       
+         $customer_nid = false;
+        }
+    }
+  }
+  
+  //now get the currency needed
+  $currency = false;
+  foreach ($billables as $billable) {
+    $currency_new = $billable->currency;
+    if (!$currency)
+        $currency = $currency_new;
+    else
+      if ($currency <> $currency_new) {
+        //BAD!! NO currency found but equal currencies in the billables! We cannot create an invoice with that information
+        $currency = false;
+      }
+  }
+  
+  $invoiceOK = true;
+  if (!$invoice)
+    $invoiceOK = false; //no invoice
+    
+  if (!$invoice->nid)
+    $invoiceOK = false;  //no nid no invoice
+    
+  if ($invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'] != $customer_nid)
+    $invoiceOK = false; //wrong customer
+    
+  if ($invoice->field_currency[LANGUAGE_NONE][0]['value'] != $currency)
+    $invoiceOK = false; //wrong currency
+
+  //check skonto
+  if (isset($params['skonto'])) {
+    //get the MUST values
+    $credit_period = $params['skonto']['credit_period'];
+    $discount_percent = $params['skonto']['discount_percent'];
+
+    //now get the real valus in the invoice node
+    $skonto_collection_id = $invoice->field_skonto[LANGUAGE_NONE][0]['value'];
+    $skonto_entity = entity_load('field_collection_item', array($skonto_collection_id));
+    $skonto_entity = $skonto_entity[$skonto_collection_id];
+
+    if ($credit_period != $skonto_entity->field_credit_period[LANGUAGE_NONE][0]['value'] ||
+      $discount_percent != $skonto_entity->field_discount_percent[LANGUAGE_NONE][0]['value'])
+        $invoiceOK = false;
+  }
+  
+  return $invoiceOK;
+}
+
+/**
+*Checks that all invoice auto notes because of vat rate notes are available
+*/
+function _erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required) {
+  $auto_notes = $invoice->field_auto_note[LANGUAGE_NONE];
+  $flat_auto_notes = array();
+  foreach ($auto_notes as $note) {
+    $flat_auto_notes[] = $note['value'];
+  }
+  
+  //now intersect the params and the notes, cardinality of elements should stay the sam
+  $intersection = array_intersect($auto_notes_required, $flat_auto_notes);
+
+  $invoiceOK = count($intersection) == count($auto_notes_required);
+  
+  return $invoiceOK;
+}

@@ -1,0 +1,12 @@
+name = Commander
+description = Commander module, provides API for other modules to register their own commands, handle and execute them.
+core = 7.x
+package = "Misc"
+
+scripts[] = assets/js/commander.js
+scripts[] = assets/js/jquery.shortcuts.min.js
+stylesheets[all][] = assets/css/commander.css
+; files[] = lib/GetOptionKit/Init.php
+
+php = 5.3
+version = "7.x-1.x-dev"

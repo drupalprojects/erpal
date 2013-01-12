@@ -1,0 +1,11 @@
+name = ERPAL Bookmark
+description = ERPAL Bookmark Module
+core = 7.x
+package = ERPAL
+php = 5.2.4
+version = 7.x-1.0-dev
+project = erpal_bookmark
+dependencies[] = erpal_bookmark_helper
+dependencies[] = flag
+features[features_api][] = api:1
+features[flag][] = bookmark_flag

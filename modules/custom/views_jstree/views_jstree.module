@@ -1,0 +1,603 @@
+<?php
+
+module_load_include('inc', 'views_jstree', 'views_jstree.token');
+
+/**
+ * Implements of hook_views_api().
+ */
+function views_jstree_views_api() {
+  return array(
+    'api' => '3.0',
+    'path' => drupal_get_path('module', 'views_jstree'),
+  );
+}
+
+/**
+* Implements hook_menu
+*/
+function views_jstree_menu() {
+  $items = array();
+  $items['jstree/load/%/%'] = array(
+    'page callback' => 'views_jstree_load_children',
+    'page arguments' => array(2,3), //2=view, 3=parent_id
+    'access callback' => 'views_jstree_load_children_access',
+    'access arguments' => array(2,3),
+  );
+  
+  $items['jstree/move/%/%'] = array(
+    'page callback' => 'views_jstree_move_child',
+    'page arguments' => array(2, 3), //2=view name, 3=the nid that is moved
+    'access callback' => true,  //@TODO: user can alway move? Cannot? Shouldnot? only if he can edit the task!
+  );
+
+  return $items;
+}
+
+/**
+* Implements hook_form_alter
+*/
+function views_jstree_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    $form['#submit'][] = 'views_js_tree_views_exposed_form_submit';
+  }
+}
+
+function views_js_tree_views_exposed_form_submit($form, $form_state) {
+  //save the values submitted to the view if view is js tree plugin
+  //but we dont save the filter for get children requests because they dont submit filter data on ajax request
+  if (!isset($_REQUEST['operation'])) {
+    $display = $form_state['display'];
+    $display_vid = $display->vid;
+    $display_id = $display->id;
+    $_SESSION['views_jstree_filter'][$display_vid] = $_REQUEST;
+  }
+  
+}
+
+function views_jstree_require_jstree() {
+  //include the jstree with the library module
+  $jstree_path = libraries_get_path('jstree');
+
+  //if not exists, warn the user!
+  $jstree_download = l('latest jstree', 'http://www.jstree.com');
+  $jstree_root = $jstree_path;
+  if (!file_exists($jstree_path."/jquery.jstree.js")) {
+    drupal_set_message(t('Please download !jstree_download and place files from package in !jstree_root', array('!jstree_download' => $jstree_download, '!jstree_root' => $jstree_root)), 'warning');
+  }
+  
+  //add jstree Javascript and all its components
+  drupal_add_js($jstree_path."/_lib/jquery.cookie.js");
+  drupal_add_js($jstree_path."/_lib/jquery.hotkeys.js");
+  drupal_add_js($jstree_path."/jquery.jstree.js"); 
+}
+
+/**
+ * Implements of hook_theme().
+ */
+function views_jstree_theme($existing, $type, $theme, $path) {
+  return array(
+    //the js tree
+    'views_jstree' => array(
+      'variables' => array(
+        'view' => NULL,
+        'options' => array(),
+        'rows' => array(),
+        'title' => NULL,
+      ),
+    ),
+  );
+}
+
+/**
+* Returns fields of a display. If fields are not overriden, we take the fields of the default view.
+*/
+function views_jstree_get_fields_of_view($view, $display) {
+  $fields = false;
+  if (isset($display->display_options['fields']))
+    $fields = $display->display_options['fields'];
+
+  if (!$fields) { //if not overriden, take from view
+    if (isset($view->display['default']->display_options['fields']))
+      $fields = $view->display['default']->display_options['fields'];
+  }
+  
+  return $fields;
+}
+
+function views_jstree_get_options_of_view($view, $display) {
+  $options = $display->display_options['style_options'];
+
+  if (!$options) { //if not overriden, take from view
+    $options = $view->display['default']->display_options['style_options'];
+  }
+  
+  return $options;
+}
+
+/**
+ * Theme function for the jstree style plugin.
+ *
+ * We need to do some weirdness that makes more sense as a theme function
+ * than as a template.
+ *
+ * @ingroup themeable
+ * @link http://drupal.org/node/355919
+ */
+function theme_views_jstree($variables) {
+  //only if this is not a view path....oh man thats dirty :-(
+  if (strpos($_GET['q'], 'jstree') === false)
+    $_SESSION['view_jstree']['current_tree_url'] = $_GET['q'];  //so other modules know which url ist actually viewd (@see erpal_book_helper, erpal_book_helper_jstree_context_menu)
+    
+  views_jstree_require_jstree();
+  //dpm($variables);
+  $view = $variables['view'];
+  $options = $variables['options'];
+  $rows = $variables['rows'];
+  $title = $variables['title'];
+
+  $result = $view->result;
+  $fields = &$view->field;
+
+  $parents = array();
+
+  if (!$fields[$options['id_field']] instanceof views_handler_field) {
+    drupal_set_message(t('ID field is invalid: %field', array('%field' => $options['id_field'])), 'error');
+    return '';
+  }
+
+  if (! $fields[$options['parent_field']] instanceof views_handler_field) {
+    drupal_set_message(t('Parent field is invalid: %field', array('%field' => $options['parent_field'])), 'error');
+    return '';
+  }
+  
+  //now we show the first nodes at top level here, other nodes are reloaded by ajax in the tree  
+  $nid = isset($view->args[0]) ? $view->args[0] : 0;
+  $id = 'views_jstree_'.$nid;
+  $view_name = $view->name;
+  //add javascript variables
+  $ajax_url = url("jstree/load/$view_name");
+  $ajax_url_move = url("jstree/move/$view_name");
+  
+  $jstree_options = array();
+  $jstree_options['trees'][$id] = array('parent_nid' => $nid, 'ajax_url' => $ajax_url, 'ajax_url_move' => $ajax_url_move);
+  
+  //get all parent possible parent child node type relations. 
+  $allowed_parent_child_types = module_invoke_all('jstree_allowed_child_types');
+  if (!$allowed_parent_child_types)
+    $allowed_parent_child_types = array();
+  $jstree_options['allowed_parent_child_types'] = $allowed_parent_child_types;
+  drupal_add_js(array('jstree_options' => $jstree_options), 'setting');
+  
+  $mod_path = drupal_get_path('module', 'views_jstree');
+  drupal_add_js($mod_path."/js/views_jstree.js");
+  
+  //@TODO in eigene Templatefunktion!
+  //@TODO größe so viel wie Platz ist! (100%)
+  $width = 900;  
+  $height = 600;
+  return '<div id="'.$id.'" class="jstree"></div>';
+ 
+}
+
+/**
+* Access callback for ajax loading of view_data
+*/
+function views_jstree_load_children_access() {
+  return true; //@TODO implement access validation, maybe use permissions set on view!
+}
+
+/**
+* AJAX Callback function for moving the node in jstree
+* @param $nid the nid of the node that is moved
+*/
+function views_jstree_move_child($view_name, $nid) {
+  $data = $_REQUEST;
+  
+  $op = $data['operation'];
+  $new_parent_nid = $data['new_parent_nid'];
+  $position = $data['position'];
+  $root = $data['root'];
+  
+  $view = views_get_view($view_name);
+  if (!is_object($view))
+    die(json_encode(array('result' => false)));
+    
+  $children_display = _views_jstree_get_children_display($view);  //the view that displays the children
+  
+  if ($op != 'move_node')
+    die(json_encode(array('result' => false)));
+   
+  $node = node_load($nid);
+  //check what is the parent field
+  $fields = views_jstree_get_fields_of_view($view, $children_display);
+  $options = views_jstree_get_options_of_view($view, $children_display);
+  
+  $parent_field = $fields[$options['parent_field']];
+  $weight_field = $fields[$options['weight_field']];
+
+  if ($new_parent_nid == 1){  //@TODO: is this really allways 1 if we drag at top level under the root??
+    //set parent to argument, because this is the root.
+    $new_parent_nid = $root;
+  }
+
+  $node->{$parent_field['id']}[LANGUAGE_NONE][0]['target_id'] = $new_parent_nid;
+  $node->{$weight_field['id']}[LANGUAGE_NONE][0]['value'] = $position;
+
+  //call hook when node is moved, so other module could interact with the moved node
+  module_invoke_all('views_tree_before_move', $node, $position);
+
+  node_save($node);
+
+  module_invoke_all('views_tree_after_move', $node);
+
+  die(json_encode(array('result' => true)));
+}
+
+
+/**
+* AJAX Callback function for loading tree children
+*/
+function views_jstree_load_children($view_name, $parent_id) {
+
+  $view = views_get_view($view_name);
+ 
+  if (!is_object($view))
+    return array();
+  
+  $parent_node = node_load($parent_id);
+  $parent_types = array($parent_node->type);
+
+  $children_display = _views_jstree_get_children_display($view, $parent_types);
+
+  //execute it and return data as json  
+  $args = array($parent_id);
+  
+  $display_vid = $children_display->vid; 
+  $filter_values = $_SESSION['views_jstree_filter'][$display_vid]; //@TODO this works but it is not the best way to do that!
+  
+  $view->preview($children_display->id, $args);
+
+  $total_result = $view->result;  //here we have ALL nodes, independent of the set filter
+  
+
+  $fields = views_jstree_get_fields_of_view($view, $children_display);
+  $options = views_jstree_get_options_of_view($view, $children_display);
+  
+  $parent_field = $fields[$options['parent_field']];
+  $id_field = $fields[$options['parent_field']];
+  $weight_field = $fields[$options['weight_field']];  
+  $type_field = $fields[$options['type_field']];
+
+  //go through the results and get the nids of all parents that have filter-matching childs but dont match the filter themselfes.
+
+  /*  
+  - 1) wenn ein Filter gesetzt ist: Müssen wir erstmal ALLE! nodes laden die in dem PArent auf der ersten Ebene vorkommen. Dabei muss der Filter ignoriert werden!  
+  - 2) dann müssen wir eine Tiefensuche für jeden Result node starten. Wir sammeln all diese nids pro Parent node auf der ersten Ebene gruppiert (also pro ergebnis row aus der ersten query) der Tiefensuche ein.
+  - 3) dann fürhren wir ein query aus, dem wir diese nids als argumente geben (inklusive der Parents auf erster Ebene) und wenden den Filter an. Nun haben wir 
+    alle nids im Subtree, die dem Filter entsprechen.
+  - 4) Wir gehen nun alle gruppierten Nodes aus schritt zwei durch und deren kinder (die wir ja durch die Tiefensuche kennen) und prüfen ob sich eines dieser Kinder noch in in der Ergebnismenge aus Schritt 3 befindet wenn das nicht so ist, werfen wir die nid weg, sonst wird sie aufgehoben und kommt mit in die Ergebnismenge.
+  - 5) Wir prüfen nun noch, ob alle Parents auf erster Ebene ohne Kinder dem Filter entsprechen, sich also in den nids aus SChritt 3 befinden. Wenn nicht, werden sie aus der Ergebnismenge entfernt.
+  */  
+
+  unset($filter_values['operation']);  //if not removed, this will disturb our filtering "if-statement"
+  
+  //What is done in this if-section? So we have a tree. If we filter with exposed filters, users will get filtered nodes in the tree. But they will see nodes that dont match the filter if these nodes are parent nodes of filter-matching children. If these non-filter-matching parent nodes would not be shown, even the matching children would not be visible. At first try, I thougth it is enough to execute this section only if exposed form was submitted because of Performance reasons, BUT: in ERPAL for example we filter tickets and tasks (the same node type with a flag). So a ticket ca be parent of a task and a task can be the parent of a ticket. So here we have to show parents that dont match the filter (task or ticket) even if no exposed form was submitted.
+  if (true || $filter_values && is_array($filter_values) && count($filter_values)) {  
+    $filter = $children_display->handler->view->filter;
+
+    if (isset($filter['type']->options['value']))
+      $filtered_types = $filter['type']->options['value'];
+    else
+      $filtered_types = array();
+
+    $filtered_types = array_keys($filtered_types);
+    $all_children_flat = array(); //simply all the child nids
+    $children_by_root = array(); //child nids grouped by parent
+
+    //in results array we have all nids that have parent_id as direct parent
+    foreach ($total_result as $delta=>$row) {      
+      //now get all children of the current rows sub tree
+      $sub_children = _views_jstree_get_all_child_nids_deep_search($row->nid, $parent_field['id'], $filtered_types);
+    
+      //add the node itself, too
+      $all_children_flat[] = $row->nid;
+      $children_by_root[$row->nid] = array();  //otherwise the node will not be displayed if it has no children, which would be wrong.
+
+      //now add the children to our array
+      foreach ($sub_children as $delta=>$sub) {
+        $all_children_flat[] = $sub['child'];
+        $children_by_root[$row->nid][] = $sub['child'];
+      }      
+    }
+
+    //now execute a view by id arguement and the given filter to filter node that should not be displayed according to the current set filter
+    $by_id_view = views_get_view($view_name);
+
+    $by_id_display = _views_jstree_get_by_id_display($by_id_view);
+
+    if ($by_id_display) {  //if there is no view display for selecting nodes by id skip this process!
+      $id_args = array(implode('+', $all_children_flat));
+
+      //set filter  
+      $by_id_view->set_exposed_input($filter_values);
+      $by_id_view->preview($by_id_display->id, $id_args);
+      $filtered_result = $by_id_view->result;
+
+      //now go through the grouped array of all results and eleminate nodes from deep search that are no more part of the filtered result set.      
+      $non_filter_matching_nids = array();
+      foreach ($children_by_root as $parent_nid=>$children_nids) {        
+        foreach ($children_nids as $delta=>$child_nid) {
+          $in_filtered_result = false;
+          foreach ($filtered_result as $filtered_obj) {
+            //check children
+            if ($filtered_obj->nid == $child_nid) {
+              $in_filtered_result = true;
+            }
+          }
+          
+          if (!$in_filtered_result) {
+            unset($children_by_root[$parent_nid][$delta]); //no result of filtered nodes, so delete the node from final resultset            
+          }
+          
+        }
+        
+        //if there are some root nodes without children in $children_by_root, check if they match the filtered_result. If not, delete them
+        if (is_array($children_by_root)) {
+          if (!count($children_by_root[$parent_nid])) { //if there are no child nids in the parent subtree, delete the parent, but only if the parent itself doesnt match the filter!
+ 
+            $in_filtered_result = false;
+            foreach ($filtered_result as $filtered_obj) {
+              if ($filtered_obj->nid == $parent_nid) {
+                $in_filtered_result = true;
+                break;
+              }
+            }
+            if (!$in_filtered_result)
+              unset($children_by_root[$parent_nid]);
+          }
+        }
+      }
+
+      //now delete the nodes in total_result and mark non filter-matching nodes
+      foreach ($total_result as $delta=>$result_obj) {
+        
+        if (!isset($children_by_root[$result_obj->nid])) {
+          unset($total_result[$delta]);
+        }
+        if (isset($total_result[$delta])) {
+          //mark the result if it doesn't match the filter
+          $result_obj->filter_matching = false;
+          foreach ($filtered_result as $filtered_obj) {
+            if ($result_obj->nid == $filtered_obj->nid)
+              $result_obj->filter_matching = true;
+          } 
+
+        }
+          
+      }
+    }
+  }
+  
+  $result = $total_result;
+
+  //output result as json to display in jstree
+  $output = array();
+  foreach($result as $delta=>$row) {        
+    //Execute next view to see if it hase some children!
+    $subargs = array($row->nid);
+    $node_type = 'node_'.$type_field['id'];
+    $row_type = $row->{$node_type};
+    $parent_types = array($row_type);
+
+    $view = views_get_view($view_name);
+    //we dont respect the filter because it doenst matter if we collapse the subtree and it is empty because the filter doesnt match. But it would be bad if we cannot collapse the subtree because we think we have no sub children but in reality we do have!
+    $subview = _views_jstree_get_children_display($view, $parent_types);
+
+    $view->preview($subview->id, $subargs); //@TODO may be a view that just counts the results would be much more performant   
+
+    $hasChildren = count($view->result) > 0;   
+
+    $node_uri = url('node/'.$row->nid);
+    //@TODO Views row style plugin? No hard coded row style format!
+    //@TODO ensure in views UI that for this style plugin node_type is set as field as well as nid!
+
+    $status = '';
+    if (isset($row->field_field_task_status_term[0]['raw']['value']))  //@TODO should be dynamically set in view options for general usage
+      $status = " ".$row->field_field_task_status_term[0]['raw']['value'];
+      
+    //if filter matching is not set, there may be no filter...!
+    if (!isset($row->filter_matching))
+      $row->filter_matching = true;
+    
+    $filter_matching_class = $row->filter_matching ? 'filter_matching' : 'no_filter_matching';
+    $output[] = array(
+      "attr" => array(
+        "id" => "node_".$row->nid, "rel" => $row->node_type, "type" => $row->node_type, "uri" => $node_uri, "entity_id" => $row->nid, "class" => $row->node_type." ".$status." ".$filter_matching_class
+      ), 
+      "data" => $row->node_title,
+      "state" => $hasChildren ? "closed" : '', //or '' if no Children!
+      'context_menu' => _views_jstree_get_context_menu($view, $children_display, $row->node_type, $row->nid, $row, $parent_id),
+    );
+  }
+
+  die(json_encode($output));
+}
+
+/**
+* returns context_menu data for a given node
+*/
+function _views_jstree_get_context_menu($view, $display, $node_type, $nid, $row, $root_id) {
+  //get the options first!
+  $context_menu_options = $display->display_options['style_options']['context_menu'];
+  if (!$context_menu_options) {
+    //get options from default view
+    $context_menu_options = $view->display['default']->display_options['style_options']['context_menu'];
+  }
+
+  //now get the menu either from textarea or from implemented hooks
+  if ($context_menu_options['use_context_menu_hook']) {
+    //from hooks!
+    
+    $menu = module_invoke_all('jstree_context_menu', 'node', $node_type, $nid, $root_id);
+    return $menu;
+  } else {
+    $type_prefix = 'views_jstree';
+    $type = $type_prefix."_".$view->name."_".$display->id;
+
+    $custom_context_menu = $context_menu_options['custom_context_menu'];
+    $custom_context_menu = token_replace($custom_context_menu, array($type => array('view' => $view, 'display' => $display, 'row' => $row)));
+   
+$br = "
+";    //a linebreak that always works
+    $menu = array();
+    $items = explode($br, $custom_context_menu);
+    foreach ($items as $item) {
+      $elements = explode('|', $item);
+      $title = $elements[0];
+      $url = $elements[1];
+      $menu[] = array('title' => $title, 'url' => $url);
+    }
+    
+    return $menu;
+  }
+ 
+}
+
+/**
+* Returns the view that is needed for querying all tasks only by nid using contextual filter because views filter cannot
+* query with "Where nid IN (1,2,4)"
+*/
+function _views_jstree_get_by_id_display($view) {
+  
+  foreach($view->display as $display_id=>$display) {
+    $display_options = $display->display_options;
+    if (isset($display_options['style_options']['results_id']) && $display_options['style_options']['results_id']) {
+      return $display;
+    }
+  }
+  
+  return false;
+}
+
+/**
+* Return the view displaying the children using the ajax allback related to the given view
+* @param a view which contains the display to get children
+*/
+function _views_jstree_get_children_display($view, $for_types=array()) {
+  //@TODO make dynamic options in view to select the child view displaying ajax children
+  $display_normal = false;
+  $top_row_display = false;
+  foreach($view->display as $display_id=>$display) {
+    $display_options = $display->display_options;
+    if (isset($display_options['style_options']['ajax_child_view'])) {
+      if ($display_options['style_options']['ajax_child_view']) {
+        //that ist the display!
+        $display_normal = $display;
+      }
+
+      $ajax_child_view_top_types = isset($display_options['style_options']['ajax_child_view_top_types']) ? $display_options['style_options']['ajax_child_view_top_types'] : array();
+      $types_intersection = array_intersect($for_types, $ajax_child_view_top_types);
+
+      if (count($types_intersection)) {
+        //that ist the display!
+        $top_row_display = $display;
+      }
+    }
+  }
+  
+  if (count($for_types) && $top_row_display) {
+    return $top_row_display;
+  }
+  
+  return $display_normal;
+}
+
+/**
+ * Code mostly taken from views_tree module, THANKS!
+ *
+ * Normalize a value out of the record to an int.
+ *
+ * If the field in question comes from Field API, then it will be an array, not
+ * an int.  We need to detect that and extract the int value we want from it.
+ * Note that because Field API structures are so free-form, we have to specifically
+ * support each field type.  For right now we support entityreference (target_id),
+ * nodereference (nid), userreference (uid), and taxonomyreference (tid).
+ *
+ * @param mixed $value
+ *   The value to normalize.  It should be either an int or an array. If an int,
+ *   it is returned unaltered.  If it's an array, we extract the int we want
+ *   and return that.
+ * @param views_handler_field $field
+ *   Metadata about the field we are extracting information from.
+ * @return int
+ *   The value of this key, normalized to an int.
+ */
+function views_jstree_normalize_key($value, views_handler_field $field) {
+  if (is_array($value) && count($value)) {
+    if (isset($field->field_info['columns'])) {
+      $columns = array_keys($field->field_info['columns']);
+      foreach ($columns as $column) {
+        if (in_array($column, array('target_id', 'nid', 'uid', 'tid'))) {
+          $field_property = $column;
+          break;
+        }
+      }
+    }
+    else {
+      $field_property = '';
+    }
+    return $field_property ? $value[0][$field_property] : 0;
+  }
+  else {
+    return $value ? $value : 0;
+  }
+}
+
+/**
+* Gets all child nodes of a given parent by deepsearch.
+* @return a flat array with all children nids in deep search order, each node in an array whith key 'child' and 'parent'
+* @param $types the node types that should be returned and deep searched as children
+*/
+function _views_jstree_get_all_child_nids_deep_search($nid, $parent_field_name, $types=array()) {
+  $children = _views_jstree_get_direct_children($nid, $parent_field_name, $types);
+ 
+  $all_children = array();
+  foreach ($children as $delta=>$child_nid) {    
+    $sub_children = _views_jstree_get_all_child_nids_deep_search($child_nid, $parent_field_name, $types);
+    $all_children[] = array('parent' => $nid, 'child' => $child_nid);
+    $all_children = array_merge($all_children, $sub_children);
+  }
+  
+  return $all_children;
+}
+
+/**
+* returns an array of direct children nids of a node using field_parent
+* @param $nid the parent nid to search children for
+* @param $types only those node types are returned
+*/
+function _views_jstree_get_direct_children($nid, $parent_field_name, $types=array(), $order_field=false) {
+  
+  $children = array();
+  if (!count($types))
+    return $children;
+ 
+  foreach ($types as $type) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', $type)
+    ->fieldCondition('field_parent', 'target_id', $nid, '=')
+    ->addMetaData('account', user_load(1)); // run the query as user 1
+
+    if ($order_field)
+      $query->fieldOrderBy($order_field, 'value', 'asc');
+    
+    $result = $query->execute();
+    if (isset($result['node'])) {
+      $new_nids = array_keys($result['node']);
+      $children = array_merge($children, $new_nids);
+    }
+  }
+  
+  return $children;
+}

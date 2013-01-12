@@ -1,0 +1,1228 @@
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/* for pain search */
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border, */
+/*link color*/
+/*styles for alert*/
+/*color for mark*/
+/* left sidebar link*/
+/*grey link color*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
+body {
+  /*----------end node task-----------*/
+  /*----------end node ticket-----------*/
+}
+body.panels-ipe {
+  margin-bottom: 0 !important;
+}
+body #erpal_wrapper > .panel-col-first {
+  margin: 0;
+  background-color: #7b726b;
+  width: 150px;
+  max-width: none;
+  height: 100%;
+  float: left;
+  position: absolute;
+  left: 0;
+}
+body #erpal_wrapper > .panel-col-first > .inside {
+  margin: 0;
+  padding-right: 0;
+  height: 100%;
+  -webkit-box-shadow: #888888 1px 2px 2px;
+  -moz-box-shadow: #888888 1px 2px 2px;
+  box-shadow: #888888 1px 2px 2px;
+}
+body.page-node-tasks {
+  /*----------begin node task-----------*/
+}
+body.page-node-tasks li {
+  list-style-type: none;
+}
+body.page-node-tasks .content-inner {
+  border-bottom: 1px solid #e5e5e5;
+}
+body.page-node-tasks .region-sidebar-left {
+  max-width: 620px;
+}
+body.page-node-tasks .region-sidebar-right {
+  padding: 10px;
+  width: 380px;
+}
+body.page-node-tickets {
+  /*----------begin node ticket-----------*/
+}
+body.page-node-tickets li {
+  list-style-type: none;
+}
+body.page-node-tickets .content-inner {
+  border-bottom: 1px solid #e5e5e5;
+}
+body.page-node-tickets .region-sidebar-left {
+  max-width: 620px;
+}
+body.page-node-tickets .region-sidebar-right {
+  padding: 10px;
+  width: 380px;
+}
+body .inline_fields {
+  clear: both;
+}
+body .inline_fields .field {
+  margin-right: 50px;
+  clear: none !important;
+  float: left;
+}
+body.page-crm-contacts table .views-field-field-contact-image {
+  width: 160px;
+}
+body.page-crm-contacts table .views-field-title {
+  width: 345px;
+}
+body .view-crm-activities table {
+  border-collapse: collapse;
+}
+body #user-login input.form-text {
+  width: 200px;
+}
+
+.pane-system-user-menu {
+  /*----------begin User menu-------------*/
+  /*----------end User menu-------------*/
+}
+.pane-system-user-menu ul {
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  border-bottom: 1px solid #908984;
+}
+.pane-system-user-menu ul li {
+  padding: 0;
+  float: right;
+  width: 74px;
+  text-align: center;
+}
+.pane-system-user-menu ul li.last {
+  border-right: 1px solid #847c76;
+}
+.pane-system-user-menu ul li a {
+  color: #e7d4c5;
+}
+.pane-system-user-menu ul li a:hover {
+  color: #fdf8f4;
+}
+
+/*----------Logo-------------*/
+.pane-page-logo {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.pane-page-logo img {
+  vertical-align: bottom;
+}
+
+/*----------end Logo-------------*/
+/*----------begin Search Block-------------*/
+.pane-search-form {
+  margin-bottom: 0px;
+}
+.pane-search-form #search-block-form {
+  margin-bottom: 12px;
+}
+.pane-search-form #search-block-form .form-text {
+  margin-left: 5px;
+  width: 130px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  color: silver;
+  font-size: 11px;
+}
+
+/*----------end Search Block-------------*/
+/*----------begin Erpal menu-------------*/
+.pane-menu-menu-erpal-menu {
+  width: 150px;
+}
+.pane-menu-menu-erpal-menu ul {
+  margin: 0px;
+  padding: 0px;
+}
+.pane-menu-menu-erpal-menu ul li {
+  margin-left: 0;
+  padding: 0;
+  list-style-image: none;
+  list-style-type: none;
+  border-top: 1px solid #908984;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a {
+  color: black;
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a:hover {
+  color: black;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail .active {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail.active-trail {
+  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
+}
+.pane-menu-menu-erpal-menu ul li.last a {
+  border-bottom: 1px solid #908984;
+}
+.pane-menu-menu-erpal-menu ul li.last.last {
+  border-bottom: 1px solid #756c65;
+}
+.pane-menu-menu-erpal-menu ul li a {
+  padding: 9px 17px 9px 10px;
+  display: block;
+  font-size: 14px;
+  color: #e7d4c5;
+  border-top: 1px solid #756c65;
+}
+.pane-menu-menu-erpal-menu ul li a:hover {
+  color: #fdf8f4;
+}
+.pane-menu-menu-erpal-menu ul li a.active {
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+.pane-menu-menu-erpal-menu ul ul {
+  margin: 0px;
+  padding: 0px;
+}
+.pane-menu-menu-erpal-menu ul ul li.last {
+  border-bottom: none;
+}
+.pane-menu-menu-erpal-menu ul ul li.last .active {
+  border-top: 2px solid #fd8300;
+  border-bottom: 2px solid #fd8300 !important;
+}
+.pane-menu-menu-erpal-menu ul ul li a {
+  padding-left: 25px;
+}
+
+/*----------end Erpal menu-------------*/
+/* =============================================================================
+ *   Middle region
+ * ========================================================================== */
+.pane-page-content {
+  margin-top: 30px;
+  margin-right: 20px;
+  margin-left: 30px;
+  max-width: 1070px;
+}
+.pane-page-content .content-inner {
+  clear: both;
+}
+.pane-page-content .pane-page-title.block {
+  margin-bottom: 0;
+}
+.pane-page-content .panel-2col-stacked .panel-col-first {
+  width: 700px;
+}
+.pane-page-content .panel-2col-stacked .panel-col-last {
+  margin-left: 30px;
+  width: 340px !important;
+}
+.pane-page-content .panel-2col-stacked .inside {
+  margin: 0 !important;
+}
+.pane-page-content .panel-2col-stacked .inside .inside {
+  background: none;
+  border: none;
+}
+.pane-page-content h2.pane-title {
+  margin: 0px 0px 20px 0px;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 36px;
+}
+.pane-page-content .rel-register-build {
+  padding: 10px;
+  -webkit-border-radius: 8px 8px 0 0;
+  -moz-border-radius: 8px 8px 0 0;
+  -ms-border-radius: 8px 8px 0 0;
+  -o-border-radius: 8px 8px 0 0;
+  border-radius: 8px 8px 0 0;
+}
+.pane-page-content .rel-register-build .views-exposed-widgets {
+  margin-bottom: 0px;
+}
+.pane-page-content .views-table {
+  margin-top: 0;
+  border: none;
+}
+.pane-page-content .views-table th {
+  padding: 15px 15px 15px 12px;
+  font-size: 14px;
+}
+.pane-page-content .views-table td {
+  padding: 15px 15px 15px 12px;
+}
+.pane-page-content .views-table td.views-field-title a {
+  text-decoration: underline;
+}
+.pane-page-content .views-table td.views-field-field-customer-ref {
+  text-decoration: underline;
+}
+
+/*----------begin comments------------------------*/
+.comment {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: white;
+}
+.comment .field-name-comment-body p {
+  font-size: 16px;
+}
+.comment .comment-header {
+  padding-right: 10px;
+  padding-left: 15px;
+  float: left;
+}
+.comment .submitted {
+  padding-right: 15px;
+  border-bottom: 1px solid #f4f4f4;
+}
+.comment .submitted .author-datetime {
+  margin-bottom: 12px;
+}
+.comment .comment-content {
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.comment .comment-content section {
+  width: 250px;
+  float: left;
+}
+.comment .comment-form {
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+.comment nav {
+  padding: 0 15px;
+  clear: both;
+}
+
+/*----------end comments------------------------*/
+.view-filters .rel-register-build {
+  background-color: #eeeeee;
+}
+.view-filters .rel-register-build .views-exposed-widget .rel-register-link {
+  padding-top: 12px;
+  padding-right: 20px;
+  float: left;
+}
+
+.alert {
+  /*----------------begin red alert-----------------*/
+}
+.alert .field-name-field-task-status-term,
+.alert .field_item .field-name-field-date,
+.alert .views-field-field-date,
+.alert .field-item,
+.alert .views-field-field-date-1,
+.alert .views-field-field-next-contact,
+.alert .views-field-field-task-status-term,
+.alert .views-field-field-project-status-term,
+.alert .views-field-field-activity-status-term {
+  color: #cc000c;
+}
+
+/*----------------end red alert-----------------*/
+.completed {
+  /*----------------begin alert completed-----------------*/
+}
+.completed .field-name-field-task-status-term,
+.completed .field-name-field-completed,
+.completed .field-item,
+.completed .views-field-field-date,
+.completed .views-field-field-date-1,
+.completed .views-field-field-next-contact,
+.completed .views-field-field-task-status-term,
+.completed .views-field-field-project-status-term,
+.completed .views-field-field-activity-status-term {
+  color: #088a58;
+}
+
+/*----------------end alert completed-----------------*/
+.region-sidebar-left {
+  /*----------------begin side-bar-left-----------------*/
+  max-width: 800px;
+  min-width: 360px;
+  width: 100%;
+  float: left;
+}
+.region-sidebar-left.single-row {
+  max-width: 100% !important;
+}
+.region-sidebar-left #mini-panel-contact_details_panel {
+  margin-top: 2px;
+}
+.region-sidebar-left .quicktabs-tabpage .columns-inner {
+  margin-bottom: 12px;
+}
+.region-sidebar-left .quicktabs-tabpage .views-table .views-field-title {
+  width: 115px;
+}
+.region-sidebar-left .quicktabs-tabpage .views-field-field-task-status-term {
+  width: 70px;
+}
+.region-sidebar-left .quicktabs-tabpage .content-column .content-inner {
+  padding: 10px;
+  overflow: hidden;
+}
+.region-sidebar-left .quicktabs-tabpage .field-label {
+  margin: 0px !important;
+  padding-right: 5px;
+}
+.region-sidebar-left .quicktabs-tabpage .field-group-format section.field {
+  overflow: hidden;
+  clear: both;
+}
+.region-sidebar-left .quicktabs-tabpage .field-name-files-count .field-items,
+.region-sidebar-left .quicktabs-tabpage .field-name-comment-count .field-items {
+  padding-top: 5px;
+  width: 50%;
+}
+.region-sidebar-left .quicktabs-tabpage .view-mode-view_row_details .field-label,
+.region-sidebar-left .quicktabs-tabpage .view-mode-view_row_details .field-items,
+.region-sidebar-left .quicktabs-tabpage .region-sidebar-right .field-name-task-customer-node div,
+.region-sidebar-left .quicktabs-tabpage .region-sidebar-right .field-name-task-customer-node div,
+.region-sidebar-left .quicktabs-tabpage .field-collection-item-field-pricing .field-label,
+.region-sidebar-left .quicktabs-tabpage .field-collection-item-field-pricing .field-items {
+  padding-right: 5px;
+  float: left;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-nid {
+  width: 40px;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-title {
+  width: 120px;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-field-priority-term-tid {
+  width: 75px;
+}
+.region-sidebar-left .quicktabs-tabpage #edit-field-task-type-term-tid {
+  width: 60px;
+}
+.region-sidebar-left ul.quicktabs-tabs {
+  margin: 0;
+  padding-left: 0;
+  background: none;
+  overflow: hidden;
+  border: none;
+}
+.region-sidebar-left ul.quicktabs-tabs li {
+  margin: 0px;
+  padding: 0px;
+  float: left;
+  background-image: none;
+  background-color: #dedede;
+  border-top: 1px solid #eeeeee;
+  border-left: 1px solid #eeeeee;
+}
+.region-sidebar-left ul.quicktabs-tabs li.active {
+  background-color: #f6f6f6 !important;
+}
+.region-sidebar-left ul.quicktabs-tabs li.active a {
+  color: #525252 !important;
+}
+.region-sidebar-left ul.quicktabs-tabs li.last {
+  border-right: 1px solid #eeeeee;
+}
+.region-sidebar-left ul.quicktabs-tabs li a {
+  padding: 1px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  float: left;
+  min-width: 100px;
+  color: #888888;
+}
+.region-sidebar-left ul .field-name-task-title .field-item a {
+  font-weight: bold;
+  font-size: 16px;
+}
+.region-sidebar-left ul .field-name-task-title .field-item p {
+  margin-bottom: 0px;
+}
+.region-sidebar-left .region-sidebar-right section.field {
+  overflow: hidden;
+}
+
+/*----------------end side-bar-left-----------------*/
+.region-sidebar-right {
+  /*----------------begin side-bar-right-----------------*/
+  margin-left: 10px;
+  width: 250px;
+  float: right;
+  color: #202020;
+  /*----------------end side-bar-right-----------------*/
+}
+.region-sidebar-right .local_tasks_menu .local_tasks {
+  position: absolute;
+  width: 248px;
+  z-index: 10;
+}
+.region-sidebar-right .local_tasks {
+  margin-top: 2px;
+  margin-bottom: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+.region-sidebar-right .local_tasks li {
+  margin: 0 2px 7px;
+  list-style-type: none;
+}
+.region-sidebar-right .local_tasks li a {
+  padding-top: 5px;
+  padding-bottom: 6px;
+  display: block;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+  -moz-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+  box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
+  color: #525252;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(44%, #e6e6e6), color-stop(72%, #efefef));
+  background-image: -webkit-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  background-image: -moz-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  background-image: -o-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  background-image: linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+.region-sidebar-right .local_tasks li a:hover {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
+  background-image: -webkit-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -moz-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -o-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+}
+.region-sidebar-right .local_tasks li ul {
+  display: none;
+}
+.region-sidebar-right .content-inner {
+  padding-bottom: 30px;
+  clear: both;
+  max-width: 1100px;
+  min-width: 1100px;
+  overflow: hidden;
+}
+.region-sidebar-right .panel-separator {
+  display: none;
+}
+.region-sidebar-right .ctools-collapsible-container {
+  background-color: #dedede;
+  border: 1px solid #eeeeee;
+}
+.region-sidebar-right .ctools-collapsible-container figure {
+  text-align: center;
+}
+
+/*----------------end erpal_content_layout-----------------------*/
+/*----------------begin .panel-display-----------------------*/
+.panel-display .pane-entity-field h2.pane-title {
+  padding-right: 5px;
+  margin: 0px 0px 0 0px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 12px;
+  color: #525252;
+}
+.panel-display .pane-entity-field .block-content {
+  float: left;
+}
+.panel-display .pane-entity-field .block-content .rel-register-link {
+  float: left;
+}
+.panel-display .pane-entity-field .field-type-taxonomy-term-reference {
+  margin: 0px;
+}
+.panel-display .pane-entity-field .form-item {
+  margin-bottom: 0px;
+}
+.panel-display .pane-entity-field .ds-form .group-left {
+  width: auto;
+  float: none;
+}
+.panel-display .pane-entity-field .form-item label {
+  float: left;
+}
+.panel-display .ui-widget-content {
+  background: none;
+  border: none;
+}
+.panel-display .ui-tabs .ui-tabs-panel {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  display: block;
+  float: left;
+  background-color: #eeeeee;
+}
+
+/*----------------end panel-display-----------------------*/
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+.ctools-collapsible-processed .ctools-collapsible-handle {
+  cursor: pointer;
+}
+.ctools-collapsible-processed .block-content a {
+  text-decoration: underline;
+}
+.ctools-collapsible-processed h2.pane-title {
+  margin: 0;
+  padding: 3px 5px 0px 30px;
+  background-color: #AFAFAF;
+  margin: 0px 0px 0 0px;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 12px;
+  color: #525252;
+}
+.ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
+  padding: 3px 5px 3px 30px;
+}
+.ctools-collapsible-processed .ctools-collapsible-content {
+  padding-top: 10px;
+}
+.ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
+  padding-left: 0;
+  font-weight: bold;
+  color: #525252;
+  background: none;
+}
+.ctools-collapsible-processed .ctools-collapsible-content .field-items {
+  clear: both;
+}
+.ctools-collapsible-processed .field-name-field-pricing h2.field-label {
+  margin: 0;
+  clear: both;
+  line-height: 12px;
+  color: #525252;
+}
+.ctools-collapsible-processed section, .ctools-collapsible-processed .field-name-field-books-ref {
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+.ctools-collapsible-processed section a, .ctools-collapsible-processed .field-name-field-books-ref a {
+  text-decoration: underline;
+}
+.ctools-collapsible-processed .field-name-field-task-assigned-users {
+  padding-left: 0px;
+}
+.ctools-collapsible-processed .panel-separator {
+  height: 1px;
+  overflow: hidden;
+  border-bottom: 1px solid #eeeeee;
+}
+.ctools-collapsible-processed ul {
+  margin: 0px;
+  padding: 0px;
+}
+.ctools-collapsible-processed ul li {
+  list-style-type: none;
+}
+.ctools-collapsible-processed .field-type-taxonomy-term-reference {
+  margin: 0;
+}
+.ctools-collapsible-processed .field-name-field-asset-files {
+  margin-bottom: 10px;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item {
+  margin-left: 20px;
+  padding-left: 0 !important;
+  display: list-item;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item a {
+  text-decoration: underline;
+}
+.ctools-collapsible-processed .field-name-field-contacts-ref .field-item {
+  padding-left: 10px;
+}
+.ctools-collapsible-processed .panel-display .pane-entity-field .block-content,
+.ctools-collapsible-processed .panel-display .pane-entity-field h2.pane-title {
+  float: none;
+}
+.ctools-collapsible-processed .panel-separator {
+  display: block;
+}
+.ctools-collapsible-processed .no-title {
+  padding-left: 10px;
+}
+.ctools-collapsible-processed .ctools-toggle {
+  background-position: 7px 8px;
+}
+
+/*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+#mini-panel-task_status_panel {
+  padding: 10px 20px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #eeeeee;
+  color: #525252;
+}
+#mini-panel-task_status_panel .panel-separator {
+  display: none;
+}
+#mini-panel-task_status_panel section {
+  margin-bottom: 0;
+  margin-right: 30px;
+  float: left;
+}
+#mini-panel-task_status_panel ul {
+  padding-left: 5px;
+}
+#mini-panel-task_status_panel ul li {
+  padding: 0px;
+  list-style-type: none;
+}
+
+#mini-panel-activity_status_panel {
+  padding: 10px 20px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #eeeeee;
+}
+#mini-panel-activity_status_panel .panel-separator {
+  display: none;
+}
+#mini-panel-activity_status_panel ul {
+  padding-left: 5px;
+}
+#mini-panel-activity_status_panel section {
+  margin-bottom: 0;
+  margin-right: 30px;
+  float: left;
+}
+
+.view-empty {
+  padding: 15px;
+}
+
+/*-------------------begin project page----------------------*/
+.page-projects .views-field-title {
+  width: 200px;
+}
+.page-projects .views-field-field-customer-ref {
+  width: 200px;
+}
+.page-projects .views-field-field-project-status-term,
+.page-projects .page-projects .views-field-field-priority-term {
+  width: 100px;
+}
+.page-projects #edit-field-customer-ref-target-id-wrapper {
+  margin-left: 45px;
+}
+.page-projects #edit-field-project-status-term-tid-wrapper {
+  margin-left: 23px;
+}
+
+/*-------------------end project page----------------------*/
+/*--------------------------------for erpal task view row layout------------------------------------------*/
+.erpal-task-view-row-layout .region-sidebar-left {
+  width: 70%;
+  float: left;
+}
+.erpal-task-view-row-layout .region-sidebar-right {
+  margin-left: 20px;
+  width: 28%;
+  float: left;
+}
+.erpal-task-view-row-layout .content-inner {
+  margin-bottom: 20px;
+  clear: both;
+  max-width: 1100px;
+  min-width: 1100px;
+}
+
+/*---------------ticket details-----------*/
+.node-erpal-task .columns-inner {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.view-mode-view_row_details .content-inner {
+  padding-bottom: 0px;
+}
+
+.pane-node-body {
+  padding: 20px;
+  min-height: 350px;
+  background-color: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+.pane-node-body p {
+  font-size: 16px;
+}
+
+/*-----------------------begin projects-timetrackings--------------------*/
+.page-projects-timetrackings #edit-field-date-time-value-wrapper {
+  margin-left: 45px;
+}
+.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper {
+  margin-left: 440px;
+}
+.page-projects-timetrackings #edit-field-project-ref-target-id {
+  width: 120px;
+}
+.page-projects-timetrackings .views-field-field-date-time {
+  width: 140px;
+}
+.page-projects-timetrackings .views-field-title-1,
+.page-projects-timetrackings .views-field-title-2 {
+  width: 120px;
+}
+.page-projects-timetrackings #edit-uid {
+  width: 90px;
+}
+.page-projects-timetrackings .views-submit-button {
+  clear: both;
+}
+.page-projects-timetrackings #edit-uid-wrapper {
+  width: 140px;
+}
+.page-projects-timetrackings #edit-uid-wrapper .description {
+  line-height: 12px;
+}
+
+/*-----------------------begin projects-timetrackings--------------------*/
+/*-------------begin comments------------------- */
+#comment-form {
+  padding: 15px;
+  margin-top: 20px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background: #eeeeee;
+}
+#comment-form .field-type-datetime {
+  width: 300px;
+  float: left;
+}
+#comment-form .field-type-datetime fieldset {
+  margin: 0px;
+  padding: 0px;
+  border: none;
+}
+#comment-form .field-type-datetime fieldset .date-padding {
+  margin: 0px;
+  padding: 0px;
+  width: 270px;
+}
+#comment-form #edit-author--2 {
+  clear: both;
+}
+#comment-form #edit-field-contacts-ref {
+  margin-right: 40px;
+  width: 350px;
+  float: left;
+}
+#comment-form #edit-field-contacts-ref table {
+  width: 310px;
+}
+#comment-form #edit-field-contacts-ref table input {
+  width: 310px;
+}
+#comment-form #edit-field-asset-files {
+  width: 350px;
+  float: left;
+}
+#comment-form #edit-field-asset-files table {
+  width: 310px;
+}
+#comment-form #edit-field-asset-files table input {
+  width: 310px;
+}
+#comment-form #edit-actions {
+  clear: both;
+}
+#comment-form .field-widget-options-select {
+  margin-right: 15px;
+  width: 100px;
+  float: left;
+}
+#comment-form .field-name-field-activity-status-term {
+  width: 160px !important;
+  float: left;
+}
+
+/*-------------end comments------------------- */
+/*--------------begin multi select boxes--------------*/
+.views-exposed-form .form-submit {
+  margin-top: 1.3em;
+}
+.views-exposed-form .views-exposed-widget {
+  padding-right: 7px !important;
+}
+.views-exposed-form button span:not(.ui-icon) {
+  position: absolute;
+  overflow: hidden;
+  width: 105px !important;
+  height: 19px;
+  line-height: 13px;
+}
+.views-exposed-form button {
+  font-size: 11px;
+  height: 25px;
+  width: 130px !important;
+  overflow: hidden;
+}
+
+#edit-field-task-status-term-tid-wrapper,
+#edit-field-activity-status-term-tid-wrapper,
+#edit-field-priority-term-tid-wrapper,
+#edit-field-task-type-term-tid-wrapper,
+#edit-field-project-tags-tid-wrapper,
+#edit-field-task-assigned-users-target-id-wrapper {
+  width: 130px !important;
+}
+
+.ui-multiselect-menu {
+  width: 200px !important;
+}
+
+.ui-helper-reset {
+  position: relative;
+}
+
+.ui-multiselect-close {
+  position: absolute;
+  right: 0;
+}
+
+.ui-multiselect-header {
+  padding: 3px 0;
+}
+
+/*--------------end multi select boxes--------------*/
+/*-------------begin dashboard styles--------------*/
+#homebox .homebox-column-wrapper-1 .homebox-column {
+  margin-right: 20px;
+}
+#homebox .homebox-column {
+  margin: 0px;
+  padding: 0px;
+  background: none;
+}
+#homebox .homebox-portlet {
+  border: none;
+}
+#homebox .homebox-portlet .homebox-portlet-inner {
+  border: none;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-header {
+  font-weight: normal;
+  background-color: #f6f6f6;
+  border: none;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-header .portlet-title {
+  padding-left: 8px;
+  background-color: #f6f6f6;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content {
+  padding: 0px;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-item, #homebox .homebox-portlet .homebox-portlet-inner .portlet-content .view-grouping-header, #homebox .homebox-portlet .homebox-portlet-inner .portlet-content caption {
+  padding-left: 12px;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .more-link {
+  padding: 4px 10px;
+  background-color: #f6f6f6;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-submit {
+  margin-left: 12px;
+  padding-left: 12px;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column-wrapper {
+  float: left;
+  width: 48% !important;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content fieldset {
+  border: none;
+}
+#homebox .homebox-portlet .homebox-portlet-inner .portlet-content .homebox-column {
+  margin: 0px;
+  padding: 0px;
+}
+
+/*-------------end dashboard styles--------------*/
+/*-------------begin contact styles------------------*/
+.node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
+  margin: 0px 0px 7px 0px;
+  font-weight: normal;
+  font-size: 26px;
+  line-height: 26px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
+  margin: 0px;
+  padding: 0px;
+  border: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #afafaf;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane ul {
+  margin: 0px;
+  padding: 0px;
+  float: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane ul li {
+  padding-right: 7px;
+  list-style-type: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane table {
+  margin: 0;
+  border: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane table td {
+  padding: 10px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container {
+  border: none;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
+  margin: 0px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td {
+  border-bottom: 1px solid #e7e7e7;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
+  padding: 10px;
+  text-align: right;
+  -webkit-border-radius: 0 0 2px 2px;
+  -moz-border-radius: 0 0 2px 2px;
+  -ms-border-radius: 0 0 2px 2px;
+  -o-border-radius: 0 0 2px 2px;
+  border-radius: 0 0 2px 2px;
+  background-color: #afafaf;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li a {
+  font-size: 1.2em;
+  text-decoration: underline;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .field-type-taxonomy-term-reference {
+  margin: 0px;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .pane-entity-field .block-content {
+  float: none;
+}
+
+/*-------------end contact styles------------------*/
+/* begin hightlight of different states of tasks/projects */
+.block-content .view-content td {
+  border-bottom: 1px solid #e5e5e5;
+}
+.block-content .view-content th {
+  background-color: #afafaf;
+}
+.block-content .view-content tr.info,
+.block-content .view-content tr.even,
+.block-content .view-content tr:nth-child(2n+2) {
+  background-color: white;
+}
+.block-content .view-content tr.odd.alert,
+.block-content .view-content tr.even.alert {
+  background-color: #ffdfe4 !important;
+}
+.block-content .view-content tr.odd.alert .active,
+.block-content .view-content tr.even.alert .active {
+  background-color: #eed0d5 !important;
+}
+.block-content .view-content tr.odd.completed,
+.block-content .view-content tr.even.completed {
+  background-color: #eeeeee !important;
+}
+
+/* end hightlight of different states of tasks/projects */
+/*-------------begin login styles------------------*/
+.not-logged-in {
+  background: url("../images/gradient-login.png") no-repeat center #645c57;
+  overflow: hidden;
+}
+.not-logged-in #login_mask_logo {
+  margin: 75px auto 8px;
+  background: url("../images/erpal_logo_login.png") no-repeat 0 0;
+  width: 240px;
+  height: 322px;
+}
+.not-logged-in .pane-pane-messages {
+  width: 400px;
+  margin: 0 auto;
+}
+.not-logged-in .pane-pane-messages #messages .messages {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
+  -webkit-box-shadow: black 0px 0px 5px;
+  -moz-box-shadow: black 0px 0px 5px;
+  box-shadow: black 0px 0px 5px;
+}
+.not-logged-in .pane-page-content {
+  margin: 0 auto 10px;
+  padding: 25px;
+  background-color: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  width: 350px;
+  -webkit-box-shadow: black 0px 0px 5px;
+  -moz-box-shadow: black 0px 0px 5px;
+  box-shadow: black 0px 0px 5px;
+}
+.not-logged-in #user-login {
+  color: black;
+}
+.not-logged-in #user-login label {
+  padding-right: 25px;
+  float: left;
+  line-height: 32px;
+}
+.not-logged-in #user-login .form-text {
+  border-top: 1px solid #747474;
+  border-left: 1px solid #747474;
+  border-right: 1px solid #959595;
+  border-bottom: 1px solid #959595;
+  height: 22px;
+  line-height: 22px;
+  -webkit-box-shadow: #b6b6b6 1px 1px 2px 0px inset;
+  -moz-box-shadow: #b6b6b6 1px 1px 2px 0px inset;
+  box-shadow: #b6b6b6 1px 1px 2px 0px inset;
+}
+.not-logged-in #user-login .description {
+  padding-left: 92px;
+}
+.not-logged-in #user-login #edit-actions {
+  padding-top: 5px;
+}
+.not-logged-in #user-login #edit-actions input.form-submit {
+  margin: 0 auto;
+  padding: 7px 20px;
+  color: white;
+  background-color: #ffa800;
+  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #fdae15), color-stop(69%, #f9b942)) !important;
+  background: -webkit-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background: -moz-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background: -o-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background: linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background-image: none;
+  font-weight: bold;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+  border-radius: 12px;
+  display: block;
+  border: 1px solid #fba124;
+}
+.not-logged-in #user-login #edit-actions input.form-submit:hover {
+  background-color: #fd8300;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #ffa800), color-stop(69%, #f9c25d)) !important;
+  background-image: -webkit-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: -moz-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: -o-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+}
+
+/*------------------------------------invoice-----------------------*/
+.page-invoice-invoices table.views-table {
+  border-collapse: collapse;
+}
+
+#mini-panel-invoice_content_panel .panel-col-first.panel-panel {
+  width: 50%;
+}
+#mini-panel-invoice_content_panel .panel-col-last.panel-panel {
+  width: 46%;
+}
+
+/*-------------begin login styles------------------*/
+/*****DELETE****/
+.rel-register-link {
+  display: none;
+}
+
+/****DELEEETE****/

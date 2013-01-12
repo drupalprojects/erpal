@@ -1,0 +1,13 @@
+<?php
+/**
+ * @file
+ * erpal_invoice tests for costs.
+ */
+
+//require a file with some testfunctions
+require_once 'erpal_projects_billable.test.helper';
+
+//check costs for timetrackings, tasks and projects
+function billable_test_check_costs() {
+  
+}

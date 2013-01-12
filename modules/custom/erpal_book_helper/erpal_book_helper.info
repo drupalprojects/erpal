@@ -1,0 +1,12 @@
+core = "7.x"
+description = "ERPAL Book Helper module"
+name = "erpal_book_helper"
+package = "ERPAL Book Helper"
+php = "5.2.4"
+project = "erpal_book_helper"
+version = "7.x-1.0-dev"
+
+dependencies[] = libraries
+files[] = erpal_book_helper.module
+files[] = inc/book.token.inc
+files[] = inc/config.inc

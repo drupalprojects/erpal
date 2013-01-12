@@ -1,0 +1,22 @@
+name = Billable
+description = Provides entity functionality for billable entites
+core = 7.x
+
+dependencies[] = entity
+dependencies[] = views
+dependencies[] = erpal_basic
+dependencies[] = date_popup
+dependencies[] = erpal_lib
+
+files[] = billable.entity.inc
+files[] = billable.actions.inc
+files[] = billable.reduce.inc
+files[] = billable.vat.inc
+files[] = test/billable.test
+files[] = views/billable.views.inc
+files[] = views/billable_handler_link_field.inc
+files[] = views/billable_handler_delete_link_field.inc
+files[] = views/billable_handler_edit_link_field.inc
+files[] = views/billable_handler_billable_operations_field.inc
+
+

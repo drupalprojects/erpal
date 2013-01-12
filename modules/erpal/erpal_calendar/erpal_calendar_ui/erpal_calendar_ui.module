@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_calendar_ui feature.
+ */
+
+include_once 'erpal_calendar_ui.features.inc';

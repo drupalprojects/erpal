@@ -1,0 +1,14 @@
+name = Erpal Layout
+description = ERPAL Layout
+core = 7.x
+package = ERPAL
+php = 5.2.4
+version = 7.x-1.0-dev
+dependencies[] = ctools
+dependencies[] = erpal_layout_helper
+dependencies[] = jquery_ui_multiselect_widget
+dependencies[] = jquery_update
+dependencies[] = page_manager
+dependencies[] = panels
+dependencies[] = panels_everywhere
+dependencies[] = strongarm

@@ -1,0 +1,21 @@
+core = "7.x"
+description = "ERPAL Projects Helper"
+name = "erpal_projects_helper"
+package = "ERPAL Projects"
+php = "5.2.4"
+project = "erpal_projects_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_projects_helper.module
+files[] = erpal_projects_helper.install
+files[] = inc/config.inc
+files[] = inc/book.inc
+files[] = inc/budget.inc
+files[] = inc/dynamic.menu.inc
+files[] = inc/field_access.inc
+files[] = inc/projects.inc
+files[] = inc/rules.inc
+files[] = inc/tasks.inc
+files[] = inc/timetracking.inc
+files[] = inc/notifications.inc
+files[] = inc/token.inc

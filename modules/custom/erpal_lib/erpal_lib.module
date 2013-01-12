@@ -1,0 +1,13 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_lib module.
+ */
+
+/**
+* Implements hook_init
+*/
+function erpal_lib_init() {
+  module_load_include('inc', 'erpal_lib', 'inc/date_time');
+  module_load_include('inc', 'erpal_lib', 'inc/node');
+}

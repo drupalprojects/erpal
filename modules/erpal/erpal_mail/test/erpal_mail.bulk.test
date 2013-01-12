@@ -1,0 +1,59 @@
+<?php
+/**
+ * Tests the functionality of the email bulk referencing.
+ */
+class FeatureErpalMailBulkTest extends DrupalWebTestCase {
+  protected $privileged_user;
+  protected $profile = 'erpal';
+
+  public static function getInfo() {
+    // Note: getInfo() strings are not translated with t().
+    return array(
+      'name' => 'Erpal Mail Test',
+      'description' => 'Ensure that the bulk email functions work properly.',
+      'group' => 'Mail',
+    );
+  }
+
+  public function setUp() {
+    // Enable any modules required for the test. This should be an array of
+    // module names.
+    parent::setUp(array(
+      // 'features'
+      // 'erpal_project'
+      // 'erpal_mail'
+      // 'erpal_crm_mailaction'
+    ));
+    // Run a features rebuild to ensure our feature is fully installed.
+    // features_rebuild();
+   
+    // Clear all caches so everything from the feature is recognized now that it is fully loaded.
+    // cache_clear_all();
+
+    // // Create and log in our privileged user.
+    // $this->privileged_user = $this->drupalCreateUser(array(
+      // ));
+    // $this->drupalLogin($this->privileged_user);
+  }
+
+  /**
+    * Tests Bulk email referencing
+    */
+  public function testBulkEmailReferencing() {
+    // $newMail = new erpal_crm_mailaction\aggregating\database\entity_wrappers\MailEntityWrapper(1, 1, "testemail 1", "test email 1");
+    // $newMail->save();
+    // $newMail = new erpal_crm_mailaction\aggregating\database\entity_wrappers\MailEntityWrapper(1, 1, "testemail 2", "test email 2");
+    // $newMail->save();
+    // $newMail = new erpal_crm_mailaction\aggregating\database\entity_wrappers\MailEntityWrapper(1, 1, "testemail 3", "test email 3");
+    // $newMail->save();
+    // $newMail = new erpal_crm_mailaction\aggregating\database\entity_wrappers\MailEntityWrapper(1, 1, "testemail 4", "test email 4");
+    // $newMail->save();
+//     
+    // $activity = erpal_crm_mailaction\aggregating\database\entity_wrappers\ActivityEntityWrapper::create();
+    // $activity->title = 'test Activity';
+    // $activity->save();
+    
+    $this->assertTrue(TRUE);
+  }
+
+}

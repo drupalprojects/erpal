@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Module file for date_item_calendar.
+ */
+
+/**
+ * Implements hook_entity_presave
+ */
+function date_item_calendar_entity_presave($entity, $type) {
+  // Synchrinize date_from and date_till values with field_date_item_date field
+  if ($type == 'date_item') {
+    // Sync when node was changed (when date_items_update is present)
+    if ($entity->date_items_update) {
+      $update = FALSE;
+
+      // date_from
+      $l = LANGUAGE_NONE;
+      if (_date_item_calendar_needs_update($entity, 'value', 'date_from', $l)) {
+        $entity->field_date_item_date[$l][0]['value'] = $entity->date_from;
+        $update = TRUE;
+      }
+      // date_till
+      if (_date_item_calendar_needs_update($entity, 'value2', 'date_till', $l)) {
+        $entity->field_date_item_date[$l][0]['value2'] = $entity->date_till;
+        $update = TRUE;
+      }
+
+      if ($update)
+        return $entity;
+    } 
+    // Sync when date_item entity was changed
+    else {
+      $update = FALSE;
+
+      // date_from
+      $l = LANGUAGE_NONE;
+      if (_date_item_calendar_entity_needs_update($entity, 'value', 'date_from', $l)) {
+        $entity->date_from = $entity->field_date_item_date[$l][0]['value'];
+        $update = TRUE;
+      }
+      // date_till
+      if (_date_item_calendar_entity_needs_update($entity, 'value2', 'date_till', $l)) {
+        $entity->date_till = $entity->field_date_item_date[$l][0]['value2'];
+        $update = TRUE;
+      }
+
+      if ($update)
+        return $entity;
+    }
+  }
+}
+
+/**
+ * helper function that checks if date fields of date_item entity need update
+ */
+function _date_item_calendar_needs_update($entity, $value, $date_field, $l) {
+  if (!isset($entity->{$date_field}))
+    return FALSE;
+
+  if (!isset($entity->field_date_item_date[$l][0][$value]))
+    return TRUE;
+
+  if ($entity->field_date_item_date[$l][0][$value] != $entity->{$date_field}) {
+    return TRUE;
+  }
+}
+
+function _date_item_calendar_entity_needs_update($entity, $value, $date_field, $l) {
+  if (!isset($entity->field_date_item_date[$l][0][$value]))
+    return FALSE;
+  
+  if (!isset($entity->{$date_field}))
+    return TRUE;
+
+  if ($entity->field_date_item_date[$l][0][$value] != $entity->{$date_field}) {
+    return TRUE;
+  }
+}

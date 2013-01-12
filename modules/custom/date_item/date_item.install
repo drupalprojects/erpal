@@ -1,0 +1,244 @@
+<?php
+
+/**
+ * @file
+ * Schema and installation hooks for date_item module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function date_item_schema() {
+  $schema = array();
+  
+  $schema['date_item'] = array(
+    'description' => 'The base table for date_item module.',
+    'fields' => array(
+      'date_item_id' => array(
+        'description' => 'The primary identifier for a date_item.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The {date_item_type}.type of this date_item.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'title' => array(
+        'description' => 'The title this date_item.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ),
+      'date_from' => array(
+        'description' => 'The start date the date_item is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date_till' => array(
+        'description' => 'The end date the date_item is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'offset_from' => array(
+        'description' => 'The timezone offset for the from date the date_item is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'offset_till' => array(
+        'description' => 'The timezone offset for the till date the date_item is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'timezone' => array(
+        'description' => 'The timezone for the date the date_item is for',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'src_type' => array(
+        'description' => 'The type of the source entity where this date_item was created at (may be node or another entity type)',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'src_id' => array(
+        'description' => 'The ID of the source entity where this date_item was created at (may be the ID of a node)',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'src_field_name' => array(
+        'description' => 'The field name of the date field of the source entity where this date_item was created at (may be node or another entity type)',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'removed' => array(
+        'description' => 'A boolean indicating whether this date_item was removed from a serial date.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'data' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+        'serialize' => TRUE,
+        'description' => 'A serialized array of additional data related to this entity_test type.',
+        'merge' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The uid of the user associated with this date_item.',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the date_item was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'updated' => array(
+        'description' => 'The Unix timestamp when the date_item was most recently saved.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'date_item_from' => array('date_from'),
+      'date_item_till' => array('date_till'),
+      'date_item_type' => array(array('type', 4)),
+    ),
+    'primary key' => array('date_item_id'),
+    'foreign keys' => array(
+      'subject_node' => array(
+        'table' => 'node',  //@TODO: not so good because the referenced entity could be a different type than node
+        'columns' => array('src_id' => 'nid'),
+      ),
+     ),
+  );
+
+
+  $schema['date_item_type'] = array(
+    'description' => 'Stores information about all defined date_item types.',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique date_item type ID.',
+      ),
+      'name' => array(
+        'description' => 'The machine-readable name of this date_item type.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+      'label' => array(
+        'description' => 'The human-readable name of this date_item type.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'weight' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+        'description' => 'The weight of this date_item type in relation to others.',
+      ),
+      'locked' => array(
+        'description' => 'A boolean indicating whether the administrator may delete this type.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+      'data' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+        'serialize' => TRUE,
+        'description' => 'A serialized array of additional data related to this entity_test type.',
+        'merge' => TRUE,
+      ),
+      'status' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        // Set the default to ENTITY_CUSTOM without using the constant as it is
+        // not safe to use it at this point.
+        'default' => 0x01,
+        'size' => 'tiny',
+        'description' => 'The exportable status of the entity.',
+      ),
+      'module' => array(
+        'description' => 'The name of the providing module if the entity has been defined in code.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'name' => array('name'),
+    ),
+  );
+ 
+  return $schema;
+}
+
+/**
+ * Implements hook_field_schema().
+ */
+function date_item_field_schema($field) {
+  $columns = array(
+    'date_item_type' => array(
+      'type' => 'varchar',
+      'length' => 32,
+      'not null' => FALSE
+    ),
+  );
+  $indexes = array(
+    'date_item_type' => array('date_item_type'),
+  );
+  $foreign_keys = array(
+    'date_item_type' => array(
+      'table' => 'date_item_type',
+      'columns' => array('date_item_type' => 'name'),
+    ),
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes,
+    'foreign keys' => $foreign_keys,
+  );
+}
+
+/**
+* add colum title to table
+*/
+function date_item_update_7001 () {
+  $spec = array(
+    'description' => 'The title this date_item.',
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => FALSE,
+    'default' => '',
+  ); 
+  db_add_field( 'date_item', 'title', $spec);
+} 

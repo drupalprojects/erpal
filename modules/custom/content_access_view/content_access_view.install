@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Install Content Access View
+ * Enable view permissions of content_access nodule
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function content_access_view_install() {
+  $roles_permissions = user_role_permissions(user_roles());
+  $permissions = user_permission_get_modules();
+
+  // Remove disabled modules permissions, so they can't raise exception
+  // in content_access_save_permissions()
+  foreach ($roles_permissions as $rid => $role_permissions) {
+    foreach ($role_permissions as $permission => $value) {
+      if (!array_key_exists($permission, $permissions)) {
+        unset($roles_permissions[$rid][$permission]);
+      }
+    }
+  }
+
+  // Find view permissions in the content_access module
+  foreach (array('view', 'view_own') as $op) {
+    $note_types = array_keys(node_type_get_names());
+    // Loop view permissions per each node type
+    foreach ($note_types as $note_type) {
+      $permission = _content_access_view_get_permission_by_op($op, $note_type);
+      $node_settings = content_access_get_settings($op, $note_type);
+      // set node view permissions
+      if (!empty($node_settings)) {
+        foreach ($node_settings as $rid) {
+          if ($rid) {
+            $roles_permissions[$rid][$permission] = TRUE;
+          }
+        }
+      }
+    }
+  }
+  // save permissions
+  module_load_include('inc', 'content_access', 'content_access.admin');
+  content_access_save_permissions($roles_permissions);
+}

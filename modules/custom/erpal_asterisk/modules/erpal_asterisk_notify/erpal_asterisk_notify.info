@@ -1,0 +1,12 @@
+core = "7.x"
+description = "ERPAL Asterisk Notify"
+name = "erpal_asterisk_notify"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_asterisk_notify"
+version = "7.x-1.0-dev"
+
+files[] = erpal_asterisk_notify.module
+stylesheets[all][] = /css/erpal_asterisk_notify.css
+dependencies[] = views
+dependencies[] = erpal_asterisk

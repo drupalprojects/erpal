@@ -1,0 +1,15 @@
+core = "7.x"
+description = "ERPAL Invoice Helper"
+name = "erpal_invoice_helper"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_invoice_helper"
+version = "7.x-1.0-dev"
+
+dependencies[] = billable
+dependencies[] = erpal_print
+dependencies[] = erpal_basic_helper
+files[] = erpal_invoice_helper.module
+files[] = erpal_invoice_helper.install
+files[] = inc/config.inc
+files[] = inc/dynamic.menu.inc

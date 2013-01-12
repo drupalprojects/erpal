@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Install function for the erpal_dashboard_helper module.
+ */
+ 
+function erpal_dashboard_helper_modules_installed($modules) {
+
+  if (in_array('front_page', $modules)) {
+    //set /dashboard as URL for authenticated users. We do this because the frontpage doesnt support features
+    //get role id of authenticated user
+    $rid = DRUPAL_AUTHENTICATED_RID;
+    db_merge('front_page')
+    ->key(array('rid' => $rid))
+    ->fields(array(
+      'mode' => 'alias',
+      'data' => 'dashboard',
+      'filter_format' => '',
+    ))
+    ->execute();
+  }
+}

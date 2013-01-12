@@ -1,0 +1,135 @@
+/****************************
+	General
+****************************/
+.group-form-left,
+.group-form-right,
+.group-form-advanced-onecolumn,
+.group-form-advanced-left,
+.group-form-advanced-right {
+  background-color: #EEEEEE;
+  padding: 10px;
+}
+
+#erpal-project-node-form,
+#erpal-task-node-form {
+  max-width: 1070px;
+  margin-top: 20px;
+}
+
+div.group-form-left:empty,
+div.group-form-right:empty,
+div.group-form-advanced-onecolumn:empty,
+div.group-form-advanced-left:empty,
+div.group-form-advanced-right:empty {
+  display: none;
+}
+
+/****************************
+	Group top
+****************************/
+.group-form-left {
+  width: 68%;
+  float: left;
+  margin-bottom: 30px;
+}
+
+.group-form-right {
+  width: 25%;
+  float: right;
+  margin-bottom: 30px;
+}
+
+/* fields in group left */
+.group-form-left .form-item-title {
+  margin-top: 0px;
+}
+
+.group-form-left #edit-title {
+  width: 100%;
+}
+
+/* fields in group right */
+.form-item-group-content-access-und {
+  margin-top: 0px;
+}
+
+.group-form-right select,
+.group-form-right input:not([type='checkbox']),
+.group-form-advanced-right select,
+.group-form-advanced-right input:not([type='checkbox']) {
+  width: 100%;
+}
+
+.edit-field-customer-ref-und-0-target-id ul.references-dialog-links li a {
+  display: block;
+}
+
+/****************************
+	Group advanced
+****************************/
+.group-advanced {
+  clear: both;
+}
+
+.group-advanced > legend {
+  font-size: 16px;
+}
+
+.group-advanced h3 {
+  border-bottom: 1px solid #525252;
+  padding: 20px 5px 10px;
+}
+
+.group-advanced h3 a {
+  background: url(../images/forms-advanced-arrow-open.png) no-repeat 2px 50%;
+  padding-left: 15px;
+}
+
+.group-advanced.collapsed h3 a {
+  background: url(../images/forms-advanced-arrow-collapsed.png) no-repeat 2px 50%;
+  padding-left: 15px;
+}
+
+.group-form-advanced-onecolumn {
+  margin-bottom: 20px;
+}
+
+.group-form-advanced-left {
+  width: 68%;
+  float: left;
+}
+
+.group-form-advanced-right {
+  width: 25%;
+  float: right;
+}
+
+/* only visible for admin */
+.vertical-tabs {
+  clear: both;
+}
+
+/****************************
+	Invoices
+****************************/
+/*** Group left ***/
+.group-invoice-left {
+  width: 50%;
+  float: left;
+}
+
+/*** Group right ***/
+.group-invoice-right {
+  width: 50%;
+  float: right;
+}
+
+/*** Group bottom ***/
+.group-invoice-bottom {
+  clear: both;
+}
+
+.group-invoice-sonstiges {
+  clear: both;
+  display: none;
+}

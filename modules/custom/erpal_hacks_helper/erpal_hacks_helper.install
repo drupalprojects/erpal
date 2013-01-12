@@ -1,0 +1,40 @@
+<?php
+
+/**
+* @file
+* Installation hooks for erpal_hacks_helper module.
+*/
+
+function erpal_hacks_helper_enable() {
+  //set module weight heigh so it will be executed after all the other modules
+  db_update('system')
+  ->fields(array(
+    'weight' => 100,
+  ))
+  ->condition('name', 'erpal_hacks_helper')
+  ->execute();
+}
+
+/**
+* Update to change language of body field to "und" and make the body field not translatable, whyever it was...
+*/
+function erpal_hacks_helper_update_7001() {
+  //Delete doublicates
+  $res = db_query("SELECT b.entity_id FROM {field_revision_body} b LEFT JOIN (SELECT entity_id FROM {field_revision_body} GROUP by entity_id, revision_id HAVING count(*) >1) sub ON sub.entity_id = b.entity_id WHERE sub.entity_id IS NOT NULL AND language='und'");
+  $del_ids = array();
+  while ($id = $res->fetchField()) {
+    db_query('DELETE FROM {field_revision_body} WHERE entity_id = '.$id);
+  }
+ 
+  $res = db_query("SELECT b.entity_id FROM {field_data_body} b LEFT JOIN (SELECT entity_id FROM {field_data_body} GROUP by entity_id, revision_id HAVING count(*) >1) sub ON sub.entity_id = b.entity_id WHERE sub.entity_id IS NOT NULL AND language='und'");
+  $del_ids = array();
+  while ($id = $res->fetchField()) {
+    db_query('DELETE FROM {field_data_body} WHERE entity_id = '.$id);
+  }
+  
+  //now update languages
+  db_query("UPDATE {field_revision_body} SET language='und'");
+  db_query("UPDATE {field_data_body} SET language='und'");
+  
+  db_query("UPDATE {field_config} SET translatable=0 WHERE field_name='body'");
+}

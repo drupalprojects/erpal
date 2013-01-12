@@ -1,0 +1,5 @@
+name = Content Access View
+description = Extends content access control of view permissions.
+core = 7.x
+package = Access control
+dependencies[] = content_access

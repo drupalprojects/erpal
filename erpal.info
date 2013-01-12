@@ -1,0 +1,144 @@
+name = ERPAL Starter
+description = Install ERPAL
+version = VERSION
+core = 7.x
+
+;core
+dependencies[] = php
+dependencies[] = menu
+dependencies[] = path
+
+
+; core fields
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = list
+dependencies[] = file
+dependencies[] = image
+dependencies[] = options
+dependencies[] = number
+
+dependencies[] = taxonomy
+
+;contrib
+dependencies[] = auto_nodetitle
+dependencies[] = better_exposed_filters
+dependencies[] = calendar
+dependencies[] = comment
+dependencies[] = computed_field
+dependencies[] = conditional_fields
+dependencies[] = ctools
+dependencies[] = date
+dependencies[] = date_item
+dependencies[] = date_popup
+dependencies[] = date_repeat
+dependencies[] = date_repeat_field
+dependencies[] = date_views
+dependencies[] = ds
+dependencies[] = ds_forms
+dependencies[] = editablefields
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = entityreference
+dependencies[] = entityreference_prepopulate
+dependencies[] = fe_block
+dependencies[] = features
+dependencies[] = features_plumber
+dependencies[] = field_collection
+dependencies[] = field_collection_table
+dependencies[] = field_group
+dependencies[] = fileedit
+dependencies[] = flag
+dependencies[] = front_page
+dependencies[] = homebox
+
+dependencies[] = jquery_ui_multiselect_widget
+dependencies[] = jquery_update
+dependencies[] = libraries
+dependencies[] = link
+
+dependencies[] = page_manager
+dependencies[] = panels
+dependencies[] = panels_everywhere
+dependencies[] = panels_mini
+dependencies[] = panels_style_collapsible
+
+dependencies[] = path_breadcrumbs
+dependencies[] = pathauto
+
+dependencies[] = pm_existing_pages
+dependencies[] = post_hooks
+dependencies[] = profile2
+dependencies[] = profile2_page
+dependencies[] = quicktabs
+dependencies[] = references_dialog
+dependencies[] = relation
+dependencies[] = relation_add
+dependencies[] = relation_dummy_field
+dependencies[] = relation_endpoint
+dependencies[] = relation_ui
+dependencies[] = strongarm
+
+dependencies[] = timetracking
+dependencies[] = token
+dependencies[] = views
+dependencies[] = views_bulk_operations
+dependencies[] = views_content
+dependencies[] = views_jstree
+
+; custom
+dependencies[] = date_item_calendar
+dependencies[] = content_access_view
+dependencies[] = billable
+dependencies[] = budget
+dependencies[] = cne
+dependencies[] = erpal_basic_helper
+dependencies[] = erpal_bookmark_helper
+dependencies[] = erpal_calendar_helper
+dependencies[] = erpal_contract_helper
+dependencies[] = erpal_crm_helper
+dependencies[] = erpal_dashboard_helper
+dependencies[] = erpal_docs_helper
+dependencies[] = erpal_hacks_helper
+dependencies[] = erpal_invoice_helper
+dependencies[] = erpal_layout_helper
+dependencies[] = erpal_print
+dependencies[] = erpal_profile_helper
+dependencies[] = erpal_projects_billable
+dependencies[] = erpal_projects_helper
+dependencies[] = erpal_resource_helper
+dependencies[] = erpal_timetracking_export
+dependencies[] = erpal_projects_access
+dependencies[] = erpal_projects_relations
+
+; features 
+dependencies[] = erpal_basic
+dependencies[] = erpal_basic_ui
+dependencies[] = erpal_book
+dependencies[] = erpal_book_ui
+dependencies[] = erpal_bookmark
+dependencies[] = erpal_bookmark_ui
+dependencies[] = erpal_calendar
+dependencies[] = erpal_calendar_ui
+dependencies[] = erpal_contract 
+dependencies[] = erpal_contract_ui
+dependencies[] = erpal_crm
+dependencies[] = erpal_crm_ui
+dependencies[] = erpal_dashboard
+dependencies[] = erpal_docs
+dependencies[] = erpal_docs_ui
+dependencies[] = erpal_employee
+dependencies[] = erpal_employee_ui
+dependencies[] = erpal_invoice
+dependencies[] = erpal_invoice_ui
+dependencies[] = erpal_profile
+dependencies[] = erpal_project
+dependencies[] = erpal_project_ui
+
+
+dependencies[] = erpal_layout
+
+ 
+; System Requirements.
+php_memory_limit = 256M

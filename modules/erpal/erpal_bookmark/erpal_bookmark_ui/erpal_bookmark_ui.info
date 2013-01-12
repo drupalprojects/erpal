@@ -1,0 +1,13 @@
+name = ERPAL Bookmark UI
+description = ERPAL Bookmark UI Module
+core = 7.x
+package = ERPAL UI
+php = 5.2.4
+version = 7.x-1.0-dev
+project = erpal_bookmark_ui
+dependencies[] = erpal_bookmark
+dependencies[] = erpal_basic_ui
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[views_view][] = bookmarks

@@ -1,0 +1,7 @@
+.jstree-default li.filter_matching a {
+  color: #000 !important;
+}
+
+.jstree-default li.no_filter_matching a {
+  color: #999;
+}

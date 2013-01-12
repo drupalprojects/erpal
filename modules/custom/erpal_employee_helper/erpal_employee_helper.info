@@ -1,0 +1,16 @@
+core = "7.x"
+description = "ERPAL Employee Helper provides helps the erpal employee feature."
+name = "erpal_employee_helper"
+package = "ERPAL Employee helper"
+php = "5.2.4"
+project = "erpal_employee_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_employee_helper.module
+files[] = inc/config.inc
+files[] = views/erpal_employee_helper.views.inc
+files[] = inc/working_times.entity.inc
+files[] = views/working_times_handler_link_field.inc
+files[] = views/erpal_employee_helper_handler_edit_link_field.inc
+files[] = views/working_times_handler_edit_link_field.inc
+files[] = views/working_times_handler_delete_link_field.inc

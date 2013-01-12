@@ -1,0 +1,10 @@
+core = "7.x"
+description = "ERPAL Projects access"
+name = "erpal_projects_access"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_projects_access"
+version = "7.x-1.0-dev"
+
+files[] = erpal_projects_access.module
+dependencies[] = acl

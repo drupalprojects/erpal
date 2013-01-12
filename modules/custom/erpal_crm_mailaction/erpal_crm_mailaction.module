@@ -1,0 +1,147 @@
+<?php
+/**
+ * @author 		Marc Sven Kleinboehl
+ * @created 	01/14/2012
+ * @copyright	2012 © Bright Solutions GmbH
+ * 
+ * ERPAL mail to action handling for CRM.
+ */
+
+// The UID of the site admin.
+define ('ERPAL_CRM_MAILACTION_ADMIN_UID', 1);
+
+/**
+* Returns all the menu path for config of invoice feature
+*/
+function erpal_crm_mailaction_menu(){
+  
+  $items = array ();
+  
+  $items['admin/erpal/crm-mailaction'] = array(
+    'title'               => 'ERPAL crm mail action',
+    'page callback'       => 'drupal_get_form',
+    'page arguments'      => array ('erpal_crm_mailaction\misc\config\form'),
+    'access arguments'    => array('config erpal crm mailaction'),
+    'file'                => 'inc/misc/config.form.inc',
+    'type'                => MENU_LOCAL_TASK,
+  );
+  
+  $items['admin/erpal/crm-mailaction/run-import'] = array(
+    'page callback'       => '_erpal_crm_mailaction_cron_page_wrapper',
+    'access arguments'    => array('config erpal crm mailaction'),
+    'type'                => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+* Implements hook_permission.
+*/
+function erpal_crm_mailaction_permission(){
+  
+  return array(
+    'config erpal crm mailaction' => array(
+      'title'       => t('Administer ERPAL email action handler'), 
+      'description' => t('Perform administration tasks for ERPAL crm email action module.'),
+    ),
+    'reply mails erpal crm mailaction' => array(
+      'title'       => t('Email reply from node'), 
+      'description' => t('Allows the user to reply to emails and shows a reply link.'),
+    ),
+  );
+} 
+
+/**
+ * Implements hook_cron.
+ */
+function erpal_crm_mailaction_cron () {
+  
+  if (! lock_acquire('erpal_crm_mailaction')) {
+    watchdog ('erpal_crm_mailaction', t('Can not run email action cron. Currently a cron process is running already.'));
+    return;
+  }
+
+  erpal_crm_mailaction\cron_processing\CronProcessor::run ();
+  
+  lock_release('erpal_crm_mailaction');
+  
+  return;
+}
+
+/**
+ * A simple page wrapper for the cron function.
+ */
+function _erpal_crm_mailaction_cron_page_wrapper () {
+  
+  if (! user_access ('config erpal crm mailaction')) {
+    drupal_access_denied();
+    return;
+  }
+  
+  erpal_crm_mailaction_cron ();
+  
+  drupal_set_message (t('All emails have been imported.'));
+  
+  drupal_goto ('admin/erpal/crm-mailaction');
+  
+  return ' ';
+}
+
+/**
+ * Implements hook_erpal_crm_mailaction_incoming. 
+ */
+function erpal_crm_mailaction_erpal_crm_mailaction_incoming ($to, $from, $subject, $body, $attachments) {
+ 
+  $import = new erpal_crm_mailaction\aggregating\Import ();
+  $import->import ($to, $from, $subject, $body, $attachments);
+  
+  return;
+}
+
+/**
+ * Implements hook_boot.
+ */
+function erpal_crm_mailaction_boot () {
+ 
+  /*
+   * For autoloading namespaced classes and interfaces.
+   * Because, drupal isn't able to do that because of PHP namespacing.
+   */
+  _erpal_crm_mailaction_load_autoloader ();
+
+  return;
+}
+
+/**
+ * Creates an instance of the autoloader, configured for this module.
+ * 
+ * @return Autoloader   An object of the autoloader class.
+ */
+function _erpal_crm_mailaction_load_autoloader () {
+  
+  static $autoloader = NULL;
+  
+  if ($autoloader != NULL) {
+    return $autoloader;
+  }
+  
+  /*
+   * This function will be called on hook_boot.
+   * At this runtime level, it is not possible to get access to
+   * module_load_include and many other drupal API functions.
+   */
+  require_once 'inc/autoloading/Autoloader.class.inc';
+  
+  $autoloader = new erpal_crm_mailaction\autoloading\Autoloader (
+    substr (
+      __DIR__,
+      strlen ($_SERVER['DOCUMENT_ROOT'] . '/')
+    ),
+    array ('erpal_crm_mailaction'=>'inc'),
+    'erpal_crm_mailaction'
+  );
+
+  return $autoloader;
+}
+

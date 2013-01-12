@@ -1,0 +1,30 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_layout_helper module.
+ */
+ 
+/**
+* Preprocess pane messages to spearate local tasks from messages pane
+*/ 
+function erpal_layout_helper_preprocess_pane_messages(&$variables) {
+  $variables['action_links'] = '';  //we dont want the local actions to be rendert in messages pane
+}
+
+/**
+* Implements hok_form_alter
+*/
+function erpal_layout_helper_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'search_block_form')
+    _erpal_layout_helper_search_form_block_alter($form, $form_state);
+}
+
+/**
+* Remove the search button from search form block
+*/
+function _erpal_layout_helper_search_form_block_alter(&$form, $form_state) {
+
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['#attributes']['class'][] = 'element-invisible';
+  }
+}

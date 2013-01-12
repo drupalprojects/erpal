@@ -1,0 +1,102 @@
+<?php
+
+require_once (dirname(__FILE__) . '/includes/commander_front.inc');
+//define('MODULE_COMMANDER', 'commander');
+
+/**
+ * Implements hook_init().
+ */
+function commander_init() {
+    if (user_access(COMMANDER_PERMISSION_ACCESS_COMMANDER)) {
+        drupal_add_library('system', 'jquery.form');
+        drupal_add_library('system', 'drupal.ajax');
+
+        if (arg(0) == 'node') {
+            drupal_add_js(array('commander' => array('nid' => arg(1))), 'setting');
+        }
+    }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function commander_permission() {
+    return array(
+        COMMANDER_PERMISSION_ACCESS_COMMANDER => array(
+            'title' => t('Access commander'),
+            'description' => t('Indicates access to commander prompt panel.'),
+        ),
+    );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function commander_menu() {
+    $items = array();
+
+    $items['commander/prompt'] = array(
+        'page callback' => 'commander_front_prompt',
+        'access callback' => 'user_access',
+        'access arguments' => array(COMMANDER_PERMISSION_ACCESS_COMMANDER),
+        'type' => MENU_CALLBACK,
+        'file' => COMMANDER_FRONT_INC
+    );
+
+    $items['commander/prompt/show'] = array(
+        'title' => t('Show commander'),
+        'page callback' => 'commander_front_prompt_show',
+        'access callback' => 'user_access',
+        'access arguments' => array(COMMANDER_PERMISSION_ACCESS_COMMANDER),
+        'type' => MENU_NORMAL_ITEM,
+        'file' => COMMANDER_FRONT_INC
+    );
+
+    return $items;
+}
+
+function commander_command() {
+    $items = array();
+
+    $items['commander'] = array(
+        'execution callback' => 'commander_command_commander',
+        'access callback' => 'user_access',
+        'access arguments' => array('create page content'),
+        'file' => 'includes/commander_command.inc',
+        'options' => array(
+            'list' => array(
+                'short' => 'l',
+                'long' => 'list',
+                'description' => 'List all the registered commands',
+                'required' => false,
+                'type' => 's',
+            ),
+        )
+    );
+
+    $items['addpage'] = array(
+        'execution callback' => 'commander_command_addpage',
+        'access callback' => 'user_access',
+        'access arguments' => array('create page content'),
+        'file' => 'includes/commander_command.inc',
+        'options' => array(
+            'title' => array(
+                'short' => 't',
+                'long' => 'title',
+                'description' => 'Title',
+                'required' => true,
+                'type' => 's',
+            ),
+            'description' => array(
+                'short' => 'd',
+                'long' => 'description',
+                'description' => 'Description',
+                'required' => false,
+                'type' => 's',
+            ),
+        )
+    );
+
+    return $items;
+}
+
