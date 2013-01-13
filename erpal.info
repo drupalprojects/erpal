@@ -7,6 +7,8 @@ core = 7.x
 dependencies[] = php
 dependencies[] = menu
 dependencies[] = path
+dependencies[] = dblog
+dependencies[] = toolbar
 
 
 ; core fields
