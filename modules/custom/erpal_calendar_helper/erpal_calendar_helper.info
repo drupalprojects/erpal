@@ -10,3 +10,10 @@ dependencies[] = erpal_lib
 
 files[] = erpal_resource_helper.module
 files[] = inc/config.inc
+
+; Information added by drupal.org packaging script on 2013-01-13
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "erpal"
+datestamp = "1358039883"
+
