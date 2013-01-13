@@ -27,7 +27,7 @@ function _erpal_calendar_helper_warn_libraries() {
 
   if (!file_exists($fullcalendar_path)) {
     //unset all other messages
-    $tcpdf_link = l('Full calendar library', 'http://sourceforge.net/projects/tcpdf/files/');
+    $tcpdf_link = l('Full calendar library', 'http://arshaw.com/fullcalendar/download/');
     $tcpdf_path = libraries_get_path('tcpdf');
     drupal_set_message(t('Please download !link and place the contents of the folder fullcalendar of the zip file in !fullcalendar_lib to create a PDF.', array('!link' => $tcpdf_link, '!fullcalendar_lib' => $fullcalendar_path)), 'warning');    
     return false;
