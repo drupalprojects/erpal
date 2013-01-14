@@ -38,7 +38,12 @@ function erpal_book_helper_erpal_contexts($router_item) {
     }
   }
      
-  if (drupal_match_path($path, 'node/%*') ) {    
+  //CHECK CRM Global CONTEXT
+  if (drupal_match_path($path, 'books/*')) {  
+    $contexts[ERPAL_CONTEXT_BOOK_GLOBAL] = true;      
+  }   
+     
+  if (drupal_match_path($path, 'node/%*') || drupal_match_path($path, 'books/*')) {    
     if (!$node || !is_object($node))
       return $contexts;
     
@@ -57,10 +62,6 @@ function erpal_book_helper_erpal_contexts($router_item) {
        
   }
 
-  //CHECK CRM Global CONTEXT
-  if (drupal_match_path($path, 'books/*')) {        
-    $contexts[ERPAL_CONTEXT_BOOK_GLOBAL] = true;      
-  }
   
   //CHECK ACTIVITIES list CONTEXT
   if ($path == 'books/books') { 
@@ -86,7 +87,7 @@ function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
   $nid = false;
   if ($node)
     $nid = $node->nid;
-  $is_node_view = !isset($router_item['original_map'][2]) || $router_item['original_map'][2] == 'view'; 
+  $is_node_view = !isset($router_item['original_map'][2]) || $router_item['original_map'][2] == 'view';   
   
   //books list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOKS, $router_item)) {        
@@ -96,7 +97,6 @@ function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
   //templates context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOK_TEMPLATES, $router_item)) {    
     _erpal_book_helper_book_templates_links($data);       
-    _erpal_book_helper_book_global_menu_tabs($data, $nid, array('book templates'));   
   } 
   
   //Book context
@@ -114,7 +114,24 @@ function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
     _erpal_book_helper_book_global_menu_tabs($data, $nid, array($active_tab));   
   }
  
-  
+  //now on global context ensure that all links are shown
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOK_GLOBAL, $router_item)) {   
+    if (!$node) {
+      $nid = isset($router_item['original_map'][2]) ? $router_item['original_map'][2] : false;
+      if (!$nid) {
+        $templates = isset($router_item['original_map'][1]) && $router_item['original_map'][1] == 'templates' ? true : false;
+        if ($templates) 
+          $active_tab = 'templates';
+        else
+          $active_tab = 'books';
+        
+      } else {
+        $a_node = node_load($nid);
+        $active_tab = isset($a_node->field_is_template[LANGUAGE_NONE][0]) && $a_node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'books';
+      }
+    }
+    _erpal_book_helper_book_global_menu_tabs($data, $nid, array($active_tab));   
+  }
 }
 
 /**
