@@ -3,6 +3,9 @@
  * @file
  * Module to provide helper functions for book feature
  */
+ module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+ module_load_include('inc', 'erpal_book_helper', 'inc/dynamic.menu');
+ module_load_include('inc', 'erpal_book_helper', 'inc/book.token');
  
 /**
  * Implements hook_action_info().
@@ -229,8 +232,6 @@ function _erpal_book_helper_get_contact($node) {
 * implements hook_init
 */
 function erpal_book_helper_init() {
-  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
-  module_load_include('inc', 'erpal_book_helper', 'inc/book.token'); 
   module_load_include('inc', 'erpal_book_helper', 'inc/book.clone'); 
   module_load_include('inc', 'erpal_book_helper', 'inc/book.action');
   
