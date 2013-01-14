@@ -1042,6 +1042,12 @@ function erpal_employee_ui_views_default_views() {
   $handler->display->display_options['fields']['project_time']['label'] = 'Project time';
   $handler->display->display_options['fields']['project_time']['precision'] = '0';
   $handler->display->display_options['fields']['project_time']['suffix'] = 'h';
+  /* Field: Calculated working times: Edit Link */
+  $handler->display->display_options['fields']['edit_working_times']['id'] = 'edit_working_times';
+  $handler->display->display_options['fields']['edit_working_times']['table'] = 'working_times';
+  $handler->display->display_options['fields']['edit_working_times']['field'] = 'edit_working_times';
+  $handler->display->display_options['fields']['edit_working_times']['label'] = '';
+  $handler->display->display_options['fields']['edit_working_times']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Calculated working times: Uid */
   $handler->display->display_options['arguments']['uid']['id'] = 'uid';
