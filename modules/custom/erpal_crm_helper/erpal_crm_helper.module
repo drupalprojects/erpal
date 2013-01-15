@@ -5,13 +5,8 @@
  * This is needed by the feature_erpal_crm
  */
 
-/**
-* Implements hook_init
-*/
-function erpal_crm_helper_init() {
-  module_load_include('inc', 'erpal_crm_helper', 'inc/dynamic.menu');
-  module_load_include('inc', 'erpal_crm_helper', 'inc/theme');
-}
+module_load_include('inc', 'erpal_crm_helper', 'inc/dynamic.menu');
+module_load_include('inc', 'erpal_crm_helper', 'inc/theme');
  
 /**
 * Implements hook_menu

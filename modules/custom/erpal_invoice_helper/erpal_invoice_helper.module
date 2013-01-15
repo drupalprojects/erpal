@@ -188,7 +188,11 @@ function erpal_invoice_helper_init() {
 * Implements hook_form_alter
 */
 function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
-
+  
+  if($form_id == 'views_form_invoices_panel_pane_4'){
+    $form['actions']['#attributes']['class'][] = 'element-invisible';
+  }
+  
   if ($form_id == 'node_delete_confirm') {
     if (arg(0) == 'node') {
       $node = node_load($form['nid']['#value']);

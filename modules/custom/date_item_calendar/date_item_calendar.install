@@ -189,3 +189,26 @@ function date_item_calendar_uninstall() {
   // purge all field infromation
   field_purge_batch(1000);
 }
+
+/**
+* Resave all date items so the new attached field will be saved
+*/
+function date_item_calendar_update_7001(&$context) {
+  //get all date items
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'date_item')
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  if (isset($result['date_item'])) {
+    $item_nids = array_keys($result['date_item']);
+    $items = entity_load('date_item', $item_nids);
+    foreach ($items as $item) {
+      $item->field_date_item_date[LANGUAGE_NONE][0]['value'] = $item->date_from;
+      $item->field_date_item_date[LANGUAGE_NONE][0]['value2'] = $item->date_till;
+      $item->save();
+    }
+  }
+}
