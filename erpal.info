@@ -53,6 +53,7 @@ dependencies[] = fileedit
 dependencies[] = flag
 dependencies[] = front_page
 dependencies[] = homebox
+dependencies[] = entitycache
 
 dependencies[] = jquery_ui_multiselect_widget
 dependencies[] = jquery_update
