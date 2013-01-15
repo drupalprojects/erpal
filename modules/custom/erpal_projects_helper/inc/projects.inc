@@ -130,6 +130,20 @@ function _erpal_projects_helper_get_activity_by_project($project_node) {
 function erpal_projects_helper_node_presave_project($node) {
   $old_node = node_load($node->nid);
   _erpal_projects_helper_handle_removed_book_nodes($node, $old_node);
+  _erpal_projects_helper_subscribe_project_team($node);
+}
+
+/**
+ * subscribe project team to project
+ */
+function _erpal_projects_helper_subscribe_project_team($node){
+  $node_wrapper = entity_metadata_wrapper('node', $node);
+  // loop uids of assignrd users
+  foreach ($node_wrapper->field_project_team as $project_team) {
+    $account = $project_team->field_user->value();
+    // subscribe users to the erpal_task
+     _erpal_projects_helper_flag($node->type, $node->nid, 'flag', $account);
+  }
 }
 
 /**

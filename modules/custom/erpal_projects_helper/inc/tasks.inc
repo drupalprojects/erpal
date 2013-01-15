@@ -248,6 +248,24 @@ function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($proj
 function erpal_projects_helper_node_presave_task($task_node) {
   _erpal_projects_helper_task_set_project($task_node);
   _erpal_projects_helper_field_automation($task_node);
+  _erpal_projects_helper_subscribe_task_assigned_users($task_node);
+}
+
+/**
+ * subscribe users assigned to task 
+ */
+function _erpal_projects_helper_subscribe_task_assigned_users($task_node){
+  // get uids of assigned users
+  $assigned_users = field_get_items('node', $task_node, 'field_task_assigned_users');
+  
+  // loop uids of assignrd users
+  if(!empty($assigned_users)){
+    foreach ($assigned_users as $assigned_user) {
+      $account = user_load($assigned_user['target_id']);
+      // subscribe users to the erpal_task
+      _erpal_projects_helper_flag($task_node->type, $task_node->nid, 'flag', $account);
+    }
+  }
 }
 
 /**
