@@ -5,14 +5,16 @@
  */
 
 module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.entity');
+module_load_include('inc', 'erpal_employee_helper', 'inc/config');
+module_load_include('inc', 'erpal_employee_helper', 'inc/token');
+
 /**
 * Implements hook_init
 */
 function erpal_employee_helper_init() {
-  module_load_include('inc', 'erpal_employee_helper', 'inc/config');
+
   module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.calc');
-  module_load_include('inc', 'erpal_employee_helper', 'inc/dynamic.menu');
-  module_load_include('inc', 'erpal_employee_helper', 'inc/token');
+  module_load_include('inc', 'erpal_employee_helper', 'inc/dynamic.menu');  
 }
 
 /**

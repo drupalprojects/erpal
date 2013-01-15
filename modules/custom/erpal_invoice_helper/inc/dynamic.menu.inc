@@ -17,6 +17,11 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
   $path = $router_item['path'];
   $contexts = array();
   
+  if (drupal_match_path($path, 'node/add/erpal-invoice*')) { 
+    $contexts[ERPAL_CONTEXT_INVOICE_GLOBAL] = true;
+    $contexts[ERPAL_CONTEXT_INVOICE] = true;  
+  }
+  
   //CHECK invoice CONTEXT
   if (drupal_match_path($path, 'node/%*') ) {
     $node = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
@@ -31,7 +36,8 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
     
     switch ($node->type) {
       case 'erpal_invoice':
-        $contexts[ERPAL_CONTEXT_INVOICE] = true;              
+        $contexts[ERPAL_CONTEXT_INVOICE] = true;
+        $contexts[ERPAL_CONTEXT_INVOICE_GLOBAL] = true;          
         break;    
     }
   }
@@ -62,14 +68,9 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
 function erpal_invoice_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
   //invoices list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICES, $router_item)) {  
-    $contact_node = is_object($router_item['map'][1]) ? $router_item['map'][1]->data : false;
-    _erpal_invoice_helper_invoices_links($data, $router_item, $contact_node);       
+    $node = is_object($router_item['map'][1]) ? $router_item['map'][1]->data : false;
+    _erpal_invoice_helper_invoices_links($data, $router_item, $node);       
   }
-  
-  //INVOICE global context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICE_GLOBAL, $router_item)) {    
-    _erpal_invoice_helper_invoice_global_links($data, $router_item);       
-  } 
   
   //billables context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BILLABLES, $router_item)) {    
@@ -78,20 +79,29 @@ function erpal_invoice_helper_dynamic_menu_items_alter(&$data, $router_item, $ro
   
   //INVOICE context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICE, $router_item)) {    
-    $invoice_node = is_object($router_item['map'][1]->data) ? $router_item['map'][1]->data : $router_item['map'][1];
+    $invoice_node = (isset($router_item['map'][1]->data) && is_object($router_item['map'][1]->data)) ? $router_item['map'][1]->data : $router_item['map'][1];
     _erpal_invoice_helper_invoice_links($data, $router_item, $invoice_node);       
   }
+  
+  //INVOICE global context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICE_GLOBAL, $router_item)) {    
+    _erpal_invoice_helper_invoice_global_links($data, $router_item);       
+  } 
 }
 
 /**
 * Adds all invoice global context links
 */
-function _erpal_invoice_helper_invoice_global_links(&$data, $router_item) {
-  //single project context
-  
-  //hide the links if we are in a contact o
-  erpal_make_local_tab($data, t('Invoices'), 'invoice/invoices');
-  erpal_make_local_tab($data, t('Billables'), 'invoice/billables');
+function _erpal_invoice_helper_invoice_global_links(&$data, $router_item, $active_tabs=array()) {
+  static $processed = false;
+
+  if ($processed)
+    return; //we want no duplicate tabs if somebody calls this twice
+
+  $processed = true;
+  //hide the links if we are in a contact
+  erpal_make_local_tab($data, t('Invoices'), 'invoice/invoices', array(), in_array('invoices', $active_tabs));
+  erpal_make_local_tab($data, t('Billables'), 'invoice/billables', array(), in_array('billables', $active_tabs));
 }
 
 /**
@@ -139,11 +149,16 @@ function _erpal_invoice_helper_billables_links(&$data, $contact_node=false) {
 /**
 * Adds all invoice context links
 */
-function _erpal_invoice_helper_invoice_links(&$data, $router_item, $contact_node) {
+function _erpal_invoice_helper_invoice_links(&$data, $router_item, $invoice_node) {
   //single project context
   $query = array();
-  erpal_make_action($data, t('Edit this invoice'), 'node/'.$contact_node->nid.'/edit', $query);
   
-  erpal_make_local_tab($data, t('Invoices'), 'invoice/invoices');
-  erpal_make_local_tab($data, t('Billables'), 'invoice/billables');
+  $invoice_nid = false;
+  if ($invoice_node && is_object($invoice_node))
+    $invoice_nid = $invoice_node->nid;
+  
+  erpal_make_action($data, t('Edit this invoice'), 'node/'.$invoice_nid.'/edit', $query);
+  
+  $active_tabs = array('invoices');
+  _erpal_invoice_helper_invoice_global_links($data, $router_item, $active_tabs);
 }

@@ -57,6 +57,20 @@ function erpal_calendar_ui_views_default_views() {
   $handler = $view->new_display('panel_pane', 'Full calendar pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['full_calendar'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('relation src node'),
+    t('Date'),
+    t('Title'),
+    t('Full calendar pane'),
+    t('View panes'),
+  );
   $export['full_calendar'] = $view;
 
   return $export;
