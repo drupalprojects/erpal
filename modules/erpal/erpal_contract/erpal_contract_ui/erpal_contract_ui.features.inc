@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * erpal_contract.features.inc
+ * erpal_contract_ui.features.inc
  */
 
 /**
