@@ -110,7 +110,6 @@ function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
   //Book Page Context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOK_PAGE, $router_item)) {  
     _erpal_book_helper_node_book_page_links($data, $node, $is_node_view); 
-    _erpal_book_helper_node_book_links($data, $node, $is_node_view); 
     $active_tab = isset($node->field_is_template[LANGUAGE_NONE][0]) && $node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'books';
     _erpal_book_helper_book_global_menu_tabs($data, $nid, array($active_tab));   
   }
@@ -182,7 +181,7 @@ function _erpal_book_helper_node_book_links(&$data, $node, $is_node_view=false) 
   if ($is_node_view) {
     $query = array();
     erpal_make_action($data, t('Edit this book'), 'node/'.$node->nid.'/edit', $query);
-    
+
     _erpal_book_helper_book_and_page_actions($data, $node, $is_node_view);
   }
   
