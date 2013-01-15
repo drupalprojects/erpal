@@ -16,6 +16,7 @@ define('ERPAL_CONTEXT_BOOK_PAGE', 'book_page');
 function erpal_book_helper_erpal_contexts($router_item) {
   
   $path = $router_item['path'];
+  
   $contexts = array();
 
   $node = _erpal_basic_helper_router_object(1, $router_item);
@@ -39,8 +40,17 @@ function erpal_book_helper_erpal_contexts($router_item) {
   }
      
   //CHECK CRM Global CONTEXT
-  if (drupal_match_path($path, 'books/*')) {  
+  if (drupal_match_path($path, 'books/*') || drupal_match_path($path, 'books')) {  
     $contexts[ERPAL_CONTEXT_BOOK_GLOBAL] = true;      
+  }   
+     
+  //CHECK books list CONTEXT
+  if ($path == 'books/%') {
+    $sub_page = isset($router_item['original_map'][1]) ? $router_item['original_map'][1] : false;
+    if ($sub_page == 'books')
+      $contexts[ERPAL_CONTEXT_BOOKS] = true;
+    elseif ($sub_page == 'templates')
+      $contexts[ERPAL_CONTEXT_BOOK_TEMPLATES] = true;
   }   
      
   if (drupal_match_path($path, 'node/%*') || drupal_match_path($path, 'books/*')) {    
@@ -61,17 +71,6 @@ function erpal_book_helper_erpal_contexts($router_item) {
     }
        
   }
-
-  
-  //CHECK ACTIVITIES list CONTEXT
-  if ($path == 'books/books') { 
-    $contexts[ERPAL_CONTEXT_BOOKS] = true;       
-  }
-  
-  //CHECK Contacts list CONTEXT
-  if ($path == 'books/templates') {        
-    $contexts[ERPAL_CONTEXT_BOOK_TEMPLATES] = true;          
-  }
   
   return $contexts;  
 
@@ -84,10 +83,12 @@ function erpal_book_helper_erpal_contexts($router_item) {
 function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
   $node = _erpal_basic_helper_router_object(1, $router_item);
   
+  $active_tab = array();
   $nid = false;
-  if ($node)
+  if ($node && is_object($node)) {
     $nid = $node->nid;
-  $is_node_view = !isset($router_item['original_map'][2]) || $router_item['original_map'][2] == 'view';   
+  }
+  $is_node_view = !isset($router_item['original_map'][2]) || (isset($router_item['original_map'][2]) && $router_item['original_map'][2] == 'view');   
   
   //books list context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOKS, $router_item)) {        
@@ -168,7 +169,7 @@ function _erpal_book_helper_books_links(&$data) {
 */
 function _erpal_book_helper_book_templates_links(&$data) {
   //book template list context
-  $query = array('destination' => $_GET['q']);
+  $query = array('destination' => $_GET['q'], 'field_is_template' => 1);
   erpal_make_action($data, t('Create a new template'), 'node/add/erpal-book', $query);
   _erpal_book_helper_book_global_menu_tabs($data, false, array('templates'));  
 }
@@ -191,10 +192,12 @@ function _erpal_book_helper_node_book_links(&$data, $node, $is_node_view=false) 
 * Add actions to a book or a book page
 */
 function _erpal_book_helper_book_and_page_actions(&$data, $node, $is_node_view=false) {
-  $query = array();
+  $query = array('field_parent' => $node->nid);
   erpal_make_action($data, t('Add a book page'), 'node/add/erpal-book-page', $query);
+  
+  $query = array();
   erpal_make_action($data, t('Create PDF'), 'books/'.$node->nid.'/pdf', $query);
-  erpal_make_action($data, t('Add pages cloned'), 'books/clonetemplates', $query);
+  erpal_make_action($data, t('Add pages cloned'), 'books/clonetemplates/'.$node->nid, $query);
   
   if ($node->type == 'erpal_book') {
     erpal_make_action($data, t('Clone to new book'), 'books/'.$node->nid.'/clone', $query);
