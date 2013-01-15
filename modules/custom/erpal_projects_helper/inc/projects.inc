@@ -161,7 +161,7 @@ function _erpal_projects_helper_subscribe_project_team($node){
     _erpal_projects_helper_loop_users($updated_diff, $node, 'flag');
   }
   
-  // unbscribe users from the erpal_project
+  // unsubscribe users from the erpal_project
   if (!empty($original_diff)) {
     _erpal_projects_helper_loop_users($original_diff, $node->original, 'unflag');
   }
@@ -169,7 +169,7 @@ function _erpal_projects_helper_subscribe_project_team($node){
 
 /**
  * helper function
- * bscribe / unbscribe users from the erpal_project
+ * subscribe / unsubscribe users from the erpal_project
  * @param type $diff
  * @param type $node
  * @param type $action
