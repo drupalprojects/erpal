@@ -156,12 +156,12 @@ function _erpal_projects_helper_subscribe_project_team($node){
    // find deleted users
   $original_diff = array_diff($original_team, $udpated_team);
 
-  // subscribe users to the erpal_task
+  // subscribe users to the erpal_project
   if (!empty($updated_diff)) {
     _erpal_projects_helper_loop_users($updated_diff, $node, 'flag');
   }
   
-  // unbscribe users from the erpal_task
+  // unbscribe users from the erpal_project
   if (!empty($original_diff)) {
     _erpal_projects_helper_loop_users($original_diff, $node->original, 'unflag');
   }
@@ -169,7 +169,7 @@ function _erpal_projects_helper_subscribe_project_team($node){
 
 /**
  * helper function
- * bscribe / unbscribe users from the erpal_task
+ * bscribe / unbscribe users from the erpal_project
  * @param type $diff
  * @param type $node
  * @param type $action
