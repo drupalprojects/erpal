@@ -27,5 +27,6 @@ features[page_manager_handlers][] = node_view_panel_context_5
 features[page_manager_handlers][] = node_view_panel_context_6
 features[page_manager_pages][] = books
 features[panels_mini][] = book_general_fields
+features[panels_mini][] = book_page_fields
 features[views_view][] = book_children
 features[views_view][] = books
