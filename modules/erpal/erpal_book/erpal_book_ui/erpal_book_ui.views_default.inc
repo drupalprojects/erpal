@@ -116,8 +116,8 @@ function erpal_book_ui_views_default_views() {
   $handler->display->display_options['filters']['field_parent_nid']['field'] = 'field_parent_nid';
   $handler->display->display_options['filters']['field_parent_nid']['operator'] = 'empty';
 
-  /* Display: Child nodes */
-  $handler = $view->new_display('panel_pane', 'Child nodes', 'panel_pane_2');
+  /* Display: Child book page nodes */
+  $handler = $view->new_display('panel_pane', 'Child book page nodes', 'panel_pane_2');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['display_description'] = 'Dispalys all nodes that have parent nid set to contextual filter';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
@@ -149,8 +149,8 @@ function erpal_book_ui_views_default_views() {
     'erpal_task' => 'erpal_task',
   );
   $handler->display->display_options['argument_input'] = array(
-    'field_parent_nid' => array(
-      'type' => 'panel',
+    'field_parent_target_id' => array(
+      'type' => 'user',
       'context' => 'entity:billable.billable-id',
       'context_optional' => 0,
       'panel' => '0',
@@ -158,9 +158,10 @@ function erpal_book_ui_views_default_views() {
       'label' => 'Content: Parent (field_parent)',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
-  /* Display: Child nodes AJAX */
-  $handler = $view->new_display('panel_pane', 'Child nodes AJAX', 'panel_pane_3');
+  /* Display: Child book page nodes AJAX */
+  $handler = $view->new_display('panel_pane', 'Child book page nodes AJAX', 'panel_pane_3');
   $handler->display->display_options['display_description'] = 'Load all nodes that have parent nid set to contextual filter';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['cache'] = FALSE;
@@ -302,10 +303,10 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
     t('Type'),
     t('Weight'),
     t('All'),
-    t('Child nodes'),
+    t('Child book page nodes'),
     t('Dispalys all nodes that have parent nid set to contextual filter'),
     t('View panes'),
-    t('Child nodes AJAX'),
+    t('Child book page nodes AJAX'),
     t('Load all nodes that have parent nid set to contextual filter'),
   );
   $export['book_children'] = $view;

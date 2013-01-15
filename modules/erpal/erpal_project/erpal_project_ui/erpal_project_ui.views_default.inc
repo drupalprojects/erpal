@@ -1419,11 +1419,6 @@ function erpal_project_ui_views_default_views() {
     t('[title] ([field_activity_status_term])'),
     t('All'),
     t('View panes'),
-    t('Projects and tasks reference dialog search'),
-    t('Projects and tasks'),
-    t('Content entity referenced from field_project_ref'),
-    t('Type'),
-    t('Tasks by project'),
     t('Projects pane'),
     t('Search Terms'),
   );
