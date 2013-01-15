@@ -157,7 +157,6 @@ function _erpal_invoice_helper_invoice_pdf($invoice_nid, $documents, $attach=fal
     $basename = _erpal_docs_make_filename(t('Invoice')."-".$invoice_number, 'pdf');
 
     $doc_file = _erpal_print_html_as_pdf($html, $doc_uri, $basename, $params);
-
     $file_node = _erpal_invoice_helper_invoice_file_node($invoice);
 
     _erpal_docs_attach_file($invoice, $doc_file, $file_node, $skip_save_invoice, true);

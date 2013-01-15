@@ -3,6 +3,9 @@
  * @file
  * Module to provide helper functions for book feature
  */
+ module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+ module_load_include('inc', 'erpal_book_helper', 'inc/dynamic.menu');
+ module_load_include('inc', 'erpal_book_helper', 'inc/book.token');
  
 /**
  * Implements hook_action_info().
@@ -229,8 +232,6 @@ function _erpal_book_helper_get_contact($node) {
 * implements hook_init
 */
 function erpal_book_helper_init() {
-  module_load_include('inc', 'erpal_basic_helper', 'inc/config');
-  module_load_include('inc', 'erpal_book_helper', 'inc/book.token'); 
   module_load_include('inc', 'erpal_book_helper', 'inc/book.clone'); 
   module_load_include('inc', 'erpal_book_helper', 'inc/book.action');
   
@@ -409,11 +410,26 @@ function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'erpal_book_node_form') {
     _erpal_book_helper_show_tokens_at_body($form, $form_state);
     _erpal_book_helper_prepare_address_ajax_reload($form, $form_state);
+    _erpal_book_helper_preselect_form($form, $form_state);
   }
   
   if ($form_id == 'node_delete_confirm') {
     _erpal_book_helper_node_delete_confirm_alter($form, $form_state);
   }
+}
+
+/**
+* Preselect some form elements from URL
+*/
+function _erpal_book_helper_preselect_form(&$form, $form_state) {
+  $nid = $form['nid']['#value'];
+  if ($nid)
+    return; //only for new nodes we preselect the fields
+  
+  $is_template = isset($_GET['field_is_template']) ? $_GET['field_is_template'] : false;
+  
+  $form['field_is_template'][LANGUAGE_NONE]['#default_value'] = $is_template;
+
 }
 
 /**
@@ -635,30 +651,6 @@ function _erpal_book_helper_form_redirect_orphan_book_page($form) {
   }
 }
 
-/**
-* This function is called by the view books. Links for creating some nodes are added. 
-* With the hook other modules could add some more links.
-*/
-function _erpal_book_helper_view_contacts_header_content() {
-  
-  $add_erpal_book = _erpal_book_helper_create_book_link();
-  
-  $my_content = array(
-    $add_erpal_book,
-  );
-  
-  //ask all other modules for content in the header area of the view
-  $other_module_content = module_invoke_all('view_books_header_content');
-  
-  $all_content = array_merge($other_module_content, $my_content);
-  
-  $content = '';
-  foreach ($all_content as $a_content) {
-    $content .= '<br>'.$a_content;
-  }
-  
-  return $content;
-}
 
 /**
 * Returns the book the page is refernced to, if given node is a book return this book
@@ -721,27 +713,6 @@ function erpal_book_helper_jstree_context_menu($entity_type, $type, $id, $root_i
   }
 }
 
-/**
-* Helper function to create new book link
-*/
-function _erpal_book_helper_create_book_link($q_arg = false, $query_arr = array(), $title=false){
-  if (!$q_arg)
-    $q = current_path();
-  else 
-    $q = $q_arg;
-  
-  if (!isset($query_arr['destination']) || $q_arg)
-    $query_arr['destination'] = $q;
-  
-  if (!$title)
-    $title = t("Create new book");
-    
-  return l(
-    $title, "node/add/erpal-book", array(
-        'query' => $query_arr,
-    )
-  );
-}
 
 /**
 * Returns all direct children of a given book node
