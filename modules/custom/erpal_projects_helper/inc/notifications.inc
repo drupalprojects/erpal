@@ -210,9 +210,12 @@ function _erpal_projects_helper_flag($node_type, $nid, $action = 'flag', $accoun
       $flag = flag_get_flag('project_subscriptions'); 
     }
 
-    if (!$flag->is_flagged($nid, $account->uid)) {
+    if ($action == 'flag' && !$flag->is_flagged($nid, $account->uid)) {
       $flag->flag($action, $nid, $account);
-    }
+    } else
+     if ($action == 'unflag' && $flag->is_flagged($nid, $account->uid)) {
+      $flag->flag($action, $nid, $account);
+    } 
   }
 }
 

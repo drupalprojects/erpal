@@ -137,12 +137,53 @@ function erpal_projects_helper_node_presave_project($node) {
  * subscribe project team to project
  */
 function _erpal_projects_helper_subscribe_project_team($node){
+  
+  $udpated_team = $original_team = $updated_diff = $original_diff = array();
+  
+  // updated node
+  $field_project_team_udpated = field_get_items('node', $node, 'field_project_team');
+  foreach ($field_project_team_udpated as $udpated_team_collection) {
+    $udpated_team[] = $udpated_team_collection['value'];
+  }
+  // original node
+  $field_project_team_original = field_get_items('node', $node->original, 'field_project_team');
+  foreach ($field_project_team_original as $original_team_collection) {
+    $original_team[] = $original_team_collection['value'];
+  }
+  
+  // find added users
+  $updated_diff = array_diff($udpated_team, $original_team);
+   // find deleted users
+  $original_diff = array_diff($original_team, $udpated_team);
+
+  // subscribe users to the erpal_task
+  if (!empty($updated_diff)) {
+    _erpal_projects_helper_loop_users($updated_diff, $node, 'flag');
+  }
+  
+  // unbscribe users from the erpal_task
+  if (!empty($original_diff)) {
+    _erpal_projects_helper_loop_users($original_diff, $node->original, 'unflag');
+  }
+}
+
+/**
+ * helper function
+ * bscribe / unbscribe users from the erpal_task
+ * @param type $diff
+ * @param type $node
+ * @param type $action
+ */
+function _erpal_projects_helper_loop_users($diff, $node, $action){
   $node_wrapper = entity_metadata_wrapper('node', $node);
   // loop uids of assignrd users
   foreach ($node_wrapper->field_project_team as $project_team) {
-    $account = $project_team->field_user->value();
-    // subscribe users to the erpal_task
-     _erpal_projects_helper_flag($node->type, $node->nid, 'flag', $account);
+    if($project_team && $project_team_value = $project_team->value()){
+      if (in_array($project_team_value->item_id, $diff)) {
+        $account = $project_team->field_user->value();
+        _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+      }
+    }
   }
 }
 
