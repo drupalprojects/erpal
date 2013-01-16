@@ -117,12 +117,10 @@ function erpal_make_action(&$data, $title, $path, $query = array()) {
 * Returns a local action item to path if user has access
 */
 function erpal_make_local_tab(&$data, $title, $path, $query = array(), $active=false) {
-  
   $item = erpal_make_local_link($data, $title, $path, $query);
- 
+
   if (array_key_exists('access', $item) && $item['access']) {
-    //may be make active
-    
+    //may be make active    
     if ($active) {
       $item['localized_options']['attributes']['class'][] = 'active-trail';
       $item['localized_options']['attributes']['class'][] = 'active';      
@@ -174,7 +172,11 @@ function erpal_get_menu_parents($router_item) {
 * Basic processing for local menu links, should not be called directely by other modules
 */
 function erpal_make_local_link(&$data, $title, $path, $query = array()) {
-  $item = menu_get_item($path);
+  $item = menu_get_item();
+  if ($path == 'contracts') {
+   // die('adf');
+    //dpm($item);
+  }
   $item['title'] = $title;
   // The add new content page would redirect to the new event
   // if we did not override that here. This way they will

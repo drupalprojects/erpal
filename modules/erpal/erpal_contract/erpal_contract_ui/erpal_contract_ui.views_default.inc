@@ -92,7 +92,6 @@ function erpal_contract_ui_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Contracts';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access contracts view';
@@ -118,15 +117,6 @@ function erpal_contract_ui_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<?php
-echo _erpal_contract_helper_view_contracts_header_content();
-?>';
-  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -267,11 +257,6 @@ echo _erpal_contract_helper_view_contracts_header_content();
     5 => 0,
     7 => 0,
   );
-
-  /* Display: Contracts */
-  $handler = $view->new_display('page', 'Contracts', 'page');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'contracts';
 
   /* Display: Budgets by contract pane */
   $handler = $view->new_display('panel_pane', 'Budgets by contract pane', 'panel_pane_1');
@@ -482,9 +467,13 @@ echo _erpal_contract_helper_view_contracts_header_content();
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['inherit_panels_path'] = '1';
+
+  /* Display: Contracts pane */
+  $handler = $view->new_display('panel_pane', 'Contracts pane', 'panel_pane_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['contracts'] = array(
     t('Master'),
-    t('Contracts'),
     t('more'),
     t('Apply'),
     t('Reset'),
@@ -498,9 +487,6 @@ echo _erpal_contract_helper_view_contracts_header_content();
     t('‹ previous'),
     t('next ›'),
     t('last »'),
-    t('<?php
-echo _erpal_contract_helper_view_contracts_header_content();
-?>'),
     t('No contract available'),
     t('field collection item from field_contract_payment'),
     t('Contractor'),
@@ -527,6 +513,7 @@ echo _erpal_contract_helper_view_contracts_header_content();
     t('All'),
     t('View panes'),
     t('Contracts by customer'),
+    t('Contracts pane'),
   );
   $export['contracts'] = $view;
 
