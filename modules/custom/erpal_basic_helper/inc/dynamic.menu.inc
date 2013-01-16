@@ -36,6 +36,17 @@ function _erpal_basic_helper_alter_local_tasks_output(&$data) {
     $data['actions']['output']['container'][] = $link;
   }
   
+  //if there is no tab, add a tab so the navigation will be shown
+  if (!count($data['tabs'])) {
+    erpal_make_local_tab($data, t('Home'), 'dashboard', array(), false);
+  }
+    
+  
+  if (isset($data['tabs'][0]['count']) && $data['tabs'][0]['count'] == 1) {
+    $data['tabs'][0]['count'] = 2;  //we do this so single menu tabs will be shown, otherwise they wont display if there is only 1 item
+  }
+ 
+  
   //add javascript to show local tasks as popup!
   $mod_path = drupal_get_path('module', 'erpal_basic_helper');
   $js_path = $mod_path.'/js/local_tasks.js';
