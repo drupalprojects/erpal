@@ -7,15 +7,16 @@ define('ERPAL_STATUS_ALERT', 'alert');
 define('ERPAL_STATUS_NONE', 'none');
 define('ERPAL_STATUS_COMPLETED', 'completed');
  
+module_load_include('inc', 'erpal_basic_helper', 'inc/config');  
+module_load_include('inc', 'erpal_basic_helper', 'inc/token');
+module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
+module_load_include('inc', 'erpal_basic_helper', 'inc/dynamic.menu');
+module_load_include('inc', 'erpal_basic_helper', 'inc/notifications'); 
+ 
 /**
 * Implements hok_init
 */ 
 function erpal_basic_helper_init() {
-  module_load_include('inc', 'erpal_basic_helper', 'inc/config');  
-  module_load_include('inc', 'erpal_basic_helper', 'inc/token');
-  module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
-  module_load_include('inc', 'erpal_basic_helper', 'inc/dynamic.menu');
-  module_load_include('inc', 'erpal_basic_helper', 'inc/notifications');  
   _erpal_basic_helper_warnings();
 }
 

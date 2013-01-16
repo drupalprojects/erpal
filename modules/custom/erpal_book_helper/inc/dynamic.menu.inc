@@ -85,7 +85,7 @@ function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
   
   $active_tab = array();
   $nid = false;
-  if ($node && is_object($node)) {
+  if ($node && is_object($node) && isset($node->nid)) {
     $nid = $node->nid;
   }
   $is_node_view = !isset($router_item['original_map'][2]) || (isset($router_item['original_map'][2]) && $router_item['original_map'][2] == 'view');   

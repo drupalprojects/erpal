@@ -46,7 +46,6 @@ function _erpal_basic_helper_alter_local_tasks_output(&$data) {
 * Implements hook_menu_local_tasks_alter()
 */
 function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_path) {  
-  
   //allow other modules to add dynamic menu items
   drupal_alter('dynamic_menu_items', $data, $router_item, $root_path);  
   
