@@ -41,7 +41,6 @@ function _erpal_invoice_helper_invoices_preprocess(&$view, &$field_classes, &$ro
     }
 
     $row_classes[$delta] = $status;  
-    dpm($row_classes);
   }
 
 }
