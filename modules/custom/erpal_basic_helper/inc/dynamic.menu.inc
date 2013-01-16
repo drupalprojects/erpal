@@ -172,11 +172,8 @@ function erpal_get_menu_parents($router_item) {
 * Basic processing for local menu links, should not be called directely by other modules
 */
 function erpal_make_local_link(&$data, $title, $path, $query = array()) {
-  $item = menu_get_item($path);
-  if ($path == 'contracts') {
-   // die('adf');
-    //dpm($item);
-  }
+  $item = menu_get_item($path, NULL, true);
+
   $item['title'] = $title;
   // The add new content page would redirect to the new event
   // if we did not override that here. This way they will

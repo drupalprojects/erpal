@@ -112,11 +112,11 @@ function _erpal_contract_helper_contacts_links(&$data) {
 /**
 * Adds all contract context links
 */
-function _erpal_contract_helper_contract_links(&$data, $contact_node, $is_node_view=false) {
-  //single contact context
+function _erpal_contract_helper_contract_links(&$data, $contract_node, $is_node_view=false) {
+  //single contract context
   if ($is_node_view) {
     $query = array();
-    erpal_make_action($data, t('Edit this contract'), 'node/'.$contact_node->nid.'/edit', $query);    
+    erpal_make_action($data, t('Edit this contract'), 'node/'.$contract_node->nid.'/edit', $query);    
   }
 }
 
@@ -133,5 +133,7 @@ function _erpal_contract_helper_contracts_global_menu_tabs(&$data, $current_nid=
 
   $processed = true;
 
-  erpal_make_local_tab($data, t('Contracts'), 'contacts', array(), in_array('contracts', $active_tabs)); 
+  //thi will only be shown if we add another tab here!
+  erpal_make_local_tab($data, t('Contracts'), 'contracts', array(), in_array('contracts', $active_tabs));
+
 } 
