@@ -172,7 +172,7 @@ function erpal_get_menu_parents($router_item) {
 * Basic processing for local menu links, should not be called directely by other modules
 */
 function erpal_make_local_link(&$data, $title, $path, $query = array()) {
-  $item = menu_get_item();
+  $item = menu_get_item($path);
   if ($path == 'contracts') {
    // die('adf');
     //dpm($item);
