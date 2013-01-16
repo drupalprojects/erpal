@@ -274,7 +274,7 @@ function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_ta
       
       //check project tags
       if (count($project_tag_tids) > 0) {
-        $tag_ids = isset($contract_data_entity->field_project_tags[LANGUAGE_NONE]) = $contract_data_entity->field_project_tags[LANGUAGE_NONE] : array();
+        $tag_ids = isset($contract_data_entity->field_project_tags[LANGUAGE_NONE]) ? $contract_data_entity->field_project_tags[LANGUAGE_NONE] : array();
         $has_matching_term = false;
         foreach ($tag_ids as $id) {
           $tid = $id['tid'];
