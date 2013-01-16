@@ -24,5 +24,6 @@ features[features_api][] = api:1
 features[menu_links][] = menu-erpal-menu:contracts
 features[page_manager_handlers][] = node_view_panel_context_9
 features[page_manager_pages][] = budget_by_contract_pane
+features[page_manager_pages][] = contracts
 features[views_view][] = cancelations_by_contract
 features[views_view][] = contracts
