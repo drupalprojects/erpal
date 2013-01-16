@@ -6,6 +6,7 @@
 
  module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
  module_load_include('inc', 'erpal_calendar_helper', 'inc/access');  
+ module_load_include('inc', 'erpal_calendar_helper', 'inc/dynamic.menu');
  
 /**
 * Implements hook_init
