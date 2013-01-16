@@ -435,16 +435,6 @@ function erpal_invoice_ui_views_default_views() {
   $handler->display->display_options['fields']['total_price']['label'] = 'Summe';
   $handler->display->display_options['fields']['total_price']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['total_price']['precision'] = '2';
-  /* Field: Billable: Currency */
-  $handler->display->display_options['fields']['currency']['id'] = 'currency';
-  $handler->display->display_options['fields']['currency']['table'] = 'billable';
-  $handler->display->display_options['fields']['currency']['field'] = 'currency';
-  $handler->display->display_options['fields']['currency']['label'] = 'Währung';
-  /* Field: Field: Service category */
-  $handler->display->display_options['fields']['field_service_category_term']['id'] = 'field_service_category_term';
-  $handler->display->display_options['fields']['field_service_category_term']['table'] = 'field_data_field_service_category_term';
-  $handler->display->display_options['fields']['field_service_category_term']['field'] = 'field_service_category_term';
-  $handler->display->display_options['fields']['field_service_category_term']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Billable: Date_delivery */
   $handler->display->display_options['sorts']['date_delivery']['id'] = 'date_delivery';
@@ -1074,6 +1064,11 @@ function erpal_invoice_ui_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );
+  /* Field: Content: Paid */
+  $handler->display->display_options['fields']['field_payed_1']['id'] = 'field_payed_1';
+  $handler->display->display_options['fields']['field_payed_1']['table'] = 'field_data_field_payed';
+  $handler->display->display_options['fields']['field_payed_1']['field'] = 'field_payed';
+  $handler->display->display_options['fields']['field_payed_1']['exclude'] = TRUE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
