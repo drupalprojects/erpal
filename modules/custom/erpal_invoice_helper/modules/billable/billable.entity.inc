@@ -406,8 +406,8 @@ class BillableUIController extends EntityDefaultUIController {
       'access callback' => 'billable_access',
       'access arguments' => array('edit', ),
       'weight' => 0,
-      'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-      'type' => MENU_DEFAULT_LOCAL_TASK,
+      //'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+      'type' => MENU_LOCAL_TASK,
       'file' => 'billable.entity.inc',
       'file path' => drupal_get_path('module', $this->entityInfo['module'])
     );

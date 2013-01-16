@@ -5,6 +5,12 @@
  */
 module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/billables.elements');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.pdf');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/dynamic.menu');
 
 /**
  * Implements hook_action_info().
@@ -159,12 +165,6 @@ function erpal_invoice_helper_field_formatter_view($entity_type, $entity, $field
 * implements hook_init
 */
 function erpal_invoice_helper_init() {
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.pdf');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/dynamic.menu');
    
   //@TODO that is really bad, but we have no other chance right now. The problem is:
   //if the customer changes in an invoice, we change the allowed values using #ajax at the customer
