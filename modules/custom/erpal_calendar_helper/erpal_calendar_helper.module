@@ -116,7 +116,7 @@ function _erpal_calendar_helper_set_tag($date_item) {
   $src_bundle = _date_entity_entity_bundle($src_entity, $src_type);
   $src_field_name = $date_item->src_field_name;
   $term_to_set = _erpal_calendar_helper_field_tag($src_type, $src_bundle, $src_field_name);
-die($term_to_set);
+
   //allow other modules to alter the set term. In case of a erpal_date node, we want another term if the date node is not e real date but a holiday
   $context = array('src' => array('type' => $src_type, 'bundle' => $src_bundle, 'entity' => $src_entity));
   drupal_alter('date_term', $term_to_set, $context);
