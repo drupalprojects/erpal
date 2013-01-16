@@ -36,6 +36,17 @@ function _erpal_basic_helper_alter_local_tasks_output(&$data) {
     $data['actions']['output']['container'][] = $link;
   }
   
+  //if there is no tab, add a tab so the navigation will be shown
+  if (!count($data['tabs'])) {
+    erpal_make_local_tab($data, t('Home'), 'dashboard', array(), false);
+  }
+    
+  
+  if (isset($data['tabs'][0]['count']) && $data['tabs'][0]['count'] == 1) {
+    $data['tabs'][0]['count'] = 2;  //we do this so single menu tabs will be shown, otherwise they wont display if there is only 1 item
+  }
+ 
+  
   //add javascript to show local tasks as popup!
   $mod_path = drupal_get_path('module', 'erpal_basic_helper');
   $js_path = $mod_path.'/js/local_tasks.js';
@@ -172,11 +183,8 @@ function erpal_get_menu_parents($router_item) {
 * Basic processing for local menu links, should not be called directely by other modules
 */
 function erpal_make_local_link(&$data, $title, $path, $query = array()) {
-  $item = menu_get_item();
-  if ($path == 'contracts') {
-   // die('adf');
-    //dpm($item);
-  }
+  $item = menu_get_item($path, NULL, true);
+
   $item['title'] = $title;
   // The add new content page would redirect to the new event
   // if we did not override that here. This way they will
