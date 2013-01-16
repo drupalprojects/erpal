@@ -68,8 +68,13 @@ function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_p
         unset($data['tabs'][$delta]['output'][$inner_delta]);
       }
       
-      //and if this is the view button, rename it
+      //and if this is the view button remove it
       if ($path == 'node/%/view') {
+        unset($data['tabs'][$delta]['output'][$inner_delta]);
+      }
+      
+      //and if this is the revision button remove it
+      if ($path == 'node/%/revisions') {
         unset($data['tabs'][$delta]['output'][$inner_delta]);
       }
     }
