@@ -460,7 +460,7 @@ function date_item_access($op, $date_item = NULL, $account = NULL, $entity_type)
   switch ($op) {
     case 'view':
       return ($account_own && user_access("view own $type date_item", $account)) || user_access("view $type date_item", $account);
-    case 'update':
+    case 'update':      
       return ($account_own && user_access("update own $type date_item", $account)) || user_access("update any $type date_item", $account);
     case 'create':
       return (user_access("create $type date_item", $account));
