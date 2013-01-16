@@ -36,20 +36,21 @@ function erpal_contract_helper_erpal_contexts($router_item) {
       return $contexts;
     
     //check if we have a subpath like node/23/bla or something like this
-    $is_crm_context_node = false;
-   
     switch ($node->type) {
       case 'erpal_contract':  
-        $is_crm_context_node = true;
         $contexts[ERPAL_CONTEXT_CONTRACT] = true;  
         break;       
     }
   }
   
-  //CHECK CRM Global CONTEXT
+  //CHECK Contract Global CONTEXT
   if (drupal_match_path($path, 'contracts/*') || drupal_match_path($path, 'contracts')) {  
     $contexts[ERPAL_CONTEXT_CONTRACT_GLOBAL] = true;      
-  }   
+  }  
+
+  if (drupal_match_path($path, 'contracts')) {  
+    $contexts[ERPAL_CONTEXT_CONTRACTS] = true;      
+  }    
 
   return $contexts;  
 
@@ -64,13 +65,13 @@ function erpal_contract_helper_dynamic_menu_items_alter(&$data, $router_item, $r
   $is_node_view = !isset($router_item['original_map'][2]) || $router_item['original_map'][2] == 'view'; 
 
   //Contracts contact context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTRACT, $router_item)) {    
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTRACTS, $router_item)) {    
     _erpal_contract_helper_contacts_links($data);          
     _erpal_contract_helper_contracts_global_menu_tabs($data, $node, array('contracts'));   
   } 
   
   //CRM contacts context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTACT, $router_item)) {    
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTRACT, $router_item)) {    
     _erpal_contract_helper_contract_links($data, $node, $is_node_view); 
     _erpal_contract_helper_contracts_global_menu_tabs($data, $node, array('contracts'));   
   }
@@ -92,9 +93,9 @@ function erpal_contract_helper_erpal_menu_parents($router_item) {
 * returns the menu parents for a given router item, according to its context
 */
 function _erpal_contract_helper_get_menu_parents($router_item) {
-  $crm_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTRACT_GLOBAL, $router_item);
+  $contract_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTRACT_GLOBAL, $router_item);
   
-  if ($crm_global) {
+  if ($contract_global) {
     return 'contracts';
   }
 }
@@ -112,11 +113,11 @@ function _erpal_contract_helper_contacts_links(&$data) {
 /**
 * Adds all contract context links
 */
-function _erpal_contract_helper_contract_links(&$data, $contact_node, $is_node_view=false) {
-  //single contact context
+function _erpal_contract_helper_contract_links(&$data, $contract_node, $is_node_view=false) {
+  //single contract context
   if ($is_node_view) {
     $query = array();
-    erpal_make_action($data, t('Edit this contract'), 'node/'.$contact_node->nid.'/edit', $query);    
+    erpal_make_action($data, t('Edit this contract'), 'node/'.$contract_node->nid.'/edit', $query);    
   }
 }
 
@@ -133,5 +134,7 @@ function _erpal_contract_helper_contracts_global_menu_tabs(&$data, $current_nid=
 
   $processed = true;
 
-  erpal_make_local_tab($data, t('Contracts'), 'contacts', array(), in_array('contracts', $active_tabs)); 
+  //thi will only be shown if we add another tab here!
+  erpal_make_local_tab($data, t('Contracts'), 'contracts', array(), in_array('contracts', $active_tabs));
+
 } 

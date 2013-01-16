@@ -4,13 +4,9 @@
  * Code for the erpal_docs_helper module.
 */
 
-/**
-* Implements hook_init
-*/
-function erpal_docs_helper_init() {
-  module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
-  module_load_include('inc', 'erpal_docs_helper', 'inc/config');
-}
+module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
+module_load_include('inc', 'erpal_docs_helper', 'inc/config');
+module_load_include('inc', 'erpal_docs_helper', 'inc/dynamic.menu');
  
 /**
  * Implements hook_ctools_plugin_directory().
