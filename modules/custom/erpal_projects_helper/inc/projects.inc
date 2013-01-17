@@ -130,15 +130,17 @@ function _erpal_projects_helper_get_activity_by_project($project_node) {
 function erpal_projects_helper_node_presave_project($node) {
   $old_node = node_load($node->nid);
   _erpal_projects_helper_handle_removed_book_nodes($node, $old_node);
-  _erpal_projects_helper_subscribe_project_team($node);
+  // node edit
+  if (!empty($node->original)) {
+    _erpal_projects_helper_subscribe_project_team($node);
+  }
 }
 
 /**
  * subscribe project team to project
  */
 function _erpal_projects_helper_subscribe_project_team($node){
-  
-  $udpated_team = $original_team = $updated_diff = $original_diff = array();
+  $udpated_team = $original_team = $updated_diff = $original_diff = $field_project_team_original = array();
   
   // updated node
   $field_project_team_udpated = field_get_items('node', $node, 'field_project_team');
@@ -148,9 +150,8 @@ function _erpal_projects_helper_subscribe_project_team($node){
   // original node
   if (!empty($node->original)) {
     $field_project_team_original = field_get_items('node', $node->original, 'field_project_team');
-  } else {
-    $field_project_team_original = array();
   }
+  
   if(!empty($field_project_team_original) && is_array($field_project_team_original)){
     foreach ($field_project_team_original as $original_team_collection) {
       $original_team[] = $original_team_collection['value'];
@@ -184,9 +185,9 @@ function _erpal_projects_helper_loop_users($diff, $node, $action){
   $node_wrapper = entity_metadata_wrapper('node', $node);
   // loop uids of assignrd users
   foreach ($node_wrapper->field_project_team as $project_team) {
-    if($project_team && $project_team_value = $project_team->value()){
+    if ($project_team && $project_team_value = $project_team->value()) {
       if (in_array($project_team_value->item_id, $diff)) {
-        if($account = $project_team->field_user->value()){
+        if ($account = $project_team->field_user->value()) {
           _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
         }
       }
