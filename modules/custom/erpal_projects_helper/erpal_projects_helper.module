@@ -1376,30 +1376,11 @@ function _erpal_projects_helper_budget_view_project($budget_id) {
 }
 
 /**
- * Implements hook_comment_presave
+ * Implements hook_comment_insert
  */
-function erpal_projects_helper_comment_presave($comment){
+function erpal_projects_helper_comment_insert($comment){ // might be useful to use presave
   $node_type = str_replace('comment_node_', '', $comment->node_type);
   // flag erpal_task on comment
   _erpal_projects_helper_flag($node_type, $comment->nid);
 }
 
-/**
- * Implements hook_flag_flag
- */
-function erpal_projects_helper_flag_flag($flag, $entity_id, $account, $flagging){
-  if($flag->name == 'task_subscriptions' || $flag->name == 'project_subscriptions') {
-      $entity = node_load($entity_id);
-      _erpal_projects_helper_user_subscribed_email($account, $entity, 'subscribe');
-  }
-}
-
-/**
- * Implements hook_flag_unflag
- */
-function erpal_projects_helper_flag_unflag($flag, $entity_id, $account, $flagging){
-  if($flag->name == 'task_subscriptions' || $flag->name == 'project_subscriptions') {
-      $entity = node_load($entity_id);
-      _erpal_projects_helper_user_unsubscribed_email($account, $entity, 'unsubscribe');
-  }
-}

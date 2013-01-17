@@ -85,51 +85,30 @@ function erpal_projects_helper_config_form($form, &$form_state) {
   );
 
   // User subscribed to project / task
-  $form['user_subscribed'] = array(
+  $form['user_assigned'] = array(
     '#type' => 'fieldset',
     '#title' => t('User subscribed'),
     '#collapsible' => true,
     '#collapsed' => true,
     '#group' => 'notification_messages',
   );
-  $form['user_subscribed']['erpal_task_user_subscribed_subject'] = array(
+  $form['user_assigned']['erpal_task_user_assigned_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Message subject'),
-    '#default_value' => _erpal_task_user_subscribed_subject(),
+    '#default_value' => _erpal_task_user_assigned_subject(),
   );
 
-  $form['user_subscribed']['erpal_task_user_subscribed_message'] = array(
+  $form['user_assigned']['erpal_task_user_assigned_message'] = array(
     '#type' => 'textarea',
     '#title' => t('Message text'),
-    '#default_value' => _erpal_task_user_subscribed_message(),
-  );
-
-  // User unsubscribed from project / task
-  $form['user_unsubscribed'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('User unsubscribed'),
-    '#collapsible' => true,
-    '#collapsed' => true,
-    '#group' => 'notification_messages',
-  );
-  $form['user_unsubscribed']['erpal_task_user_unsubscribed_subject'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Message subject'),
-    '#default_value' => _erpal_task_user_unsubscribed_subject(),
-  );
-
-  $form['user_unsubscribed']['erpal_task_user_unsubscribed_message'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Message text'),
-    '#default_value' => _erpal_task_user_unsubscribed_message(),
+    '#default_value' => _erpal_task_user_assigned_message(),
   );
 
   //add available tokens to the form
   //show available Tokens  
   if (module_exists('token')) {
-    $form['task_notifications']['token_tree'] =
-      $form['user_subscribed']['token_tree'] =
-      $form['user_unsubscribed']['token_tree'] = array(
+    $form['task_notifications']['token_tree'] = 
+      $form['user_assigned']['token_tree'] = array(
       '#theme' => 'token_tree',
       '#token_types' => array('erpal_project_notifications'),
       '#global_types' => FALSE,
@@ -274,21 +253,19 @@ function _erpal_projects_helper_task_update_subject() {
 }
 
 /**
- * Returns subject and body of message when user subscribes
+ * Returns subject and body of message when user assigned to task
  */
-function _erpal_task_user_subscribed_subject() {
-  return variable_get('erpal_task_user_subscribed_subject', false);
+function _erpal_task_user_assigned_subject() {
+  $value = 'ERPAL - Notification: [erpal_project_notifications:content_label]';
+  return variable_get('erpal_task_user_assigned_subject', $value);
 }
-function _erpal_task_user_subscribed_message() {
-  return variable_get('erpal_task_user_subscribed_message', false);
-}
+function _erpal_task_user_assigned_message() {
+  $value = 'Hello,
 
-/**
- * Returns subject and body of message when user unsubscribes
- */
-function _erpal_task_user_unsubscribed_subject() {
-  return variable_get('erpal_task_user_unsubscribed_subject', false);
-}
-function _erpal_task_user_unsubscribed_message() {
-  return variable_get('erpal_task_user_unsubscribed_message', false);
+You were assigned to task: [erpal_project_notifications:content_label] -> [erpal_project_notifications:content_url]
+
+Best regards
+
+ERPAL';
+  return variable_get('erpal_task_user_assigned_message', $value);
 }

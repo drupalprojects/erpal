@@ -212,6 +212,10 @@ function _erpal_projects_helper_flag($node_type, $nid, $action = 'flag', $accoun
 
     if ($action == 'flag' && !$flag->is_flagged($nid, $account->uid)) {
       $flag->flag($action, $nid, $account);
+      if ($node_type == 'erpal_task') { // flag erpal_task
+        $entity = node_load($nid);
+        _erpal_projects_helper_user_assigned_email($account, $entity, 'assign');
+      }
     } else
      if ($action == 'unflag' && $flag->is_flagged($nid, $account->uid)) {
       $flag->flag($action, $nid, $account);
@@ -223,14 +227,14 @@ function _erpal_projects_helper_flag($node_type, $nid, $action = 'flag', $accoun
  * Send email to subscribed user
  * @param type $account
  */
-function _erpal_projects_helper_user_subscribed_email($account, $entity, $op) {
+function _erpal_projects_helper_user_assigned_email($account, $entity, $op) {
   $data['op'] = $op;
   $data['entity'] = $entity;
   $data['entity_type'] = 'node';
 
   $message = array(
-    'subject' => token_replace(_erpal_task_user_subscribed_subject(), $data),
-    'message' => token_replace(_erpal_task_user_subscribed_message(), $data),
+    'subject' => token_replace(_erpal_task_user_assigned_subject(), $data),
+    'message' => token_replace(_erpal_task_user_assigned_message(), $data),
   );
 
   _erpal_basic_helper_notify_users_send(array($account->uid), $message);
