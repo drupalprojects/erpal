@@ -263,7 +263,10 @@ function _erpal_projects_helper_subscribe_task_assigned_users($node){
     $assigned[] = $assigned_user['target_id'];
   }
   // get uids of original assigned users
-  $assigned_users_original = field_get_items('node', $node->original, 'field_task_assigned_users');
+  if (isset($node->original))
+    $assigned_users_original = field_get_items('node', $node->original, 'field_task_assigned_users');
+  else
+    $assigned_users_original = array();
   foreach ($assigned_users_original as $assigned_user_original) {
     $assigned_original[] = $assigned_user_original['target_id'];
   }
@@ -280,7 +283,9 @@ function _erpal_projects_helper_subscribe_task_assigned_users($node){
   
   // unsubscribe users from the erpal_task
   if (!empty($original_diff)) {
-    _erpal_projects_helper_loop_task_users($original_diff, $node->original, 'unflag');
+    if (isset($node->original)) {
+      _erpal_projects_helper_loop_task_users($original_diff, $node->original, 'unflag');
+    }
   }
 }
 
