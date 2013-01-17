@@ -8,15 +8,15 @@
 * Returns all the menu path for config of crm feature
 */
 function _erpal_projects_helper_config_menu() {
-  
+
   $items['admin/erpal/projects'] = array(
     'title' => 'ERPAL Projects',
-    'page callback' => '_erpal_projects_helper_config_projects',    
+    'page callback' => '_erpal_projects_helper_config_projects',
     'access arguments' => array('config erpal projects'),
     'file' => 'inc/config.inc',
     'type' => MENU_LOCAL_TASK,
   );
-  
+
   return $items;
 }
 
@@ -35,7 +35,7 @@ function _erpal_projects_helper_config_projects() {
 function erpal_projects_helper_config_form($form, &$form_state) {
 
   $form = array();
-  
+
   $form['budget_usage_warn'] = array(
     '#type' => 'textfield',
     '#title' => t('Warn at budget usage %'),
@@ -43,7 +43,7 @@ function erpal_projects_helper_config_form($form, &$form_state) {
     '#size' => 5,
     '#default_value' => _erpal_projects_helper_budget_usage_warn(),
   );
-  
+
   $print_options = array('html' => t('HTML output'), 'pdf' => t('As PDF'));
   $form['erpal_task_print_type'] = array(
     '#type' => 'radios',
@@ -51,103 +51,132 @@ function erpal_projects_helper_config_form($form, &$form_state) {
     '#options' => $print_options,
     '#default_value' => _erpal_projects_helper_task_print_type(),
   );
-  
+
+  // Project and task notifications messages
+  $form['project_notifications'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Project notification messages'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  $form['project_notifications']['notification_messages'] = array(
+    '#type' => 'vertical_tabs',
+  );
+
+  // Task notifications. Task was updated
   $form['task_notifications'] = array(
     '#type' => 'fieldset',
     '#title' => t('Task notifications'),
     '#collapsible' => true,
     '#collapsed' => true,
+    '#group' => 'notification_messages',
   );
-  
+
   $form['task_notifications']['erpal_task_update_subject'] = array(
     '#type' => 'textfield',
-    '#title' => t('Message subject'),    
+    '#title' => t('Message subject'),
     '#default_value' => _erpal_projects_helper_task_update_subject(),
   );
-  
+
   $form['task_notifications']['erpal_task_update_message'] = array(
     '#type' => 'textarea',
-    '#title' => t('Message text'),    
+    '#title' => t('Message text'),
     '#default_value' => _erpal_projects_helper_task_update_message(),
   );
-  
+
+  // User subscribed to project / task
+  $form['user_assigned'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('User subscribed'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#group' => 'notification_messages',
+  );
+  $form['user_assigned']['erpal_task_user_assigned_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Message subject'),
+    '#default_value' => _erpal_task_user_assigned_subject(),
+  );
+
+  $form['user_assigned']['erpal_task_user_assigned_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message text'),
+    '#default_value' => _erpal_task_user_assigned_message(),
+  );
+
   //add available tokens to the form
   //show available Tokens  
   if (module_exists('token')) {
-    $form['task_notifications']['token_tree'] = array(
-      '#theme' => 'token_tree',   
+    $form['task_notifications']['token_tree'] = 
+      $form['user_assigned']['token_tree'] = array(
+      '#theme' => 'token_tree',
       '#token_types' => array('erpal_project_notifications'),
       '#global_types' => FALSE,
       '#click_insert' => TRUE,
       '#recursion_limit' => 1,
     );
   }
-  
+
   $form['timetracking'] = array(
     '#type' => 'fieldset',
     '#title' => t('Timetracking'),
     '#collapsible' => true,
     '#collapsed' => true,
   );
-  
+
   $form['timetracking']['timetracking_default_title'] = array(
     '#type' => 'textfield',
     '#title' => t('Timetracking default title'),
     '#description' => t('This text will be used as default timetracking title on a task as subject'),
     '#default_value' => _erpal_projects_helper_get_timetracking_default_title(),
   );
-  
+
   //add available tokens to the form
   //show available Tokens  
   if (module_exists('token')) {
     $form['timetracking']['token_tree'] = array(
-      '#theme' => 'token_tree',   
+      '#theme' => 'token_tree',
       '#token_types' => array('erpal_task'),
       '#global_types' => FALSE,
       '#click_insert' => TRUE,
       '#recursion_limit' => 1,
     );
   }
-  
-  
+
+
   $form['task_category_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit task and project category terms'), 'admin/structure/taxonomy/project_tags'),
   );
-  
+
   $form['status_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit project status terms'), 'admin/structure/taxonomy/project_status_terms'),
   );
-  
+
   $form['task_type_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit task type terms'), 'admin/structure/taxonomy/task_type_terms'),
   );
-  
+
   $form['task_status_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit task status terms'), 'admin/structure/taxonomy/task_status_terms'),
   );
-  
+
   $form['project_tags_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit project / task category terms'), 'admin/structure/taxonomy/project_tags'),
   );
-  
+
   $form['priority_terms_edit_link'] = array(
     '#type' => 'item',
     '#markup' => l(t('Edit priority terms'), 'admin/structure/taxonomy/priority_terms'),
   );
-  
+
   _erpal_projects_helper_field_access_config_form($form);
   
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('save'),
-  );
-  
-  return $form;
+  return system_settings_form($form);
 }
 
 /**
@@ -167,7 +196,7 @@ function erpal_projects_helper_config_form_validate($form, $form_state) {
   $out_of_range = false;
   if ($budget_usage_warn < 1 || $budget_usage_warn > 100)
     $out_of_range = true;
-  
+
   if (!is_numeric($budget_usage_warn) || $out_of_range)
     form_set_error('budget_usage_warn', t('Please enter only numeric values between 1 and 100'));
 }
@@ -182,14 +211,14 @@ function erpal_projects_helper_config_form_submit($form, $form_state) {
   $erpal_task_update_subject = $values['erpal_task_update_subject'];
   $erpal_task_update_message = $values['erpal_task_update_message'];
   $timetracking_default_title = $values['timetracking_default_title'];
-  
+
   variable_set('erpal_projects_budget_usage_warn', $budget_usage_warn);
   variable_set('erpal_task_print_type', $erpal_task_print_type);
-  
+
   //notification messages
   variable_set('erpal_task_update_subject', $erpal_task_update_subject);
   variable_set('erpal_task_update_message', $erpal_task_update_message);
-  
+
   //Timetracking
   variable_set('timetracking_default_title', $timetracking_default_title);
   
@@ -221,4 +250,22 @@ function _erpal_projects_helper_task_update_message() {
 */
 function _erpal_projects_helper_task_update_subject() {
   return variable_get('erpal_task_update_subject', false);
+}
+
+/**
+ * Returns subject and body of message when user assigned to task
+ */
+function _erpal_task_user_assigned_subject() {
+  $value = 'ERPAL - Notification: [erpal_project_notifications:content_label]';
+  return variable_get('erpal_task_user_assigned_subject', $value);
+}
+function _erpal_task_user_assigned_message() {
+  $value = 'Hello,
+
+You were assigned to task: [erpal_project_notifications:content_label] -> [erpal_project_notifications:content_url]
+
+Best regards
+
+ERPAL';
+  return variable_get('erpal_task_user_assigned_message', $value);
 }
