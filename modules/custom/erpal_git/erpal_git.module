@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * Code for the erpal_git services module.
+ * Provides server endpoint for git integration
+ */
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_git_services_resources() {
+  return array(
+    'git' => array(
+      'actions' => array(
+        'commit' => array(
+          'help' => 'Aplying git commit tags from message',
+          'file' => array('file' => 'inc', 'module' => 'erpal_git'),
+          'callback' => '_erpal_git_commit',
+          'access arguments' => array('access git commit'),
+          'access arguments append' => FALSE,
+          'args' => array(
+            array(
+              'name' => 'data',
+              'type' => 'string',
+              'description' => 'Git commit',
+              'source' => 'data',
+              'optional' => FALSE,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_git_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+    );
+  }
+}
+
+/**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_git_default_services_endpoint() {
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'git_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/git';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'formatters' => array(
+      'bencode' => TRUE,
+      'json' => TRUE,
+      'php' => TRUE,
+      'rss' => TRUE,
+      'xml' => TRUE,
+      'jsonp' => FALSE,
+    ),
+    'parsers' => array(
+      'application/json' => TRUE,
+      'application/vnd.php.serialized' => TRUE,
+      'application/x-www-form-urlencoded' => TRUE,
+      'application/xml' => TRUE,
+      'multipart/form-data' => TRUE,
+      'text/xml' => TRUE,
+    ),
+  );
+  $endpoint->resources = array(
+    'git' => array(
+      'actions' => array(
+        'commit' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+  $endpoints[] = $endpoint;
+
+  return $endpoints;
+}
+
+function erpal_git_permission() {
+  $permissions = array(
+    'access git commit' => array(
+      'title' => t('Provides access to git rest service'),
+    ),
+  );
+  
+  return $permissions;
+}

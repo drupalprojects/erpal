@@ -248,6 +248,57 @@ function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($proj
 function erpal_projects_helper_node_presave_task($task_node) {
   _erpal_projects_helper_task_set_project($task_node);
   _erpal_projects_helper_field_automation($task_node);
+  _erpal_projects_helper_subscribe_task_assigned_users($task_node);
+}
+
+/**
+ * subscribe users assigned to task 
+ */
+function _erpal_projects_helper_subscribe_task_assigned_users($node){
+  $assigned = $assigned_original = array();
+  
+  // get uids of assigned users
+  $assigned_users = field_get_items('node', $node, 'field_task_assigned_users');
+  foreach ($assigned_users as $assigned_user) {
+    $assigned[] = $assigned_user['target_id'];
+  }
+  // get uids of original assigned users
+  if (isset($node->original))
+    $assigned_users_original = field_get_items('node', $node->original, 'field_task_assigned_users');
+  else
+    $assigned_users_original = array();
+  foreach ($assigned_users_original as $assigned_user_original) {
+    $assigned_original[] = $assigned_user_original['target_id'];
+  }
+  
+  // find added users
+  $updated_diff = array_diff($assigned, $assigned_original);
+  // find deleted users
+  $original_diff = array_diff($assigned_original, $assigned);
+  
+  // subscribe users to the erpal_task
+  if (!empty($updated_diff)) {
+    _erpal_projects_helper_loop_task_users($updated_diff, $node, 'flag');
+  }
+  
+  // unsubscribe users from the erpal_task
+  if (!empty($original_diff)) {
+    if (isset($node->original)) {
+      _erpal_projects_helper_loop_task_users($original_diff, $node->original, 'unflag');
+    }
+  }
+}
+
+/**
+ * helper function
+ * subscribe / unsubscribe users from the erpal_task
+ */
+function _erpal_projects_helper_loop_task_users($assigned_users, $node, $action){
+  foreach ($assigned_users as $assigned_user) {
+    $account = user_load($assigned_user);
+    // subscribe users to the erpal_task
+    _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+  }
 }
 
 /**

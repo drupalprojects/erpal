@@ -5,7 +5,7 @@
 */
 
 /**
-* Manu callback for printing a task
+* Menu callback for printing a task
 */
 function _erpal_projects_helper_task_print($task_node) {
   //@TODO
