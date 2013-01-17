@@ -1,7 +1,7 @@
 core = "7.x"
 description = "Provides server endpoint for git integration"
 
-name = "erpal_git"
+name = "Erpal GIT"
 package = "ERPAL Services"
 php = "5.2.4"
 project = "erpal_git"
