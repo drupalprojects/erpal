@@ -14,7 +14,7 @@ function erpal_git_services_resources() {
     'git' => array(
       'actions' => array(
         'commit' => array(
-          'help' => 'Creates a note',
+          'help' => 'Aplying git commit tags from message',
           'file' => array('file' => 'inc', 'module' => 'erpal_git'),
           'callback' => '_erpal_git_commit',
           'access arguments' => array('access git commit'),
