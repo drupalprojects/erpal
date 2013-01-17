@@ -38,5 +38,52 @@ function erpal_git_services_resources() {
  * Implements hook_default_services_endpoint().
  */
 function erpal_git_default_services_endpoint() {
-  //@todo add endpoint here
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'git_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/git';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'formatters' => array(
+      'bencode' => TRUE,
+      'json' => TRUE,
+      'php' => TRUE,
+      'rss' => TRUE,
+      'xml' => TRUE,
+      'jsonp' => FALSE,
+    ),
+    'parsers' => array(
+      'application/json' => TRUE,
+      'application/vnd.php.serialized' => TRUE,
+      'application/x-www-form-urlencoded' => TRUE,
+      'application/xml' => TRUE,
+      'multipart/form-data' => TRUE,
+      'text/xml' => TRUE,
+    ),
+  );
+  $endpoint->resources = array(
+    'git' => array(
+      'actions' => array(
+        'commit' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+  $endpoints[] = $endpoint;
+
+  return $endpoints;
 }
