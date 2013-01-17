@@ -17,7 +17,7 @@ function erpal_git_services_resources() {
           'help' => 'Creates a note',
           'file' => array('file' => 'inc', 'module' => 'erpal_git'),
           'callback' => '_erpal_git_commit',
-          'access arguments' => array('access content'),
+          'access arguments' => array('access git commit'),
           'access arguments append' => FALSE,
           'args' => array(
             array(
@@ -86,4 +86,14 @@ function erpal_git_default_services_endpoint() {
   $endpoints[] = $endpoint;
 
   return $endpoints;
+}
+
+function erpal_git_permission() {
+  $permissions = array(
+    'access git commit' => array(
+      'title' => t('Provides access to git rest service'),
+    ),
+  );
+  
+  return $permissions;
 }
