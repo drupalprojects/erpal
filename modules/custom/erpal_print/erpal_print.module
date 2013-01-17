@@ -167,6 +167,9 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
     $destination_uri = $destination_uri.$new_basename;
     $pdf_object->Output($destination_path, "F");
     
+    //sometimes, the URI starts with /// instead of // so we fix that here
+    $destination_uri = str_replace('///', '//', $destination_uri);
+    
     // Begin building file object.
     $file = new stdClass();
     $file->uid      = $user->uid;

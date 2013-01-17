@@ -36,6 +36,17 @@ function _erpal_basic_helper_alter_local_tasks_output(&$data) {
     $data['actions']['output']['container'][] = $link;
   }
   
+  //if there is no tab, add a tab so the navigation will be shown
+  if (!count($data['tabs'])) {
+    erpal_make_local_tab($data, t('Home'), 'dashboard', array(), false);
+  }
+    
+  
+  if (isset($data['tabs'][0]['count']) && $data['tabs'][0]['count'] == 1) {
+    $data['tabs'][0]['count'] = 2;  //we do this so single menu tabs will be shown, otherwise they wont display if there is only 1 item
+  }
+ 
+  
   //add javascript to show local tasks as popup!
   $mod_path = drupal_get_path('module', 'erpal_basic_helper');
   $js_path = $mod_path.'/js/local_tasks.js';
@@ -46,7 +57,6 @@ function _erpal_basic_helper_alter_local_tasks_output(&$data) {
 * Implements hook_menu_local_tasks_alter()
 */
 function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_path) {  
-  
   //allow other modules to add dynamic menu items
   drupal_alter('dynamic_menu_items', $data, $router_item, $root_path);  
   
@@ -58,8 +68,13 @@ function erpal_basic_helper_menu_local_tasks_alter(&$data, $router_item, $root_p
         unset($data['tabs'][$delta]['output'][$inner_delta]);
       }
       
-      //and if this is the view button, rename it
+      //and if this is the view button remove it
       if ($path == 'node/%/view') {
+        unset($data['tabs'][$delta]['output'][$inner_delta]);
+      }
+      
+      //and if this is the revision button remove it
+      if ($path == 'node/%/revisions') {
         unset($data['tabs'][$delta]['output'][$inner_delta]);
       }
     }
@@ -118,12 +133,10 @@ function erpal_make_action(&$data, $title, $path, $query = array()) {
 * Returns a local action item to path if user has access
 */
 function erpal_make_local_tab(&$data, $title, $path, $query = array(), $active=false) {
-  
   $item = erpal_make_local_link($data, $title, $path, $query);
- 
+
   if (array_key_exists('access', $item) && $item['access']) {
-    //may be make active
-    
+    //may be make active    
     if ($active) {
       $item['localized_options']['attributes']['class'][] = 'active-trail';
       $item['localized_options']['attributes']['class'][] = 'active';      
@@ -175,7 +188,8 @@ function erpal_get_menu_parents($router_item) {
 * Basic processing for local menu links, should not be called directely by other modules
 */
 function erpal_make_local_link(&$data, $title, $path, $query = array()) {
-  $item = menu_get_item($path);
+  $item = menu_get_item($path, NULL, true);
+
   $item['title'] = $title;
   // The add new content page would redirect to the new event
   // if we did not override that here. This way they will

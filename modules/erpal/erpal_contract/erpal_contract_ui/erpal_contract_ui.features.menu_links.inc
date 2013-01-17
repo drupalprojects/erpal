@@ -16,17 +16,13 @@ function erpal_contract_ui_menu_default_menu_links() {
     'link_path' => 'contracts',
     'router_path' => 'contracts',
     'link_title' => 'Contracts',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-    ),
-    'module' => 'menu',
+    'options' => array(),
+    'module' => 'system',
     'hidden' => '0',
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-48',
+    'weight' => '0',
   );
   // Translatables
   // Included for use with string extractors like potx.

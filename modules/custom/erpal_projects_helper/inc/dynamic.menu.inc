@@ -101,7 +101,7 @@ function erpal_projects_helper_erpal_contexts($router_item) {
       $contexts[ERPAL_CONTEXT_PROJECTS_GLOBAL] = true;
     }
   }
-  
+
   //budget view context?
   if (drupal_match_path($path, 'budget/%*') ) {
     $contexts[ERPAL_CONTEXT_BUDGET] = true;
@@ -187,7 +187,7 @@ function erpal_projects_helper_dynamic_menu_items_alter(&$data, $router_item, $r
   } 
   
   //projects global context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS_GLOBAL, $router_item)) {    
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_PROJECTS_GLOBAL, $router_item)) {  
     _erpal_projects_helper_projects_global_links($data, $entity);       
   } 
   
@@ -220,7 +220,7 @@ function erpal_projects_helper_dynamic_menu_items_alter(&$data, $router_item, $r
   } 
   
   //Timetracking context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_TIMETRACKING, $router_item)) {    
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_TIMETRACKING, $router_item)) {
     _erpal_projects_helper_timetracking_links($data, $entity);       
   } 
   
@@ -359,7 +359,7 @@ function _erpal_projects_helper_timetracking_add_links(&$data) {
   $task_node = node_load($task_nid);
 
   $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
-  _erpal_projects_helper_node_add_links_project_context($data, $project_nid, $task_nid, array('timetrackings'));
+  _erpal_projects_helper_node_add_links_project_context($data, $project_nid, $task_nid, array('timetrackings'));  
 }
 
 /**
@@ -506,6 +506,10 @@ function _erpal_projects_helper_project_links(&$data, $project_node) {
 function _erpal_projects_helper_timetracking_links(&$data, $timetracking_node) {
   
   erpal_make_action($data, t('Edit this timetracking'), 'node/'.$timetracking_node->nid.'/edit');
+  $subject_nid = $timetracking_node->field_timetracking_subject[LANGUAGE_NONE][0]['target_id'];
+  $subject_node = node_load($subject_nid);
+  $project_nid = $subject_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
+  _erpal_project_helper_project_global_menu_tabs($data, $project_nid, $subject_nid, array('timetrackings'));  
 }
 
 /**

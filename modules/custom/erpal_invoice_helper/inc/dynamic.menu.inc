@@ -8,6 +8,8 @@ define('ERPAL_CONTEXT_INVOICES', 'invoices'); //invoices list
 define('ERPAL_CONTEXT_INVOICE_GLOBAL', 'invoice_global'); //we are in activies view or in a tab that belongs to the activities
 define('ERPAL_CONTEXT_INVOICE', 'invoice');
 define('ERPAL_CONTEXT_BILLABLES', 'billables');
+define('ERPAL_CONTEXT_BILLABLE_GLOBAL', 'billables_global');
+define('ERPAL_CONTEXT_BILLABLE', 'billable');
 
 /**
 * Implement hook_erpal_contexts definied in erpal_basic_helper module
@@ -22,6 +24,11 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
     $contexts[ERPAL_CONTEXT_INVOICE] = true;  
   }
   
+  if (drupal_match_path($path, 'billable/add*')) { 
+    $contexts[ERPAL_CONTEXT_BILLABLE_GLOBAL] = true;
+    $contexts[ERPAL_CONTEXT_BILLABLE] = true;  
+  }
+  
   //CHECK invoice CONTEXT
   if (drupal_match_path($path, 'node/%*') ) {
     $node = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
@@ -29,8 +36,7 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
     if (!$node || !is_object($node))
       return $contexts;
     
-    //may be we have a ctools context
-    
+    //may be we have a ctools context    
     if (get_class($node) == 'ctools_context')
       $node = $node->data;    
     
@@ -41,9 +47,37 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
         break;    
     }
   }
+  
+  //CHECK billable CONTEXT
+  if (drupal_match_path($path, 'billable/%*') ) {
+    $billable = isset($router_item['map'][1]) ? $router_item['map'][1] : false;
+    
+    if (!$billable || !is_object($billable))
+      return $contexts;
+    
+    //may be we have a ctools context
+    if (get_class($billable) == 'ctools_context')
+      $billable = $billable->data;    
+    
+    $contexts[ERPAL_CONTEXT_BILLABLE] = true;
+    $contexts[ERPAL_CONTEXT_BILLABLE_GLOBAL] = true;          
+
+  }
+  
+  //check edit pages
+  //do we have an edit form?
+  if ($path == 'node/%/edit') {
+    if ($node->type == 'erpal_invoice') {
+      $contexts[ERPAL_CONTEXT_INVOICE_GLOBAL] = true;
+    }
+  }
+  if ($path == 'billable/%/edit') {
+    $contexts[ERPAL_CONTEXT_BILLABLE] = true;
+    $contexts[ERPAL_CONTEXT_BILLABLE_GLOBAL] = true;
+  }
 
   //CHECK INVOICE Global CONTEXT
-  if (drupal_match_path($path, 'invoice/invoices') || drupal_match_path($path, 'invoice/billables')) {        
+  if (drupal_match_path($path, 'invoice/invoices')) {        
     $contexts[ERPAL_CONTEXT_INVOICE_GLOBAL] = true;      
   }
   
@@ -55,7 +89,8 @@ function erpal_invoice_helper_erpal_contexts($router_item) {
   
   //CHECK BILLABLES list CONTEXT
   if ($path == 'invoice/billables') {        
-    $contexts[ERPAL_CONTEXT_BILLABLES] = true;          
+    $contexts[ERPAL_CONTEXT_BILLABLES] = true; 
+    $contexts[ERPAL_CONTEXT_BILLABLE_GLOBAL] = true;       
   }
 
   return $contexts;  
@@ -83,25 +118,22 @@ function erpal_invoice_helper_dynamic_menu_items_alter(&$data, $router_item, $ro
     _erpal_invoice_helper_invoice_links($data, $router_item, $invoice_node);       
   }
   
+  //Billable context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BILLABLE, $router_item)) {    
+    $billable = (isset($router_item['map'][1]->data) && is_object($router_item['map'][1]->data)) ? $router_item['map'][1]->data : $router_item['map'][1];
+    _erpal_invoice_helper_billable_links($data, $router_item, $billable);    
+   
+  }
+  
   //INVOICE global context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICE_GLOBAL, $router_item)) {    
-    _erpal_invoice_helper_invoice_global_links($data, $router_item);       
+    _erpal_invoice_helper_invoice_global_links($data, $router_item, array('invoices'));       
   } 
-}
-
-/**
-* Adds all invoice global context links
-*/
-function _erpal_invoice_helper_invoice_global_links(&$data, $router_item, $active_tabs=array()) {
-  static $processed = false;
-
-  if ($processed)
-    return; //we want no duplicate tabs if somebody calls this twice
-
-  $processed = true;
-  //hide the links if we are in a contact
-  erpal_make_local_tab($data, t('Invoices'), 'invoice/invoices', array(), in_array('invoices', $active_tabs));
-  erpal_make_local_tab($data, t('Billables'), 'invoice/billables', array(), in_array('billables', $active_tabs));
+  
+  //billable global context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BILLABLE_GLOBAL, $router_item)) {     
+    _erpal_invoice_helper_invoice_global_links($data, $router_item, array('billables'));       
+  } 
 }
 
 /**
@@ -116,8 +148,9 @@ function erpal_invoice_helper_erpal_menu_parents($router_item) {
 */
 function _erpal_invoice_helper_get_menu_parents($router_item) {
   $invoice_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_INVOICE_GLOBAL, $router_item);
+  $billable_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_BILLABLE_GLOBAL, $router_item);
   
-  if ($invoice_global) {
+  if ($invoice_global || $billable_global) {
     return 'invoice/invoices';
   }
 }
@@ -161,4 +194,35 @@ function _erpal_invoice_helper_invoice_links(&$data, $router_item, $invoice_node
   
   $active_tabs = array('invoices');
   _erpal_invoice_helper_invoice_global_links($data, $router_item, $active_tabs);
+}
+
+/**
+* Shows links for a single billable context
+*/
+function _erpal_invoice_helper_billable_links(&$data, $router_item, $billable) {
+  //single project context
+  $query = array();
+  
+  $billable_id = false;
+  if ($billable && is_object($billable))
+    $billable_id = $billable->billable_id;
+  
+  erpal_make_action($data, t('Edit this billable'), 'billable/'.$billable_id.'/edit', $query);
+  $active_tabs = array('billables');
+  _erpal_invoice_helper_invoice_global_links($data, $router_item, $active_tabs);
+}
+
+/**
+* Adds all invoice global context links
+*/
+function _erpal_invoice_helper_invoice_global_links(&$data, $router_item, $active_tabs=array()) {
+  static $processed = false;
+
+  if ($processed)
+    return; //we want no duplicate tabs if somebody calls this twice
+
+  $processed = true;
+  //hide the links if we are in a contact
+  erpal_make_local_tab($data, t('Invoices'), 'invoice/invoices', array(), in_array('invoices', $active_tabs));
+  erpal_make_local_tab($data, t('Billables'), 'invoice/billables', array(), in_array('billables', $active_tabs));
 }
