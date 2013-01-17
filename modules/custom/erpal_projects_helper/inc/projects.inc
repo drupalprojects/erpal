@@ -146,9 +146,15 @@ function _erpal_projects_helper_subscribe_project_team($node){
     $udpated_team[] = $udpated_team_collection['value'];
   }
   // original node
-  $field_project_team_original = field_get_items('node', $node->original, 'field_project_team');
-  foreach ($field_project_team_original as $original_team_collection) {
-    $original_team[] = $original_team_collection['value'];
+  if (!empty($node->original)) {
+    $field_project_team_original = field_get_items('node', $node->original, 'field_project_team');
+  } else {
+    $field_project_team_original = array();
+  }
+  if(!empty($field_project_team_original) && is_array($field_project_team_original)){
+    foreach ($field_project_team_original as $original_team_collection) {
+      $original_team[] = $original_team_collection['value'];
+    }
   }
   
   // find added users
@@ -162,7 +168,7 @@ function _erpal_projects_helper_subscribe_project_team($node){
   }
   
   // unsubscribe users from the erpal_project
-  if (!empty($original_diff)) {
+  if (!empty($original_diff) && !empty($node->original)) {
     _erpal_projects_helper_loop_users($original_diff, $node->original, 'unflag');
   }
 }
@@ -180,8 +186,9 @@ function _erpal_projects_helper_loop_users($diff, $node, $action){
   foreach ($node_wrapper->field_project_team as $project_team) {
     if($project_team && $project_team_value = $project_team->value()){
       if (in_array($project_team_value->item_id, $diff)) {
-        $account = $project_team->field_user->value();
-        _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+        if($account = $project_team->field_user->value()){
+          _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+        }
       }
     }
   }
