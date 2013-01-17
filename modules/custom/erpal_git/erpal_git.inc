@@ -22,8 +22,9 @@ function _erpal_git_commit($data) {
   else
     $nid = str_replace('#', '', $matches[0]);
 
-  // Check if node exists
-  if (!$node = node_load($nid)) {
+  // Check if node exists and node type is erpal_task
+  $node = node_load($nid);
+  if (!$node || $node->type != 'erpal_task') {
     return (object) array('error' => 'Cant find node #nid');
   }
 
@@ -40,11 +41,14 @@ function _erpal_git_commit($data) {
   if (isset($data['id']))
     $subject .= ': ' . $data['id'];
   // add comment
-  _erpal_git_create_comment($nid, $user, $formatted_message, $subject);
-  
+  $comment_add = _erpal_git_create_comment($nid, $user, $formatted_message, $subject);
   // Change node status
-  
-  return (object) array('result' => print_r($subject, true));
+  $node_update = _erpal_git_change_task_status($node, $message);
+  if($comment_add || $node_update){
+    return (object) array('success' => 'successful update');
+  } else {
+    return (object) array('warning' => 'bad nid or status tag');
+  }
 }
 
 /**
@@ -134,4 +138,42 @@ function _erpal_git_prepare_message_data($data) {
   }
 
   return render($message);
+}
+
+function _erpal_git_change_task_status($node, $message) {
+  // Check if node status tag exists
+  if (!preg_match('/\?\w+/', $message, $matches))
+    return FALSE;
+
+  $status = str_replace('?', '', $matches[0]);
+  if (!$vocabulary = taxonomy_vocabulary_machine_name_load('task_status_terms'))
+    return FALSE;
+
+  // we can use this function if condition for status tag is not "contains"
+  // $terms = taxonomy_get_term_by_name($status, 'task_status_terms');
+  
+  // get status tid
+  $status_tid = '';
+  $tree = taxonomy_get_tree($vocabulary->vid);
+  foreach ($tree as $term) {
+    // check if term name contains the status
+    if (strpos(strtolower($term->name), strtolower($status)) !== FALSE) {
+      // check if only one term contains status tag
+      if (!$status_tid)
+        $status_tid = $term->tid;
+      else
+        // break because only one term in voxabulary must contain status tag
+        return FALSE;
+    }
+  }
+
+  // update node status
+  if($status_tid){
+    $node_status = field_get_items('node', $node, 'field_task_status_term');
+    if($node_status[0]['tid'] && $node_status[0]['tid'] != $status_tid){
+      $node->field_task_status_term[$node->language][0]['tid'] = $status_tid;
+      node_save($node);
+      return TRUE;
+    }
+  }
 }
