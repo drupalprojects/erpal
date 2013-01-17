@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Code for the erpal_git services module.
+ * Provides server endpoint for git integration
+ */
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_git_services_resources() {
+  return array(
+    'git' => array(
+      'actions' => array(
+        'commit' => array(
+          'help' => 'Creates a note',
+          'file' => array('file' => 'inc', 'module' => 'erpal_git'),
+          'callback' => '_erpal_git_commit',
+          'access arguments' => array('access content'),
+          'access arguments append' => FALSE,
+          'args' => array(
+            array(
+              'name' => 'data',
+              'type' => 'string',
+              'description' => 'Git commit',
+              'source' => 'data',
+              'optional' => FALSE,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_git_default_services_endpoint() {
+  //@todo add endpoint here
+}

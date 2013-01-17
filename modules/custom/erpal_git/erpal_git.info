@@ -1,0 +1,12 @@
+core = "7.x"
+description = "Provides server endpoint for git integration"
+
+name = "erpal_git"
+package = "ERPAL Services"
+php = "5.2.4"
+project = "erpal_git"
+version = "7.x-1.0-dev"
+
+dependencies[] = services
+dependencies[] = rest_server
+dependencies[] = erpal_project
