@@ -38,8 +38,11 @@ projects[date][subdir] = "contrib"
 projects[ds][version] = "1.6"
 projects[ds][subdir] = "contrib"
 
-projects[editablefields][version] = "1.0-alpha2"
+projects[editablefields][version] = "1.x"
 projects[editablefields][subdir] = "contrib"
+projects[editablefields][download][type] = "git"
+projects[editablefields][download][url] = "http://git.drupal.org/project/editablefields.git"
+projects[editablefields][download][revision] = "bcfa4d111add31985eda8fbc0382cc7f81bec0bc"
 
 projects[entity][version] = "1.0"
 projects[entity][subdir] = "contrib"
