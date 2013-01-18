@@ -1,6 +1,30 @@
 <?php
 
 /**
+ * Works with git commits
+ * @param object $data
+ *  Format of posted JSON Object:
+ * 
+ *  before: ID of the previous commit, may be empty if new branch set.
+ *  after: ID of the new commit
+ *  ref:	which Branch / Tag was updated, Master-Branch could be for example 'refs/heads/master'
+ *  commits:	Array of commit-objects (see below)
+ *    Format of commit objects
+ *      id: ID (Hash) of the commit
+ *      message: Commit-Message
+ *      timestamp: Date and time of the Commit. Format yyyy-mm-dd'T'hh:mm:ssz
+ *      url: URL to the commit in a repository viewer
+ *      author: Object with author information and fields "name" and "email"
+ *  repository:	Object with information about the repository
+ *    Format of the repository object
+ *      name:	Name of the repository
+ *      url: GIT-URL
+ */
+function _erpal_git_commit($data) {
+  _erpal_git_commit_comment($data);
+}
+
+/**
  * Comment node using git commit message data
  * Format of commit objects:
  *   id: ID (Hash) of the commit
@@ -9,7 +33,7 @@
  *   url:	URL to the commit in a repository viewer
  *   author: Object with author information and fields "name" and "email"
  */
-function _erpal_git_commit($data) {
+function _erpal_git_commit_comment($data) {
   // Check if message exists
   if (!isset($data['message']))
     return (object) array('error' => 'Cant find message');

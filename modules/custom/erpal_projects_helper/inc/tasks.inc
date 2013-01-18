@@ -245,17 +245,19 @@ function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($proj
 /**
 * Presave function for tasks
 */
-function erpal_projects_helper_node_presave_task($task_node) {
-  _erpal_projects_helper_task_set_project($task_node);
-  _erpal_projects_helper_field_automation($task_node);
-  _erpal_projects_helper_subscribe_task_assigned_users($task_node);
+function erpal_projects_helper_node_presave_task($node) {
+  _erpal_projects_helper_task_set_project($node);
+  _erpal_projects_helper_field_automation($node);
+  if (!empty($node->original)) {
+    _erpal_projects_helper_subscribe_task_assigned_users($node);
+  }
 }
 
 /**
  * subscribe users assigned to task 
  */
 function _erpal_projects_helper_subscribe_task_assigned_users($node){
-  $assigned = $assigned_original = array();
+  $assigned = $assigned_original = $assigned_users_original = array();
   
   // get uids of assigned users
   $assigned_users = field_get_items('node', $node, 'field_task_assigned_users');
@@ -265,10 +267,11 @@ function _erpal_projects_helper_subscribe_task_assigned_users($node){
   // get uids of original assigned users
   if (isset($node->original))
     $assigned_users_original = field_get_items('node', $node->original, 'field_task_assigned_users');
-  else
-    $assigned_users_original = array();
-  foreach ($assigned_users_original as $assigned_user_original) {
-    $assigned_original[] = $assigned_user_original['target_id'];
+
+  if(!empty($assigned_users_original) && is_array($assigned_users_original)){
+    foreach ($assigned_users_original as $assigned_user_original) {
+      $assigned_original[] = $assigned_user_original['target_id'];
+    }
   }
   
   // find added users
@@ -295,9 +298,10 @@ function _erpal_projects_helper_subscribe_task_assigned_users($node){
  */
 function _erpal_projects_helper_loop_task_users($assigned_users, $node, $action){
   foreach ($assigned_users as $assigned_user) {
-    $account = user_load($assigned_user);
-    // subscribe users to the erpal_task
-    _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+    if($account = user_load($assigned_user)){
+      // subscribe/unsubscribe users
+      _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+    }
   }
 }
 
