@@ -233,12 +233,10 @@ function erpal_timetracking_export_handle_entity($node, $context = array()) {
     $row['date_start'] = '';
   }
 
-  //if date_end equals date_start but duration is set, we correct the date_end value or if date till is empty
-  if (empty($date_time['value2']) || $date_time['value2'] == $date_time['value']) {
-    $duration_seconds = 3600 * $row['duration'];
-    $date_time['value2'] = $date_time['value'] + $duration_seconds;
-  }
-  
+  //calculate the end time to make sure it fits with the duration
+  $duration_seconds = 3600 * str_replace(',', '.', $row['duration']);
+  $date_time['value2'] = $date_time['value'] + $duration_seconds;
+   
   // Date end
   if (!empty($date_time['value2'])) {
     $row['date_end'] = date($date_format, $date_time['value2']);
