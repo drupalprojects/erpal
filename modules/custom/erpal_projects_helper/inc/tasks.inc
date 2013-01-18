@@ -303,6 +303,10 @@ function _erpal_projects_helper_loop_task_users($assigned_users, $node, $action)
     if($account = user_load($assigned_user)){
       // subscribe/unsubscribe users
       _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+      // send notification email to assigned user
+      if ($action == 'flag' && $node->type == 'erpal_task') {
+        _erpal_projects_helper_user_assigned_email($account, $node, 'assign');
+      }
     }
   }
 }
