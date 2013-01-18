@@ -257,12 +257,14 @@ function erpal_projects_helper_node_presave_task($node) {
  * subscribe users assigned to task 
  */
 function _erpal_projects_helper_subscribe_task_assigned_users($node){
-  $assigned = $assigned_original = $assigned_users_original = array();
+  $assigned = $assigned_original = $assigned_users_original = $assigned_users = array();
   
   // get uids of assigned users
   $assigned_users = field_get_items('node', $node, 'field_task_assigned_users');
-  foreach ($assigned_users as $assigned_user) {
-    $assigned[] = $assigned_user['target_id'];
+  if(!empty($assigned_users) && is_array($assigned_users)){
+    foreach ($assigned_users as $assigned_user) {
+      $assigned[] = $assigned_user['target_id'];
+    }
   }
   // get uids of original assigned users
   if (isset($node->original))

@@ -231,13 +231,19 @@ function _erpal_projects_helper_user_assigned_email($account, $entity, $op) {
   $data['op'] = $op;
   $data['entity'] = $entity;
   $data['entity_type'] = 'node';
+  
+  if(!$subject = token_replace(_erpal_task_user_assigned_subject(), $data)){
+    $subject = 'ERPAL Notification';
+  }
+  $message_body = token_replace(_erpal_task_user_assigned_message(), $data);
+  if ($message_body) {
+    $message = array(
+      'subject' => $subject,
+      'message' => $message_body,
+    );
 
-  $message = array(
-    'subject' => token_replace(_erpal_task_user_assigned_subject(), $data),
-    'message' => token_replace(_erpal_task_user_assigned_message(), $data),
-  );
-
-  _erpal_basic_helper_notify_users_send(array($account->uid), $message);
+    _erpal_basic_helper_notify_users_send(array($account->uid), $message);
+  }
 }
 
 /**

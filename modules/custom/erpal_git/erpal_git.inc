@@ -21,7 +21,19 @@
  *      url: GIT-URL
  */
 function _erpal_git_commit($data) {
-  _erpal_git_commit_comment($data);
+  // handle commits array
+  if (!isset($data['commits']) || empty($data['commits']) || !is_array($data['commits']))
+    return (object) array('error' => 'Can\'t find commits');
+
+  // Comment and update task using git commit message data
+  $result = array();
+  foreach ($data['commits'] as $commit) {
+    if (isset($commit['id']))
+      $result[$commit['id']] = _erpal_git_commit_comment($commit);
+    else
+      $result[] = _erpal_git_commit_comment($commit);
+  }
+  return (object) $result;
 }
 
 /**
@@ -34,45 +46,49 @@ function _erpal_git_commit($data) {
  *   author: Object with author information and fields "name" and "email"
  */
 function _erpal_git_commit_comment($data) {
+  $result = array();
+  
   // Check if message exists
   if (!isset($data['message']))
-    return (object) array('error' => 'Cant find message');
+    return array('error' => 'Can\'t find message');
   else
     $message = $data['message'];
 
   // Check if nid exists
   if (!preg_match('/#\d+/', $message, $matches))
-    return (object) array('error' => 'Cant find #nid in message');
+    return array('error' => 'Can\'t find #nid in message');
   else
     $nid = str_replace('#', '', $matches[0]);
 
   // Check if node exists and node type is erpal_task
   $node = node_load($nid);
-  if (!$node || $node->type != 'erpal_task') {
-    return (object) array('error' => 'Cant find node #nid');
-  }
+  if (!$node || $node->type != 'erpal_task')
+    return array('error' => 'Can\'t find node #nid');
 
-  // Comment node
-  if (!isset($data['author']['email']))
+  // If the users email is not found in the system, the comment will be assigned 
+  // to as admin.
+  if (!isset($data['author']['email']) || !$user = user_load_by_mail($data['author']['email'])) {
     $user = user_load(1);
-  else
-    $user = user_load_by_mail($data['author']['email']);
-
+  }
   // prepare comment body data
   $formatted_message = _erpal_git_prepare_message_data($data);
   // comment subject
   $subject = t('GIT commit');
   if (isset($data['id']))
     $subject .= ': ' . $data['id'];
+  
   // add comment
-  $comment_add = _erpal_git_create_comment($nid, $user, $formatted_message, $subject);
-  // Change node status
-  $node_update = _erpal_git_change_task_status($node, $message);
-  if($comment_add || $node_update){
-    return (object) array('success' => 'successful update');
-  } else {
-    return (object) array('warning' => 'bad nid or status tag');
-  }
+  if($comment_add = _erpal_git_create_comment($nid, $user, $formatted_message, $subject))
+    $result['comment'] = array('success' => 'Comment was added');
+
+  // change node status
+  if($node_update = _erpal_git_change_task_status($node, $message))
+    $result['status'] = array('success' => 'Task status was updated');
+
+  if (!$comment_add && !$node_update)
+    return array('warning' => 'Bad #nid or ?status tag');
+  
+  return $result;
 }
 
 /**
@@ -175,7 +191,6 @@ function _erpal_git_change_task_status($node, $message) {
 
   // we can use this function if condition for status tag is not "contains"
   // $terms = taxonomy_get_term_by_name($status, 'task_status_terms');
-  
   // get status tid
   $status_tid = '';
   $tree = taxonomy_get_tree($vocabulary->vid);
@@ -186,15 +201,15 @@ function _erpal_git_change_task_status($node, $message) {
       if (!$status_tid)
         $status_tid = $term->tid;
       else
-        // break because only one term in voxabulary must contain status tag
+      // break because only one term in voxabulary must contain status tag
         return FALSE;
     }
   }
 
   // update node status
-  if($status_tid){
+  if ($status_tid) {
     $node_status = field_get_items('node', $node, 'field_task_status_term');
-    if($node_status[0]['tid'] && $node_status[0]['tid'] != $status_tid){
+    if ($node_status[0]['tid'] && $node_status[0]['tid'] != $status_tid) {
       $node->field_task_status_term[$node->language][0]['tid'] = $status_tid;
       node_save($node);
       return TRUE;
