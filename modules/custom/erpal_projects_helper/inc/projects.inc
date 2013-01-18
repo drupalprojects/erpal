@@ -144,8 +144,10 @@ function _erpal_projects_helper_subscribe_project_team($node){
   
   // updated node
   $field_project_team_udpated = field_get_items('node', $node, 'field_project_team');
-  foreach ($field_project_team_udpated as $udpated_team_collection) {
-    $udpated_team[] = $udpated_team_collection['value'];
+  if(!empty($field_project_team_udpated) && is_array($field_project_team_udpated)){
+    foreach ($field_project_team_udpated as $udpated_team_collection) {
+      $udpated_team[] = $udpated_team_collection['value'];
+    }
   }
   // original node
   if (!empty($node->original)) {
