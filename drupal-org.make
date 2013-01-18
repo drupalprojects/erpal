@@ -170,6 +170,12 @@ projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa
 projects[views_bulk_operations][version] = "3.0-rc1"
 projects[views_bulk_operations][subdir] = "contrib"
 
+; Libraries
+libraries[fullcalendar][download][type] = "get"
+libraries[fullcalendar][download][url] = "http://arshaw.com/fullcalendar/downloads/fullcalendar-1.5.zip"
+libraries[fullcalendar][destination] = "libraries"
+libraries[fullcalendar][directory_name] = "fullcalendar"
+
 ; Themes
 projects[adaptivetheme][version] = "3.1"
 
