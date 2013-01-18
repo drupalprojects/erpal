@@ -31,6 +31,7 @@ features[panels_mini][] = invoice_content_panel
 features[panels_mini][] = invoice_detailed_fields
 features[panels_mini][] = invoice_general_fields
 features[panels_mini][] = invoice_header_fields
+features[panels_mini][] = invoice_pdf
 features[quicktabs][] = invoice_tabs
 features[variable][] = pm_existing_pages_disabled_billable_view_page
 features[views_view][] = billables

@@ -288,22 +288,16 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-10';
     $pane->panel = 'sidebar_second_right';
-    $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_asset_files';
+    $pane->type = 'panels_mini';
+    $pane->subtype = 'invoice_pdf';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'label' => 'title',
-      'formatter' => 'entityreference_label',
-      'delta_limit' => '0',
-      'delta_offset' => '0',
-      'delta_reversed' => 0,
-      'formatter_settings' => array(
-        'link' => 1,
+      'context' => array(
+        0 => 'argument_entity_id:node_1',
       ),
-      'context' => 'argument_entity_id:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => 'Invoice PDF',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -318,37 +312,6 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-10'] = $pane;
     $display->panels['sidebar_second_right'][3] = 'new-10';
-    $pane = new stdClass();
-    $pane->pid = 'new-11';
-    $pane->panel = 'sidebar_second_right';
-    $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_invoice_exported';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'label' => 'title',
-      'formatter' => 'list_default',
-      'delta_limit' => 0,
-      'delta_offset' => '0',
-      'delta_reversed' => FALSE,
-      'formatter_settings' => array(),
-      'context' => 'argument_entity_id:node_1',
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => array(
-        'pane_collapsed' => 0,
-      ),
-      'style' => 'collapsible',
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 4;
-    $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['sidebar_second_right'][4] = 'new-11';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -393,7 +356,7 @@ function erpal_invoice_ui_default_page_manager_handlers() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-12';
+    $pane->pid = 'new-11';
     $pane->panel = 'sidebar_first_left';
     $pane->type = 'page_title';
     $pane->subtype = 'page_title';
@@ -414,10 +377,10 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-12';
+    $display->content['new-11'] = $pane;
+    $display->panels['sidebar_first_left'][0] = 'new-11';
     $pane = new stdClass();
-    $pane->pid = 'new-13';
+    $pane->pid = 'new-12';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -432,10 +395,10 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-13';
+    $display->content['new-12'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-12';
     $pane = new stdClass();
-    $pane->pid = 'new-14';
+    $pane->pid = 'new-13';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'entity_view';
     $pane->subtype = 'billable';
@@ -455,10 +418,10 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-14'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-14';
+    $display->content['new-13'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-13';
   $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-12';
+  $display->title_pane = 'new-11';
   $handler->conf['display'] = $display;
   $export['pm_existing_pages_billable_view_page_panel_context'] = $handler;
 
