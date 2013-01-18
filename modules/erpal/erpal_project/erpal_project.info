@@ -158,3 +158,4 @@ features_exclude[field][node-erpal_task-og_group_ref] = node-erpal_task-og_group
 features_exclude[field][node-erpal_task-group_group] = node-erpal_task-group_group
 features_exclude[field][node-erpal_project-field_books_ref] = node-erpal_project-field_books_ref
 features_exclude[dependencies][erpal_invoice] = erpal_invoice
+features_exclude[dependencies][erpal_book] = erpal_book

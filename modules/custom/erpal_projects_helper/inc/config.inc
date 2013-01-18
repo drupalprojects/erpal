@@ -87,7 +87,7 @@ function erpal_projects_helper_config_form($form, &$form_state) {
   // User subscribed to project / task
   $form['user_assigned'] = array(
     '#type' => 'fieldset',
-    '#title' => t('User subscribed'),
+    '#title' => t('User assigned'),
     '#collapsible' => true,
     '#collapsed' => true,
     '#group' => 'notification_messages',

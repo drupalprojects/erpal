@@ -1090,7 +1090,7 @@ function erpal_project_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'increment' => '15',
+          'increment' => '1',
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
@@ -1801,7 +1801,7 @@ function erpal_project_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'increment' => '15',
+          'increment' => '1',
           'input_format' => 'Y-m-d H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
@@ -3249,6 +3249,12 @@ function erpal_project_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_timetracking',
+      'comment_enabled' => 0,
+      'date_item' => array(
+        'create_date_item' => 0,
+        'date_item_type' => 'simple_date',
+        'handle_range' => 'range',
+      ),
       'deleted' => '0',
       'description' => 'Start and end time of your work',
       'display' => array(
@@ -3288,7 +3294,7 @@ function erpal_project_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'increment' => '15',
+          'increment' => '1',
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',

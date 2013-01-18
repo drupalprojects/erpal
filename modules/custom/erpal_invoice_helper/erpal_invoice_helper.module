@@ -30,6 +30,15 @@ function erpal_invoice_helper_action_info() {
 }
 
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_invoice_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'erpal_invoice_helper' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+} 
+
+/**
 * Implements hook_theme
 */
 function erpal_invoice_helper_theme() {

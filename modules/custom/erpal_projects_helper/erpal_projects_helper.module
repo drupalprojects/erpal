@@ -1149,6 +1149,17 @@ function _erpal_projects_helper_render_projects_referencing_books($book_nid) {
   return $links;
 }
 
+/**
+* Implements hook_node_insert
+*/
+function erpal_projects_helper_node_insert($node){
+  if ($node->type == 'erpal_task') {    
+    _erpal_projects_helper_subscribe_task_assigned_users($node);       
+  }
+  if ($node->type == 'erpal_project') {    
+    _erpal_projects_helper_subscribe_project_team($node);       
+  }
+}
 
 /**
 * Implements hook_node_presave
