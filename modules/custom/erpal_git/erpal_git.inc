@@ -31,8 +31,9 @@ function _erpal_git_commit($data) {
     if (isset($commit['id']))
       $result[$commit['id']] = _erpal_git_commit_comment($commit);
     else
-      $result[] = _erpal_git_commit_comment($commit);
+      $result = array('error' => 'Can\'t find commit Id');
   }
+
   return (object) $result;
 }
 
@@ -83,10 +84,10 @@ function _erpal_git_commit_comment($data) {
 
   // change node status
   if ($node_update = _erpal_git_change_task_status($node, $message))
-    $result['status'] = array('success' => 'Task status was updated');
+    $result['status'] = $node_update;
   else
     $result['status'] = array('warning' => 'Bad ?status tag');
-
+  
   return $result;
 }
 
@@ -212,6 +213,8 @@ function _erpal_git_change_task_status($node, $message) {
       $node->field_task_status_term[$node->language][0]['tid'] = $status_tid;
       node_save($node);
       return array('success' => 'Task status was updated');
+    } else {
+      return array('success' => 'Task already have this status');
     }
   }
 }
