@@ -211,14 +211,10 @@ function _erpal_projects_helper_flag($node_type, $nid, $action = 'flag', $accoun
     }
 
     if ($action == 'flag' && !$flag->is_flagged($nid, $account->uid)) {
-      $flag->flag($action, $nid, $account);
-      if ($node_type == 'erpal_task') { // flag erpal_task
-        $entity = node_load($nid);
-        _erpal_projects_helper_user_assigned_email($account, $entity, 'assign');
-      }
+      $flag->flag($action, $nid, $account); // flag node
     } else
      if ($action == 'unflag' && $flag->is_flagged($nid, $account->uid)) {
-      $flag->flag($action, $nid, $account);
+      $flag->flag($action, $nid, $account); // unflag node
     } 
   }
 }
