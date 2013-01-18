@@ -128,19 +128,10 @@ function _erpal_git_create_comment($nid, $user, $message, $subject = '', $pid = 
  */
 function _erpal_git_prepare_message_data($data) {
   $message = array();
-  // id: ID (Hash) of the commit
-  if (isset($data['id'])) {
-    $message['id'] = array(
-      '#type' => 'item',
-      '#title' => t('Commit Id'),
-      '#markup' => $data['id']
-    );
-  }
   // message:	Commit-Message
   if (isset($data['message'])) {
     $message['message'] = array(
       '#type' => 'item',
-      '#title' => t('Message'),
       '#markup' => $data['message']
     );
   }
@@ -148,32 +139,29 @@ function _erpal_git_prepare_message_data($data) {
   if (isset($data['timestamp'])) {
     $message['timestamp'] = array(
       '#type' => 'item',
-      '#title' => t('Date'),
-      '#markup' => $data['timestamp']
+      '#markup' => t('Date') . ': ' . $data['timestamp']
     );
   }
   // url:	URL to the commit in a repository viewer
   if (isset($data['url'])) {
     $message['url'] = array(
       '#type' => 'item',
-      '#title' => t('url'),
-      '#markup' => $data['url']
+      '#markup' => t('Commit url') . ': ' . $data['url'],
     );
   }
+  // Author
+  $author = array();
   // author: "name"
-  if (isset($data['author']['name'])) {
-    $message['name'] = array(
-      '#type' => 'item',
-      '#title' => t('Author name'),
-      '#markup' => $data['author']['name']
-    );
-  }
+  if (isset($data['author']['name']))
+    $author[] = $data['author']['name'];
   // author: "email"
-  if (isset($data['author']['email'])) {
+  if (isset($data['author']['email'])) 
+    $author[] = $data['author']['email'];
+  
+  if (!empty($author)) {
     $message['email'] = array(
       '#type' => 'item',
-      '#title' => t('Author email'),
-      '#markup' => $data['author']['email']
+      '#markup' => t('Author') . ': ' . implode(', ', $author),
     );
   }
 
