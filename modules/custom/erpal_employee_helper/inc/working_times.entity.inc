@@ -242,7 +242,7 @@ class WorkingTimesUIController extends EntityDefaultUIController {
     $items['working_times/add/%'] = array( //working_times offset is the only bundle we want to create!
       'title' => 'Add working time offset',
       'page callback' => 'working_times_form_wrapper',
-      'page arguments' => array(2),
+      'page arguments' => array(false, 2),
       'access callback' => 'working_times_access',
       'access arguments' => array('create'),
       'file' => 'working_times.entity.inc',
@@ -287,10 +287,11 @@ class WorkingTimesUIController extends EntityDefaultUIController {
  *
  * @see working_times_edit_form()
  */
-function working_times_form_wrapper() {
-  $uid = arg(2);
-  $working_times = working_times_create(array('type' => 'offset', 'uid' => $uid));
+function working_times_form_wrapper($working_times=false, $uid=false) {
+ 
+  $working_times = $working_times ? $working_times : working_times_create(array('type' => 'offset', 'uid' => $uid));
   drupal_set_message('The offset data you create here will be used as offset for calcultions from the beginning of the month you enter.', 'warning');
+
   return drupal_get_form('working_times_edit_form', $working_times, $uid);
 }
 
@@ -315,13 +316,13 @@ function working_times_delete_form_wrapper($working_times) {
  *   The working_times object to edit or for a create form an empty working_times object
  *     with only a working_times type defined.
  */
-function working_times_edit_form($form, &$form_state, $working_times) {
+function working_times_edit_form($form, &$form_state, $working_times, $uid=false) {
   // Add the default field elements.
   $form['id'] = array(
     '#type' => 'value',
     '#value' => isset($working_times->id) ? $working_times->id : 0,
   );
-  
+  dpm($working_times);
   $type = isset($working_times->type) ? $working_times->type : 'offset';
   $form['type'] = array(
     '#type' => 'value',
