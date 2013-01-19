@@ -87,6 +87,13 @@ function erpal_basic_ui_views_default_views() {
   $handler->display->display_options['fields']['field_contact_type']['id'] = 'field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['table'] = 'field_data_field_contact_type';
   $handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
+  /* Field: Content: Contact Tags */
+  $handler->display->display_options['fields']['field_contact_tags']['id'] = 'field_contact_tags';
+  $handler->display->display_options['fields']['field_contact_tags']['table'] = 'field_data_field_contact_tags';
+  $handler->display->display_options['fields']['field_contact_tags']['field'] = 'field_contact_tags';
+  $handler->display->display_options['fields']['field_contact_tags']['label'] = 'Categories';
+  $handler->display->display_options['fields']['field_contact_tags']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_contact_tags']['delta_offset'] = '0';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -153,6 +160,30 @@ function erpal_basic_ui_views_default_views() {
   $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
   $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  /* Filter criterion: Content: Contact Tags (field_contact_tags) */
+  $handler->display->display_options['filters']['field_contact_tags_tid']['id'] = 'field_contact_tags_tid';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['table'] = 'field_data_field_contact_tags';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['field'] = 'field_contact_tags_tid';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_tags_tid']['expose']['operator_id'] = 'field_contact_tags_tid_op';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['expose']['label'] = 'Categories';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['expose']['operator'] = 'field_contact_tags_tid_op';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['expose']['identifier'] = 'field_contact_tags_tid';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_tags_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_contact_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
+  $handler->display->display_options['filters']['field_contact_tags_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['vocabulary'] = 'contact_tags';
+  $handler->display->display_options['filters']['field_contact_tags_tid']['error_message'] = FALSE;
 
   /* Display: Contacts pane */
   $handler = $view->new_display('panel_pane', 'Contacts pane', 'panel_pane_1');
@@ -186,6 +217,35 @@ function erpal_basic_ui_views_default_views() {
   $handler->display->display_options['fields']['field_contact_type']['field'] = 'field_contact_type';
   $handler->display->display_options['attach'] = array(
     0 => 'node:field_customer_ref:erpal_project',
+  );
+  $translatables['contacts'] = array(
+    t('Master'),
+    t('more'),
+    t('Filter'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('There are no contacts available'),
+    t('<div class="no_contact_image"></div>'),
+    t('Name'),
+    t('Contact Type'),
+    t('Categories'),
+    t('Search Terms'),
+    t('Type'),
+    t('Contacts pane'),
+    t('View panes'),
+    t('Contact Reference Project'),
+    t('Contact Dialog Search Project'),
+    t('Choose a contact'),
+    t('Search a customer for a project'),
   );
   $export['contacts'] = $view;
 
@@ -300,6 +360,30 @@ function erpal_basic_ui_views_default_views() {
       'fixed' => '',
       'label' => 'Content: Nid',
     ),
+  );
+  $translatables['node_revisions'] = array(
+    t('Master'),
+    t('Revisions'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('revision user'),
+    t('Get the actual content from a content revision.'),
+    t('Updated date'),
+    t('User'),
+    t('All'),
+    t('Pane node revisions'),
+    t('View panes'),
   );
   $export['node_revisions'] = $view;
 
@@ -428,6 +512,33 @@ function erpal_basic_ui_views_default_views() {
   $handler->display->display_options['fields']['ops']['field'] = 'ops';
   $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['fields']['ops']['label'] = 'Notification';
+  $translatables['notifications'] = array(
+    t('Master'),
+    t('Task notifications'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('flagged task'),
+    t('Content entity referenced from field_project_ref'),
+    t('Task title'),
+    t('Project'),
+    t('Updated date'),
+    t('Notification'),
+    t('View panes'),
+    t('Project notifications'),
+    t('flag'),
+    t('Project title'),
+  );
   $export['notifications'] = $view;
 
   $view = new view();
@@ -595,6 +706,33 @@ function erpal_basic_ui_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['relations_view'] = array(
+    t('Master'),
+    t('Relations by node'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No relations available'),
+    t('Rendered Relation'),
+    t('All'),
+    t('Relation type'),
+    t('Period'),
+    t('Changed'),
+    t('Created'),
+    t('Tags'),
+    t('Role in project'),
+    t('View panes'),
+  );
   $export['relations_view'] = $view;
 
   return $export;

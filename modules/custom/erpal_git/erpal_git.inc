@@ -21,7 +21,20 @@
  *      url: GIT-URL
  */
 function _erpal_git_commit($data) {
-  _erpal_git_commit_comment($data);
+  // handle commits array
+  if (!isset($data['commits']) || empty($data['commits']) || !is_array($data['commits']))
+    return (object) array('error' => 'Can\'t find commits');
+
+  // Comment and update task using git commit message data
+  $result = array();
+  foreach ($data['commits'] as $commit) {
+    if (isset($commit['id']))
+      $result[$commit['id']] = _erpal_git_commit_comment($commit);
+    else
+      $result = array('error' => 'Can\'t find commit Id');
+  }
+
+  return (object) $result;
 }
 
 /**
@@ -34,45 +47,48 @@ function _erpal_git_commit($data) {
  *   author: Object with author information and fields "name" and "email"
  */
 function _erpal_git_commit_comment($data) {
+  $result = array();
+
   // Check if message exists
   if (!isset($data['message']))
-    return (object) array('error' => 'Cant find message');
+    return array('error' => 'Can\'t find message');
   else
     $message = $data['message'];
 
   // Check if nid exists
   if (!preg_match('/#\d+/', $message, $matches))
-    return (object) array('error' => 'Cant find #nid in message');
+    return array('error' => 'Can\'t find #nid tag in message');
   else
     $nid = str_replace('#', '', $matches[0]);
 
   // Check if node exists and node type is erpal_task
   $node = node_load($nid);
-  if (!$node || $node->type != 'erpal_task') {
-    return (object) array('error' => 'Cant find node #nid');
-  }
+  if (!$node || $node->type != 'erpal_task')
+    return array('error' => 'Can\'t find task #nid');
 
-  // Comment node
-  if (!isset($data['author']['email']))
+  // If the users email is not found in the system, the comment will be assigned 
+  // to as admin.
+  if (!isset($data['author']['email']) || !$user = user_load_by_mail($data['author']['email'])) {
     $user = user_load(1);
-  else
-    $user = user_load_by_mail($data['author']['email']);
-
+  }
   // prepare comment body data
   $formatted_message = _erpal_git_prepare_message_data($data);
   // comment subject
   $subject = t('GIT commit');
   if (isset($data['id']))
     $subject .= ': ' . $data['id'];
+
   // add comment
-  $comment_add = _erpal_git_create_comment($nid, $user, $formatted_message, $subject);
-  // Change node status
-  $node_update = _erpal_git_change_task_status($node, $message);
-  if($comment_add || $node_update){
-    return (object) array('success' => 'successful update');
-  } else {
-    return (object) array('warning' => 'bad nid or status tag');
-  }
+  _erpal_git_create_comment($nid, $user, $formatted_message, $subject);
+  $result['comment'] = array('success' => 'Comment was added');
+
+  // change node status
+  if ($node_update = _erpal_git_change_task_status($node, $message))
+    $result['status'] = $node_update;
+  else
+    $result['status'] = array('warning' => 'Bad ?status tag');
+  
+  return $result;
 }
 
 /**
@@ -112,19 +128,10 @@ function _erpal_git_create_comment($nid, $user, $message, $subject = '', $pid = 
  */
 function _erpal_git_prepare_message_data($data) {
   $message = array();
-  // id: ID (Hash) of the commit
-  if (isset($data['id'])) {
-    $message['id'] = array(
-      '#type' => 'item',
-      '#title' => t('Commit Id'),
-      '#markup' => $data['id']
-    );
-  }
   // message:	Commit-Message
   if (isset($data['message'])) {
     $message['message'] = array(
       '#type' => 'item',
-      '#title' => t('Message'),
       '#markup' => $data['message']
     );
   }
@@ -132,32 +139,29 @@ function _erpal_git_prepare_message_data($data) {
   if (isset($data['timestamp'])) {
     $message['timestamp'] = array(
       '#type' => 'item',
-      '#title' => t('Date'),
-      '#markup' => $data['timestamp']
+      '#markup' => t('Date') . ': ' . $data['timestamp']
     );
   }
   // url:	URL to the commit in a repository viewer
   if (isset($data['url'])) {
     $message['url'] = array(
       '#type' => 'item',
-      '#title' => t('url'),
-      '#markup' => $data['url']
+      '#markup' => t('Commit url') . ': ' . $data['url'],
     );
   }
+  // Author
+  $author = array();
   // author: "name"
-  if (isset($data['author']['name'])) {
-    $message['name'] = array(
-      '#type' => 'item',
-      '#title' => t('Author name'),
-      '#markup' => $data['author']['name']
-    );
-  }
+  if (isset($data['author']['name']))
+    $author[] = $data['author']['name'];
   // author: "email"
-  if (isset($data['author']['email'])) {
+  if (isset($data['author']['email'])) 
+    $author[] = $data['author']['email'];
+  
+  if (!empty($author)) {
     $message['email'] = array(
       '#type' => 'item',
-      '#title' => t('Author email'),
-      '#markup' => $data['author']['email']
+      '#markup' => t('Author') . ': ' . implode(', ', $author),
     );
   }
 
@@ -167,15 +171,14 @@ function _erpal_git_prepare_message_data($data) {
 function _erpal_git_change_task_status($node, $message) {
   // Check if node status tag exists
   if (!preg_match('/\?\w+/', $message, $matches))
-    return FALSE;
+    return array('success' => 'No status tag in the message');
 
   $status = str_replace('?', '', $matches[0]);
   if (!$vocabulary = taxonomy_vocabulary_machine_name_load('task_status_terms'))
-    return FALSE;
+    return array('error' => 'Can\'t load vocabulary.');
 
   // we can use this function if condition for status tag is not "contains"
   // $terms = taxonomy_get_term_by_name($status, 'task_status_terms');
-  
   // get status tid
   $status_tid = '';
   $tree = taxonomy_get_tree($vocabulary->vid);
@@ -186,18 +189,20 @@ function _erpal_git_change_task_status($node, $message) {
       if (!$status_tid)
         $status_tid = $term->tid;
       else
-        // break because only one term in voxabulary must contain status tag
-        return FALSE;
+        // break because only one term in vocabulary must contain status tag
+        return array('error' => 'There are more than one status in vocabulery that matches your tag. Use another ?status tag.');
     }
   }
 
   // update node status
-  if($status_tid){
+  if ($status_tid) {
     $node_status = field_get_items('node', $node, 'field_task_status_term');
-    if($node_status[0]['tid'] && $node_status[0]['tid'] != $status_tid){
+    if ($node_status[0]['tid'] && $node_status[0]['tid'] != $status_tid) {
       $node->field_task_status_term[$node->language][0]['tid'] = $status_tid;
       node_save($node);
-      return TRUE;
+      return array('success' => 'Task status was updated');
+    } else {
+      return array('success' => 'Task already have this status');
     }
   }
 }
