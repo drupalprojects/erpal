@@ -89,11 +89,11 @@ function erpal_employee_ui_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: Content: Date and time -  start date (field_date_time) */
+  $handler->display->display_options['sorts']['field_date_time_value']['id'] = 'field_date_time_value';
+  $handler->display->display_options['sorts']['field_date_time_value']['table'] = 'field_data_field_date_time';
+  $handler->display->display_options['sorts']['field_date_time_value']['field'] = 'field_date_time_value';
+  $handler->display->display_options['sorts']['field_date_time_value']['order'] = 'DESC';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
