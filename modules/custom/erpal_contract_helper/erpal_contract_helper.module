@@ -268,7 +268,7 @@ function _erpal_contract_helper_contract_node_form_alter(&$form, &$form_state) {
   if ($nid)
     return;
   
-  $activity_nid = $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+  $activity_nid = isset($form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : '';
   $activity_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($activity_nid);
 
   if (!empty($activity_nid) && is_numeric($activity_nid)) {
