@@ -605,6 +605,7 @@ function erpal_employee_ui_views_default_views() {
     'overtime_reduce' => 'overtime_reduce',
     'project_time' => 'project_time',
     'changed' => 'changed',
+    'type' => 'type',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -716,6 +717,15 @@ function erpal_employee_ui_views_default_views() {
       'calc' => array(),
     ),
     'changed' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'type' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -873,6 +883,7 @@ function erpal_employee_ui_views_default_views() {
     'overtime_reduce' => 'overtime_reduce',
     'project_time' => 'project_time',
     'changed' => 'changed',
+    'type' => 'type',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -1010,6 +1021,15 @@ function erpal_employee_ui_views_default_views() {
       'has_calc' => 0,
       'calc' => array(),
     ),
+    'type' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
   );
   $handler->display->display_options['style_options']['detailed_values'] = '0';
   $handler->display->display_options['style_options']['precision'] = '0';
@@ -1099,6 +1119,7 @@ function erpal_employee_ui_views_default_views() {
     'overtime_reduce' => 'overtime_reduce',
     'project_time' => 'project_time',
     'changed' => 'changed',
+    'type' => 'type',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -1219,6 +1240,15 @@ function erpal_employee_ui_views_default_views() {
       'calc' => array(),
     ),
     'changed' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+      'has_calc' => 0,
+      'calc' => array(),
+    ),
+    'type' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1635,6 +1665,129 @@ function erpal_employee_ui_views_default_views() {
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'id' => 'id',
+    'year' => 'year',
+    'month' => 'month',
+    'name' => 'name',
+    'holidays_used' => 'holidays_used',
+    'holidays_used_from_before' => 'holidays_used_from_before',
+    'holidays_available' => 'holidays_available',
+    'holidays_available_till' => 'holidays_available_till',
+    'ill_days' => 'ill_days',
+    'total_hours' => 'total_hours',
+    'booked_working_hours' => 'booked_working_hours',
+    'overtime' => 'overtime',
+    'overtime_reduce' => 'overtime_reduce',
+    'project_time' => 'project_time',
+    'edit_working_times' => 'edit_working_times',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'id' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'year' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'month' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'holidays_used' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'holidays_used_from_before' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'holidays_available' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'holidays_available_till' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'ill_days' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'total_hours' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'booked_working_hours' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'overtime' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'overtime_reduce' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'project_time' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_working_times' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
