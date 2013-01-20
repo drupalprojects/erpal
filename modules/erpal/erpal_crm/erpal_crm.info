@@ -59,3 +59,4 @@ features[variable][] = menu_parent_erpal_crm_activity
 features[variable][] = node_options_erpal_crm_activity
 features[variable][] = node_preview_erpal_crm_activity
 features[variable][] = node_submitted_erpal_crm_activity
+features_exclude[dependencies][erpal_crm_tasks] = erpal_crm_tasks

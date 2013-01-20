@@ -744,6 +744,12 @@ function erpal_field_pricing_field_default_fields() {
           'type' => 'hidden',
           'weight' => 25,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 21,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),

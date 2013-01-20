@@ -53,6 +53,7 @@ features[ds_layout_settings][] = node|erpal_project|form
 features[ds_layout_settings][] = node|erpal_project|full
 features[ds_layout_settings][] = node|erpal_task|form
 features[ds_layout_settings][] = node|erpal_task|full
+features[ds_layout_settings][] = node|erpal_task|in_activity
 features[ds_layout_settings][] = node|erpal_task|view_row_details
 features[features_api][] = api:1
 features[menu_links][] = menu-erpal-menu:projects/projects
