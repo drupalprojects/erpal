@@ -29,12 +29,13 @@ function erpal_basic_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Communications',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_communication|node|erpal_contact|form'] = $field_group;
@@ -50,7 +51,7 @@ function erpal_basic_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Legal information',
-    'weight' => '15',
+    'weight' => '10',
     'children' => array(
       0 => 'field_legal_other',
       1 => 'field_vat_number',
@@ -81,19 +82,20 @@ function erpal_basic_field_group_info() {
     'weight' => '9',
     'children' => array(
       0 => 'field_facebook',
-      1 => 'field_google_plus',
-      2 => 'field_twitter',
-      3 => 'field_website',
-      4 => 'field_xing',
+      1 => 'field_twitter',
+      2 => 'field_website',
+      3 => 'field_xing',
+      4 => 'field_google_plus',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Weblinks',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_weblinks|node|erpal_contact|form'] = $field_group;
