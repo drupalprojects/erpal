@@ -21,7 +21,7 @@ function erpal_contract_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Cancelation',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'field_cancelation_period',
       1 => 'field_cancelation_period_con',

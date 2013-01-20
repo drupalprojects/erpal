@@ -496,6 +496,7 @@ function erpal_book_ui_default_page_manager_pages() {
       'settings' => array(
         'use_tail' => 0,
       ),
+      'keyword' => 'book_type',
     ),
   );
   $page->conf = array(
