@@ -19,8 +19,14 @@ function _erpal_crm_helper_config_menu(){
 /**
 * Settings for the ERPAL CRM Feature
 */
-function _erpal_crm_helper_config_core()
-{
+function _erpal_crm_helper_config_core() {
+  return drupal_get_form('erpal_crm_helper_config_form');
+}
+
+/**
+* Form for crm config
+*/
+function erpal_crm_helper_config_form($form,$form_state) {
   //add a link to edit activity status terms
   $form = array();
   
@@ -29,5 +35,5 @@ function _erpal_crm_helper_config_core()
     '#markup' => l(t('Edit activity status terms'), 'admin/structure/taxonomy/activity_status_terms'),
   );
   
-  return $form;
+  return system_settings_form($form);
 }

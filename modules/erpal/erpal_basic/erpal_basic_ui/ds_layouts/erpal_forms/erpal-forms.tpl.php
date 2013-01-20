@@ -9,7 +9,7 @@
 
   <?php if ($right): ?><div class="group-form-right<?php print $right_classes; ?>"><?php print $right; ?></div><?php endif; ?>
  
-  <?php if ($advanced): ?>
+  <?php if ($advanced || $advancedleft || $advancedright): ?>
     <fieldset class="group-advanced collapsible collapsed<?php print $advanced_classes; ?>">	
 		<legend>
 			<span class="fieldset-legend">Advanced</span>

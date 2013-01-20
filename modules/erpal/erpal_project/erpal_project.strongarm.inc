@@ -367,6 +367,12 @@ function erpal_project_strongarm() {
       'view_row_details' => array(
         'custom_settings' => TRUE,
       ),
+      'in_activity' => array(
+        'custom_settings' => TRUE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
