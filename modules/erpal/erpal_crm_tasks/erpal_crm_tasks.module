@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Functions form erpal crm tasks
+ */
+ 
+module_load_include('inc', 'erpal_crm_tasks', 'inc/config');
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_crm_tasks_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_crm_helper_config_form') {
+    _erpal_crm_tasks_crm_config_form_alter($form, $form_state);
+  }
+  
+}
