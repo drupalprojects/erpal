@@ -8,6 +8,7 @@ define('ERPAL_CONTEXT_WORKING_TIMES', 'working_times'); //working_times list
 define('ERPAL_CONTEXT_WORKING_TIMES_GLOBAL', 'working_times_global');
 define('ERPAL_CONTEXT_WORKING_TIMES_ALL_GLOBAL', 'working_times_all_global');
 define('ERPAL_CONTEXT_WORKING_TIME', 'working_time');
+define('ERPAL_CONTEXT_USER_OFFSETS', 'user_offsets'); //list of offsets of a user
 
 /**
 * Implement hook_erpal_contexts definied in erpal_basic_helper module
@@ -30,6 +31,10 @@ function erpal_employee_helper_erpal_contexts($router_item) {
     if ($node->type == 'erpal_working_time') {
       $contexts[ERPAL_CONTEXT_WORKING_TIMES_GLOBAL] = true;
     }
+  }
+  
+  if ($path == 'user/%/timekeeping-offsets') {
+    $contexts[ERPAL_CONTEXT_USER_OFFSETS] = true;
   }
      
   if (drupal_match_path($path, 'node/%*') ) {    
@@ -91,6 +96,19 @@ function erpal_employee_helper_dynamic_menu_items_alter(&$data, $router_item, $r
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_WORKING_TIMES_ALL_GLOBAL, $router_item)) {    
     _erpal_employee_helper_timekeeping_global_menu_tabs($data, $node, array('all timekeeping'));   
   }
+  
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_USER_OFFSETS, $router_item)) {
+    $user = $node;
+    _erpal_employee_helper_user_offsets_links($data, $user);
+  }
+}
+
+/**
+* Adds links to list of user working times offset
+*/
+function _erpal_employee_helper_user_offsets_links(&$data, $user) {
+  $query = array('destination' => $_GET['q']);
+  erpal_make_action($data, t('Create a new offset'), 'working_times/add/'.$user->uid, $query);
 }
 
 /**

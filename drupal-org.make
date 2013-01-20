@@ -38,8 +38,11 @@ projects[date][subdir] = "contrib"
 projects[ds][version] = "1.6"
 projects[ds][subdir] = "contrib"
 
-projects[editablefields][version] = "1.0-alpha2"
+projects[editablefields][version] = "1.x"
 projects[editablefields][subdir] = "contrib"
+projects[editablefields][download][type] = "git"
+projects[editablefields][download][url] = "http://git.drupal.org/project/editablefields.git"
+projects[editablefields][download][revision] = "bcfa4d111add31985eda8fbc0382cc7f81bec0bc"
 
 projects[entity][version] = "1.0"
 projects[entity][subdir] = "contrib"
@@ -166,6 +169,12 @@ projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa
 
 projects[views_bulk_operations][version] = "3.0-rc1"
 projects[views_bulk_operations][subdir] = "contrib"
+
+; Libraries
+libraries[fullcalendar][download][type] = "file"
+libraries[fullcalendar][download][url] = "http://arshaw.com/fullcalendar/downloads/fullcalendar-1.5.4.zip"
+libraries[fullcalendar][directory_name] = "libraries"
+libraries[fullcalendar][destination] = ""
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"

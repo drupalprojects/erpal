@@ -4,6 +4,7 @@
  * Code for the erpal_invoice_helper module.
  */
 module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/theme');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/billables.elements');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
@@ -27,6 +28,15 @@ function erpal_invoice_helper_action_info() {
     ),
   ); 
 }
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_invoice_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'erpal_invoice_helper' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+} 
 
 /**
 * Implements hook_theme
@@ -1541,4 +1551,53 @@ function _erpal_invoice_helper_get_vat_rate_by_address($address_id) {
   }
 
   return $default_vat_rate;
+}
+
+
+/**
+* Implements hook_preprocess_field
+*/
+function erpal_invoice_helper_preprocess_field(&$variables) {
+  _erpal_invoice_helper_preprocess_field_warnings($variables);
+}
+
+
+/**
+* alter fields so they display warning colors
+*/
+function _erpal_invoice_helper_preprocess_field_warnings(&$variables) {
+  $element = $variables['element'];
+  $object = isset($element['#object']) ? $element['#object'] : false;
+  
+  if (!$object)
+    return;
+
+  if ($element['#field_name'] == 'field_payed' || $element['#field_name'] == 'field_payment_date') {    
+  
+    //if semantic meaning is "in progress" and deadline is over current date, make red    
+    if (isset($object->type) && ($object->type == 'erpal_invoice')) {
+      $node = $object;
+      //get the status field name
+      $deadline = isset($node->field_payment_date[LANGUAGE_NONE][0]) ? $node->field_payment_date[LANGUAGE_NONE][0]['value'] : false;
+      
+      if ($deadline)
+        $deadline_unix = erpal_date_as_unix_timestamp($deadline);   
+      else
+        $deadline_unix = false;
+        
+      //date and state are set
+      $paid = isset($object->field_payed[LANGUAGE_NONE][0]['value']) ? $object->field_payed[LANGUAGE_NONE][0]['value'] : false;
+      $field_status = ERPAL_STATUS_NONE;
+      if (!$paid && time() > $deadline_unix && $deadline_unix) {
+        $field_status = ERPAL_STATUS_ALERT;
+      }
+      
+      //only the state is set, NO date end
+      if ($paid) {
+        $field_status = ERPAL_STATUS_COMPLETED;
+      }
+      
+      $variables['classes_array'][] = $field_status;
+    }
+  }
 }

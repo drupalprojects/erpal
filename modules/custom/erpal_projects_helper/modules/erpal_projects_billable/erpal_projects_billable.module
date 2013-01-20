@@ -745,7 +745,7 @@ function _erpal_billable_update_billable($node, $op) {
   
   if ($is_timetracking) {
     //use the date of the timetracking node!
-    $date_delivery = $subject_node->field_date_time[LANGUAGE_NONE][0]['value2'];
+    $date_delivery = $subject_node->field_date_time[LANGUAGE_NONE][0]['value'];
   } else {
     $date_delivery = time();  //the current time
   }  

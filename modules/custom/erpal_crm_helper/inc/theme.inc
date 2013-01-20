@@ -4,6 +4,7 @@
 * @file provide functions to them the output of views and nodes
 */
 
+
 /**
 * Alter fields and rows in the view table
 */

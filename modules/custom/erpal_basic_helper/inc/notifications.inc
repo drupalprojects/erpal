@@ -100,7 +100,7 @@ function _erpal_basic_helper_notify_users_send($users, $message, $module='erpal_
   if ($message['result']) {
     watchdog('ERPAL notification', t('!count user(s) have been notified', array('!count' => count($users))));
   } else {
-    drupal_set_message('ERPAL notification', t('!count user(s) could NOT be notified because of mail sending error', array('!count' => count($users))), 'error');
+    drupal_set_message(t('ERPAL notification !count user(s) could NOT be notified because of mail sending error', array('!count' => count($users))), 'error');
   }
 }
 

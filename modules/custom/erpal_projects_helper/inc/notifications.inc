@@ -1,67 +1,67 @@
 <?php
 
 /**
-* @file provide functions to have user notifications on projects
-*/
+ * @file provide functions to have user notifications on projects
+ */
 
 /**
-* Checks if there should be some notifications send on tasks to subscribers and if so, send them
-* @param $op the operation that is performed on the entity
-*/
+ * Checks if there should be some notifications send on tasks to subscribers and if so, send them
+ * @param $op the operation that is performed on the entity
+ */
 function _erpal_projects_helper_handle_notifications_on_subscribers($entity, $entity_type, $op) {
   if ($entity_type == 'node') {
     if ($entity->type != 'erpal_task')
       return false; //only for tasks
-    
+
     _erpal_projects_helper_handle_entity_notification($entity, $entity_type, $op);
     
   } elseif ($entity_type == 'comment') {
     if ($entity->node_type != 'comment_node_erpal_task')
-      return;      
-      
+      return;
+
     _erpal_projects_helper_handle_entity_notification($entity, $entity_type, $op);
   }
   
 }
 
 /**
-* Starts notification process
-*/
+ * Starts notification process
+ */
 function _erpal_projects_helper_handle_entity_notification($entity, $entity_type, $op) {
-  
+
   $users = _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $op);
-  
+
   //we dont want the user that postet the update to get the message
   global $user;
   if (isset($users[$user->uid])) {
     unset($users[$user->uid]);
   }
-  
+
   //send a notification to these users
   $message = _erpal_projects_helper_get_project_notify_message($entity, $entity_type, $op);
   _erpal_basic_helper_notify_users($users, $message);
 }
 
 /**
-* Returns all users that should be notified about changes of the given node
-*/
+ * Returns all users that should be notified about changes of the given node
+ */
 function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $op) {
-  
+
   $users = array();
   $task_node = false;
   if ($entity_type == 'comment') {
     if ($entity->node_type == 'comment_node_erpal_task') {
       //load the node for the comment and notify for this node
-      $task_node = node_load($entity->nid);      
+      $task_node = node_load($entity->nid);
     }
   } elseif ($entity_type == 'node') {
     if ($entity->type == 'erpal_task') {
-      $task_node = $entity;                
+      $task_node = $entity;
     }
   }
-  
-  if ($task_node) {   
-  
+
+  if ($task_node) {
+
     //get parents until and collect all users that want to be notified
     $parent_nodes = _erpal_projects_helper_get_parent_tasks($task_node);
 
@@ -72,8 +72,8 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
       $task_subscriptions_flag = flag_get_flag('task_subscriptions');
       $task_subscribers_new = _erpal_projects_helper_get_subscribers($task_subscriptions_flag, $parent_node);
       $task_subscribers_new = $task_subscribers_new['users'];
-      $task_subscribers = array_merge($task_subscribers, $task_subscribers_new);      
-    }     
+      $task_subscribers = array_merge($task_subscribers, $task_subscribers_new);
+    }
     $task_subscribers = array(
       'users' => $task_subscribers,
     );
@@ -82,8 +82,8 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
     $project_nid = $task_node->field_project_ref[LANGUAGE_NONE][0]['target_id'];
 
     $project_node = node_load($project_nid);
-    $project_subscriptions_flag = flag_get_flag('project_subscriptions');    
-    $project_subscribers = _erpal_projects_helper_get_subscribers($project_subscriptions_flag, $project_node);    
+    $project_subscriptions_flag = flag_get_flag('project_subscriptions');
+    $project_subscribers = _erpal_projects_helper_get_subscribers($project_subscriptions_flag, $project_node);
 
     //now merge the users to have a unique array and no user will get douplicate notifications
     $subscribers = array();
@@ -100,9 +100,9 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
         //node_access_acquire_grants($entity); //write the grants bevor checking access because if node was inserted we dont have grants here. Enebale this if some permissions go wrong
       }
     }
-    
+
     //now check that all users really have access to the node. Users that don't have access are not notified.
-    $users = _erpal_projects_helper_delete_users_no_access($subscribers, $task_node, 'node'); 
+    $users = _erpal_projects_helper_delete_users_no_access($subscribers, $task_node, 'node');
   }
   return $users;
 }
@@ -123,19 +123,19 @@ function _erpal_projects_helper_get_subscribers($flag, $entity) {
 }
 
 /**
-* Returns the message to send to subscribers if project changes 
-* @param $entity the message may contain data of the entity.
-*/
+ * Returns the message to send to subscribers if project changes 
+ * @param $entity the message may contain data of the entity.
+ */
 function _erpal_projects_helper_get_project_notify_message($entity, $entity_type, $op) {
   $message = _erpal_projects_helper_task_update_message();
   $subject = _erpal_projects_helper_task_update_subject();
-  
+
   $data['op'] = $op;
   $data['entity'] = $entity;
   $data['entity_type'] = $entity_type;
   $subject = token_replace($subject, $data);
   $message = token_replace($message, $data);
-  
+
   return array(
     'message' => $message,
     'subject' => $subject,
@@ -143,28 +143,28 @@ function _erpal_projects_helper_get_project_notify_message($entity, $entity_type
 }
 
 /**
-* Returns an array with user IDs only of users that have the permission to view the entity
-*/
+ * Returns an array with user IDs only of users that have the permission to view the entity
+ */
 function _erpal_projects_helper_delete_users_no_access($users, $entity, $entity_type) {
   $new_users = array();
-  
+
   if ($entity_type != 'node')
     return false;  //@TODO implement for other entity_types (entity_access?)
-    
-  
+
+
   foreach ($users as $uid) {
     $a_user = user_load($uid);
     if (node_access('view', $entity, $a_user)) {
       $new_users[$uid] = $uid;
     }
   }
-  
+
   return $new_users;
 }
 
 /**
-* Returns renderable element with nnotifiy flag link
-*/
+ * Returns renderable element with nnotifiy flag link
+ */
 function _erpal_projects_helper_get_notify_flag_link_element($node) {
   $flag_link = false;
   $flag_link = false;
@@ -172,14 +172,90 @@ function _erpal_projects_helper_get_notify_flag_link_element($node) {
     $flag_link = flag_create_link('task_subscriptions', $node->nid);
   elseif ($node->type == 'erpal_project')
     $flag_link = flag_create_link('project_subscriptions', $node->nid);
-  
+
   if (!$flag_link)
     return;  //will be false if this node type is not notifiable
-    
+
   $element = array(
     '#markup' => $flag_link,
     '#weight' => 1,
   );
-  
+
   return $element;
 }
+
+/**
+ * Flags node if it's erpal_task or erpal_project
+ * @param string $node_type
+ *   content type
+ * @param int $nid
+ *   The ID of the item to flag or unflag.
+ * @param string $action
+ *   Either 'flag' or 'unflag'.
+ * @param object $account
+ *   The user on whose behalf to flag. Leave empty for the current user.
+ */
+function _erpal_projects_helper_flag($node_type, $nid, $action = 'flag', $account = NULL) {
+  if ($node_type == 'erpal_task' || $node_type == 'erpal_project') {
+    if (!isset($account->uid)) {
+      global $user;
+      $account = $user;
+    }
+    
+    if ($node_type == 'erpal_task') { // flag erpal_task
+      $flag = flag_get_flag('task_subscriptions');
+    } else
+    
+    if ($node_type == 'erpal_project') { //flag erpal_project
+      $flag = flag_get_flag('project_subscriptions'); 
+    }
+
+    if ($action == 'flag' && !$flag->is_flagged($nid, $account->uid)) {
+      $flag->flag($action, $nid, $account); // flag node
+    } else
+     if ($action == 'unflag' && $flag->is_flagged($nid, $account->uid)) {
+      $flag->flag($action, $nid, $account); // unflag node
+    } 
+  }
+}
+
+/**
+ * Send email to subscribed user
+ * @param type $account
+ */
+function _erpal_projects_helper_user_assigned_email($account, $entity, $op) {
+  $data['op'] = $op;
+  $data['entity'] = $entity;
+  $data['entity_type'] = 'node';
+  
+  if(!$subject = token_replace(_erpal_task_user_assigned_subject(), $data)){
+    $subject = 'ERPAL Notification';
+  }
+  $message_body = token_replace(_erpal_task_user_assigned_message(), $data);
+  if ($message_body) {
+    $message = array(
+      'subject' => $subject,
+      'message' => $message_body,
+    );
+
+    _erpal_basic_helper_notify_users_send(array($account->uid), $message);
+  }
+}
+
+/**
+ * Send email to unsubscribed user
+ * @param type $account
+ */
+function _erpal_projects_helper_user_unsubscribed_email($account, $entity, $op) {
+  $data['op'] = $op;
+  $data['entity'] = $entity;
+  $data['entity_type'] = 'node';
+
+  $message = array(
+    'subject' => token_replace(_erpal_task_user_unsubscribed_subject(), $data),
+    'message' => token_replace(_erpal_task_user_unsubscribed_message(), $data),
+  );
+
+  _erpal_basic_helper_notify_users_send(array($account->uid), $message);
+}
+
