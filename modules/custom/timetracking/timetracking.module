@@ -6,6 +6,7 @@
  */  
 
 module_load_include('inc', 'timetracking', 'timetracking.entity');   
+module_load_include('inc', 'timetracking', 'timetracking.admin'); 
  
 /**
  * Implements hook_views_api().
@@ -406,6 +407,15 @@ function timetracking_permission() {
     'edit any timetracking' => array(
       'title' => t('Edit any timetracking'),
     ),
+    'edit own timetracking' => array(
+      'title' => t('Edit own timetracking'),
+    ),
+    'delete any timetracking' => array(
+      'title' => t('Delete any timetracking'),
+    ),
+    'delete own timetracking' => array(
+      'title' => t('Delete own timetracking'),
+    ),
     'view any timetracking' => array(
       'title' => t('View any timetracking'),
     ),  
@@ -433,13 +443,24 @@ function timetracking_permission() {
  *   Whether access is allowed or not.
  */
 function timetracking_access($op, $timetracking = NULL, $account = NULL) {
- 
+
+  global $user;
+  if (!$account)
+    $account = $user;
+    
   if (user_access('administer timetrackings', $account)) {
     return TRUE;
   }
 
-  if (isset($timetracking) && is_object($timetracking) && $type_name = $timetracking->type) {
+  if (isset($timetracking) && is_object($timetracking)) {
     $op = ($op == 'view') ? 'view' : 'edit';
+
+    if (isset($timetracking->timetracking_id) && $account->uid == $timetracking->uid) {
+      if (user_access("$op own timetracking", $account)) {
+        return TRUE;
+      }
+    }
+    
     if (user_access("$op any timetracking", $account)) {
       return TRUE;
     }
