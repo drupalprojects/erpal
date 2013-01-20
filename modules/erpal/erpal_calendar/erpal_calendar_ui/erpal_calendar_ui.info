@@ -16,6 +16,7 @@ features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
 features[menu_links][] = menu-erpal-menu:calendar
 features[page_manager_existing_pages][] = date_item_panel
+features[page_manager_handlers][] = node_view_panel_context_11
 features[page_manager_handlers][] = pm_existing_pages_date_item_panel_panel_context
 features[page_manager_pages][] = full_calendar_pane
 features[variable][] = pm_existing_pages_disabled_date_item_panel
