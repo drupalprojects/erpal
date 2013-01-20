@@ -15,3 +15,77 @@ function erpal_crm_tasks_form_alter(&$form, &$form_state, $form_id) {
   }
   
 }
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_crm_tasks_node_presave($node) {
+  if ($node->type == 'erpal_crm_activity') {
+    _erpal_crm_tasks_crm_activity_presave($node);
+  }
+}
+
+/**
+* Perform actions of a crm activity node is presaved
+*/
+function _erpal_crm_tasks_crm_activity_presave($node) {
+  $add_on_insert = _erpal_crm_tasks_create_on_insert();
+  $add_on_update = _erpal_crm_tasks_create_on_update();
+  $current_task_nid = isset($node->field_task_ref[LANGUAGE_NONE][0]['target_id']) ? $node->field_task_ref[LANGUAGE_NONE][0]['target_id'] : false;
+  
+  if ($current_task_nid)
+    return; //if there is already a task, don't add a new one
+  
+  if ($node->nid && !$add_on_update)
+    return; //don't add a task if node is updated
+
+  if (!$node->nid && !$add_on_insert)
+    return; //don't add a task if node is updated
+    
+  _erpal_crm_tasks_activity_add_task($node);
+  
+}
+
+/**
+* adds a task to a crm activity.
+*/
+function _erpal_crm_tasks_activity_add_task($node) {
+  global $user;
+  
+  //if there is no project, we don't create a task
+  $project_nid = variable_get('crm_tasks_project', false);
+  
+  if (!$project_nid)
+    return;
+
+  $task_nid = variable_get('crm_tasks_task', false);
+  
+  $form_id = 'erpal_task_node_form';
+ 
+  $task_node = array('type' => 'erpal_task');
+  module_load_include('inc', 'node', 'node.pages'); 
+  $form_values = array(
+    'title' => $node->title,
+    'body' => array(LANGUAGE_NONE => array('value' => '')),
+    'language' => LANGUAGE_NONE,
+    'name' => $user->name,
+    'status' => 1,
+    'type' => 'erpal_task',
+    'promote' => 0,
+    'sticky' => 0,
+    'field_project_ref' => array(LANGUAGE_NONE => array(0 => array('target_id' => _erpal_basic_helper_autocomplete_string_from_nid($project_nid)))),
+  );
+  
+  if ($task_nid)
+    $form_values['field_parent'][LANGUAGE_NONE][0]['target_id'] = _erpal_basic_helper_autocomplete_string_from_nid($task_nid);
+ 
+  $form_values['op'] = t('Save');  // this seems to be a required value
+  $form_state['values'] = $form_values;
+  drupal_form_submit($form_id, $form_state, (object)$task_node);
+  
+  $task_node = $form_state['node'];
+  
+  $node->field_task_ref[LANGUAGE_NONE][0]['target_id'] = $task_node->nid;
+
+  return $task_node;
+}
