@@ -9213,34 +9213,41 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   $handler = $view->new_display('panel_pane', 'Budget timetrackings pane', 'panel_pane_3');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Content: Author */
-  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
-  $handler->display->display_options['relationships']['uid']['table'] = 'node';
-  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['field_budget_target_id']['id'] = 'field_budget_target_id';
-  $handler->display->display_options['relationships']['field_budget_target_id']['table'] = 'field_data_field_budget';
-  $handler->display->display_options['relationships']['field_budget_target_id']['field'] = 'field_budget_target_id';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_timetracking_subject_target_id']['id'] = 'field_timetracking_subject_target_id';
   $handler->display->display_options['relationships']['field_timetracking_subject_target_id']['table'] = 'field_data_field_timetracking_subject';
   $handler->display->display_options['relationships']['field_timetracking_subject_target_id']['field'] = 'field_timetracking_subject_target_id';
+  /* Relationship: Content: Pricing (field_pricing) */
+  $handler->display->display_options['relationships']['field_pricing_value']['id'] = 'field_pricing_value';
+  $handler->display->display_options['relationships']['field_pricing_value']['table'] = 'field_data_field_pricing';
+  $handler->display->display_options['relationships']['field_pricing_value']['field'] = 'field_pricing_value';
+  $handler->display->display_options['relationships']['field_pricing_value']['relationship'] = 'field_timetracking_subject_target_id';
+  $handler->display->display_options['relationships']['field_pricing_value']['delta'] = '-1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_budgets_target_id']['id'] = 'field_budgets_target_id';
+  $handler->display->display_options['relationships']['field_budgets_target_id']['table'] = 'field_data_field_budgets';
+  $handler->display->display_options['relationships']['field_budgets_target_id']['field'] = 'field_budgets_target_id';
+  $handler->display->display_options['relationships']['field_budgets_target_id']['relationship'] = 'field_pricing_value';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_project_ref_target_id']['id'] = 'field_project_ref_target_id';
   $handler->display->display_options['relationships']['field_project_ref_target_id']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['relationships']['field_project_ref_target_id']['field'] = 'field_project_ref_target_id';
   $handler->display->display_options['relationships']['field_project_ref_target_id']['relationship'] = 'field_timetracking_subject_target_id';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Budget: Budget ID */
-  $handler->display->display_options['arguments']['budget_id']['id'] = 'budget_id';
-  $handler->display->display_options['arguments']['budget_id']['table'] = 'budget';
-  $handler->display->display_options['arguments']['budget_id']['field'] = 'budget_id';
-  $handler->display->display_options['arguments']['budget_id']['relationship'] = 'field_budget_target_id';
-  $handler->display->display_options['arguments']['budget_id']['default_action'] = 'empty';
-  $handler->display->display_options['arguments']['budget_id']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['budget_id']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['budget_id']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['budget_id']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Field collection item: Budgets (field_budgets) */
+  $handler->display->display_options['arguments']['field_budgets_target_id']['id'] = 'field_budgets_target_id';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['table'] = 'field_data_field_budgets';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['field'] = 'field_budgets_target_id';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['relationship'] = 'field_pricing_value';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_budgets_target_id']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -9310,8 +9317,9 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
     t('Timetracking by project pane'),
     t('Timetracking title'),
     t('Budget timetrackings pane'),
-    t('budget entity referenced from field_budget'),
     t('Content entity referenced from field_timetracking_subject'),
+    t('field collection item from field_pricing'),
+    t('budget entity referenced from field_budgets'),
     t('Content entity referenced from field_project_ref'),
   );
   $export['timetrackings'] = $view;
