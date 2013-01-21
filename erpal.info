@@ -3,6 +3,8 @@ description = Install ERPAL
 version = VERSION
 core = 7.x
 
+dependencies[] = devel
+
 ;core
 dependencies[] = php
 dependencies[] = menu
