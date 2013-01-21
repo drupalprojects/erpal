@@ -20,6 +20,12 @@ function computed_field_field_timetracking_button_compute(&$entity_field, $entit
  * Alter the timetracking node form
  */
 function _erpal_projects_helper_timetracking_node_form_alter(&$form, $form_state) {
+  //we alter only, if the timetracking will be new created, not for existing timetrackings
+  $nid = isset($form['nid']['#value']) ? $form['nid']['#value'] : false;
+  if ($nid) {
+    return;
+  }
+  
   if (isset($form['field_timetracking_subject'][LANGUAGE_NONE][0]['target_id'])) {
     $target_string = $form['field_timetracking_subject'][LANGUAGE_NONE][0]['target_id']['#default_value'];
     if (!$target_string) {

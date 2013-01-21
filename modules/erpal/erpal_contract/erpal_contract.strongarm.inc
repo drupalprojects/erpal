@@ -183,7 +183,7 @@ function erpal_contract_strongarm() {
           'weight' => '26',
         ),
         'path' => array(
-          'weight' => '30',
+          'weight' => '10',
         ),
         'alias' => array(
           'weight' => '17',

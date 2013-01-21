@@ -9,6 +9,7 @@ dependencies[] = budget
 dependencies[] = computed_field
 dependencies[] = ctools
 dependencies[] = date
+dependencies[] = editablefields
 dependencies[] = entityreference
 dependencies[] = erpal_crm
 dependencies[] = erpal_field_pricing
