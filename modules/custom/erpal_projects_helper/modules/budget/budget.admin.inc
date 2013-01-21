@@ -29,7 +29,7 @@ class budgetUIController extends EntityDefaultUIController {
       'page callback' => 'budget_form_wrapper',
       'page arguments' => array(budget_create(array('type' => 'budget'))),
       'access callback' => 'budget_access',
-      'access arguments' => array('edit', 'edit budget'),
+      'access arguments' => array('create'),
       'file' => 'budget.admin.inc',
       'file path' => drupal_get_path('module', $this->entityInfo['module'])
     );
