@@ -43,26 +43,18 @@ function erpal_crm_helper_erpal_contexts($router_item) {
     if (!$node || !is_object($node))
       return $contexts;
     
-    //check if we have a subpath like node/23/timetracking or something like this
+    //check if we have a subpath like node/23/invoices or something like this
     $is_crm_context_node = false;
-    if (arg(2) && arg(2) != 'edit') {
-      switch ($node->type) {
-        case 'erpal_contact':  
-        case 'erpal_crm_activity':       
+   
+    switch ($node->type) {
+      case 'erpal_contact':  
         $is_crm_context_node = true;
+        $contexts[ERPAL_CONTEXT_CONTACT] = true;  
         break;
-      }
-    } else {
-      switch ($node->type) {
-        case 'erpal_contact':  
-          $is_crm_context_node = true;
-          $contexts[ERPAL_CONTEXT_CONTACT] = true;  
-          break;
-        case 'erpal_crm_activity':
-          $is_crm_context_node = true;
-          $contexts[ERPAL_CONTEXT_ACTIVITY] = true;          
-          break;        
-      }
+      case 'erpal_crm_activity':
+        $is_crm_context_node = true;
+        $contexts[ERPAL_CONTEXT_ACTIVITY] = true;          
+        break;        
     }
     
     if ($is_crm_context_node) {

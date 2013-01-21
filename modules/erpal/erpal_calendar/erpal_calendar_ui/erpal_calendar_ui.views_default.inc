@@ -52,11 +52,50 @@ function erpal_calendar_ui_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'src_id';
+  /* Filter criterion: date item: Date tags (field_date_item_tags) */
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['id'] = 'field_date_item_tags_tid';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['table'] = 'field_data_field_date_item_tags';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['field'] = 'field_date_item_tags_tid';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['expose']['operator_id'] = 'field_date_item_tags_tid_op';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['expose']['label'] = 'Date categories';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['expose']['operator'] = 'field_date_item_tags_tid_op';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['expose']['identifier'] = 'field_date_item_tags_tid';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['vocabulary'] = 'date_item_tags';
+  $handler->display->display_options['filters']['field_date_item_tags_tid']['error_message'] = FALSE;
 
   /* Display: Full calendar pane */
   $handler = $view->new_display('panel_pane', 'Full calendar pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['full_calendar'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('relation src node'),
+    t('Date'),
+    t('Title'),
+    t('Date categories'),
+    t('Full calendar pane'),
+    t('View panes'),
+  );
   $export['full_calendar'] = $view;
 
   return $export;

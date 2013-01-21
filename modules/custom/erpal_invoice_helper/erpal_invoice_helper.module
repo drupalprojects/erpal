@@ -4,7 +4,14 @@
  * Code for the erpal_invoice_helper module.
  */
 module_load_include('inc', 'erpal_invoice_helper', 'inc/token');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/theme');
 module_load_include('inc', 'erpal_invoice_helper', 'inc/billables.elements');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.pdf');
+module_load_include('inc', 'erpal_invoice_helper', 'inc/dynamic.menu');
 
 /**
  * Implements hook_action_info().
@@ -21,6 +28,15 @@ function erpal_invoice_helper_action_info() {
     ),
   ); 
 }
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_invoice_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'erpal_invoice_helper' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+} 
 
 /**
 * Implements hook_theme
@@ -159,12 +175,6 @@ function erpal_invoice_helper_field_formatter_view($entity_type, $entity, $field
 * implements hook_init
 */
 function erpal_invoice_helper_init() {
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/actions');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/config');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/helper');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.pdf');
-  module_load_include('inc', 'erpal_invoice_helper', 'inc/dynamic.menu');
    
   //@TODO that is really bad, but we have no other chance right now. The problem is:
   //if the customer changes in an invoice, we change the allowed values using #ajax at the customer
@@ -188,7 +198,11 @@ function erpal_invoice_helper_init() {
 * Implements hook_form_alter
 */
 function erpal_invoice_helper_form_alter(&$form, &$form_state, $form_id) {
-
+  
+  if($form_id == 'views_form_invoices_panel_pane_4'){
+    $form['actions']['#attributes']['class'][] = 'element-invisible';
+  }
+  
   if ($form_id == 'node_delete_confirm') {
     if (arg(0) == 'node') {
       $node = node_load($form['nid']['#value']);
@@ -1537,4 +1551,53 @@ function _erpal_invoice_helper_get_vat_rate_by_address($address_id) {
   }
 
   return $default_vat_rate;
+}
+
+
+/**
+* Implements hook_preprocess_field
+*/
+function erpal_invoice_helper_preprocess_field(&$variables) {
+  _erpal_invoice_helper_preprocess_field_warnings($variables);
+}
+
+
+/**
+* alter fields so they display warning colors
+*/
+function _erpal_invoice_helper_preprocess_field_warnings(&$variables) {
+  $element = $variables['element'];
+  $object = isset($element['#object']) ? $element['#object'] : false;
+  
+  if (!$object)
+    return;
+
+  if ($element['#field_name'] == 'field_payed' || $element['#field_name'] == 'field_payment_date') {    
+  
+    //if semantic meaning is "in progress" and deadline is over current date, make red    
+    if (isset($object->type) && ($object->type == 'erpal_invoice')) {
+      $node = $object;
+      //get the status field name
+      $deadline = isset($node->field_payment_date[LANGUAGE_NONE][0]) ? $node->field_payment_date[LANGUAGE_NONE][0]['value'] : false;
+      
+      if ($deadline)
+        $deadline_unix = erpal_date_as_unix_timestamp($deadline);   
+      else
+        $deadline_unix = false;
+        
+      //date and state are set
+      $paid = isset($object->field_payed[LANGUAGE_NONE][0]['value']) ? $object->field_payed[LANGUAGE_NONE][0]['value'] : false;
+      $field_status = ERPAL_STATUS_NONE;
+      if (!$paid && time() > $deadline_unix && $deadline_unix) {
+        $field_status = ERPAL_STATUS_ALERT;
+      }
+      
+      //only the state is set, NO date end
+      if ($paid) {
+        $field_status = ERPAL_STATUS_COMPLETED;
+      }
+      
+      $variables['classes_array'][] = $field_status;
+    }
+  }
 }

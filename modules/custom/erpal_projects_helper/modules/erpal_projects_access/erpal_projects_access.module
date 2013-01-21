@@ -178,7 +178,7 @@ function _erpal_projects_access_manage_task_acl_process($task_node, $op, $projec
   $ticket_view_acl = _erpal_projects_access_init_project_acl($task_node->nid, 'view', 'ticket', $recreate_acl);
   module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
   $ticket_update_acl = _erpal_projects_access_init_project_acl($task_node->nid, 'update', 'ticket', $recreate_acl);
-  dpm($project_node);
+
   $project_team_uids = _erpal_projects_helper_get_project_team_uids($project_node);
 
   //add the task node to all ACLs that are neccessary

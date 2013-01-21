@@ -21,6 +21,7 @@ features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
 features[ds_field_settings][] = node|erpal_contact|full
 features[ds_fields][] = comment_count
+features[ds_layout_settings][] = node|erpal_contact|form
 features[ds_layout_settings][] = node|erpal_contact|full
 features[ds_view_modes][] = in_pane
 features[ds_view_modes][] = view_row_details

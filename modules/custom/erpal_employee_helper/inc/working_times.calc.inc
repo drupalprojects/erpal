@@ -250,11 +250,8 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
       $year_before = date('Y', $year_month_before_unix);
       $month_before = date('m', $year_month_before_unix);
       
-      if ($offset) {
-        $current_holidays_available = $offset->holidays_available;
-      } else {
-        $current_holidays_available = _erpal_employee_get_holidays_available($uid, $year_before, $month_before, 'month', $year_month_unix);
-      }
+      //offsets have been respected in ..._book_user_holidays function before      
+      $current_holidays_available = _erpal_employee_get_holidays_available($uid, $year_before, $month_before, 'month', $year_month_unix);      
       
       $working_times_entity->holidays_available = $current_holidays_available - $working_times_entity->holidays_used;//this is the total amount of available holidays in the total year of this month where as all other values are absolute values only in the current month.     
  
@@ -325,18 +322,28 @@ function _erpal_employee_helper_add_offset($working_times, $offset) {
 }
 
 /**
-* Books the given holidays to a users working times in the given date. First we try to finde some available "old" holiday in the year before if it is not more than the holidays expiration months away. We book it there and return the rest holiday as result of the function
+* Books the given holidays to a users working times in the given date. First we try to finde some available "old" holiday in the year before if it is not more than the holidays expiration months away. We book it there and return the rest holiday as result of the function. If we find an offset with rest holidays, we use this first and only!
 */
 function _erpal_employee_helper_book_user_holidays($uid, $holidays, $month, $year, $working_times_entity_month) {
   
-  //get working_times from year before and see if the available holidays there are not yet expired.
-  $working_times = working_times_load_by_user('year', $uid, $year-1);
-  if (!count($working_times)) {
-    //no rest holidays found in the last year
-    return $holidays;
-  }
+  //try to get an offset from the last year
+  $offset = working_times_load_by_user('offset', $uid, $year-1);      
+  $offset = array_shift($offset);
   
-  $working_times = array_shift($working_times);
+  //get working_times from year before and see if the available holidays there are not yet expired.
+  if ($offset) {
+    //if we have an offset, we use that first
+    $working_times = $offset;
+  } else {
+    //otherwise check for holidays in the year before
+    $working_times = working_times_load_by_user('year', $uid, $year-1);
+    if (!count($working_times)) {
+      //no rest holidays found in the last year
+      return $holidays;
+    }
+    
+    $working_times = array_shift($working_times);
+  }
 
   //because in the previous run, we already substracted the holidays from the rest holidays of the last year if there were some. So we add them here again, otherwise, they will be substracted again, which will result in wrong data
   $working_times->holidays_available += $working_times_entity_month->holidays_used_from_before;  
@@ -453,7 +460,7 @@ function _erpal_employee_helper_get_reduce_hours($uid, $year, $month) {
     }
     
     if ($is_valid_date) {
-      $duration = $node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+      $duration = $node->field_duration_calc[LANGUAGE_NONE][0]['value'];
       $total_duration += $duration;
     }
   }

@@ -57,7 +57,7 @@ function _erpal_basic_helper_notify_users($users, $message, $module='erpal_basic
 */
 function _erpal_basic_helper_notifications_queue_run($message_arr) {
   //send the message here
-  $users = $message_arr['users'];
+  $users = array_unique($message_arr['users']); // remove user duplicates
   $message = unserialize($message_arr['message']);
   $module = $message_arr['module'];
   $message_type = $message_arr['message_type'];
@@ -96,11 +96,10 @@ function _erpal_basic_helper_notify_users_send($users, $message, $module='erpal_
   $sender = $site_name.' <'.$site_mail.'>';
   $params = array('message' => $message, 'subject' => $subject);
   $message = drupal_mail($module, $message_type, $mails, user_preferred_language($user), $params, $sender);
-   
   if ($message['result']) {
     watchdog('ERPAL notification', t('!count user(s) have been notified', array('!count' => count($users))));
   } else {
-    drupal_set_message('ERPAL notification', t('!count user(s) could NOT be notified because of mail sending error', array('!count' => count($users))), 'error');
+    drupal_set_message(t('ERPAL notification !count user(s) could NOT be notified because of mail sending error', array('!count' => count($users))), 'error');
   }
 }
 

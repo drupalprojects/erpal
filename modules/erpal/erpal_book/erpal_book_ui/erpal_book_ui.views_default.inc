@@ -116,8 +116,9 @@ function erpal_book_ui_views_default_views() {
   $handler->display->display_options['filters']['field_parent_nid']['field'] = 'field_parent_nid';
   $handler->display->display_options['filters']['field_parent_nid']['operator'] = 'empty';
 
-  /* Display: Child nodes */
-  $handler = $view->new_display('panel_pane', 'Child nodes', 'panel_pane_2');
+  /* Display: Child book page nodes */
+  $handler = $view->new_display('panel_pane', 'Child book page nodes', 'panel_pane_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['display_description'] = 'Dispalys all nodes that have parent nid set to contextual filter';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
@@ -148,8 +149,8 @@ function erpal_book_ui_views_default_views() {
     'erpal_task' => 'erpal_task',
   );
   $handler->display->display_options['argument_input'] = array(
-    'field_parent_nid' => array(
-      'type' => 'panel',
+    'field_parent_target_id' => array(
+      'type' => 'user',
       'context' => 'entity:billable.billable-id',
       'context_optional' => 0,
       'panel' => '0',
@@ -157,9 +158,10 @@ function erpal_book_ui_views_default_views() {
       'label' => 'Content: Parent (field_parent)',
     ),
   );
+  $handler->display->display_options['inherit_panels_path'] = '1';
 
-  /* Display: Child nodes AJAX */
-  $handler = $view->new_display('panel_pane', 'Child nodes AJAX', 'panel_pane_3');
+  /* Display: Child book page nodes AJAX */
+  $handler = $view->new_display('panel_pane', 'Child book page nodes AJAX', 'panel_pane_3');
   $handler->display->display_options['display_description'] = 'Load all nodes that have parent nid set to contextual filter';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['cache'] = FALSE;
@@ -279,6 +281,34 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
       'label' => 'Content: Parent (field_parent)',
     ),
   );
+  $translatables['book_children'] = array(
+    t('Master'),
+    t('All child pages'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Edit'),
+    t('Nid'),
+    t('Parent'),
+    t('Type'),
+    t('Weight'),
+    t('All'),
+    t('Child book page nodes'),
+    t('Dispalys all nodes that have parent nid set to contextual filter'),
+    t('View panes'),
+    t('Child book page nodes AJAX'),
+    t('Load all nodes that have parent nid set to contextual filter'),
+  );
   $export['book_children'] = $view;
 
   $view = new view();
@@ -293,7 +323,6 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Books';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access books view';
@@ -303,7 +332,10 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '20';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '30';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
@@ -318,13 +350,6 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<?php return _erpal_book_helper_view_contacts_header_content(); ?>';
-  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -399,63 +424,19 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['filters']['field_book_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_book_tags_tid']['vocabulary'] = 'book_tags';
   $handler->display->display_options['filters']['field_book_tags_tid']['error_message'] = FALSE;
-
-  /* Display: Books */
-  $handler = $view->new_display('page', 'Books', 'page');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'books/books';
-
-  /* Display: Book templates */
-  $handler = $view->new_display('page', 'Book templates', 'page_1');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'erpal_book' => 'erpal_book',
-    'erpal_book_page' => 'erpal_book_page',
-  );
   /* Filter criterion: Content: Is template (field_is_template) */
   $handler->display->display_options['filters']['field_is_template_value']['id'] = 'field_is_template_value';
   $handler->display->display_options['filters']['field_is_template_value']['table'] = 'field_data_field_is_template';
   $handler->display->display_options['filters']['field_is_template_value']['field'] = 'field_is_template_value';
+  $handler->display->display_options['filters']['field_is_template_value']['operator'] = 'not';
   $handler->display->display_options['filters']['field_is_template_value']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Content: Title */
-  $handler->display->display_options['filters']['title']['id'] = 'title';
-  $handler->display->display_options['filters']['title']['table'] = 'node';
-  $handler->display->display_options['filters']['title']['field'] = 'title';
-  $handler->display->display_options['filters']['title']['operator'] = 'contains';
-  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
-  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
-  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-  );
-  $handler->display->display_options['path'] = 'books/templates';
 
   /* Display: Book templates to clone */
   $handler = $view->new_display('page', 'Book templates to clone', 'page_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Books';
   $handler->display->display_options['display_description'] = 'Lists all template pages with bulk op to clone to book given in argument';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -704,6 +685,110 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
     7 => 0,
   );
   $handler->display->display_options['path'] = 'books/clonetemplates/%';
+
+  /* Display: Books pane */
+  $handler = $view->new_display('panel_pane', 'Books pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['inherit_panels_path'] = '1';
+
+  /* Display: Templates pane */
+  $handler = $view->new_display('panel_pane', 'Templates pane', 'panel_pane_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_book' => 'erpal_book',
+    'erpal_book_page' => 'erpal_book_page',
+  );
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Book Tags (field_book_tags) */
+  $handler->display->display_options['filters']['field_book_tags_tid']['id'] = 'field_book_tags_tid';
+  $handler->display->display_options['filters']['field_book_tags_tid']['table'] = 'field_data_field_book_tags';
+  $handler->display->display_options['filters']['field_book_tags_tid']['field'] = 'field_book_tags_tid';
+  $handler->display->display_options['filters']['field_book_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_book_tags_tid']['expose']['operator_id'] = 'field_book_tags_tid_op';
+  $handler->display->display_options['filters']['field_book_tags_tid']['expose']['label'] = 'Tags';
+  $handler->display->display_options['filters']['field_book_tags_tid']['expose']['operator'] = 'field_book_tags_tid_op';
+  $handler->display->display_options['filters']['field_book_tags_tid']['expose']['identifier'] = 'field_book_tags_tid';
+  $handler->display->display_options['filters']['field_book_tags_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_book_tags_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_book_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_book_tags_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_book_tags_tid']['vocabulary'] = 'book_tags';
+  $handler->display->display_options['filters']['field_book_tags_tid']['error_message'] = FALSE;
+  /* Filter criterion: Content: Is template (field_is_template) */
+  $handler->display->display_options['filters']['field_is_template_value']['id'] = 'field_is_template_value';
+  $handler->display->display_options['filters']['field_is_template_value']['table'] = 'field_data_field_is_template';
+  $handler->display->display_options['filters']['field_is_template_value']['field'] = 'field_is_template_value';
+  $handler->display->display_options['filters']['field_is_template_value']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['books'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Post date'),
+    t('Title'),
+    t('Tags'),
+    t('Book templates to clone'),
+    t('Books'),
+    t('Lists all template pages with bulk op to clone to book given in argument'),
+    t('Select'),
+    t('Is template'),
+    t('Books pane'),
+    t('View panes'),
+    t('Templates pane'),
+  );
   $export['books'] = $view;
 
   return $export;

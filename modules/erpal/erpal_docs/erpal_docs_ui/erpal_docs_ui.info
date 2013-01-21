@@ -25,5 +25,6 @@ features[ds_fields][] = files_count
 features[features_api][] = api:1
 features[menu_links][] = menu-erpal-menu:documents
 features[page_manager_handlers][] = node_view_panel_context_7
+features[page_manager_pages][] = documents_panel
 features[views_view][] = documents
 features[views_view][] = documents_usage_comments

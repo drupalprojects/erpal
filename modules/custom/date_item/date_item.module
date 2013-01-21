@@ -102,8 +102,8 @@ function date_item_menu() {
     'title' => 'Edit',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('date_item_form', 1),
-    'access callback' => 'date_item_edit_access',
-    'access arguments' => array(1),
+    'access callback' => 'entity_access',
+    'access arguments' => array('view', 'date_item', 1),
     'weight' => 10,
     'type' => MENU_LOCAL_TASK,
   );
@@ -136,6 +136,13 @@ function date_item_menu() {
   return $items;
 }
 
+/**
+* Access callback for date item. Must be in this file, otherwise the function won't work, even if it results "true" we don't get 
+*/
+function __date_item_access($op, $date_item = NULL, $account = NULL, $entity_type) {
+  return true;
+  return _date_item_access($op, $date_item, $account, $entity_type);  
+}
 
 /**
 * Decides of a date item could be edit or not
@@ -571,7 +578,7 @@ function _date_item_update_date_items_process($entity, $field_name, $field_data,
 /**
 * Implements hook_entity_presave
 */
-function date_item_field_attach_presave($entity, $entity_type) {
+function date_item_field_attach_presave($entity_type, $entity) {
   if ($entity_type == 'date_item') {    
     module_invoke_all('date_item_presave', $entity);
   }

@@ -480,6 +480,30 @@ function erpal_project_ui_ds_layout_settings_info() {
 
   $ds_layout = new stdClass();
   $ds_layout->api_version = 1;
+  $ds_layout->id = 'node|erpal_task|in_activity';
+  $ds_layout->entity_type = 'node';
+  $ds_layout->bundle = 'erpal_task';
+  $ds_layout->view_mode = 'in_activity';
+  $ds_layout->layout = 'ds_1col';
+  $ds_layout->settings = array(
+    'hide_empty_regions' => 1,
+    'hide_sidebars' => 1,
+    'regions' => array(
+      'ds_content' => array(
+        0 => 'field_timetracking_button',
+        1 => 'field_project_tags',
+      ),
+    ),
+    'fields' => array(
+      'field_timetracking_button' => 'ds_content',
+      'field_project_tags' => 'ds_content',
+    ),
+    'classes' => array(),
+  );
+  $export['node|erpal_task|in_activity'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
   $ds_layout->id = 'node|erpal_task|view_row_details';
   $ds_layout->entity_type = 'node';
   $ds_layout->bundle = 'erpal_task';

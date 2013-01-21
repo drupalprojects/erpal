@@ -1,12 +1,14 @@
 <?php
 
 /**
-* @file provide functions for dynamic menu items in Timekeeping context
+* @file provide functions for dynamic menu items in timekeeping context
 */
 //define some contexts
-define('ERPAL_CONTEXT_TIMEKEEPING_GLOBAL', 'timekeeping_global'); //timekeeping lists
-define('ERPAL_CONTEXT_TIMEKEEPING_USER', 'timekeeping_user'); //timekeeping offsets profil page
-//@TODO add edit and add form links and contexts
+define('ERPAL_CONTEXT_WORKING_TIMES', 'working_times'); //working_times list
+define('ERPAL_CONTEXT_WORKING_TIMES_GLOBAL', 'working_times_global');
+define('ERPAL_CONTEXT_WORKING_TIMES_ALL_GLOBAL', 'working_times_all_global');
+define('ERPAL_CONTEXT_WORKING_TIME', 'working_time');
+define('ERPAL_CONTEXT_USER_OFFSETS', 'user_offsets'); //list of offsets of a user
 
 /**
 * Implement hook_erpal_contexts definied in erpal_basic_helper module
@@ -19,43 +21,48 @@ function erpal_employee_helper_erpal_contexts($router_item) {
   $node = _erpal_basic_helper_router_object(1, $router_item);
   
   //do we have node add form
-  if (drupal_match_path($path, 'node/add/erpal-working-time')) { 
-    $contexts[ERPAL_CONTEXT_TIMEKEEPING_GLOBAL] = true;
+  if (drupal_match_path($path, 'node/add/erpal-working-time*')) { 
+    $contexts[ERPAL_CONTEXT_WORKING_TIMES_GLOBAL] = true;
+    $contexts[ERPAL_CONTEXT_WORKING_TIME] = true;  
   }
   
   //do we have an edit form?
   if ($path == 'node/%/edit') {
     if ($node->type == 'erpal_working_time') {
-      $contexts[ERPAL_CONTEXT_TIMEKEEPING_GLOBAL] = true;
+      $contexts[ERPAL_CONTEXT_WORKING_TIMES_GLOBAL] = true;
     }
+  }
+  
+  if ($path == 'user/%/timekeeping-offsets') {
+    $contexts[ERPAL_CONTEXT_USER_OFFSETS] = true;
   }
      
   if (drupal_match_path($path, 'node/%*') ) {    
     if (!$node || !is_object($node))
       return $contexts;
     
-    //check if we have a subpath like node/23/abc or something like this
-    if ($node->type == 'erpal_working_time') {
-      if (arg(2) && arg(2) != 'edit') {
-        $contexts[ERPAL_CONTEXT_TIMEKEEPING_GLOBAL] = true;  
-      } else {
-        $contexts[ERPAL_CONTEXT_TIMEKEEPING_GLOBAL] = true;  
-      }
+    //check if we have a subpath like node/23/bla or something like this  
+    switch ($node->type) {
+      case 'erpal_working_time':  
+        $contexts[ERPAL_CONTEXT_WORKING_TIME] = true; 
+        $contexts[ERPAL_CONTEXT_WORKING_TIMES_GLOBAL] = true;         
+        break;       
     }
-    
   }
 
-  //Timekeeping Global CONTEXT
-  if (drupal_match_path($path, 'timekeeping*')) {        
-    $contexts[ERPAL_CONTEXT_TIMEKEEPING_GLOBAL] = true;      
-  }
-  
-  //Timekeeping User CONTEXT
-  if (drupal_match_path($path, 'user/%/timekeeping-offsets')) {        
-    $contexts[ERPAL_CONTEXT_TIMEKEEPING_USER] = true;      
-  }
-  
+  //CHECK Doc Global CONTEXT
+  if (drupal_match_path($path, 'timekeeping')) {  
+    $contexts[ERPAL_CONTEXT_WORKING_TIMES_GLOBAL] = true;      
+  }  
 
+  if (drupal_match_path($path, 'timekeeping')) {  
+    $contexts[ERPAL_CONTEXT_WORKING_TIMES] = true;        
+  }    
+  
+  if (drupal_match_path($path, 'timekeeping/all')) {  
+    $contexts[ERPAL_CONTEXT_WORKING_TIMES_ALL_GLOBAL] = true;         
+  }   
+  
   return $contexts;  
 
 }
@@ -67,38 +74,41 @@ function erpal_employee_helper_erpal_contexts($router_item) {
 function erpal_employee_helper_dynamic_menu_items_alter(&$data, $router_item, $root_path) {
   $node = _erpal_basic_helper_router_object(1, $router_item);
   $is_node_view = !isset($router_item['original_map'][2]) || $router_item['original_map'][2] == 'view'; 
+
+  //Working times context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_WORKING_TIMES, $router_item)) {    
+    _erpal_employee_helper_working_times_links($data);          
+    _erpal_employee_helper_timekeeping_global_menu_tabs($data, $node, array('timekeeping'));   
+  } 
   
-  //activities list context
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_TIMEKEEPING_GLOBAL, $router_item)) {        
-    _erpal_employee_helper_timekeeping_global_links($data);       
+  //Working Time context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_WORKING_TIME, $router_item)) {    
+    _erpal_employee_helper_working_time_links($data, $node, $is_node_view); 
+    _erpal_employee_helper_timekeeping_global_menu_tabs($data, $node, array('timekeeping'));   
+  }
+ 
+  //just global context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_WORKING_TIMES_GLOBAL, $router_item)) {    
+    _erpal_employee_helper_timekeeping_global_menu_tabs($data, $node, array('timekeeping'));   
   }
   
-  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_TIMEKEEPING_USER, $router_item)) {        
-    _erpal_employee_helper_timekeeping_offsets_user_links($data, $router_item);       
-  }  
+  //just global context
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_WORKING_TIMES_ALL_GLOBAL, $router_item)) {    
+    _erpal_employee_helper_timekeeping_global_menu_tabs($data, $node, array('all timekeeping'));   
+  }
   
+  if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_USER_OFFSETS, $router_item)) {
+    $user = $node;
+    _erpal_employee_helper_user_offsets_links($data, $user);
+  }
 }
 
 /**
-* Shows all global timekeeping links
+* Adds links to list of user working times offset
 */
-function _erpal_employee_helper_timekeeping_global_links(&$data) {
-  //contacts list context
+function _erpal_employee_helper_user_offsets_links(&$data, $user) {
   $query = array('destination' => $_GET['q']);
-  erpal_make_action($data, t('Create a new working time'), 'node/add/erpal-working-time', $query);
-  
-  _erpal_employee_helper_crm_global_menu_tabs($data);
-}
-
-/**
-* Shows all links on users profile timekeeting offsets pages
-*/
-function _erpal_employee_helper_timekeeping_offsets_user_links(&$data, $router_item) {
-  //contacts list context
-  $query = array('destination' => $_GET['q']);
-  $uid = $router_item['original_map'][1];
-  erpal_make_action($data, t('Add new offset'), 'working_times/add/'.$uid, $query);
-  
+  erpal_make_action($data, t('Create a new offset'), 'working_times/add/'.$user->uid, $query);
 }
 
 /**
@@ -112,17 +122,40 @@ function erpal_employee_helper_erpal_menu_parents($router_item) {
 * returns the menu parents for a given router item, according to its context
 */
 function _erpal_employee_helper_get_menu_parents($router_item) {
-  $timekeeping_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_TIMEKEEPING_GLOBAL, $router_item);
+  $working_times_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_WORKING_TIMES_GLOBAL, $router_item);
+  $working_times_all_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_WORKING_TIMES_ALL_GLOBAL, $router_item);
 
-  if ($timekeeping_global) {
+  if ($working_times_global || $working_times_all_global) {
     return 'timekeeping';
   }
 }
 
 /**
-* Show all menu tab links for crm context
+* Adds all doc context links
 */
-function _erpal_employee_helper_crm_global_menu_tabs(&$data, $current_nid=false, $active_tabs=array()) {
+function _erpal_employee_helper_working_times_links(&$data) {
+  //docs list context
+  $query = array('destination' => $_GET['q']);
+  erpal_make_action($data, t('Create a new working time'), 'node/add/erpal-working-time', $query);
+}
+
+
+/**
+* Adds all doc context links
+*/
+function _erpal_employee_helper_working_time_links(&$data, $node, $is_node_view=false) {
+  //single doc context
+  if ($is_node_view) {
+    $query = array();
+    erpal_make_action($data, t('Edit this working time'), 'node/'.$node->nid.'/edit', $query);    
+  }
+}
+
+
+/**
+* Show all menu tab links for doc context
+*/
+function _erpal_employee_helper_timekeeping_global_menu_tabs(&$data, $current_nid=false, $active_tabs=array()) {
 
   static $processed = false;
   
@@ -131,6 +164,8 @@ function _erpal_employee_helper_crm_global_menu_tabs(&$data, $current_nid=false,
 
   $processed = true;
 
-  erpal_make_local_tab($data, t('My timekeeping'), 'timekeeping', array(), in_array('my_timekeeping', $active_tabs)); 
-  erpal_make_local_tab($data, t('All timekeeping'), 'timekeeping/all', array(), in_array('all_timekeeping', $active_tabs)); 
+  //thi will only be shown if we add another tab here!
+  erpal_make_local_tab($data, t('Timekeeping'), 'timekeeping', array(), in_array('timekeeping', $active_tabs));
+  erpal_make_local_tab($data, t('All Timekeeping'), 'timekeeping/all', array(), in_array('all timekeeping', $active_tabs));
+
 } 

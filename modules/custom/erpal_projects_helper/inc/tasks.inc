@@ -245,9 +245,70 @@ function _erpal_projects_helper_get_tasks_of_project_having_no_task_parent($proj
 /**
 * Presave function for tasks
 */
-function erpal_projects_helper_node_presave_task($task_node) {
-  _erpal_projects_helper_task_set_project($task_node);
-  _erpal_projects_helper_field_automation($task_node);
+function erpal_projects_helper_node_presave_task($node) {
+  _erpal_projects_helper_task_set_project($node);
+  _erpal_projects_helper_field_automation($node);
+  if (!empty($node->original)) {
+    _erpal_projects_helper_subscribe_task_assigned_users($node);
+  }
+}
+
+/**
+ * subscribe users assigned to task 
+ */
+function _erpal_projects_helper_subscribe_task_assigned_users($node){
+  $assigned = $assigned_original = $assigned_users_original = $assigned_users = array();
+  
+  // get uids of assigned users
+  $assigned_users = field_get_items('node', $node, 'field_task_assigned_users');
+  if(!empty($assigned_users) && is_array($assigned_users)){
+    foreach ($assigned_users as $assigned_user) {
+      $assigned[] = $assigned_user['target_id'];
+    }
+  }
+  // get uids of original assigned users
+  if (isset($node->original))
+    $assigned_users_original = field_get_items('node', $node->original, 'field_task_assigned_users');
+
+  if(!empty($assigned_users_original) && is_array($assigned_users_original)){
+    foreach ($assigned_users_original as $assigned_user_original) {
+      $assigned_original[] = $assigned_user_original['target_id'];
+    }
+  }
+  
+  // find added users
+  $updated_diff = array_diff($assigned, $assigned_original);
+  // find deleted users
+  $original_diff = array_diff($assigned_original, $assigned);
+  
+  // subscribe users to the erpal_task
+  if (!empty($updated_diff)) {
+    _erpal_projects_helper_loop_task_users($updated_diff, $node, 'flag');
+  }
+  
+  // unsubscribe users from the erpal_task
+  if (!empty($original_diff)) {
+    if (isset($node->original)) {
+      _erpal_projects_helper_loop_task_users($original_diff, $node->original, 'unflag');
+    }
+  }
+}
+
+/**
+ * helper function
+ * subscribe / unsubscribe users from the erpal_task
+ */
+function _erpal_projects_helper_loop_task_users($assigned_users, $node, $action){
+  foreach ($assigned_users as $assigned_user) {
+    if($account = user_load($assigned_user)){
+      // subscribe/unsubscribe users
+      _erpal_projects_helper_flag($node->type, $node->nid, $action, $account);
+      // send notification email to assigned user
+      if ($action == 'flag' && $node->type == 'erpal_task') {
+        _erpal_projects_helper_user_assigned_email($account, $node, 'assign');
+      }
+    }
+  }
 }
 
 /**

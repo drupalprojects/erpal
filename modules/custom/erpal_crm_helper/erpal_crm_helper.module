@@ -5,13 +5,8 @@
  * This is needed by the feature_erpal_crm
  */
 
-/**
-* Implements hook_init
-*/
-function erpal_crm_helper_init() {
-  module_load_include('inc', 'erpal_crm_helper', 'inc/dynamic.menu');
-  module_load_include('inc', 'erpal_crm_helper', 'inc/theme');
-}
+module_load_include('inc', 'erpal_crm_helper', 'inc/dynamic.menu');
+module_load_include('inc', 'erpal_crm_helper', 'inc/theme');
  
 /**
 * Implements hook_menu
@@ -184,4 +179,42 @@ function _erpal_crm_helper_get_date_status_state($date_unix, $status_term, $node
   
   return ERPAL_STATUS_NONE;
 }
+
+/**
+* Implements hook_preprocess_field
+*/
+function erpal_crm_helper_preprocess_field(&$variables) {
+  _erpal_crm_helper_preprocess_field_warnings($variables);
+}
+
+
+/**
+* alter fields so they display warning colors
+*/
+function _erpal_crm_helper_preprocess_field_warnings(&$variables) {
+  $element = $variables['element'];
+  $object = isset($element['#object']) ? $element['#object'] : false;
+  
+  if (!$object)
+    return;
+
+  if ($element['#field_name'] == 'field_activity_status_term' || $element['#field_name'] == 'field_next_contact') {    
+  
+    //if semantic meaning is "in progress" and deadline is over current date, make red    
+    if (isset($object->type) && ($object->type == 'erpal_crm_activity')) {
+      $node = $object;
+      //get the status field name
+      $deadline = isset($node->field_next_contact[LANGUAGE_NONE][0]) ? $node->field_next_contact[LANGUAGE_NONE][0]['value'] : false;
+      
+      if ($deadline)
+        $deadline_unix = erpal_date_as_unix_timestamp($deadline);   
+      else
+        $deadline_unix = false;
+        
+      $status = _erpal_crm_helper_get_date_status_state($deadline_unix, false, $node, 'field_activity_status_term');
+      $variables['classes_array'][] = $status;
+    }
+  }
+}
+
 

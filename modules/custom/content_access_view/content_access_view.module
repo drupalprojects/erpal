@@ -144,13 +144,14 @@ function content_access_view_user_admin_perm_submit($form, $form_state) {
 function _content_access_view_leave_admin_permissions(&$settings, $permission_type) {
   // Get admin roles
   $admin_roles = content_access_get_permission_access('administer nodes');
-
-  foreach ($settings[$permission_type] as $node_type_access_key => $node_type_access) {
-    // Get non admin roles and unset them
-    $not_admin_roles = array_diff($node_type_access, $admin_roles);
-    if (!empty($not_admin_roles)) {
-      foreach ($not_admin_roles as $not_admin_role_key => $not_admin_role) {
-        unset($settings[$permission_type][$node_type_access_key][$not_admin_role_key]);
+  if (isset($settings[$permission_type])) {
+    foreach ($settings[$permission_type] as $node_type_access_key => $node_type_access) {
+      // Get non admin roles and unset them
+      $not_admin_roles = array_diff($node_type_access, $admin_roles);
+      if (!empty($not_admin_roles)) {
+        foreach ($not_admin_roles as $not_admin_role_key => $not_admin_role) {
+          unset($settings[$permission_type][$node_type_access_key][$not_admin_role_key]);
+        }
       }
     }
   }

@@ -1090,7 +1090,7 @@ function erpal_project_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'increment' => '15',
+          'increment' => '1',
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
@@ -1538,6 +1538,12 @@ function erpal_project_field_default_fields() {
           'type' => 'text_default',
           'weight' => 3,
         ),
+        'in_activity' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 25,
+        ),
         'teaser' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -1641,6 +1647,12 @@ function erpal_project_field_default_fields() {
           ),
           'type' => 'entityreference_label',
           'weight' => 4,
+        ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 24,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1765,6 +1777,12 @@ function erpal_project_field_default_fields() {
           'type' => 'date_default',
           'weight' => 9,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 16,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1801,7 +1819,7 @@ function erpal_project_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'increment' => '15',
+          'increment' => '1',
           'input_format' => 'Y-m-d H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
@@ -1870,6 +1888,12 @@ function erpal_project_field_default_fields() {
           ),
           'type' => 'number_decimal',
           'weight' => 13,
+        ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 26,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1960,6 +1984,12 @@ function erpal_project_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 20,
+        ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 22,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2072,6 +2102,12 @@ function erpal_project_field_default_fields() {
           'type' => 'entityreference_label',
           'weight' => 11,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 17,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -2176,6 +2212,12 @@ function erpal_project_field_default_fields() {
           'type' => 'hidden',
           'weight' => 23,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 23,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -2266,6 +2308,12 @@ function erpal_project_field_default_fields() {
           'settings' => array(),
           'type' => 'list_default',
           'weight' => 15,
+        ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 28,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2383,6 +2431,12 @@ function erpal_project_field_default_fields() {
           'type' => 'entityreference_label',
           'weight' => 14,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 20,
+        ),
         'teaser' => array(
           'label' => 'above',
           'module' => 'entityreference',
@@ -2491,6 +2545,19 @@ function erpal_project_field_default_fields() {
           'type' => 'taxonomy_term_reference_link',
           'weight' => 5,
         ),
+        'in_activity' => array(
+          'label' => 'hidden',
+          'module' => 'editablefields',
+          'settings' => array(
+            'click_to_edit' => FALSE,
+            'click_to_edit_style' => 'button',
+            'empty_text' => '',
+            'fallback_format' => NULL,
+            'fallback_settings' => array(),
+          ),
+          'type' => 'editable',
+          'weight' => 1,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -2595,6 +2662,12 @@ function erpal_project_field_default_fields() {
           'type' => 'entityreference_label',
           'weight' => 10,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 27,
+        ),
         'teaser' => array(
           'label' => 'above',
           'module' => 'entityreference',
@@ -2690,6 +2763,12 @@ function erpal_project_field_default_fields() {
           'type' => 'list_default',
           'weight' => 12,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 15,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -2775,6 +2854,12 @@ function erpal_project_field_default_fields() {
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
           'weight' => 7,
+        ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 19,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2863,6 +2948,12 @@ function erpal_project_field_default_fields() {
           'type' => 'taxonomy_term_reference_link',
           'weight' => 6,
         ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 18,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -2942,6 +3033,13 @@ function erpal_project_field_default_fields() {
           'type' => 'hidden',
           'weight' => 24,
         ),
+        'in_activity' => array(
+          'label' => 'hidden',
+          'module' => 'computed_field',
+          'settings' => array(),
+          'type' => 'computed_field_unsanitized',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -3011,6 +3109,12 @@ function erpal_project_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 26,
+        ),
+        'in_activity' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 29,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3249,6 +3353,12 @@ function erpal_project_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_timetracking',
+      'comment_enabled' => 0,
+      'date_item' => array(
+        'create_date_item' => 0,
+        'date_item_type' => 'simple_date',
+        'handle_range' => 'range',
+      ),
       'deleted' => '0',
       'description' => 'Start and end time of your work',
       'display' => array(
@@ -3288,7 +3398,7 @@ function erpal_project_field_default_fields() {
         'active' => 1,
         'module' => 'date',
         'settings' => array(
-          'increment' => '15',
+          'increment' => '1',
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',

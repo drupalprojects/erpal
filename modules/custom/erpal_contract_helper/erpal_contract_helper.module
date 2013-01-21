@@ -10,6 +10,7 @@
 function erpal_contract_helper_init() {
   module_load_include('inc', 'erpal_contract_helper', 'inc/config');
   module_load_include('inc', 'erpal_contract_helper', 'inc/token');
+  module_load_include('inc', 'erpal_contract_helper', 'inc/dynamic.menu');
 }
  
 /**
@@ -267,7 +268,7 @@ function _erpal_contract_helper_contract_node_form_alter(&$form, &$form_state) {
   if ($nid)
     return;
   
-  $activity_nid = $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+  $activity_nid = isset($form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : '';
   $activity_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($activity_nid);
 
   if (!empty($activity_nid) && is_numeric($activity_nid)) {
@@ -322,54 +323,6 @@ function _erpal_contract_helper_set_default_pricing(&$form, &$form_state) {
     $form['field_contract_payment'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#default_value'] = $default_vat_rate;
     $form['field_contract_payment'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
   }
-}
-
-/**
-* This function is called by the view contracts. Links for creating some nodes are added. 
-* With the hook other modules add some more links.
-*/
-function _erpal_contract_helper_view_contracts_header_content() {
-  
-  $add_erpal_contract = _erpal_contract_helper_create_contract_link();
-  
-  $my_content = array(
-    $add_erpal_contract,
-  );
-  
-  //ask all other modules for content in the header area of the view
-  $other_module_content = module_invoke_all('view_contracts_header_content');
-  
-  $all_content = array_merge($other_module_content, $my_content);
-  
-  $content = '';
-  foreach ($all_content as $a_content) {
-    $content .= '<br>'.$a_content;
-  }
-  
-  return $content;
-}
-
-
-/**
-* Helper function to create new contract link
-*/
-function _erpal_contract_helper_create_contract_link($q_arg = false, $query_arr = array(), $title=false){
-  if (!$q_arg)
-    $q = current_path();
-  else 
-    $q = $q_arg;
-  
-  if (!isset($query_arr['destination']) || $q_arg)
-    $query_arr['destination'] = $q;
-  
-  if (!$title)
-    $title = t("Create new contract");
-    
-  return l(
-    $title, "node/add/erpal-contract", array(
-        'query' => $query_arr,
-    )
-  );
 }
 
 /**
