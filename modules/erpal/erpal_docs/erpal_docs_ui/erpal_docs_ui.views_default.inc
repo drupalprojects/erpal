@@ -95,7 +95,6 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['filters']['field_file_tags_tid']['id'] = 'field_file_tags_tid';
   $handler->display->display_options['filters']['field_file_tags_tid']['table'] = 'field_data_field_file_tags';
   $handler->display->display_options['filters']['field_file_tags_tid']['field'] = 'field_file_tags_tid';
-  $handler->display->display_options['filters']['field_file_tags_tid']['value'] = '';
   $handler->display->display_options['filters']['field_file_tags_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator_id'] = 'field_file_tags_tid_op';
   $handler->display->display_options['filters']['field_file_tags_tid']['expose']['label'] = 'File tags';
@@ -111,9 +110,32 @@ function erpal_docs_ui_views_default_views() {
     6 => 0,
     5 => 0,
     7 => 0,
+    8 => 0,
   );
+  $handler->display->display_options['filters']['field_file_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_file_tags_tid']['vocabulary'] = 'file_tags';
   $handler->display->display_options['filters']['field_file_tags_tid']['error_message'] = FALSE;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
 
   /* Display: Reference Dialog Search */
   $handler = $view->new_display('references_dialog', 'Reference Dialog Search', 'references_dialog_1');
@@ -215,6 +237,7 @@ function erpal_docs_ui_views_default_views() {
     t('last »'),
     t('File tags'),
     t('Updated date'),
+    t('Title'),
     t('Reference Dialog Search'),
     t('Tags'),
     t('File usage pane'),
