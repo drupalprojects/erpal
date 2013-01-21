@@ -1,7 +1,15 @@
 <?php
 
 /**
- * Callback for returning a list of project tags
+* @file all functions needed to make erpal_taxonomy accessible by services
+* @author Oskar Bechtold <bechtold@brightsolutions.de>
+* @copyright (c) 2013
+*/
+
+/**
+ * Callback for returning a list of erpal specific taxonomy terms
+ * @param string $vocabname the machine name of the vocabulary, to get the taxonomy terms
+ * @return array taxonomy terms prepared for output
  */
 function _erpal_projects_service_taxonomy_index($vocabname) {
   if ($vocabname != 'FALSE') {
