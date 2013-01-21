@@ -1,50 +1,39 @@
 <?php
 
 /**
-* @file file has all functions for integration projects in erpal with services
+* @file all functions needed for make erpal_projects accessible by services
+* @author Oskar Bechtold <bechtold@brightsolutions.de>
+* @copyright (c) 2013
 */
 
 /**
- * Callback for retrieving erpal_project resources.
+ * Callback for retrieving single erpal_project resources.
  *
  * @param int $id the nid of the project node that should be retrieved
  * @return object
  */
 function _erpal_projects_service_project_retrieve($id) {
-  $project_node = _erpal_projects_service_project_out($id,TRUE);
+  $project_node = _erpal_projects_service_project_out( (int)$id,TRUE);
 
   return $project_node;
 }
 
 /**
-* Callback for returning a list of projects resprecting a given filter
-* @param $start Deliver data from "start"th element, defaults to 0.
+* Callback for returning a list of projects given filters
+* @param int $start Deliver data from nth element, defaults to 0.
+ * @param int $count Delive n elements
+ * @param int $changed_since Deliver all elemets changed after date  x. Format: UNIX timestamp in UTC
+ * @param bool $details Deliver elements with more detail
 */
-function _erpal_projects_service_project_index($start=0, $count=PHP_INT_MAX, $changed_since=0, $details=false) {
-  dpm($changed_since);
-  dpm($details);
-  
+function _erpal_projects_service_project_index($start=0, $count=PHP_INT_MAX, $changed_since=0, $details=false, $include_children=  FALSE) {  
   module_load_include('inc', 'erpal_projects_helper', 'inc/projects');
-
-  // $task_states = array();
-  // $uids = array();
-  // $changed = 0;
-  // if (isset($parameters['uids']))
-    // $uids = $parameters['uids'];
-  // if (isset($parameters['states']))
-    // $task_states = $parameters['states'];
-  // if (isset($parameters['task_changed']))
-    // $task_changed = $parameters['task_changed'];
-  // if (isset($parameters['project_changed']))
-    // $project_changed = $parameters['project_changed'];
-//    
-  // $projects = _erpal_projects_helper_get_projects_with_assigned_tasks($task_states, $uids, $task_changed, $project_changed);
 
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
-    ->propertyCondition('type', 'erpal_project');
-    $query ->range($start, $count);
-  // if(isset($parameters['start']))
+    ->propertyCondition('type', 'erpal_project')
+    ->range( (int)$start, (int)$count)
+    ->propertyCondition('changed',(int)$changed_since,'>=');
+
   $entities = $query->execute();
 
   $projects_out = array();
@@ -52,11 +41,9 @@ function _erpal_projects_service_project_index($start=0, $count=PHP_INT_MAX, $ch
   if (!empty($entities['node'])) {
     //prepare for output!
     foreach (array_keys($entities['node']) as $nid) {
-      $projects_out[] = _erpal_projects_service_project_out($nid,$details);
+      $projects_out[] = _erpal_projects_service_project_out($nid,$details,$include_children);
     }
   }
-
-      // $project = _erpal_projects_service_project_out($project);
 
   return $projects_out;
 }
@@ -68,15 +55,20 @@ function _erpal_projects_service_project_index($start=0, $count=PHP_INT_MAX, $ch
  * @return array with title and url
  * @author  Oskar Bechtold
  */
-function _erpal_projects_service_project_out($nid, $details=FALSE) {
+function _erpal_projects_service_project_out($nid, $details=FALSE, $include_children=FALSE) {
   $project = node_load($nid);
-  dpm($project);
+//  dpm($project);
   $project_out = array();
   $project_out['title'] = $project->title;
   $project_out['project'] = url('rest/projects/project/'.$project->nid, array('absolute'=>TRUE) );
   if($details){
-    $project_out['tasks'] = url('rest/projects/project/'.$project->nid.'/tasks', array('absolute'=>TRUE) );
+    $project_out['tasks'] = url('rest/projects/task',
+            array('absolute'=>TRUE,
+                      'query'=>array('project'=>$project->nid)) );
     $project_out['description'] = $project->body[LANGUAGE_NONE][0]['value'];
+    $project_out['created'] = $project->created;
+    $project_out['changed'] = $project->changed;
+    
   }
   return $project_out;
 }
