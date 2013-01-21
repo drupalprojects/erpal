@@ -55,7 +55,7 @@
         <?php if ($customer['address_additionals']) {print "&nbsp;&nbsp;"; print $customer['address_additionals']; print "<br />";} ?>        
         <?php if ($customer['street']) {print "&nbsp;&nbsp;"; print $customer['street']; print "<br />";} ?>
         <?php if ($customer['zip']) {print "&nbsp;&nbsp;"; print $customer['zip'];} ?>&nbsp;<?php if ($customer['city']) {print $customer['city']; print "<br />";} ?>
-        <?php if ($customer['country']) {print "&nbsp;&nbsp;"; print $customer['country']; print "<br />";} ?>
+        <?php if ($customer['country']) {print "&nbsp;&nbsp;"; print $customer['country']; print "<br />";} ?>        
       </div>
     </td>      
   </tr>
@@ -78,7 +78,10 @@
                 <td style="height:1cm">&nbsp;</td>
               </tr>
               <tr>
-                <td>Rechnung Nr. <?php print $invoice_number; ?></td>
+                <td>Rechnung Nr. <?php print $invoice_number; ?></td>                
+              </tr>
+              <tr>
+                <td><?php if ($customer['vat_number']) {print t('VAT number').':&nbsp;'; print $customer['vat_number']; print "<br />";} ?></td>
               </tr>
             </table>  
           </td>
