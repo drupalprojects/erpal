@@ -105,14 +105,16 @@ function budget_access($op, $budget = NULL, $account = NULL) {
     return TRUE;
   }
 
-  if (isset($budget) && is_object($budget) && $type_name = $budget->type) {
+  if (isset($budget) && is_object($budget)) {
     $op = ($op == 'view') ? 'view' : 'edit';
+
     if (user_access("$op any budget", $account)) {
       return TRUE;
     }
   }
-  
+
   if ($op == 'create') {
+    
     $create_access = user_access('create budget', $account);
     if ($create_access)
       return true;
