@@ -7,6 +7,8 @@
 module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
 module_load_include('inc', 'erpal_docs_helper', 'inc/config');
 module_load_include('inc', 'erpal_docs_helper', 'inc/dynamic.menu');
+module_load_include('inc', 'erpal_docs_helper', 'views/erpal_docs_helper.views');
+module_load_include('inc', 'erpal_docs_helper', 'views/erpal_docs_helper_handler_filter_project_file_children');
  
 /**
  * Implements hook_ctools_plugin_directory().
