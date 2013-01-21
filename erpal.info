@@ -3,6 +3,8 @@ description = Install ERPAL
 version = VERSION
 core = 7.x
 
+dependencies[] = devel
+
 ;core
 dependencies[] = php
 dependencies[] = menu
@@ -127,6 +129,8 @@ dependencies[] = erpal_contract
 dependencies[] = erpal_contract_ui
 dependencies[] = erpal_crm
 dependencies[] = erpal_crm_ui
+dependencies[] = erpal_crm_tasks
+dependencies[] = erpal_crm_tasks_ui
 dependencies[] = erpal_dashboard
 dependencies[] = erpal_docs
 dependencies[] = erpal_docs_ui

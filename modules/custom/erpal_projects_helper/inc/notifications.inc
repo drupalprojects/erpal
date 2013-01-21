@@ -49,10 +49,12 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
 
   $users = array();
   $task_node = false;
+  $comment_author = '';
   if ($entity_type == 'comment') {
     if ($entity->node_type == 'comment_node_erpal_task') {
       //load the node for the comment and notify for this node
       $task_node = node_load($entity->nid);
+      $comment_author = $entity->uid;
     }
   } elseif ($entity_type == 'node') {
     if ($entity->type == 'erpal_task') {
@@ -88,10 +90,12 @@ function _erpal_projects_helper_get_project_subscribers($entity, $entity_type, $
     //now merge the users to have a unique array and no user will get douplicate notifications
     $subscribers = array();
     foreach ($project_subscribers['users'] as $uid) {
-      $subscribers[$uid] = $uid;
+      if($uid != $comment_author)
+        $subscribers[$uid] = $uid;
     }
     foreach ($task_subscribers['users'] as $uid) {
-      $subscribers[$uid] = $uid;
+      if($uid != $comment_author)
+        $subscribers[$uid] = $uid;
     }
 
     if (count($subscribers)) {
