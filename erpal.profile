@@ -196,12 +196,6 @@ function erpal_contact_information_form($form, &$form_state){
 
 function erpal_contact_information_form_validate($form, $form_state){
   $values = $form_state['values'];
-
-  if(!is_numeric($values['zip_code']))
-    form_set_error('zip_code', 'Please enter only numbers as a zip-code.');
-  
-  if(!is_numeric($values['phone_number']))
-    form_set_error('phone_number', 'Please enter only numbers as phone number.');
   
   if(!valid_email_address($values['email_address']))
     form_set_error('email_address', 'The Email-address is not valid.');
