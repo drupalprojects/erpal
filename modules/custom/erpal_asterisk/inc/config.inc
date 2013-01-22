@@ -81,7 +81,7 @@ function _erpal_asterisk_config_form() {
       '#type' => 'fieldset',
       '#title' => t('Libphonenumber config'),
       '#collapsible' => TRUE,
-      '#collapsed' => FALSE,
+      '#collapsed' => TRUE,
     );
   
   $form['libphonenumber']['country'] = array(
