@@ -1365,7 +1365,7 @@ function erpal_project_ui_default_page_manager_pages() {
       'class' => '',
       'id' => '',
       'override_title' => 1,
-      'override_title_text' => '%node:title',
+      'override_title_text' => 'Files at %node:title',
     );
     $pane->cache = array();
     $pane->style = array(

@@ -248,6 +248,7 @@ function erpal_docs_ui_views_default_views() {
 
   /* Display: Documents by project */
   $handler = $view->new_display('panel_pane', 'Documents by project', 'panel_pane_3');
+  $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Author */
