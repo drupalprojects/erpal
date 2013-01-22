@@ -13,5 +13,5 @@ dependencies[] = field_collection
 dependencies[] = field_collection_table
 dependencies[] = profile2
 dependencies[] = libphonenumber
-dependencies[] = features_erpal_asterisk_profileadd mod	
+dependencies[] = features_erpal_asterisk_profile	
 
