@@ -1264,7 +1264,7 @@ function erpal_project_ui_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'Project files';
   $page->admin_description = '';
-  $page->path = 'projects/project/%node/files';
+  $page->path = 'node/%node/files';
   $page->access = array(
     'logic' => 'and',
     'plugins' => array(
