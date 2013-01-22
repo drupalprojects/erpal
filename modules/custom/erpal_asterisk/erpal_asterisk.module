@@ -4,7 +4,20 @@
  * Code for the erpal_asterisk module.
  */
  
-// module_load_include('inc', 'erpal_asterisk', 'inc/profile');
+/**
+ * Adds the profile2 asterisk-settings with a field phone for the normalized phone number
+ */
+// module_load_include('inc', 'erpal_asterisk', 'inc/profile');
+/**
+ * Provides a basic configuration for local testing
+ */
+function erpal_asterisk_install(){
+  variable_set('asterisk_nodejs_host'    , "127.0.0.1");
+  variable_set('asterisk_nodejs_http_port'    , 8080);
+  variable_set('asterisk_nodejs_socket_port'    , 3081);
+  variable_set('asterisk_nodejs_lifetime', 60); 
+}
+
 
 /*
 * Implements hook_menu
@@ -37,7 +50,7 @@ function erpal_asterisk_permission(){
 function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
   
   $url = 'http://' . variable_get('asterisk_nodejs_host') . ':' . variable_get('asterisk_nodejs_http_port') . '/ingoing';
-
+  
   $phone_number = libphonenumber_normalize($destination);
 
   $fields = array(
