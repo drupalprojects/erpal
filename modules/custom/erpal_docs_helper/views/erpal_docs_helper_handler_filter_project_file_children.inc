@@ -1,7 +1,7 @@
 <?php
 
 /**
- * "Show files of child tasks" contextual filter(argiment)
+ * "Show files of child tasks" contextual filter(argument)
  * Get files of project, tasks
  */
 class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler_argument {
