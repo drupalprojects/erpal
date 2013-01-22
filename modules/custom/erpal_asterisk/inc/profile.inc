@@ -18,7 +18,7 @@ function erpal_asterisk_default_profile2_type() {
     "data" : { "registration" : 0, "use_page" : 1 }
   }');
   return $items;
-} 
+}
 
 /**
  * Implements hook_field_default_fields().
@@ -30,7 +30,7 @@ function erpal_asterisk_field_default_fields() {
   $fields['profile2-asterisk_settings-field_phone'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_phone',
@@ -39,6 +39,7 @@ function erpal_asterisk_field_default_fields() {
       'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
+        'hide_blank_items' => 0,
         'path' => '',
         'profile2_private' => 0,
       ),
@@ -68,7 +69,7 @@ function erpal_asterisk_field_default_fields() {
       ),
       'entity_type' => 'profile2',
       'field_name' => 'field_phone',
-      'label' => 'Listening numbers',
+      'label' => 'field_phone',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -83,6 +84,9 @@ function erpal_asterisk_field_default_fields() {
     ),
   );
 
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('field_phone');
 
   return $fields;
 }
