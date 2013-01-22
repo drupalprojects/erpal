@@ -1,7 +1,7 @@
 <?php
 
 /**
- * "Show files of child tasks" erpal_docs_helper contextual filter(argiment)
+ * "Show files of child tasks" contextual filter(argiment)
  * Get files of project, tasks
  */
 class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler_argument {
@@ -10,37 +10,46 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
    * Clear query alter
    */
   function query() {
+
     if (!$nid = $this->argument) // check arg
       return;
-    
+
     if (!$node = node_load($nid)) // check in node exists
       return;
-    
+
     // check in node is erpal_project or erpal_task
     if ($node->type != 'erpal_project' && $node->type != 'erpal_task')
       return;
-    
+
+    // prepare table
     $this->ensure_my_table();
     $alias = $this->table_alias;
+    $this->query->distinct = 1; // distinct condition
     
     // If project_tasks_files value is "NO" get all direct files
-    if (empty($this->view->filter['project_tasks_files']->value[0])){
-      $files = _erpal_docs_helper_search_files($node, $node->type);
-    } 
-    // If project_tasks_files value is "YES" get all child files
-    else {
-      $files = _erpal_docs_helper_search_files($node, $node->type, TRUE);
+    if (empty($this->view->filter['project_tasks_files']->value[0])) {
+      // Get direct files of entity
+      $this->query->add_where($alias, "{$alias}.entity_id", $nid);
     }
+    
+    // If project_tasks_files value is "YES" get all direct and child files
+    else {
 
-    if(!$files && !is_array($files))
-      return;
+      // Get files of task and it's subtasks tree
+      if ($node->type == 'erpal_task') {
+        $child_nids = _erpal_timetracking_helper_get_children($nid);
+        $nids = array_unique($child_nids);
+        $this->query->add_where($alias, "{$alias}.entity_id", $nids, "IN");
+      } else
 
-    $nids = array_unique($files);
-
-    // filter files that belong to project team
-    if (!empty($nids)) {
-      $this->query->distinct = 1;
-      $this->query->add_where($alias, "$alias.nid", $nids, "IN");
+      // Get files of project and it's tasks tree
+      if ($node->type == 'erpal_project') {
+        $join = new views_join();
+        $join->construct('field_data_field_project_ref', $alias, 'entity_id', 'entity_id');
+        $join_table = $this->query->ensure_table('field_data_field_project_ref', $this->relationship, $join);
+        $expression = "{$alias}.entity_id = {$nid} OR {$join_table}.field_project_ref_target_id = {$nid}";
+        $this->query->add_where_expression($this->options['group'], $expression);
+      }
     }
   }
 
