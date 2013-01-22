@@ -9,7 +9,7 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
   /**
    * Clear query alter
    */
-  function query($group_by = FALSE) {) {
+  function query($group_by = FALSE) {
 
     if (!$nid = $this->argument) // check arg
       return;
