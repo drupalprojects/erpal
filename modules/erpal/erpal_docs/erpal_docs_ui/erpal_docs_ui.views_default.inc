@@ -57,6 +57,10 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'No files available';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -79,6 +83,11 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -150,6 +159,11 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -179,6 +193,11 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['title'] = 'This file is used at';
   $handler->display->display_options['display_description'] = 'Pane showing nodes referencing the file';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -231,10 +250,47 @@ function erpal_docs_ui_views_default_views() {
   $handler = $view->new_display('panel_pane', 'Documents by project', 'panel_pane_3');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['field_asset_files_target_id']['id'] = 'field_asset_files_target_id';
-  $handler->display->display_options['relationships']['field_asset_files_target_id']['table'] = 'field_data_field_asset_files';
-  $handler->display->display_options['relationships']['field_asset_files_target_id']['field'] = 'field_asset_files_target_id';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Entity Reference: Referencing entity */
+  $handler->display->display_options['relationships']['reverse_field_asset_files_node']['id'] = 'reverse_field_asset_files_node';
+  $handler->display->display_options['relationships']['reverse_field_asset_files_node']['table'] = 'node';
+  $handler->display->display_options['relationships']['reverse_field_asset_files_node']['field'] = 'reverse_field_asset_files_node';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: File tags */
+  $handler->display->display_options['fields']['field_file_tags']['id'] = 'field_file_tags';
+  $handler->display->display_options['fields']['field_file_tags']['table'] = 'field_data_field_file_tags';
+  $handler->display->display_options['fields']['field_file_tags']['field'] = 'field_file_tags';
+  $handler->display->display_options['fields']['field_file_tags']['delta_offset'] = '0';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
+  /* Field: Content: Edit link */
+  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = '';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_asset_files_node';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Attached at';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: File Usage: Show files of child tasks */
   $handler->display->display_options['arguments']['child_tasks_files']['id'] = 'child_tasks_files';
@@ -364,8 +420,10 @@ function erpal_docs_ui_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No files available'),
+    t('author'),
     t('File tags'),
     t('Updated date'),
+    t('Name'),
     t('Title'),
     t('Reference Dialog Search'),
     t('Tags'),
@@ -377,7 +435,8 @@ function erpal_docs_ui_views_default_views() {
     t('View panes'),
     t('Files pane'),
     t('Documents by project'),
-    t('Content entity referenced from field_asset_files'),
+    t('Content referencing Content from field_asset_files'),
+    t('Attached at'),
     t('Show sub-files'),
   );
   $export['documents'] = $view;
