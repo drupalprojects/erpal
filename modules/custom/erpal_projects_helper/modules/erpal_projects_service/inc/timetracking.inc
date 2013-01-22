@@ -1,14 +1,16 @@
 <?php
 
 /**
- * @file all functions needed to integrate timetracking nodes with services module
- */
+* @file all functions needed to make erpal_timtrackings accessible by services
+* @author Oskar Bechtold <bechtold@brightsolutions.de>
+* @copyright (c) 2013
+*/
 
 /**
  * Callback for retrieving single erpal_task resources.
  *
- * @param int $id
- * @return object
+ * @param int $id node id of the timetracking
+ * @return array timetracking prepared for output
  */
 function _erpal_projects_service_timetracking_retrieve($id) {
   $task_node = _erpal_projects_service_timetracking_out((int) $id, TRUE);
@@ -19,8 +21,10 @@ function _erpal_projects_service_timetracking_retrieve($id) {
 /**
  * Callback for returning a list of timetrackings considering given filters
  * @param int $start Deliver data from nth element, defaults to 0.
- * @param int $count Delive n elements
+ * @param int $count Delive n elements, defaults to PHP_INT_MAX
  * @param int $changed_since Deliver all elemets changed after date  x. Format: UNIX timestamp in UTC
+ * @param bool $details whether or not to return timtrackings with more detail
+ * @return array timetrackings prepared for output
  */
 function _erpal_projects_service_timetracking_index($start = 0, $count = PHP_INT_MAX, $changed_since = 0, $details = FALSE) {
   module_load_include('inc', 'erpal_projects_helper', 'inc/timetracking');
@@ -46,9 +50,10 @@ function _erpal_projects_service_timetracking_index($start = 0, $count = PHP_INT
 }
 
 /**
- * retrieves a project node and returns only simple data
- *
- * @return array with title and url
+ * retrieves a project node and returns simple data
+ * @param int $nid the node id of the timetracking
+ * @param bool $details whether or not to return the timetrackings with detail
+ * @return array timetrackings prepared for output
  * @author  Oskar Bechtold
  */
 function _erpal_projects_service_timetracking_out($nid, $details = FALSE) {
@@ -71,6 +76,9 @@ function _erpal_projects_service_timetracking_out($nid, $details = FALSE) {
 
 /**
  * Create a new timetracking node by services module request
+ * @param array $timetrackings the data delivered by the webservice, $timetracking['timetracking'] must be an array of the trackings
+ * @return array the new trackings prepared for output
+ * @TODO: maybe use drupal_form_submit or _node_resource_create to have validation instead of node_save
  */
 function _erpal_projects_service_timetracking_create($timetracking) {
   $returns = array();
@@ -109,36 +117,3 @@ function _erpal_projects_service_timetrackings_access($op, $args) {
   //@todo check with node access
 }
 
-///**
-//* Maps timetracking values to node  because the app webservice doesn't need to know the [und][0][value] strukture auf
-//* drupals data structure
-//*/
-//function _erpal_projects_service_map_timetracking_values($timetracking) {
-//  
-//  $final_tt = array('type' => 'erpal_timetracking');
-//  $final_tt['title'] = $timetracking['title'];
-//  if (isset($timetracking['body']))
-//    $final_tt['body'][LANGUAGE_NONE][0]['value'] = $timetracking['body'];
-//    
-//  if (isset($timetracking['duration']))
-//    $final_tt['field_timetracking_duration'][LANGUAGE_NONE][0]['value'] = $timetracking['duration'];
-//  
-//  if (isset($timetracking['task_id'])) {
-//    //as we use entity relation, we need to set the title with the nid, not only the nid...
-//    $task = node_load($timetracking['task_id']);
-//    $final_tt['field_timetracking_subject'][LANGUAGE_NONE][0]['target_id'] = ($task->title)." (".$task->nid.")";
-//  }
-//  
-//  if (isset($timetracking['date'])) {
-//    $final_tt['field_date_time'][LANGUAGE_NONE][0]['value']['date'] = date('m/d/Y', $timetracking['date']);
-//    $final_tt['field_date_time'][LANGUAGE_NONE][0]['value']['time'] = date('H:i', $timetracking['date']);
-//    
-//    /*
-//    $date_till = $timetracking['date'] + ($timetracking['duration'] * 60 * 60);
-//    $final_tt['field_date_time'][LANGUAGE_NONE][0]['value2']['date'] = date('m/d/Y', $date_till);
-//    $final_tt['field_date_time'][LANGUAGE_NONE][0]['value2']['time'] = date('H:i', $date_till);
-//    */
-//  }
-//
-//  return $final_tt;
-//}
