@@ -50,6 +50,13 @@ function erpal_docs_ui_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No files available';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -219,6 +226,127 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
+
+  /* Display: Documents by project */
+  $handler = $view->new_display('panel_pane', 'Documents by project', 'panel_pane_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_asset_files_target_id']['id'] = 'field_asset_files_target_id';
+  $handler->display->display_options['relationships']['field_asset_files_target_id']['table'] = 'field_data_field_asset_files';
+  $handler->display->display_options['relationships']['field_asset_files_target_id']['field'] = 'field_asset_files_target_id';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: File Usage: Show files of child tasks */
+  $handler->display->display_options['arguments']['child_tasks_files']['id'] = 'child_tasks_files';
+  $handler->display->display_options['arguments']['child_tasks_files']['table'] = 'field_data_field_asset_files';
+  $handler->display->display_options['arguments']['child_tasks_files']['field'] = 'child_tasks_files';
+  $handler->display->display_options['arguments']['child_tasks_files']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['child_tasks_files']['default_argument_type'] = 'user';
+  $handler->display->display_options['arguments']['child_tasks_files']['default_argument_options']['user'] = FALSE;
+  $handler->display->display_options['arguments']['child_tasks_files']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['child_tasks_files']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['child_tasks_files']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['child_tasks_files']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['child_tasks_files']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['child_tasks_files']['validate_options']['types'] = array(
+    'erpal_project' => 'erpal_project',
+    'erpal_task' => 'erpal_task',
+  );
+  $handler->display->display_options['arguments']['child_tasks_files']['validate']['fail'] = 'empty';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_file' => 'erpal_file',
+  );
+  /* Filter criterion: Content: File tags (field_file_tags) */
+  $handler->display->display_options['filters']['field_file_tags_tid']['id'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['table'] = 'field_data_field_file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['field'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator_id'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['label'] = 'File tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['operator'] = 'field_file_tags_tid_op';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['identifier'] = 'field_file_tags_tid';
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_file_tags_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
+  $handler->display->display_options['filters']['field_file_tags_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_file_tags_tid']['vocabulary'] = 'file_tags';
+  $handler->display->display_options['filters']['field_file_tags_tid']['error_message'] = FALSE;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
+  /* Filter criterion: File Usage: Show files of child tasks */
+  $handler->display->display_options['filters']['child_tasks_files']['id'] = 'child_tasks_files';
+  $handler->display->display_options['filters']['child_tasks_files']['table'] = 'field_data_field_asset_files';
+  $handler->display->display_options['filters']['child_tasks_files']['field'] = 'child_tasks_files';
+  $handler->display->display_options['filters']['child_tasks_files']['value'] = '1';
+  $handler->display->display_options['filters']['child_tasks_files']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['child_tasks_files']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['child_tasks_files']['expose']['label'] = 'Show sub-files';
+  $handler->display->display_options['filters']['child_tasks_files']['expose']['operator'] = 'child_tasks_files_op';
+  $handler->display->display_options['filters']['child_tasks_files']['expose']['identifier'] = 'child_tasks_files';
+  $handler->display->display_options['filters']['child_tasks_files']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['child_tasks_files']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['child_tasks_files']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
+  $handler->display->display_options['argument_input'] = array(
+    'child_tasks_files' => array(
+      'type' => 'panel',
+      'context' => 'entity:node.field-duration-calc',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'File Usage: Show files of child tasks',
+    ),
+  );
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['documents'] = array(
     t('Master'),
     t('Documents'),
@@ -235,6 +363,7 @@ function erpal_docs_ui_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('No files available'),
     t('File tags'),
     t('Updated date'),
     t('Title'),
@@ -247,6 +376,9 @@ function erpal_docs_ui_views_default_views() {
     t('All'),
     t('View panes'),
     t('Files pane'),
+    t('Documents by project'),
+    t('Content entity referenced from field_asset_files'),
+    t('Show sub-files'),
   );
   $export['documents'] = $view;
 
