@@ -27,7 +27,7 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
     $this->query->distinct = 1; // distinct condition
     
     // If project_tasks_files value is "NO" get all direct files
-    if (empty($this->view->filter['project_tasks_files']->value[0])) {
+    if (empty($this->view->filter['child_tasks_files']->value[0])) {
       // Get direct files of entity
       $this->query->add_where($alias, "{$alias}.entity_id", $nid);
     }
@@ -48,7 +48,7 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
         $join->construct('field_data_field_project_ref', $alias, 'entity_id', 'entity_id');
         $join_table = $this->query->ensure_table('field_data_field_project_ref', $this->relationship, $join);
         $expression = "{$alias}.entity_id = {$nid} OR {$join_table}.field_project_ref_target_id = {$nid}";
-        $this->query->add_where_expression($this->options['group'], $expression);
+        $this->query->add_where_expression(0, $expression);
       }
     }
   }
