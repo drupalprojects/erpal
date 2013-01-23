@@ -7,17 +7,7 @@
 /**
  * Adds the profile2 asterisk-settings with a field phone for the normalized phone number
  */
-// module_load_include('inc', 'erpal_asterisk', 'inc/profile');
-/**
- * Provides a basic configuration for local testing
- */
-function erpal_asterisk_install(){
-  variable_set('asterisk_nodejs_host'    , "127.0.0.1");
-  variable_set('asterisk_nodejs_http_port'    , 8080);
-  variable_set('asterisk_nodejs_socket_port'    , 3081);
-  variable_set('asterisk_nodejs_lifetime', 60); 
-}
-
+// module_load_include('inc', 'erpal_asterisk', 'inc/profile');
 
 /*
 * Implements hook_menu
@@ -55,7 +45,8 @@ function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
 
   $fields = array(
       'destination' => $phone_number,
-      'caller_data' => urlencode($data)
+      'caller_data' => urlencode($data),
+      'lifetime' => variable_get('asterisk_nodejs_lifetime', 60),
   );
   $fields_string = '';
   foreach ($fields as $key => $value) {
