@@ -58,7 +58,7 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
     else {
       // Get files of task and it's subtasks tree
       if ($node->type == 'erpal_task') {
-        $child_nids = _erpal_timetracking_helper_get_children($nid);
+        $child_nids = _erpal_projects_helper_get_children($nid);
         $nids = array_unique($child_nids);
         $this->query->add_where($alias, "{$alias}.entity_id", $nids, "IN");
       } else
