@@ -1,0 +1,14 @@
+name = ERPAL WYSIWYG
+description = ERPAL WYSIWSG Module
+core = 7.x
+package = ERPAL UI
+version = 7.x-1.0-dev
+project = erpal_wysiwyg
+dependencies[] = ckeditor
+dependencies[] = features
+dependencies[] = filter
+features[ckeditor_profile][] = ERPAL
+features[features_api][] = api:1
+features[filter][] = filtered_html
+features[filter][] = full_html
+features[filter][] = plain_text
