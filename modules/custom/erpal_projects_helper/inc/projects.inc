@@ -128,8 +128,13 @@ function _erpal_projects_helper_get_activity_by_project($project_node) {
 * called in hook_node_presave of this module if presaved node is a project
 */
 function erpal_projects_helper_node_presave_project($node) {
-  $old_node = node_load($node->nid);
-  _erpal_projects_helper_handle_removed_book_nodes($node, $old_node);
+  
+  $old_nid = isset($node->nid) ? $node->nid : false;
+  if ($old_nid) {
+    $old_node = node_load($old_nid);
+    _erpal_projects_helper_handle_removed_book_nodes($node, $old_node);
+  }
+  
   // node edit
   if (!empty($node->original)) {
     _erpal_projects_helper_subscribe_project_team($node);

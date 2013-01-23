@@ -8,3 +8,5 @@ version = "7.x-1.0-dev"
 
 files[] = erpal_docs_helper.module
 files[] = erpal_docs_helper.token.inc
+files[] = views/erpal_docs_helper.views.inc
+files[] = views/erpal_docs_helper_handler_filter_project_file_children.inc

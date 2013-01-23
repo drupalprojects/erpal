@@ -93,7 +93,7 @@
   ;regions[leaderboard]        = Leaderboard
   regions[header]             = Header
   ;regions[menu_bar]           = Menu Bar
-  ;regions[help]               = Help
+  regions[help]               = Help
   ;regions[page_top]           = Page top
   ;regions[page_bottom]        = Page bottom
   regions[sidebar_first_left] = First left row
