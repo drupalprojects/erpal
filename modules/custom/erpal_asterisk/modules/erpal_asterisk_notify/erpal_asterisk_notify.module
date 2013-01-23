@@ -8,19 +8,41 @@
 define("VIEWCONTENTTYPE", "erpal_contact");
 
 
-/*
-* Implements hook_init
-*/
+/**
+ * Implements hook_init
+ * Adds the erpal_asterisk.js and the socketio.js to every page
+ * and sets a warning when the libraries are not installed
+ */
 function erpal_asterisk_notify_init() {
   
-  $path	= drupal_get_path( 'module', 'erpal_asterisk_notify' ); 
+  $socketio_path = libraries_get_path('socketio') . '/socket.io.min.js';
+  $erpal_asterisk_path = libraries_get_path('erpal_asterisk') . '/erpal_asterisk.js';
+  
+  $return = FALSE;
+  
+  if (!file_exists($socketio_path)) {
+    drupal_set_message(
+      t('Erpal Asterisk Notify can not work without the socketio library. '
+        . 'Pleaso install to .../libraries/socketio/'), 'warning');    
+    $return = TRUE;
+  }
+  if (!file_exists($erpal_asterisk_path)) {
+    drupal_set_message(
+      t('Erpal Asterisk Notify can not work without the erpal_asterisk.js library. '
+      . 'Pleaso install to .../libraries/erpal_asterisk/'), 'warning');    
+    $return = TRUE;
+  }  
+  if ($return) return;
+  
   global $user; 
   $profile = profile2_load_by_user($user);
     
-  // Get field-collections attached to asterisk-settings profile 
-  (isset($profile['asterisk_settings'])) 
-    ? $fields = $profile['asterisk_settings']->field_phone[LANGUAGE_NONE]
-    : $fields = array();
+  // Get field-collections attached to asterisk-settings profile
+  if (isset($profile['asterisk_settings']->field_phone[LANGUAGE_NONE])) 
+    $fields = $profile['asterisk_settings']->field_phone[LANGUAGE_NONE];
+  else {  
+    return;
+  }
   
   // $fields: array of entity-ids of field-collections attached to the profile
   
@@ -40,12 +62,8 @@ function erpal_asterisk_notify_init() {
     'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port'),
   );
   
-    
-  $socketio_path = libraries_get_path('socketio') . '/socket.io.min.js';
-  $asterisk_path = libraries_get_path('erpal_asterisk') . '/erpal_asterisk.js';
-  
   drupal_add_js($socketio_path, Array('every_page'=>TRUE));
-  drupal_add_js($asterisk_path, Array('every_page'=>TRUE));
+  drupal_add_js($erpal_asterisk_path, Array('every_page'=>TRUE));
   drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting');
 }
   

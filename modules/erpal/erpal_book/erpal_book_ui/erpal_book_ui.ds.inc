@@ -24,6 +24,7 @@ function erpal_book_ui_ds_layout_settings_info() {
       'left' => array(
         0 => 'title',
         1 => 'body',
+        2 => 'field_files_ref',
       ),
       'right' => array(
         0 => 'field_book_tags',
@@ -44,6 +45,7 @@ function erpal_book_ui_ds_layout_settings_info() {
     'fields' => array(
       'title' => 'left',
       'body' => 'left',
+      'field_files_ref' => 'left',
       'field_book_tags' => 'right',
       'field_is_template' => 'right',
       'field_estimated_duration' => 'right',
@@ -74,6 +76,7 @@ function erpal_book_ui_ds_layout_settings_info() {
       'left' => array(
         0 => 'title',
         1 => 'body',
+        2 => 'field_files_ref',
       ),
       'right' => array(
         0 => 'field_contact_ref',
@@ -92,6 +95,7 @@ function erpal_book_ui_ds_layout_settings_info() {
     'fields' => array(
       'title' => 'left',
       'body' => 'left',
+      'field_files_ref' => 'left',
       'field_contact_ref' => 'right',
       'field_address_id' => 'right',
       'field_book_tags' => 'right',

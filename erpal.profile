@@ -53,7 +53,6 @@ function erpal_file_private_path_submit($form, $form_state){
  * Add additional install tasks 
  */
 function erpal_install_tasks(){
-
   
   $tasks = array();
   
@@ -75,6 +74,57 @@ function erpal_install_tasks(){
   );
   
   return $tasks;
+}
+
+
+/**
+ * Implements hook_install_tasks_alter().
+ */
+function erpal_install_tasks_alter(&$tasks, $install_state) {
+  $tasks['install_select_profile']['display'] = FALSE;
+  $welcome['erpal_welcome_message'] = array(
+    'display_name' => st('Welcome'),
+    'display' => TRUE,
+    'type' => 'form',
+    'run' => isset($install_state['parameters']['welcome']) ? INSTALL_TASK_SKIP : INSTALL_TASK_RUN_IF_REACHED,
+  );
+  $old_tasks = $tasks;
+  $tasks = array_slice($old_tasks, 0, 1) + $welcome+ array_slice($old_tasks, 1);
+  _erpal_set_theme('erpal_maintenance');
+}
+
+function erpal_welcome_message($form, $form_state){
+  drupal_set_title(st('Welcome'));
+  $welcome = st('<p>The following steps will install and configure your new ERPAL-Site</br>
+  This project is still under development so feel free to visit the ' 
+  . l('project page', 'http://drupal.org/project/erpal')
+  . ' and share your thoughts and impressions to make it even better.</br>
+  Thank you for choosing ERPAL!</p>');
+  $form = array();
+  $form['welcome_message'] = array(
+    '#markup' => $welcome);
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Install ERPAL'),
+  );
+  return $form;
+}
+
+function erpal_welcome_message_submit($form, &$form_state) {
+  global $install_state;
+  $install_state['parameters']['welcome'] = 'done';
+}
+
+/**
+ * Forces to set the erpal_maintenance theme during the installation
+ */
+function _erpal_set_theme($target_theme) {
+  if ($GLOBALS['theme'] != $target_theme) {
+    unset($GLOBALS['theme']);
+    drupal_static_reset();
+    $GLOBALS['conf']['maintenance_theme'] = $target_theme;
+    _drupal_maintenance_theme();
+  }
 }
 
 function erpal_preconfigure_site(){
@@ -153,20 +203,14 @@ function erpal_contact_information_form($form, &$form_state){
     '#required' => TRUE,
   );
   
+  $countries = _erpal_get_countries();
   
-  $countries_vocabulary = taxonomy_vocabulary_machine_name_load('countries');
-  $countries_terms = taxonomy_get_tree($countries_vocabulary->vid, 0);
-  $countries = array();
-  foreach($countries_terms as $term){
-    $countries[$term->tid] = $term->name;
-  }  
   $form['company_address']['country'] = array(
     '#title' => st('Country'),
     '#type' => 'select',
     '#options' => $countries,
     '#default_value' => array_search('Germany', $countries),
-  );
-  
+  );  
     
   $form['contact_information'] = array(
     '#type' => 'fieldset',
@@ -196,12 +240,6 @@ function erpal_contact_information_form($form, &$form_state){
 
 function erpal_contact_information_form_validate($form, $form_state){
   $values = $form_state['values'];
-
-  if(!is_numeric($values['zip_code']))
-    form_set_error('zip_code', 'Please enter only numbers as a zip-code.');
-  
-  if(!is_numeric($values['phone_number']))
-    form_set_error('phone_number', 'Please enter only numbers as phone number.');
   
   if(!valid_email_address($values['email_address']))
     form_set_error('email_address', 'The Email-address is not valid.');
@@ -251,10 +289,9 @@ function erpal_contact_information_form_submit($form, $form_state){
   $address->field_street[LANGUAGE_NONE][0]['value'] = $values['street'];
   $address->field_zip_code[LANGUAGE_NONE][0]['value'] = $values['zip_code'];
   $address->field_city[LANGUAGE_NONE][0]['value'] = $values['city'];
-  //$address->field_country_term[LANGUAGE_NONE][0]['value'] = $values['country'];
+  $address->field_country_term[LANGUAGE_NONE][0]['tid'] = $values['country'];
   $address->save(TRUE);
 
-  
   $phone_number = entity_create('field_collection_item', array('field_name' => 'field_phone'));
   $phone_number->setHostEntity('node', $node);
   $phone_number->field_phone_number[LANGUAGE_NONE][0]['value'] = $values['phone_number'];
@@ -262,8 +299,57 @@ function erpal_contact_information_form_submit($form, $form_state){
   
   node_save($node);
   
+  // Set configuration for Erpal_basic_helper
   variable_set('erpal_config_my_company_nid', $node->nid);
   variable_set('my_field_addresses', 0);  //set field 0 as default
   variable_set('my_field_phone', 0);  //      ""  
   variable_set('my_field_email', $values['email_address']);  //save email address
+  
+  
+  // create Internal work project:
+  $project_node = (object) array(
+    'uid' => $user->uid,
+    'name' => (isset($user->name)) ? $user->name : '',
+    'type' => 'erpal_project',
+    'language' => LANGUAGE_NONE,  
+    'title' => 'Internal work',
+    'field_customer_ref' => array(
+      LANGUAGE_NONE => array(
+        0 => array('target_id' => $node->nid,),
+      ),
+    ),
+  );
+  node_object_prepare($project_node); 
+  node_save($project_node);
+  variable_set('project_nid', $project_node->nid);
+  
+  
+    // create Internal work project:
+  $task_node = (object) array(
+    'uid' => $user->uid,
+    'name' => (isset($user->name)) ? $user->name : '',
+    'type' => 'erpal_task',
+    'language' => LANGUAGE_NONE,  
+    'title' => 'Work on CRM activities',
+    'field_project_ref' => array(
+      LANGUAGE_NONE => array(
+        0 => array('target_id' => $project_node->nid,),
+      ),
+    ),
+  );
+  node_object_prepare($task_node); 
+  node_save($task_node);
+  variable_set('task_nid', $task_node->nid);
+  
 }
+
+function _erpal_get_countries(){
+  $countries_vocabulary = taxonomy_vocabulary_machine_name_load('countries');
+  $countries_terms = taxonomy_get_tree($countries_vocabulary->vid, 0);
+  $countries = array();
+  foreach($countries_terms as $term){
+    $countries[$term->tid] = $term->name;
+  }  
+  return $countries;
+}
+ 
