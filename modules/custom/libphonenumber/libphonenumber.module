@@ -4,7 +4,13 @@ use com\google\i18n\phonenumbers\PhoneNumberUtil;
 use com\google\i18n\phonenumbers\PhoneNumberFormat;
 use com\google\i18n\phonenumbers\NumberParseException;
 
-// require_once 'lib/PhoneNumberUtil.php';
+function libphonenumber_install(){
+  // Set germany as the default country
+  variable_set('libphonenumber_default_country', 47);
+  // Set e164 as the default format for number normalisation
+  variable_set('libphonenumber_default_format', 0);
+}
+
 
 /**
  * Includes the libphonenumber library and sets a warning when the library can
@@ -14,13 +20,12 @@ use com\google\i18n\phonenumbers\NumberParseException;
  */
 function _libphonenumber_include_library(){
   
-  $libphonenumber_path = libraries_get_path('libphonenumber');
-  
+  $libphonenumber_path = libraries_get_path('libphonenumber-for-PHP');
   if (!file_exists($libphonenumber_path)) {
     $libphonenumber_link = l('download', 'https://github.com/davideme/libphonenumber-for-PHP');
     drupal_set_message(
-      t('The libphonenumber-module can not work without libphonenumber-for-PHP. Please !link and extract to !path.', 
-        array('!link' => $libphonenumber_link, '!path' => $libphonenumber_path)), 'warning');    
+      t('The libphonenumber-module can not work without libphonenumber-for-PHP. Please !link and extract to ...libraries/libphonenumber-for-PHP/', 
+        array('!link' => $libphonenumber_link)), 'warning');    
     return false;
   }
   

@@ -9266,13 +9266,13 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['argument_input'] = array(
-    'budget_id' => array(
+    'field_budgets_target_id' => array(
       'type' => 'panel',
       'context' => 'entity:billable.billable-id',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
-      'label' => 'Budget: Budget ID',
+      'label' => 'Field collection item: Budgets (field_budgets)',
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
