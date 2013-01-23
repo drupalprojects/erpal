@@ -1,13 +1,6 @@
 <?php
 
 /**
- * Implements of hook_views_api().
- */
-function erpal_docs_helper_views_api() {
-  return array('api' => 3);
-}
-
-/**
  * Implements of hook_views_data().
  */
 function erpal_docs_helper_views_data() {
