@@ -20,7 +20,7 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
         'toolbar' => '[
     [\'Undo\',\'Redo\',\'Source\',\'Styles\',\'Format\',\'Font\',\'FontSize\',\'NewPage\',\'Cut\',\'Copy\',\'Paste\',\'PasteText\',\'PasteFromWord\',\'SpellChecker\',\'Scayt\',\'RemoveFormat\'],
     \'/\',
-    [\'Bold\',\'Italic\',\'Underline\',\'Strike\',\'Subscript\',\'Superscript\',\'NumberedList\',\'BulletedList\',\'Outdent\',\'Indent\',\'Blockquote\',\'CreateDiv\',\'JustifyLeft\',\'JustifyCenter\',\'JustifyRight\',\'JustifyBlock\',\'BidiLtr\',\'BidiRtl\',\'Link\',\'Unlink\',\'Anchor\',\'Image\',\'Table\',\'HorizontalRule\',\'SpecialChar\',\'PageBreak\']
+    [\'Bold\',\'Italic\',\'Underline\',\'Strike\',\'Subscript\',\'Superscript\',\'NumberedList\',\'BulletedList\',\'Outdent\',\'Indent\',\'Blockquote\',\'CreateDiv\',\'JustifyLeft\',\'JustifyCenter\',\'JustifyRight\',\'JustifyBlock\',\'BidiLtr\',\'BidiRtl\',\'Link\',\'Unlink\',\'Anchor\',\'Table\',\'HorizontalRule\',\'SpecialChar\',\'PageBreak\']
 ]',
         'expand' => 't',
         'width' => '100%',
@@ -45,9 +45,9 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
         'css_path' => '',
         'css_style' => 'theme',
         'styles_path' => '',
-        'filebrowser' => 'imce',
-        'filebrowser_image' => 'imce',
-        'filebrowser_flash' => 'imce',
+        'filebrowser' => 'none',
+        'filebrowser_image' => '',
+        'filebrowser_flash' => '',
         'forcePasteAsPlainText' => 'f',
         'html_entities' => 'f',
         'scayt_autoStartup' => 'f',
