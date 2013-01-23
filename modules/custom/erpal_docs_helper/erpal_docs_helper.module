@@ -8,9 +8,7 @@ module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
 module_load_include('inc', 'erpal_docs_helper', 'inc/config');
 module_load_include('inc', 'erpal_docs_helper', 'inc/dynamic.menu');
 module_load_include('inc', 'erpal_docs_helper', 'inc/erpal_docs_helper_files');
-module_load_include('inc', 'erpal_docs_helper', 'views/erpal_docs_helper.views');
-module_load_include('inc', 'erpal_docs_helper', 'views/erpal_docs_helper_handler_filter_project_file_children');
- 
+
 /**
  * Implements hook_ctools_plugin_directory().
  */
@@ -20,6 +18,16 @@ function erpal_docs_helper_ctools_plugin_directory($module, $plugin) {
   }
 }  
  
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_docs_helper_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'erpal_docs_helper') . '/views',
+  );
+}
+
 /**
 * Implements hook_menu
 */ 
