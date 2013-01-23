@@ -4,6 +4,16 @@ core = 7.x
 
 ; Install and Maintenance Pages
 stylesheets[all][] = css/erpal_maintenance.css
+stylesheets[all][] = ../css/global.base.css
+stylesheets[all][] = ../css/global.styles.css
+stylesheets[all][] = ../css/navigation.css
+stylesheets[all][] = ../css/layout.css
+stylesheets[all][] = ../css/color.css
+stylesheets[all][] = ../css/tabs.css
+stylesheets[all][] = ../css/page.css
+stylesheets[all][] = ../css/tree.css
+stylesheets[all][] = ../css/ds_form.css
+
 
 settings[shortcut_module_link] = 1
 regions[content] = Content
