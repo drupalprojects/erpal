@@ -46,6 +46,10 @@
         <?php endif; ?>
         
       </div>
+      <?php if (isset($screencasts)): ?>
+          <div id="videos"><?php print $screencasts; ?></div>
+      <?php endif; ?>
+      
     </div>
   </div>
     <div class="footer-messages clearfix">
