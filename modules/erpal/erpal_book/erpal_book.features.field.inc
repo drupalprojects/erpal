@@ -1774,7 +1774,7 @@ function erpal_book_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 14,
+        'weight' => 13,
       ),
     ),
   );
