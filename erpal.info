@@ -1,9 +1,8 @@
-name = ERPAL Starter
+name = ERPAL
 description = Install ERPAL
-version = VERSION
 core = 7.x
+distribution_name = ERPAL
 
-dependencies[] = devel
 
 ;core
 dependencies[] = php

@@ -757,12 +757,39 @@ body #user-login input.form-text {
 #mini-panel-activity_status_panel .panel-separator {
   display: none;
 }
+#mini-panel-activity_status_panel .pane-title {
+  float: left;
+  line-height: 40px;
+}
+#mini-panel-activity_status_panel .block-content {
+  float: left;
+}
+#mini-panel-activity_status_panel .block-content ul.field-items {
+  margin: 0px;
+}
 #mini-panel-activity_status_panel ul {
   padding-left: 5px;
 }
 #mini-panel-activity_status_panel section {
   margin-bottom: 0;
   margin-right: 30px;
+  float: left;
+}
+#mini-panel-activity_status_panel section .field-type-datetime {
+  float: left;
+}
+#mini-panel-activity_status_panel section .field-type-datetime .date-no-float {
+  width: auto;
+}
+#mini-panel-activity_status_panel section .field-type-datetime .date-no-float .form-item {
+  margin-top: 0;
+  float: left;
+}
+#mini-panel-activity_status_panel section .field-type-datetime .date-no-float .form-item .date-padding {
+  padding-top: 7px;
+}
+#mini-panel-activity_status_panel section .form-actions {
+  margin-top: 27px;
   float: left;
 }
 
@@ -919,6 +946,7 @@ body #user-login input.form-text {
 }
 #comment-form .field-widget-options-select {
   margin-right: 15px;
+  padding-top: 5px;
   width: 100px;
   float: left;
 }
@@ -929,6 +957,10 @@ body #user-login input.form-text {
 
 /*-------------end comments------------------- */
 /*--------------begin multi select boxes--------------*/
+.views-exposed-form {
+  padding: 10px;
+  background-color: #eeeeee;
+}
 .views-exposed-form .form-submit {
   margin-top: 1.3em;
 }
@@ -1119,7 +1151,16 @@ body #user-login input.form-text {
 /* end hightlight of different states of tasks/projects */
 /*-------------begin login styles------------------*/
 .not-logged-in {
-  background: url("../images/gradient-login.png") no-repeat center #645c57;
+  background-color: #645C57;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFA69A91', endColorstr='#FF645C57');
+  background-image: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 60, color-stop(10%, #a69a91), color-stop(60%, #645c57));
+  background-image: -webkit-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: -moz-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: -o-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-position: center top;
+  background-repeat: no-repeat;
   overflow: hidden;
 }
 .not-logged-in #login_mask_logo {

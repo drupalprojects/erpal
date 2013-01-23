@@ -657,6 +657,7 @@ a.button, input.form-submit {
   border-bottom: 1px solid #afafaf;
   border-left-color: silver;
   border-right-color: silver;
+  border-top-color: silver;
   color: #3a3a3a;
 }
 
