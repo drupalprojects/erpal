@@ -16,7 +16,7 @@ function erpal_crm_ui_filter_default_formats() {
     'name' => 'PHP code',
     'cache' => '0',
     'status' => '1',
-    'weight' => '11',
+    'weight' => '-7',
     'filters' => array(
       'php_code' => array(
         'weight' => '0',
