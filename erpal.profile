@@ -53,7 +53,6 @@ function erpal_file_private_path_submit($form, $form_state){
  * Add additional install tasks 
  */
 function erpal_install_tasks(){
-
   
   $tasks = array();
   
@@ -75,6 +74,57 @@ function erpal_install_tasks(){
   );
   
   return $tasks;
+}
+
+
+/**
+ * Implements hook_install_tasks_alter().
+ */
+function erpal_install_tasks_alter(&$tasks, $install_state) {
+  $tasks['install_select_profile']['display'] = FALSE;
+  $welcome['erpal_welcome_message'] = array(
+    'display_name' => st('Welcome'),
+    'display' => TRUE,
+    'type' => 'form',
+    'run' => isset($install_state['parameters']['welcome']) ? INSTALL_TASK_SKIP : INSTALL_TASK_RUN_IF_REACHED,
+  );
+  $old_tasks = $tasks;
+  $tasks = array_slice($old_tasks, 0, 1) + $welcome+ array_slice($old_tasks, 1);
+  _erpal_set_theme('erpal_maintenance');
+}
+
+function erpal_welcome_message($form, $form_state){
+  drupal_set_title(st('Welcome'));
+  $welcome = st('<p>The following steps will install and configure your new ERPAL-Site</br>
+  This project is still under development so feel free to visit the ' 
+  . l('project page', 'http://drupal.org/project/erpal')
+  . ' and share your thoughts and impressions to make it even better.</br>
+  Thank you for choosing ERPAL!</p>');
+  $form = array();
+  $form['welcome_message'] = array(
+    '#markup' => $welcome);
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Install ERPAL'),
+  );
+  return $form;
+}
+
+function erpal_welcome_message_submit($form, &$form_state) {
+  global $install_state;
+  $install_state['parameters']['welcome'] = 'done';
+}
+
+/**
+ * Forces to set the erpal_maintenance theme during the installation
+ */
+function _erpal_set_theme($target_theme) {
+  if ($GLOBALS['theme'] != $target_theme) {
+    unset($GLOBALS['theme']);
+    drupal_static_reset();
+    $GLOBALS['conf']['maintenance_theme'] = $target_theme;
+    _drupal_maintenance_theme();
+  }
 }
 
 function erpal_preconfigure_site(){
@@ -302,3 +352,4 @@ function _erpal_get_countries(){
   }  
   return $countries;
 }
+ 

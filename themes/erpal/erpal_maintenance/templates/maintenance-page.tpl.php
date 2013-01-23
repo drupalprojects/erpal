@@ -34,12 +34,17 @@
         <?php if ($messages): ?>
           <div id="console"><?php print $messages; ?></div>
         <?php endif; ?>
+        
         <?php if ($help): ?>
-          <div id="help">
-            <?php print $help; ?>
-          </div>
+          <div id="help"><?php print $help; ?></div>
         <?php endif; ?>
+        
         <?php print $content; ?>
+        
+        <?php if (isset($sponsors)): ?>
+          <div id="sponsors"><?php print $sponsors; ?></div>
+        <?php endif; ?>
+        
       </div>
     </div>
   </div>

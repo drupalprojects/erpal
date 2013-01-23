@@ -4,7 +4,7 @@
  * Install, update and uninstall functions for the erpal install profile.
  */
 
- 
+
 
 
 /**
@@ -19,6 +19,7 @@ function erpal_install() {
   // adaptivetheme und theme erpal anschalten und auf default setzen
   $default_theme = 'erpal';
   $admin_theme = 'adaptivetheme_admin';
+  $maintenance_theme = 'erpal_maintenance';
   // alle themes deaktivieren
   db_update('system')
     ->fields(array('status' => 0))
@@ -35,6 +36,11 @@ function erpal_install() {
     ->fields(array('status' => 1))
     ->condition('type', 'theme')
     ->condition('name', $admin_theme)
+    ->execute();
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', $maintenance_theme)
     ->execute();
   // $admin_theme als admin theme setzen
   variable_set('admin_theme', $admin_theme);
