@@ -11,6 +11,7 @@ files[] = erpal_projects_service.module
 files[] = inc/project.inc
 files[] = inc/task.inc
 files[] = inc/timetracking.inc
+files[] = inc/taxonomy.inc
 
 dependencies[] = rest_server
 dependencies[] = erpal_project

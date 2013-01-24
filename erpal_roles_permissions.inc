@@ -96,7 +96,7 @@ function erpal_role_grant_permissions($rid, array $permissions = array()) {
 }
 
 function _erpal_roles_permissions_get_config(){
- $export = array(
+$export = array(
   'anonymous user' => array(
     'role' => array(
       'name' => 'anonymous user',
@@ -128,9 +128,11 @@ function _erpal_roles_permissions_get_config(){
       'create erpal_task content',
       'delete own erpal_task content',
       'delete own simple_date date_item',
+      'delete own timetracking',
       'edit own erpal_file content',
       'edit own erpal_task content',
       'edit own main profile',
+      'edit own timetracking',
       'erpal print tasks',
       'field view task advanced',
       'flag bookmark_flag',

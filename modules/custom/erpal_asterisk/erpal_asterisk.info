@@ -8,11 +8,10 @@ version = "7.x-1.0-dev"
 
 dependencies[] = entity
 dependencies[] = erpal_basic
-dependencies[] = erpal_profile
 dependencies[] = features
 dependencies[] = field_collection
 dependencies[] = field_collection_table
-dependencies[] = field_sql_storage
 dependencies[] = profile2
 dependencies[] = libphonenumber
+dependencies[] = feature_erpal_asterisk_profile	
 

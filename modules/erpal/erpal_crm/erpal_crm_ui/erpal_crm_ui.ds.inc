@@ -24,12 +24,12 @@ function erpal_crm_ui_ds_layout_settings_info() {
       'left' => array(
         0 => 'title',
         1 => 'body',
+        2 => 'field_asset_files',
       ),
       'right' => array(
         0 => 'field_customer_ref',
         1 => 'field_activity_status_term',
         2 => 'field_next_contact',
-        3 => 'field_asset_files',
       ),
       'advancedright' => array(
         0 => 'field_volume',
@@ -52,10 +52,10 @@ function erpal_crm_ui_ds_layout_settings_info() {
     'fields' => array(
       'title' => 'left',
       'body' => 'left',
+      'field_asset_files' => 'left',
       'field_customer_ref' => 'right',
       'field_activity_status_term' => 'right',
       'field_next_contact' => 'right',
-      'field_asset_files' => 'right',
       'field_volume' => 'advancedright',
       'field_contacts_ref' => 'advancedleft',
       'field_chance' => 'advancedright',

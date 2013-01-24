@@ -84,7 +84,7 @@ function erpal_project_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Time information',
-    'weight' => '18',
+    'weight' => '17',
     'children' => array(
       0 => 'field_date',
       1 => 'field_estimated_time',

@@ -1395,3 +1395,29 @@ function erpal_projects_helper_comment_insert($comment){ // might be useful to u
   _erpal_projects_helper_flag($node_type, $comment->nid);
 }
 
+
+/**
+ * Get the children of the current task:
+ * 1. Get directly subtasks;
+ * 2. Loop through the results of subtasks;
+ * 3. Execute search of subtasks for each children again on each child level.
+ * @param int $parent_nid
+ *  nid of parent task
+ * @return array
+ *  array of all subtasks of all levels
+ */
+function _erpal_projects_helper_get_children($parent_nid) {
+  $parent_node = new stdClass;
+  $parent_node->nid = $parent_nid;
+  $children = array();
+  $children[] = (int) $parent_nid;
+  $child_nids = _erpal_projects_helper_get_tasks_child_nodes($parent_node, array(), TRUE);
+  if (!empty($child_nids)) {
+    foreach ($child_nids as $child_nid) {
+      foreach (_erpal_projects_helper_get_children($child_nid) as $child_value) {
+        $children[] = (int) $child_value;
+      }
+    }
+  }
+  return $children;
+}
