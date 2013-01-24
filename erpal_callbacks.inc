@@ -148,8 +148,20 @@ function _erpal_create_relations(&$context){
  */
 function _erpal_various_settings(&$context){
   $context['message'] = st('Configured ERPAL');
+  
+  module_load_include('install', 'erpal_basic_helper', 'erpal_basic_helper');
+  
+  //insert date and time format if they dont exist
+  _erpal_basic_helper_ensure_format('d.m.Y');
+  _erpal_basic_helper_ensure_format('d.m.Y - H:i');
+  
+  //now add these formats to the format types that we need
+  _erpal_basic_helper_ensure_format_type('ERPAL date', 'erpal_date', 'd.m.Y');
+  _erpal_basic_helper_ensure_format_type('ERPAL date time', 'erpal_date_time', 'd.m.Y - H:i');
+  
   variable_set('date_format_erpal_date', 'd.m.Y');
-  variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');  
+  variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');
+  
   variable_set('erpal_docs_doc_file_extensions', 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml');
 }
 

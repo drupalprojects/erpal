@@ -57,7 +57,7 @@ function erpal_install_tasks(){
   $tasks = array();
   
   $tasks['erpal_preconfigure_site'] = array(
-    'display_name' => st('Configure ERPAL'),
+    'display_name' => st('Preparing site'),
     'display' => TRUE,
     'type' => 'batch',
   );
