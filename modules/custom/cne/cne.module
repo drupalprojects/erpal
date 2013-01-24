@@ -28,7 +28,7 @@ function cne_form_comment_form_alter(&$form, &$form_state) {
 		
 		//Attach the node's fields
     $new_form = array(); //if we attach all elements immideately, weights will get lost! So we keep the old form elements with old weights
-
+		
 		field_attach_form('node', $node, $new_form, $form_state, $node->language);
 		
 		//Get the weight of the author field
@@ -70,14 +70,16 @@ function cne_form_comment_form_alter(&$form, &$form_state) {
  * Validates added fields 
 	*/
 function cne_form_validate($form, &$form_state) { 
-	field_attach_form_validate('node', $form['#node'], $form, $form_state);
+  $form_state_node = _cne_prepare_form_state($form, $form_state);
+	field_attach_form_validate('node', $form['#node'], $form, $form_state_node);
 }
 
 /**
  * Submiuts and saves added fields 
 	*/
 function  cne_form_submit($form, &$form_state) {
-	field_attach_submit('node', $form['#node'], $form, $form_state);
+  $form_state_node = _cne_prepare_form_state($form, $form_state);
+	field_attach_submit('node', $form['#node'], $form, $form_state_node);
   $node = $form['#node'];
   $node_options = variable_get('node_options_' . $node->type, false);
   //check if node should create a revision
@@ -86,4 +88,28 @@ function  cne_form_submit($form, &$form_state) {
   }
   node_save($node);
 	drupal_set_message($form['#node']->title . " updated via comment");
+}
+
+/**
+ * Prepare form_state array. Node can content the same field as in comment.
+ * If this field is not "comment_enabled" we shouldn't update it in the node.
+ * @param array $form
+ * @param array $form_state
+ * @return array $form_state
+ */
+function _cne_prepare_form_state($form, $form_state) {
+  if(isset($form['#node'])){
+    $node = $form['#node'];
+    $bundle = $node->type;
+    // loop node fields
+    foreach (field_info_instances('node', $bundle) as $fieldname => $field_instance) {
+      // unset field in form state it it is not "comment_enabled"
+      if (!isset($field_instance['comment_enabled']) || $field_instance['comment_enabled'] == 0) {
+        if (isset($form_state['values'][$fieldname])) {
+          unset($form_state['values'][$fieldname]);
+        }
+      }
+    }
+  }
+  return $form_state;
 }
