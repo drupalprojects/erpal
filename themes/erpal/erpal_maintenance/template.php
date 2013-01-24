@@ -26,7 +26,7 @@ function erpal_maintenance_preprocess_maintenance_page(&$vars){
   // add page screencasts.html to every page in the maintenance theme 
   $filename = path_to_theme().'/screencasts.html';
   $file = fopen($filename, 'r');
-  $vars['sponsors'] = fread($file, filesize($filename));
+  $vars['screencasts'] = fread($file, filesize($filename));
   fclose($file);
 }
 

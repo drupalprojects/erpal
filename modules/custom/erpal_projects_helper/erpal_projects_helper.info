@@ -19,3 +19,5 @@ files[] = inc/tasks.inc
 files[] = inc/timetracking.inc
 files[] = inc/notifications.inc
 files[] = inc/token.inc
+files[] = views/erpal_projects_helper.views.inc
+files[] = views/erpal_projects_helper_handler_filter_erpal_projects.inc

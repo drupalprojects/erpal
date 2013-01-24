@@ -12,13 +12,13 @@ projects[auto_nodetitle][subdir] = "contrib"
 projects[better_exposed_filters][version] = "3.0-beta3"
 projects[better_exposed_filters][subdir] = "contrib"
 
+projects[ckeditor][version] = "1.12"
+projects[ckeditor][subdir] = "contrib"
+
 projects[ctools][version] = "1.2"
 projects[ctools][subdir] = "contrib"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-1727804-6_0.patch"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-fix-warning-message-1739718-32.patch"
-
-projects[fullcalendar][version] = "2.0"
-projects[fullcalendar][subdir] = "contrib"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
@@ -86,6 +86,9 @@ projects[flag][subdir] = "contrib"
 
 projects[front][version] = "2.1"
 projects[front][subdir] = "contrib"
+
+projects[fullcalendar][version] = "2.0"
+projects[fullcalendar][subdir] = "contrib"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
@@ -175,6 +178,10 @@ libraries[fullcalendar][download][type] = "file"
 libraries[fullcalendar][download][url] = "http://arshaw.com/fullcalendar/downloads/fullcalendar-1.5.4.zip"
 libraries[fullcalendar][directory_name] = "libraries"
 libraries[fullcalendar][destination] = ""
+
+libraries[ckeditor][download][type] = "file"
+libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.0.1/ckeditor_4.0.1_full.tar.gz"
+libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"

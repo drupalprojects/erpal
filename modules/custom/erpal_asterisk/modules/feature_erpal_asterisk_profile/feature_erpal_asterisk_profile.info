@@ -1,6 +1,6 @@
 name = Feature ERPAL Asterisk Profile
 core = 7.x
-package = Features
+package = ERPAL Asterisk
 php = 5.2.4
 dependencies[] = entity
 dependencies[] = erpal_asterisk

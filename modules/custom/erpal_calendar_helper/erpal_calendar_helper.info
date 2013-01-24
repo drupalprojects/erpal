@@ -10,6 +10,7 @@ dependencies[] = erpal_lib
 
 files[] = erpal_resource_helper.module
 files[] = inc/config.inc
+files[] = inc/notifications.inc
 
 ; Information added by drupal.org packaging script on 2013-01-13
 version = "7.x-2.x-dev"

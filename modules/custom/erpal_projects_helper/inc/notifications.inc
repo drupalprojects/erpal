@@ -241,8 +241,10 @@ function _erpal_projects_helper_user_assigned_email($account, $entity, $op) {
       'subject' => $subject,
       'message' => $message_body,
     );
-
-    _erpal_basic_helper_notify_users_send(array($account->uid), $message);
+    // email will be added to a cron queue
+    _erpal_basic_helper_notify_users(array($account->uid), $message);
+    // direct email send
+    //_erpal_basic_helper_notify_users_send(array($account->uid), $message);
   }
 }
 

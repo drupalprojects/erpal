@@ -1,5 +1,17 @@
 <?php
 
+
+
+/**
+ * Provides a basic configuration for local testing
+ */
+function erpal_asterisk_install(){
+  variable_set('asterisk_nodejs_host'    , "127.0.0.1");
+  variable_set('asterisk_nodejs_http_port'    , 8080);
+  variable_set('asterisk_nodejs_socket_port'    , 3081);
+  variable_set('asterisk_nodejs_lifetime', 60); 
+}
+
 /**
 * Returns all the menu path for config of asterisk notify
 */
@@ -91,7 +103,12 @@ function _erpal_asterisk_config_form() {
       '#options' => libphonenumber_get_regions(),
       '#default_value' => variable_get('libphonenumber_default_country'), 
     );
-    
+  $form['libphonenumber']['area'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Default area code'),
+      '#description' => t('Enter the country code of your phonenumber. Such as "06151" for Darmstadt or "030" for Berlin'),
+      '#default_value' => variable_get('libphonenumber_default_area'),
+  );
     
   $form['libphonenumber']['format'] = array(
       '#type' => 'select', 
@@ -148,5 +165,7 @@ function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
   $format = $form_state['values']['format'];
   variable_set('libphonenumber_default_format', $format);
    
+  $area = $form_state['values']['area'];
+  variable_set('libphonenumber_default_area', $area);
 }
 
