@@ -27,6 +27,7 @@ dependencies[] = taxonomy
 ;contrib
 dependencies[] = auto_nodetitle
 dependencies[] = better_exposed_filters
+dependencies[] = ckeditor
 dependencies[] = comment
 dependencies[] = computed_field
 dependencies[] = conditional_fields
@@ -140,6 +141,7 @@ dependencies[] = erpal_invoice_ui
 dependencies[] = erpal_profile
 dependencies[] = erpal_project
 dependencies[] = erpal_project_ui
+dependencies[] = erpal_wysiwyg
 
 
 dependencies[] = erpal_layout

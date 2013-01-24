@@ -33,6 +33,36 @@ function erpal_calendar_helper_config_form($form, &$form_state){
   $form = array();
   $form['#tree'] = true;
   
+  // Date notifications. User was assigned
+  $form['calendar_notifications'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Calendar notifications'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  $form['calendar_notifications']['erpal_calendar_assigned_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Message subject'),
+    '#default_value' => _erpal_calendar_get_assigned_subject(),
+  );
+
+  $form['calendar_notifications']['erpal_calendar_assigned_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message text'),
+    '#default_value' => _erpal_calendar_get_assigned_message(),
+  );
+  //add available tokens to the form. show available Tokens  
+  if (module_exists('token')) {
+    $form['calendar_notifications']['token_tree'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => array('erpal_project_notifications'),
+      '#global_types' => FALSE,
+      '#click_insert' => TRUE,
+      '#recursion_limit' => 1,
+    );
+  }
+  // ** end of Date notifications **
+  
   $form['date_item_tags'] = array(
     '#type' => 'fieldset',
     '#title' => t('Date categories'),
@@ -142,4 +172,50 @@ function _erpal_calendar_helper_config_form_submit($form, $form_state){
   $user_holiday_tag_string = $values['date_item_tags_special']['erpal_calendar_user_holiday_tag_string'];
   variable_set('erpal_calendar_user_holiday_tag_string', $user_holiday_tag_string);
   
+  // notifications settings
+  if(!empty($form_state['values']['calendar_notifications'])){
+    $notifications = $form_state['values']['calendar_notifications'];
+    // subject
+    if(!empty($notifications['erpal_calendar_assigned_subject'])){
+      _erpal_calendar_set_assigned_subject($notifications['erpal_calendar_assigned_subject']);
+    }
+    // message
+    if(!empty($notifications['erpal_calendar_assigned_message'])){
+      _erpal_calendar_set_assigned_message($notifications['erpal_calendar_assigned_message']);
+    }
+  }
+}
+
+/**
+ * Returns the message subject for calendar assigned messages
+ */
+function _erpal_calendar_get_assigned_subject() {
+  $value = 'ERPAL - Notification: [erpal_project_notifications:content_label]';
+  return variable_get('erpal_calendar_assigned_subject', $value);
+}
+/**
+ * Sets the message subject for calendar assigned messages
+ */
+function _erpal_calendar_set_assigned_subject($subject) {
+  return variable_set('erpal_calendar_assigned_subject', $subject);
+}
+
+/**
+ * Returns the message text for calendar assigned messages
+ */
+function _erpal_calendar_get_assigned_message() {
+  $value = 'Hello,
+
+You were assigned to the date: [erpal_project_notifications:content_label] -> [erpal_project_notifications:content_url]
+
+Best regards
+
+ERPAL';
+  return variable_get('erpal_calendar_assigned_message', $value);
+}
+/**
+ * Sets the message text for calendar assigned messages
+ */
+function _erpal_calendar_set_assigned_message($message) {
+  return variable_set('erpal_calendar_assigned_message', $message);
 }
