@@ -12,7 +12,7 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
    * It requires joins for comments, WHERE OR conditions(to find files in 
    * comments) and views ui configuration because we need to show title of 
    * comment's task where the file is attached. Then we won't need to store all
-   * files of comments in task.
+   * files of comments in task via _erpal_docs_helper_form_submit function.
    */
   function query($group_by = FALSE) {
 
