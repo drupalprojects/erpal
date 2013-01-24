@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Notify users assigned to date via email
  */
@@ -38,9 +39,13 @@ function _erpal_calendar_helper_subscribe_date_assigned_users($node) {
  */
 function _erpal_calendar_helper_loop_date_users($assigned_users, $node) {
   foreach ($assigned_users as $assigned_user) {
-    if ($account = user_load($assigned_user)) {
-      // send notification email to assigned user
-      _erpal_calendar_helper_date_assigned_email($account, $node, 'assign');
+    global $user;
+    // User won't receive notification if he adds himself to the date node
+    if ($assigned_user != $user->uid){
+      if ($account = user_load($assigned_user)) {
+        // send notification email to assigned user
+        _erpal_calendar_helper_date_assigned_email($account, $node, 'assign');
+      }
     }
   }
 }
