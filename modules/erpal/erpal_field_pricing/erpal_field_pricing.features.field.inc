@@ -686,7 +686,7 @@ function erpal_field_pricing_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => 6,
+        'weight' => 7,
       ),
     ),
   );
@@ -777,7 +777,7 @@ function erpal_field_pricing_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => 8,
+        'weight' => 9,
       ),
     ),
   );

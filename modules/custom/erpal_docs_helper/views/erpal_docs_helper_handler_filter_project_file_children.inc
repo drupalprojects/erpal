@@ -8,6 +8,11 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
 
   /**
    * Clear query alter
+   * @TODO: better solution would be to get files directly from comments.
+   * It requires joins for comments, WHERE OR conditions(to find files in 
+   * comments) and views ui configuration because we need to show title of 
+   * comment's task where the file is attached. Then we won't need to store all
+   * files of comments in task via _erpal_docs_helper_form_submit function.
    */
   function query($group_by = FALSE) {
 
@@ -58,7 +63,7 @@ class erpal_docs_helper_handler_argument_child_tasks_files extends views_handler
     else {
       // Get files of task and it's subtasks tree
       if ($node->type == 'erpal_task') {
-        $child_nids = _erpal_timetracking_helper_get_children($nid);
+        $child_nids = _erpal_projects_helper_get_children($nid);
         $nids = array_unique($child_nids);
         $this->query->add_where($alias, "{$alias}.entity_id", $nids, "IN");
       } else

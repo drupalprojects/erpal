@@ -8,9 +8,7 @@ module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
 module_load_include('inc', 'erpal_docs_helper', 'inc/config');
 module_load_include('inc', 'erpal_docs_helper', 'inc/dynamic.menu');
 module_load_include('inc', 'erpal_docs_helper', 'inc/erpal_docs_helper_files');
-module_load_include('inc', 'erpal_docs_helper', 'views/erpal_docs_helper.views');
-module_load_include('inc', 'erpal_docs_helper', 'views/erpal_docs_helper_handler_filter_project_file_children');
- 
+
 /**
  * Implements hook_ctools_plugin_directory().
  */
@@ -20,6 +18,16 @@ function erpal_docs_helper_ctools_plugin_directory($module, $plugin) {
   }
 }  
  
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_docs_helper_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'erpal_docs_helper') . '/views',
+  );
+}
+
 /**
 * Implements hook_menu
 */ 
@@ -314,4 +322,64 @@ function _erpal_docs_make_filename($title, $type) {
   $title = str_replace(' ', '_', $title);
   
   return $title.".".$type;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter
+ */
+function erpal_docs_helper_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  array_push($form['#submit'], '_erpal_docs_helper_form_submit');
+}
+
+/**
+ * Attach comment files to task node on comment submit
+ */
+function _erpal_docs_helper_form_submit(&$form, &$form_state) { 
+  $l = LANGUAGE_NONE;
+  // comment checks
+  if(empty($form_state['values']['field_asset_files'][$l]))
+    return FALSE;
+
+  if(!$node = $form['#node'])
+    return FALSE;
+  
+  if($node->type != 'erpal_task')
+    return FALSE;
+  
+  // emulate comment entity for _erpal_docs_helper_collect_files function
+  $comment = new stdClass();
+  $comment->field_asset_files = $form_state['values']['field_asset_files'];
+  
+  // collect comment files
+  $comment_files = _erpal_docs_helper_collect_files($comment);
+  // collect node files
+  $node_files = _erpal_docs_helper_collect_files($node);
+  
+  // find new files in comment
+  if($new_files = array_diff($comment_files, $node_files)){
+    // add new files to node
+    foreach ($new_files as $new_fid) {
+      $node->field_asset_files[$l][]['target_id'] = $new_fid;
+    }
+    if(node_save($node)){
+      // save node in form for other submits
+      $form['#node'] = $node;
+    }
+  }
+}
+
+/**
+ * Collects files nids of field field_asset_files in array.
+ * @param object $entity entity with field field_asset_files
+ */
+function _erpal_docs_helper_collect_files($entity){
+  $l = LANGUAGE_NONE;
+  $node_files = array();
+  if (!empty($entity->field_asset_files[$l])) {
+    foreach ($entity->field_asset_files[$l] as $key => $node_file) {
+      if(is_numeric($key) && !empty($node_file['target_id']))
+        $node_files[] = $node_file['target_id'];
+    }
+  }
+  return $node_files;
 }

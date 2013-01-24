@@ -10,7 +10,7 @@ class erpal_docs_helper_files {
    *   nid of task
    */
   function task_children_get_files($nid) {
-    $child_nids = _erpal_timetracking_helper_get_children($nid);
+    $child_nids = _erpal_projects_helper_get_children($nid);
     $query = db_select('field_data_field_asset_files', 'f');
     $query->leftJoin('field_data_field_project_ref', 'p', 'p.entity_id = f.entity_id');
     $query->fields('f', array('field_asset_files_target_id'));
