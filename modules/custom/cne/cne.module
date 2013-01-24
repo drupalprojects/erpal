@@ -77,7 +77,7 @@ function cne_form_validate($form, &$form_state) {
 /**
  * Submiuts and saves added fields 
 	*/
-function  cne_form_submit($form, &$form_state) {
+function  cne_form_submit(&$form, &$form_state) {
   $form_state_node = _cne_prepare_form_state($form, $form_state);
 	field_attach_submit('node', $form['#node'], $form, $form_state_node);
   $node = $form['#node'];
@@ -86,8 +86,11 @@ function  cne_form_submit($form, &$form_state) {
   if (is_array($node_options) && in_array('revision', $node_options)) {
     $node->revision = true;
   }
-  node_save($node);
-	drupal_set_message($form['#node']->title . " updated via comment");
+  if(node_save($node)){
+    // save node in form for other submits
+    $form['#node'] = $node;
+    drupal_set_message($form['#node']->title . " updated via comment");
+  }
 }
 
 /**
