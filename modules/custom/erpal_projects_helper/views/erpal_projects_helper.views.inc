@@ -11,8 +11,11 @@ function erpal_projects_helper_views_data() {
         'title' => t('Task subtasks'),
         'help' => t('Choses task and subtasks nids'),
         'argument' => array(
-          'handler' => 'erpal_projects_helper_handler_filter_erpal_projects'
+          'handler' => 'erpal_projects_helper_handler_argument_erpal_projects',
         ),
+        'filter' => array(
+          'handler' => 'erpal_projects_helper_handler_filter_erpal_projects',
+        )
       )
     )
   );
