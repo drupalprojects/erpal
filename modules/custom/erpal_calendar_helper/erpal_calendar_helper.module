@@ -7,6 +7,7 @@
  module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
  module_load_include('inc', 'erpal_calendar_helper', 'inc/access');  
  module_load_include('inc', 'erpal_calendar_helper', 'inc/dynamic.menu');
+ module_load_include('inc', 'erpal_calendar_helper', 'inc/notifications');
  
 /**
 * Implements hook_init
@@ -55,6 +56,25 @@ function erpal_calendar_helper_entity_update($entity, $type) {
       _erpal_calendar_helper_manage_date_acl($entity, 'insert');
     }    
   }   
+}
+
+/**
+* Implements hook_node_inser
+*/
+function erpal_calendar_helper_node_insert($node){
+  if ($node->type == 'erpal_date') {    
+    _erpal_calendar_helper_subscribe_date_assigned_users($node);       
+  }
+}
+/**
+* Implements hook_node_presave
+*/
+function erpal_calendar_helper_node_presave($node) {
+  if ($node->type == 'erpal_date') {  
+    if (!empty($node->original)) {
+      _erpal_calendar_helper_subscribe_date_assigned_users($node);    
+    }
+  }
 }
 
 /**
