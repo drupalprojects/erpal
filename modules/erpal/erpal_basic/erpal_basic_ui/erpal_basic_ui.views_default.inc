@@ -190,9 +190,6 @@ function erpal_basic_ui_views_default_views() {
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
 
-  /* Display: Contact Reference Project */
-  $handler = $view->new_display('entityreference_view_widget', 'Contact Reference Project', 'entityreference_view_widget_2');
-
   /* Display: Contact Dialog Search Project */
   $handler = $view->new_display('references_dialog', 'Contact Dialog Search Project', 'references_dialog_customer_project');
   $handler->display->display_options['defaults']['title'] = FALSE;
