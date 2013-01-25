@@ -1263,6 +1263,10 @@ body #user-login input.form-text {
   width: 46%;
 }
 
+li.jstree-open ul {
+  padding-left: 20px;
+}
+
 /*-------------begin login styles------------------*/
 /*****DELETE****/
 .rel-register-link {
