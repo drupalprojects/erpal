@@ -1,16 +1,14 @@
 <?php
 
 
-$show_sponsores = FALSE;
-$show_screencasts = TRUE;
-
 /**
  * 
  * function theme_prepsrocess_maintenance_page
  * used to add content to the batch processes during the installation
  */
 function erpal_maintenance_preprocess_maintenance_page(&$vars){
-  
+  $show_sponsores = FALSE;
+  $show_screencasts = TRUE;  
   if($show_sponsores){  
     if(isset($vars['title'])){
       // add page sponsors1.html to the module-install batch process
