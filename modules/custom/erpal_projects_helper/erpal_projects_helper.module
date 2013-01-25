@@ -37,7 +37,16 @@ function erpal_projects_helper_ctools_plugin_directory($module, $plugin) {
     return 'plugins/' . $plugin;
   }
 } 
- 
+
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_projects_helper_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'erpal_projects_helper') . '/views',
+  );
+}
  
 /**
  * Implements hook_action_info().
