@@ -200,7 +200,6 @@ function erpal_book_strongarm() {
   $strongarm->name = 'node_options_erpal_book';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
   );
   $export['node_options_erpal_book'] = $strongarm;
 
@@ -210,7 +209,6 @@ function erpal_book_strongarm() {
   $strongarm->name = 'node_options_erpal_book_page';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
   );
   $export['node_options_erpal_book_page'] = $strongarm;
 
