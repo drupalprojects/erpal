@@ -1,0 +1,104 @@
+/*---------for background----------*/
+/*---------for shadow----------*/
+/*---------for link hover----------*/
+.maintenance-page {
+  background-color: #7b726b;
+  font-size: 14px;
+}
+.maintenance-page #branding {
+  padding: 20px 30px 15px 20px;
+  overflow: hidden;
+  font-size: 38px;
+  line-height: 38px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.maintenance-page #branding .logo-wrapper {
+  float: left;
+}
+.maintenance-page #branding h1.page-title {
+  margin-top: 30px;
+  float: right;
+  font-size: 36px;
+  line-height: 36px;
+}
+.maintenance-page #page-top {
+  margin: 60px auto 0;
+  width: 800px;
+  background: #ffffff;
+  -webkit-box-shadow: black 0px 0px 5px;
+  -moz-box-shadow: black 0px 0px 5px;
+  box-shadow: black 0px 0px 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+.maintenance-page #videos {
+  margin: 20px auto 0;
+  padding: 25px 30px 15px;
+  background-color: white;
+  width: 740px;
+  -webkit-box-shadow: black 0px 0px 5px;
+  -moz-box-shadow: black 0px 0px 5px;
+  box-shadow: black 0px 0px 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.maintenance-page #videos h3.title {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 20px;
+}
+.maintenance-page #videos .video-box {
+  margin-right: 50px;
+  float: left;
+  width: 170px;
+}
+.maintenance-page #videos .video-box iframe {
+  border: 1px solid #dedede;
+}
+.maintenance-page #videos .video-box a {
+  text-decoration: underline;
+  display: block;
+  line-height: 17px;
+}
+.maintenance-page #videos .video-box a:hover {
+  color: #756c65;
+}
+.maintenance-page .page-wrapper {
+  padding: 10px 30px 15px;
+}
+.maintenance-page .page-wrapper #sidebar-first {
+  float: left;
+  width: 200px;
+}
+.maintenance-page .page-wrapper .task-list {
+  padding-left: 0px;
+  list-style-type: none;
+  float: left;
+}
+.maintenance-page .page-wrapper .task-list li {
+  background: url("../images/list.png") no-repeat 0 5px;
+  line-height: 35px;
+  padding-left: 40px;
+}
+.maintenance-page .page-wrapper .task-list li.active {
+  background: url("../images/list_active.png") no-repeat 0 5px;
+  color: #fba125;
+  font-weight: normal;
+}
+.maintenance-page .page-wrapper .task-list li.done {
+  background: url("../images/list_done.png") no-repeat 0 5px;
+  color: #0c8b5a;
+}
+.maintenance-page #content {
+  padding-left: 40px !important;
+  float: left;
+  width: 500px;
+}
