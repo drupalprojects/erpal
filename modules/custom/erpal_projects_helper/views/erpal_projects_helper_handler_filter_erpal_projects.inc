@@ -32,7 +32,7 @@ class erpal_projects_helper_handler_argument_erpal_projects extends views_handle
       return;
 
     // check in node is erpal_project or erpal_task
-    if ($node->type != 'erpal_task')
+    if ($node->type != 'erpal_project' && $node->type != 'erpal_task')
       return;
 
     // prepare table
@@ -47,9 +47,22 @@ class erpal_projects_helper_handler_argument_erpal_projects extends views_handle
     // If erpal_subtasks value is "YES" or doesn't exist get direct task and 
     // subtasks
     else {
-      $child_nids = _erpal_projects_helper_get_children($nid);
-      $nids = array_unique($child_nids);
-      $this->query->add_where($alias, "{$alias}.nid", $nids, "IN");
+      // Get files of task and it's subtasks tree
+      if ($node->type == 'erpal_task') {
+        $child_nids = _erpal_projects_helper_get_children($nid);
+        $nids = array_unique($child_nids);
+        $this->query->add_where($alias, "{$alias}.nid", $nids, "IN");
+      } else
+
+      // Get files of project and it's tasks tree
+      if ($node->type == 'erpal_project') {
+        $join_project_ref = new views_join();
+        $join_project_ref->construct('field_data_field_project_ref', $alias, 'nid', 'entity_id');
+        $joined_table = $this->query->ensure_table('field_data_field_project_ref', $this->relationship, $join_project_ref);
+
+        $expression = "{$alias}.nid = {$nid} OR {$joined_table}.field_project_ref_target_id = {$nid}";
+        $this->query->add_where_expression(0, $expression);
+      }
     }
   }
 
