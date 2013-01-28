@@ -27,6 +27,14 @@ function erpal_projects_service_services_resources() {
             'source' => array('path' => 0),  //counted from the end, so param = 0 is the last arg in the url!
             'optional' => TRUE,
           ),          
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'Deliver the Projects with an array of children, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
         ),
       ),
       'index' => array(
@@ -68,14 +76,6 @@ function erpal_projects_service_services_resources() {
             'description' => 'Deliver the Projects with detailed information, defaults to false.',
             'optional' => TRUE,
             'source' => array('param' => 'details'),
-            'default value' => FALSE,
-          ),
-          array(
-            'name' => 'include_children',
-            'type' => 'boolean',
-            'description' => 'Deliver the Projects with an array of children, defaults to false.',
-            'optional' => TRUE,
-            'source' => array('param' => 'include_children'),
             'default value' => FALSE,
           ),
         ),
