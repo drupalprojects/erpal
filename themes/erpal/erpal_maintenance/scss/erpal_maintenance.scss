@@ -65,6 +65,7 @@
   .page-wrapper {
     padding: 10px 30px 15px;
 	#sidebar-first {
+	  margin-right: 40px;
 	  float: left;
 	  width: 200px;
 	}
@@ -89,8 +90,11 @@
     }
   }
   #content {
-    padding-left: 40px !important;
 	float: left;
 	width: 500px;
+  }
+  #sponsors {
+	margin-top: 30px;
+	text-align: center;
   }
 }
