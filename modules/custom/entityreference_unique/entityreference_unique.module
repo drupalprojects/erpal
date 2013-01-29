@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Creates validation plugin "validate unique entities" for the Entity Reference 
+ * module.
+ */
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function entityreference_unique_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'entityreference') {
+    return 'plugins/' . $plugin;
+  }
+}

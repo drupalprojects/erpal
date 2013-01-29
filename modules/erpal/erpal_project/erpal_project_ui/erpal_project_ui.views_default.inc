@@ -230,37 +230,6 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_timetracking_button']['field'] = 'field_timetracking_button';
   $handler->display->display_options['fields']['field_timetracking_button']['label'] = 'Timetracking';
   $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
-  $translatables['assigned_tasks'] = array(
-    t('Master'),
-    t('Assigned open tasks'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No tasks available'),
-    t('User entity referenced from field_task_assigned_users'),
-    t('term from field_task_status_term'),
-    t('Title'),
-    t('Project'),
-    t('Priority'),
-    t('Deadline'),
-    t('Timetracking button'),
-    t('Assigned tasks page'),
-    t('Status'),
-    t('Progress'),
-    t('Parent'),
-    t('Timetracking'),
-    t('Assigned tasks block'),
-  );
   $export['assigned_tasks'] = $view;
 
   $view = new view();
@@ -580,39 +549,6 @@ function erpal_project_ui_views_default_views() {
   /* Display: All budgets overview */
   $handler = $view->new_display('panel_pane', 'All budgets overview', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $translatables['budgets'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('Budget ID'),
-    t('.'),
-    t('Total hours'),
-    t(','),
-    t('Available hours'),
-    t('Valid from'),
-    t('Valid to'),
-    t('Created'),
-    t('Changed'),
-    t('Subject'),
-    t('Project'),
-    t('Link'),
-    t('Edit'),
-    t('Delete'),
-    t('Valid till'),
-    t('All budgets overview'),
-    t('View panes'),
-  );
   $export['budgets'] = $view;
 
   $view = new view();
@@ -905,38 +841,6 @@ function erpal_project_ui_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['fixed_price_nodes'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No fixed priced items found'),
-    t('field collection item from field_pricing'),
-    t('term from field_project_status_term'),
-    t('term from field_task_status_term'),
-    t('Task title'),
-    t('Project'),
-    t('Deadline'),
-    t('Status'),
-    t('Price'),
-    t('Fixed price nodes pane'),
-    t('[field_project_status_term] --'),
-    t('Type'),
-    t('View panes'),
-    t('Fixed price tasks by project pane'),
-    t('Fixed price tasks'),
-    t('All'),
-  );
   $export['fixed_price_nodes'] = $view;
 
   $view = new view();
@@ -999,23 +903,6 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'entityreference_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $translatables['project_related_users'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('Entity Reference'),
-  );
   $export['project_related_users'] = $view;
 
   $view = new view();
@@ -1393,35 +1280,6 @@ function erpal_project_ui_views_default_views() {
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['projects'] = array(
-    t('Master'),
-    t('more'),
-    t('Filter'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No projects found'),
-    t('Title'),
-    t('Customer'),
-    t('Status'),
-    t('Priority'),
-    t('Project starts'),
-    t('Project ends'),
-    t('Projects by activity pane'),
-    t('[title] ([field_activity_status_term])'),
-    t('All'),
-    t('View panes'),
-    t('Projects pane'),
-    t('Search Terms'),
-  );
   $export['projects'] = $view;
 
   $view = new view();
@@ -1561,35 +1419,6 @@ function erpal_project_ui_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['task_revisions'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No history found'),
-    t('revision user'),
-    t('Get the actual content from a content revision.'),
-    t('Task title'),
-    t('Updated date'),
-    t('Priority'),
-    t('Type'),
-    t('Status'),
-    t('Progress'),
-    t('Name'),
-    t('All'),
-    t('Task revisions pane'),
-    t('View panes'),
-  );
   $export['task_revisions'] = $view;
 
   $view = new view();
@@ -4417,63 +4246,6 @@ function erpal_project_ui_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['tasks'] = array(
-    t('Master'),
-    t('more'),
-    t('Filter'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('No tasks available'),
-    t('Content entity referenced from field_parent'),
-    t('author'),
-    t('Project'),
-    t('Type'),
-    t('Status'),
-    t('Priority'),
-    t('Time'),
-    t('[field_estimated_time] h'),
-    t('Parent'),
-    t('Edit'),
-    t('Nid'),
-    t('Weight'),
-    t('Assigned'),
-    t('Title'),
-    t('Categories'),
-    t('Task by project pane tree'),
-    t('Tree'),
-    t('All'),
-    t('ID'),
-    t('Priority (field_priority_term)'),
-    t('View panes'),
-    t('Task child view AJAX'),
-    t('Task child view AJAX TOP'),
-    t('Subtasks Tree'),
-    t('Subtasks (tree)'),
-    t('Tasks by ID'),
-    t('Subtasks List'),
-    t('Subtasks (list)'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('#'),
-    t('Task title'),
-    t('Submitted'),
-    t('Last update'),
-    t('Deadline'),
-    t('Author'),
-    t('Subtasks Details'),
-    t('Subtasks (details)'),
-    t('Tasks by project pane list'),
-    t('List'),
-    t('Tasks by project pane details'),
-    t('Details'),
-  );
   $export['tasks'] = $view;
 
   $view = new view();
@@ -7096,63 +6868,6 @@ function erpal_project_ui_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['tickets'] = array(
-    t('Master'),
-    t('more'),
-    t('Filter'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('No tasks available'),
-    t('Content entity referenced from field_parent'),
-    t('author'),
-    t('Project'),
-    t('Type'),
-    t('Status'),
-    t('Priority'),
-    t('Time'),
-    t('[field_estimated_time] h'),
-    t('Parent'),
-    t('Edit'),
-    t('Nid'),
-    t('Weight'),
-    t('Assigned'),
-    t('Title'),
-    t('Categories'),
-    t('ID'),
-    t('Tickets by project pane tree'),
-    t('Tree'),
-    t('All'),
-    t('Priority (field_priority_term)'),
-    t('View panes'),
-    t('Tickets child view AJAX'),
-    t('Tickets child view AJAX TOP'),
-    t('Subtickets Tree'),
-    t('Subtickets (tree)'),
-    t('Tickets by ID'),
-    t('Subtickets List'),
-    t('Subtickets (list)'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('#'),
-    t('Ticket title'),
-    t('Submitted'),
-    t('Last update'),
-    t('Deadline'),
-    t('Author'),
-    t('Subtickets Details'),
-    t('Subtasks (details)'),
-    t('Tickets by project pane list'),
-    t('List'),
-    t('Tickets by project pane details'),
-    t('Details'),
-  );
   $export['tickets'] = $view;
 
   $view = new view();
@@ -7542,36 +7257,6 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['description']['field'] = 'description';
   $handler->display->display_options['fields']['description']['label'] = 'Artikelbezeichnung';
   $handler->display->display_options['fields']['description']['exclude'] = TRUE;
-  $translatables['timetracking_entities'] = array(
-    t('Master'),
-    t('My unbooked timetrackings'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('No timetrackings available'),
-    t('Timetracking subject'),
-    t('Timetracking user'),
-    t('Timetracking'),
-    t('Timetracking ID'),
-    t('.'),
-    t(','),
-    t('Changed'),
-    t('Artikelbezeichnung'),
-    t('start'),
-    t('end'),
-    t('Duration'),
-    t('Subject'),
-    t('User'),
-    t('Category'),
-    t('Delete Link'),
-    t('Edit Link'),
-    t('Timetracking button'),
-    t('My timetracking entites'),
-    t('My Timetrackings block'),
-  );
   $export['timetracking_entities'] = $view;
 
   $view = new view();
@@ -8546,16 +8231,22 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   $handler->display->display_options['fields']['field_project_tags']['field'] = 'field_project_tags';
   $handler->display->display_options['fields']['field_project_tags']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Subject (field_timetracking_subject) */
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['id'] = 'field_timetracking_subject_target_id';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['table'] = 'field_data_field_timetracking_subject';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['field'] = 'field_timetracking_subject_target_id';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['default_action'] = 'empty';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['break_phrase'] = TRUE;
+  /* Contextual filter: Task: Task subtasks */
+  $handler->display->display_options['arguments']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['relationship'] = 'field_timetracking_subject_target_id';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['erpal_subtasks']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate_options']['types'] = array(
+    'erpal_task' => 'erpal_task',
+  );
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['fail'] = 'empty';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Title */
@@ -8637,27 +8328,6 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
     'erpal_timetracking' => 'erpal_timetracking',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Timetracking: Show subtasks */
-  $handler->display->display_options['filters']['timetracking_subtasks']['id'] = 'timetracking_subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['table'] = 'field_data_field_timetracking_subject';
-  $handler->display->display_options['filters']['timetracking_subtasks']['field'] = 'timetracking_subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['value'] = 0;
-  $handler->display->display_options['filters']['timetracking_subtasks']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['label'] = 'Show subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['operator'] = 'timetracking_subtasks_op';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['identifier'] = 'timetracking_subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-    8 => 0,
-  );
   /* Filter criterion: Field: Category (field_project_tags) */
   $handler->display->display_options['filters']['field_project_tags_tid']['id'] = 'field_project_tags_tid';
   $handler->display->display_options['filters']['field_project_tags_tid']['table'] = 'field_data_field_project_tags';
@@ -8682,6 +8352,28 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['filters']['field_project_tags_tid']['error_message'] = FALSE;
+  /* Filter criterion: Task: Task subtasks */
+  $handler->display->display_options['filters']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['filters']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['value'] = '0';
+  $handler->display->display_options['filters']['erpal_subtasks']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['label'] = 'Show subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['operator'] = 'erpal_subtasks_op';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['identifier'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+  );
   $handler->display->display_options['argument_input'] = array(
     'field_timetracking_subject_target_id' => array(
       'type' => 'panel',
@@ -9276,52 +8968,6 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['timetrackings'] = array(
-    t('Master'),
-    t('Timetrackings'),
-    t('more'),
-    t('Filter'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No timetrackings available'),
-    t('author'),
-    t('field_timetracking_subject'),
-    t('Select'),
-    t('Title'),
-    t('Date and time'),
-    t('Duration'),
-    t('Billing Duration'),
-    t('Price'),
-    t('Task'),
-    t('Project'),
-    t('User'),
-    t('Category'),
-    t('Date and time -  start date (field_date_time)'),
-    t('Search Terms'),
-    t('Date'),
-    t('field_project_ref'),
-    t('All'),
-    t('Timetrackings by task'),
-    t('Content'),
-    t('Show subtasks'),
-    t('View panes'),
-    t('Timetracking by project pane'),
-    t('Timetracking title'),
-    t('Budget timetrackings pane'),
-    t('Content entity referenced from field_timetracking_subject'),
-    t('field collection item from field_pricing'),
-    t('budget entity referenced from field_budgets'),
-    t('Content entity referenced from field_project_ref'),
-  );
   $export['timetrackings'] = $view;
 
   return $export;

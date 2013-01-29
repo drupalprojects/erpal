@@ -21,7 +21,7 @@ environment = :development
 # Compass will overwrite the CSS files in the css_dir when set to watch.
 css_dir = "css"
 sass_dir = "scss"
-images_dir = "css/images"
+images_dir = "images"
 
 
 # Assuming this theme is in sites/*/themes/THEMENAME, you can add the partials
