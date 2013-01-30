@@ -1,6 +1,10 @@
 /*---------for background----------*/
 /*---------for shadow----------*/
 /*---------for link hover----------*/
+html {
+  height: auto !important;
+}
+
 .maintenance-page {
   background-color: #7b726b;
   font-size: 14px;
@@ -115,4 +119,32 @@
 .maintenance-page #sponsors {
   margin-top: 30px;
   text-align: center;
+}
+.maintenance-page input.form-submit {
+  margin-top: 10px;
+  padding: 7px 20px;
+  color: white;
+  background-color: #ffa800;
+  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #fdae15), color-stop(69%, #f9b942)) !important;
+  background: -webkit-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background: -moz-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background: -o-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background: linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
+  background-image: none;
+  font-weight: bold;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+  border-radius: 12px;
+  display: block;
+  border: 1px solid #fba124;
+}
+.maintenance-page input.form-submit:hover {
+  background-color: #fd8300;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #ffa800), color-stop(69%, #f9c25d)) !important;
+  background-image: -webkit-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: -moz-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: -o-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
 }

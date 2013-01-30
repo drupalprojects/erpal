@@ -1,5 +1,7 @@
 @import "global_vars_a_mixins";
-
+html {
+  height: auto !important;
+}
 .maintenance-page {
   background-color: $dark_brown;
   font-size: 14px;
@@ -96,5 +98,21 @@
   #sponsors {
 	margin-top: 30px;
 	text-align: center;
+  }
+  input.form-submit {
+    margin-top: 10px;
+    padding: 7px 20px;
+	color: $white;
+	background-color: $orange;
+	@include background(linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important);
+	background-image: none;
+	font-weight: bold;
+	@include border-radius(12px); 
+	display: block;
+	border: 1px solid #fba124;
+	&:hover {
+	  background-color: $dark_orange;
+	  @include background-image(linear-gradient(bottom, $orange 37%, #f9c25d 69%) !important);
+	}
   }
 }
