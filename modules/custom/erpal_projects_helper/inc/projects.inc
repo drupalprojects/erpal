@@ -135,10 +135,11 @@ function erpal_projects_helper_node_presave_project($node) {
     _erpal_projects_helper_handle_removed_book_nodes($node, $old_node);
   }
   
-  // node edit
-  if (!empty($node->original)) {
+  // We don't notify project if user is assigned to team. 
+  // This produces to many mails that are not relevant for the user
+  /*if (!empty($node->original)) {
     _erpal_projects_helper_subscribe_project_team($node);
-  }
+  }*/
 }
 
 /**
