@@ -321,7 +321,7 @@ function erpal_contact_information_form_submit($form, $form_state){
   );
   node_object_prepare($project_node); 
   node_save($project_node);
-  variable_set('project_nid', $project_node->nid);
+  variable_set('crm_tasks_project', $project_node->nid);
   
   
     // create Internal work project:
@@ -339,7 +339,7 @@ function erpal_contact_information_form_submit($form, $form_state){
   );
   node_object_prepare($task_node); 
   node_save($task_node);
-  variable_set('task_nid', $task_node->nid);
+  variable_set('crm_tasks_task', $task_node->nid);
   
 }
 

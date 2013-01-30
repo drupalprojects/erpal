@@ -3,6 +3,11 @@
 .maintenance-page {
   background-color: $dark_brown;
   font-size: 14px;
+  background-color: $dark_brown;
+  @include filter-gradient(#a69a91, $dark_brown, horizontal); 
+  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 25%, $dark_brown 60%));
+  background-position: center top;
+  background-repeat: no-repeat;
   #branding {
 	padding: 20px 30px 15px 20px;
 	overflow: hidden;
@@ -60,6 +65,7 @@
   .page-wrapper {
     padding: 10px 30px 15px;
 	#sidebar-first {
+	  margin-right: 40px;
 	  float: left;
 	  width: 200px;
 	}
@@ -84,8 +90,11 @@
     }
   }
   #content {
-    padding-left: 40px !important;
 	float: left;
 	width: 500px;
+  }
+  #sponsors {
+	margin-top: 30px;
+	text-align: center;
   }
 }
