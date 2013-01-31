@@ -7,56 +7,61 @@
     <?php print $styles; ?>
     <?php print $scripts; ?>
   </head>
-  <body class="<?php print $classes; ?> <?php print drupal_html_class($title);?>">
+  <body class="<?php print $classes; ?> <?php print drupal_html_class($title); ?>">
 
-  <?php print $page_top; ?>
-  <div class="body-wrapper">
-  <div class="page-outer">
-  <div id="page">
-    <div id="branding">
-      <?php if ($logo): ?>
-      <div class="logo-wrapper">
-        <img id="logo" src="<?php print $logo ?>" alt="<?php print $site_name ?>" />
-      </div>
-      <?php endif; ?>
-      <?php if ($title): ?><h1 class="page-title"><?php print $title; ?></h1><?php endif; ?>
-    </div>
+    <?php if (!empty($page['page_top'])): ?>
+      <?php print render($page['page_top']); ?>
+    <?php endif; ?>
 
-    <div class="page-wrapper clearfix">
+    <div class="body-wrapper">
+      <div class="page-outer">
+        <div id="page">
+          <div id="page-top">
+            <div id="branding">
+              <?php if ($logo): ?>
+                <div class="logo-wrapper">
+                  <img id="logo" src="<?php print $logo ?>" alt="<?php print $site_name ?>" />
+                </div>
+              <?php endif; ?>
+              <?php if ($title): ?><h1 class="page-title"><?php print $title; ?></h1><?php endif; ?>
+            </div>
 
-      <?php if ($sidebar_first): ?>
-        <div id="sidebar-first" class="sidebar">
-          <?php print $sidebar_first ?>
+            <div class="page-wrapper clearfix">
+
+              <?php if (!empty($page['sidebar_first'])): ?>
+                <?php print render($page['sidebar_first']); ?>
+              <?php endif; ?>
+
+              <div id="content" class="clearfix">
+                <?php if ($messages): ?>
+                  <div id="console"><?php print $messages; ?></div>
+                <?php endif; ?>
+
+                <?php if ($help): ?>
+                  <div id="help"><?php print $help; ?></div>
+                <?php endif; ?>
+
+                <?php print $content; ?>
+
+                <?php if (isset($sponsors)): ?>
+                  <div id="sponsors"><?php print $sponsors; ?></div>
+                <?php endif; ?>
+
+              </div>
+            </div>
+          </div>
+          <?php if (isset($screencasts)): ?>
+            <div id="videos"><?php print $screencasts; ?></div>
+          <?php endif; ?>
+
         </div>
-      <?php endif; ?>
-
-      <div id="content" class="clearfix">
-        <?php if ($messages): ?>
-          <div id="console"><?php print $messages; ?></div>
-        <?php endif; ?>
-        
-        <?php if ($help): ?>
-          <div id="help"><?php print $help; ?></div>
-        <?php endif; ?>
-        
-        <?php print $content; ?>
-        
-        <?php if (isset($sponsors)): ?>
-          <div id="sponsors"><?php print $sponsors; ?></div>
-        <?php endif; ?>
-        
       </div>
-      <?php if (isset($screencasts)): ?>
-          <div id="videos"><?php print $screencasts; ?></div>
-      <?php endif; ?>
-      
-    </div>
-  </div>
-    <div class="footer-messages clearfix">
+      <div class="footer-messages clearfix">
 
+      </div>
+      <?php if (!empty($page['page_bottom'])): ?>
+        <?php print render($page['page_bottom']); ?>
+      <?php endif; ?>
     </div>
-  <?php print $page_bottom; ?>
-  </div>
-  </div>
   </body>
 </html>
