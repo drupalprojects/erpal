@@ -115,6 +115,7 @@ dependencies[] = erpal_resource_helper
 dependencies[] = erpal_timetracking_export
 dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations
+dependencies[] = entityreference_unique
 
 ; features 
 dependencies[] = erpal_basic
