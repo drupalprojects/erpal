@@ -1347,6 +1347,7 @@ function erpal_book_field_default_fields() {
           'references_dialog_edit' => 1,
           'references_dialog_search' => 1,
           'references_dialog_search_view' => '',
+          'references_dialog_send' => 1,
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
