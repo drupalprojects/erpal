@@ -196,11 +196,14 @@ function _erpal_projects_config(&$context){
  */
 function _erpal_calendar_config(&$context){ 
   $context['message'] = st('Configured ERPAL-Calendar');
+  module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
   _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
   _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
+  _erpal_calendar_helper_field_tag('node', 'erpal_project', 'field_date', 'project');
+  _erpal_calendar_helper_field_tag('node', 'erpal_task', 'field_date', 'task');
 }
  
 
