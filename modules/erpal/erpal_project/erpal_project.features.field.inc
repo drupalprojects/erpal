@@ -462,6 +462,9 @@ function erpal_project_field_default_fields() {
         'handler' => 'base',
         'handler_settings' => array(
           'behaviors' => array(
+            'unique_field_behavior' => array(
+              'status' => 1,
+            ),
             'views-select-list' => array(
               'status' => 1,
             ),
@@ -517,6 +520,7 @@ function erpal_project_field_default_fields() {
           'references_dialog_edit' => 0,
           'references_dialog_search' => 0,
           'references_dialog_search_view' => '',
+          'references_dialog_send' => 0,
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
@@ -2619,6 +2623,9 @@ function erpal_project_field_default_fields() {
         'handler' => 'views',
         'handler_settings' => array(
           'behaviors' => array(
+            'unique_field_behavior' => array(
+              'status' => 1,
+            ),
             'views-select-list' => array(
               'status' => 1,
             ),
@@ -2709,6 +2716,7 @@ function erpal_project_field_default_fields() {
           'references_dialog_edit' => 0,
           'references_dialog_search' => 0,
           'references_dialog_search_view' => '',
+          'references_dialog_send' => 0,
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
