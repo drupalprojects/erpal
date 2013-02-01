@@ -95,10 +95,11 @@ function erpal_install_tasks_alter(&$tasks, $install_state) {
 
 function erpal_welcome_message($form, $form_state){
   drupal_set_title(st('Welcome'));
-  $welcome = st('<p>The following steps will guide you throuh the installation and configuration of your new ERPAL-Site.</br>
-  This project is still under development so feel free to visit our ' 
+  $welcome = st('<p>The following steps will guide you throuh the installation '
+  . 'and configuration of your new ERPAL-Site. This project is still under '
+  . 'development so feel free to visit our ' 
   . l('homepage', 'http://www.erpal.info')
-  . ' and share your thoughts and impressions to make it even better.</br>
+  . ' and share your thoughts and impressions to make it even better.</br></br>
   Thank you for choosing ERPAL!</p>');
   $form = array();
   $form['welcome_message'] = array(
