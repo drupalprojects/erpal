@@ -9,6 +9,7 @@ body {
   }
   #erpal_wrapper {
     .erpal-region-content {
+	  padding-top: 20px;
 	  background-color: $white;
 	  @include border-radius(0px 5px 0 0);
 	  @include box-shadow($black 0px 0px 5px);
@@ -198,7 +199,7 @@ body {
  .pane-page-content { 
   margin: {
 	right: 20px;
-	left: 30px;
+	left: 20px;
   }
   max-width: 1070px;
   .content-inner {

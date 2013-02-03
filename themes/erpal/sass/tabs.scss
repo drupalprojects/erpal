@@ -22,12 +22,10 @@
 		white-space: nowrap;
 		border: none;
 		li {
-		  margin: 0;
+		  margin: 0 2px 0 0;
 	      float: left;
 		  display: block;
-		  position: relative;
-		  z-index: 1;
-		  a{
+		  a {
 		    @include a_black;
 			background-color: rgb(233,229,226); 
 			@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
@@ -36,21 +34,24 @@
 			height: 33px;
 			line-height: 33px;
 			min-width: 105px;
-			@include box-shadow($black 0px 0px 5px);
+			@include box-shadow(#545151 0 -2px 1px 0);
+			position: relative;
+		    z-index: 1;
 			&:visited {
 			  @include a_black;
 			  color: $dark_brown;
 			}
 			&:hover {
-			  background-color: $white;
 			  color: $black;
 			}
 			&.active {
 			  @include a_orange;
+			  background: $white;
 			  border: medium none;
+			  z-index: 10;
+			  color: $orange;
 			  &:hover{
-			    @include a_orange;
-			    background-color: $orange;
+			    color: $orange;
 			  }
 			}
 		  }		

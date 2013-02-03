@@ -59,11 +59,9 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   border: none;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li {
-  margin: 0;
+  margin: 0 2px 0 0;
   float: left;
   display: block;
-  position: relative;
-  z-index: 1;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
@@ -96,9 +94,11 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   height: 33px;
   line-height: 33px;
   min-width: 105px;
-  -webkit-box-shadow: black 0px 0px 5px;
-  -moz-box-shadow: black 0px 0px 5px;
-  box-shadow: black 0px 0px 5px;
+  -webkit-box-shadow: #545151 0 -2px 1px 0;
+  -moz-box-shadow: #545151 0 -2px 1px 0;
+  box-shadow: #545151 0 -2px 1px 0;
+  position: relative;
+  z-index: 1;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
   margin: 0;
@@ -118,20 +118,19 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   color: #7b726b;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:hover {
-  background-color: white;
   color: black;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active {
   *zoom: 1;
   background-color: #ffa800;
   color: black;
+  background: white;
   border: medium none;
+  z-index: 10;
+  color: #ffa800;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
-  *zoom: 1;
-  background-color: #ffa800;
-  color: black;
-  background-color: #ffa800;
+  color: #ffa800;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary .active {
   border-left: 2px solid #fd8300;
