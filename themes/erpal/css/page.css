@@ -28,6 +28,7 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for alert*/
 /*color for mark*/
 /* left sidebar link*/
+/*for border*/
 /*grey link color*/
 /*styles for border*/
 /*styles for text*/
@@ -228,7 +229,7 @@ body #user-login input.form-text {
   font-weight: bold;
 }
 .pane-menu-menu-erpal-menu ul li a:hover {
-  color: #ffa800;
+  color: #fc9822;
 }
 .pane-menu-menu-erpal-menu ul li a.active {
   color: white;
@@ -299,19 +300,15 @@ body #user-login input.form-text {
 .pane-page-content .views-table {
   margin-top: 0;
   border: none;
+  border-left: 1px solid #cbcbcb;
+  border-right: 1px solid #cbcbcb;
 }
 .pane-page-content .views-table th {
-  padding: 15px 15px 15px 12px;
-  font-size: 14px;
+  padding: 8px 15px 8px 12px;
+  font-size: 13px;
 }
 .pane-page-content .views-table td {
-  padding: 15px 15px 15px 12px;
-}
-.pane-page-content .views-table td.views-field-title a {
-  text-decoration: underline;
-}
-.pane-page-content .views-table td.views-field-field-customer-ref {
-  text-decoration: underline;
+  padding: 8px 15px 8px 12px;
 }
 
 /*----------end .pane-page-content -------------*/
@@ -489,7 +486,7 @@ body #user-login input.form-text {
   background-color: #f6f6f6 !important;
 }
 .erpal-content-left ul.quicktabs-tabs li.active a {
-  color: #525252 !important;
+  color: #3d3835 !important;
 }
 .erpal-content-left ul.quicktabs-tabs li.last {
   border-right: 1px solid #eeeeee;
@@ -598,7 +595,7 @@ body #user-login input.form-text {
   font-weight: normal;
   font-size: 12px;
   line-height: 12px;
-  color: #525252;
+  color: #3d3835;
 }
 .panel-display .pane-entity-field .block-content {
   float: left;
@@ -655,7 +652,7 @@ body #user-login input.form-text {
   font-weight: bold;
   font-size: 12px;
   line-height: 12px;
-  color: #525252;
+  color: #3d3835;
 }
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
   padding: 3px 5px 3px 30px;
@@ -666,7 +663,7 @@ body #user-login input.form-text {
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
   padding-left: 0;
   font-weight: bold;
-  color: #525252;
+  color: #3d3835;
   background: none;
 }
 .ctools-collapsible-processed .ctools-collapsible-content .field-items {
@@ -676,7 +673,7 @@ body #user-login input.form-text {
   margin: 0;
   clear: both;
   line-height: 12px;
-  color: #525252;
+  color: #3d3835;
 }
 .ctools-collapsible-processed section, .ctools-collapsible-processed .field-name-field-books-ref {
   margin-bottom: 10px;
@@ -740,7 +737,7 @@ body #user-login input.form-text {
   -o-border-radius: 10px;
   border-radius: 10px;
   background-color: #eeeeee;
-  color: #525252;
+  color: #3d3835;
 }
 #mini-panel-task_status_panel .panel-separator {
   display: none;
@@ -972,7 +969,20 @@ body #user-login input.form-text {
 /*--------------begin multi select boxes--------------*/
 .views-exposed-form {
   padding: 10px;
-  background-color: #eeeeee;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #cbcbcb;
 }
 .views-exposed-form .form-submit {
   margin-top: 1.3em;
@@ -1138,10 +1148,17 @@ body #user-login input.form-text {
 /*-------------end contact styles------------------*/
 /* begin hightlight of different states of tasks/projects */
 .block-content .view-content td {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #cbcbcb;
 }
 .block-content .view-content th {
-  background-color: #afafaf;
+  background-color: #d4d4d4;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD4D4D4', endColorstr='#FFC5C1BF');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d4d4d4), color-stop(100%, #c5c1bf));
+  background-image: -webkit-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
+  background-image: -moz-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
+  background-image: -o-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
+  background-image: linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
 }
 .block-content .view-content tr.info,
 .block-content .view-content tr.even,
@@ -1240,7 +1257,7 @@ body #user-login input.form-text {
   margin: 0 auto;
   padding: 7px 20px;
   color: white;
-  background-color: #ffa800;
+  background-color: #fc9822;
   background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #fdae15), color-stop(69%, #f9b942)) !important;
   background: -webkit-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
   background: -moz-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
@@ -1258,11 +1275,11 @@ body #user-login input.form-text {
 }
 .not-logged-in #user-login #edit-actions input.form-submit:hover {
   background-color: #fd8300;
-  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #ffa800), color-stop(69%, #f9c25d)) !important;
-  background-image: -webkit-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
-  background-image: -moz-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
-  background-image: -o-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
-  background-image: linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #fc9822), color-stop(69%, #f9c25d)) !important;
+  background-image: -webkit-linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
+  background-image: -moz-linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
+  background-image: -o-linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
+  background-image: linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
 }
 
 /*------------------------------------invoice-----------------------*/

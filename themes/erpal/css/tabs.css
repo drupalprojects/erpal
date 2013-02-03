@@ -28,6 +28,7 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for alert*/
 /*color for mark*/
 /* left sidebar link*/
+/*for border*/
 /*grey link color*/
 /*styles for border*/
 /*styles for text*/
@@ -127,13 +128,13 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active {
   *zoom: 1;
-  background-color: #ffa800;
+  background-color: #fc9822;
   color: black;
   background: white;
   border: medium none;
   z-index: 10;
-  color: #ffa800;
+  color: #fc9822;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
-  color: #ffa800;
+  color: #fc9822;
 }

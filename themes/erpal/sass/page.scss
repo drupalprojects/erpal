@@ -243,19 +243,20 @@ body {
   .views-table {
 	margin-top: 0;
 	border: none;
+	border-left: 1px solid $silver_light;
+	border-right: 1px solid $silver_light;
 	th {
-	  padding: 15px 15px 15px 12px;
-	  font-size: 14px;
+	  padding: 8px 15px 8px 12px;
+	  font-size: 13px;
 	}
 	td {
-	  padding: 15px 15px 15px 12px;
+	  padding: 8px 15px 8px 12px;
 	  &.views-field-title {
 		a {
-		  text-decoration: underline;
 		}
 	  }
 	  &.views-field-field-customer-ref {
-		text-decoration: underline;
+	
 	  }
 	}
   }
@@ -502,7 +503,7 @@ body {
 		text-align: center;
 	    font-size: 13px;
 	    font-weight: bold;
-		border: 1px solid #cbcbcb;
+		border: 1px solid $silver_light;
 	  }
 	  ul {
 	    display: none;
@@ -883,7 +884,11 @@ body {
 /*--------------begin multi select boxes--------------*/
 .views-exposed-form  {
   padding: 10px;
-  background-color: $light_grey;
+  background-color: rgb(233,229,226); 
+  @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+  @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+  @include border-radius(5px 5px 0 0);
+  border: 1px solid $silver_light;
   .form-submit {
     margin-top: 1.3em;
   }
@@ -1047,10 +1052,12 @@ body {
 /* begin hightlight of different states of tasks/projects */
 .block-content .view-content {
   td {
-    border-bottom: 1px solid $bright_grey;
+    border-bottom: 1px solid $silver_light;
   }
   th {
-    background-color: $dark_silver;
+    background-color: rgb(212,212,212); // Old browsers
+    @include filter-gradient(#d4d4d4, #c5c1bf, vertical); // IE6-9
+    @include background-image(linear-gradient(top,  rgba(212,212,212,1) 0%,rgba(197,193,191,1) 100%));
   }
   tr.info, 
   tr.even,

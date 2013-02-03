@@ -57,6 +57,7 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for alert*/
 /*color for mark*/
 /* left sidebar link*/
+/*for border*/
 /*grey link color*/
 /*styles for border*/
 /*styles for text*/
@@ -72,7 +73,7 @@ body {
   min-width: 1020px;
   min-height: 100%;
   position: relative;
-  color: #525252;
+  color: #3d3835;
   background: #7b726b;
 }
 body.admin-menu {
@@ -188,10 +189,10 @@ ul.links li {
  * ========================================================================== */
 a {
   text-decoration: none;
-  color: #525252;
+  color: #3d3835;
 }
 a:link, a:visited {
-  color: #525252;
+  color: #3d3835;
 }
 a:hover, a:focus {
   text-decoration: none;
@@ -378,7 +379,7 @@ ul.pager li.pager-current {
 }
 ul.pager li a {
   font-size: 1.2em;
-  color: #525252 !important;
+  color: #3d3835 !important;
 }
 
 /* =============================================================================
