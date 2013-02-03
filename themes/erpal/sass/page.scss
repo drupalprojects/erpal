@@ -15,9 +15,12 @@ body {
 	  @include box-shadow($black 0px 0px 5px);
 	  position: relative;
 	  z-index: 2;
+	  height: 100%;
+	  min-height: 500px;
 	}
 	.erpal-top {
 	  margin-bottom: 15px;
+	  margin-left: 10px;
       background-color: rgb(233,229,226); 
 	  @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	  @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
@@ -37,6 +40,7 @@ body {
       height: $value100;
       float: left;
       position: absolute;
+	  z-index: 1;
       >.inside { 
         margin:0;
 	    padding-right: 0;
@@ -114,10 +118,11 @@ body {
     #search-block-form {   
 	  margin-bottom: 12px;
 	  .form-text {
-		margin-left: 5px;
-		  width: 130px;
-		  @include border-radius(2px); 
-		  font-size: 11px;
+		margin-left: 10px;
+		padding: 2px 0;
+		width: 120px;
+		@include border-radius(2px); 
+		font-size: 11px;
 	   }
     }        
 }	
@@ -133,44 +138,42 @@ body {
 	  padding: 0;
 	  list-style-image: none;
       list-style-type: none;
-	  border-top: 1px solid $brown;
+	  position: relative;
+      z-index: 1;
+	  background: url("../images/li.png") no-repeat 0 0 ;
+	  &.active-trail.projects a,
+	  &.active-trail.projects a:hover {
+		    background: url("../images/menu_icons/projects.png") no-repeat 15px -74px;
+	  }
+	  &.projects a{
+		    background: url("../images/menu_icons/projects.png") no-repeat 15px -1px;
+	  }
+	  &.projects a:hover{
+		    background: url("../images/menu_icons/projects.png") no-repeat 15px -37px;
+	  }
 	  &.active-trail {
 	    a {
-	      color: $black;
-		  @include orange_border;
+	      color: $white;
 		  &:hover {
-		    color: $black;
+		    color: $white;
 		  }
-	      &.active-trail {
-	        background: url("../images/arrow.gif") no-repeat $value100 center $orange;
-	      }		
 	    }
-	   .active {
-	      background: url("../images/arrow.gif") no-repeat $value100 center $orange;
-	    } 
 	    &.active-trail {
-		  background: url("../images/arrow.gif") no-repeat $value100 center $orange;
+		  background: url("../images/li_active.png") no-repeat 0 0 ;
+		  color: $white;
+		  z-index: 5;
 		}
-	  }
-	  &.last{
-	    a {
-	      border-bottom: 1px solid $brown;
-	    }
-	  &.last {
-	    border-bottom: 1px solid $grey_light;
-	   }
 	  }
 	  a {
-	    padding: 9px 17px 9px 10px;
+	    padding: 8px 17px 7px 42px;
 		display: block;
-		font-size: 14px;
-		color: $grey_orange;
-		border-top: 1px solid $grey_light;
+		font-size: 12px;
+		font-weight: bold;
 		&:hover {
-		  color: $light;
+		  color: $orange;
 		}
 		&.active {
-		  @include orange_border;
+		  color: $white;
 		}
 	  }
 	}
@@ -226,7 +229,8 @@ body {
   }
   h2 {
     &.pane-title {
-	  @include headline(36px, 36px, 20px, normal);
+	  @include headline(24px, 24px, 20px, bold);
+	  color: $black;
 	}
   }
   .rel-register-build {
@@ -491,13 +495,14 @@ body {
 	      @include background-image(linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%));
 	    }
 	    display: block;
-	    @include rounded_corners_10;
-	    @include box-shadow(0px 1px 3px rgba(50, 50, 50, 0.5));
-	    color: $grey;
-	    @include background-image(linear-gradient(bottom, #E6E6E6 44%, #EFEFEF 72%));
-	    text-align: center;
+	    @include border-radius(5px); 
+	    color: $black;
+	    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+		@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+		text-align: center;
 	    font-size: 13px;
 	    font-weight: bold;
+		border: 1px solid #cbcbcb;
 	  }
 	  ul {
 	    display: none;
@@ -1158,10 +1163,8 @@ body {
 li.jstree-open ul {
   padding-left: 20px;
 }
-/*-------------begin login styles------------------*/
-/*****DELETE****/
-	.rel-register-link {
-		display: none;
-	}
-
-/****DELEEETE****/
+#erpal_wrapper,
+.erpal-container,
+.erpal-container-item {
+	height: 100%;
+}

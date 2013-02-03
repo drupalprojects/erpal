@@ -3,9 +3,11 @@
 #erpal_wrapper .panel-panel.panel-col-last {
   float: left;
   width: $value100;
+  height: 100%;
   .inside {
-    margin-left: 150px;
+    margin-left: 140px;
 	min-width: 440px;
+	height: 100%;
 	.ctools-collapsible-content {
 	  .inside {
         margin-left: 0px;
@@ -22,19 +24,20 @@
 		white-space: nowrap;
 		border: none;
 		li {
-		  margin: 0 2px 0 0;
+		  margin: 0 3px 0 0;
 	      float: left;
 		  display: block;
+		  background-color: rgb(233,229,226); 
+		  @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+		  @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+		  @include box-shadow(#545151 0 -2px 1px 0);
+		  @include border-radius(5px 5px 0 0);
 		  a {
 		    @include a_black;
-			background-color: rgb(233,229,226); 
-			@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
-			@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
-     	    @include border-radius(5px 5px 0 0);
+			@include border-radius(5px 5px 0 0);
 			height: 33px;
 			line-height: 33px;
 			min-width: 105px;
-			@include box-shadow(#545151 0 -2px 1px 0);
 			position: relative;
 		    z-index: 1;
 			&:visited {
@@ -55,10 +58,6 @@
 			  }
 			}
 		  }		
-		}
-		.active {
-		  border-left: 2px solid $dark_orange;
-		  border-right: 2px solid $dark_orange;
 		}
 	  }
 	} 
