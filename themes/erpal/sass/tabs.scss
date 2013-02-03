@@ -13,26 +13,30 @@
 	  }
 	}
     .pane-page-tabs {
-	  @include box-shadow(2px 3px 4px $silver_grey);
-	  background-color: $white;
+	  margin-bottom: 0;
 	  width: $value100;
-	  background-color: $light_grey;
-	  border-bottom: 2px solid $orange;
 	  ul.primary {
 	    @include dist_zero;
-		overflow: hidden;
 		*zoom: 1;
 		list-style: none;
 		white-space: nowrap;
-		background-color: $white;
 		border: none;
 		li {
 		  margin: 0;
 	      float: left;
 		  display: block;
-	      border-right: 1px solid #D9D9D9;
-	      a{
+		  position: relative;
+		  z-index: 1;
+		  a{
 		    @include a_black;
+			background-color: rgb(233,229,226); 
+			@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+			@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+     	    @include border-radius(5px 5px 0 0);
+			height: 33px;
+			line-height: 33px;
+			min-width: 105px;
+			@include box-shadow($black 0px 0px 5px);
 			&:visited {
 			  @include a_black;
 			  color: $dark_brown;

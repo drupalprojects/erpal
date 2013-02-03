@@ -41,7 +41,47 @@ body {
 body.panels-ipe {
   margin-bottom: 0 !important;
 }
-body #erpal_wrapper > .panel-col-first {
+body.logged-in {
+  padding-top: 50px !important;
+}
+body #erpal_wrapper .erpal-region-content {
+  background-color: white;
+  -webkit-border-radius: 0px 5px 0 0;
+  -moz-border-radius: 0px 5px 0 0;
+  -ms-border-radius: 0px 5px 0 0;
+  -o-border-radius: 0px 5px 0 0;
+  border-radius: 0px 5px 0 0;
+  -webkit-box-shadow: black 0px 0px 5px;
+  -moz-box-shadow: black 0px 0px 5px;
+  box-shadow: black 0px 0px 5px;
+  position: relative;
+  z-index: 2;
+}
+body #erpal_wrapper .erpal-top {
+  margin-bottom: 15px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  height: 28px;
+  position: relative;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+body #erpal_wrapper .erpal-top .block {
+  margin-bottom: 0;
+}
+body #erpal_wrapper .panel-col-first {
   margin: 0;
   background-color: #7b726b;
   width: 150px;
@@ -49,44 +89,20 @@ body #erpal_wrapper > .panel-col-first {
   height: 100%;
   float: left;
   position: absolute;
-  left: 0;
 }
-body #erpal_wrapper > .panel-col-first > .inside {
+body #erpal_wrapper .panel-col-first > .inside {
   margin: 0;
   padding-right: 0;
   height: 100%;
-  -webkit-box-shadow: #888888 1px 2px 2px;
-  -moz-box-shadow: #888888 1px 2px 2px;
-  box-shadow: #888888 1px 2px 2px;
 }
 body.page-node-tasks {
   /*----------begin node task-----------*/
-    /*.content-inner {
-	  border-bottom: 1px solid $bright_grey; commentlk: same color as background?! why is it even there?! 
-	}*/
-  /*.region-sidebar-left {
-    max-width: 620px; commentlk: why is it smaller than on other pages?
-  }*/
-  	/*.region-sidebar-right {
-  	  padding: 10px;
-  	  width: 380px; commentlk: why is it bigger than on other pages?
-      }*/
 }
 body.page-node-tasks li {
   list-style-type: none;
 }
 body.page-node-tickets {
   /*----------begin node ticket-----------*/
-                                         /*.content-inner {
-  border-bottom: 1px solid $bright_grey; /* lk: same color as background?! why is it even there?! 
-}*/
-  /*.region-sidebar-left {
-    max-width: 620px; commentlk: why is it smaller than on other pages?
-  }*/
-  /*.region-sidebar-right {
-    padding: 10px;
-    width: 380px; commentlk: why is it bigger than on other pages?
-  }*/
 }
 body.page-node-tickets li {
   list-style-type: none;
@@ -120,16 +136,12 @@ body #user-login input.form-text {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
-  border-bottom: 1px solid #908984;
 }
 .pane-system-user-menu ul li {
   padding: 0;
   float: right;
   width: 74px;
   text-align: center;
-}
-.pane-system-user-menu ul li.last {
-  border-right: 1px solid #847c76;
 }
 .pane-system-user-menu ul li a {
   color: #e7d4c5;
@@ -140,11 +152,10 @@ body #user-login input.form-text {
 
 /*----------Logo-------------*/
 .pane-page-logo {
-  margin-bottom: 10px;
-  text-align: center;
-}
-.pane-page-logo img {
-  vertical-align: bottom;
+  top: -9px;
+  left: 2px;
+  position: absolute;
+  z-index: 1000;
 }
 
 /*----------end Logo-------------*/
@@ -240,7 +251,6 @@ body #user-login input.form-text {
  * ========================================================================== */
 /*----------begin .pane-page-content -------------*/
 .pane-page-content {
-  margin-top: 30px;
   margin-right: 20px;
   margin-left: 30px;
   max-width: 1070px;
