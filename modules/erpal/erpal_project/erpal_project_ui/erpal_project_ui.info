@@ -65,6 +65,7 @@ features[page_manager_handlers][] = pm_existing_pages_budget_view_page_panel_con
 features[page_manager_pages][] = budgets
 features[page_manager_pages][] = global_fixed_price_items
 features[page_manager_pages][] = page_budgets
+features[page_manager_pages][] = project_calendar
 features[page_manager_pages][] = project_files
 features[page_manager_pages][] = project_tasks
 features[page_manager_pages][] = project_timetrackings

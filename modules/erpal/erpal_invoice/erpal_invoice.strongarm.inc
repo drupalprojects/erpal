@@ -203,7 +203,6 @@ function erpal_invoice_strongarm() {
   $strongarm->name = 'node_options_erpal_invoice';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
   );
   $export['node_options_erpal_invoice'] = $strongarm;
 
