@@ -334,6 +334,10 @@ function _erpal_contract_helper_check_payments() {
 
   //create billables and set last and next payment date in field collection
   foreach ($contract_nodes as $contract_node) {
+    $canceled = _erpal_contract_helper_contract_canceled($contract_node);
+    if ($canceled)
+      continue;
+    
     $payment_entity = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['entity'];
     
     $service_category_tid = isset($payment_entity->field_service_category_term[LANGUAGE_NONE][0]['tid']) ? $payment_entity->field_service_category_term[LANGUAGE_NONE][0]['tid'] : false;
@@ -361,6 +365,21 @@ function _erpal_contract_helper_check_payments() {
 }
 
 /**
+* Returns true if the contract node has already been canceled
+*/
+function _erpal_contract_helper_contract_canceled($contract_node) {
+  $date_start = $contract_node->field_date[LANGUAGE_NONE][0]['value'] ? $contract_node->field_date[LANGUAGE_NONE][0]['value'] : false;
+  $date_end = $contract_node->field_date[LANGUAGE_NONE][0]['value2'] ? $contract_node->field_date[LANGUAGE_NONE][0]['value2'] : false;
+
+  if (!$date_end || ($date_end && $date_start == $date_end)) {
+    return false;
+  }
+  
+  watchdog('contract', 'canceled - '.$contract_node->nid);
+  return true; //must be already canceled
+}
+
+/**
 * If contract has budget information set, check if new budgets must be created a create them
 */
 function _erpal_contract_helper_check_budgets() {
@@ -368,6 +387,10 @@ function _erpal_contract_helper_check_budgets() {
 
   //create billables and set last and next payment date in field collection
   foreach ($contract_nodes as $contract_node) {
+    $canceled = _erpal_contract_helper_contract_canceled($contract_node);
+    if ($canceled)
+      continue;
+  
     $budget_booking_entity = $contract_node->field_budget_booking[LANGUAGE_NONE][0]['entity'];
     $budget_hours = isset($budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value']) ? $budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value'] : false;
     $budget_destination_nid = isset($budget_booking_entity->field_budget_destination[LANGUAGE_NONE][0]['target_id']) ? $budget_booking_entity->field_budget_destination[LANGUAGE_NONE][0]['target_id'] : false;
@@ -507,7 +530,7 @@ function _erpal_contract_helper_get_contracts_to_bill() {
 }
 
 /**
-* pre-Calculates cancelation dates for alln contracts that have no end date set in the past and created date_item entites for that
+* pre-Calculates cancelation dates for all contracts that have no end date set in the past and created date_item entites for that
 */
 function _erpal_contract_helper_calculate_cancelation_dates() {
   $active_contract_nids = _erpal_contract_helper_get_all_contracts();
@@ -517,15 +540,14 @@ function _erpal_contract_helper_calculate_cancelation_dates() {
   $field_name_repeating_duration = 'field_repeating_duration';
 
   foreach ($active_contract_nids as $contract_nid) {
-if ($contract_nid != 1833)
-  continue;
+
     //check, if there is any cancelation data set
     $contract_node = node_load($contract_nid);
  
     //if contract has end date set (different from start date)
-    $date_field = $contract_node->field_date[LANGUAGE_NONE][0];
-    //if ($date_field['value'] != $date_field['value2']) //end date already set, no need to calculate other cancelation dates
-      //continue;
+    $canceled = _erpal_contract_helper_contract_canceled($contract_node);
+    if ($canceled)
+      continue;
       
     $field_cancelation_period = isset($contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value'] : false;
     
