@@ -11,7 +11,7 @@ body {
     .erpal-region-content {
 	  padding-top: 20px;
 	  background-color: $white;
-	  @include border-radius(0px 5px 0 0);
+	  @include border-radius(0px 5px 5px 5px);
 	  @include box-shadow($black 0px 0px 5px);
 	  position: relative;
 	  z-index: 2;
@@ -40,8 +40,7 @@ body {
       height: $value100;
       float: left;
       position: absolute;
-	  z-index: 1;
-      >.inside { 
+	  >.inside { 
         margin:0;
 	    padding-right: 0;
         height: $value100;
@@ -92,13 +91,20 @@ body {
 	li {
 	  padding: 0;
 	  float: right;
-	  width: 74px;
 	  text-align: center;
 	  a {
-		color: $grey_orange;
+	    padding-left: 25px;
+		color: $grey;
+		display: block;
 		&:hover{
-		  color: $light;
+		  color: $orange;
 		}
+	  }
+	  &.log-out a{
+	    background: url("../images/menu_icons/logout.png") no-repeat 0px 2px;
+	  }
+	  &.log-out a:hover{
+	    background: url("../images/menu_icons/logout.png") no-repeat 0px -22px;
 	  }
 	}
   }  /*----------end User menu-------------*/
@@ -129,6 +135,35 @@ body {
  /*----------end Search Block-------------*/ 
  
  /*----------begin Erpal menu-------------*/
+  /*----------begin Erpal menu items-------------*/
+.pane-menu-menu-erpal-menu {
+  .active-trail.projects a,
+  .active-trail.projects a:hover,
+  .projects a,
+  .projects a:hover  {
+	background-image: url("../images/menu_icons/projects.png");
+  }
+  .active-trail.documents a,
+  .active-trail.documents a:hover,
+  .documents a,
+  .documents a:hover  {
+	background-image: url("../images/menu_icons/docs.png");
+  }
+  .active-trail.invoices a,
+  .active-trail.invoices a:hover,
+  .invoices a,
+  .invoices a:hover  {
+	background-image: url("../images/menu_icons/invoices.png");
+  }
+  .active-trail.contracts a,
+  .active-trail.contracts a:hover,
+  .contracts a,
+  .contracts a:hover  {
+	background-image: url("../images/menu_icons/contracts.png");
+  }
+}
+
+/*-------------end Erpal menu items-----------*/
 .pane-menu-menu-erpal-menu { 
   width: 150px;
   ul {
@@ -141,15 +176,15 @@ body {
 	  position: relative;
       z-index: 1;
 	  background: url("../images/li.png") no-repeat 0 0 ;
-	  &.active-trail.projects a,
-	  &.active-trail.projects a:hover {
-		    background: url("../images/menu_icons/projects.png") no-repeat 15px -74px;
+	  &.active-trail a,
+	  &.active-trail a:hover {
+	    background-position: 15px -74px;
 	  }
-	  &.projects a{
-		    background: url("../images/menu_icons/projects.png") no-repeat 15px -1px;
+	  a {
+		background-position: 15px -1px;
 	  }
-	  &.projects a:hover{
-		    background: url("../images/menu_icons/projects.png") no-repeat 15px -37px;
+	  a:hover {
+		background-position: 15px -37px;
 	  }
 	  &.active-trail {
 	    a {
@@ -169,6 +204,7 @@ body {
 		display: block;
 		font-size: 12px;
 		font-weight: bold;
+		background-repeat: no-repeat;
 		&:hover {
 		  color: $orange;
 		}
@@ -247,11 +283,11 @@ body {
 	border-left: 1px solid $silver_light;
 	border-right: 1px solid $silver_light;
 	th {
-	  padding: 8px 15px 8px 12px;
+	  padding: 7px 15px 7px 12px;
 	  font-size: 13px;
 	}
 	td {
-	  padding: 8px 15px 8px 12px;
+	  padding: 7px 15px 7px 12px;
 	  &.views-field-title {
 		a {
 		}
@@ -354,7 +390,7 @@ body {
 
 /*.region-sidebar-left,*/
 .erpal-content-left { /*----------------begin side-bar-left-----------------*/
-  max-width: 800px;
+  max-width: 720px;
   min-width: 360px;
   width: $value100;
   float: left;
@@ -418,23 +454,24 @@ body {
 	  margin: 0;
 	  padding-left: 0;
 	  background: none;
-	  overflow: hidden;
+	  height: 21px;
 	  border: none;
 	  li {
-	    @include dist_zero;
+	    margin: 0 2px 0 0;
+		padding: 0px;
 	    float: left;
-		background: {
-		  image: none;
-		  color: $silver;
-		}
-	    border: {
-		  top: 1px solid $light_grey;
-		  left: 1px solid $light_grey;
-		}
+		@include border-radius(5px 5px 0 0);
+		background-color: rgb(233,229,226); 
+		@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+		@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+		text-align: center;
+		border: 1px solid #CBCBCB;
 	    &.active {
-		  background-color: $dark_white !important;
-	      a {
-		    color: $grey !important;
+		  background-color: rgb(203,199,198); // Old browsers
+          @include filter-gradient(#cbc7c6, #aeaba8, vertical); // IE6-9
+          @include background-image(linear-gradient(top,  rgba(203,199,198,1) 0%,rgba(174,171,168,1) 100%));
+        a {
+		    color: $white !important;
 		  }
 		}
 		&.last{
@@ -444,7 +481,10 @@ body {
 	      padding: 1px 12px;
 		  @include text_bold_12;
 		  min-width: 100px;
-		  color: $dark_grey;
+		  color: $grey;
+		  &:hover {
+		    color: $orange; 
+		  }
 	    }
 	  }
     }
@@ -894,11 +934,11 @@ body {
   @include border-radius(5px 5px 0 0);
   border: 1px solid $silver_light;
   .form-submit {
-    margin-top: 1.3em;
+    margin-top: 1.3em !important;
   }
   .views-exposed-widget {
     padding-top: 0;
-    padding-right: 7px !important;
+    padding-right: 5px !important;
 	label {
 	  font-size: 10px;
 	}
@@ -1060,7 +1100,14 @@ body {
 /* begin hightlight of different states of tasks/projects */
 .block-content .view-content {
   td {
+    font-size: 10px;
     border-bottom: 1px solid $silver_light;
+	a {
+	  font-size: 13px;
+	  &:hover {
+	    color: $orange;
+	  }
+	}
   }
   th {
     background-color: rgb(212,212,212); // Old browsers
@@ -1165,6 +1212,9 @@ body {
 .page-invoice-invoices {
   table.views-table {
     border-collapse: collapse;
+  }
+  .container-inline-date .date-padding {
+    padding-left: 0px;
   }
 }
 #mini-panel-invoice_content_panel {
