@@ -204,6 +204,7 @@ body {
 	right: 20px;
 	left: 20px;
   }
+  padding-bottom: 20px;
   max-width: 1070px;
   .content-inner {
     clear: both;
@@ -472,6 +473,9 @@ body {
   width: 250px;
   float: right;
   color: $dark_black;
+  .block {
+    margin-bottom: 10px;
+  }
   .local_tasks_menu .local_tasks {
 	position: absolute;
 	width: 248px;
@@ -883,7 +887,7 @@ body {
 
 /*--------------begin multi select boxes--------------*/
 .views-exposed-form  {
-  padding: 10px;
+  padding: 5px 10px;
   background-color: rgb(233,229,226); 
   @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
   @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
@@ -893,7 +897,11 @@ body {
     margin-top: 1.3em;
   }
   .views-exposed-widget {
+    padding-top: 0;
     padding-right: 7px !important;
+	label {
+	  font-size: 10px;
+	}
   }
   button span:not(.ui-icon) {
     position: absolute;

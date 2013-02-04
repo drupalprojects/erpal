@@ -257,6 +257,7 @@ body #user-login input.form-text {
 .pane-page-content {
   margin-right: 20px;
   margin-left: 20px;
+  padding-bottom: 20px;
   max-width: 1070px;
 }
 .pane-page-content .content-inner {
@@ -521,6 +522,9 @@ body #user-login input.form-text {
   float: right;
   color: #202020;
   /*----------------end side-bar-right-----------------*/
+}
+.erpal-content-right .block {
+  margin-bottom: 10px;
 }
 .erpal-content-right .local_tasks_menu .local_tasks {
   position: absolute;
@@ -968,7 +972,7 @@ body #user-login input.form-text {
 /*-------------end comments------------------- */
 /*--------------begin multi select boxes--------------*/
 .views-exposed-form {
-  padding: 10px;
+  padding: 5px 10px;
   background-color: #e9e5e2;
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
@@ -988,7 +992,11 @@ body #user-login input.form-text {
   margin-top: 1.3em;
 }
 .views-exposed-form .views-exposed-widget {
+  padding-top: 0;
   padding-right: 7px !important;
+}
+.views-exposed-form .views-exposed-widget label {
+  font-size: 10px;
 }
 .views-exposed-form button span:not(.ui-icon) {
   position: absolute;
