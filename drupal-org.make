@@ -109,6 +109,9 @@ projects[libraries][subdir] = "contrib"
 projects[link][version] = "1.0"
 projects[link][subdir] = "contrib"
 
+projects[menu_css_names][version] = "1.0-beta1"
+projects[menu_css_names][subdir] = "contrib"
+
 projects[panels][version] = "3.3"
 projects[panels][subdir] = "contrib"
 
@@ -185,6 +188,11 @@ libraries[fullcalendar][destination] = ""
 libraries[ckeditor][download][type] = "file"
 libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.0.1/ckeditor_4.0.1_full.tar.gz"
 libraries[ckeditor][destination] = "modules/contrib/ckeditor"
+
+libraries[jstree][download][type] = "git"
+libraries[jstree][download][url] = "https://github.com/vakata/jstree.git"
+libraries[jstree][download][revision] = "96f9bebabe536a3ddf6118ebede3c92adfadb511"
+
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
