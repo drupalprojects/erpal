@@ -106,6 +106,9 @@ projects[libraries][subdir] = "contrib"
 projects[link][version] = "1.0"
 projects[link][subdir] = "contrib"
 
+projects[menu_css_names][version] = "1.0-beta1"
+projects[menu_css_names][subdir] = "contrib"
+
 projects[panels][version] = "3.3"
 projects[panels][subdir] = "contrib"
 
