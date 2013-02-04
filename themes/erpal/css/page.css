@@ -639,8 +639,20 @@ body #user-login input.form-text {
   display: none;
 }
 .erpal-content-right .ctools-collapsible-container {
-  background-color: #dedede;
-  border: 1px solid #eeeeee;
+  margin-bottom: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .erpal-content-right .ctools-collapsible-container figure {
   text-align: center;
@@ -706,7 +718,14 @@ body #user-login input.form-text {
 .ctools-collapsible-processed h2.pane-title {
   margin: 0;
   padding: 3px 5px 0px 30px;
-  background-color: #AFAFAF;
+  background-color: #d1d1d1;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD1D1D1', endColorstr='#FFADADAD');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d1d1), color-stop(100%, #adadad));
+  background-image: -webkit-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
+  background-image: -moz-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
+  background-image: -o-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
+  background-image: linear-gradient(top, #d1d1d1 0%, #adadad 100%);
   margin: 0px 0px 0 0px;
   font-weight: bold;
   font-size: 12px;
@@ -714,6 +733,11 @@ body #user-login input.form-text {
   color: #3d3835;
 }
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
   padding: 3px 5px 3px 30px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content {
@@ -1044,7 +1068,7 @@ body #user-login input.form-text {
   border: 1px solid #cbcbcb;
 }
 .views-exposed-form .form-submit {
-  margin-top: 1.3em !important;
+  margin-top: 1.3em;
 }
 .views-exposed-form .views-exposed-widget {
   padding-top: 0;

@@ -565,11 +565,14 @@ body {
     display: none;
   }
   .ctools-collapsible-container {
+    margin-bottom: 1px;
+    @include border-radius(5px);
     figure {
       text-align: center;
     }
-    background-color: $silver;
-    border: 1px solid $light_grey;
+    background-color: rgb(233,229,226); 
+    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+    @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
   }    
 } /*----------------end erpal_content_layout-----------------------*/
 
@@ -623,11 +626,14 @@ body {
   }
   h2.pane-title {
     &.ctools-collapsible-handle {
+	  @include border-radius(5px 5px 0 0);
       padding: 3px 5px 3px 30px;
 	}
 	margin: 0;
     padding: 3px 5px 0px 30px;
-    background-color: #AFAFAF;
+    background-color: rgb(209,209,209); 
+    @include filter-gradient(#d1d1d1, #adadad, vertical); 
+    @include background-image(linear-gradient(top,  rgba(209,209,209,1) 0%,rgba(173,173,173,1) 100%));
 	@include headline(12px, 12px, 0, bold);
 	color: $grey;
    }
@@ -934,7 +940,7 @@ body {
   @include border-radius(5px 5px 0 0);
   border: 1px solid $silver_light;
   .form-submit {
-    margin-top: 1.3em !important;
+    margin-top: 1.3em;
   }
   .views-exposed-widget {
     padding-top: 0;
