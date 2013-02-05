@@ -167,8 +167,10 @@ projects[views][patch][] = "http://drupal.org/files/fixed_revisions_relationship
 
 projects[views_calc][version] = "1.0"
 projects[views_calc][subdir] = "contrib"
-projects[views_calc][patch][] = "http://drupal.org/files/views_calc_0.patch"
-projects[views_calc][patch][] = "http://drupal.org/files/views_calc-theme_render_fix-1876594-6896978.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1567108_0.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1868900.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc-usind_while_1900714.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc_1548552.patch"
 
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"
