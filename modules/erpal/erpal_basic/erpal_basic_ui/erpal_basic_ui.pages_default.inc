@@ -15,7 +15,7 @@ function erpal_basic_ui_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'CRM Contacts';
   $page->admin_description = '';
-  $page->path = 'crm/contacts';
+  $page->path = 'contacts';
   $page->access = array(
     'plugins' => array(
       0 => array(

@@ -10,9 +10,9 @@
 function erpal_book_taxonomy_default_vocabularies() {
   return array(
     'book_tags' => array(
-      'name' => 'Book tags',
+      'name' => 'Document tags',
       'machine_name' => 'book_tags',
-      'description' => 'Tags for books and book pages',
+      'description' => 'Tags for documents and pages',
       'hierarchy' => '0',
       'module' => 'taxonomy',
       'weight' => '0',

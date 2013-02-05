@@ -57,6 +57,7 @@ features[ds_layout_settings][] = node|erpal_task|in_activity
 features[ds_layout_settings][] = node|erpal_task|view_row_details
 features[features_api][] = api:1
 features[menu_links][] = menu-erpal-menu:projects/projects
+features[menu_links][] = user-menu:tasks
 features[page_manager_existing_pages][] = budget_view_page
 features[page_manager_handlers][] = node_view_panel_context
 features[page_manager_handlers][] = node_view_panel_context_10

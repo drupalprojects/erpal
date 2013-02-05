@@ -1,21 +1,21 @@
 <?php
 /**
  * @file
- * erpal_book_ui.features.menu_links.inc
+ * erpal_employee_ui.features.menu_links.inc
  */
 
 /**
  * Implements hook_menu_default_menu_links().
  */
-function erpal_book_ui_menu_default_menu_links() {
+function erpal_employee_ui_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-erpal-menu:books/books
-  $menu_links['menu-erpal-menu:books/books'] = array(
-    'menu_name' => 'menu-erpal-menu',
-    'link_path' => 'books/books',
-    'router_path' => 'books/%',
-    'link_title' => 'Documents',
+  // Exported menu link: user-menu:timekeeping
+  $menu_links['user-menu:timekeeping'] = array(
+    'menu_name' => 'user-menu',
+    'link_path' => 'timekeeping',
+    'router_path' => 'timekeeping',
+    'link_title' => 'timekeeping',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -30,7 +30,7 @@ function erpal_book_ui_menu_default_menu_links() {
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('Documents');
+  t('timekeeping');
 
 
   return $menu_links;

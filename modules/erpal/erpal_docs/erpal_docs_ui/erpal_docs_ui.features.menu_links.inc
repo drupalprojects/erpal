@@ -10,12 +10,12 @@
 function erpal_docs_ui_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-erpal-menu:documents
-  $menu_links['menu-erpal-menu:documents'] = array(
+  // Exported menu link: menu-erpal-menu:files
+  $menu_links['menu-erpal-menu:files'] = array(
     'menu_name' => 'menu-erpal-menu',
-    'link_path' => 'documents',
-    'router_path' => 'documents',
-    'link_title' => 'Documents',
+    'link_path' => 'files',
+    'router_path' => 'files',
+    'link_title' => 'Files',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -30,7 +30,7 @@ function erpal_docs_ui_menu_default_menu_links() {
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('Documents');
+  t('Files');
 
 
   return $menu_links;

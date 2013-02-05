@@ -283,7 +283,7 @@ function erpal_docs_ui_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'Documents Panel';
   $page->admin_description = '';
-  $page->path = 'documents';
+  $page->path = 'files';
   $page->access = array(
     'plugins' => array(
       0 => array(
@@ -351,7 +351,7 @@ function erpal_docs_ui_default_page_manager_pages() {
       'class' => '',
       'id' => '',
       'override_title' => 1,
-      'override_title_text' => 'Documents',
+      'override_title_text' => 'Files',
     );
     $pane->cache = array();
     $pane->style = array(
