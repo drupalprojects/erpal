@@ -99,9 +99,22 @@
 
     // Add the click handler to the insert button.
     $('.references-dialog-insert-send', context).addClass('insert-processed').live('click', (function(){
-
-      var content = $(this).siblings('.references-dialog-insert-link').val();
-
+      var image_style, content, name;
+      // image link
+      if($(this).siblings('.references-dialog-insert-image').length != 0){
+        image_style = $(this).closest('.references-dialog-insert-wrapper').find('select').val();
+        name = 'references-dialog-insert-image-' + image_style;
+        content = $(this).siblings('.references-dialog-insert-image[name="' + name + '"]').val();
+      } 
+      // simple link
+      else {
+        content = $(this).siblings('.references-dialog-insert-link').val();
+      }
+      
+      // Check if content exists
+      if(!content)
+        return false;
+      
       // Cleanup unused replacements.
       content = content.replace(/"__([a-z0-9_]+)__"/g, '""');
 
