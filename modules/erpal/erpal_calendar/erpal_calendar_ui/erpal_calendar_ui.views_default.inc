@@ -23,7 +23,8 @@ function erpal_calendar_ui_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access calendar view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -52,6 +53,13 @@ function erpal_calendar_ui_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'src_id';
+  /* Contextual filter: Task: Task subtasks */
+  $handler->display->display_options['arguments']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['relationship'] = 'src_id';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['format'] = 'default_summary';
   /* Filter criterion: date item: Date tags (field_date_item_tags) */
   $handler->display->display_options['filters']['field_date_item_tags_tid']['id'] = 'field_date_item_tags_tid';
   $handler->display->display_options['filters']['field_date_item_tags_tid']['table'] = 'field_data_field_date_item_tags';
@@ -81,6 +89,40 @@ function erpal_calendar_ui_views_default_views() {
   $handler = $view->new_display('panel_pane', 'Full calendar pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
+
+  /* Display: Project calendar pane */
+  $handler = $view->new_display('panel_pane', 'Project calendar pane', 'panel_pane_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Task: Task subtasks */
+  $handler->display->display_options['arguments']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['relationship'] = 'src_id';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['erpal_subtasks']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate_options']['types'] = array(
+    'erpal_project' => 'erpal_project',
+    'erpal_task' => 'erpal_task',
+  );
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate_options']['access'] = TRUE;
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['fail'] = 'access denied';
+  $handler->display->display_options['argument_input'] = array(
+    'erpal_subtasks' => array(
+      'type' => 'panel',
+      'context' => 'entity:billable.billable-id',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Task: Task subtasks',
+    ),
+  );
+  $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['full_calendar'] = array(
     t('Master'),
     t('more'),
@@ -92,9 +134,11 @@ function erpal_calendar_ui_views_default_views() {
     t('relation src node'),
     t('Date'),
     t('Title'),
+    t('All'),
     t('Date categories'),
     t('Full calendar pane'),
     t('View panes'),
+    t('Project calendar pane'),
   );
   $export['full_calendar'] = $view;
 

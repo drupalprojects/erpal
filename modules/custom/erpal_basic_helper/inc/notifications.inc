@@ -90,12 +90,17 @@ function _erpal_basic_helper_notify_users_send($users, $message, $module='erpal_
     if ($a_user->status)  //dont send to inactive users
       $mails[] = $a_user->mail;    
   }
-  $mails = implode(',', $mails);
+
   $site_name = variable_get('site_name', 'ERPAL');
   $site_mail = variable_get('site_mail', ini_get('sendmail_from'));
   $sender = $site_name.' <'.$site_mail.'>';
   $params = array('message' => $message, 'subject' => $subject);
-  $message = drupal_mail($module, $message_type, $mails, user_preferred_language($user), $params, $sender);
+  
+  foreach ($mails as $mail) {
+    //notify each user. We could add all mails to drupal_mail but then everybody will see every receipient.
+    $message = drupal_mail($module, $message_type, $mail, user_preferred_language($user), $params, $sender);
+  }
+  
   if ($message['result']) {
     watchdog('ERPAL notification', t('!count user(s) have been notified', array('!count' => count($users))));
   } else {

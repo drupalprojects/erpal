@@ -84,10 +84,10 @@ function erpal_projects_helper_tokens($type, $tokens, array $data = array(), arr
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'title':
-          $replacements[$original] = $subject_node->title;
+          $replacements[$original] = isset($subject_node->title) ? $subject_node->title : '';
         break;
         case 'nid':
-          $replacements[$original] = $subject_node->nid;
+          $replacements[$original] = isset($subject_node->nid) ? $subject_node->nid : false;
         break;                  
       }
     }
