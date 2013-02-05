@@ -30,6 +30,7 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /* left sidebar link*/
 /*for border*/
 /*grey link color*/
+/*for label*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -41,9 +42,6 @@ body {
 }
 body.panels-ipe {
   margin-bottom: 0 !important;
-}
-body.logged-in {
-  padding-top: 50px !important;
 }
 body #erpal_wrapper .erpal-region-content {
   padding-top: 20px;
@@ -88,7 +86,6 @@ body #erpal_wrapper .erpal-top .block {
 }
 body #erpal_wrapper .panel-col-first {
   margin: 0;
-  background-color: #7b726b;
   width: 150px;
   max-width: none;
   height: 100%;
@@ -217,10 +214,25 @@ body #user-login input.form-text {
 .pane-menu-menu-erpal-menu .contracts a:hover {
   background-image: url("../images/menu_icons/contracts.png");
 }
+.pane-menu-menu-erpal-menu .active-trail.files a,
+.pane-menu-menu-erpal-menu .active-trail.files a:hover,
+.pane-menu-menu-erpal-menu .files a,
+.pane-menu-menu-erpal-menu .files a:hover {
+  background-image: url("../images/menu_icons/files.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.calendar a,
+.pane-menu-menu-erpal-menu .active-trail.calendar a:hover,
+.pane-menu-menu-erpal-menu .calendar a,
+.pane-menu-menu-erpal-menu .calendar a:hover {
+  background-image: url("../images/menu_icons/calendar.png");
+}
 
 /*-------------end Erpal menu items-----------*/
 .pane-menu-menu-erpal-menu {
   width: 150px;
+}
+.pane-menu-menu-erpal-menu .contextual-links-wrapper li {
+  background: none;
 }
 .pane-menu-menu-erpal-menu ul {
   margin: 0px;
@@ -332,14 +344,22 @@ body #user-login input.form-text {
 .pane-page-content .rel-register-build .views-exposed-widgets {
   margin-bottom: 0px;
 }
+.pane-page-content .portlet-content .views-table {
+  border: 1px solid #cbcbcb;
+  border-bottom: none;
+  -webkit-border-radius: 5px 5px 0px 0px;
+  -moz-border-radius: 5px 5px 0px 0px;
+  -ms-border-radius: 5px 5px 0px 0px;
+  -o-border-radius: 5px 5px 0px 0px;
+  border-radius: 5px 5px 0px 0px;
+}
 .pane-page-content .views-table {
   margin-top: 0;
-  border: none;
-  border-left: 1px solid #cbcbcb;
-  border-right: 1px solid #cbcbcb;
+  border-bottom: none;
+  border-top: none;
 }
 .pane-page-content .views-table th {
-  padding: 7px 15px 7px 12px;
+  padding: 7px 4px;
   font-size: 13px;
 }
 .pane-page-content .views-table td {
@@ -356,7 +376,7 @@ body #user-login input.form-text {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  background-color: white;
+  background-color: #eeeeee;
 }
 .comment .field-name-comment-body p {
   font-size: 16px;
@@ -505,7 +525,7 @@ body #user-login input.form-text {
   margin: 0;
   padding-left: 0;
   background: none;
-  height: 21px;
+  overflow: hidden;
   border: none;
 }
 .erpal-content-left ul.quicktabs-tabs li {
@@ -527,6 +547,7 @@ body #user-login input.form-text {
   background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   text-align: center;
   border: 1px solid #CBCBCB;
+  border-bottom: none;
 }
 .erpal-content-left ul.quicktabs-tabs li.active {
   background-color: #cbc7c6;
@@ -943,7 +964,7 @@ body #user-login input.form-text {
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
-  background-color: white;
+  background-color: #f6f6f6;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -1076,6 +1097,7 @@ body #user-login input.form-text {
 }
 .views-exposed-form .views-exposed-widget label {
   font-size: 10px;
+  color: #645c57;
 }
 .views-exposed-form button span:not(.ui-icon) {
   position: absolute;
@@ -1134,6 +1156,12 @@ body #user-login input.form-text {
   border: none;
 }
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-header {
+  margin-bottom: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
   font-weight: normal;
   background-color: #f6f6f6;
   border: none;
@@ -1151,6 +1179,11 @@ body #user-login input.form-text {
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-content .more-link {
   padding: 4px 10px;
   background-color: #f6f6f6;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
 }
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-submit {
   margin-left: 12px;
@@ -1183,8 +1216,15 @@ body #user-login input.form-text {
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
   padding: 10px;
-  font-size: 14px;
-  background-color: #afafaf;
+  font-size: 13px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane ul {
   margin: 0px;
@@ -1197,7 +1237,11 @@ body #user-login input.form-text {
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane table {
   margin: 0;
-  border: none;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane table td {
   padding: 10px;
@@ -1208,18 +1252,22 @@ body #user-login input.form-text {
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
   margin: 0px;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td {
-  border-bottom: 1px solid #e7e7e7;
-}
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
   padding: 10px;
   text-align: right;
-  -webkit-border-radius: 0 0 2px 2px;
-  -moz-border-radius: 0 0 2px 2px;
-  -ms-border-radius: 0 0 2px 2px;
-  -o-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
-  background-color: #afafaf;
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  -ms-border-radius: 0 0 5px 5px;
+  -o-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li a {
   font-size: 1.2em;
@@ -1236,10 +1284,12 @@ body #user-login input.form-text {
 /* begin hightlight of different states of tasks/projects */
 .block-content .view-content td {
   font-size: 10px;
+  font-weight: bold;
   border-bottom: 1px solid #cbcbcb;
 }
 .block-content .view-content td a {
   font-size: 13px;
+  font-weight: normal;
 }
 .block-content .view-content td a:hover {
   color: #fc9822;
@@ -1399,4 +1449,22 @@ li.jstree-open ul {
 .erpal-container,
 .erpal-container-item {
   height: 100%;
+}
+
+.page-invoice fieldset.collapsible {
+  margin-bottom: 3px;
+}
+.page-invoice .views-table {
+  border-collapse: collapse;
+}
+
+.group-form-left,
+.group-form-right,
+.group-form-advanced-left,
+.group-form-advanced-right {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
 }
