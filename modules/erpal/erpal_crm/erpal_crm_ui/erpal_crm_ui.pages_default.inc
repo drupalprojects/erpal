@@ -219,7 +219,7 @@ function erpal_crm_ui_default_page_manager_handlers() {
     $pane->access = array();
     $pane->configuration = array(
       'label' => 'title',
-      'formatter' => 'entityreference_label',
+      'formatter' => 'entityreference_typed_label',
       'delta_limit' => '0',
       'delta_offset' => '0',
       'delta_reversed' => 0,
@@ -447,7 +447,7 @@ function erpal_crm_ui_default_page_manager_handlers() {
     $pane->access = array();
     $pane->configuration = array(
       'label' => 'title',
-      'formatter' => 'entityreference_label',
+      'formatter' => 'entityreference_typed_label',
       'delta_limit' => '0',
       'delta_offset' => '0',
       'delta_reversed' => 0,
@@ -501,7 +501,7 @@ function erpal_crm_ui_default_page_manager_handlers() {
     $pane->access = array();
     $pane->configuration = array(
       'label' => 'title',
-      'formatter' => 'entityreference_label',
+      'formatter' => 'entityreference_typed_label',
       'delta_limit' => '0',
       'delta_offset' => '0',
       'delta_reversed' => 0,

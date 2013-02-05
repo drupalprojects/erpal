@@ -9,6 +9,7 @@ dependencies[] = ctools
 dependencies[] = date
 dependencies[] = entityreference
 dependencies[] = erpal_basic
+dependencies[] = erpal_basic_helper
 dependencies[] = erpal_field_pricing
 dependencies[] = erpal_invoice_helper
 dependencies[] = erpal_print

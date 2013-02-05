@@ -57,6 +57,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -129,6 +130,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -169,6 +171,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -203,6 +206,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -731,6 +735,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -833,6 +838,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -1113,6 +1119,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );
@@ -1740,6 +1747,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -3891,6 +3899,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -4201,6 +4210,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -4613,6 +4623,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -4649,6 +4660,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent_1']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent_1']['field'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent_1']['relationship'] = 'field_parent_target_id';
+  $handler->display->display_options['fields']['field_parent_1']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent_1']['settings'] = array(
     'link' => 1,
   );
@@ -6587,6 +6599,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -6881,6 +6894,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -9064,6 +9078,7 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   $handler->display->display_options['fields']['field_timetracking_subject']['table'] = 'field_data_field_timetracking_subject';
   $handler->display->display_options['fields']['field_timetracking_subject']['field'] = 'field_timetracking_subject';
   $handler->display->display_options['fields']['field_timetracking_subject']['label'] = 'Task';
+  $handler->display->display_options['fields']['field_timetracking_subject']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_timetracking_subject']['settings'] = array(
     'link' => 1,
   );

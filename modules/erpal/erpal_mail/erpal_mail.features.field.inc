@@ -70,7 +70,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 18,
         ),
         'teaser' => array(
@@ -248,7 +248,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 3,
         ),
         'full' => array(
@@ -257,7 +257,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 3,
         ),
         'teaser' => array(
@@ -355,7 +355,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'full' => array(
@@ -364,7 +364,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'teaser' => array(
@@ -462,7 +462,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 1,
         ),
         'full' => array(
@@ -471,7 +471,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 1,
         ),
         'teaser' => array(
@@ -571,7 +571,7 @@ function erpal_mail_field_default_fields() {
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 31,
         ),
         'full' => array(
