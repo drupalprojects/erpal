@@ -10,30 +10,10 @@ define("VIEWCONTENTTYPE", "erpal_contact");
 
 /**
  * Implements hook_init
- * Adds the erpal_asterisk.js and the socketio.js to every page
- * and sets a warning when the libraries are not installed
+ * Adds bs_asterisk_client.js and now.js to every page
  */
 function erpal_asterisk_notify_init() {
-  
-  $socketio_path = libraries_get_path('socketio') . '/socket.io.min.js';
-  $erpal_asterisk_path = libraries_get_path('erpal_asterisk') . '/erpal_asterisk.js';
-  
-  $return = FALSE;
-  
-  if (!file_exists($socketio_path)) {
-    drupal_set_message(
-      t('Erpal Asterisk Notify can not work without the socketio library. '
-        . 'Pleaso install to .../libraries/socketio/'), 'warning');    
-    $return = TRUE;
-  }
-  if (!file_exists($erpal_asterisk_path)) {
-    drupal_set_message(
-      t('Erpal Asterisk Notify can not work without the erpal_asterisk.js library. '
-      . 'Pleaso install to .../libraries/erpal_asterisk/'), 'warning');    
-    $return = TRUE;
-  }  
-  if ($return) return;
-  
+
   global $user; 
   $profile = profile2_load_by_user($user);
     
@@ -64,10 +44,6 @@ function erpal_asterisk_notify_init() {
     'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port'),
     'client_uid' => $user->uid,
   );
-  
-  // drupal_add_js($socketio_path, Array('every_page'=>TRUE));
-  // drupal_add_js($erpal_asterisk_path, Array('every_page'=>TRUE));
-  // drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting');
   
   drupal_add_js('http://localhost:8080/nowjs/now.js', 'external');  drupal_add_js('http://localhost:8080/asterisk/client.js', 'external');
   drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting');
@@ -108,35 +84,28 @@ function _erpal_asterisk_notify_get_views_of_type_erpal_contact(){
       }
     }
   }
-  // dpm($views_array);
+  // dpm($views_array);
   return $views_array;
 }
 
-
-
 /*
- * Implements hook_ingoing_call()
- * Implement Functions wich get des and source number.
+ * returns rendered caller notification for the source number.
  * It call the function _erpal_asterisk_get_view to get view number from erpal
- * if it doesen't exist it gives an template with content of unknown number
- * @param string $dest 		Destination number
+ * if it doesen't exist it gives an template with content of unknown number message.
  * @param string $source	Source number 
  */
-
-function erpal_asterisk_notify_ingoing_call($destination, $source) {
-  
+function erpal_asterisk_notify_ingoing_call($source) {
   if($source!=NULL) {
     $view = _erpal_asterisk_notify_get_view($source);
     $out	= theme('erpal_asterisk_view', array('output' => $view));
   }else{
     $out	= theme('erpal_asterisk_unknown_number', array('output' => variable_get('asterisk_unknown_number_message')));
   }
-
-  erpal_asterisk_send_dispatch_data($out, $source, $destination);    
+  return $out;
 }
 
 /*
- * This function build defaul text for view
+ * This function builds the default text for the notification
  */
 function _erpal_asterisk_notify_get_default_message($phone_number){
 
