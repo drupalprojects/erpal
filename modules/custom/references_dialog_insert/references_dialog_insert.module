@@ -226,8 +226,8 @@ function _references_dialog_insert_genedate_link($entity_id, $entity_type) {
       );
 
       // generate image links
-      foreach ($image_styles as $image_style) {
-        $send_link[] = _references_dialog_insert_image($entity_id, $entity, $file, $image_style, $alt, $title);
+      foreach ($image_styles as $image_style_key => $image_style) {
+        $send_link[] = _references_dialog_insert_image($entity_id, $entity, $file, $image_style_key, $alt, $title);
       }
     }
 
@@ -246,7 +246,7 @@ function _references_dialog_insert_genedate_link($entity_id, $entity_type) {
  */
 function _references_dialog_insert_image_styles() {
   $image_styles = image_styles();
-  $insert_styles = array();
+  $insert_styles = array('original' => t('original image'));
   foreach ($image_styles as $style_key => $style) {
     $insert_styles[$style_key] = $style['name'];
   }
@@ -258,22 +258,33 @@ function _references_dialog_insert_image_styles() {
  * @return array image link hidden input
  */
 function _references_dialog_insert_image($entity_id, $entity, $file, $image_style, $alt, $title) {
-  // image render array
-  $image = array(
-    '#theme' => 'image_formatter',
-    '#image_style' => $image_style,
-    '#item' => array(
-      'uri' => $file->uri,
-      'alt' => $alt,
-      'title' => $title,
-    ),
-  );
+  if ($image_style == 'original') {
+    $variables = array(
+      'attributes' => array(
+        'alt' => ''
+      ),
+      'path' => file_create_url($file->uri),
+    );
+    $image = theme_image($variables);
+  } else {
+    // image render array
+    $image_render = array(
+      '#theme' => 'image_formatter',
+      '#image_style' => $image_style,
+      '#item' => array(
+        'uri' => $file->uri,
+        'alt' => $alt,
+        'title' => $title,
+      ),
+    );
+    $image = render($image_render);
+  }
 
   // $image_link = l(render($image), url('node/' . $entity_id, array('absolute' => TRUE)), array('html' => TRUE));
   // image link hidden input
   $send_link['image'] = array(
     '#type' => 'hidden',
-    '#value' => render($image),
+    '#value' => $image,
     '#attributes' => array(
       'class' => array(
         'references-dialog-insert-image',
@@ -290,7 +301,7 @@ function _references_dialog_insert_image($entity_id, $entity, $file, $image_styl
  * @return array filke link hidden input
  */
 function _references_dialog_insert_file_link($entity_id, $entity, $file) {
-  
+
   // create file icon
   $image = '';
   if ($icon_path = file_icon_url($file)) {
@@ -302,10 +313,10 @@ function _references_dialog_insert_file_link($entity_id, $entity, $file) {
     );
     $image = theme_image($variables);
   }
-  
+
   // file link
   $url = file_create_url($file->uri);
-  
+
   $send_link = array(
     '#type' => 'hidden',
     '#value' => $image . l($entity->title, $url),
