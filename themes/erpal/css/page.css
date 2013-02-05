@@ -48,11 +48,11 @@ body.logged-in {
 body #erpal_wrapper .erpal-region-content {
   padding-top: 20px;
   background-color: white;
-  -webkit-border-radius: 0px 5px 0 0;
-  -moz-border-radius: 0px 5px 0 0;
-  -ms-border-radius: 0px 5px 0 0;
-  -o-border-radius: 0px 5px 0 0;
-  border-radius: 0px 5px 0 0;
+  -webkit-border-radius: 0px 5px 5px 5px;
+  -moz-border-radius: 0px 5px 5px 5px;
+  -ms-border-radius: 0px 5px 5px 5px;
+  -o-border-radius: 0px 5px 5px 5px;
+  border-radius: 0px 5px 5px 5px;
   -webkit-box-shadow: black 0px 0px 5px;
   -moz-box-shadow: black 0px 0px 5px;
   box-shadow: black 0px 0px 5px;
@@ -94,7 +94,6 @@ body #erpal_wrapper .panel-col-first {
   height: 100%;
   float: left;
   position: absolute;
-  z-index: 1;
 }
 body #erpal_wrapper .panel-col-first > .inside {
   margin: 0;
@@ -146,14 +145,21 @@ body #user-login input.form-text {
 .pane-system-user-menu ul li {
   padding: 0;
   float: right;
-  width: 74px;
   text-align: center;
 }
 .pane-system-user-menu ul li a {
-  color: #e7d4c5;
+  padding-left: 25px;
+  color: #3d3835;
+  display: block;
 }
 .pane-system-user-menu ul li a:hover {
-  color: #fdf8f4;
+  color: #fc9822;
+}
+.pane-system-user-menu ul li.log-out a {
+  background: url("../images/menu_icons/logout.png") no-repeat 0px 2px;
+}
+.pane-system-user-menu ul li.log-out a:hover {
+  background: url("../images/menu_icons/logout.png") no-repeat 0px -22px;
 }
 
 /*----------Logo-------------*/
@@ -186,6 +192,33 @@ body #user-login input.form-text {
 
 /*----------end Search Block-------------*/
 /*----------begin Erpal menu-------------*/
+/*----------begin Erpal menu items-------------*/
+.pane-menu-menu-erpal-menu .active-trail.projects a,
+.pane-menu-menu-erpal-menu .active-trail.projects a:hover,
+.pane-menu-menu-erpal-menu .projects a,
+.pane-menu-menu-erpal-menu .projects a:hover {
+  background-image: url("../images/menu_icons/projects.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.documents a,
+.pane-menu-menu-erpal-menu .active-trail.documents a:hover,
+.pane-menu-menu-erpal-menu .documents a,
+.pane-menu-menu-erpal-menu .documents a:hover {
+  background-image: url("../images/menu_icons/docs.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.invoices a,
+.pane-menu-menu-erpal-menu .active-trail.invoices a:hover,
+.pane-menu-menu-erpal-menu .invoices a,
+.pane-menu-menu-erpal-menu .invoices a:hover {
+  background-image: url("../images/menu_icons/invoices.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.contracts a,
+.pane-menu-menu-erpal-menu .active-trail.contracts a:hover,
+.pane-menu-menu-erpal-menu .contracts a,
+.pane-menu-menu-erpal-menu .contracts a:hover {
+  background-image: url("../images/menu_icons/contracts.png");
+}
+
+/*-------------end Erpal menu items-----------*/
 .pane-menu-menu-erpal-menu {
   width: 150px;
 }
@@ -202,14 +235,14 @@ body #user-login input.form-text {
   z-index: 1;
   background: url("../images/li.png") no-repeat 0 0;
 }
-.pane-menu-menu-erpal-menu ul li.active-trail.projects a, .pane-menu-menu-erpal-menu ul li.active-trail.projects a:hover {
-  background: url("../images/menu_icons/projects.png") no-repeat 15px -74px;
+.pane-menu-menu-erpal-menu ul li.active-trail a, .pane-menu-menu-erpal-menu ul li.active-trail a:hover {
+  background-position: 15px -74px;
 }
-.pane-menu-menu-erpal-menu ul li.projects a {
-  background: url("../images/menu_icons/projects.png") no-repeat 15px -1px;
+.pane-menu-menu-erpal-menu ul li a {
+  background-position: 15px -1px;
 }
-.pane-menu-menu-erpal-menu ul li.projects a:hover {
-  background: url("../images/menu_icons/projects.png") no-repeat 15px -37px;
+.pane-menu-menu-erpal-menu ul li a:hover {
+  background-position: 15px -37px;
 }
 .pane-menu-menu-erpal-menu ul li.active-trail a {
   color: white;
@@ -227,6 +260,7 @@ body #user-login input.form-text {
   display: block;
   font-size: 12px;
   font-weight: bold;
+  background-repeat: no-repeat;
 }
 .pane-menu-menu-erpal-menu ul li a:hover {
   color: #fc9822;
@@ -305,11 +339,11 @@ body #user-login input.form-text {
   border-right: 1px solid #cbcbcb;
 }
 .pane-page-content .views-table th {
-  padding: 8px 15px 8px 12px;
+  padding: 7px 15px 7px 12px;
   font-size: 13px;
 }
 .pane-page-content .views-table td {
-  padding: 8px 15px 8px 12px;
+  padding: 7px 15px 7px 12px;
 }
 
 /*----------end .pane-page-content -------------*/
@@ -409,7 +443,7 @@ body #user-login input.form-text {
 /*.region-sidebar-left,*/
 .erpal-content-left {
   /*----------------begin side-bar-left-----------------*/
-  max-width: 800px;
+  max-width: 720px;
   min-width: 360px;
   width: 100%;
   float: left;
@@ -471,23 +505,41 @@ body #user-login input.form-text {
   margin: 0;
   padding-left: 0;
   background: none;
-  overflow: hidden;
+  height: 21px;
   border: none;
 }
 .erpal-content-left ul.quicktabs-tabs li {
-  margin: 0px;
+  margin: 0 2px 0 0;
   padding: 0px;
   float: left;
-  background-image: none;
-  background-color: #dedede;
-  border-top: 1px solid #eeeeee;
-  border-left: 1px solid #eeeeee;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  text-align: center;
+  border: 1px solid #CBCBCB;
 }
 .erpal-content-left ul.quicktabs-tabs li.active {
-  background-color: #f6f6f6 !important;
+  background-color: #cbc7c6;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFCBC7C6', endColorstr='#FFAEABA8');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cbc7c6), color-stop(100%, #aeaba8));
+  background-image: -webkit-linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
+  background-image: -moz-linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
+  background-image: -o-linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
+  background-image: linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
 }
 .erpal-content-left ul.quicktabs-tabs li.active a {
-  color: #3d3835 !important;
+  color: white !important;
 }
 .erpal-content-left ul.quicktabs-tabs li.last {
   border-right: 1px solid #eeeeee;
@@ -500,7 +552,10 @@ body #user-login input.form-text {
   display: block;
   float: left;
   min-width: 100px;
-  color: #888888;
+  color: #3d3835;
+}
+.erpal-content-left ul.quicktabs-tabs li a:hover {
+  color: #fc9822;
 }
 .erpal-content-left ul .field-name-task-title .field-item a {
   font-weight: bold;
@@ -584,8 +639,20 @@ body #user-login input.form-text {
   display: none;
 }
 .erpal-content-right .ctools-collapsible-container {
-  background-color: #dedede;
-  border: 1px solid #eeeeee;
+  margin-bottom: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .erpal-content-right .ctools-collapsible-container figure {
   text-align: center;
@@ -651,7 +718,14 @@ body #user-login input.form-text {
 .ctools-collapsible-processed h2.pane-title {
   margin: 0;
   padding: 3px 5px 0px 30px;
-  background-color: #AFAFAF;
+  background-color: #d1d1d1;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD1D1D1', endColorstr='#FFADADAD');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d1d1), color-stop(100%, #adadad));
+  background-image: -webkit-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
+  background-image: -moz-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
+  background-image: -o-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
+  background-image: linear-gradient(top, #d1d1d1 0%, #adadad 100%);
   margin: 0px 0px 0 0px;
   font-weight: bold;
   font-size: 12px;
@@ -659,6 +733,11 @@ body #user-login input.form-text {
   color: #3d3835;
 }
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
   padding: 3px 5px 3px 30px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content {
@@ -993,7 +1072,7 @@ body #user-login input.form-text {
 }
 .views-exposed-form .views-exposed-widget {
   padding-top: 0;
-  padding-right: 7px !important;
+  padding-right: 5px !important;
 }
 .views-exposed-form .views-exposed-widget label {
   font-size: 10px;
@@ -1156,7 +1235,14 @@ body #user-login input.form-text {
 /*-------------end contact styles------------------*/
 /* begin hightlight of different states of tasks/projects */
 .block-content .view-content td {
+  font-size: 10px;
   border-bottom: 1px solid #cbcbcb;
+}
+.block-content .view-content td a {
+  font-size: 13px;
+}
+.block-content .view-content td a:hover {
+  color: #fc9822;
 }
 .block-content .view-content th {
   background-color: #d4d4d4;
@@ -1293,6 +1379,9 @@ body #user-login input.form-text {
 /*------------------------------------invoice-----------------------*/
 .page-invoice-invoices table.views-table {
   border-collapse: collapse;
+}
+.page-invoice-invoices .container-inline-date .date-padding {
+  padding-left: 0px;
 }
 
 #mini-panel-invoice_content_panel .panel-col-first.panel-panel {

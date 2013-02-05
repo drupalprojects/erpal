@@ -32,12 +32,13 @@
 @import "global_vars_a_mixins";
 
 body {
-  margin: 0;
+  margin: 0 auto;
   padding: 10px 20px 0px 10px;
   line-height: 1.5em;
   font-size: 12px;
   font-family: Arial,Helvetica,sans-serif;
-  min-width: 1020px;
+  min-width: 960px;
+  max-width: 1200px;
   min-height: 100%;
   position: relative;
   color: $grey;
@@ -724,7 +725,7 @@ tbody {
 
 /* Left and right margin are set by the global gutter width */
 div.messages {
-  margin: 0 30px 10px;
+  margin: 0 20px 10px;
   ul {
     margin-top: 0;
     margin-bottom: 0;
