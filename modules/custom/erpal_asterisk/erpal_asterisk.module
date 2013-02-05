@@ -39,12 +39,9 @@ function erpal_asterisk_permission(){
  */
 function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
   
-  $url = 'http://' . variable_get('asterisk_nodejs_host') . ':' . variable_get('asterisk_nodejs_http_port') . '/ingoing';
-  
-  $phone_number = libphonenumber_normalize($destination);
-
+  $url = 'http://' . variable_get('asterisk_nodejs_host') . ':' . variable_get('asterisk_nodejs_http_port') . '/asterisk/ingoing';  
   $fields = array(
-      'destination' => $phone_number,
+      'destination' => libphonenumber_normalize($destination),
       'caller_data' => urlencode($data),
       'lifetime' => variable_get('asterisk_nodejs_lifetime', 60),
   );
@@ -57,7 +54,6 @@ function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
     'method' => 'POST',
     'data' => $fields_string,
   );
-
   //send data to node.js server
   drupal_http_request($url, $options);
 }
@@ -66,6 +62,9 @@ function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
  * This function implements hook of asterisknotify module and get view of an contact
  */
 function _erpal_asterisk_call($destination, $source = NULL){
+  
+  // $destination = $_POST['destination'];
+  // $source = isset($_POST['source']) ? $_POST['source'] : NULL;
   
   module_invoke_all('ingoing_call', $destination, $source);
   $s = ($source == NULL) ? 'NULL' : $source;

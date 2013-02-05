@@ -38,6 +38,7 @@ function erpal_asterisk_notify_init() {
   $profile = profile2_load_by_user($user);
     
   // Get field-collections attached to asterisk-settings profile
+  // If no numbers are set return
   if (isset($profile['asterisk_settings']->field_phone[LANGUAGE_NONE])) 
     $fields = $profile['asterisk_settings']->field_phone[LANGUAGE_NONE];
   else {  
@@ -53,6 +54,7 @@ function erpal_asterisk_notify_init() {
     $phone_numbers[] = $field_collection[$item['value']]->field_phone_number_normalized[LANGUAGE_NONE][0]['value'];
   }
   
+  global $user;
   // Attach javascript to etablish connection to nodejs-server
 	$js_settings = array(
 	  'client_phone_numbers' => $phone_numbers,
@@ -60,11 +62,15 @@ function erpal_asterisk_notify_init() {
     'nodejs_host' => variable_get('asterisk_nodejs_host'),
     'nodejs_http_port' => variable_get('asterisk_nodejs_http_port'),
     'nodejs_socket_port' => variable_get('asterisk_nodejs_socket_port'),
+    'client_uid' => $user->uid,
   );
   
-  drupal_add_js($socketio_path, Array('every_page'=>TRUE));
-  drupal_add_js($erpal_asterisk_path, Array('every_page'=>TRUE));
-  drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting');
+  // drupal_add_js($socketio_path, Array('every_page'=>TRUE));
+  // drupal_add_js($erpal_asterisk_path, Array('every_page'=>TRUE));
+  // drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting');
+  
+  drupal_add_js('http://localhost:8080/nowjs/now.js', 'external');  drupal_add_js('http://localhost:8080/asterisk/client.js', 'external');
+  drupal_add_js(array('erpal_asterisk_notify' => $js_settings), 'setting');
 }
   
 
@@ -135,7 +141,7 @@ function erpal_asterisk_notify_ingoing_call($destination, $source) {
 function _erpal_asterisk_notify_get_default_message($phone_number){
 
   $text = variable_get('asterisk_default_message');
-  return str_replace(array('%number%'), $phone_number, $text);
+  return str_replace(array('[callerid]'), $phone_number, $text);
   
 }
 
