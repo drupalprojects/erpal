@@ -1,4 +1,4 @@
-.erpal-asterisk-notify {
+div.erpal-asterisk-notify {
   position:fixed;
   right:0;
   bottom:0;
@@ -8,16 +8,33 @@
   padding:0 20px;
 }
 
-.erpal-asterisk-notify .status-buttons {
+div.erpal-asterisk-notify div.asterisk-status-buttons {
   margin:15px;
 }
 
-.erpal-asterisk-notify .status-buttons a.button.available {
+div.erpal-asterisk-notify div.asterisk-status-buttons a#asterisk-available {
   color:green;
   font-weight:bold;
 }
 
-.erpal-asterisk-notify .status-buttons a.button.not-available {
+div.erpal-asterisk-notify div.asterisk-status-buttons a#asterisk-not-available {
   color:red;
   font-weight:bold;
 }
+
+
+
+/*
+div.asterisk-toolbar {
+	padding-left: 8px;
+}
+
+
+div.asterisk-toolbar a#toggle-status .available{
+	color: green;	
+}
+div.asterisk-toolbar a#toggle-status .not-available{
+	color: red;
+}*/
+
+

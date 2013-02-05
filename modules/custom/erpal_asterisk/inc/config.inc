@@ -26,11 +26,17 @@ function _erpal_asterisk_menu(){
     'file' => 'inc/config.inc',
     'type' => MENU_LOCAL_TASK,
   );
-  $items['asterisk/ingoingcall/%'] = array(
+  
+  $items['asterisk/ingoingcall'] = array(
     'page callback' => '_erpal_asterisk_call',    
-    'page arguments' => array(2,3),
     'access callback' => TRUE,
   );
+  
+  $items['asterisk/normalize'] = array(
+    'page callback' => '_erpal_asterisk_normalize',
+    'access callback' => TRUE,
+  );
+  
   return $items;
 }
 
@@ -49,7 +55,6 @@ function _erpal_asterisk_config(){
  * Forms wich list all views in erpal
  * @return array $form  Forms  
  */
-
 function _erpal_asterisk_config_form() {
   
   $form= array();
