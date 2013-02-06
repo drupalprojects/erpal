@@ -226,6 +226,24 @@ body #user-login input.form-text {
 .pane-menu-menu-erpal-menu .calendar a:hover {
   background-image: url("../images/menu_icons/calendar.png");
 }
+.pane-menu-menu-erpal-menu .active-trail.contacts a,
+.pane-menu-menu-erpal-menu .active-trail.contacts a:hover,
+.pane-menu-menu-erpal-menu .contacts a,
+.pane-menu-menu-erpal-menu .contacts a:hover {
+  background-image: url("../images/menu_icons/contacts.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.activities a,
+.pane-menu-menu-erpal-menu .active-trail.activities a:hover,
+.pane-menu-menu-erpal-menu .activities a,
+.pane-menu-menu-erpal-menu .activities a:hover {
+  background-image: url("../images/menu_icons/activities.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.timekeeping a,
+.pane-menu-menu-erpal-menu .active-trail.timekeeping a:hover,
+.pane-menu-menu-erpal-menu .timekeeping a,
+.pane-menu-menu-erpal-menu .timekeeping a:hover {
+  background-image: url("../images/menu_icons/timekeeping.png");
+}
 
 /*-------------end Erpal menu items-----------*/
 .pane-menu-menu-erpal-menu {

@@ -172,6 +172,24 @@ body {
   .calendar a:hover  {
 	background-image: url("../images/menu_icons/calendar.png");
   }
+  .active-trail.contacts a,
+  .active-trail.contacts a:hover,
+  .contacts a,
+  .contacts a:hover  {
+	background-image: url("../images/menu_icons/contacts.png");
+  }
+  .active-trail.activities a,
+  .active-trail.activities a:hover,
+  .activities a,
+  .activities a:hover  {
+	background-image: url("../images/menu_icons/activities.png");
+  }
+  .active-trail.timekeeping a,
+  .active-trail.timekeeping a:hover,
+  .timekeeping a,
+  .timekeeping a:hover  {
+	background-image: url("../images/menu_icons/timekeeping.png");
+  }
 }
 
 /*-------------end Erpal menu items-----------*/
