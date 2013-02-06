@@ -338,7 +338,15 @@ ul.menu {
    margin-bottom: 0px;
     .breadcrumb {
       margin-left: 20px;
-  }
+	  color: $silverlight;
+	  font-size: 11px;
+	  a {
+	    color: $silverlight;
+		&:hover {
+		  color: $orange;
+		}
+	  }
+    }
   }
 }
 
