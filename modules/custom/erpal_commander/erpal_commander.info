@@ -1,9 +1,0 @@
-name = Erpal Commander
-description = Erpal Commander module.
-core = 7.x
-package = "ERPAL"
-
-dependencies[] = commander
-dependencies[] = erpal_basic_helper
-
-version = "7.x-1.x-dev"
