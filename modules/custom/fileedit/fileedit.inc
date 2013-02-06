@@ -4,12 +4,12 @@ define('FILEEDIT_PERMISSION_ACCESS_FILEEDIT', 'access filedit');
 
 define('FILEEDIT_URL_PATTERN_DOWNLOAD', 'fileedit/download/%/%');
 define('FILEEDIT_URL_PATTERN_UPLOAD', 'fileedit/upload/%/%');
-define('FILEEDIT_URL_PATTERN_APPLET', 'fileedit/applet');
+define('FILEEDIT_URL_PATTERN_APPLET', 'fileedit/monitor');
 
 /**
  * Callback for applet page.
  */
-function fileedit_applet() {
+function fileedit_monitor() {
     $out = theme('fileedit_applet', array('args' => array('fileedit_codebase' => url(drupal_get_path('module', 'fileedit') . '/assets/jar/'))));
     die ($out);
 }
