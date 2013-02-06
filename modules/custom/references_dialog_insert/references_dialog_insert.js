@@ -11,31 +11,20 @@
   Drupal.behaviors.references_dialog_insert = {};
   Drupal.behaviors.references_dialog_insert.attach = function(context) {
     
-    // on form-autocomplete change
+    // reference link update on form-autocomplete change
     $('.references-dialog-insert .form-autocomplete').once('processed').change(function(){
+      $(this).blur(); // fix for autocomplete change enter press
       var element = $(this);
       references_dialog_insert_link(element);
     });
 
-    // on autocomplete click
+    // reference link update on autocomplete click change
     $('.references-dialog-insert #autocomplete').live('click', function () {
       var element = $(this).once('processed').closest('.references-dialog-insert').find('.form-autocomplete');
       element.change();
     });
     
-    // on autocomplete Enter
-    /*$('.references-dialog-insert .form-autocomplete').bind('input', function(){
-      var element = $(this);
-      references_dialog_insert_link(element);
-      e.preventDefault();
-    });
-    $('.references-dialog-insert .form-autocomplete').bind('input', function () {
-      if(e && e.keyCode == 13) {
-        var element = $(this);
-        element.change();
-      }
-    });*/
-    
+    // reference link update on creating entityreference widget
     $('.references-dialog-insert .form-autocomplete').ready(function(){
       $('.references-dialog-insert .form-autocomplete').each(function(){
         var element = $(this);
@@ -43,6 +32,7 @@
       });
     });
     
+    // reference link update
     function references_dialog_insert_link(element, dont_check_entity){
       var container = element.closest('.references-dialog-insert');
       
@@ -61,7 +51,7 @@
         var entity_id = entity_val.replace(/^.*\(/, '').replace(/\).*$/, ''); 
         var bundles = container.find('.references-dialog-target-bundles').val();
       
-        // call callback to show "Send to textarea" button
+        // call callback to bild "Send to textarea" widget
         if(type && entity_id){
           $.ajax({
             url: '/references-dialog-insert/' + entity_id + '/' + type,
@@ -89,7 +79,6 @@
       }
     }
     
-    
     if (typeof(insertTextarea) == 'undefined') {
       insertTextarea = $('#edit-body textarea.text-full').get(0) || false;
     }
@@ -97,8 +86,8 @@
     // Keep track of the last active textarea (if not using WYSIWYG).
     $('textarea:not([name$="[data][title]"]):not(.insert-processed)', context).addClass('insert-processed').focus(insertSetActive).blur(insertRemoveActive);
 
-    // Add the click handler to the insert button.
-    $('.references-dialog-insert-send', context).addClass('insert-processed').live('click', (function(){
+    // Add the click handler for the "Send to textarea" button.
+    $('.references-dialog-insert-send', context).addClass('insert-processed').die('click').live('click', function(){
       var image_style, content, name;
       // image link
       if($(this).siblings('.references-dialog-insert-image').length != 0){
@@ -123,11 +112,11 @@
         return (tagName === 'alt') ? match : '';
       });
 
-      // Insert the text.
+      // Insert the content in WYSIWYG editor or textarea.
       Drupal.references_dialog_insert.insertIntoActiveEditor(content);
       
       return false;
-    }));
+    });
     
     function insertSetActive() {
       insertTextarea = this;

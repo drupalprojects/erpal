@@ -39,7 +39,7 @@ function fileedit_menu() {
     );
 
     $items[FILEEDIT_URL_PATTERN_APPLET] = array(
-        'page callback' => 'fileedit_applet',
+        'page callback' => 'fileedit_monitor',
         'access callback' => 'user_access',
         'access arguments' => array(FILEEDIT_PERMISSION_ACCESS_FILEEDIT),
         'type' => MENU_CALLBACK,
@@ -112,6 +112,8 @@ function theme_file_link_fileedit(&$variables) {
                 )
             )
         );
+
+//        $out .= '<iframe src="' . url(FILEEDIT_URL_PATTERN_APPLET, array('absolute' => true)) . '" width="400" height="300"></iframe>';
     }
 
     return $out;
