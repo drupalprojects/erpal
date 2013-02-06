@@ -132,7 +132,10 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
   
   if (!$pdf_object)
     return false;
-  
+
+  //parse html file for private files. These must be replaced be strem ULR with token
+  $html = _erpal_print_replace_private_images($html);
+
   $parts = _erpal_print_split_pages($html);
   foreach ($parts as $part_html) {
     $pdf_object->AddPage();
@@ -149,7 +152,8 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
     $pdf_object->setPrintHeader(false);
   for ($i = count($frontpages) -1; $i >= 0; $i--) {
     $part_html = $frontpages[0];
-    
+    $part_html = _erpal_print_replace_private_images($part_html);
+
     $pdf_object->AddPage();
     $pdf_object->writeHTML($part_html, true, false, false, false, '');
     $inserted_page_no = $pdf_object->PageNo();
@@ -189,6 +193,47 @@ function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false
     */
     die();
   }
+}
+
+/**
+* Replaces the link to image file that are private with stream link
+*/
+function _erpal_print_replace_private_images($html) {
+  
+  $regexp = "<img[^>]+>";
+  $images = array();
+  if(preg_match_all("/$regexp/i", $html, $matches)) {
+    $images = $matches[0];
+  }
+  
+  foreach($images as $img_tag)
+  {
+    preg_match_all('/(src)=["\'](.*)["\']/i',$img_tag, $path_matches);
+    $urls = $path_matches[2];
+    foreach ($urls as $url) {
+      //now get the file ID of the given file if it is a private file.
+      $priv_path = '/system/files/';
+      $private_file_dir_pos = strpos($url, $priv_path);
+      if ($private_file_dir_pos !== false) {
+        $end_pos = strlen($url) - ($private_file_dir_pos + strlen($priv_path));
+        $file = substr($url, $private_file_dir_pos + strlen($priv_path), $end_pos); 
+
+        $uri = 'private://'.$file;
+
+        //now get the file to have the fid
+        $files = file_load_multiple(array(), array('uri' => $uri));
+        $file = reset($files);
+        
+        if ($file) {     
+          $private_key = drupal_get_private_key();
+          $stream_url = url('erpal/file/'.$file->fid.'/'.$private_key, array('absolute' => true));
+          $html = str_replace($url, $stream_url, $html);
+        }
+      }      
+    }    
+  }
+
+  return $html;
 }
 
 /**
