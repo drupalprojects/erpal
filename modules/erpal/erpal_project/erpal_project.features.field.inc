@@ -119,11 +119,11 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 1,
         ),
       ),
@@ -269,11 +269,11 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 1,
         ),
       ),
@@ -490,11 +490,11 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
       ),
@@ -682,38 +682,38 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 6,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 9,
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'test' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 6,
         ),
       ),
@@ -797,20 +797,20 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 14,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 11,
         ),
         'teaser' => array(
@@ -910,47 +910,47 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 1,
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 7,
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'test' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 1,
         ),
       ),
@@ -1636,20 +1636,20 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 27,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 4,
         ),
         'in_activity' => array(
@@ -2090,20 +2090,20 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 8,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 11,
         ),
         'in_activity' => array(
@@ -2120,11 +2120,11 @@ function erpal_project_field_default_fields() {
         ),
         'view_row_details' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 4,
         ),
       ),
@@ -2410,29 +2410,29 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 12,
         ),
         'entityreference_view_widget' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 14,
         ),
         'in_activity' => array(
@@ -2443,20 +2443,20 @@ function erpal_project_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'view_row_details' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 1,
         ),
       ),
@@ -2653,20 +2653,20 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 7,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 10,
         ),
         'in_activity' => array(
@@ -2677,20 +2677,20 @@ function erpal_project_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
         'view_row_details' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 8,
         ),
       ),
@@ -3280,11 +3280,11 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 5,
         ),
         'teaser' => array(
@@ -3619,20 +3619,20 @@ function erpal_project_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 4,
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
       ),

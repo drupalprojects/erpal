@@ -1054,6 +1054,7 @@ function erpal_invoice_ui_views_default_views() {
   $handler->display->display_options['fields']['field_contractor_ref']['id'] = 'field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['table'] = 'field_data_field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['field'] = 'field_contractor_ref';
+  $handler->display->display_options['fields']['field_contractor_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_contractor_ref']['settings'] = array(
     'link' => 1,
   );
@@ -1061,6 +1062,7 @@ function erpal_invoice_ui_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );

@@ -14,6 +14,7 @@ features[ctools][] = quicktabs:quicktabs:1
 features[ctools][] = views:views_default:3.0
 features[ds_layout_settings][] = node|erpal_working_time|form
 features[features_api][] = api:1
+features[menu_links][] = user-menu:timekeeping
 features[page_manager_pages][] = all_timekeepings
 features[page_manager_pages][] = timekeeping
 features[page_manager_pages][] = user_working_time_offset

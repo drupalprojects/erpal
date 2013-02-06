@@ -20,17 +20,17 @@ function erpal_book_ctools_plugin_api() {
 function erpal_book_node_info() {
   $items = array(
     'erpal_book' => array(
-      'name' => t('Book'),
+      'name' => t('Document'),
       'base' => 'node_content',
-      'description' => t('A document representing a book or a document like a proposal or a project specification'),
+      'description' => t('A document representing a documentation or a proposal or a project specification'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',
     ),
     'erpal_book_page' => array(
-      'name' => t('Book page'),
+      'name' => t('Document page'),
       'base' => 'node_content',
-      'description' => t('A page with subpages of a book'),
+      'description' => t('A page with subpages of a document'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',

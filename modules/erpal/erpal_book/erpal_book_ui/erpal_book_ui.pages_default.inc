@@ -564,7 +564,7 @@ function erpal_book_ui_default_page_manager_pages() {
       'class' => '',
       'id' => '',
       'override_title' => 1,
-      'override_title_text' => 'Books',
+      'override_title_text' => 'Documents',
     );
     $pane->cache = array();
     $pane->style = array(

@@ -702,11 +702,11 @@ function erpal_profile_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
       ),

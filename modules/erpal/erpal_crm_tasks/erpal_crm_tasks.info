@@ -6,6 +6,7 @@ php = 5.2.4
 version = 7.x-1.0-dev
 project = erpal_crm_tasks
 dependencies[] = entityreference
+dependencies[] = erpal_basic_helper
 dependencies[] = erpal_crm
 dependencies[] = erpal_project
 dependencies[] = features

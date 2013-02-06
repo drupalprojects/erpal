@@ -28,7 +28,9 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for alert*/
 /*color for mark*/
 /* left sidebar link*/
+/*for border*/
 /*grey link color*/
+/*for label*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -37,39 +39,49 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 #erpal_wrapper .panel-panel.panel-col-last {
   float: left;
   width: 100%;
+  height: 100%;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside {
-  margin-left: 150px;
+  margin-left: 141px;
   min-width: 440px;
+  height: 100%;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .ctools-collapsible-content .inside {
   margin-left: 0px;
   min-width: 0px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs {
-  -webkit-box-shadow: 2px 3px 4px #b6b6b6;
-  -moz-box-shadow: 2px 3px 4px #b6b6b6;
-  box-shadow: 2px 3px 4px #b6b6b6;
-  background-color: white;
+  margin-bottom: 0;
   width: 100%;
-  background-color: #eeeeee;
-  border-bottom: 2px solid #ffa800;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary {
   margin: 0px;
   padding: 0px;
-  overflow: hidden;
   *zoom: 1;
   list-style: none;
   white-space: nowrap;
-  background-color: white;
   border: none;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li {
-  margin: 0;
+  margin: 0 3px 0 0;
   float: left;
   display: block;
-  border-right: 1px solid #D9D9D9;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  -webkit-box-shadow: #545151 0 -2px 1px 0;
+  -moz-box-shadow: #545151 0 -2px 1px 0;
+  box-shadow: #545151 0 -2px 1px 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
@@ -84,8 +96,18 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   height: 42px;
   line-height: 42px;
   min-width: 80px;
-  background: white;
   border: none;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  height: 33px;
+  line-height: 33px;
+  min-width: 105px;
+  position: relative;
+  z-index: 1;
+  color: black;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
   margin: 0;
@@ -100,27 +122,21 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   height: 42px;
   line-height: 42px;
   min-width: 80px;
-  background: white;
   border: none;
-  color: #7b726b;
+  color: black;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:hover {
-  background-color: white;
-  color: black;
+  color: #fc9822;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active {
   *zoom: 1;
-  background-color: #ffa800;
+  background-color: #fc9822;
   color: black;
+  background: white;
   border: medium none;
+  z-index: 10;
+  color: #fc9822;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
-  *zoom: 1;
-  background-color: #ffa800;
-  color: black;
-  background-color: #ffa800;
-}
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary .active {
-  border-left: 2px solid #fd8300;
-  border-right: 2px solid #fd8300;
+  color: #fc9822;
 }

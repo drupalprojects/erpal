@@ -26,10 +26,29 @@ function erpal_project_ui_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-49',
+    'weight' => '-48',
+  );
+  // Exported menu link: user-menu:tasks
+  $menu_links['user-menu:tasks'] = array(
+    'menu_name' => 'user-menu',
+    'link_path' => 'tasks',
+    'router_path' => 'tasks',
+    'link_title' => 'My Tasks',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '0',
   );
   // Translatables
   // Included for use with string extractors like potx.
+  t('My Tasks');
   t('Projects');
 
 

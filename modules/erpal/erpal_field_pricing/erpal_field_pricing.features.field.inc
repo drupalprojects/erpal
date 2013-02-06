@@ -134,29 +134,29 @@ function erpal_field_pricing_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => 1,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 8,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 8,
         ),
         'in_pane' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 8,
         ),
       ),
