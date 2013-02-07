@@ -75,7 +75,7 @@ body {
   max-width: 1200px;
   min-height: 100%;
   position: relative;
-  color: #3d3835;
+  color: #645c57;
   background: #7b726b;
 }
 body.admin-menu {
@@ -191,10 +191,10 @@ ul.links li {
  * ========================================================================== */
 a {
   text-decoration: none;
-  color: #3d3835;
+  color: #645c57;
 }
 a:link, a:visited {
-  color: #3d3835;
+  color: #645c57;
 }
 a:hover, a:focus {
   text-decoration: none;
@@ -351,6 +351,14 @@ ul.menu ul {
 }
 .pane-page-breadcrumb.block .breadcrumb {
   margin-left: 20px;
+  color: #645c57;
+  font-size: 11px;
+}
+.pane-page-breadcrumb.block .breadcrumb a {
+  color: #645c57;
+}
+.pane-page-breadcrumb.block .breadcrumb a:hover {
+  color: #fc9822;
 }
 
 /* =============================================================================
@@ -381,7 +389,7 @@ ul.pager li.pager-current {
 }
 ul.pager li a {
   font-size: 1.2em;
-  color: #3d3835 !important;
+  color: #645c57 !important;
 }
 
 /* =============================================================================

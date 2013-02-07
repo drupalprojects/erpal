@@ -146,7 +146,7 @@ body #user-login input.form-text {
 }
 .pane-system-user-menu ul li a {
   padding-left: 25px;
-  color: #3d3835;
+  color: #645c57;
   display: block;
 }
 .pane-system-user-menu ul li a:hover {
@@ -225,6 +225,24 @@ body #user-login input.form-text {
 .pane-menu-menu-erpal-menu .calendar a,
 .pane-menu-menu-erpal-menu .calendar a:hover {
   background-image: url("../images/menu_icons/calendar.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.contacts a,
+.pane-menu-menu-erpal-menu .active-trail.contacts a:hover,
+.pane-menu-menu-erpal-menu .contacts a,
+.pane-menu-menu-erpal-menu .contacts a:hover {
+  background-image: url("../images/menu_icons/contacts.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.activities a,
+.pane-menu-menu-erpal-menu .active-trail.activities a:hover,
+.pane-menu-menu-erpal-menu .activities a,
+.pane-menu-menu-erpal-menu .activities a:hover {
+  background-image: url("../images/menu_icons/activities.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.timekeeping a,
+.pane-menu-menu-erpal-menu .active-trail.timekeeping a:hover,
+.pane-menu-menu-erpal-menu .timekeeping a,
+.pane-menu-menu-erpal-menu .timekeeping a:hover {
+  background-image: url("../images/menu_icons/timekeeping.png");
 }
 
 /*-------------end Erpal menu items-----------*/
@@ -345,7 +363,7 @@ body #user-login input.form-text {
   margin-bottom: 0px;
 }
 .pane-page-content .portlet-content .views-table {
-  border: 1px solid #cbcbcb;
+  border: 1px solid #d9d5d2;
   border-bottom: none;
   -webkit-border-radius: 5px 5px 0px 0px;
   -moz-border-radius: 5px 5px 0px 0px;
@@ -356,7 +374,6 @@ body #user-login input.form-text {
 .pane-page-content .views-table {
   margin-top: 0;
   border-bottom: none;
-  border-top: none;
 }
 .pane-page-content .views-table th {
   padding: 7px 4px;
@@ -573,7 +590,7 @@ body #user-login input.form-text {
   display: block;
   float: left;
   min-width: 100px;
-  color: #3d3835;
+  color: #645c57;
 }
 .erpal-content-left ul.quicktabs-tabs li a:hover {
   color: #fc9822;
@@ -598,9 +615,11 @@ body #user-login input.form-text {
   float: right;
   color: #202020;
   /*----------------end side-bar-right-----------------*/
+  /*-------------begin Notifiy, Bookmark------------------*/
+  /*-------------end Notifiy, Bookmark------------------*/
 }
 .erpal-content-right .block {
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 .erpal-content-right .local_tasks_menu .local_tasks {
   position: absolute;
@@ -637,7 +656,7 @@ body #user-login input.form-text {
   text-align: center;
   font-size: 13px;
   font-weight: bold;
-  border: 1px solid #cbcbcb;
+  border: 1px solid #d9d5d2;
 }
 .erpal-content-right .local_tasks li a:hover {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
@@ -648,6 +667,26 @@ body #user-login input.form-text {
 }
 .erpal-content-right .local_tasks li ul {
   display: none;
+}
+.erpal-content-right .flag-wrapper {
+  margin-bottom: 6px;
+  margin-left: 5px;
+  display: block;
+}
+.erpal-content-right .flag-wrapper.flag-project-subscriptions a {
+  background: url("../images/menu_icons/notifiy.png") no-repeat 0 0;
+}
+.erpal-content-right .flag-wrapper.flag-bookmark-flag a {
+  background: url("../images/menu_icons/bookmark.png") no-repeat 0 0;
+}
+.erpal-content-right .flag-wrapper a {
+  padding: 3px 0 5px 26px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.erpal-content-right .flag-wrapper a:hover {
+  color: #fc9822;
+  background-position: 0px -22px;
 }
 .erpal-content-right .content-inner {
   padding-bottom: 30px;
@@ -660,23 +699,28 @@ body #user-login input.form-text {
   display: none;
 }
 .erpal-content-right .ctools-collapsible-container {
+  margin-top: 10px;
   margin-bottom: 1px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
-  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
-  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
-  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
-  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  padding-top: 5px;
+  font-size: 11px;
+  border-top: 1px solid #d9d5d2;
+}
+.erpal-content-right .ctools-collapsible-container .field-name-field-buy-price .field-item,
+.erpal-content-right .ctools-collapsible-container .pane-node-created .block-content,
+.erpal-content-right .ctools-collapsible-container .field-name-field-buy-currency .field-item {
+  font-weight: bold;
+}
+.erpal-content-right .ctools-collapsible-container .field_time_estimation_sumed,
+.erpal-content-right .ctools-collapsible-container .time_ok,
+.erpal-content-right .ctools-collapsible-container .field-name-field-budget-time-billing .field-item,
+.erpal-content-right .ctools-collapsible-container .field-name-field-price-mode .field-item {
+  font-weight: bold;
 }
 .erpal-content-right .ctools-collapsible-container figure {
   text-align: center;
+}
+.erpal-content-right .date-display-single {
+  font-weight: bold;
 }
 
 /*----------------end erpal_content_layout-----------------------*/
@@ -685,9 +729,9 @@ body #user-login input.form-text {
   padding-right: 5px;
   margin: 0px 0px 0 0px;
   font-weight: normal;
-  font-size: 12px;
-  line-height: 12px;
-  color: #3d3835;
+  font-size: 11px;
+  line-height: 11px;
+  color: #645c57;
 }
 .panel-display .pane-entity-field .block-content {
   float: left;
@@ -730,44 +774,33 @@ body #user-login input.form-text {
 
 /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+.ctools-collapsible-processed a:hover {
+  color: #fc9822;
+}
 .ctools-collapsible-processed .ctools-collapsible-handle {
   cursor: pointer;
 }
 .ctools-collapsible-processed .block-content a {
-  text-decoration: underline;
+  font-size: 13px;
 }
 .ctools-collapsible-processed h2.pane-title {
   margin: 0;
   padding: 3px 5px 0px 30px;
-  background-color: #d1d1d1;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD1D1D1', endColorstr='#FFADADAD');
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d1d1), color-stop(100%, #adadad));
-  background-image: -webkit-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
-  background-image: -moz-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
-  background-image: -o-linear-gradient(top, #d1d1d1 0%, #adadad 100%);
-  background-image: linear-gradient(top, #d1d1d1 0%, #adadad 100%);
   margin: 0px 0px 0 0px;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 12px;
-  color: #3d3835;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 11px;
+  color: #645c57;
 }
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
-  -webkit-border-radius: 5px 5px 0 0;
-  -moz-border-radius: 5px 5px 0 0;
-  -ms-border-radius: 5px 5px 0 0;
-  -o-border-radius: 5px 5px 0 0;
-  border-radius: 5px 5px 0 0;
-  padding: 3px 5px 3px 30px;
+  padding: 3px 5px 3px 0px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content {
-  padding-top: 10px;
+  clear: both;
 }
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
   padding-left: 0;
-  font-weight: bold;
-  color: #3d3835;
+  color: #645c57;
   background: none;
 }
 .ctools-collapsible-processed .ctools-collapsible-content .field-items {
@@ -777,14 +810,15 @@ body #user-login input.form-text {
   margin: 0;
   clear: both;
   line-height: 12px;
-  color: #3d3835;
+  color: #645c57;
+  font-weight: normal;
 }
 .ctools-collapsible-processed section, .ctools-collapsible-processed .field-name-field-books-ref {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding-left: 10px;
 }
 .ctools-collapsible-processed section a, .ctools-collapsible-processed .field-name-field-books-ref a {
-  text-decoration: underline;
+  font-size: 13px;
 }
 .ctools-collapsible-processed .field-name-field-task-assigned-users {
   padding-left: 0px;
@@ -792,7 +826,6 @@ body #user-login input.form-text {
 .ctools-collapsible-processed .panel-separator {
   height: 1px;
   overflow: hidden;
-  border-bottom: 1px solid #eeeeee;
 }
 .ctools-collapsible-processed ul {
   margin: 0px;
@@ -800,6 +833,7 @@ body #user-login input.form-text {
 }
 .ctools-collapsible-processed ul li {
   list-style-type: none;
+  font-weight: bold;
 }
 .ctools-collapsible-processed .field-type-taxonomy-term-reference {
   margin: 0;
@@ -808,12 +842,17 @@ body #user-login input.form-text {
   margin-bottom: 10px;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item {
-  margin-left: 20px;
+  margin-left: 5px;
   padding-left: 0 !important;
-  display: list-item;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a {
-  text-decoration: underline;
+  padding: 3px 0 3px 24px;
+  background: url("../images/menu_icons/files.png") no-repeat 0 -8px;
+  line-height: 21px;
+  font-size: 13px;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item a:hover {
+  background-position: 0px -44px;
 }
 .ctools-collapsible-processed .field-name-field-contacts-ref .field-item {
   padding-left: 10px;
@@ -829,7 +868,7 @@ body #user-login input.form-text {
   padding-left: 10px;
 }
 .ctools-collapsible-processed .ctools-toggle {
-  background-position: 7px 8px;
+  background-position: 7px 6px;
 }
 
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
@@ -841,7 +880,7 @@ body #user-login input.form-text {
   -o-border-radius: 10px;
   border-radius: 10px;
   background-color: #eeeeee;
-  color: #3d3835;
+  color: #645c57;
 }
 #mini-panel-task_status_panel .panel-separator {
   display: none;
@@ -964,7 +1003,7 @@ body #user-login input.form-text {
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
-  background-color: #f6f6f6;
+  border: 1px solid #d9d5d2;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -1086,7 +1125,7 @@ body #user-login input.form-text {
   -ms-border-radius: 5px 5px 0 0;
   -o-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
-  border: 1px solid #cbcbcb;
+  border: 1px solid #d9d5d2;
 }
 .views-exposed-form .form-submit {
   margin-top: 1.3em;
@@ -1285,7 +1324,7 @@ body #user-login input.form-text {
 .block-content .view-content td {
   font-size: 10px;
   font-weight: bold;
-  border-bottom: 1px solid #cbcbcb;
+  border-bottom: 1px solid #d9d5d2;
 }
 .block-content .view-content td a {
   font-size: 13px;

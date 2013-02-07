@@ -172,6 +172,24 @@ body {
   .calendar a:hover  {
 	background-image: url("../images/menu_icons/calendar.png");
   }
+  .active-trail.contacts a,
+  .active-trail.contacts a:hover,
+  .contacts a,
+  .contacts a:hover  {
+	background-image: url("../images/menu_icons/contacts.png");
+  }
+  .active-trail.activities a,
+  .active-trail.activities a:hover,
+  .activities a,
+  .activities a:hover  {
+	background-image: url("../images/menu_icons/activities.png");
+  }
+  .active-trail.timekeeping a,
+  .active-trail.timekeeping a:hover,
+  .timekeeping a,
+  .timekeeping a:hover  {
+	background-image: url("../images/menu_icons/timekeeping.png");
+  }
 }
 
 /*-------------end Erpal menu items-----------*/
@@ -299,7 +317,6 @@ body {
    .views-table {
 	margin-top: 0;
 	border-bottom: none;
-    border-top: none;
 	th {
 	  padding: 7px 4px;
 	  font-size: 13px;
@@ -533,7 +550,7 @@ body {
   float: right;
   color: $dark_black;
   .block {
-    margin-bottom: 10px;
+    margin-bottom: 2px;
   }
   .local_tasks_menu .local_tasks {
 	position: absolute;
@@ -573,6 +590,32 @@ body {
 	  }
     } 
   }   /*----------------end side-bar-right-----------------*/
+  
+ /*-------------begin Notifiy, Bookmark------------------*/
+
+.flag-wrapper {
+  margin-bottom: 6px;
+  margin-left: 5px;
+  display: block;
+  &.flag-project-subscriptions a{
+	background: url("../images/menu_icons/notifiy.png") no-repeat 0 0;
+  }
+  &.flag-bookmark-flag a{
+	background: url("../images/menu_icons/bookmark.png") no-repeat 0 0;
+  }
+  a {
+    padding: 3px 0 5px 26px;
+    $black_dark: #393431;
+	font-size: 11px;
+    font-weight: bold;
+	&:hover {
+	  color: $orange;
+	  background-position: 0px -22px;
+	}
+  }
+}
+ 
+ /*-------------end Notifiy, Bookmark------------------*/
   .content-inner {
     padding-bottom: 30px;
     clear: both;
@@ -584,22 +627,36 @@ body {
     display: none;
   }
   .ctools-collapsible-container {
+    margin-top: 10px;
     margin-bottom: 1px;
-    @include border-radius(5px);
+	padding-top: 5px;
+	font-size: 11px;
+	border-top: 1px solid $silver_light;
+	.field-name-field-buy-price .field-item,
+	.pane-node-created .block-content,
+    .field-name-field-buy-currency .field-item{
+	  font-weight: bold;
+	}
+	.field_time_estimation_sumed,
+    .time_ok,
+	.field-name-field-budget-time-billing .field-item,
+	.field-name-field-price-mode .field-item{
+	  font-weight: bold;
+	}
     figure {
       text-align: center;
     }
-    background-color: rgb(233,229,226); 
-    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
-    @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
-  }    
+  }
+  .date-display-single {
+    font-weight: bold;
+  }  
 } /*----------------end erpal_content_layout-----------------------*/
 
 /*----------------begin .panel-display-----------------------*/
 .panel-display {
   .pane-entity-field h2.pane-title {
     padding-right: 5px;
-	@include headline(12px, 12px, 0, normal);
+	@include headline(11px, 11px, 0, normal);
 	color: $grey;
   }
   .pane-entity-field {
@@ -637,30 +694,28 @@ body {
 } /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
 .ctools-collapsible-processed  {
+  a:hover {
+	color: $orange;
+  }
   .ctools-collapsible-handle {
     cursor: pointer;
   }
   .block-content a {
-    text-decoration: underline;
+    font-size: 13px;
   }
   h2.pane-title {
     &.ctools-collapsible-handle {
-	  @include border-radius(5px 5px 0 0);
-      padding: 3px 5px 3px 30px;
+      padding: 3px 5px 3px 0px;
 	}
 	margin: 0;
     padding: 3px 5px 0px 30px;
-    background-color: rgb(209,209,209); 
-    @include filter-gradient(#d1d1d1, #adadad, vertical); 
-    @include background-image(linear-gradient(top,  rgba(209,209,209,1) 0%,rgba(173,173,173,1) 100%));
-	@include headline(12px, 12px, 0, bold);
+   	@include headline(11px, 11px, 0, normal);
 	color: $grey;
    }
   .ctools-collapsible-content {
-    padding-top: 10px;
+    clear: both;
     h2.pane-title {
       padding-left: 0;
-	  font-weight: bold;
 	  color: $grey;
 	  background: none;
 	}
@@ -673,12 +728,13 @@ body {
 	clear: both;
 	line-height: 12px;
 	color: $grey;
+	font-weight: normal;
   }
   section, .field-name-field-books-ref {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 	padding-left: 10px;
 	a {
-	  text-decoration: underline;
+	  font-size: 13px;
 	} 
   }
   .field-name-field-task-assigned-users {
@@ -687,12 +743,12 @@ body {
   .panel-separator {
     height: 1px;
 	overflow: hidden;
-	border-bottom: 1px solid $light_grey;
   }
   ul {
     @include dist_zero;
 	li {
 	  list-style-type: none;
+	  font-weight: bold;
 	}
   }
   .field-type-taxonomy-term-reference {
@@ -701,12 +757,17 @@ body {
   .field-name-field-asset-files {
     margin-bottom: 10px;
 	.field-item  {
-	  margin-left: 20px;
+	  margin-left: 5px;
       padding-left: 0 !important;
-	  display: list-item;
 	  a {
-	    text-decoration: underline;
-	  } 
+		padding: 3px 0 3px 24px;
+	    background: url("../images/menu_icons/files.png") no-repeat 0 -8px;
+        line-height: 21px;
+		font-size: 13px;
+		&:hover {
+		  background-position: 0px -44px;
+	    }
+      }
 	}
   }
   .field-name-field-contacts-ref .field-item {
@@ -725,7 +786,7 @@ body {
     padding-left: 10px;
   }
   .ctools-toggle {
-    background-position: 7px 8px;
+    background-position: 7px 6px;
   }
 }
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
@@ -851,7 +912,7 @@ body {
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
-  background-color: $dark_white;
+  border: 1px solid $silver_light;
   @include border-radius(5px); 
   p {
 	font-size: 16px;
