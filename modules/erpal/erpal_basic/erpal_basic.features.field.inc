@@ -970,6 +970,9 @@ function erpal_basic_field_default_fields() {
         'handler' => 'base',
         'handler_settings' => array(
           'behaviors' => array(
+            'unique_field_behavior' => array(
+              'status' => 0,
+            ),
             'views-select-list' => array(
               'status' => 1,
             ),

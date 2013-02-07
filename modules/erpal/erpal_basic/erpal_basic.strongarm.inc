@@ -151,6 +151,7 @@ function erpal_basic_strongarm() {
   $strongarm->name = 'node_options_erpal_contact';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'promote',
   );
   $export['node_options_erpal_contact'] = $strongarm;
 
