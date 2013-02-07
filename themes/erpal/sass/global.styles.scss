@@ -48,7 +48,6 @@ body {
 	padding-top: 20px !important;
   }
 }
-
 /* =============================================================================
  *   HTML Elements
  * ========================================================================== */
@@ -338,10 +337,10 @@ ul.menu {
    margin-bottom: 0px;
     .breadcrumb {
       margin-left: 20px;
-	  color: $silverlight;
+	  color: $grey;
 	  font-size: 11px;
 	  a {
-	    color: $silverlight;
+	    color: $grey;
 		&:hover {
 		  color: $orange;
 		}
@@ -837,13 +836,13 @@ select.form-select {
 
 input.form-submit {
   cursor: pointer;
-  font-size: 0.929em;
-  font-weight: normal;
+  font-size: 10px;
   text-align: center;
   margin-bottom: 1em;
   margin-right: 0.6em; /* LTR */
   padding: 4px 17px;
-  @include border-radius(15px);
+  font-weight: bold;
+  border: 1px solid $gray_silver;
 }
 a.button {
   @extend input.form-submit;

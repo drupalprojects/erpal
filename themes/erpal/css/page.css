@@ -30,7 +30,8 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /* left sidebar link*/
 /*for border*/
 /*grey link color*/
-/*for label*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -373,6 +374,7 @@ body #user-login input.form-text {
 }
 .pane-page-content .views-table {
   margin-top: 0;
+  border-collapse: collapse;
   border-bottom: none;
 }
 .pane-page-content .views-table th {
@@ -380,35 +382,53 @@ body #user-login input.form-text {
   font-size: 13px;
 }
 .pane-page-content .views-table td {
-  padding: 7px 15px 7px 12px;
+  padding: 7px 4px 7px 4px;
 }
 
 /*----------end .pane-page-content -------------*/
 /*----------begin comments------------------------*/
 .comment {
-  padding-top: 15px;
   padding-bottom: 15px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  background-color: #eeeeee;
+  border: 1px solid #d9d5d2;
+}
+.comment ul.links li {
+  margin-right: 10px;
 }
 .comment .field-name-comment-body p {
   font-size: 16px;
 }
 .comment .comment-header {
+  padding-top: 10px;
   padding-right: 10px;
   padding-left: 15px;
   float: left;
 }
+.comment .comment-header .new {
+  position: relative;
+  top: -4px;
+}
 .comment .submitted {
-  padding-right: 15px;
-  border-bottom: 1px solid #f4f4f4;
+  padding: 10px 15px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .comment .submitted .author-datetime {
-  margin-bottom: 12px;
+  margin-bottom: 0px;
+  font-size: 11px;
+}
+.comment .submitted .author-datetime a {
+  font-size: 12px;
 }
 .comment .comment-content {
   padding-top: 15px;
@@ -418,6 +438,18 @@ body #user-login input.form-text {
 .comment .comment-content section {
   width: 250px;
   float: left;
+}
+.comment .comment-content section.field-name-field-asset-files .comment_erpal_file a {
+  margin-right: 20px;
+  float: left;
+  padding: 3px 0 3px 24px;
+  background: url("../images/menu_icons/files.png") no-repeat 0 -8px;
+  line-height: 21px;
+  font-size: 13px;
+}
+.comment .comment-content section.field-name-field-asset-files .comment_erpal_file a:hover {
+  background-position: 0px -44px;
+  color: #fc9822;
 }
 .comment .comment-form {
   padding-top: 15px;
@@ -565,32 +597,24 @@ body #user-login input.form-text {
   text-align: center;
   border: 1px solid #CBCBCB;
   border-bottom: none;
+  position: relative;
 }
 .erpal-content-left ul.quicktabs-tabs li.active {
-  background-color: #cbc7c6;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFCBC7C6', endColorstr='#FFAEABA8');
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cbc7c6), color-stop(100%, #aeaba8));
-  background-image: -webkit-linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
-  background-image: -moz-linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
-  background-image: -o-linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
-  background-image: linear-gradient(top, #cbc7c6 0%, #aeaba8 100%);
+  background: white;
+  z-index: 10;
 }
 .erpal-content-left ul.quicktabs-tabs li.active a {
-  color: white !important;
-}
-.erpal-content-left ul.quicktabs-tabs li.last {
-  border-right: 1px solid #eeeeee;
+  color: #3d3835 !important;
 }
 .erpal-content-left ul.quicktabs-tabs li a {
-  padding: 1px 12px;
+  padding: 1px 12px 2px;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
   min-width: 100px;
-  color: #645c57;
+  color: #3d3835;
 }
 .erpal-content-left ul.quicktabs-tabs li a:hover {
   color: #fc9822;
@@ -598,6 +622,9 @@ body #user-login input.form-text {
 .erpal-content-left ul .field-name-task-title .field-item a {
   font-weight: bold;
   font-size: 16px;
+}
+.erpal-content-left ul .field-name-task-title .field-item a:hover {
+  color: #fc9822;
 }
 .erpal-content-left ul .field-name-task-title .field-item p {
   margin-bottom: 0px;
@@ -613,7 +640,7 @@ body #user-login input.form-text {
   margin-left: 10px;
   width: 250px;
   float: right;
-  color: #202020;
+  color: #3d3835;
   /*----------------end side-bar-right-----------------*/
   /*-------------begin Notifiy, Bookmark------------------*/
   /*-------------end Notifiy, Bookmark------------------*/
@@ -633,7 +660,7 @@ body #user-login input.form-text {
   list-style-type: none;
 }
 .erpal-content-right .local_tasks li {
-  margin: 0 2px 7px;
+  margin: 0 2px 4px;
   list-style-type: none;
 }
 .erpal-content-right .local_tasks li a {
@@ -673,7 +700,10 @@ body #user-login input.form-text {
   margin-left: 5px;
   display: block;
 }
-.erpal-content-right .flag-wrapper.flag-project-subscriptions a {
+.erpal-content-right .flag-wrapper .flag-message {
+  top: 2.2em;
+}
+.erpal-content-right .flag-wrapper.flag-project-subscriptions a, .erpal-content-right .flag-wrapper.flag-task-subscriptions a {
   background: url("../images/menu_icons/notifiy.png") no-repeat 0 0;
 }
 .erpal-content-right .flag-wrapper.flag-bookmark-flag a {
@@ -846,7 +876,9 @@ body #user-login input.form-text {
   padding-left: 0 !important;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a {
+  margin-right: 20px;
   padding: 3px 0 3px 24px;
+  float: left;
   background: url("../images/menu_icons/files.png") no-repeat 0 -8px;
   line-height: 21px;
   font-size: 13px;
@@ -988,12 +1020,7 @@ body #user-login input.form-text {
 
 /*---------------ticket details-----------*/
 .node-erpal-task .columns-inner {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  background-color: white;
+  border-bottom: 1px solid #d9d5d2;
 }
 
 .view-mode-view_row_details .content-inner {
@@ -1009,9 +1036,43 @@ body #user-login input.form-text {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+  font-size: 16px;
+}
+.pane-node-body a {
+  color: #098a58;
+  text-decoration: underline;
+}
+.pane-node-body a:hover {
+  color: #fc9822;
+}
+.pane-node-body a:visited {
+  color: #098a58;
 }
 .pane-node-body p {
   font-size: 16px;
+}
+.pane-node-body ul {
+  margin-left: 15px;
+}
+.pane-node-body ul li {
+  list-style-type: disc;
+}
+.pane-node-body ol {
+  margin-left: 21px;
+}
+.pane-node-body ol li {
+  list-style-type: decimal;
+}
+
+.quicktabs-tabpage .panel-panel.panel-col .pane-node-body {
+  margin-top: -1px;
+  -webkit-border-radius: 0px 5px 5px 5px;
+  -moz-border-radius: 0px 5px 5px 5px;
+  -ms-border-radius: 0px 5px 5px 5px;
+  -o-border-radius: 0px 5px 5px 5px;
+  border-radius: 0px 5px 5px 5px;
+  position: relative;
+  z-index: 5;
 }
 
 /*-----------------------begin projects-timetrackings--------------------*/
@@ -1054,7 +1115,10 @@ body #user-login input.form-text {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  background: #eeeeee;
+  border: 1px solid #d9d5d2;
+}
+#comment-form #edit-author {
+  clear: both;
 }
 #comment-form .field-type-datetime {
   width: 300px;
@@ -1326,6 +1390,9 @@ body #user-login input.form-text {
   font-weight: bold;
   border-bottom: 1px solid #d9d5d2;
 }
+.block-content .view-content td.views-field-views-bulk-operations {
+  padding-right: 0;
+}
 .block-content .view-content td a {
   font-size: 13px;
   font-weight: normal;
@@ -1342,6 +1409,9 @@ body #user-login input.form-text {
   background-image: -moz-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
   background-image: -o-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
   background-image: linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
+}
+.block-content .view-content th.views-field-views-bulk-operations {
+  width: 50px;
 }
 .block-content .view-content tr.info,
 .block-content .view-content tr.even,
@@ -1506,4 +1576,8 @@ li.jstree-open ul {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+}
+
+fieldset {
+  margin: 0px;
 }

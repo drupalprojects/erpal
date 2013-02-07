@@ -59,7 +59,8 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /* left sidebar link*/
 /*for border*/
 /*grey link color*/
-/*for label*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -818,18 +819,14 @@ select.form-select {
  */
 input.form-submit, a.button {
   cursor: pointer;
-  font-size: 0.929em;
-  font-weight: normal;
+  font-size: 10px;
   text-align: center;
   margin-bottom: 1em;
   margin-right: 0.6em;
   /* LTR */
   padding: 4px 17px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  -ms-border-radius: 15px;
-  -o-border-radius: 15px;
-  border-radius: 15px;
+  font-weight: bold;
+  border: 1px solid #cbcbcb;
 }
 
 a.button:link, a.button:visited, a.button:hover, a.button:focus, a.button:active {

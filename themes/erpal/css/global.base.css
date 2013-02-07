@@ -30,7 +30,8 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /* left sidebar link*/
 /*for border*/
 /*grey link color*/
-/*for label*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -653,13 +654,20 @@ header[role=banner],
 }
 
 a.button, input.form-submit {
-  background: white url(../images/buttons.png) 0 0 repeat-x;
-  border: 1px solid #eeeeee;
-  border-bottom: 1px solid #afafaf;
-  border-left-color: silver;
-  border-right-color: silver;
-  border-top-color: silver;
-  color: #3a3a3a;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  color: #393431;
 }
 
 input.form-submit:hover, input.form-submit:focus {
