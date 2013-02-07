@@ -188,7 +188,9 @@ function erpal_calendar_field_default_fields() {
       ),
       'locked' => '0',
       'module' => 'text',
-      'settings' => array(),
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
       'translatable' => '0',
       'type' => 'text_with_summary',
     ),
@@ -420,17 +422,24 @@ function erpal_calendar_field_default_fields() {
       'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
-        'handler' => 'base',
+        'handler' => 'views',
         'handler_settings' => array(
           'behaviors' => array(
+            'test_field_behavior' => array(
+              'status' => 0,
+            ),
+            'unique_field_behavior' => array(
+              'status' => 1,
+            ),
             'views-select-list' => array(
               'status' => 1,
             ),
           ),
-          'sort' => array(
-            'type' => 'none',
+          'view' => array(
+            'args' => array(),
+            'display_name' => 'entityreference_1',
+            'view_name' => 'user_entityreferences',
           ),
-          'target_bundles' => array(),
         ),
         'profile2_private' => FALSE,
         'target_type' => 'user',
@@ -469,6 +478,9 @@ function erpal_calendar_field_default_fields() {
       'settings' => array(
         'behaviors' => array(
           'prepopulate' => array(
+            'status' => 0,
+          ),
+          'test_instance_behavior' => array(
             'status' => 0,
           ),
         ),
