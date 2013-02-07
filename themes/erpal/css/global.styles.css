@@ -570,6 +570,8 @@ ul.action-links {
  */
 .comment-title {
   margin: 0;
+  font-weight: normal;
+  font-size: 14px;
 }
 
 /*
@@ -583,7 +585,7 @@ ul.action-links {
  * Nested comments are indented
  */
 .indented {
-  margin-left: 40px;
+  margin-left: 0px;
 }
 
 /* =============================================================================
@@ -688,7 +690,7 @@ tr.odd td.active {
 }
 tr.info, tr.even, tr:nth-child(2n+2) {
   border-bottom: 0;
-  background-color: #f5f5f5;
+  background-color: transparent;
 }
 tr.even td.active {
   background-color: #ebebeb;

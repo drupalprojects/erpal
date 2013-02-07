@@ -346,10 +346,10 @@ body #user-login input.form-text {
   border: none;
 }
 .pane-page-content h2.pane-title {
-  margin: 0px 0px 20px 0px;
+  margin: 0px 0px 15px 0px;
   font-weight: bold;
   font-size: 24px;
-  line-height: 24px;
+  line-height: 30px;
   color: black;
 }
 .pane-page-content .rel-register-build {
@@ -371,6 +371,7 @@ body #user-login input.form-text {
   -ms-border-radius: 5px 5px 0px 0px;
   -o-border-radius: 5px 5px 0px 0px;
   border-radius: 5px 5px 0px 0px;
+  border-collapse: separate;
 }
 .pane-page-content .views-table {
   margin-top: 0;
@@ -395,9 +396,6 @@ body #user-login input.form-text {
   -o-border-radius: 5px;
   border-radius: 5px;
   border: 1px solid #d9d5d2;
-}
-.comment ul.links li {
-  margin-right: 10px;
 }
 .comment .field-name-comment-body p {
   font-size: 16px;
@@ -432,23 +430,33 @@ body #user-login input.form-text {
 }
 .comment .comment-content {
   padding-top: 15px;
-  padding-right: 15px;
-  padding-left: 15px;
 }
-.comment .comment-content section {
-  width: 250px;
+.comment .comment-content .field-name-comment-body {
+  padding: 0 15px 15px 15px;
+  font-size: 16px;
+}
+.comment .comment-content .field-name-field-asset-files {
+  padding-left: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #d9d5d2;
+}
+.comment .comment-content .field-name-field-asset-files h2 {
+  padding-bottom: 10px;
+}
+.comment .comment-content .field-name-field-asset-files .field-item {
+  overflow: hidden;
   float: left;
 }
 .comment .comment-content section.field-name-field-asset-files .comment_erpal_file a {
   margin-right: 20px;
   float: left;
   padding: 3px 0 3px 24px;
-  background: url("../images/menu_icons/files.png") no-repeat 0 -8px;
+  background: url("../images/menu_icons/files_.png") no-repeat 0 -8px;
   line-height: 21px;
   font-size: 13px;
 }
 .comment .comment-content section.field-name-field-asset-files .comment_erpal_file a:hover {
-  background-position: 0px -44px;
+  background: url("../images/menu_icons/files_hover.png") no-repeat 0 -9px;
   color: #fc9822;
 }
 .comment .comment-form {
@@ -463,8 +471,44 @@ body #user-login input.form-text {
   border-radius: 5px;
 }
 .comment nav {
-  padding: 0 15px;
+  margin-top: 10px;
+  padding: 10px 15px 0 10px;
   clear: both;
+  border-top: 1px solid #d9d5d2;
+}
+.comment nav ul.links li {
+  margin-right: 10px;
+  float: left;
+}
+.comment nav ul.links li a {
+  padding: 6px 17px;
+  display: block;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  margin: 0px 0px 0 0px;
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 10px;
+  color: #393431;
+  border: 1px solid #d9d5d2;
+}
+.comment nav ul.links li a:hover {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
+  background-image: -webkit-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -moz-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -o-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
 }
 
 /*----------end comments------------------------*/
@@ -660,7 +704,7 @@ body #user-login input.form-text {
   list-style-type: none;
 }
 .erpal-content-right .local_tasks li {
-  margin: 0 2px 4px;
+  margin: 0 2px 4px 0;
   list-style-type: none;
 }
 .erpal-content-right .local_tasks li a {
@@ -707,6 +751,7 @@ body #user-login input.form-text {
   background: url("../images/menu_icons/notifiy.png") no-repeat 0 0;
 }
 .erpal-content-right .flag-wrapper.flag-bookmark-flag a {
+  padding-top: 6px;
   background: url("../images/menu_icons/bookmark.png") no-repeat 0 0;
 }
 .erpal-content-right .flag-wrapper a {
@@ -734,6 +779,23 @@ body #user-login input.form-text {
   padding-top: 5px;
   font-size: 11px;
   border-top: 1px solid #d9d5d2;
+}
+.erpal-content-right .ctools-collapsible-container .field-collection-view-final {
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+}
+.erpal-content-right .ctools-collapsible-container .field-collection-view-final th {
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .erpal-content-right .ctools-collapsible-container .field-name-field-buy-price .field-item,
 .erpal-content-right .ctools-collapsible-container .pane-node-created .block-content,
@@ -878,13 +940,12 @@ body #user-login input.form-text {
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a {
   margin-right: 20px;
   padding: 3px 0 3px 24px;
-  float: left;
-  background: url("../images/menu_icons/files.png") no-repeat 0 -8px;
+  background: url("../images/menu_icons/files_.png") no-repeat 0 -8px;
   line-height: 21px;
   font-size: 13px;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a:hover {
-  background-position: 0px -44px;
+  background: url("../images/menu_icons/files_hover.png") no-repeat 0 -9px;
 }
 .ctools-collapsible-processed .field-name-field-contacts-ref .field-item {
   padding-left: 10px;
@@ -932,12 +993,12 @@ body #user-login input.form-text {
 
 #mini-panel-activity_status_panel {
   padding: 10px 20px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  background-color: #eeeeee;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #d9d5d2;
 }
 #mini-panel-activity_status_panel .panel-separator {
   display: none;
@@ -962,6 +1023,7 @@ body #user-login input.form-text {
 }
 #mini-panel-activity_status_panel section .field-type-datetime {
   float: left;
+  margin-right: 5px;
 }
 #mini-panel-activity_status_panel section .field-type-datetime .date-no-float {
   width: auto;
@@ -1079,9 +1141,6 @@ body #user-login input.form-text {
 .page-projects-timetrackings #edit-field-date-time-value-wrapper {
   margin-left: 45px;
 }
-.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper {
-  margin-left: 440px;
-}
 .page-projects-timetrackings #edit-field-project-ref-target-id {
   width: 120px;
 }
@@ -1095,9 +1154,6 @@ body #user-login input.form-text {
 .page-projects-timetrackings #edit-uid {
   width: 90px;
 }
-.page-projects-timetrackings .views-submit-button {
-  clear: both;
-}
 .page-projects-timetrackings #edit-uid-wrapper {
   width: 140px;
 }
@@ -1107,6 +1163,16 @@ body #user-login input.form-text {
 
 /*-----------------------begin projects-timetrackings--------------------*/
 /*-------------begin comments------------------- */
+.node-type-erpal-crm-activity #comment-form {
+  margin-top: -1px;
+  -webkit-border-radius: 0px 5px 5px 5px;
+  -moz-border-radius: 0px 5px 5px 5px;
+  -ms-border-radius: 0px 5px 5px 5px;
+  -o-border-radius: 0px 5px 5px 5px;
+  border-radius: 0px 5px 5px 5px;
+  border: 1px solid #d9d5d2;
+}
+
 #comment-form {
   padding: 15px;
   margin-top: 20px;
@@ -1401,14 +1467,14 @@ body #user-login input.form-text {
   color: #fc9822;
 }
 .block-content .view-content th {
-  background-color: #d4d4d4;
+  background-color: #e9e5e2;
   *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFD4D4D4', endColorstr='#FFC5C1BF');
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d4d4d4), color-stop(100%, #c5c1bf));
-  background-image: -webkit-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
-  background-image: -moz-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
-  background-image: -o-linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
-  background-image: linear-gradient(top, #d4d4d4 0%, #c5c1bf 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .block-content .view-content th.views-field-views-bulk-operations {
   width: 50px;
@@ -1560,11 +1626,16 @@ li.jstree-open ul {
   height: 100%;
 }
 
-.page-invoice fieldset.collapsible {
+.node-type-erpal-invoice fieldset.collapsible {
   margin-bottom: 3px;
 }
-.page-invoice .views-table {
-  border-collapse: collapse;
+.node-type-erpal-invoice .views-table {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border-collapse: separate;
 }
 
 .group-form-left,
@@ -1580,4 +1651,85 @@ li.jstree-open ul {
 
 fieldset {
   margin: 0px;
+}
+
+.page-contact .form-textarea-wrapper {
+  width: 500px;
+}
+
+.page-projects td.views-field-title a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/projects_.png") no-repeat 0 0;
+  line-height: 18px;
+}
+.page-projects td.views-field-title a:hover {
+  background: url("../images/menu_icons/projects_hover.png") no-repeat 0 0;
+}
+.page-projects .node_erpal_contact a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/contact_.png") no-repeat 0 0;
+  line-height: 18px;
+}
+.page-projects .node_erpal_contact a:hover {
+  background: url("../images/menu_icons/contact_hover.png") no-repeat 0 0;
+}
+
+.node-type-erpal-task .pane-page-content .views-table {
+  -webkit-border-radius: 0px 5px 0px 0px;
+  -moz-border-radius: 0px 5px 0px 0px;
+  -ms-border-radius: 0px 5px 0px 0px;
+  -o-border-radius: 0px 5px 0px 0px;
+  border-radius: 0px 5px 0px 0px;
+  border-collapse: separate;
+}
+
+/*-------------------------begin Page titles--------------------------------*/
+.page-projects h2.pane-title,
+.page-contacts h2.pane-title,
+.page-activities h2.pane-title,
+.page-books h2.pane-title,
+.page-files h2.pane-title,
+.page-invoice h2.pane-title,
+.page-contracts h2.pane-title,
+.page-timekeeping h2.pane-title {
+  padding-left: 33px;
+}
+
+.page-projects h2.pane-title {
+  background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
+}
+
+.page-contacts h2.pane-title {
+  background: url("../images/menu_icons/contact_title.png") no-repeat 0 0;
+}
+
+.page-activities h2.pane-title {
+  background: url("../images/menu_icons/activity_title.png") no-repeat 0 0;
+}
+
+.page-books h2.pane-title {
+  background: url("../images/menu_icons/documents_title.png") no-repeat 0 0;
+}
+
+.page-files h2.pane-title {
+  background: url("../images/menu_icons/file_title.png") no-repeat 0 0;
+}
+
+.page-invoice h2.pane-title {
+  background: url("../images/menu_icons/invoice_title.png") no-repeat 0 0;
+}
+
+.page-contracts h2.pane-title {
+  background: url("../images/menu_icons/contracts_title.png") no-repeat 0 0;
+}
+
+.page-timekeeping h2.pane-title {
+  background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
+}
+
+/*-------------------------end Page titles--------------------------------*/
+.ui-dialog .ui-dialog-content body {
+  background: transparent;
 }

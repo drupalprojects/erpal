@@ -681,3 +681,7 @@ html.js input.form-autocomplete {
 html.js input.form-autocomplete.throbbing {
   background-position: 100% -15px;
 }
+
+.token-tree {
+  margin-left: 0px;
+}
