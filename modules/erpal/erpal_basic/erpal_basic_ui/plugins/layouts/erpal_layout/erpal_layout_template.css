@@ -1,0 +1,14 @@
+/* Admin display of the site template, we have to load the whole layout so it works in non-AT admin themes */
+#panels-dnd-main  .erpal-region-left{
+  width: 24.5%;
+  float: left;
+}
+#panels-dnd-main .erpal-container-item {
+  clear: both;
+  overflow: hidden;
+}
+#panels-dnd-main  .erpal-container-content{
+  float: right;
+  width: 75%;
+}
+

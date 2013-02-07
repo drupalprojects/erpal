@@ -475,20 +475,20 @@ function erpal_invoice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 5,
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 5,
         ),
         'in_pane' => array(
@@ -759,20 +759,20 @@ function erpal_invoice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 28,
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
       ),
@@ -921,11 +921,11 @@ function erpal_invoice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 26,
         ),
         'teaser' => array(
@@ -1012,20 +1012,20 @@ function erpal_invoice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 25,
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => TRUE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 0,
         ),
       ),
@@ -1253,11 +1253,11 @@ function erpal_invoice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
+          'module' => 'erpal_basic_helper',
           'settings' => array(
             'link' => FALSE,
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_typed_label',
           'weight' => 30,
         ),
         'teaser' => array(

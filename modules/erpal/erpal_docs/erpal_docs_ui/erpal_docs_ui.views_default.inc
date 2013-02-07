@@ -179,7 +179,7 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
   $handler->display->display_options['fields']['changed']['date_format'] = 'erpal_date_time';
-  /* Field: Broken/missing handler */
+  /* Field: Content: Tags */
   $handler->display->display_options['fields']['field_tags']['id'] = 'field_tags';
   $handler->display->display_options['fields']['field_tags']['table'] = 'field_data_field_tags';
   $handler->display->display_options['fields']['field_tags']['field'] = 'field_tags';
@@ -404,6 +404,42 @@ function erpal_docs_ui_views_default_views() {
     ),
   );
   $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['documents'] = array(
+    t('Master'),
+    t('Documents'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No files available'),
+    t('author'),
+    t('File tags'),
+    t('Updated date'),
+    t('Name'),
+    t('Title'),
+    t('Reference Dialog Search'),
+    t('Tags'),
+    t('File usage pane'),
+    t('This file is used at'),
+    t('Pane showing nodes referencing the file'),
+    t('Type'),
+    t('All'),
+    t('View panes'),
+    t('Files pane'),
+    t('Documents by project'),
+    t('Content referencing Content from field_asset_files'),
+    t('Attached at'),
+    t('Show sub-files'),
+  );
   $export['documents'] = $view;
 
   $view = new view();
@@ -499,6 +535,28 @@ function erpal_docs_ui_views_default_views() {
       'fixed' => '',
       'label' => 'Field: Files (field_asset_files)',
     ),
+  );
+  $translatables['documents_usage_comments'] = array(
+    t('Master'),
+    t('Used at comments'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Content'),
+    t('Comment'),
+    t('All'),
+    t('Comments by asset'),
+    t('View panes'),
   );
   $export['documents_usage_comments'] = $view;
 

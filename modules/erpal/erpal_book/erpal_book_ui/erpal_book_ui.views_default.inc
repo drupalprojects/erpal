@@ -65,6 +65,7 @@ function erpal_book_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -221,6 +222,7 @@ Edit IT|/node/[views_jstree_book_children_panel_pane_3:nid]/edit',
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );

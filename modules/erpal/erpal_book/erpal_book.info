@@ -6,6 +6,7 @@ php = 5.2.4
 version = 7.x-1.01-dev
 project = erpal_book
 dependencies[] = entityreference
+dependencies[] = erpal_basic_helper
 dependencies[] = erpal_book_helper
 dependencies[] = erpal_docs
 dependencies[] = erpal_print

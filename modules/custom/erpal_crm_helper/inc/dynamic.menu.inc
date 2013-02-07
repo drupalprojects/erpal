@@ -23,19 +23,17 @@ function erpal_crm_helper_erpal_contexts($router_item) {
   
   //do we have node add form
   if (drupal_match_path($path, 'node/add/erpal-contact*')) { 
-    $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
     $contexts[ERPAL_CONTEXT_CONTACT] = true;  
   } elseif (drupal_match_path($path, 'node/add/erpal-crm-activity*')) {  
-    $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
     $contexts[ERPAL_CONTEXT_ACTIVITY] = true; 
   }
   
   //do we have an edit form?
   if ($path == 'node/%/edit') {
     if ($node->type == 'erpal_contact') {
-      $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
+      $contexts[ERPAL_CONTEXT_CONTACT] = true;
     } elseif ($node->type == 'erpal_crm_activity') { 
-      $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
+      $contexts[ERPAL_CONTEXT_ACTIVITY] = true;
     }
   }
      
@@ -48,32 +46,21 @@ function erpal_crm_helper_erpal_contexts($router_item) {
    
     switch ($node->type) {
       case 'erpal_contact':  
-        $is_crm_context_node = true;
         $contexts[ERPAL_CONTEXT_CONTACT] = true;  
         break;
       case 'erpal_crm_activity':
-        $is_crm_context_node = true;
         $contexts[ERPAL_CONTEXT_ACTIVITY] = true;          
         break;        
     }
-    
-    if ($is_crm_context_node) {
-      $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;
-    }
-  }
-
-  //CHECK CRM Global CONTEXT
-  if (drupal_match_path($path, 'crm/*')) {        
-    $contexts[ERPAL_CONTEXT_CRM_GLOBAL] = true;      
   }
   
   //CHECK ACTIVITIES list CONTEXT
-  if ($path == 'crm/activities' || $path == 'node/%/activities') { 
+  if ($path == 'activities' || $path == 'node/%/activities') { 
     $contexts[ERPAL_CONTEXT_ACTIVITIES] = true;       
   }
   
   //CHECK Contacts list CONTEXT
-  if ($path == 'crm/contacts') {        
+  if ($path == 'contacts') {        
     $contexts[ERPAL_CONTEXT_CONTACTS] = true;          
   }
   
@@ -132,10 +119,15 @@ function erpal_crm_helper_erpal_menu_parents($router_item) {
 * returns the menu parents for a given router item, according to its context
 */
 function _erpal_crm_helper_get_menu_parents($router_item) {
-  $crm_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_CRM_GLOBAL, $router_item);
+  $activity = _erpal_basic_helper_has_context(ERPAL_CONTEXT_ACTIVITY, $router_item);
+  $contact = _erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTACT, $router_item);
   
-  if ($crm_global) {
-    return 'crm/activities';
+  if ($activity) {
+    return 'activities';
+  }
+  
+  if ($contact) {
+    return 'contacts';
   }
 }
 
@@ -210,6 +202,6 @@ function _erpal_crm_helper_crm_global_menu_tabs(&$data, $current_nid=false, $act
 
   $processed = true;
 
-  erpal_make_local_tab($data, t('Activities'), 'crm/activities', array(), in_array('activities', $active_tabs)); 
-  erpal_make_local_tab($data, t('Contacts'), 'crm/contacts', array(), in_array('contacts', $active_tabs)); 
+  //erpal_make_local_tab($data, t('Activities'), 'activities', array(), in_array('activities', $active_tabs)); 
+  //erpal_make_local_tab($data, t('Contacts'), 'contacts', array(), in_array('contacts', $active_tabs)); 
 } 

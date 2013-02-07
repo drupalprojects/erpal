@@ -12,6 +12,7 @@ module_load_include('inc', 'erpal_basic_helper', 'inc/token');
 module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
 module_load_include('inc', 'erpal_basic_helper', 'inc/dynamic.menu');
 module_load_include('inc', 'erpal_basic_helper', 'inc/notifications'); 
+module_load_include('inc', 'erpal_basic_helper', 'inc/formatter'); 
  
 /**
 * Implements hok_init
@@ -19,6 +20,7 @@ module_load_include('inc', 'erpal_basic_helper', 'inc/notifications');
 function erpal_basic_helper_init() {
   _erpal_basic_helper_warnings();
 }
+
 
 /**
  * Implements hook_ctools_plugin_directory().

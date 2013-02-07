@@ -133,18 +133,18 @@ function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
   //Book context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOK, $router_item)) {    
     _erpal_book_helper_node_book_links($data, $node, $is_node_view); 
-    $active_tab = isset($node->field_is_template[LANGUAGE_NONE][0]) && $node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'books';
+    $active_tab = isset($node->field_is_template[LANGUAGE_NONE][0]) && $node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'documents';
   }
   
   //Book Page Context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOK_PAGE, $router_item)) {  
     _erpal_book_helper_node_book_page_links($data, $node, $is_node_view); 
-    $active_tab = isset($node->field_is_template[LANGUAGE_NONE][0]) && $node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'books';
+    $active_tab = isset($node->field_is_template[LANGUAGE_NONE][0]) && $node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'documents';
   }
  
   //now on global context ensure that all links are shown
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_BOOK_GLOBAL, $router_item)) {   
-    _erpal_book_helper_book_global_menu_tabs($data, $nid, array('books'));
+    _erpal_book_helper_book_global_menu_tabs($data, $nid, array('documents'));
     /*
     if (!$node) {
       $nid = isset($router_item['original_map'][2]) ? $router_item['original_map'][2] : false;
@@ -153,11 +153,11 @@ function erpal_book_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
         if ($templates) 
           $active_tab = 'templates';
         else
-          $active_tab = 'books';
+          $active_tab = 'documents';
         
       } else {
         $a_node = node_load($nid);
-        $active_tab = isset($a_node->field_is_template[LANGUAGE_NONE][0]) && $a_node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'books';
+        $active_tab = isset($a_node->field_is_template[LANGUAGE_NONE][0]) && $a_node->field_is_template[LANGUAGE_NONE][0]['value'] ? 'templates' : 'documents';
       }
     }
     _erpal_book_helper_book_global_menu_tabs($data, $nid, array($active_tab));
@@ -193,8 +193,8 @@ function _erpal_book_helper_get_menu_parents($router_item) {
 function _erpal_book_helper_books_links(&$data) {
   //book list context
   $query = array('destination' => $_GET['q']);
-  erpal_make_action($data, t('Create a new book'), 'node/add/erpal-book', $query);
-  _erpal_book_helper_book_global_menu_tabs($data, false, array('books'));  
+  erpal_make_action($data, t('Create a new document'), 'node/add/erpal-book', $query);
+  _erpal_book_helper_book_global_menu_tabs($data, false, array('documents'));  
 }
 
 
@@ -215,7 +215,7 @@ function _erpal_book_helper_node_book_links(&$data, $node, $is_node_view=false) 
   //single book context
   if ($is_node_view) {
     $query = array();
-    erpal_make_action($data, t('Edit this book'), 'node/'.$node->nid.'/edit', $query);
+    erpal_make_action($data, t('Edit this document'), 'node/'.$node->nid.'/edit', $query);
 
     _erpal_book_helper_book_and_page_actions($data, $node, $is_node_view);
   }
@@ -227,7 +227,7 @@ function _erpal_book_helper_node_book_links(&$data, $node, $is_node_view=false) 
 */
 function _erpal_book_helper_book_and_page_actions(&$data, $node, $is_node_view=false) {
   $query = array('field_parent' => $node->nid);
-  erpal_make_action($data, t('Add a book page'), 'node/add/erpal-book-page', $query);
+  erpal_make_action($data, t('Add a page'), 'node/add/erpal-book-page', $query);
   
   $query = array();
   erpal_make_action($data, t('Create PDF'), 'books/'.$node->nid.'/pdf', $query);
@@ -245,7 +245,7 @@ function _erpal_book_helper_node_book_page_links(&$data, $node, $is_node_view=fa
   //single book page context
   if ($is_node_view) {
     $query = array();
-    erpal_make_action($data, t('Edit this book page'), 'node/'.$node->nid.'/edit', $query);
+    erpal_make_action($data, t('Edit this page'), 'node/'.$node->nid.'/edit', $query);
     
     _erpal_book_helper_book_and_page_actions($data, $node, $is_node_view);
     
@@ -266,6 +266,6 @@ function _erpal_book_helper_book_global_menu_tabs(&$data, $current_nid=false, $a
 
   $processed = true;
 
-  erpal_make_local_tab($data, t('Books'), 'books/books', array(), in_array('books', $active_tabs)); 
+  erpal_make_local_tab($data, t('Documents'), 'books/books', array(), in_array('documents', $active_tabs)); 
   erpal_make_local_tab($data, t('Templates'), 'books/templates', array(), in_array('templates', $active_tabs)); 
 } 
