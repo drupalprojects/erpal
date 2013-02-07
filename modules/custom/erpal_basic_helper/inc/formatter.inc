@@ -126,8 +126,9 @@ function erpal_basic_helper_field_formatter_view($entity_type, $entity, $field, 
         $label = $handler->getLabel($item['entity']);
         // If the link is to be displayed and the entity has a uri, display a link.
         // Note the assignment ($url = ) here is intended to be an assignment.
+ 
         if ($display['settings']['link'] && ($uri = entity_uri($field['settings']['target_type'], $item['entity']))) {
-          $bundle = _erpal_basic_helper_entity_bundle($entity, $entity_type);
+          $bundle = _erpal_basic_helper_entity_bundle($item['entity'], $field['settings']['target_type']);
           $reference_class = $entity_type."_".$bundle;
           $result[$delta] = array('#markup' => '<span class="entityreference '.$reference_class.'">'.l($label, $uri['path'], $uri['options']).'</span>');
         }
