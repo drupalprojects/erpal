@@ -589,7 +589,7 @@ function _erpal_project_helper_project_global_menu_tabs(&$data, $project_nid, $c
   erpal_make_local_tab($data, t('Files'), 'node/'.$current_nid.'/files', array(), in_array('pricing', $active_tabs));
   erpal_make_local_tab($data, t('Calendar'), 'node/'.$current_nid.'/calendar', array(), in_array('calendar', $active_tabs));
   erpal_make_local_tab($data, t('Timetrackings'), 'node/'.$current_nid.'/timetracking', array(), in_array('timetrackings', $active_tabs));
-  erpal_make_local_tab($data, t('Pricing'), 'node/'.$current_nid.'/pricing', array(), in_array('pricing', $active_tabs));
+  //erpal_make_local_tab($data, t('Pricing'), 'node/'.$current_nid.'/pricing', array(), in_array('pricing', $active_tabs));
 }
 
 /**
