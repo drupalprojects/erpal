@@ -40,9 +40,12 @@ body {
   min-width: 960px;
   max-width: 1200px;
   min-height: 100%;
-  position: relative;
-  color: $grey;
-  background: $dark_brown;
+  color: $black;
+  background-color: $grey;
+  @include filter-gradient(#a69a91, $grey, horizontal); 
+  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 10%, $grey 60%));
+  background-position: center top;
+  background-repeat: no-repeat;
   &.admin-menu { /*if the admin menu is used change margin-top to padding-top */
 	margin-top: 0 !important;
 	padding-top: 20px !important;
@@ -668,6 +671,7 @@ table,
 td,
 th {
   vertical-align: middle;
+  color: $dark_black;
 }
 
 caption,
