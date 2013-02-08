@@ -9,6 +9,7 @@ dependencies[] = comment
 dependencies[] = ctools
 dependencies[] = date
 dependencies[] = entityreference
+dependencies[] = erpal_basic_helper
 dependencies[] = erpal_crm_helper
 dependencies[] = erpal_docs
 dependencies[] = features

@@ -6,7 +6,7 @@
   core        = 7.x
   base theme  = adaptivetheme
   release     = 7.x-3.x
-  engine      = phptemplate
+  engine      = phptemplate 
   screenshot  = screenshot.png
 
 

@@ -9,6 +9,7 @@ dependencies[] = billable
 dependencies[] = budget
 dependencies[] = conditional_fields
 dependencies[] = entityreference
+dependencies[] = erpal_basic_helper
 dependencies[] = features
 dependencies[] = field_collection
 dependencies[] = list

@@ -28,6 +28,7 @@ features[ds_view_modes][] = view_row_details
 features[features_api][] = api:1
 features[menu_custom][] = menu-erpal-menu
 features[menu_custom][] = user-menu
+features[menu_links][] = menu-erpal-menu:contacts
 features[menu_links][] = user-menu:user
 features[menu_links][] = user-menu:user/logout
 features[page_manager_pages][] = crm_contacts

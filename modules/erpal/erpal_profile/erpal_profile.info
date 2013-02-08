@@ -10,6 +10,7 @@ dependencies[] = date
 dependencies[] = date_popup
 dependencies[] = entity
 dependencies[] = entityreference
+dependencies[] = erpal_basic_helper
 dependencies[] = erpal_profile_helper
 dependencies[] = erpal_project
 dependencies[] = features

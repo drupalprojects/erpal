@@ -12,6 +12,7 @@ dependencies[] = date
 dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = erpal_basic
+dependencies[] = erpal_basic_helper
 dependencies[] = erpal_contract_helper
 dependencies[] = erpal_docs
 dependencies[] = erpal_field_pricing

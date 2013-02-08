@@ -38,6 +38,13 @@ function erpal_docs_helper_menu(){
   require_once 'inc/config.inc';
   $config_items = _erpal_docs_helper_config_menu();
   
+  $items['erpal/file/%file/%'] = array(
+    'page callback' => '_erpal_docs_helper_stream_file',  
+    'page arguments' => array(2), //must be the file
+    'access callback' => '_erpal_docs_helper_stream_file_access',
+    'access arguments' => array(2, 3), //this is the access token, the drupal secret key
+  );
+  
   $items = array_merge($items, $config_items);
   return $items;
 } 
@@ -382,4 +389,29 @@ function _erpal_docs_helper_collect_files($entity){
     }
   }
   return $node_files;
+}
+
+/**
+* Cause all files are private in ERPAL, we need to provide this callback to make files accessible with the drupal private key token. This is needed for PDF export e.g
+*/
+function _erpal_docs_helper_stream_file($file) {
+
+  $uri = $file->uri;
+  $abs_filename = drupal_realpath($uri);
+  $mime = $file->filemime;
+
+  header("Content-Type: ".$mime);
+  header('Content-Length: ' . filesize($abs_filename));
+
+  readfile($abs_filename);
+  exit(0);
+}
+
+/**
+* Validates access to stream a private file, only, if the drupal secret key is given
+*/
+function _erpal_docs_helper_stream_file_access($file, $token) {
+  $private_key = drupal_get_private_key();
+
+  return $token == $private_key && isset($file->fid) && $file->fid;
 }
