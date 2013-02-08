@@ -95,8 +95,8 @@ function _erpal_asterisk_config_form() {
   $form['asterisk']['lifetime'] = array(
     '#type' => 'textfield', 
     '#title' => t('Lifetime'),
-    '#default_value'     => variable_get('asterisk_nodejs_lifetime'),
-    '#description' => t('Lifetime of call'),
+    '#default_value'     => variable_get('erpal_asterisk_call_lifetime'),
+    '#description' => t('Time in seconds the notification should be active if noone is available to recieve'),
   );
   
   $form['libphonenumber'] = array(
@@ -158,10 +158,10 @@ function _erpal_asterisk_config_form_validate(&$form, &$form_state){
  */
 function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
 
-  variable_set('asterisk_nodejs_host'    , $form_state['values']['host']);
-  variable_set('asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
+  variable_set('erpal_asterisk_nodejs_host'    , $form_state['values']['host']);
+  variable_set('erpal_asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
   variable_set('erpal_asterisk_secret'    , $form_state['values']['secret']);
-  variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
+  variable_set('erpal_asterisk_call_lifetime', $form_state['values']['lifetime']);
   
    // Save default country number in 'libphonenumber_default_country'  
   $country = $form_state['values']['country'];

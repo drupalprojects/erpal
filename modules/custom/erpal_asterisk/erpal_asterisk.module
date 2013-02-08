@@ -32,22 +32,33 @@ function erpal_asterisk_permission(){
 
 
 function _erpal_asterisk_create_key(){
+  
   $secret = variable_get('erpal_asterisk_secret', 'erpal');
   // if(isset($_POST['secret']) && $_POST['secret'] == $secret){
   if(isset($_POST['secret']) && $_POST['secret'] == $secret){
     $key = drupal_hmac_base64(drupal_random_bytes(512), drupal_get_private_key() . drupal_get_hash_salt());
-    //@TODO: hardcoded url ersetzen
-    $response = drupal_http_request('http://localhost:8080/asterisk/authenticate',
+    $lifetime = variable_get('erpal_asterisk_call_lifetime', '60');
+
+    $url = 'http://' . variable_get('erpal_asterisk_nodejs_host', '127.0.0.1') 
+    . ':' . variable_get('erpal_asterisk_nodejs_port', '8080');
+
+    $response = drupal_http_request($url . '/asterisk/authenticate',
       array(
         'method' => 'POST',
-        'data' => json_encode(array('secret' => $secret, 'key' => $key)),
-        'headers' => array('Content-Type' => 'application/json', 'Accept' => 'application/json'),
+        'data' => json_encode(array(
+          'secret' => $secret, 
+          'key' => $key, 
+          'call_lifetime' => $lifetime,
+        )),
+        'headers' => array(
+          'Content-Type' => 'application/json', 
+          'Accept' => 'application/json'
+        ),
       )
     );
-    dpm($response);
     if(isset($response) && $response->data == 'ok'){
-      variable_set('erpal_asterisk_authentification', $key);    
-      print_r('Key created and sent to the nodejs-server');
+      variable_set('erpal_asterisk_authentication', $key);    
+      print_r('ok');
       die();
     }
   }
@@ -60,7 +71,7 @@ function _erpal_asterisk_create_key(){
  * Returns the html code of the asterisk_notification to the html request 
  */
 function _erpal_asterisk_call(){
-  if(true){
+  if(isset($_POST['authentication']) && $_POST['authentication'] == variable_get('erpal_asterisk_authentication')){
     $source = isset($_POST['source']) ? $_POST['source'] : NULL;
      // // Implements hook_ingoing_call to inform other modules about a call
      // // module_invoke_all('ingoing_call', $destination, $source);
@@ -76,14 +87,18 @@ function _erpal_asterisk_call(){
  * Takes a phonenumber given in $_POST['number'] and returns the normalized number via html
  */
 function _erpal_asterisk_normalize(){
-  $destination = (isset($_POST['destination'])) 
-    ? $destination = libphonenumber_normalize($_POST['destination'])
-    : 'unknown';
-  $source = (isset($_POST['source'])) 
-    ? $source = libphonenumber_normalize($_POST['source'])
-    : 'unknown';
-  $out = json_encode(array('destination' => $destination, 'source' => $source)); 
-  print_r($out);
+  if(isset($_POST['authentication']) && $_POST['authentication'] == variable_get('erpal_asterisk_authentication')){
+    $destination = (isset($_POST['destination'])) 
+      ? $destination = libphonenumber_normalize($_POST['destination'])
+      : 'unknown';
+    $source = (isset($_POST['source'])) 
+      ? $source = libphonenumber_normalize($_POST['source'])
+      : 'unknown';
+    $out = json_encode(array('destination' => $destination, 'source' => $source)); 
+    print_r($out);
+    die();
+  }
+  print_r('');
   die();
 }
 
