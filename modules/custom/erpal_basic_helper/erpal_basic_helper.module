@@ -204,6 +204,10 @@ function erpal_basic_helper_block_view($delta) {
 */
 function _erpal_invoice_helper_welcome_user_block_content() {
   global $user;
+  
+  if (!$user->uid)
+    return false;
+  
   $picture_fid = $user->picture;
   $picture = file_load($picture_fid);
   $image_url = file_create_url($picture->uri);
