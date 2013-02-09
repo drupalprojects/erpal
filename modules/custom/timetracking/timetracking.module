@@ -90,7 +90,7 @@ function _timetracking_last_timetracking_block_render($uid) {
     $total_duration = $lt->duration;
   
   $duration = round($total_duration, 2);
-  //@TODO make this work not only form entity type of node. Therefor we have to save the entity type in the database, @see _timetracking_calculate_current_timetrackings#
+  //@TODO make this work not only for entity type of node. Therefor we have to save the entity type in the database, @see _timetracking_calculate_current_timetrackings#
   $node_titles = erpal_lib_helper_node_titles(array($lt->subject_id));
   $subject_title = $lt->subject_id ? $node_titles[$lt->subject_id] : $lt->description;
   $timetracking_button = "<div class='last_timetracking'><span class='timetracking_subject'>".$subject_title."</span>".theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => $subject_id, 'state' => $state, 'duration' => $duration))."</div>";
