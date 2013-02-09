@@ -28,11 +28,7 @@ function _libphonenumber_include_library(){
         array('!link' => $libphonenumber_link)), 'warning');    
     return false;
   }
-  
-  
   require_once $libphonenumber_path . '/PhoneNumberUtil.php';
-  
-  
   return true;
 
 }
@@ -49,11 +45,12 @@ function libphonenumber_permission(){
 
 function libphonenumber_menu(){
   
-  $items['admin/libphonenumber'] = array(
-    'title' => t('Libphonenumber config'),
+  $items['admin/config/regional/libphonenumber'] = array(
+    'title' => 'Libphonenumber',
+    'description' => t('Basic settings for phonenumber normalisation'),
     'page callback' => '_libphonenumber_config',    
     'access arguments' => array('config libphonenumber'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_NORMAL_ITEM,
   );
   return $items;
   

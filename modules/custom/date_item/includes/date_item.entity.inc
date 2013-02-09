@@ -236,10 +236,6 @@ class DateItem extends Entity {
     return parent::save();
   }
   
-  public function delete() {      
-    parent::delete();    
-  }
-
   /**
    * Specify URI
    */

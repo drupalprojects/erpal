@@ -27,6 +27,10 @@ function erpal_basic_helper_update_7002() {
   cache_clear_all(); //clear cache so the system will forgett the rel module
 }
 
+function erpal_basic_helper_update_7003(){
+  
+}
+
 /**
 * Insert neccessary date formats if they don't exist
 */

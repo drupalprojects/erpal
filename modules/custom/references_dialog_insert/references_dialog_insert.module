@@ -133,6 +133,7 @@ function references_dialog_insert_process_widget(&$element) {
     }
   }
   drupal_add_js(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.js');
+  drupal_add_css(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.css');
 
   return $wrapper;
 }
@@ -156,8 +157,50 @@ function references_dialog_insert_entityreference_send_link($element, $widget_se
 }
 
 function _references_dialog_insert_genedate_link($entity_id, $entity_type) {
+  // check the entity
   $entity = current(entity_load($entity_type, array($entity_id)));
   if (entity_access('create', $entity_type, $entity)) {
+    $file = $file_fields = $file_is_image = $alt = $title = FALSE;
+    list(, , $bundle) = entity_extract_ids($entity_type, $entity);
+    
+    // let's find all file fields in needle entity
+    $fields_info = field_info_instances($entity_type, $bundle);
+
+    // get first file field
+    $allowed_fields = array('file', 'image');
+    foreach ($fields_info as $field_name => $field_info) {
+      $field = field_info_field($field_name);
+      if (in_array($field['type'], $allowed_fields)) {
+        $file_field = $field_name;
+        break;
+      }
+    }
+    // get file from a referenced entity
+    if (empty($file_field))
+      return FASLE;
+
+    // get file
+    $fid = $entity->{$file_field}[$entity->language][0]['fid'];
+    if (!$file = file_load($fid))
+      return FALSE;
+
+    $errors = file_validate_is_image($file);
+    if (empty($errors)) {
+      $file_is_image = TRUE;
+
+      // image alt
+      if (!empty($entity->{$file_field}[$entity->language][0]['alt']))
+        $alt = $entity->{$file_field}[$entity->language][0]['alt'];
+      else
+        $alt = $entity->title;
+
+      // image title
+      if (!empty($entity->{$file_field}[$entity->language][0]['title']))
+        $title = $entity->{$file_field}[$entity->language][0]['title'];
+      else
+        $title = $entity->title;
+    }
+
     $send_link = array(
       '#type' => 'container',
       '#attributes' => array(
@@ -166,28 +209,125 @@ function _references_dialog_insert_genedate_link($entity_id, $entity_type) {
         ),
       ),
     );
+
+    // "Send to textarea" link button
     $send_link['button'] = array(
-      /*'#type' => 'button',
-      '#value' => 'Send to textarea',
-      '#attributes' => array(
-        'class' => array(
-          'references-dialog-insert-send',
-        ),
-      ),*/
       '#type' => 'markup',
       '#markup' => '<a class="button references-dialog-insert-send" href="#">' . t('Send to textarea') . '</a>',
     );
 
-    $send_link['entity_id'] = array(
-      '#type' => 'hidden',
-      '#value' => l($entity->title, url('node/' . $entity_id, array('absolute' => TRUE))),
-      '#attributes' => array(
-        'class' => array(
-          'references-dialog-insert-link',
-        ),
-      ),
-    );
+    // Insert embedded image
+    if ($file_is_image) {
 
+      // image styles select
+      $image_styles = _references_dialog_insert_image_styles();
+      $send_link['styles'] = array(
+        '#type' => 'select',
+        '#title' => t('Image style') . ':',
+        '#options' => $image_styles,
+      );
+
+      // generate image links
+      foreach ($image_styles as $image_style_key => $image_style) {
+        $send_link[] = _references_dialog_insert_image($entity_id, $entity, $file, $image_style_key, $alt, $title);
+      }
+    }
+
+    // Insert link if file is not image
+    else {
+      // Simple link to entity page
+      $send_link[] = _references_dialog_insert_file_link($entity_id, $entity, $file);
+    }
     return $send_link;
   }
+}
+
+/**
+ * Get all image styles in array
+ * @return array image styles
+ */
+function _references_dialog_insert_image_styles() {
+  $image_styles = image_styles();
+  $insert_styles = array('original' => t('original image'));
+  foreach ($image_styles as $style_key => $style) {
+    $insert_styles[$style_key] = $style['name'];
+  }
+  return $insert_styles;
+}
+
+/**
+ * Generates image links
+ * @return array image link hidden input
+ */
+function _references_dialog_insert_image($entity_id, $entity, $file, $image_style, $alt, $title) {
+  if ($image_style == 'original') {
+    $variables = array(
+      'attributes' => array(
+        'alt' => ''
+      ),
+      'path' => file_create_url($file->uri),
+    );
+    $image = theme_image($variables);
+  } else {
+    // image render array
+    $image_render = array(
+      '#theme' => 'image_formatter',
+      '#image_style' => $image_style,
+      '#item' => array(
+        'uri' => $file->uri,
+        'alt' => $alt,
+        'title' => $title,
+      ),
+    );
+    $image = render($image_render);
+  }
+
+  // $image_link = l(render($image), url('node/' . $entity_id, array('absolute' => TRUE)), array('html' => TRUE));
+  // image link hidden input
+  $send_link['image'] = array(
+    '#type' => 'hidden',
+    '#value' => $image,
+    '#attributes' => array(
+      'class' => array(
+        'references-dialog-insert-image',
+      ),
+      'name' => 'references-dialog-insert-image-' . $image_style,
+    ),
+  );
+
+  return $send_link;
+}
+
+/**
+ * Generates file link
+ * @return array filke link hidden input
+ */
+function _references_dialog_insert_file_link($entity_id, $entity, $file) {
+
+  // create file icon
+  $image = '';
+  if ($icon_path = file_icon_url($file)) {
+    $variables = array(
+      'attributes' => array(
+        'alt' => ''
+      ),
+      'path' => $icon_path,
+    );
+    $image = theme_image($variables);
+  }
+
+  // file link
+  $url = file_create_url($file->uri);
+
+  $send_link = array(
+    '#type' => 'hidden',
+    '#value' => $image . l($entity->title, $url),
+    '#attributes' => array(
+      'class' => array(
+        'references-dialog-insert-link',
+      ),
+    ),
+  );
+
+  return $send_link;
 }

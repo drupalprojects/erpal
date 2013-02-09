@@ -203,7 +203,7 @@ function _erpal_calendar_helper_set_tag($date_item) {
 function erpal_calendar_get_holidays($year, $month, $holiday_tid) {
   
   if(!$holiday_tid)
-    return $days;  //return because the term for holidays set on a date node is unknown!
+    return false;  //return because the term for holidays set on a date node is unknown!
     
   //get all erpal_date nodes that have field_date_type set to "holiday" in the given range above
   //we get all date items that have starting date in our date range. After that we call a function to get all the single dates from these ranges, so if a date_item goes over the given month (see function argument), only the days in the given month count.
@@ -337,6 +337,7 @@ function _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, $
           $till_value = drupal_array_get_nested_value($till_value, $value_key_till);  
           
         $date_item_from_start = strtotime(date('Y-m-d 00:00:00', $from_value)); //get the start of the day, ignore the time
+
         $date_item_till_start = strtotime(date('Y-m-d 00:00:00', $till_value)); //get the start of the day, ignore the time
         if ($date_item_from_start <= $date_current && $date_current <= $date_item_till_start) {
           //add this day!

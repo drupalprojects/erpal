@@ -21,6 +21,23 @@ function erpal_basic_helper_init() {
   _erpal_basic_helper_warnings();
 }
 
+/**
+ * Theme registry overrides for various theme functions 
+ */
+function erpal_basic_helper_theme_registry_alter(&$theme_registry) {
+  if (!empty($theme_registry['menu_link'])) {
+    $theme_registry['menu_link']['function'] = 'erpal_menu_link';
+  }
+  
+  if (!empty($theme_registry['links'])) {
+    $theme_registry['links']['function'] = 'erpal_links';
+  }
+  
+  if (!empty($theme_registry['menu_local_task'])) {
+    $theme_registry['menu_local_task']['function'] = 'erpal_menu_local_task';
+  }
+  
+}
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -161,6 +178,45 @@ function erpal_basic_helper_node_relation_add_form($form, $form_state, $node) {
 }
 
 /**
+* Implements hook_block_info
+*/
+function erpal_basic_helper_block_info() {
+  return array(
+    'logged_in_user_block' => array(
+      'info' => t('Logged in user welcome'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function erpal_basic_helper_block_view($delta) {
+  if ($delta == 'logged_in_user_block') {
+    $block['subject'] = '';
+    $block['content'] = _erpal_invoice_helper_welcome_user_block_content();
+    return $block;
+  }  
+}
+
+/**
+* Renders the content for the user welcome message block
+*/
+function _erpal_invoice_helper_welcome_user_block_content() {
+  global $user;
+  
+  if (!$user->uid)
+    return false;
+  
+  $picture_fid = $user->picture;
+  $picture = file_load($picture_fid);
+  $image_url = file_create_url($picture->uri);
+  $thumbnail_url = image_style_url('thumbnail', $picture->uri);
+  
+  return '<div class="welcome_user"><img class="user_image_tiny" src="'.$thumbnail_url.'">Hello '.$user->name.'</div>';
+}
+
+/**
 * Implements hook_form_alter
 */
 function erpal_basic_helper_form_alter(&$form, $form_state, $form_id) {
@@ -288,7 +344,7 @@ function _erpal_basic_helper_create_contact_link($q_arg = false, $query_arr = ar
 function erpal_basic_helper_preprocess_menu_link(&$variables) {
   
   if (isset($variables['element'])) {
-    erpal_set_menu_item_active($variables);
+    erpal_set_menu_item_active($variables['element']);
   }
 }
 

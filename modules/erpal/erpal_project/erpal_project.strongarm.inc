@@ -540,7 +540,6 @@ function erpal_project_strongarm() {
   $strongarm->name = 'node_options_erpal_project';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
   );
   $export['node_options_erpal_project'] = $strongarm;
 
@@ -550,7 +549,6 @@ function erpal_project_strongarm() {
   $strongarm->name = 'node_options_erpal_task';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
     2 => 'revision',
   );
   $export['node_options_erpal_task'] = $strongarm;
@@ -561,7 +559,6 @@ function erpal_project_strongarm() {
   $strongarm->name = 'node_options_erpal_timetracking';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
   );
   $export['node_options_erpal_timetracking'] = $strongarm;
 

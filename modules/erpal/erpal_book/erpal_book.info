@@ -14,6 +14,7 @@ dependencies[] = features
 dependencies[] = list
 dependencies[] = number
 dependencies[] = options
+dependencies[] = references_dialog_insert
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text
