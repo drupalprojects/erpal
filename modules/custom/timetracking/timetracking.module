@@ -44,19 +44,74 @@ function timetracking_block_info() {
     'block' => array(
       'info' => t('Timetracking'),
     ),
+    'last_timetracking_block' => array(
+      'info' => t('Last timetracking'),
+    ),
   );
 }
 
 /**
  * Implements hook_block_view().
  */
-function timetracking_block_view() {
+function timetracking_block_view($delta) {
+  global $user;
   if (!(user_access('use quick timetracking') || user_access('create timetracking'))) {
     return NULL;
   };
-  $block['subject'] = t('Quick timetracking');
-  $block['content'] = drupal_get_form('timetracking_quick_form');
+
+  if ($delta == 'last_timetracking_block' ) {
+    $block['subject'] = '';
+    $block['content'] = _timetracking_last_timetracking_block_render($user->uid);
+  } else {
+    $block['subject'] = t('Quick timetracking');
+    $block['content'] = drupal_get_form('timetracking_quick_form');
+  }
   return $block;
+}
+
+/**
+* renders a block html for the last timetracking of a user, if one is available
+*/
+function _timetracking_last_timetracking_block_render($uid) {
+  
+  if (!$uid)
+    return false;
+  
+  $last_timetracking = _timetrackings_by_user_latest($uid);
+  $lt = $last_timetracking;
+  
+  $subject_id = $lt->subject_id ? $lt->subject_id : md5($lt->description);
+  $state = $lt->time_end ? 'off' : 'on';
+  
+  //get total duration of all timetrackings to the given subject
+  if (is_numeric($subject_id))
+    $total_duration = _timetracking_get_total_duration_by_subject_by_user($uid, $subject_id);
+  else
+    $total_duration = $lt->duration;
+  
+  $duration = round($total_duration, 2);
+  //@TODO make this work not only form entity type of node. Therefor we have to save the entity type in the database, @see _timetracking_calculate_current_timetrackings#
+  $node_titles = erpal_lib_helper_node_titles(array($lt->subject_id));
+  $subject_title = $lt->subject_id ? $node_titles[$lt->subject_id] : $lt->description;
+  $timetracking_button = "<div class='last_timetracking'><span class='timetracking_subject'>".$subject_title."</span>".theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => $subject_id, 'state' => $state, 'duration' => $duration))."</div>";
+
+  return $timetracking_button;
+}
+
+/**
+* Returns the total sum of all timetrackings of a given subject by a given user.
+* subject could be an MD5 has or a numeric id, which depends on the fact if the timetracking has a subject-ID assigned or not.
+*/
+function _timetracking_get_total_duration_by_subject_by_user($uid, $subject_id) {
+  $timetracking_nids = _timetrackings_by_user($uid, $subject_id);
+  $timetrackings = timetracking_load_multiple($timetracking_nids);
+  
+  $duration = 0;
+  foreach ($timetrackings as $timetracking) {
+    $duration += $timetracking->duration;
+  }
+  
+  return round($duration, 2);
 }
 
 /**
@@ -242,7 +297,8 @@ function _timetracking_calculate_current_timetrackings() {
     $init_data = array('total_duration'=>0, 'state'=>'off', 'subject'=>false); //initialise data array
     $duration = $timetracking->time_end ? $timetracking->duration : (time() - $timetracking->time_start) / (60*60);
     if ($subject_id) {
-      $subject = node_load($subject_id);//@TODO make this compatible with all entitys and save the entity type into the datebase of timetrackings, 
+      $subject = node_load($subject_id);//@TODO make this compatible with all entitys and save the entity type into the datebase of timetrackings
+      
       //group them by subject
       if (isset($with_subject[$subject_id]) && $with_subject[$subject_id]) {
         $data = $with_subject[$subject_id];        
@@ -551,6 +607,8 @@ function _timetracking_stop_other_user_times($uid) {
   } 
 }
 
+
+
 /**
 * Returns all timetrackings by a given user
 * @param $need_time_end if true, we only return timetrackings that don't have a end time set
@@ -579,6 +637,31 @@ function _timetrackings_by_user($uid, $subject_id=false, $need_time_end=false) {
   }
   
   return $entities;
+}
+
+/**
+* Returns the latest timetracking by a given user
+*/
+function _timetrackings_by_user_latest($uid) {
+  
+  if (!$uid)
+    return false;
+  
+  $query = db_select('timetracking', 't')
+  ->fields('t', array('timetracking_id'))
+  ->condition('uid', $uid, '=')
+  ->orderBy('changed', 'desc')
+  ->range(0,1);
+  
+  $result = $query->execute()
+  ->fetchAll();
+  $object = reset($result);
+  if ($object) {
+    $timetracking = timetracking_load($object->timetracking_id);
+    return $timetracking;
+  }
+
+  return false;
 }
 
 /**
