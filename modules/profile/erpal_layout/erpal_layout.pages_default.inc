@@ -224,7 +224,7 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->pid = 'new-9';
     $pane->panel = 'sidebar_top';
     $pane->type = 'block';
-    $pane->subtype = 'system-user-menu';
+    $pane->subtype = 'erpal_basic_helper-logged_in_user_block';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -241,6 +241,27 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->locks = array();
     $display->content['new-9'] = $pane;
     $display->panels['sidebar_top'][1] = 'new-9';
+    $pane = new stdClass();
+    $pane->pid = 'new-10';
+    $pane->panel = 'sidebar_top';
+    $pane->type = 'block';
+    $pane->subtype = 'system-user-menu';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '<none>',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $display->content['new-10'] = $pane;
+    $display->panels['sidebar_top'][2] = 'new-10';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -294,7 +315,7 @@ function erpal_layout_default_page_manager_handlers() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-10';
+    $pane->pid = 'new-11';
     $pane->panel = 'middle';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -315,10 +336,10 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-10'] = $pane;
-    $display->panels['middle'][0] = 'new-10';
+    $display->content['new-11'] = $pane;
+    $display->panels['middle'][0] = 'new-11';
     $pane = new stdClass();
-    $pane->pid = 'new-11';
+    $pane->pid = 'new-12';
     $pane->panel = 'middle';
     $pane->type = 'pane_messages';
     $pane->subtype = 'pane_messages';
@@ -333,10 +354,10 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['middle'][1] = 'new-11';
+    $display->content['new-12'] = $pane;
+    $display->panels['middle'][1] = 'new-12';
     $pane = new stdClass();
-    $pane->pid = 'new-12';
+    $pane->pid = 'new-13';
     $pane->panel = 'middle';
     $pane->type = 'page_help';
     $pane->subtype = 'page_help';
@@ -351,10 +372,10 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['middle'][2] = 'new-12';
+    $display->content['new-13'] = $pane;
+    $display->panels['middle'][2] = 'new-13';
     $pane = new stdClass();
-    $pane->pid = 'new-13';
+    $pane->pid = 'new-14';
     $pane->panel = 'middle';
     $pane->type = 'page_content';
     $pane->subtype = 'page_content';
@@ -373,10 +394,10 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['middle'][3] = 'new-13';
+    $display->content['new-14'] = $pane;
+    $display->panels['middle'][3] = 'new-14';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-10';
+  $display->title_pane = 'new-11';
   $handler->conf['display'] = $display;
   $export['site_template_panel_context_2'] = $handler;
 
