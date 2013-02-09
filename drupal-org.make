@@ -94,9 +94,6 @@ projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
 projects[homebox][patch][] = "http://drupal.org/files/homebox-undefined_propert_module_delta-1088242-3.patch"
 
-projects[menu_css_names][version] = "1.0-beta1"
-projects[menu_css_names][subdir] = "contrib"
-
 projects[jquery_ui_multiselect_widget][version] = "1.5"
 projects[jquery_ui_multiselect_widget][subdir] = "contrib"
 

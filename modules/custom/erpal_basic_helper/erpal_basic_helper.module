@@ -21,6 +21,23 @@ function erpal_basic_helper_init() {
   _erpal_basic_helper_warnings();
 }
 
+/**
+ * Theme registry overrides for various theme functions 
+ */
+function erpal_basic_helper_theme_registry_alter(&$theme_registry) {
+  if (!empty($theme_registry['menu_link'])) {
+    $theme_registry['menu_link']['function'] = 'erpal_menu_link';
+  }
+  
+  if (!empty($theme_registry['links'])) {
+    $theme_registry['links']['function'] = 'erpal_links';
+  }
+  
+  if (!empty($theme_registry['menu_local_task'])) {
+    $theme_registry['menu_local_task']['function'] = 'erpal_menu_local_task';
+  }
+  
+}
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -288,7 +305,7 @@ function _erpal_basic_helper_create_contact_link($q_arg = false, $query_arr = ar
 function erpal_basic_helper_preprocess_menu_link(&$variables) {
   
   if (isset($variables['element'])) {
-    erpal_set_menu_item_active($variables);
+    erpal_set_menu_item_active($variables['element']);
   }
 }
 

@@ -9,7 +9,6 @@ dependencies[] = ds
 dependencies[] = editablefields
 dependencies[] = entityreference_prepopulate
 dependencies[] = erpal_basic
-dependencies[] = menu_css_names
 dependencies[] = page_manager
 dependencies[] = panels_mini
 dependencies[] = quicktabs
