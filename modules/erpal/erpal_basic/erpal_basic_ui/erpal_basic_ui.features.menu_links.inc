@@ -42,7 +42,7 @@ function erpal_basic_ui_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-10',
+    'weight' => '-48',
   );
   // Exported menu link: user-menu:user/logout
   $menu_links['user-menu:user/logout'] = array(
@@ -56,7 +56,7 @@ function erpal_basic_ui_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '10',
+    'weight' => '-44',
   );
   // Translatables
   // Included for use with string extractors like potx.
