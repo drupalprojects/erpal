@@ -15,7 +15,6 @@
 	    <?php endif; ?>
 	    <div class="erpal-container-content panel-panel panel-col-last">
 		  <div class="inside">
-	      <?php if (!empty($content['sidebar_tabs_row'])): ?>
 		    <?php if (!empty($content['sidebar_tabs_row'])): ?>
 		      <div class="erpal-region-tabs">
 		         <?php print render($content['sidebar_tabs_row']); ?>
@@ -28,7 +27,6 @@
 		    <?php endif; ?>
 		    </div>
 	    </div>
-	    <?php endif; ?>
 	</div>
   </div>
 </div>
