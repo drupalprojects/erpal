@@ -50,8 +50,6 @@ ul.primary li a {
 		  }
 		  a {
 		    @include a_black;
-			height: 33px;
-			line-height: 33px;
 			position: relative;
 		    z-index: 1;
 			color: $black;

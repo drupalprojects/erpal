@@ -105,18 +105,14 @@ ul.primary li a:hover {
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
-  padding: 0 12px 0 35px;
+  padding: 9px 12px 10px 35px;
   letter-spacing: 1px;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
-  height: 42px;
-  line-height: 42px;
   border: none;
-  height: 33px;
-  line-height: 33px;
   position: relative;
   z-index: 1;
   color: black;
@@ -130,15 +126,13 @@ ul.primary li a:hover {
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
   margin: 0;
-  padding: 0 12px 0 35px;
+  padding: 9px 12px 10px 35px;
   letter-spacing: 1px;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
-  height: 42px;
-  line-height: 42px;
   border: none;
   color: black;
 }

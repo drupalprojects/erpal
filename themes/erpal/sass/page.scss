@@ -880,6 +880,9 @@ body {
     cursor: pointer;
   }
   .block-content a {
+    font-size: 11px;
+  }
+  .pane-node-author a {
     font-size: 13px;
   }
   h2.pane-title {
@@ -1316,7 +1319,12 @@ body {
 	  }
 	}
 	td.views-field-field-timetracking-button a{
-	  background: url("../images/menu_icons/start.png") no-repeat 0 2px; 
+	  padding-left: 0;
+      img {
+	    margin-right: 3px;
+        margin-top: 1px;
+		float: left;
+	  }	  
 	}
   }
   .homebox-portlet {
@@ -1475,9 +1483,6 @@ body {
 	  font-weight: normal;
 	  &:hover {
 	    color: $orange;
-	  }
-	  img {
-	    width: 20px;
 	  }
 	}
   }
@@ -1727,5 +1732,11 @@ fieldset {
 #field-phone-values .form-text .form-autocomplete {
 	position: relative;
     top: 19px;
+}
+#edit-field-pricing {
+  .select, 
+  input.form-autocomplete {
+    width: 180px;
+  } 
 }
 /*-------------------------end Page titles--------------------------------*/

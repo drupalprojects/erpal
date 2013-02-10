@@ -987,6 +987,9 @@ body #user-login input.form-text {
   cursor: pointer;
 }
 .ctools-collapsible-processed .block-content a {
+  font-size: 11px;
+}
+.ctools-collapsible-processed .pane-node-author a {
   font-size: 13px;
 }
 .ctools-collapsible-processed h2.pane-title {
@@ -1458,7 +1461,12 @@ body #user-login input.form-text {
   background: url("../images/menu_icons/projects_hover.png") no-repeat 0 0;
 }
 #homebox .view-assigned-tasks td.views-field-field-timetracking-button a {
-  background: url("../images/menu_icons/start.png") no-repeat 0 2px;
+  padding-left: 0;
+}
+#homebox .view-assigned-tasks td.views-field-field-timetracking-button a img {
+  margin-right: 3px;
+  margin-top: 1px;
+  float: left;
 }
 #homebox .homebox-portlet {
   margin-bottom: 40px;
@@ -1636,9 +1644,6 @@ body #user-login input.form-text {
 }
 .block-content .view-content td a:hover {
   color: #fc9822;
-}
-.block-content .view-content td a img {
-  width: 20px;
 }
 .block-content .view-content th {
   background-color: #e9e5e2;
@@ -1945,6 +1950,11 @@ fieldset {
 #field-phone-values .form-text .form-autocomplete {
   position: relative;
   top: 19px;
+}
+
+#edit-field-pricing .select,
+#edit-field-pricing input.form-autocomplete {
+  width: 180px;
 }
 
 /*-------------------------end Page titles--------------------------------*/
