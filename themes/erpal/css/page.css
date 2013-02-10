@@ -32,6 +32,7 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*grey link color*/
 /*for quicktabs-tabs color*/
 /*----for buttons border---------------*/
+/*for top menu border*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
@@ -85,6 +86,10 @@ body #erpal_wrapper .erpal-top {
 body #erpal_wrapper .erpal-top .block {
   margin-bottom: 0;
 }
+body #erpal_wrapper .erpal-top .block .block {
+  margin-bottom: 0;
+  float: left;
+}
 body #erpal_wrapper .erpal-region-left.panel-col-first {
   margin: 0;
   width: 150px;
@@ -136,13 +141,15 @@ body #user-login input.form-text {
   /*----------end User menu-------------*/
 }
 .pane-system-user-menu ul {
-  margin: 0px;
-  padding: 0px;
+  margin: 0 0 0 20px;
+  padding: 0 10px 0 2px;
   overflow: hidden;
   float: right;
+  border-left: 1px solid #d0cac6;
+  border-right: 1px solid #d0cac6;
 }
 .pane-system-user-menu ul li {
-  margin-left: 10px;
+  margin-left: 15px;
   padding: 0;
   float: left;
   text-align: center;
@@ -151,15 +158,11 @@ body #user-login input.form-text {
   padding-left: 25px;
   color: #645c57;
   display: block;
+  font-size: 0;
+  text-indent: -2000px;
 }
 .pane-system-user-menu ul li a:hover {
   color: #fc9822;
-}
-.pane-system-user-menu ul li.log-out a {
-  background: url("../images/menu_icons/logout.png") no-repeat 0px 2px;
-}
-.pane-system-user-menu ul li.log-out a:hover {
-  background: url("../images/menu_icons/logout.png") no-repeat 0px -22px;
 }
 .pane-system-user-menu ul li.my-bookmarks a {
   background: url("../images/menu_icons/bookmark.png") no-repeat 0px 2px;
@@ -168,7 +171,7 @@ body #user-login input.form-text {
   background: url("../images/menu_icons/bookmark.png") no-repeat 0px -24px;
 }
 .pane-system-user-menu ul li.my-tasks a {
-  background: url("../images/menu_icons/tasks.png") no-repeat 0px 2px;
+  background: url("../images/menu_icons/tasks.png") no-repeat 0px 4px;
 }
 .pane-system-user-menu ul li.my-tasks a:hover {
   background: url("../images/menu_icons/tasks.png") no-repeat 0px -21px;
@@ -184,6 +187,80 @@ body #user-login input.form-text {
 }
 .pane-system-user-menu ul li.timekeeping a:hover {
   background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+}
+.pane-system-user-menu ul li.my-projects a {
+  background: url("../images/menu_icons/projects.png") no-repeat 0px -3px;
+}
+.pane-system-user-menu ul li.my-projects a:hover {
+  background: url("../images/menu_icons/projects.png") no-repeat 0px -39px;
+}
+
+#mini-panel-user_bar .panel-panel {
+  width: auto;
+}
+#mini-panel-user_bar .panel-panel .panel-separator {
+  display: none;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last {
+  margin-right: 20px;
+  width: auto;
+  float: right;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last .inside {
+  margin-left: 0px;
+  min-width: auto;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last .inside .pane-erpal-basic-helper-logout-block .block-content a {
+  padding: 6px 0 6px 22px;
+  background: url("../images/menu_icons/logout.png") no-repeat 0px 2px;
+  line-height: 27px;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last .inside .pane-erpal-basic-helper-logout-block .block-content a:hover {
+  background: url("../images/menu_icons/logout.png") no-repeat 0px -22px;
+  color: #fc9822;
+}
+#mini-panel-user_bar .panel-panel .welcome_user {
+  line-height: 27px;
+}
+#mini-panel-user_bar .panel-panel .welcome_user img {
+  margin-top: 3px;
+  margin-right: 5px;
+  float: left;
+  width: 22px;
+  height: 22px;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timekeeping_link {
+  padding-left: 25px;
+  float: left;
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -3px;
+  line-height: 30px;
+  font-size: 0;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timekeeping_link:hover {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking_subject {
+  margin-right: 2px;
+  line-height: 30px;
+  float: left;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking {
+  float: left;
+  font-weight: bold;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking a {
+  line-height: 30px;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking img {
+  margin-top: 6px;
+  margin-right: 2px;
+  float: left;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking .timetracking_text {
+  display: none;
+}
+#mini-panel-user_bar .panel-col-first {
+  width: 160px;
 }
 
 /*----------Logo-------------*/
@@ -1844,6 +1921,10 @@ fieldset {
 
 .page-user h2.pane-title {
   background: url("../images/menu_icons/users.png") no-repeat 0 0;
+}
+
+.profile .user-picture {
+  margin-top: 20px;
 }
 
 /*-------------------------end Page titles--------------------------------*/
