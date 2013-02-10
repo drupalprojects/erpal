@@ -22,7 +22,7 @@ function fileedit_menu() {
 
     $items[FILEEDIT_URL_PATTERN_DOWNLOAD] = array(
         'page callback' => 'fileedit_download',
-        'page arguments' => array(2),
+        'page arguments' => array(2, 3),
         'access callback' => 'fileedit_download_access',
         'access arguments' => array(2, 3), //fid, session ID
         'type' => MENU_CALLBACK,
@@ -31,7 +31,7 @@ function fileedit_menu() {
 
     $items[FILEEDIT_URL_PATTERN_UPLOAD] = array(
         'page callback' => 'fileedit_upload',
-        'page arguments' => array(2),
+        'page arguments' => array(2, 3),
         'access callback' => 'fileedit_download_access',
         'access arguments' => array(2, 3), //fid, session ID
         'type' => MENU_CALLBACK,
@@ -99,7 +99,7 @@ function theme_file_link_fileedit(&$variables) {
                 'sid' => $user->sid,
                 'downloadUrl' => url(FILEEDIT_URL_PATTERN_DOWNLOAD, array('absolute' => true)),
                 'uploadUrl' => url(FILEEDIT_URL_PATTERN_UPLOAD, array('absolute' => true)),
-                'appletUrl' => url(FILEEDIT_URL_PATTERN_APPLET, array('absolute' => true)),
+                'monitoringUrl' => url(FILEEDIT_URL_PATTERN_APPLET, array('absolute' => true)),
                 'uploadFieldName' => 'userfile'
             )), 'setting');
         }
