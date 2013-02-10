@@ -44,7 +44,7 @@
 <applet code='de.brightsolutions.erpal.filehandler.applet.FileHandlerApplet.class'
         codebase='<?php echo $args['fileedit_codebase']; ?>'
         archive='FileHandler.jar' type='application/x-java-applet;version=1.6'
-        width="400" height="300" id="fileHandlerApplet" name="File Handler" MAYSCRIPT>
+        width="100%" height="100%" id="fileHandlerApplet" name="File Handler" MAYSCRIPT>
 </applet>
 </body>
 </html>

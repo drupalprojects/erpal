@@ -40,7 +40,7 @@ jQuery(function ($) {
                 window.fileEditWin = window.open('', 'FileEdit', "status=no,resizable=no,width=415,height=315");
                 if (window.fileEditWin) {
                     if (window.fileEditWin.location == 'about:blank') {
-                        window.fileEditWin.location = Drupal.settings.fileedit.appletUrl;
+                        window.fileEditWin.location = Drupal.settings.fileedit.monitoringUrl;
 
                         window.fileEditWin.onload = function (e) {
                             setTimeout(function () {

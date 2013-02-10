@@ -17,8 +17,37 @@ function fileedit_monitor() {
 /**
  * Callback for downloading file.
  */
-function fileedit_download($fid) {
-    $file = file_load($fid);
+function fileedit_download($fid, $sid) {
+    $file_usage = null;
+
+    // look for the single node where the file is used.
+    $result = db_select('file_usage', 'f')
+        ->fields('f', array('fid', 'module', 'type', 'id', 'count'))
+        ->condition('fid', $fid)
+        ->condition('type', 'node')
+        ->condition('count', 0, '>')
+        ->range(0, 1)
+        ->execute();
+
+    foreach ($result as $usage) {
+        $file_usage = $usage;
+    }
+
+    // look for the recent fid for the specified node, assuming the id represents the node type as file.
+    $query = db_select('file_usage', 'f')
+        ->fields('f', array('fid', 'module', 'type', 'id', 'count'))
+        ->condition('id', $file_usage->id)
+        ->condition('type', 'node')
+        ->condition('count', 0, '>')
+        ->range(0, 1);
+    $query->addExpression('MAX(fid)', 'lid');
+    $result = $query->execute();
+
+    foreach ($result as $usage) {
+        $file_usage = $usage;
+    }
+
+    $file = file_load($file_usage->lid);
 
     $headers = array(
         'Content-Type' => 'force-download',
@@ -42,10 +71,12 @@ function fileedit_download($fid) {
  * @TODO evaluate whether a drupal_submit_form after readjusting the _FILES-array might be easier/less error-prone
  */
 function fileedit_upload($fid, $sid) {
+//    _drupal_session_read($sid);
+
     // Thiemo; Save updates, reload page
-    session_id($sid);
-    session_start();
-    drupal_save_session(TRUE);
+//    session_id($sid);
+//    session_start();
+//    drupal_save_session(TRUE);
 
     $_SESSION['fileedit']['updated'][$fid] = TRUE;
 
@@ -57,13 +88,14 @@ function fileedit_upload($fid, $sid) {
     foreach ($per_module as $module => $per_type) {
         foreach ($per_type as $type => $per_type_id) {
             foreach ($per_type_id as $id => $count) {
-                //dpm( $id );
                 if ($type == 'node') {
                     $node = node_load($id);
                     //file_put_contents( 'C:\xampp\htdocs\froebus_com_showroom\www\sites\all\modules\custom\showroom_helper\template\loading.txt', "\n".$node->type." = ".$node->nid, FILE_APPEND );
                     $options = variable_get('node_options_' . $node->type, array());
-                    if (in_array('revision', $options))
+
+                    if (in_array('revision', $options)) {
                         $revisions[] = array($node, $node, $type);
+                    }
                 } elseif ($type == 'field_collection_item') {
                     $entities = array_values(entity_load('field_collection_item', array($id)));
                     $root_entity = $entities[0];
@@ -87,7 +119,7 @@ function fileedit_upload($fid, $sid) {
 
     if (count($revisions)) {
         // Thiemo; Bad revisioning if the user isn't known...
-        global $user;
+//        global $user;
         $user = _fileedit_user_by_sid($sid);
 
         $name = 'userfile';
@@ -122,9 +154,10 @@ function fileedit_upload($fid, $sid) {
             foreach ((array)$entity as $name => $value) {
                 if (substr($name, 0, 6) == 'field_') {
                     $info = field_info_field($name);
+
                     if ($info['type'] == 'file' && isset($value[LANGUAGE_NONE])) {
                         foreach ($value[LANGUAGE_NONE] as $delta => $file) {
-                            if ($file['fid'] == $fid) {
+//                            if ($file['fid'] == $fid) {
                                 $instance = field_info_instance($type, $name, $node->type);
                                 $destination = file_field_widget_uri($info, $instance);
                                 $validators = file_field_widget_upload_validators($info, $instance);
@@ -138,7 +171,7 @@ function fileedit_upload($fid, $sid) {
                                     $field = &$entity->$name;
                                     $field[LANGUAGE_NONE][$delta]['fid'] = $file_now->fid;
                                 }
-                            }
+//                            }
                         }
                     }
                 }
