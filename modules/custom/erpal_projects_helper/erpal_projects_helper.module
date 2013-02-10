@@ -99,6 +99,64 @@ function _erpal_projects_helper_task_print_access() {
   return user_access('erpal print tasks');
 }
 
+/**
+ * Implements hook_block_info().
+ */
+function erpal_projects_helper_block_info() {
+  return array(
+    'last_timetracking_block' => array(
+      'info' => t('Last timetracking'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function erpal_projects_helper_block_view($delta) {
+  global $user;
+  if (!(user_access('use quick timetracking') || user_access('create timetracking'))) {
+    return NULL;
+  };
+
+  if ($delta == 'last_timetracking_block' ) {
+    $block['subject'] = '';
+    $block['content'] = _erpal_projects_helper_last_timetracking_block_render($user->uid);
+  } 
+  return $block;
+}
+
+/**
+* renders a block html for the last timetracking of a user, if one is available
+*/
+function _erpal_projects_helper_last_timetracking_block_render($uid) {
+  
+  if (!$uid)
+    return false;
+  
+  $last_timetracking = _timetrackings_by_user_latest($uid);
+  $lt = $last_timetracking;
+  if (!$lt)
+    return false; //no timetracking available
+    
+  $subject_id = $lt->subject_id ? $lt->subject_id : md5($lt->description);
+  $state = $lt->time_end ? 'off' : 'on';
+  
+  //get total duration of all timetrackings to the given subject
+  if (is_numeric($subject_id))
+    $total_duration = _timetracking_get_total_duration_by_subject_by_user($uid, $subject_id);
+  else
+    $total_duration = $lt->duration;
+  
+  $duration = round($total_duration, 2);
+  //@TODO make this work not only for entity type of node. Therefor we have to save the entity type in the database, @see _timetracking_calculate_current_timetrackings#
+  $node_titles = erpal_lib_helper_node_titles(array($lt->subject_id));
+  $subject_title = $lt->subject_id ? $node_titles[$lt->subject_id] : $lt->description;
+  $timekeeping_url = url('projects/timetrackings/tmp');
+  $timetracking_button = "<div class='last_timetracking'><a class='timekeeping_link' href='".$timekeeping_url."'>".t('list')."</a><span class='timetracking_subject'>".$subject_title."</span>".theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => $subject_id, 'state' => $state, 'duration' => $duration))."</div>";
+
+  return $timetracking_button;
+}
 
 /**
 * Implements hook_custom_node_content_block_content to provide content for the custom content block. Hook is provided by erpal_basic_helper

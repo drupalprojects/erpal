@@ -35,6 +35,7 @@ features[page_manager_pages][] = crm_contacts
 features[page_manager_pages][] = users_notifications
 features[panels_mini][] = body_and_comments
 features[panels_mini][] = contact_general_fields
+features[panels_mini][] = user_bar
 features[variable][] = default_page_manager_pages
 features[variable][] = page_manager_node_view_disabled
 features[views_view][] = contacts

@@ -78,7 +78,7 @@ function erpal_bookmark_ui_views_default_views() {
   $handler->display->display_options['defaults']['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_always'] = TRUE;
   $handler->display->display_options['defaults']['use_more_text'] = FALSE;
-  $handler->display->display_options['path'] = 'bookmarks';
+  $handler->display->display_options['path'] = 'user/bookmarks';
 
   /* Display: Bookmarks block */
   $handler = $view->new_display('block', 'Bookmarks block', 'block');

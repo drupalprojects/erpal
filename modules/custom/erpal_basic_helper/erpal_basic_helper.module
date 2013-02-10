@@ -185,6 +185,9 @@ function erpal_basic_helper_block_info() {
     'logged_in_user_block' => array(
       'info' => t('Logged in user welcome'),
     ),
+    'logout_block' => array(
+      'info' => t('Show logout Link'),
+    ),
   );
 }
 
@@ -192,11 +195,20 @@ function erpal_basic_helper_block_info() {
  * Implements hook_block_view().
  */
 function erpal_basic_helper_block_view($delta) {
+  global $user;
   if ($delta == 'logged_in_user_block') {
     $block['subject'] = '';
     $block['content'] = _erpal_invoice_helper_welcome_user_block_content();
     return $block;
   }  
+  elseif ($delta == 'logout_block') {
+    $block['subject'] = '';
+    $link = '';
+    if ($user->uid)
+      $link = l(t('Logout'), 'user/logout');
+    $block['content'] = $link;
+    return $block;
+  }
 }
 
 /**
@@ -209,11 +221,15 @@ function _erpal_invoice_helper_welcome_user_block_content() {
     return false;
   
   $picture_fid = $user->picture;
+  
+  if (!$picture_fid)
+    return false;
+  
   $picture = file_load($picture_fid);
   $image_url = file_create_url($picture->uri);
   $thumbnail_url = image_style_url('thumbnail', $picture->uri);
   
-  return '<div class="welcome_user"><img class="user_image_tiny" src="'.$thumbnail_url.'">Hello '.$user->name.'</div>';
+  return '<div class="welcome_user"><img class="user_image_tiny" src="'.$thumbnail_url.'">'.t('Hello !username_link', array('!username_link' => l($user->name, 'user'))).'</div>';
 }
 
 /**
