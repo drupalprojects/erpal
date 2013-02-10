@@ -52,7 +52,7 @@ function erpal_basic_ui_menu_default_menu_links() {
     'link_title' => 'Log out',
     'options' => array(),
     'module' => 'system',
-    'hidden' => '0',
+    'hidden' => '1',
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
