@@ -136,7 +136,9 @@ function _erpal_projects_helper_last_timetracking_block_render($uid) {
   
   $last_timetracking = _timetrackings_by_user_latest($uid);
   $lt = $last_timetracking;
-  
+  if (!$lt)
+    return false; //no timetracking available
+    
   $subject_id = $lt->subject_id ? $lt->subject_id : md5($lt->description);
   $state = $lt->time_end ? 'off' : 'on';
   

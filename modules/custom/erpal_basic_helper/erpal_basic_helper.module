@@ -221,6 +221,10 @@ function _erpal_invoice_helper_welcome_user_block_content() {
     return false;
   
   $picture_fid = $user->picture;
+  
+  if (!$picture_fid)
+    return false;
+  
   $picture = file_load($picture_fid);
   $image_url = file_create_url($picture->uri);
   $thumbnail_url = image_style_url('thumbnail', $picture->uri);
