@@ -198,7 +198,7 @@ function _erpal_git_change_task_status($node, $message) {
   if ($status_tid) {
     $node_status = field_get_items('node', $node, 'field_task_status_term');
     if ($node_status[0]['tid'] && $node_status[0]['tid'] != $status_tid) {
-      $node->field_task_status_term[$node->language][0]['tid'] = $status_tid;
+      $node->field_task_status_term[LANGUAGE_NONE][0]['tid'] = $status_tid;
       node_save($node);
       return array('success' => 'Task status was updated');
     } else {
