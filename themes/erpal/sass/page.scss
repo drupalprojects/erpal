@@ -112,33 +112,33 @@ body {
 	  }
 	  &.my-bookmarks a{
 	    background: url("../images/menu_icons/bookmark.png") no-repeat 0px 2px;
-	  }
-	  &.my-bookmarks a:hover{
-	    background: url("../images/menu_icons/bookmark.png") no-repeat 0px -24px;
+		&:hover{
+	      background: url("../images/menu_icons/bookmark.png") no-repeat 0px -24px;
+	    }
 	  }
 	  &.my-tasks a{
 	    background: url("../images/menu_icons/tasks.png") no-repeat 0px 4px;
-	  }
-	  &.my-tasks a:hover{
-	    background: url("../images/menu_icons/tasks.png") no-repeat 0px -21px;
+		&:hover{
+	      background: url("../images/menu_icons/tasks.png") no-repeat 0px -25px;
+	   }
 	  }
 	  &.my-account a{
 	    background: url("../images/menu_icons/user.png") no-repeat 0px 2px;
-	  }
-	  &.my-account a:hover{
-	    background: url("../images/menu_icons/user.png") no-repeat 0px -23px;
+		&:hover{
+	      background: url("../images/menu_icons/user.png") no-repeat 0px -23px;
+	   }
 	  }
 	  &.timekeeping a{
 	    background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -3px;
-	  }
-	  &.timekeeping a:hover{
-	    background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+		&:hover{
+	      background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+	    }
 	  }
 	  &.my-projects a{
 	    background: url("../images/menu_icons/projects.png") no-repeat 0px -3px;
-	  }
-	  &.my-projects a:hover{
-	    background: url("../images/menu_icons/projects.png") no-repeat 0px -39px;
+		&:hover{
+	      background: url("../images/menu_icons/projects.png") no-repeat 0px -39px;
+	    }
 	  }
 	}
   }  /*----------end User menu-------------*/
@@ -473,6 +473,14 @@ body {
 	 a {
 	   font-size: 12px;
 	 }
+	}
+	.user-picture {
+	  margin-right: 5px;
+	  float: left;
+	  img {
+	    width: 18px;
+		height: 18px;
+	  }
 	}
   }
   .comment-content {
@@ -809,16 +817,11 @@ body {
     .field-name-field-buy-currency .field-item{
 	  font-weight: bold;
 	}
-	.field_time_estimation_sumed,
-    .time_ok,
-	.field-name-field-budget-time-billing .field-item,
-	.field-name-field-price-mode .field-item,
-	.field-name-field-currency .field-item,
-	.field-collection-item-field-pricing .field-item,
-	.field-name-field-estimated-time .field-item{
+	.field-item {
 	  font-weight: bold;
+	  line-height: 15px;
 	}
-    figure {
+        figure {
       text-align: center;
     }
   }
@@ -999,8 +1002,12 @@ body {
     display: none;
   }
   .pane-title{
+    padding-left: 0;
+    padding-right: 10px;
     float: left;
-	line-height: 40px;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 40px;
   }
   .block-content {
     float: left;
@@ -1013,7 +1020,7 @@ body {
   }
   section {
     margin-bottom: 0;
-	margin-right: 30px;
+	margin-right: 10px;
 	float: left;
 	.field-type-datetime {
 	  float: left;
@@ -1376,10 +1383,20 @@ body {
 
 /*-------------begin contact styles------------------*/
 .node-type-erpal-contact {
+  .erpal-content-right .pane-custom-node-content{
+    margin-top: 10px;
+  }
   .region-sidebar-left {
     .panel-pane {
 	  h2.pane-title.block-title {
 		@include headline(26px, 26px, 7px, normal);
+		background: url("../images/menu_icons/contact_title.png") no-repeat scroll 0 0 transparent;
+	  }
+	  .block-content {
+	    h2.pane-title.block-title {
+		  padding-left: 0;
+		  background: none;
+		}
 	  }
 	  .field-collection-view {
 	    @include dist_zero;
@@ -1400,8 +1417,14 @@ body {
 		  list-style-type: none;
 		}
 	  }
+	 .pane-node-field-fax .block-content,
+	 .pane-node-field-email .block-content{
+	   padding: 10px;
+	   @include border-radius(5px);
+	   border: 1px solid $silver_light;
+	 }
 	  table {
-	    margin: 0;
+	    margin: 0 0 10px;
 		@include border-radius(5px 5px 0 0);
 	  	td {
 		  padding: 10px;
@@ -1417,12 +1440,8 @@ body {
 	  }
 	  .action-links {
 	    li {
-		  padding: 10px;
+		  padding: 10px 0 10px 10px;
 	      text-align: right;
-		  @include border-radius(0 0 5px 5px);
-		  background-color: rgb(233,229,226); 
-	      @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
-	      @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 		  a {
 		    font-size: 1.2em;
 			text-decoration: underline;
@@ -1456,6 +1475,9 @@ body {
 	  font-weight: normal;
 	  &:hover {
 	    color: $orange;
+	  }
+	  img {
+	    width: 20px;
 	  }
 	}
   }
@@ -1702,7 +1724,8 @@ fieldset {
 .profile .user-picture {
   margin-top: 20px;
 }
-/*-------------------------end Page titles--------------------------------*/
-.ui-dialog .ui-dialog-content body {
-  background: transparent;
+#field-phone-values .form-text .form-autocomplete {
+	position: relative;
+    top: 19px;
 }
+/*-------------------------end Page titles--------------------------------*/

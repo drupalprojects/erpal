@@ -174,7 +174,7 @@ body #user-login input.form-text {
   background: url("../images/menu_icons/tasks.png") no-repeat 0px 4px;
 }
 .pane-system-user-menu ul li.my-tasks a:hover {
-  background: url("../images/menu_icons/tasks.png") no-repeat 0px -21px;
+  background: url("../images/menu_icons/tasks.png") no-repeat 0px -25px;
 }
 .pane-system-user-menu ul li.my-account a {
   background: url("../images/menu_icons/user.png") no-repeat 0px 2px;
@@ -532,6 +532,14 @@ body #user-login input.form-text {
 }
 .comment .submitted .author-datetime a {
   font-size: 12px;
+}
+.comment .submitted .user-picture {
+  margin-right: 5px;
+  float: left;
+}
+.comment .submitted .user-picture img {
+  width: 18px;
+  height: 18px;
 }
 .comment .comment-content {
   padding-top: 15px;
@@ -908,14 +916,9 @@ body #user-login input.form-text {
 .erpal-content-right .ctools-collapsible-container .field-name-field-buy-currency .field-item {
   font-weight: bold;
 }
-.erpal-content-right .ctools-collapsible-container .field_time_estimation_sumed,
-.erpal-content-right .ctools-collapsible-container .time_ok,
-.erpal-content-right .ctools-collapsible-container .field-name-field-budget-time-billing .field-item,
-.erpal-content-right .ctools-collapsible-container .field-name-field-price-mode .field-item,
-.erpal-content-right .ctools-collapsible-container .field-name-field-currency .field-item,
-.erpal-content-right .ctools-collapsible-container .field-collection-item-field-pricing .field-item,
-.erpal-content-right .ctools-collapsible-container .field-name-field-estimated-time .field-item {
+.erpal-content-right .ctools-collapsible-container .field-item {
   font-weight: bold;
+  line-height: 15px;
 }
 .erpal-content-right .ctools-collapsible-container figure {
   text-align: center;
@@ -1116,7 +1119,11 @@ body #user-login input.form-text {
   display: none;
 }
 #mini-panel-activity_status_panel .pane-title {
+  padding-left: 0;
+  padding-right: 10px;
   float: left;
+  font-size: 12px;
+  font-weight: normal;
   line-height: 40px;
 }
 #mini-panel-activity_status_panel .block-content {
@@ -1130,7 +1137,7 @@ body #user-login input.form-text {
 }
 #mini-panel-activity_status_panel section {
   margin-bottom: 0;
-  margin-right: 30px;
+  margin-right: 10px;
   float: left;
 }
 #mini-panel-activity_status_panel section .field-type-datetime {
@@ -1531,11 +1538,19 @@ body #user-login input.form-text {
 
 /*-------------end dashboard styles--------------*/
 /*-------------begin contact styles------------------*/
+.node-type-erpal-contact .erpal-content-right .pane-custom-node-content {
+  margin-top: 10px;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
   margin: 0px 0px 7px 0px;
   font-weight: normal;
   font-size: 26px;
   line-height: 26px;
+  background: url("../images/menu_icons/contact_title.png") no-repeat scroll 0 0 transparent;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content h2.pane-title.block-title {
+  padding-left: 0;
+  background: none;
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
   margin: 0px;
@@ -1563,8 +1578,18 @@ body #user-login input.form-text {
   padding-right: 7px;
   list-style-type: none;
 }
+.node-type-erpal-contact .region-sidebar-left .panel-pane .pane-node-field-fax .block-content,
+.node-type-erpal-contact .region-sidebar-left .panel-pane .pane-node-field-email .block-content {
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #d9d5d2;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane table {
-  margin: 0;
+  margin: 0 0 10px;
   -webkit-border-radius: 5px 5px 0 0;
   -moz-border-radius: 5px 5px 0 0;
   -ms-border-radius: 5px 5px 0 0;
@@ -1581,21 +1606,8 @@ body #user-login input.form-text {
   margin: 0px;
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
-  padding: 10px;
+  padding: 10px 0 10px 10px;
   text-align: right;
-  -webkit-border-radius: 0 0 5px 5px;
-  -moz-border-radius: 0 0 5px 5px;
-  -ms-border-radius: 0 0 5px 5px;
-  -o-border-radius: 0 0 5px 5px;
-  border-radius: 0 0 5px 5px;
-  background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
-  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
-  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
-  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
-  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li a {
   font-size: 1.2em;
@@ -1624,6 +1636,9 @@ body #user-login input.form-text {
 }
 .block-content .view-content td a:hover {
   color: #fc9822;
+}
+.block-content .view-content td a img {
+  width: 20px;
 }
 .block-content .view-content th {
   background-color: #e9e5e2;
@@ -1927,7 +1942,9 @@ fieldset {
   margin-top: 20px;
 }
 
-/*-------------------------end Page titles--------------------------------*/
-.ui-dialog .ui-dialog-content body {
-  background: transparent;
+#field-phone-values .form-text .form-autocomplete {
+  position: relative;
+  top: 19px;
 }
+
+/*-------------------------end Page titles--------------------------------*/
