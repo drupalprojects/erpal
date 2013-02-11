@@ -8,7 +8,7 @@ dependencies[] = php
 dependencies[] = menu
 dependencies[] = path
 dependencies[] = dblog
-dependencies[] = toolbar
+dependencies[] = admin_menu_toolbar
 dependencies[] = search
 
 ; core fields

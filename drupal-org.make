@@ -6,6 +6,9 @@ api = 2
 projects[acl][version] = "1.0"
 projects[acl][subdir] = "contrib"
 
+projects[admin_menu][version] = "3.0-rc4"
+projects[admin_menu][subdir]drush en  = "contrib"
+
 projects[auto_nodetitle][version] = "1.0"
 projects[auto_nodetitle][subdir] = "contrib"
 
