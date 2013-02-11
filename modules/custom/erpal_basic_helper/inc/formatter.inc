@@ -68,8 +68,7 @@ function erpal_basic_helper_field_formatter_prepare_view($entity_type, $entities
   // Collect every possible entity attached to any of the entities.
   foreach ($entities as $id => $entity) {
     
-    //check display of each entity
-    if ($displays[$id]['type'] == 'relation_endpoint_simple_table') {
+    //check display of each entity    
     
       foreach ($items[$id] as $delta => $item) {
         if (isset($item['target_id'])) {
@@ -77,20 +76,20 @@ function erpal_basic_helper_field_formatter_prepare_view($entity_type, $entities
         }
       }
       
-    }
+    
   }
 
   if ($target_ids) {
     $target_entities = entity_load($field['settings']['target_type'], $target_ids);
   }
   else {
-    return false; //no entites, no data returned
+    $target_entities = array(); //no entites, no data returned
   }
 
   // Iterate through the fieldable entities again to attach the loaded data.
   foreach ($entities as $id => $entity) {
     $rekey = FALSE;
-
+    
     foreach ($items[$id] as $delta => $item) {
       // Check whether the referenced entity could be loaded.
       if (isset($target_entities[$item['target_id']])) {
@@ -130,8 +129,7 @@ function erpal_basic_helper_field_formatter_view($entity_type, $entity, $field, 
 /**
 * Callback used in hook_field_formatter_info to view entityreferences with entity type and bundle class
 */
-function _erpal_basic_helper_formatter_view_entityreference_typed_label($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  
+function _erpal_basic_helper_formatter_view_entityreference_typed_label($entity_type, $entity, $field, $instance, $langcode, $items, $display) {  
   
   $result = array();
   $settings = $display['settings'];
@@ -142,7 +140,7 @@ function _erpal_basic_helper_formatter_view_entityreference_typed_label($entity_
       unset($items[$key]);
     }
   }
-  
+
   $handler = entityreference_get_selection_handler($field, $instance, $entity_type, $entity);
 
   foreach ($items as $delta => $item) {
