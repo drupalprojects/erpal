@@ -168,13 +168,13 @@ ul.primary li a:hover {
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets-active-tab a {
   background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
 }
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a {
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.summary a {
   background: url("../images/menu_icons/projects.png") no-repeat 9px -2px;
 }
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a:hover {
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.summary a:hover {
   background: url("../images/menu_icons/projects.png") no-repeat 9px -38px;
 }
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list-active-tab a {
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.summary-active-tab a {
   background: url("../images/menu_icons/projects.png") no-repeat 9px -38px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.home a {
@@ -242,6 +242,18 @@ ul.primary li a:hover {
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar-active-tab a {
   background: url("../images/menu_icons/calendar.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices-active-tab a {
+  background: url("../images/menu_icons/invoices.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices {
+  width: auto;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices a {
+  background: url("../images/menu_icons/invoices.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices a:hover {
+  background: url("../images/menu_icons/invoices.png") no-repeat 9px -38px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tickets a {
   background: url("../images/menu_icons/ticket_.png") no-repeat 9px 8px;
