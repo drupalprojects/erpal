@@ -105,18 +105,14 @@ ul.primary li a:hover {
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
-  padding: 0 12px 0 35px;
+  padding: 9px 12px 10px 35px;
   letter-spacing: 1px;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
-  height: 42px;
-  line-height: 42px;
   border: none;
-  height: 33px;
-  line-height: 33px;
   position: relative;
   z-index: 1;
   color: black;
@@ -126,19 +122,17 @@ ul.primary li a:hover {
   -o-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
   text-align: center;
-  min-width: 50px;
+  min-width: 100px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
   margin: 0;
-  padding: 0 12px 0 35px;
+  padding: 9px 12px 10px 35px;
   letter-spacing: 1px;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
-  height: 42px;
-  line-height: 42px;
   border: none;
   color: black;
 }
@@ -227,6 +221,40 @@ ul.primary li a:hover {
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contact-active-tab a {
   background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks a {
+  background: url("../images/menu_icons/tasks.png") no-repeat 9px 7px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks a:hover {
+  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks-active-tab a {
+  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar {
+  width: auto;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar a {
+  background: url("../images/menu_icons/calendar.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar a:hover {
+  background: url("../images/menu_icons/calendar.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar-active-tab a {
+  background: url("../images/menu_icons/calendar.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tickets a {
+  background: url("../images/menu_icons/ticket_.png") no-repeat 9px 8px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tickets a:hover {
+  background: url("../images/menu_icons/ticket_.png") no-repeat 9px -25px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tickets-active-tab a {
+  background: url("../images/menu_icons/ticket_.png") no-repeat 9px -25px;
+}
+
+.page-projects-projects #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
+  min-width: 140px;
 }
 
 /*--------------------------end icons for tabs------------------------*/

@@ -167,6 +167,21 @@ ul.links {
   margin: 0;
 }
 
+.whitebox {
+  @include border-radius($radius_5, $radius_5); 
+  background-color: $white;
+  padding: 10px;
+  box-shadow: 0 0 5px black;
+}
+
+.erpal-region-left .whitebox {
+  margin-left: 10px;
+  h2.pane-title {
+    background: none !important;
+	padding: 0 !important;
+	margin-bottom: 10px;
+  }
+}
 /* =============================================================================
  *   Links
  * ========================================================================== */
