@@ -473,74 +473,67 @@ function shortcut_keys_menu() {
   $items = array();
   
   // Enable tabs...
-  $items['admin/settings/shortcut-keys'] = array(
+  $items['admin/config/user-interface/shortcut-keys'] = array(
     'title'             => 'Shortcut Keys',
     'page callback'     => '_shortcut_keys_admin_shortcuts',
-    'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
-    'type'              => MENU_NORMAL_ITEM,
+    //'type'              => MENU_NORMAL_ITEM,
     'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
   );
   
   // Manage shortcuts
-  $items['admin/settings/shortcut-keys/shortcuts'] = array(
+  $items['admin/config/user-interface/shortcut-keys/shortcuts'] = array(
     'title'             => 'Shortcuts',
-    'page callback'     => '_shortcut_keys_admin_shortcuts',
-    'access callback'   => 'user_access',
+    //'page callback'     => '_shortcut_keys_admin_shortcuts',
     'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
     'type'              => MENU_DEFAULT_LOCAL_TASK,
     'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
   );
   
   // Edit shortcut
-  $items['admin/settings/shortcut-keys/shortcuts/edit/%shortcut_keys_shortcut'] = array(
+  $items['admin/config/user-interface/shortcut-keys/shortcuts/edit/%shortcut_keys_shortcut'] = array(
     'title'             => 'Edit shortcut',
     'page callback'     => 'drupal_get_form',
     'page arguments'    => array( 'shortcut_keys_admin_shortcut_edit_form', 5 ),
-    'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
     'type'              => MENU_NORMAL_ITEM,
     'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
   );
   
   // Delete shortcut
-  $items['admin/settings/shortcut-keys/shortcuts/delete/%shortcut_keys_shortcut'] = array(
+  $items['admin/config/user-interface/shortcut-keys/shortcuts/delete/%shortcut_keys_shortcut'] = array(
     'title'             => 'Delete shortcut',
     'page callback'     => 'drupal_get_form',
     'page arguments'    => array( 'shortcut_keys_admin_shortcut_delete_form', 5 ),
-    'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
     'type'              => MENU_NORMAL_ITEM,
     'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
   );
   
   // Manage shortcut groups
-  $items['admin/settings/shortcut-keys/groups'] = array(
+  $items['admin/config/user-interface/shortcut-keys/groups'] = array(
     'title'             => 'Groups',
     'page callback'     => '_shortcut_keys_admin_groups',
-    'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS),
     'type'              => MENU_LOCAL_TASK,
     'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
   );
   
   // Edit shortcut groups
-  $items['admin/settings/shortcut-keys/groups/edit/%shortcut_keys_shortcut_group'] = array(
+  $items['admin/config/user-interface/shortcut-keys/groups/edit/%shortcut_keys_shortcut_group'] = array(
     'title'             => 'Edit shortcut group',
     'page callback'     => 'drupal_get_form',
     'page arguments'    => array( 'shortcut_keys_admin_shortcut_group_edit_form', 5 ),
-    'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS),
     'type'              => MENU_NORMAL_ITEM,
     'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
   );
   
   // Delete shortcut groups
-  $items['admin/settings/shortcut-keys/groups/delete/%shortcut_keys_shortcut_group'] = array(
+  $items['admin/config/user-interface/shortcut-keys/groups/delete/%shortcut_keys_shortcut_group'] = array(
     'title'             => 'Delete shortcut group',
     'page callback'     => 'drupal_get_form',
     'page arguments'    => array( 'shortcut_keys_admin_shortcut_group_delete_form', 5 ),
-    'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS),
     'type'              => MENU_NORMAL_ITEM,
     'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
@@ -651,6 +644,6 @@ function _shortcut_keys_url_block( &$shortcuts ) {
     'machine_name'  => 'go_to_'.preg_replace( '@([^a-z0-9_]+)@', '_', $path ),
   );
   
-  return l( t('Add shortcut to current page'), 'admin/settings/shortcut-keys/shortcuts', array( 'query'=>$query ) );
+  return l( t('Add shortcut to current page'), 'admin/config/user-interface/shortcut-keys/shortcuts', array( 'query'=>$query ) );
   
 }

@@ -274,10 +274,10 @@ function _shortcut_keys_admin_shortcuts() {
         $group_names[]  = check_plain( $shortcut_groups[ $group_name ][ 'name' ] );
       
       $actions      = array();
-      $actions[]    = l( t('Edit'), 'admin/settings/shortcut-keys/shortcuts/edit/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
+      $actions[]    = l( t('Edit'), 'admin/config/user-interface/shortcut-keys/shortcuts/edit/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
       
       if( !isset($config['module']) ) {
-        $actions[]    = l( t('Delete'), 'admin/settings/shortcut-keys/shortcuts/delete/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
+        $actions[]    = l( t('Delete'), 'admin/config/user-interface/shortcut-keys/shortcuts/delete/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
       }
       
       $table['rows'][]  = array(
@@ -480,8 +480,8 @@ function _shortcut_keys_admin_groups() {
       
       $actions      = array();
       if( !isset($group['module']) ) {
-        $actions[]    = l( t('Edit'), 'admin/settings/shortcut-keys/groups/edit/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
-        $actions[]    = l( t('Delete'), 'admin/settings/shortcut-keys/groups/delete/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
+        $actions[]    = l( t('Edit'), 'admin/config/user-interface/shortcut-keys/groups/edit/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
+        $actions[]    = l( t('Delete'), 'admin/config/user-interface/shortcut-keys/groups/delete/'.$machine_name, array( 'query'=>array( 'destination'=>$_GET['q'] ) ) );
       }
       
       $table['rows'][]  = array(
