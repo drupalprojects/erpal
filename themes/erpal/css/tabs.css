@@ -159,13 +159,13 @@ ul.primary li a:hover {
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active-timetrackings-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timetrackings-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.all-timekeeping-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-offset-active-tab a {
   background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
 }
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a {
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.billables a {
   background: url("../images/menu_icons/price_.png") no-repeat 9px 9px;
 }
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a:hover {
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.billables a:hover {
   background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
 }
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets-active-tab a {
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.billables-active-tab a {
   background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.summary a {

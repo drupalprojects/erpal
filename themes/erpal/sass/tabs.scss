@@ -99,14 +99,16 @@ ul.primary li a {
 	  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
 	}
 	&.fixed-price-items a,
-    &.time-budgets a {
+    &.time-budgets a,
+    &.billables a {
 	  background: url("../images/menu_icons/price_.png") no-repeat 9px 9px;
 	  &:hover {
 	    background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
 	  }
 	}
 	&.fixed-price-items-active-tab  a,
-    &.time-budgets-active-tab a {
+    &.time-budgets-active-tab a, 
+    &.billables-active-tab a {
 	  background: url("../images/menu_icons/price_.png") no-repeat 9px -40px; 
 	}
 	&.project-list a,
