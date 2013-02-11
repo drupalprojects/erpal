@@ -1,5 +1,8 @@
 @import "global_vars_a_mixins";
 
+iframe body {
+  background-color: white;
+}
 body {
   &.panels-ipe {
     margin-bottom: 0 !important;
@@ -1333,12 +1336,12 @@ body {
 	&#homebox-block-views_assigned_tasks-block .portlet-header {
 	  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 	}
-	&#homebox-block-timetracking_block-1 .portlet-header,
-	&#homebox-block-views_timetracking_entities-block_1-1 .portlet-header {
+	&#homebox-block-timetracking_block .portlet-header,
+	&#homebox-block-views_timetracking_entities-block_1 .portlet-header {
 	  background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
 	}
-	&#homebox-block-views_bookmarks-block-1 .portlet-header {
-	  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+	&#homebox-block-views_bookmarks-block .portlet-header {
+	  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
 	}
     #timetracking-quick-form {
 	  @include border-radius(5px);
@@ -1720,11 +1723,34 @@ fieldset {
 .page-node-tickets .erpal-content-left h2.pane-title {
   background: url("../images/menu_icons/ticket.png") no-repeat 0 2px;
 }
+.node-type-erpal-invoice .erpal-content-left .pane-page-title h2.pane-title {
+  background: url("../images/menu_icons/invoice_title.png") no-repeat 0 2px;
+}
+.pane-invoice-header-fields {
+  h2 {
+    padding-left: 0 !important;
+    font-size: 18px !important;
+	margin:  0 !important;
+  }
+  a:hover {
+    color: #FC9822;
+  }
+}
 .page-bookmarks h2.pane-title {
   background: url("../images/menu_icons/bookmarks.png") no-repeat 0 2px;
 }
+
 .page-user h2.pane-title {
   background: url("../images/menu_icons/users.png") no-repeat 0 0;
+}
+.page-user-bookmarks h2.pane-title {
+  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
+}
+.page-user-projects h2.pane-title {
+  background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
+}
+.page-user-tasks h2.pane-title {
+  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 .profile .user-picture {
   margin-top: 20px;
