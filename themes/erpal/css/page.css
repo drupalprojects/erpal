@@ -38,6 +38,10 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
+iframe body {
+  background-color: white;
+}
+
 body {
   /*----------end node task-----------*/
   /*----------end node ticket-----------*/
@@ -1475,11 +1479,11 @@ body #user-login input.form-text {
 #homebox .homebox-portlet#homebox-block-views_assigned_tasks-block .portlet-header {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
-#homebox .homebox-portlet#homebox-block-timetracking_block-1 .portlet-header, #homebox .homebox-portlet#homebox-block-views_timetracking_entities-block_1-1 .portlet-header {
+#homebox .homebox-portlet#homebox-block-timetracking_block .portlet-header, #homebox .homebox-portlet#homebox-block-views_timetracking_entities-block_1 .portlet-header {
   background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
 }
-#homebox .homebox-portlet#homebox-block-views_bookmarks-block-1 .portlet-header {
-  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+#homebox .homebox-portlet#homebox-block-views_bookmarks-block .portlet-header {
+  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
 }
 #homebox .homebox-portlet #timetracking-quick-form {
   -webkit-border-radius: 5px;
@@ -1935,12 +1939,37 @@ fieldset {
   background: url("../images/menu_icons/ticket.png") no-repeat 0 2px;
 }
 
+.node-type-erpal-invoice .erpal-content-left .pane-page-title h2.pane-title {
+  background: url("../images/menu_icons/invoice_title.png") no-repeat 0 2px;
+}
+
+.pane-invoice-header-fields h2 {
+  padding-left: 0 !important;
+  font-size: 18px !important;
+  margin: 0 !important;
+}
+.pane-invoice-header-fields a:hover {
+  color: #FC9822;
+}
+
 .page-bookmarks h2.pane-title {
   background: url("../images/menu_icons/bookmarks.png") no-repeat 0 2px;
 }
 
 .page-user h2.pane-title {
   background: url("../images/menu_icons/users.png") no-repeat 0 0;
+}
+
+.page-user-bookmarks h2.pane-title {
+  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
+}
+
+.page-user-projects h2.pane-title {
+  background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
+}
+
+.page-user-tasks h2.pane-title {
+  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 
 .profile .user-picture {
