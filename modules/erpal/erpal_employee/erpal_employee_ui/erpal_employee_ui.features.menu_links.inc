@@ -22,7 +22,7 @@ function erpal_employee_ui_menu_default_menu_links() {
       ),
     ),
     'module' => 'menu',
-    'hidden' => '1',
+    'hidden' => '0',
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
