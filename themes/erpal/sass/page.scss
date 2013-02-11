@@ -32,7 +32,7 @@ body {
 	    margin-bottom: 0;
 	  }
 	}
-    .panel-col-first {
+    .erpal-region-left.panel-col-first {
       margin:0;
       width: 150px;
       max-width: none;
@@ -87,9 +87,11 @@ body {
   ul {
 	@include dist_zero;
 	overflow: hidden;
+	float: right;
 	li {
+	  margin-left: 10px;
 	  padding: 0;
-	  float: right;
+	  float: left;
 	  text-align: center;
 	  a {
 	    padding-left: 25px;
@@ -105,6 +107,30 @@ body {
 	  &.log-out a:hover{
 	    background: url("../images/menu_icons/logout.png") no-repeat 0px -22px;
 	  }
+	  &.my-bookmarks a{
+	    background: url("../images/menu_icons/bookmark.png") no-repeat 0px 2px;
+	  }
+	  &.my-bookmarks a:hover{
+	    background: url("../images/menu_icons/bookmark.png") no-repeat 0px -24px;
+	  }
+	  &.my-tasks a{
+	    background: url("../images/menu_icons/tasks.png") no-repeat 0px 2px;
+	  }
+	  &.my-tasks a:hover{
+	    background: url("../images/menu_icons/tasks.png") no-repeat 0px -21px;
+	  }
+	  &.my-account a{
+	    background: url("../images/menu_icons/user.png") no-repeat 0px 2px;
+	  }
+	  &.my-account a:hover{
+	    background: url("../images/menu_icons/user.png") no-repeat 0px -23px;
+	  }
+	  &.timekeeping a{
+	    background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -3px;
+	  }
+	  &.timekeeping a:hover{
+	    background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+	  }
 	}
   }  /*----------end User menu-------------*/
 }
@@ -113,7 +139,7 @@ body {
   top: -9px; 
   left: 2px;
   position: absolute;
-  z-index: 1000;
+  z-index: 100;
 }                
 /*----------end Logo-------------*/
 
@@ -267,7 +293,7 @@ body {
  * ========================================================================== */
 
  /*----------begin .pane-page-content -------------*/
- .pane-page-content { 
+.pane-page-content { 
   margin: {
 	right: 20px;
 	left: 20px;
@@ -298,7 +324,7 @@ body {
   }
   h2 {
     &.pane-title {
-	  @include headline(24px, 24px, 20px, bold);
+	  @include headline(24px, 30px, 15px, bold);
 	  color: $black;
 	}
   }
@@ -310,23 +336,22 @@ body {
 	}
   }
   .portlet-content .views-table {
+    margin-bottom: 0;
     border: 1px solid $silver_light;
 	border-bottom: none;
 	@include border-radius(5px 5px 0px 0px);
+	border-collapse: separate;
   }
    .views-table {
 	margin-top: 0;
+	border-collapse: collapse;
 	border-bottom: none;
 	th {
 	  padding: 7px 4px;
 	  font-size: 13px;
 	}
 	td {
-	  padding: 7px 15px 7px 12px;
-	  &.views-field-title {
-		a {
-		}
-	  }
+	  padding: 7px 4px 7px 4px;
 	  &.views-field-field-customer-ref {
 	
 	  }
@@ -336,12 +361,9 @@ body {
 
  /*----------begin comments------------------------*/
 .comment { 
-  padding: {
-	top: 15px;
-	bottom: 15px;
-  }
+  padding-bottom: 15px;
   @include border-radius(5px);
-  background-color: $light_grey;
+  border: 1px solid $silver_light;
   .field-name-comment-body {
 	p {
 	  font-size: 16px;
@@ -349,27 +371,63 @@ body {
   }
   .comment-header {
 	padding: {
+	  top: 10px;
 	  right: 10px;
 	  left: 15px;
 	}
 	float: left;
+	.new {
+      position: relative;
+      top: -4px;
+    }
   }
   .submitted {
-	padding-right: 15px;
-	border-bottom: 1px solid $white_light;
-	  .author-datetime {
-	     margin-bottom: 12px;
-	   }
+	padding: 10px 15px;
+	background-color: rgb(233,229,226); 
+	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+   .author-datetime {
+     margin-bottom: 0px;
+	 font-size: 11px;
+	 color: $dark_black;
+	 a {
+	   font-size: 12px;
+	 }
 	}
+  }
   .comment-content {
-    padding: {
-	  top: 15px;
-	  right: 15px;
-	  left: 15px;
+    padding-top: 15px;
+	.field-name-comment-body {
+	  padding: 0 15px 15px 15px;
+	  font-size: 16px;
+	}
+	.field-name-field-asset-files {
+	  padding-left: 15px;
+	  padding-top: 15px;
+	  border-top: 1px solid $silver_light;
+	  h2{
+	    padding-bottom: 10px;
+	  }
+	  .field-item {
+	    overflow: hidden;
+		float: left;
+	  }
 	}
 	section {
-	  width: 250px;
-	  float: left;
+	  &.field-name-field-asset-files {
+	    .comment_erpal_file a {
+		  margin-right: 20px;
+		  float: left;
+		  padding: 3px 0 3px 24px;
+	      background: url("../images/menu_icons/files_.png") no-repeat 0 -8px;
+          line-height: 21px;
+		  font-size: 13px;
+		  &:hover {
+			background: url("../images/menu_icons/files_hover.png") no-repeat 0 -9px;
+			color: $orange;
+	     }
+       }
+	  }
 	}
   }
   .comment-form {
@@ -382,8 +440,28 @@ body {
 	@include border-radius(5px);
   }
   nav {
-    padding: 0 15px;
+    margin-top: 10px;
+    padding: 10px 15px 0 10px;
 	clear: both;
+	border-top: 1px solid $silver_light;
+	ul.links li{
+      margin-right: 10px;
+	  float: left;
+	  a {
+	    padding: 6px 17px;
+	    display: block;
+	    @include border-radius(5px);
+	    background-color: rgb(233,229,226); 
+	    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	    @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+		@include headline(10px, 10px, 0, bold);
+		color: $black_dark;
+	    border: 1px solid $silver_light;
+		&:hover {
+	      @include background-image(linear-gradient(bottom, #DBD8DB 37%, #E8E8E8 69%));
+	    }
+	  }
+    }
   }
 } /*----------end comments------------------------*/	
 
@@ -502,22 +580,19 @@ body {
 		text-align: center;
 		border: 1px solid #CBCBCB;
 		border-bottom: none;
+		position: relative;
 	    &.active {
-		  background-color: rgb(203,199,198); // Old browsers
-          @include filter-gradient(#cbc7c6, #aeaba8, vertical); // IE6-9
-          @include background-image(linear-gradient(top,  rgba(203,199,198,1) 0%,rgba(174,171,168,1) 100%));
-        a {
-		    color: $white !important;
+		  background: $white;
+		  z-index: 10;
+          a {
+		    color: $dark_black !important;
 		  }
 		}
-		&.last{
-		  border-right: 1px solid $light_grey;
-		}
 	    a{
-	      padding: 1px 12px;
+	      padding: 1px 12px 2px;
 		  @include text_bold_12;
 		  min-width: 100px;
-		  color: $grey;
+		  color: $dark_black;
 		  &:hover {
 		    color: $orange; 
 		  }
@@ -528,6 +603,9 @@ body {
       .field-item a {
 	    font-weight: bold;
 	    font-size: 16px;
+		&:hover {
+		  color: $orange;
+		}
       }
   	  .field-item p{
 	    margin-bottom: 0px;
@@ -565,7 +643,7 @@ body {
     padding: 0px;
     list-style-type: none;
     li {
-	  margin: 0 2px 7px;
+	  margin: 0 2px 4px 0;
 	  list-style-type: none;
 	  a {
 	    padding: {
@@ -597,10 +675,16 @@ body {
   margin-bottom: 6px;
   margin-left: 5px;
   display: block;
-  &.flag-project-subscriptions a{
+  .flag-message {
+    left: 25px;
+    top: 2em;
+  }
+  &.flag-project-subscriptions a,
+  &.flag-task-subscriptions a{
 	background: url("../images/menu_icons/notifiy.png") no-repeat 0 0;
   }
   &.flag-bookmark-flag a{
+    padding-top: 6px;
 	background: url("../images/menu_icons/bookmark.png") no-repeat 0 0;
   }
   a {
@@ -610,7 +694,7 @@ body {
     font-weight: bold;
 	&:hover {
 	  color: $orange;
-	  background-position: 0px -22px;
+	  background-position: 0px -26px;
 	}
   }
 }
@@ -632,6 +716,14 @@ body {
 	padding-top: 5px;
 	font-size: 11px;
 	border-top: 1px solid $silver_light;
+	.field-collection-view-final {
+	  @include border-radius(5px 5px 0 0);
+	  th {
+	    background-color: rgb(233,229,226); 
+	    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	    @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+	  }
+	}
 	.field-name-field-buy-price .field-item,
 	.pane-node-created .block-content,
     .field-name-field-buy-currency .field-item{
@@ -640,7 +732,10 @@ body {
 	.field_time_estimation_sumed,
     .time_ok,
 	.field-name-field-budget-time-billing .field-item,
-	.field-name-field-price-mode .field-item{
+	.field-name-field-price-mode .field-item,
+	.field-name-field-currency .field-item,
+	.field-collection-item-field-pricing .field-item,
+	.field-name-field-estimated-time .field-item{
 	  font-weight: bold;
 	}
     figure {
@@ -653,12 +748,12 @@ body {
 } /*----------------end erpal_content_layout-----------------------*/
 
 /*----------------begin .panel-display-----------------------*/
+.erpal-content-right .panel-display .pane-entity-field h2.pane-title {
+  padding-right: 5px;
+  @include headline(11px, 11px, 0, normal);
+  color: $grey;
+ }
 .panel-display {
-  .pane-entity-field h2.pane-title {
-    padding-right: 5px;
-	@include headline(11px, 11px, 0, normal);
-	color: $grey;
-  }
   .pane-entity-field {
     .block-content {
 	  float: left;
@@ -678,6 +773,7 @@ body {
     }
 	.form-item label {
 	  float: left;
+	  color: $grey;
 	}
   }
   .ui-widget-content {
@@ -756,16 +852,18 @@ body {
   }
   .field-name-field-asset-files {
     margin-bottom: 10px;
-	.field-item  {
+	.field-item {
 	  margin-left: 5px;
       padding-left: 0 !important;
 	  a {
+	    margin-right: 20px;
 		padding: 3px 0 3px 24px;
-	    background: url("../images/menu_icons/files.png") no-repeat 0 -8px;
+	    background: url("../images/menu_icons/files_.png") no-repeat 0 -5px;
         line-height: 21px;
 		font-size: 13px;
+		display: block;
 		&:hover {
-		  background-position: 0px -44px;
+		  background: url("../images/menu_icons/files_hover.png") no-repeat 0 -6px;
 	    }
       }
 	}
@@ -815,8 +913,8 @@ body {
 
 #mini-panel-activity_status_panel {
   padding: 10px 20px;
-  @include rounded_corners_10;
-  background-color: $light_grey;
+  @include border-radius(5px);
+  border: 1px solid $silver_light;
   .panel-separator {
     display: none;
   }
@@ -839,6 +937,7 @@ body {
 	float: left;
 	.field-type-datetime {
 	  float: left;
+	  margin-right: 5px;
 	  .date-no-float {
 	    width: auto;
 	    .form-item {
@@ -902,30 +1001,59 @@ body {
 /*---------------ticket details-----------*/
 
 .node-erpal-task .columns-inner {
-	@include border-radius(5px); 
-	background-color: $white;
+  border-bottom: 1px solid $silver_light;
 }
 
 .view-mode-view_row_details .content-inner {
-	padding-bottom: 0px;
+  padding-bottom: 0px;
 }
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
   border: 1px solid $silver_light;
   @include border-radius(5px); 
+  font-size: 16px;
+  line-height: 1.5em;
+  a {
+    color: $green_dark;
+	text-decoration: underline;
+	&:hover {
+	  color: $orange;
+	}
+	&:visited {
+	  color: $green_dark;
+	}
+  }
   p {
 	font-size: 16px;
   }
+  ul {
+    margin-left: 40px;
+    li {
+	  list-style-type: disc;
+	  line-height: 1.3em;
+	}
+  }
+  ol {
+    margin-left: 46px;
+    li {
+	  list-style-type: decimal;
+	  line-height: 1.3em;
+	}
+  }
 }
-
+.quicktabs-tabpage  .panel-panel.panel-col {
+  .pane-node-body {
+    margin-top: -1px;
+    @include border-radius(0px 5px 5px 5px); 
+	position: relative;
+    z-index: 5;
+  }
+}
 /*-----------------------begin projects-timetrackings--------------------*/
 .page-projects-timetrackings {
   #edit-field-date-time-value-wrapper{
 	margin-left: 45px;
-  }
-  #edit-field-project-ref-target-id-wrapper {
-    margin-left: 440px;
   }
   #edit-field-project-ref-target-id {
     width: 120px;
@@ -940,9 +1068,6 @@ body {
   #edit-uid {
     width: 90px;
   }
-  .views-submit-button {
-    clear: both;
-  }
   #edit-uid-wrapper {
     width: 140px;
 	.description {
@@ -953,11 +1078,21 @@ body {
 /*-----------------------begin projects-timetrackings--------------------*/
 
 /*-------------begin comments------------------- */
+.node-type-erpal-crm-activity {
+  #comment-form {
+    margin-top: -1px;
+    @include border-radius(0px 5px 5px 5px);
+    border: 1px solid $silver_light;
+  }
+}
 #comment-form {
   padding: 15px;
   margin-top: 20px;
-  @include border-radius(5px); 
-  background: $light_grey;
+  @include border-radius(5px);
+  border: 1px solid $silver_light;
+  #edit-author {
+    clear: both;
+  }
   .field-type-datetime {
     width: 300px;
 	float: left;
@@ -1027,7 +1162,7 @@ body {
     padding-right: 5px !important;
 	label {
 	  font-size: 10px;
-	  color: $silverlight;
+	  color: $grey;
 	}
   }
   button span:not(.ui-icon) {
@@ -1075,19 +1210,56 @@ body {
     @include dist_zero;
 	background: none;
   }
+  .view-assigned-tasks {
+    a {
+	  padding-top: 2px;
+	  padding-bottom: 3px;
+	  padding-left: 26px;
+	}
+    td.views-field-title a{
+	  background: url("../images/menu_icons/task.png") no-repeat 0 0; 
+	  &:hover {
+	    background: url("../images/menu_icons/task_hover.png") no-repeat 0 0;
+	  }
+	}
+	td.views-field-field-project-ref a{
+	  background: url("../images/menu_icons/projects_.png") no-repeat 0 0; 
+	  &:hover {
+	    background: url("../images/menu_icons/projects_hover.png") no-repeat 0 0;
+	  }
+	}
+	td.views-field-field-timetracking-button a{
+	  background: url("../images/menu_icons/start.png") no-repeat 0 2px; 
+	}
+  }
   .homebox-portlet {
+    margin-bottom: 40px;
     border: none;
+	&#homebox-block-views_assigned_tasks-block .portlet-header {
+	  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+	}
+	&#homebox-block-timetracking_block-1 .portlet-header,
+	&#homebox-block-views_timetracking_entities-block_1-1 .portlet-header {
+	  background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
+	}
+	&#homebox-block-views_bookmarks-block-1 .portlet-header {
+	  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+	}
+    #timetracking-quick-form {
+	  @include border-radius(5px);
+	  border: 1px solid $silver_light;
+	}
     .homebox-portlet-inner {
-      border: none;
+	  border: none;
       .portlet-header {
+	    padding-left: 28px;
 	    margin-bottom: 1px;
-	    @include border-radius(5px);
-        font-weight: normal;
-		background-color: $dark_white;
-	    border: none;
+		background-color: transparent;
+		@include headline(18px, 23px, 8px, bold);
+		border: none;
 	    .portlet-title {
 	      padding-left: 8px;
-		  background-color: $dark_white;
+		  background-color: transparent;
 	    }
 	  }
       .portlet-content {
@@ -1097,8 +1269,10 @@ body {
         }
         .more-link {
           padding: 4px 10px;
-		  background-color: $dark_white;
-		  @include border-radius(5px);
+		  background-color: rgb(233,229,226); 
+	      @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	      @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+		  @include border-radius(0 0 5px 5px);
         }
         .form-submit {
           margin-left: 12px;
@@ -1193,7 +1367,10 @@ body {
   td {
     font-size: 10px;
 	font-weight: bold;
-    border-bottom: 1px solid $silver_light;
+	border-bottom: 1px solid $silver_light;
+	&.views-field-views-bulk-operations {
+	  padding-right: 0;
+	}
 	a {
 	  font-size: 13px;
 	  font-weight: normal;
@@ -1203,9 +1380,12 @@ body {
 	}
   }
   th {
-    background-color: rgb(212,212,212); // Old browsers
-    @include filter-gradient(#d4d4d4, #c5c1bf, vertical); // IE6-9
-    @include background-image(linear-gradient(top,  rgba(212,212,212,1) 0%,rgba(197,193,191,1) 100%));
+    background-color: rgb(233,229,226); 
+	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+	&.views-field-views-bulk-operations {
+	  width: 50px;
+	}
   }
   tr.info, 
   tr.even,
@@ -1228,9 +1408,9 @@ body {
 /* end hightlight of different states of tasks/projects */
 /*-------------begin login styles------------------*/
 .not-logged-in {
-  background-color: #645C57;
-  @include filter-gradient(#a69a91, #645C57, horizontal); 
-  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 10%, #645C57 60%));
+  background-color: $grey;
+  @include filter-gradient(#a69a91, $grey, horizontal); 
+  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 10%, $grey 60%));
   background-position: center top;
   background-repeat: no-repeat;
   overflow: hidden;
@@ -1326,12 +1506,13 @@ li.jstree-open ul {
 .erpal-container-item {
 	height: 100%;
 }
-.page-invoice {
+.node-type-erpal-invoice {
   fieldset.collapsible {
     margin-bottom: 3px;
   }
   .views-table {
-    border-collapse: collapse;
+    @include border-radius(5px);
+	border-collapse: separate;	
   }
 }
 .group-form-left,
@@ -1339,4 +1520,106 @@ li.jstree-open ul {
 .group-form-advanced-left,
 .group-form-advanced-right {
   @include border-radius(5px);
+}
+fieldset {
+  margin: 0px;
+}
+.page-contact {
+  .form-textarea-wrapper {
+    width: 500px;
+  }
+}
+.page-projects {
+  td.views-field-title a {
+    padding-top: 2px;
+    padding-left: 26px;
+    background: url("../images/menu_icons/projects_.png") no-repeat 0 2px;
+    line-height: 18px;
+	display: block;
+    &:hover {
+      background: url("../images/menu_icons/projects_hover.png") no-repeat 0 2px;
+    }
+  }
+  .node_erpal_contact a {
+    padding-top: 2px;
+    padding-left: 26px;
+    background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
+    line-height: 18px;
+	display: block;
+    &:hover {
+      background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
+    }
+  }
+}
+.node-type-erpal-task {
+  .pane-page-content .views-table {
+    @include border-radius(0px 5px 0px 0px);
+	border-collapse: separate;
+  }
+}
+/*-------------------------begin Page titles--------------------------------*/
+.erpal-content-left h2.pane-title,
+.page-node-pricing .pane-page-content h2.pane-title,
+.node-type-erpal-contract h2.pane-title,
+.page-tasks  h2.pane-title,
+.page-bookmarks h2.pane-title,
+.page-user h2.pane-title,
+.page-projects-timetrackings h2.pane-title  {
+  padding-left: 33px;
+}
+.page-projects .erpal-content-left h2.pane-title,
+.node-type-erpal-project .erpal-content-left h2.pane-title{
+  background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
+}
+.page-contacts .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/contact_title.png") no-repeat 0 0;
+}
+.page-activities .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/activity_title.png") no-repeat 0 0;
+}
+.page-books .erpal-content-left h2.pane-title,
+.page-node-files .erpal-content-left h2.pane-title{
+  background: url("../images/menu_icons/documents_title.png") no-repeat 0 0;
+}
+.page-files .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/file_title.png") no-repeat 0 0;
+}
+.page-invoice .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/invoice_title.png") no-repeat 0 0;
+}
+.page-contracts .erpal-content-left h2.pane-title,
+.node-type-erpal-contract h2.pane-title {
+  background: url("../images/menu_icons/contracts_title.png") no-repeat 0 0;
+}
+.node-type-erpal-contract .pane-page-title h2.pane-title {
+  background: none;
+  padding-left: 0;
+}
+.page-timekeeping .erpal-content-left h2.pane-title,
+.page-node-timetracking .erpal-content-left h2.pane-title,
+.page-projects-timetrackings h2.pane-title{
+  background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
+}
+.node-type-erpal-task .erpal-content-left h2.pane-title,
+.page-node-tasks .erpal-content-left h2.pane-title,
+.page-tasks  h2.pane-title{
+  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+}
+.page-projects-pricing .erpal-content-left h2.pane-title,
+.page-projects-budgets .erpal-content-left h2.pane-title,
+.page-node-pricing .pane-page-content h2.pane-title{
+  background: url("../images/menu_icons/price.png") no-repeat 0 2px;
+}
+.page-node-tickets .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/ticket.png") no-repeat 0 2px;
+}
+.page-bookmarks h2.pane-title {
+  background: url("../images/menu_icons/bookmarks.png") no-repeat 0 2px;
+}
+.page-user h2.pane-title {
+  background: url("../images/menu_icons/users.png") no-repeat 0 0;
+}
+/*-------------------------end Page titles--------------------------------*/
+.ui-dialog .ui-dialog-content body {
+  background: transparent;
 }

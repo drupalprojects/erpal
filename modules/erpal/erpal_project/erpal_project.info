@@ -12,6 +12,7 @@ dependencies[] = date
 dependencies[] = editablefields
 dependencies[] = entityreference
 dependencies[] = entityreference_unique
+dependencies[] = erpal_basic_helper
 dependencies[] = erpal_crm
 dependencies[] = erpal_field_pricing
 dependencies[] = erpal_profile

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Implements hook_menu
+ */
 function references_dialog_insert_menu() {
   $items['references-dialog-insert/%/%'] = array(
     'access callback' => '_references_dialog_insert_access',
@@ -11,6 +13,9 @@ function references_dialog_insert_menu() {
   return $items;
 }
 
+/**
+ * access callback for ajax requests
+ */
 function _references_dialog_insert_access($entity_id, $entity_type) {
   if (isset($_POST['bundles']))
     if (isset($entity_id) && isset($entity_type))
@@ -22,19 +27,22 @@ function _references_dialog_insert_access($entity_id, $entity_type) {
         }
 }
 
+/**
+ * provides ajax callback.
+ * returns rendered "send to textarea" form section
+ */
 function _references_dialog_insert_callback($entity_id, $entity_type) {
   // check arguments  
   if (isset($entity_id) && isset($entity_type)) {
     if ($entity = current(entity_load($entity_type, array($entity_id)))) {
       // get entity link
-      if ($link = _references_dialog_insert_genedate_link($entity_id, $entity_type)) {
+      if ($link = _references_dialog_insert_generate_link($entity_id, $entity_type)) {
         $result = array('success' => render($link));
         print drupal_json_encode($result);
         exit();
       }
     }
   }
-
 
   $result = array('error' => 'bad request');
   print drupal_json_encode($error);
@@ -53,6 +61,9 @@ function references_dialog_insert_element_info_alter(&$info) {
   }
 }
 
+/**
+ * Implements hook_form_BASE_FORM_ID_alter
+ */
 function references_dialog_insert_form_field_ui_field_edit_form_alter(&$form, $form_state) {
   if ($form['instance']['widget']['type']['#value'] == 'entityreference_autocomplete') {
 
@@ -147,7 +158,7 @@ function references_dialog_insert_entityreference_send_link($element, $widget_se
     // Take "label (entity id)', match the id from parenthesis.
     if (preg_match("/.+\((\d+)\)/", $element['#default_value'], $matches)) {
       if ($entity_id = $matches[1]) {
-        if ($send_link = _references_dialog_insert_genedate_link($entity_id, $entity_type)) {
+        if ($send_link = _references_dialog_insert_generate_link($entity_id, $entity_type)) {
           return $send_link;
         }
       }
@@ -156,7 +167,13 @@ function references_dialog_insert_entityreference_send_link($element, $widget_se
   return array();
 }
 
-function _references_dialog_insert_genedate_link($entity_id, $entity_type) {
+/**
+ * generates "Send to textarea" form section
+ * @param int $entity_id referenced entity id
+ * @param string $entity_type referenced entity type
+ * @return array "Send to textarea" render array
+ */
+function _references_dialog_insert_generate_link($entity_id, $entity_type) {
   // check the entity
   $entity = current(entity_load($entity_type, array($entity_id)));
   if (entity_access('create', $entity_type, $entity)) {
@@ -180,7 +197,9 @@ function _references_dialog_insert_genedate_link($entity_id, $entity_type) {
       return FASLE;
 
     // get file
-    $fid = $entity->{$file_field}[$entity->language][0]['fid'];
+    $file_field = array_shift(field_get_items($entity_type, $entity, $file_field));
+    // file id
+    $fid = $file_field['fid'];
     if (!$file = file_load($fid))
       return FALSE;
 
@@ -189,14 +208,14 @@ function _references_dialog_insert_genedate_link($entity_id, $entity_type) {
       $file_is_image = TRUE;
 
       // image alt
-      if (!empty($entity->{$file_field}[$entity->language][0]['alt']))
-        $alt = $entity->{$file_field}[$entity->language][0]['alt'];
+      if (!empty($file_field['alt']))
+        $alt = $file_field['alt'];
       else
         $alt = $entity->title;
 
       // image title
-      if (!empty($entity->{$file_field}[$entity->language][0]['title']))
-        $title = $entity->{$file_field}[$entity->language][0]['title'];
+      if (!empty($file_field['title']))
+        $title = $file_field['title'];
       else
         $title = $entity->title;
     }

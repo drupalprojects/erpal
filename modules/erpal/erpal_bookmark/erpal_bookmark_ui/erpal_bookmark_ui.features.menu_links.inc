@@ -10,11 +10,11 @@
 function erpal_bookmark_ui_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: user-menu:bookmarks
-  $menu_links['user-menu:bookmarks'] = array(
+  // Exported menu link: user-menu:user/bookmarks
+  $menu_links['user-menu:user/bookmarks'] = array(
     'menu_name' => 'user-menu',
-    'link_path' => 'bookmarks',
-    'router_path' => 'bookmarks',
+    'link_path' => 'user/bookmarks',
+    'router_path' => 'user/bookmarks',
     'link_title' => 'My bookmarks',
     'options' => array(
       'attributes' => array(
@@ -26,7 +26,7 @@ function erpal_bookmark_ui_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '0',
+    'weight' => '-45',
   );
   // Translatables
   // Included for use with string extractors like potx.
