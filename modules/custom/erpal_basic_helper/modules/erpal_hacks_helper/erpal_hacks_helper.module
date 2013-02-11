@@ -77,8 +77,12 @@ function _erpal_hacks_exposed_form_reset_submit($form, &$form_state) {
   //unset the exposed filter values in the session, otherwise they will still appear as defaults in the exposed filter form
   $view_name = isset($form_state['view']->name) ? $form_state['view']->name : false;
   $display_name = isset($form_state['view']->current_display) ? $form_state['view']->current_display : false;
+
   if (isset($_SESSION['views'][$view_name][$display_name])) {
     unset($_SESSION['views'][$view_name][$display_name]);
+  }
+  if (isset($_SESSION['views'][$view_name]['default'])) {
+    unset($_SESSION['views'][$view_name]['default']);
   }
   drupal_goto($_GET['q'], array('query' => $query));
 }
