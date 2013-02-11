@@ -50,14 +50,12 @@ ul.primary li a {
 		  }
 		  a {
 		    @include a_black;
-			height: 33px;
-			line-height: 33px;
 			position: relative;
 		    z-index: 1;
 			color: $black;
 			@include border-radius(5px 5px 0 0);
 			text-align: center;
-			min-width: 50px;
+			min-width: 100px;
 			&:visited {
 			  @include a_black;
 			  color: $black;
@@ -87,7 +85,7 @@ ul.primary li a {
 	&.timetrackings a,
 	&.timekeeping a,
 	&.all-timekeeping a,
-	&.timekeeping-offset a{
+	&.timekeeping-offset a {
       background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -2px;
 	  &:hover {
 	    background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
@@ -97,7 +95,7 @@ ul.primary li a {
 	&.timetrackings-active-tab a,
 	&.timekeeping-active-tab a,
 	&.all-timekeeping-active-tab a,
-    &.timekeeping-offset-active-tab a{
+    &.timekeeping-offset-active-tab a {
 	  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
 	}
 	&.fixed-price-items a,
@@ -120,11 +118,14 @@ ul.primary li a {
 	&.project-list-active-tab a {
 	  background: url("../images/menu_icons/projects.png") no-repeat 9px -38px; 
 	}
-	&.home a{
+	&.home a {
 	  background: url("../images/menu_icons/home.png") no-repeat 9px 7px;
 	  &:hover {
 	    background: url("../images/menu_icons/home.png") no-repeat 9px -37px;
 	  }
+	}
+	&.home-active-tab a {
+	  background: url("../images/menu_icons/home.png") no-repeat 9px -37px;
 	}
 	&.documents a {
 	  background: url("../images/menu_icons/docs.png") no-repeat 9px -1px;
@@ -135,13 +136,13 @@ ul.primary li a {
 	&.documents-active-tab a {
 	   background: url("../images/menu_icons/docs.png") no-repeat 9px -37px;
 	}
-	&.files a{
+	&.files a {
 	  background: url("../images/menu_icons/files.png") no-repeat 9px -2px;
 	  &:hover {
 	    background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
 	  }
 	}
-	&.files-active-tab a{
+	&.files-active-tab a {
 	  background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
 	}
 	&.contracts a {
@@ -153,7 +154,7 @@ ul.primary li a {
 	&.contracts-active-tab a {
 	  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
 	}
-	&.contact a{
+	&.contact a {
 	  background: url("../images/menu_icons/contacts.png") no-repeat 9px -1px;
 	  &:hover {
 	    background: url("../images/menu_icons/contacts.png") no-repeat 9px -37px;
@@ -162,6 +163,41 @@ ul.primary li a {
 	&.contact-active-tab a {
 	  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
 	}
+	&.tasks a {
+	  background: url("../images/menu_icons/tasks.png") no-repeat 9px 7px;
+	  &:hover {
+	    background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+	  }
+	} 
+	&.tasks-active-tab a {
+	  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+	}
+	&.calendar {
+	  width: auto;
+	  a {
+	    background: url("../images/menu_icons/calendar.png") no-repeat 9px -2px;
+	    &:hover {
+	      background: url("../images/menu_icons/calendar.png") no-repeat 9px -38px;
+	    }
+	  }
+	}
+	&.calendar-active-tab a {
+	  background: url("../images/menu_icons/calendar.png") no-repeat 9px -38px;
+	}
+	&.tickets {
+	  a {
+	    background: url("../images/menu_icons/ticket_.png") no-repeat 9px 8px;
+	    &:hover {
+	      background: url("../images/menu_icons/ticket_.png") no-repeat 9px -25px;
+	    }
+	  }
+	}
+	&.tickets-active-tab a {
+	  background: url("../images/menu_icons/ticket_.png") no-repeat 9px -25px;
+	}
   }
+}
+.page-projects-projects #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
+  min-width: 140px;
 }
 /*--------------------------end icons for tabs------------------------*/
