@@ -1,5 +1,8 @@
 @import "global_vars_a_mixins";
 
+iframe body {
+  background-color: white;
+}
 body {
   &.panels-ipe {
     margin-bottom: 0 !important;
@@ -1720,9 +1723,23 @@ fieldset {
 .page-node-tickets .erpal-content-left h2.pane-title {
   background: url("../images/menu_icons/ticket.png") no-repeat 0 2px;
 }
+.node-type-erpal-invoice .erpal-content-left .pane-page-title h2.pane-title {
+  background: url("../images/menu_icons/invoice_title.png") no-repeat 0 2px;
+}
+.pane-invoice-header-fields {
+  h2 {
+    padding-left: 0 !important;
+    font-size: 18px !important;
+	margin:  0 !important;
+  }
+  a:hover {
+    color: #FC9822;
+  }
+}
 .page-bookmarks h2.pane-title {
   background: url("../images/menu_icons/bookmarks.png") no-repeat 0 2px;
 }
+
 .page-user h2.pane-title {
   background: url("../images/menu_icons/users.png") no-repeat 0 0;
 }
