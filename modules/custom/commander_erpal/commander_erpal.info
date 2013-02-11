@@ -1,0 +1,7 @@
+name = Commander ERPAL
+description = Enables you to manage ERPAL using the console. Currently this module provides the "addtask" command.
+version = "7.x-1.0"
+core = 7.x
+package = "Commander"
+dependencies[] = erpal_project
+dependencies[] = commander

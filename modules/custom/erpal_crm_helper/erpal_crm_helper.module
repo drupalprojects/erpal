@@ -123,7 +123,7 @@ function _erpal_crm_helper_crm_activity_validate($node, $form, $form_state) {
     //if set, it must be in the future
     $next_contact_unixtime = strtotime($next_contact);
     if ($next_contact_unixtime < time())
-      form_error($form['field_next_contact'], t('If date for next contact is set, it must be in the fututre'));
+      form_error($form['field_next_contact'], t('If date for next contact is set, it must be in the future'));
   }
 }
 

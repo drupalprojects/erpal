@@ -30,12 +30,20 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /* left sidebar link*/
 /*for border*/
 /*grey link color*/
-/*for label*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
+ul.primary li a {
+  background-color: transparent;
+}
+ul.primary li a:hover {
+  background-color: transparent;
+}
+
 #erpal_wrapper .panel-panel.panel-col-last {
   float: left;
   width: 100%;
@@ -82,12 +90,22 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   -ms-border-radius: 5px 5px 0 0;
   -o-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active {
+  background: white;
+  position: relative;
+  z-index: 10;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active:hover {
+  background: white;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
-  padding: 0 20px;
+  padding: 0 12px 0 35px;
   letter-spacing: 1px;
-  text-align: center;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
@@ -95,25 +113,24 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   float: left;
   height: 42px;
   line-height: 42px;
-  min-width: 80px;
   border: none;
+  height: 33px;
+  line-height: 33px;
+  position: relative;
+  z-index: 1;
+  color: black;
   -webkit-border-radius: 5px 5px 0 0;
   -moz-border-radius: 5px 5px 0 0;
   -ms-border-radius: 5px 5px 0 0;
   -o-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
-  height: 33px;
-  line-height: 33px;
-  min-width: 105px;
-  position: relative;
-  z-index: 1;
-  color: black;
+  text-align: center;
+  min-width: 50px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
   margin: 0;
-  padding: 0 20px;
+  padding: 0 12px 0 35px;
   letter-spacing: 1px;
-  text-align: center;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
@@ -121,7 +138,6 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   float: left;
   height: 42px;
   line-height: 42px;
-  min-width: 80px;
   border: none;
   color: black;
 }
@@ -129,10 +145,7 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
   color: #fc9822;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active {
-  *zoom: 1;
-  background-color: #fc9822;
   color: black;
-  background: white;
   border: medium none;
   z-index: 10;
   color: #fc9822;
@@ -140,3 +153,76 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
   color: #fc9822;
 }
+
+/*--------------------------begin icons for tabs------------------------*/
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active-timetrackings a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timetrackings a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.all-timekeeping a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-offset a {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active-timetrackings a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timetrackings a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.all-timekeeping a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-offset a:hover {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active-timetrackings-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timetrackings-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.all-timekeeping-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-offset-active-tab a {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a {
+  background: url("../images/menu_icons/price_.png") no-repeat 9px 9px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a:hover {
+  background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets-active-tab a {
+  background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a {
+  background: url("../images/menu_icons/projects.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a:hover {
+  background: url("../images/menu_icons/projects.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list-active-tab a {
+  background: url("../images/menu_icons/projects.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.home a {
+  background: url("../images/menu_icons/home.png") no-repeat 9px 7px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.home a:hover {
+  background: url("../images/menu_icons/home.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.documents a {
+  background: url("../images/menu_icons/docs.png") no-repeat 9px -1px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.documents a:hover {
+  background: url("../images/menu_icons/docs.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.documents-active-tab a {
+  background: url("../images/menu_icons/docs.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.files a {
+  background: url("../images/menu_icons/files.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.files a:hover {
+  background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.files-active-tab a {
+  background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contracts a {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -1px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contracts a:hover {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contracts-active-tab a {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contact a {
+  background: url("../images/menu_icons/contacts.png") no-repeat 9px -1px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contact a:hover {
+  background: url("../images/menu_icons/contacts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contact-active-tab a {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+}
+
+/*--------------------------end icons for tabs------------------------*/

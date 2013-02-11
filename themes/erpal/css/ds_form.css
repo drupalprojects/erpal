@@ -1,13 +1,52 @@
 /****************************
 	General
 ****************************/
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/* for pain search */
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border, */
+/*link color*/
+/*styles for alert*/
+/*color for mark*/
+/* left sidebar link*/
+/*for border*/
+/*grey link color*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
 .group-form-left,
 .group-form-right,
 .group-form-advanced-onecolumn,
 .group-form-advanced-left,
 .group-form-advanced-right {
-  background-color: #EEEEEE;
   padding: 10px;
+  border: 1px solid #d9d5d2;
 }
 
 #erpal-project-node-form,

@@ -1,5 +1,10 @@
 @import "global_vars_a_mixins";
-
+ul.primary li a {
+  background-color: transparent;
+  &:hover {
+    background-color: transparent;
+  }
+}
 #erpal_wrapper .panel-panel.panel-col-last {
   float: left;
   width: $value100;
@@ -32,15 +37,27 @@
 		  @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 		  @include box-shadow(#545151 0 -2px 1px 0);
 		  @include border-radius(5px 5px 0 0);
+		  text-align: center;
+		  position: relative;
+		  z-index: 1;
+		  &.active {
+		    background: $white;
+			position: relative;
+			z-index: 10;
+			&:hover {
+			  background: $white;
+			}
+		  }
 		  a {
 		    @include a_black;
-			@include border-radius(5px 5px 0 0);
 			height: 33px;
 			line-height: 33px;
-			min-width: 105px;
 			position: relative;
 		    z-index: 1;
 			color: $black;
+			@include border-radius(5px 5px 0 0);
+			text-align: center;
+			min-width: 50px;
 			&:visited {
 			  @include a_black;
 			  color: $black;
@@ -49,8 +66,7 @@
 			  color: $orange;
 			}
 			&.active {
-			  @include a_orange;
-			  background: $white;
+			  color: $black;
 			  border: medium none;
 			  z-index: 10;
 			  color: $orange;
@@ -64,6 +80,88 @@
 	} 
   }
 }
-
-
-
+/*--------------------------begin icons for tabs------------------------*/
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary {
+  li {
+    &.active-timetrackings a,
+	&.timetrackings a,
+	&.timekeeping a,
+	&.all-timekeeping a,
+	&.timekeeping-offset a{
+      background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -2px;
+	  &:hover {
+	    background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
+	  }
+	}
+	&.active-timetrackings-active-tab a,
+	&.timetrackings-active-tab a,
+	&.timekeeping-active-tab a,
+	&.all-timekeeping-active-tab a,
+    &.timekeeping-offset-active-tab a{
+	  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
+	}
+	&.fixed-price-items a,
+    &.time-budgets a {
+	  background: url("../images/menu_icons/price_.png") no-repeat 9px 9px;
+	  &:hover {
+	    background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
+	  }
+	}
+	&.fixed-price-items-active-tab  a,
+    &.time-budgets-active-tab a {
+	  background: url("../images/menu_icons/price_.png") no-repeat 9px -40px; 
+	}
+	&.project-list a {
+	  background: url("../images/menu_icons/projects.png") no-repeat 9px -2px;
+	  &:hover {
+	    background: url("../images/menu_icons/projects.png") no-repeat 9px -38px;
+	  }
+	}
+	&.project-list-active-tab a {
+	  background: url("../images/menu_icons/projects.png") no-repeat 9px -38px; 
+	}
+	&.home a{
+	  background: url("../images/menu_icons/home.png") no-repeat 9px 7px;
+	  &:hover {
+	    background: url("../images/menu_icons/home.png") no-repeat 9px -37px;
+	  }
+	}
+	&.documents a {
+	  background: url("../images/menu_icons/docs.png") no-repeat 9px -1px;
+	  &:hover {
+	    background: url("../images/menu_icons/docs.png") no-repeat 9px -37px;
+	  }
+	}
+	&.documents-active-tab a {
+	   background: url("../images/menu_icons/docs.png") no-repeat 9px -37px;
+	}
+	&.files a{
+	  background: url("../images/menu_icons/files.png") no-repeat 9px -2px;
+	  &:hover {
+	    background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
+	  }
+	}
+	&.files-active-tab a{
+	  background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
+	}
+	&.contracts a {
+	  background: url("../images/menu_icons/contracts.png") no-repeat 9px -1px;
+	  &:hover {
+	    background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+	  }
+	}
+	&.contracts-active-tab a {
+	  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+	}
+	&.contact a{
+	  background: url("../images/menu_icons/contacts.png") no-repeat 9px -1px;
+	  &:hover {
+	    background: url("../images/menu_icons/contacts.png") no-repeat 9px -37px;
+	  }
+	} 
+	&.contact-active-tab a {
+	  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+	}
+  }
+}
+/*--------------------------end icons for tabs------------------------*/

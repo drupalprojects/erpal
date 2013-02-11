@@ -1,14 +1,15 @@
 /****************************
 	General
 ****************************/
+@import "global_vars_a_mixins";
 
 .group-form-left,
 .group-form-right,
 .group-form-advanced-onecolumn,
 .group-form-advanced-left,
 .group-form-advanced-right {
-  background-color: #EEEEEE;
   padding: 10px;
+  border: 1px solid $silver_light;
 }
 
 #erpal-project-node-form,

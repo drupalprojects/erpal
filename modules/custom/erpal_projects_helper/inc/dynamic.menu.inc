@@ -465,7 +465,8 @@ function _erpal_projects_helper_node_timetrackings_links(&$data, $node) {
 function _erpal_projects_helper_projects_global_links(&$data, $node, $active_tabs=array()) {
   $has_node = $node;
   if (!$has_node) {
-    erpal_make_local_tab($data, t('Project list'), 'projects/projects', array(), in_array('project list', $active_tabs));
+    $options = array('class' => array('projects'));
+    erpal_make_local_tab($data, t('Project list'), 'projects/projects', array(), in_array('project list', $active_tabs),$options);
     erpal_make_local_tab($data, t('Active timetrackings'), 'projects/timetrackings/tmp', array(), in_array('active timetrackings', $active_tabs));
     erpal_make_local_tab($data, t('Timetrackings'), 'projects/timetrackings', array(), in_array('timetrackings', $active_tabs));  
     erpal_make_local_tab($data, t('Fixed price items'), 'projects/pricing/fixed', array(), in_array('fixed price items', $active_tabs));  
@@ -583,13 +584,14 @@ function _erpal_project_helper_project_global_menu_tabs(&$data, $project_nid, $c
   if (!$current_nid)
     $current_nid = $project_nid;
 
-  erpal_make_local_tab($data, t('Summary'), 'node/'.$project_nid, array(), in_array('summary', $active_tabs)); 
+  $options = array('class' => array('projects'));
+  erpal_make_local_tab($data, t('Summary'), 'node/'.$project_nid, array(), in_array('summary', $active_tabs), $options); 
   erpal_make_local_tab($data, t('Tasks'), 'node/'.$project_nid.'/tasks', array(), in_array('tasks', $active_tabs)); 
   erpal_make_local_tab($data, t('Tickets'), 'node/'.$project_nid.'/tickets', array(), in_array('tickets', $active_tabs)); 
   erpal_make_local_tab($data, t('Files'), 'node/'.$current_nid.'/files', array(), in_array('pricing', $active_tabs));
   erpal_make_local_tab($data, t('Calendar'), 'node/'.$current_nid.'/calendar', array(), in_array('calendar', $active_tabs));
   erpal_make_local_tab($data, t('Timetrackings'), 'node/'.$current_nid.'/timetracking', array(), in_array('timetrackings', $active_tabs));
-  erpal_make_local_tab($data, t('Pricing'), 'node/'.$current_nid.'/pricing', array(), in_array('pricing', $active_tabs));
+  //erpal_make_local_tab($data, t('Pricing'), 'node/'.$current_nid.'/pricing', array(), in_array('pricing', $active_tabs));
 }
 
 /**
