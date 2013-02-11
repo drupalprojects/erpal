@@ -5,28 +5,12 @@
 */
 
 /**
-* Implements hook_field_formatter_info().
+* Callback used in hook_field_formatter_view
 */
-function erpal_basic_helper_field_formatter_info() {
-  $info = array(
-    'relation_endpoint_simple_table' => array(
-      'label' => t('Endpoints simple table'),
-      'field types' => array('relation_endpoint'),
-    ),    
-  );
-
-  return $info;
-}
-
-/**
- * Implements hook_field_formatter_view().
- */
-function erpal_basic_helper_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+function _erpal_basic_helper_formatter_view_relation_endpoint_simple_table($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $build = array();
-  switch ($display['type']) {
-    case 'relation_endpoint_simple_table':      
-      $build['table'] = _erpal_basic_helper_relation_endpoint_field_create_html_table($items, $entity);
-  }
+      
+  $build['table'] = _erpal_basic_helper_relation_endpoint_field_create_html_table($items, $entity);
 
   return $build;
 }
