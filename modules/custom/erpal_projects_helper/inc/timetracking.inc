@@ -16,6 +16,46 @@ function computed_field_field_timetracking_button_compute(&$entity_field, $entit
   
 }
 
+
+/**
+* renders a block html for the last timetracking of a user, if one is available
+*/
+function _erpal_projects_helper_last_timetracking_block_render($uid) {
+  
+  if (!$uid)
+    return false;
+  
+  $last_timetracking = _timetrackings_by_user_latest($uid);
+  $lt = $last_timetracking;
+  if (!$lt)
+    return false; //no timetracking available
+    
+  $subject_id = $lt->subject_id ? $lt->subject_id : md5($lt->description);
+  $state = $lt->time_end ? 'off' : 'on';
+  
+  //@TODO make this work not only for entity type of node. Therefor we have to save the entity type in the database, @see _timetracking_calculate_current_timetrackings#
+  $node_titles = erpal_lib_helper_node_titles(array($lt->subject_id));
+  $subject_title = $lt->subject_id ? $node_titles[$lt->subject_id] : $lt->description;
+  
+  //get total duration of all timetrackings to the given subject
+  if (is_numeric($subject_id)) {
+    $total_duration = _timetracking_get_total_duration_by_subject_by_user($uid, $subject_id);
+    $entity_link = l($subject_title, 'node/'.$subject_id);  //@TODO should work for all entities not only for nodes
+  } else {
+    $total_duration = $lt->duration;
+    $entity_link = $subject_title;
+  }
+  
+  $duration = round($total_duration, 2);
+  
+  $timekeeping_url = url('projects/timetrackings/tmp');
+  
+  $timetracking_button = "<div class='last_timetracking'><a class='timekeeping_link' href='".$timekeeping_url."'>".t('list')."</a><span class='timetracking_subject'>".$entity_link."</span>".theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => $subject_id, 'state' => $state, 'duration' => $duration))."</div>";
+
+  return $timetracking_button;
+}
+
+
 /**
  * Alter the timetracking node form
  */

@@ -18,6 +18,10 @@ function erpal_basic_helper_field_formatter_info() {
         'link' => FALSE,
       ),
     ),
+    'relation_endpoint_simple_table' => array(
+      'label' => t('Endpoints simple table'),
+      'field types' => array('relation_endpoint'),
+    ),
   );
 }
 
@@ -63,10 +67,16 @@ function erpal_basic_helper_field_formatter_prepare_view($entity_type, $entities
 
   // Collect every possible entity attached to any of the entities.
   foreach ($entities as $id => $entity) {
-    foreach ($items[$id] as $delta => $item) {
-      if (isset($item['target_id'])) {
-        $target_ids[] = $item['target_id'];
+    
+    //check display of each entity
+    if ($displays[$id]['type'] == 'relation_endpoint_simple_table') {
+    
+      foreach ($items[$id] as $delta => $item) {
+        if (isset($item['target_id'])) {
+          $target_ids[] = $item['target_id'];
+        }
       }
+      
     }
   }
 
@@ -74,7 +84,7 @@ function erpal_basic_helper_field_formatter_prepare_view($entity_type, $entities
     $target_entities = entity_load($field['settings']['target_type'], $target_ids);
   }
   else {
-    $target_entities = array();
+    return false; //no entites, no data returned
   }
 
   // Iterate through the fieldable entities again to attach the loaded data.
@@ -108,6 +118,21 @@ function erpal_basic_helper_field_formatter_prepare_view($entity_type, $entities
  */
 
 function erpal_basic_helper_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $display_type = $display['type'];
+  
+  if ($display_type == 'relation_endpoint_simple_table') {
+    return _erpal_basic_helper_formatter_view_relation_endpoint_simple_table($entity_type, $entity, $field, $instance, $langcode, $items, $display);
+  } elseif ($display_type == 'entityreference_typed_label') {
+    return _erpal_basic_helper_formatter_view_entityreference_typed_label($entity_type, $entity, $field, $instance, $langcode, $items, $display);
+  }
+}
+
+/**
+* Callback used in hook_field_formatter_info to view entityreferences with entity type and bundle class
+*/
+function _erpal_basic_helper_formatter_view_entityreference_typed_label($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  
+  
   $result = array();
   $settings = $display['settings'];
 
@@ -117,26 +142,22 @@ function erpal_basic_helper_field_formatter_view($entity_type, $entity, $field, 
       unset($items[$key]);
     }
   }
+  
+  $handler = entityreference_get_selection_handler($field, $instance, $entity_type, $entity);
 
-  switch ($display['type']) {
-    case 'entityreference_typed_label':
-      $handler = entityreference_get_selection_handler($field, $instance, $entity_type, $entity);
+  foreach ($items as $delta => $item) {
+    $label = $handler->getLabel($item['entity']);
+    // If the link is to be displayed and the entity has a uri, display a link.
+    // Note the assignment ($url = ) here is intended to be an assignment.
 
-      foreach ($items as $delta => $item) {
-        $label = $handler->getLabel($item['entity']);
-        // If the link is to be displayed and the entity has a uri, display a link.
-        // Note the assignment ($url = ) here is intended to be an assignment.
- 
-        if ($display['settings']['link'] && ($uri = entity_uri($field['settings']['target_type'], $item['entity']))) {
-          $bundle = _erpal_basic_helper_entity_bundle($item['entity'], $field['settings']['target_type']);
-          $reference_class = $entity_type."_".$bundle;
-          $result[$delta] = array('#markup' => '<span class="entityreference '.$reference_class.'">'.l($label, $uri['path'], $uri['options']).'</span>');
-        }
-        else {
-          $result[$delta] = array('#markup' => check_plain($label));
-        }
-      }
-      break;
+    if ($display['settings']['link'] && ($uri = entity_uri($field['settings']['target_type'], $item['entity']))) {
+      $bundle = _erpal_basic_helper_entity_bundle($item['entity'], $field['settings']['target_type']);
+      $reference_class = $entity_type."_".$bundle;
+      $result[$delta] = array('#markup' => '<span class="entityreference '.$reference_class.'">'.l($label, $uri['path'], $uri['options']).'</span>');
+    }
+    else {
+      $result[$delta] = array('#markup' => check_plain($label));
+    }
   }
 
   return $result;

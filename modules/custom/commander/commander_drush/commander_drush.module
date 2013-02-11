@@ -1,0 +1,236 @@
+<?php
+/**
+ *  @file commander_drush/commander_drush.module
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define hooks and global callbacks.
+ */
+
+define( 'MODULE_COMMANDER_DRUSH_EXECUTION_FILE',  'inc/exec.inc' );
+
+define( 'MODULE_COMMANDER_DRUSH_PATH_VARIABLE', 'commander_drush_path' );
+
+define( 'MODULE_COMMANDER_DRUSH_ADMINISTER_PERMISSION', 'administer commander drush settings' );
+
+/**
+ *  Execute the given drush command
+ *  
+ *  @scope global
+ *  @param arguments (string) The arguments to be passed to drush
+ *  @param lines (reference) The result of the call
+ *  @param put (string) Optionally send this to drush as soon as possible. When getting a list of caches it is required to close the command line again by sending "0\n" for example.
+ *  @return (string) The result of the executed command 
+ */
+function commander_drush_execute( $arguments, &$lines, $put=NULL ) {
+  
+  $drupal_path  = getcwd();
+  
+  $descriptors  = array(
+    0 => array( 'pipe', 'r' ), // stdin
+    1 => array( 'pipe', 'w' ), // stdout
+    2 => array( 'pipe', 'w' ), // stderr
+  );
+  
+  $command  = variable_get( MODULE_COMMANDER_DRUSH_PATH_VARIABLE, 'drush' );
+  
+  if( $h=proc_open( $command.' '.$arguments, $descriptors, $pipes, $drupal_path ) ) {
+    
+    /*stream_set_timeout( $h, 10 );
+    stream_set_timeout( $pipes[1], 10 );*/
+    
+    $output = '';
+    while( !feof($pipes[1]) ) {
+      $out    = fgets( $pipes[1] );
+      
+      if( $put ) {
+        fputs( $pipes[0], $put );
+        $put  = NULL;
+      }
+      
+      $output .= $out;
+    }
+    
+    /*$read = array( $pipes[0] );
+    while( stream_select(  ) )*/
+    
+    $errors = '';
+    while( !feof($pipes[2]) ) {
+      $errors .= fgets( $pipes[2] );
+    }
+    
+    fclose( $pipes[0] );
+    fclose( $pipes[1] );
+    fclose( $pipes[2] );
+    $return_code  = proc_close( $h );
+    
+    if( $errors ) {
+      $lines  = $errors;
+      return FALSE;
+    }
+    
+    $lines  = $output;
+    return TRUE;
+    
+  }
+  
+  return FALSE;
+  
+}
+
+/**
+ *  Get currently installed version of drush
+ *  
+ *  @scope global
+ *  @return The currently installed version or NULL if none was found
+ */
+function commander_drush_get_version() {
+  
+  $lines    = NULL;
+  $result   = commander_drush_execute( '--version', $lines );
+  
+  if( !$result )
+    return NULL;
+  
+  $version  = preg_replace( "@^(.*?)drush version ([0-9\.]+)(.*?)$@s", '$2', $lines );
+  
+  if( $version==$lines )
+    return NULL;
+  
+  return $version;
+  
+}
+
+/**
+ *  Administration form
+ */
+function commander_drush_admin() {
+  
+  $form = array();
+
+  $form[MODULE_COMMANDER_DRUSH_PATH_VARIABLE] = array(
+    '#type'           => 'textfield',
+    '#title'          => t('drush path'),
+    '#default_value'  => variable_get( MODULE_COMMANDER_DRUSH_PATH_VARIABLE, 'drush' ),
+    '#description'    => t('Where to find the drush executable. For windows you may need a special bat file. See the module description for details.'),
+    '#required'       => TRUE,
+  );
+  
+  return system_settings_form( $form );
+  
+}
+
+/**
+ * Implements hook_permission().
+ */
+function commander_drush_permission() {
+  
+  return array(
+    
+    MODULE_COMMANDER_DRUSH_ADMINISTER_PERMISSION  => array(
+      'title'           => t('Administer commander drush'),
+      'description'     => t('Allow users to administer the commander_drush module.'),
+      'restrict access' => TRUE,
+    ),
+    
+  );
+  
+}
+
+/**
+ *  Implements hook_menu()
+ */
+function commander_drush_menu() {
+
+  $items    = array();
+
+  $items['admin/config/development/commander-drush'] = array(
+    'title'             => 'Commander drush config page',
+    'description'       => 'Set the path to drush. Windows may require a special configuration.',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array('commander_drush_admin'),
+    'access arguments'  => array(MODULE_COMMANDER_DRUSH_ADMINISTER_PERMISSION),
+    'type'              => MENU_NORMAL_ITEM,
+   );
+
+  return $items;
+}
+
+/**
+ *  Get a list of all drush commands
+ *  
+ *  @scope global
+ *  @param available_only (boolean) Only return commands that are available for this version (currently unused)
+ *  @return (array) All available commands in the commander definition style
+ */
+function commander_drush_get_commands( $available_only=TRUE ) {
+  
+  $commands = array(
+    'cache-clear'       => array(
+      'description'       => t('Clear a specific cache, or all drupal caches'),
+      'alias'             => 'cc',
+      'access arguments'  => array( _commander_drush_get_permission_name( 'cache-clear' ) ),
+      'execute'           => '_commander_drush_execute',
+      'file'              => MODULE_COMMANDER_DRUSH_EXECUTION_FILE,
+      'arguments'         => array(
+        'type'              => array(
+          'description'       => 'The name of the cache to be cleared. Set to "all" to clear all caches.',
+          'type'              => 'drush_cache_name',
+          'required'          => TRUE,
+        ),
+      ),
+    ),
+    'drush-version'     => array(
+      'description'       => t('Get the installed version of drush'),
+      'access arguments'  => array( _commander_drush_get_permission_name( 'version' ) ),
+      'execute'           => '_commander_drush_execute',
+      'file'              => MODULE_COMMANDER_DRUSH_EXECUTION_FILE,
+    ),
+  );
+  
+  $version  = commander_drush_get_version();
+  
+  if( !$version )
+    return array();
+  
+  return $commands;
+  
+}
+
+/**
+ *  Implements hook_commander_command()
+ */
+function commander_drush_commander_command() {
+  
+  return commander_drush_get_commands();
+  
+}
+
+/**
+ *  Implements hook_commander_argument_type()
+ */
+function commander_drush_commander_argument_type() {
+  
+  return array(
+    
+    'drush_cache_name'  => array(
+      'name'      => 'Cache name',
+      'validate'  => '_commander_validate_cache_name',
+      'load'      => NULL,
+      'list'      => '_commander_list_cache_name',
+      'file'      => MODULE_COMMANDER_DRUSH_EXECUTION_FILE,
+    ),
+  );
+  
+}
+
+/**
+ *  Get the permission name of the given drush command
+ *  
+ *  @scope private
+ *  @param name (string) The name of the drush command
+ *  @return (string) The permission key
+ */
+function _commander_drush_get_permission_name( $name ) {
+  return 'use commander drush '.$name;
+}

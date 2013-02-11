@@ -13,6 +13,7 @@ module_load_include('inc', 'erpal_basic_helper', 'inc/field_conditions');
 module_load_include('inc', 'erpal_basic_helper', 'inc/dynamic.menu');
 module_load_include('inc', 'erpal_basic_helper', 'inc/notifications'); 
 module_load_include('inc', 'erpal_basic_helper', 'inc/formatter'); 
+module_load_include('inc', 'erpal_basic_helper', 'inc/relation'); 
  
 /**
 * Implements hok_init

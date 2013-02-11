@@ -1,0 +1,9 @@
+name = Commander
+description = Commander core module providing an interface to execute commands. Other modules may extend this module, adding commands as necessary. Includes permission handling by allowing admins to group commands.
+version = "7.x-1.0"
+core = 7.x
+package = "Commander"
+
+scripts[] = js/commander.js
+
+stylesheets[all][] = css/commander.css

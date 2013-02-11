@@ -1,0 +1,6 @@
+name = Commander PHP
+description = Enables you to use execute PHP Code. USE WITH CAUTION! THIS CAN BE A HUGE SECURITY RISK!
+version = "7.x-1.0"
+core = 7.x
+package = "Commander"
+dependencies[] = commander
