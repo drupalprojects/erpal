@@ -92,7 +92,7 @@ function erpal_basic_helper_field_formatter_prepare_view($entity_type, $entities
     
     foreach ($items[$id] as $delta => $item) {
       // Check whether the referenced entity could be loaded.
-      if (isset($target_entities[$item['target_id']])) {
+      if (isset($item['target_id']) && isset($target_entities[$item['target_id']])) {
         // Replace the instance value with the term data.
         $items[$id][$delta]['entity'] = $target_entities[$item['target_id']];
         // Check whether the user has access to the referenced entity.
@@ -100,8 +100,10 @@ function erpal_basic_helper_field_formatter_prepare_view($entity_type, $entities
       }
       // Otherwise, unset the instance value, since the entity does not exist.
       else {
-        unset($items[$id][$delta]);
-        $rekey = TRUE;
+        if ($displays[$id] == 'relation_endpoint_simple_table') {
+          unset($items[$id][$delta]);
+          $rekey = TRUE;
+        }
       }
     }
 
