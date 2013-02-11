@@ -39,17 +39,16 @@ function _erpal_projects_helper_last_timetracking_block_render($uid) {
   
   //get total duration of all timetrackings to the given subject
   if (is_numeric($subject_id)) {
-    $total_duration = _timetracking_get_total_duration_by_subject_by_user($uid, $subject_id);
+    //$total_duration = _timetracking_get_total_duration_by_subject_by_user($uid, $subject_id);
     $entity_link = l($subject_title, 'node/'.$subject_id);  //@TODO should work for all entities not only for nodes
   } else {
-    $total_duration = $lt->duration;
     $entity_link = $subject_title;
   }
-  
-  $duration = round($total_duration, 2);
+  _erpal_projects_helper_task_has_timetracking_entity_active($subject_id, $duration);
+  $duration = round($duration, 2);
   
   $timekeeping_url = url('projects/timetrackings/tmp');
-  
+
   $timetracking_button = "<div class='last_timetracking'><a class='timekeeping_link' href='".$timekeeping_url."'>".t('list')."</a><span class='timetracking_subject'>".$entity_link."</span>".theme('timetracking_button', array('entity_type' => 'node', 'entity_id' => $subject_id, 'state' => $state, 'duration' => $duration))."</div>";
 
   return $timetracking_button;
