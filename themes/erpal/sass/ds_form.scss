@@ -26,6 +26,11 @@ div.group-form-advanced-right:empty {
 	display: none;
 }
 
+.erpal-forms table td {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
 /****************************
 	Group top
 ****************************/
@@ -73,6 +78,8 @@ div.group-form-advanced-right:empty {
 
 .group-advanced {
   clear: both;
+  border: none;
+  border-top: 1px solid #CCCCCC;
 }
 
 .group-advanced > legend {
