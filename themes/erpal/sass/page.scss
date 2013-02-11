@@ -1333,12 +1333,12 @@ body {
 	&#homebox-block-views_assigned_tasks-block .portlet-header {
 	  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 	}
-	&#homebox-block-timetracking_block-1 .portlet-header,
-	&#homebox-block-views_timetracking_entities-block_1-1 .portlet-header {
+	&#homebox-block-timetracking_block .portlet-header,
+	&#homebox-block-views_timetracking_entities-block_1 .portlet-header {
 	  background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
 	}
-	&#homebox-block-views_bookmarks-block-1 .portlet-header {
-	  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+	&#homebox-block-views_bookmarks-block .portlet-header {
+	  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
 	}
     #timetracking-quick-form {
 	  @include border-radius(5px);
@@ -1725,6 +1725,15 @@ fieldset {
 }
 .page-user h2.pane-title {
   background: url("../images/menu_icons/users.png") no-repeat 0 0;
+}
+.page-user-bookmarks h2.pane-title {
+  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
+}
+.page-user-projects h2.pane-title {
+  background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
+}
+.page-user-tasks h2.pane-title {
+  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 .profile .user-picture {
   margin-top: 20px;
