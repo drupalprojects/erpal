@@ -94,6 +94,10 @@ body.admin-menu {
   padding-top: 20px !important;
 }
 
+body.references-dialog-in-dialog {
+  background: transparent;
+}
+
 /* =============================================================================
  *   HTML Elements
  * ========================================================================== */
