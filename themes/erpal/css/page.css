@@ -28,12 +28,20 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for alert*/
 /*color for mark*/
 /* left sidebar link*/
+/*for border*/
 /*grey link color*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
+/*for top menu border*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
+iframe body {
+  background-color: white;
+}
+
 body {
   /*----------end node task-----------*/
   /*----------end node ticket-----------*/
@@ -41,52 +49,72 @@ body {
 body.panels-ipe {
   margin-bottom: 0 !important;
 }
-body #erpal_wrapper > .panel-col-first {
+body #erpal_wrapper .erpal-region-content {
+  padding-top: 20px;
+  background-color: white;
+  -webkit-border-radius: 0px 5px 5px 5px;
+  -moz-border-radius: 0px 5px 5px 5px;
+  -ms-border-radius: 0px 5px 5px 5px;
+  -o-border-radius: 0px 5px 5px 5px;
+  border-radius: 0px 5px 5px 5px;
+  -webkit-box-shadow: black 0px 0px 5px;
+  -moz-box-shadow: black 0px 0px 5px;
+  box-shadow: black 0px 0px 5px;
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  min-height: 500px;
+}
+body #erpal_wrapper .erpal-top {
+  margin-bottom: 15px;
+  margin-left: 10px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  height: 28px;
+  position: relative;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+body #erpal_wrapper .erpal-top .block {
+  margin-bottom: 0;
+}
+body #erpal_wrapper .erpal-top .block .block {
+  margin-bottom: 0;
+  float: left;
+}
+body #erpal_wrapper .erpal-region-left.panel-col-first {
   margin: 0;
-  background-color: #7b726b;
   width: 150px;
   max-width: none;
   height: 100%;
   float: left;
   position: absolute;
-  left: 0;
 }
-body #erpal_wrapper > .panel-col-first > .inside {
+body #erpal_wrapper .erpal-region-left.panel-col-first > .inside {
   margin: 0;
   padding-right: 0;
   height: 100%;
-  -webkit-box-shadow: #888888 1px 2px 2px;
-  -moz-box-shadow: #888888 1px 2px 2px;
-  box-shadow: #888888 1px 2px 2px;
 }
 body.page-node-tasks {
   /*----------begin node task-----------*/
-    /*.content-inner {
-	  border-bottom: 1px solid $bright_grey; commentlk: same color as background?! why is it even there?! 
-	}*/
-  /*.region-sidebar-left {
-    max-width: 620px; commentlk: why is it smaller than on other pages?
-  }*/
-  	/*.region-sidebar-right {
-  	  padding: 10px;
-  	  width: 380px; commentlk: why is it bigger than on other pages?
-      }*/
 }
 body.page-node-tasks li {
   list-style-type: none;
 }
 body.page-node-tickets {
   /*----------begin node ticket-----------*/
-                                         /*.content-inner {
-  border-bottom: 1px solid $bright_grey; /* lk: same color as background?! why is it even there?! 
-}*/
-  /*.region-sidebar-left {
-    max-width: 620px; commentlk: why is it smaller than on other pages?
-  }*/
-  /*.region-sidebar-right {
-    padding: 10px;
-    width: 380px; commentlk: why is it bigger than on other pages?
-  }*/
 }
 body.page-node-tickets li {
   list-style-type: none;
@@ -117,34 +145,134 @@ body #user-login input.form-text {
   /*----------end User menu-------------*/
 }
 .pane-system-user-menu ul {
-  margin: 0px;
-  padding: 0px;
+  margin: 0 0 0 20px;
+  padding: 0 10px 0 2px;
   overflow: hidden;
-  border-bottom: 1px solid #908984;
+  float: right;
+  border-left: 1px solid #d0cac6;
+  border-right: 1px solid #d0cac6;
 }
 .pane-system-user-menu ul li {
+  margin-left: 15px;
   padding: 0;
-  float: right;
-  width: 74px;
+  float: left;
   text-align: center;
 }
-.pane-system-user-menu ul li.last {
-  border-right: 1px solid #847c76;
-}
 .pane-system-user-menu ul li a {
-  color: #e7d4c5;
+  padding-left: 25px;
+  color: #645c57;
+  display: block;
+  font-size: 0;
+  text-indent: -2000px;
 }
 .pane-system-user-menu ul li a:hover {
-  color: #fdf8f4;
+  color: #fc9822;
+}
+.pane-system-user-menu ul li.my-bookmarks a {
+  background: url("../images/menu_icons/bookmark.png") no-repeat 0px 2px;
+}
+.pane-system-user-menu ul li.my-bookmarks a:hover {
+  background: url("../images/menu_icons/bookmark.png") no-repeat 0px -24px;
+}
+.pane-system-user-menu ul li.my-tasks a {
+  background: url("../images/menu_icons/tasks.png") no-repeat 0px 4px;
+}
+.pane-system-user-menu ul li.my-tasks a:hover {
+  background: url("../images/menu_icons/tasks.png") no-repeat 0px -25px;
+}
+.pane-system-user-menu ul li.my-account a {
+  background: url("../images/menu_icons/user.png") no-repeat 0px 2px;
+}
+.pane-system-user-menu ul li.my-account a:hover {
+  background: url("../images/menu_icons/user.png") no-repeat 0px -23px;
+}
+.pane-system-user-menu ul li.timekeeping a {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -3px;
+}
+.pane-system-user-menu ul li.timekeeping a:hover {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+}
+.pane-system-user-menu ul li.my-projects a {
+  background: url("../images/menu_icons/projects.png") no-repeat 0px -3px;
+}
+.pane-system-user-menu ul li.my-projects a:hover {
+  background: url("../images/menu_icons/projects.png") no-repeat 0px -39px;
+}
+
+#mini-panel-user_bar .panel-panel {
+  width: auto;
+}
+#mini-panel-user_bar .panel-panel .panel-separator {
+  display: none;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last {
+  margin-right: 20px;
+  width: auto;
+  float: right;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last .inside {
+  margin-left: 0px;
+  min-width: auto;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last .inside .pane-erpal-basic-helper-logout-block .block-content a {
+  padding: 6px 0 6px 22px;
+  background: url("../images/menu_icons/logout.png") no-repeat 0px 2px;
+  line-height: 27px;
+}
+#mini-panel-user_bar .panel-panel.panel-col-last .inside .pane-erpal-basic-helper-logout-block .block-content a:hover {
+  background: url("../images/menu_icons/logout.png") no-repeat 0px -22px;
+  color: #fc9822;
+}
+#mini-panel-user_bar .panel-panel .welcome_user {
+  line-height: 27px;
+}
+#mini-panel-user_bar .panel-panel .welcome_user img {
+  margin-top: 3px;
+  margin-right: 5px;
+  float: left;
+  max-width: 22px;
+  max-height: 22px;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timekeeping_link {
+  padding-left: 25px;
+  float: left;
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -3px;
+  line-height: 30px;
+  font-size: 0;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timekeeping_link:hover {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking_subject {
+  margin-right: 2px;
+  line-height: 30px;
+  float: left;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking {
+  float: left;
+  font-weight: bold;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking a {
+  line-height: 30px;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking img {
+  margin-top: 6px;
+  margin-right: 2px;
+  float: left;
+}
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking .timetracking_text {
+  display: none;
+}
+#mini-panel-user_bar .panel-col-first {
+  width: 160px;
 }
 
 /*----------Logo-------------*/
 .pane-page-logo {
-  margin-bottom: 10px;
-  text-align: center;
-}
-.pane-page-logo img {
-  vertical-align: bottom;
+  top: -9px;
+  left: 2px;
+  position: absolute;
+  z-index: 100;
 }
 
 /*----------end Logo-------------*/
@@ -156,8 +284,9 @@ body #user-login input.form-text {
   margin-bottom: 12px;
 }
 .pane-search-form #search-block-form .form-text {
-  margin-left: 5px;
-  width: 130px;
+  margin-left: 10px;
+  padding: 2px 0;
+  width: 120px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
@@ -168,8 +297,68 @@ body #user-login input.form-text {
 
 /*----------end Search Block-------------*/
 /*----------begin Erpal menu-------------*/
+/*----------begin Erpal menu items-------------*/
+.pane-menu-menu-erpal-menu .active-trail.projects a,
+.pane-menu-menu-erpal-menu .active-trail.projects a:hover,
+.pane-menu-menu-erpal-menu .projects a,
+.pane-menu-menu-erpal-menu .projects a:hover {
+  background-image: url("../images/menu_icons/projects.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.documents a,
+.pane-menu-menu-erpal-menu .active-trail.documents a:hover,
+.pane-menu-menu-erpal-menu .documents a,
+.pane-menu-menu-erpal-menu .documents a:hover {
+  background-image: url("../images/menu_icons/docs.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.invoices a,
+.pane-menu-menu-erpal-menu .active-trail.invoices a:hover,
+.pane-menu-menu-erpal-menu .invoices a,
+.pane-menu-menu-erpal-menu .invoices a:hover {
+  background-image: url("../images/menu_icons/invoices.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.contracts a,
+.pane-menu-menu-erpal-menu .active-trail.contracts a:hover,
+.pane-menu-menu-erpal-menu .contracts a,
+.pane-menu-menu-erpal-menu .contracts a:hover {
+  background-image: url("../images/menu_icons/contracts.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.files a,
+.pane-menu-menu-erpal-menu .active-trail.files a:hover,
+.pane-menu-menu-erpal-menu .files a,
+.pane-menu-menu-erpal-menu .files a:hover {
+  background-image: url("../images/menu_icons/files.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.calendar a,
+.pane-menu-menu-erpal-menu .active-trail.calendar a:hover,
+.pane-menu-menu-erpal-menu .calendar a,
+.pane-menu-menu-erpal-menu .calendar a:hover {
+  background-image: url("../images/menu_icons/calendar.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.contacts a,
+.pane-menu-menu-erpal-menu .active-trail.contacts a:hover,
+.pane-menu-menu-erpal-menu .contacts a,
+.pane-menu-menu-erpal-menu .contacts a:hover {
+  background-image: url("../images/menu_icons/contacts.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.activities a,
+.pane-menu-menu-erpal-menu .active-trail.activities a:hover,
+.pane-menu-menu-erpal-menu .activities a,
+.pane-menu-menu-erpal-menu .activities a:hover {
+  background-image: url("../images/menu_icons/activities.png");
+}
+.pane-menu-menu-erpal-menu .active-trail.timekeeping a,
+.pane-menu-menu-erpal-menu .active-trail.timekeeping a:hover,
+.pane-menu-menu-erpal-menu .timekeeping a,
+.pane-menu-menu-erpal-menu .timekeeping a:hover {
+  background-image: url("../images/menu_icons/timekeeping.png");
+}
+
+/*-------------end Erpal menu items-----------*/
 .pane-menu-menu-erpal-menu {
   width: 150px;
+}
+.pane-menu-menu-erpal-menu .contextual-links-wrapper li {
+  background: none;
 }
 .pane-menu-menu-erpal-menu ul {
   margin: 0px;
@@ -180,44 +369,42 @@ body #user-login input.form-text {
   padding: 0;
   list-style-image: none;
   list-style-type: none;
-  border-top: 1px solid #908984;
+  position: relative;
+  z-index: 1;
+  background: url("../images/li.png") no-repeat 0 0;
 }
-.pane-menu-menu-erpal-menu ul li.active-trail a {
-  color: black;
-  border-top: 2px solid #fd8300;
-  border-bottom: 2px solid #fd8300 !important;
-}
-.pane-menu-menu-erpal-menu ul li.active-trail a:hover {
-  color: black;
-}
-.pane-menu-menu-erpal-menu ul li.active-trail a.active-trail {
-  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
-}
-.pane-menu-menu-erpal-menu ul li.active-trail .active {
-  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
-}
-.pane-menu-menu-erpal-menu ul li.active-trail.active-trail {
-  background: url("../images/arrow.gif") no-repeat 100% center #ffa800;
-}
-.pane-menu-menu-erpal-menu ul li.last a {
-  border-bottom: 1px solid #908984;
-}
-.pane-menu-menu-erpal-menu ul li.last.last {
-  border-bottom: 1px solid #756c65;
+.pane-menu-menu-erpal-menu ul li.active-trail a, .pane-menu-menu-erpal-menu ul li.active-trail a:hover {
+  background-position: 15px -74px;
 }
 .pane-menu-menu-erpal-menu ul li a {
-  padding: 9px 17px 9px 10px;
-  display: block;
-  font-size: 14px;
-  color: #e7d4c5;
-  border-top: 1px solid #756c65;
+  background-position: 15px -1px;
 }
 .pane-menu-menu-erpal-menu ul li a:hover {
-  color: #fdf8f4;
+  background-position: 15px -37px;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a {
+  color: white;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail a:hover {
+  color: white;
+}
+.pane-menu-menu-erpal-menu ul li.active-trail.active-trail {
+  background: url("../images/li_active.png") no-repeat 0 0;
+  color: white;
+  z-index: 5;
+}
+.pane-menu-menu-erpal-menu ul li a {
+  padding: 8px 17px 7px 42px;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  background-repeat: no-repeat;
+}
+.pane-menu-menu-erpal-menu ul li a:hover {
+  color: #fc9822;
 }
 .pane-menu-menu-erpal-menu ul li a.active {
-  border-top: 2px solid #fd8300;
-  border-bottom: 2px solid #fd8300 !important;
+  color: white;
 }
 .pane-menu-menu-erpal-menu ul ul {
   margin: 0px;
@@ -240,9 +427,9 @@ body #user-login input.form-text {
  * ========================================================================== */
 /*----------begin .pane-page-content -------------*/
 .pane-page-content {
-  margin-top: 30px;
   margin-right: 20px;
-  margin-left: 30px;
+  margin-left: 20px;
+  padding-bottom: 20px;
   max-width: 1070px;
 }
 .pane-page-content .content-inner {
@@ -266,10 +453,11 @@ body #user-login input.form-text {
   border: none;
 }
 .pane-page-content h2.pane-title {
-  margin: 0px 0px 20px 0px;
-  font-weight: normal;
-  font-size: 36px;
-  line-height: 36px;
+  margin: 0px 0px 15px 0px;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+  color: black;
 }
 .pane-page-content .rel-register-build {
   padding: 10px;
@@ -282,59 +470,111 @@ body #user-login input.form-text {
 .pane-page-content .rel-register-build .views-exposed-widgets {
   margin-bottom: 0px;
 }
+.pane-page-content .portlet-content .views-table {
+  margin-bottom: 0;
+  border: 1px solid #d9d5d2;
+  border-bottom: none;
+  -webkit-border-radius: 5px 5px 0px 0px;
+  -moz-border-radius: 5px 5px 0px 0px;
+  -ms-border-radius: 5px 5px 0px 0px;
+  -o-border-radius: 5px 5px 0px 0px;
+  border-radius: 5px 5px 0px 0px;
+  border-collapse: separate;
+}
 .pane-page-content .views-table {
   margin-top: 0;
-  border: none;
+  border-collapse: collapse;
+  border-bottom: none;
 }
 .pane-page-content .views-table th {
-  padding: 15px 15px 15px 12px;
-  font-size: 14px;
+  padding: 7px 4px;
+  font-size: 13px;
 }
 .pane-page-content .views-table td {
-  padding: 15px 15px 15px 12px;
-}
-.pane-page-content .views-table td.views-field-title a {
-  text-decoration: underline;
-}
-.pane-page-content .views-table td.views-field-field-customer-ref {
-  text-decoration: underline;
+  padding: 7px 4px 7px 4px;
 }
 
 /*----------end .pane-page-content -------------*/
 /*----------begin comments------------------------*/
 .comment {
-  padding-top: 15px;
   padding-bottom: 15px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  background-color: white;
+  border: 1px solid #d9d5d2;
 }
 .comment .field-name-comment-body p {
   font-size: 16px;
 }
 .comment .comment-header {
+  padding-top: 10px;
   padding-right: 10px;
   padding-left: 15px;
   float: left;
 }
+.comment .comment-header .new {
+  position: relative;
+  top: -4px;
+}
 .comment .submitted {
-  padding-right: 15px;
-  border-bottom: 1px solid #f4f4f4;
+  padding: 10px 15px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .comment .submitted .author-datetime {
-  margin-bottom: 12px;
+  margin-bottom: 0px;
+  font-size: 11px;
+  color: #3d3835;
+}
+.comment .submitted .author-datetime a {
+  font-size: 12px;
+}
+.comment .submitted .user-picture {
+  margin-right: 5px;
+  float: left;
+}
+.comment .submitted .user-picture img {
+  max-width: 18px;
+  max-height: 18px;
 }
 .comment .comment-content {
   padding-top: 15px;
-  padding-right: 15px;
-  padding-left: 15px;
 }
-.comment .comment-content section {
-  width: 250px;
+.comment .comment-content .field-name-comment-body {
+  padding: 0 15px 15px 15px;
+  font-size: 16px;
+}
+.comment .comment-content .field-name-field-asset-files {
+  padding-left: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #d9d5d2;
+}
+.comment .comment-content .field-name-field-asset-files h2 {
+  padding-bottom: 10px;
+}
+.comment .comment-content .field-name-field-asset-files .field-item {
+  overflow: hidden;
   float: left;
+}
+.comment .comment-content section.field-name-field-asset-files .comment_erpal_file a {
+  margin-right: 20px;
+  float: left;
+  padding: 3px 0 3px 24px;
+  background: url("../images/menu_icons/files_.png") no-repeat 0 -8px;
+  line-height: 21px;
+  font-size: 13px;
+}
+.comment .comment-content section.field-name-field-asset-files .comment_erpal_file a:hover {
+  background: url("../images/menu_icons/files_hover.png") no-repeat 0 -9px;
+  color: #fc9822;
 }
 .comment .comment-form {
   padding-top: 15px;
@@ -348,8 +588,44 @@ body #user-login input.form-text {
   border-radius: 5px;
 }
 .comment nav {
-  padding: 0 15px;
+  margin-top: 10px;
+  padding: 10px 15px 0 10px;
   clear: both;
+  border-top: 1px solid #d9d5d2;
+}
+.comment nav ul.links li {
+  margin-right: 10px;
+  float: left;
+}
+.comment nav ul.links li a {
+  padding: 6px 17px;
+  display: block;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  margin: 0px 0px 0 0px;
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 10px;
+  color: #393431;
+  border: 1px solid #d9d5d2;
+}
+.comment nav ul.links li a:hover {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
+  background-image: -webkit-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -moz-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: -o-linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
+  background-image: linear-gradient(bottom, #dbd8db 37%, #e8e8e8 69%);
 }
 
 /*----------end comments------------------------*/
@@ -397,7 +673,7 @@ body #user-login input.form-text {
 /*.region-sidebar-left,*/
 .erpal-content-left {
   /*----------------begin side-bar-left-----------------*/
-  max-width: 800px;
+  max-width: 720px;
   min-width: 360px;
   width: 100%;
   float: left;
@@ -463,36 +739,53 @@ body #user-login input.form-text {
   border: none;
 }
 .erpal-content-left ul.quicktabs-tabs li {
-  margin: 0px;
+  margin: 0 2px 0 0;
   padding: 0px;
   float: left;
-  background-image: none;
-  background-color: #dedede;
-  border-top: 1px solid #eeeeee;
-  border-left: 1px solid #eeeeee;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  text-align: center;
+  border: 1px solid #CBCBCB;
+  border-bottom: none;
+  position: relative;
 }
 .erpal-content-left ul.quicktabs-tabs li.active {
-  background-color: #f6f6f6 !important;
+  background: white;
+  z-index: 10;
 }
 .erpal-content-left ul.quicktabs-tabs li.active a {
-  color: #525252 !important;
-}
-.erpal-content-left ul.quicktabs-tabs li.last {
-  border-right: 1px solid #eeeeee;
+  color: #3d3835 !important;
 }
 .erpal-content-left ul.quicktabs-tabs li a {
-  padding: 1px 12px;
+  padding: 1px 12px 2px;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
   min-width: 100px;
-  color: #888888;
+  color: #3d3835;
+}
+.erpal-content-left ul.quicktabs-tabs li a:hover {
+  color: #fc9822;
 }
 .erpal-content-left ul .field-name-task-title .field-item a {
   font-weight: bold;
   font-size: 16px;
+}
+.erpal-content-left ul .field-name-task-title .field-item a:hover {
+  color: #fc9822;
 }
 .erpal-content-left ul .field-name-task-title .field-item p {
   margin-bottom: 0px;
@@ -508,8 +801,13 @@ body #user-login input.form-text {
   margin-left: 10px;
   width: 250px;
   float: right;
-  color: #202020;
+  color: #3d3835;
   /*----------------end side-bar-right-----------------*/
+  /*-------------begin Notifiy, Bookmark------------------*/
+  /*-------------end Notifiy, Bookmark------------------*/
+}
+.erpal-content-right .block {
+  margin-bottom: 2px;
 }
 .erpal-content-right .local_tasks_menu .local_tasks {
   position: absolute;
@@ -523,30 +821,30 @@ body #user-login input.form-text {
   list-style-type: none;
 }
 .erpal-content-right .local_tasks li {
-  margin: 0 2px 7px;
+  margin: 0 2px 4px 0;
   list-style-type: none;
 }
 .erpal-content-right .local_tasks li a {
   padding-top: 5px;
   padding-bottom: 6px;
   display: block;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-  -moz-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-  box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.5);
-  color: #525252;
-  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(44%, #e6e6e6), color-stop(72%, #efefef));
-  background-image: -webkit-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
-  background-image: -moz-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
-  background-image: -o-linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
-  background-image: linear-gradient(bottom, #e6e6e6 44%, #efefef 72%);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  color: black;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   text-align: center;
   font-size: 13px;
   font-weight: bold;
+  border: 1px solid #d9d5d2;
 }
 .erpal-content-right .local_tasks li a:hover {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #dbd8db), color-stop(69%, #e8e8e8));
@@ -557,6 +855,31 @@ body #user-login input.form-text {
 }
 .erpal-content-right .local_tasks li ul {
   display: none;
+}
+.erpal-content-right .flag-wrapper {
+  margin-bottom: 6px;
+  margin-left: 5px;
+  display: block;
+}
+.erpal-content-right .flag-wrapper .flag-message {
+  left: 25px;
+  top: 2em;
+}
+.erpal-content-right .flag-wrapper.flag-project-subscriptions a, .erpal-content-right .flag-wrapper.flag-task-subscriptions a {
+  background: url("../images/menu_icons/notifiy.png") no-repeat 0 0;
+}
+.erpal-content-right .flag-wrapper.flag-bookmark-flag a {
+  padding-top: 6px;
+  background: url("../images/menu_icons/bookmark.png") no-repeat 0 0;
+}
+.erpal-content-right .flag-wrapper a {
+  padding: 3px 0 5px 26px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.erpal-content-right .flag-wrapper a:hover {
+  color: #fc9822;
+  background-position: 0px -26px;
 }
 .erpal-content-right .content-inner {
   padding-bottom: 30px;
@@ -569,23 +892,56 @@ body #user-login input.form-text {
   display: none;
 }
 .erpal-content-right .ctools-collapsible-container {
-  background-color: #dedede;
-  border: 1px solid #eeeeee;
+  margin-top: 10px;
+  margin-bottom: 1px;
+  padding-top: 5px;
+  font-size: 11px;
+  border-top: 1px solid #d9d5d2;
+}
+.erpal-content-right .ctools-collapsible-container .field-collection-view-final {
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+}
+.erpal-content-right .ctools-collapsible-container .field-collection-view-final th {
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+}
+.erpal-content-right .ctools-collapsible-container .field-name-field-buy-price .field-item,
+.erpal-content-right .ctools-collapsible-container .pane-node-created .block-content,
+.erpal-content-right .ctools-collapsible-container .field-name-field-buy-currency .field-item {
+  font-weight: bold;
+}
+.erpal-content-right .ctools-collapsible-container .field-item {
+  font-weight: bold;
+  line-height: 15px;
 }
 .erpal-content-right .ctools-collapsible-container figure {
   text-align: center;
 }
+.erpal-content-right .date-display-single {
+  font-weight: bold;
+}
 
 /*----------------end erpal_content_layout-----------------------*/
 /*----------------begin .panel-display-----------------------*/
-.panel-display .pane-entity-field h2.pane-title {
+.erpal-content-right .panel-display .pane-entity-field h2.pane-title {
   padding-right: 5px;
   margin: 0px 0px 0 0px;
   font-weight: normal;
-  font-size: 12px;
-  line-height: 12px;
-  color: #525252;
+  font-size: 11px;
+  line-height: 11px;
+  color: #645c57;
 }
+
 .panel-display .pane-entity-field .block-content {
   float: left;
 }
@@ -604,6 +960,7 @@ body #user-login input.form-text {
 }
 .panel-display .pane-entity-field .form-item label {
   float: left;
+  color: #645c57;
 }
 .panel-display .ui-widget-content {
   background: none;
@@ -627,32 +984,36 @@ body #user-login input.form-text {
 
 /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
+.ctools-collapsible-processed a:hover {
+  color: #fc9822;
+}
 .ctools-collapsible-processed .ctools-collapsible-handle {
   cursor: pointer;
 }
 .ctools-collapsible-processed .block-content a {
-  text-decoration: underline;
+  font-size: 11px;
+}
+.ctools-collapsible-processed .pane-node-author a {
+  font-size: 13px;
 }
 .ctools-collapsible-processed h2.pane-title {
   margin: 0;
   padding: 3px 5px 0px 30px;
-  background-color: #AFAFAF;
   margin: 0px 0px 0 0px;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 12px;
-  color: #525252;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 11px;
+  color: #645c57;
 }
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
-  padding: 3px 5px 3px 30px;
+  padding: 3px 5px 3px 0px;
 }
 .ctools-collapsible-processed .ctools-collapsible-content {
-  padding-top: 10px;
+  clear: both;
 }
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
   padding-left: 0;
-  font-weight: bold;
-  color: #525252;
+  color: #645c57;
   background: none;
 }
 .ctools-collapsible-processed .ctools-collapsible-content .field-items {
@@ -662,14 +1023,15 @@ body #user-login input.form-text {
   margin: 0;
   clear: both;
   line-height: 12px;
-  color: #525252;
+  color: #645c57;
+  font-weight: normal;
 }
 .ctools-collapsible-processed section, .ctools-collapsible-processed .field-name-field-books-ref {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding-left: 10px;
 }
 .ctools-collapsible-processed section a, .ctools-collapsible-processed .field-name-field-books-ref a {
-  text-decoration: underline;
+  font-size: 13px;
 }
 .ctools-collapsible-processed .field-name-field-task-assigned-users {
   padding-left: 0px;
@@ -677,7 +1039,6 @@ body #user-login input.form-text {
 .ctools-collapsible-processed .panel-separator {
   height: 1px;
   overflow: hidden;
-  border-bottom: 1px solid #eeeeee;
 }
 .ctools-collapsible-processed ul {
   margin: 0px;
@@ -685,6 +1046,7 @@ body #user-login input.form-text {
 }
 .ctools-collapsible-processed ul li {
   list-style-type: none;
+  font-weight: bold;
 }
 .ctools-collapsible-processed .field-type-taxonomy-term-reference {
   margin: 0;
@@ -693,12 +1055,19 @@ body #user-login input.form-text {
   margin-bottom: 10px;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item {
-  margin-left: 20px;
+  margin-left: 5px;
   padding-left: 0 !important;
-  display: list-item;
 }
 .ctools-collapsible-processed .field-name-field-asset-files .field-item a {
-  text-decoration: underline;
+  margin-right: 20px;
+  padding: 3px 0 3px 24px;
+  background: url("../images/menu_icons/files_.png") no-repeat 0 -5px;
+  line-height: 21px;
+  font-size: 13px;
+  display: block;
+}
+.ctools-collapsible-processed .field-name-field-asset-files .field-item a:hover {
+  background: url("../images/menu_icons/files_hover.png") no-repeat 0 -6px;
 }
 .ctools-collapsible-processed .field-name-field-contacts-ref .field-item {
   padding-left: 10px;
@@ -714,7 +1083,7 @@ body #user-login input.form-text {
   padding-left: 10px;
 }
 .ctools-collapsible-processed .ctools-toggle {
-  background-position: 7px 8px;
+  background-position: 7px 6px;
 }
 
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
@@ -726,7 +1095,7 @@ body #user-login input.form-text {
   -o-border-radius: 10px;
   border-radius: 10px;
   background-color: #eeeeee;
-  color: #525252;
+  color: #645c57;
 }
 #mini-panel-task_status_panel .panel-separator {
   display: none;
@@ -746,18 +1115,22 @@ body #user-login input.form-text {
 
 #mini-panel-activity_status_panel {
   padding: 10px 20px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  background-color: #eeeeee;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #d9d5d2;
 }
 #mini-panel-activity_status_panel .panel-separator {
   display: none;
 }
 #mini-panel-activity_status_panel .pane-title {
+  padding-left: 0;
+  padding-right: 10px;
   float: left;
+  font-size: 12px;
+  font-weight: normal;
   line-height: 40px;
 }
 #mini-panel-activity_status_panel .block-content {
@@ -771,11 +1144,12 @@ body #user-login input.form-text {
 }
 #mini-panel-activity_status_panel section {
   margin-bottom: 0;
-  margin-right: 30px;
+  margin-right: 10px;
   float: left;
 }
 #mini-panel-activity_status_panel section .field-type-datetime {
   float: left;
+  margin-right: 5px;
 }
 #mini-panel-activity_status_panel section .field-type-datetime .date-no-float {
   width: auto;
@@ -834,12 +1208,7 @@ body #user-login input.form-text {
 
 /*---------------ticket details-----------*/
 .node-erpal-task .columns-inner {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  background-color: white;
+  border-bottom: 1px solid #d9d5d2;
 }
 
 .view-mode-view_row_details .content-inner {
@@ -849,23 +1218,57 @@ body #user-login input.form-text {
 .pane-node-body {
   padding: 20px;
   min-height: 350px;
-  background-color: white;
+  border: 1px solid #d9d5d2;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+  font-size: 16px;
+  line-height: 1.5em;
+}
+.pane-node-body a {
+  color: #098a58;
+  text-decoration: underline;
+}
+.pane-node-body a:hover {
+  color: #fc9822;
+}
+.pane-node-body a:visited {
+  color: #098a58;
 }
 .pane-node-body p {
   font-size: 16px;
+}
+.pane-node-body ul {
+  margin-left: 40px;
+}
+.pane-node-body ul li {
+  list-style-type: disc;
+  line-height: 1.3em;
+}
+.pane-node-body ol {
+  margin-left: 46px;
+}
+.pane-node-body ol li {
+  list-style-type: decimal;
+  line-height: 1.3em;
+}
+
+.quicktabs-tabpage .panel-panel.panel-col .pane-node-body {
+  margin-top: -1px;
+  -webkit-border-radius: 0px 5px 5px 5px;
+  -moz-border-radius: 0px 5px 5px 5px;
+  -ms-border-radius: 0px 5px 5px 5px;
+  -o-border-radius: 0px 5px 5px 5px;
+  border-radius: 0px 5px 5px 5px;
+  position: relative;
+  z-index: 5;
 }
 
 /*-----------------------begin projects-timetrackings--------------------*/
 .page-projects-timetrackings #edit-field-date-time-value-wrapper {
   margin-left: 45px;
-}
-.page-projects-timetrackings #edit-field-project-ref-target-id-wrapper {
-  margin-left: 440px;
 }
 .page-projects-timetrackings #edit-field-project-ref-target-id {
   width: 120px;
@@ -880,9 +1283,6 @@ body #user-login input.form-text {
 .page-projects-timetrackings #edit-uid {
   width: 90px;
 }
-.page-projects-timetrackings .views-submit-button {
-  clear: both;
-}
 .page-projects-timetrackings #edit-uid-wrapper {
   width: 140px;
 }
@@ -892,6 +1292,16 @@ body #user-login input.form-text {
 
 /*-----------------------begin projects-timetrackings--------------------*/
 /*-------------begin comments------------------- */
+.node-type-erpal-crm-activity #comment-form {
+  margin-top: -1px;
+  -webkit-border-radius: 0px 5px 5px 5px;
+  -moz-border-radius: 0px 5px 5px 5px;
+  -ms-border-radius: 0px 5px 5px 5px;
+  -o-border-radius: 0px 5px 5px 5px;
+  border-radius: 0px 5px 5px 5px;
+  border: 1px solid #d9d5d2;
+}
+
 #comment-form {
   padding: 15px;
   margin-top: 20px;
@@ -900,7 +1310,10 @@ body #user-login input.form-text {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  background: #eeeeee;
+  border: 1px solid #d9d5d2;
+}
+#comment-form #edit-author {
+  clear: both;
 }
 #comment-form .field-type-datetime {
   width: 300px;
@@ -957,14 +1370,32 @@ body #user-login input.form-text {
 /*-------------end comments------------------- */
 /*--------------begin multi select boxes--------------*/
 .views-exposed-form {
-  padding: 10px;
-  background-color: #eeeeee;
+  padding: 5px 10px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #d9d5d2;
 }
 .views-exposed-form .form-submit {
   margin-top: 1.3em;
 }
 .views-exposed-form .views-exposed-widget {
-  padding-right: 7px !important;
+  padding-top: 0;
+  padding-right: 5px !important;
+}
+.views-exposed-form .views-exposed-widget label {
+  font-size: 10px;
+  color: #645c57;
 }
 .views-exposed-form button span:not(.ui-icon) {
   position: absolute;
@@ -1016,20 +1447,68 @@ body #user-login input.form-text {
   padding: 0px;
   background: none;
 }
+#homebox .view-assigned-tasks a {
+  padding-top: 2px;
+  padding-bottom: 3px;
+  padding-left: 26px;
+}
+#homebox .view-assigned-tasks td.views-field-title a {
+  background: url("../images/menu_icons/task.png") no-repeat 0 0;
+}
+#homebox .view-assigned-tasks td.views-field-title a:hover {
+  background: url("../images/menu_icons/task_hover.png") no-repeat 0 0;
+}
+#homebox .view-assigned-tasks td.views-field-field-project-ref a {
+  background: url("../images/menu_icons/projects_.png") no-repeat 0 0;
+}
+#homebox .view-assigned-tasks td.views-field-field-project-ref a:hover {
+  background: url("../images/menu_icons/projects_hover.png") no-repeat 0 0;
+}
+#homebox .view-assigned-tasks td.views-field-field-timetracking-button a {
+  padding-left: 0;
+}
+#homebox .view-assigned-tasks td.views-field-field-timetracking-button a img {
+  margin-right: 3px;
+  margin-top: 1px;
+  float: left;
+}
 #homebox .homebox-portlet {
+  margin-bottom: 40px;
   border: none;
+}
+#homebox .homebox-portlet#homebox-block-views_assigned_tasks-block .portlet-header {
+  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+}
+#homebox .homebox-portlet#homebox-block-timetracking_block .portlet-header, #homebox .homebox-portlet#homebox-block-views_timetracking_entities-block_1 .portlet-header {
+  background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
+}
+#homebox .homebox-portlet#homebox-block-views_bookmarks-block .portlet-header {
+  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
+}
+#homebox .homebox-portlet #timetracking-quick-form {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #d9d5d2;
 }
 #homebox .homebox-portlet .homebox-portlet-inner {
   border: none;
 }
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-header {
-  font-weight: normal;
-  background-color: #f6f6f6;
+  padding-left: 28px;
+  margin-bottom: 1px;
+  background-color: transparent;
+  margin: 0px 0px 8px 0px;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
   border: none;
 }
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-header .portlet-title {
   padding-left: 8px;
-  background-color: #f6f6f6;
+  background-color: transparent;
 }
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-content {
   padding: 0px;
@@ -1039,7 +1518,19 @@ body #user-login input.form-text {
 }
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-content .more-link {
   padding: 4px 10px;
-  background-color: #f6f6f6;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  -ms-border-radius: 0 0 5px 5px;
+  -o-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
 }
 #homebox .homebox-portlet .homebox-portlet-inner .portlet-content .form-submit {
   margin-left: 12px;
@@ -1059,11 +1550,19 @@ body #user-login input.form-text {
 
 /*-------------end dashboard styles--------------*/
 /*-------------begin contact styles------------------*/
+.node-type-erpal-contact .erpal-content-right .pane-custom-node-content {
+  margin-top: 10px;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane h2.pane-title.block-title {
   margin: 0px 0px 7px 0px;
   font-weight: normal;
   font-size: 26px;
   line-height: 26px;
+  background: url("../images/menu_icons/contact_title.png") no-repeat scroll 0 0 transparent;
+}
+.node-type-erpal-contact .region-sidebar-left .panel-pane .block-content h2.pane-title.block-title {
+  padding-left: 0;
+  background: none;
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view {
   margin: 0px;
@@ -1072,8 +1571,15 @@ body #user-login input.form-text {
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-view table th {
   padding: 10px;
-  font-size: 14px;
-  background-color: #afafaf;
+  font-size: 13px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane ul {
   margin: 0px;
@@ -1084,9 +1590,23 @@ body #user-login input.form-text {
   padding-right: 7px;
   list-style-type: none;
 }
+.node-type-erpal-contact .region-sidebar-left .panel-pane .pane-node-field-fax .block-content,
+.node-type-erpal-contact .region-sidebar-left .panel-pane .pane-node-field-email .block-content {
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #d9d5d2;
+}
 .node-type-erpal-contact .region-sidebar-left .panel-pane table {
-  margin: 0;
-  border: none;
+  margin: 0 0 10px;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane table td {
   padding: 10px;
@@ -1097,18 +1617,9 @@ body #user-login input.form-text {
 .node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container .field-items .field-item {
   margin: 0px;
 }
-.node-type-erpal-contact .region-sidebar-left .panel-pane .field-collection-container td {
-  border-bottom: 1px solid #e7e7e7;
-}
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li {
-  padding: 10px;
+  padding: 10px 0 10px 10px;
   text-align: right;
-  -webkit-border-radius: 0 0 2px 2px;
-  -moz-border-radius: 0 0 2px 2px;
-  -ms-border-radius: 0 0 2px 2px;
-  -o-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
-  background-color: #afafaf;
 }
 .node-type-erpal-contact .region-sidebar-left .panel-pane .action-links li a {
   font-size: 1.2em;
@@ -1124,10 +1635,32 @@ body #user-login input.form-text {
 /*-------------end contact styles------------------*/
 /* begin hightlight of different states of tasks/projects */
 .block-content .view-content td {
-  border-bottom: 1px solid #e5e5e5;
+  font-size: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid #d9d5d2;
+}
+.block-content .view-content td.views-field-views-bulk-operations {
+  padding-right: 0;
+}
+.block-content .view-content td a {
+  font-size: 13px;
+  font-weight: normal;
+}
+.block-content .view-content td a:hover {
+  color: #fc9822;
 }
 .block-content .view-content th {
-  background-color: #afafaf;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+}
+.block-content .view-content th.views-field-views-bulk-operations {
+  width: 50px;
 }
 .block-content .view-content tr.info,
 .block-content .view-content tr.even,
@@ -1150,7 +1683,7 @@ body #user-login input.form-text {
 /* end hightlight of different states of tasks/projects */
 /*-------------begin login styles------------------*/
 .not-logged-in {
-  background-color: #645C57;
+  background-color: #645c57;
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFA69A91', endColorstr='#FF645C57');
   background-image: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 60, color-stop(10%, #a69a91), color-stop(60%, #645c57));
@@ -1226,7 +1759,7 @@ body #user-login input.form-text {
   margin: 0 auto;
   padding: 7px 20px;
   color: white;
-  background-color: #ffa800;
+  background-color: #fc9822;
   background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #fdae15), color-stop(69%, #f9b942)) !important;
   background: -webkit-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
   background: -moz-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
@@ -1244,16 +1777,19 @@ body #user-login input.form-text {
 }
 .not-logged-in #user-login #edit-actions input.form-submit:hover {
   background-color: #fd8300;
-  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #ffa800), color-stop(69%, #f9c25d)) !important;
-  background-image: -webkit-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
-  background-image: -moz-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
-  background-image: -o-linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
-  background-image: linear-gradient(bottom, #ffa800 37%, #f9c25d 69%) !important;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(37%, #fc9822), color-stop(69%, #f9c25d)) !important;
+  background-image: -webkit-linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
+  background-image: -moz-linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
+  background-image: -o-linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
+  background-image: linear-gradient(bottom, #fc9822 37%, #f9c25d 69%) !important;
 }
 
 /*------------------------------------invoice-----------------------*/
 .page-invoice-invoices table.views-table {
   border-collapse: collapse;
+}
+.page-invoice-invoices .container-inline-date .date-padding {
+  padding-left: 0px;
 }
 
 #mini-panel-invoice_content_panel .panel-col-first.panel-panel {
@@ -1263,10 +1799,191 @@ body #user-login input.form-text {
   width: 46%;
 }
 
-/*-------------begin login styles------------------*/
-/*****DELETE****/
-.rel-register-link {
-  display: none;
+li.jstree-open ul {
+  padding-left: 20px;
 }
 
-/****DELEEETE****/
+#erpal_wrapper,
+.erpal-container,
+.erpal-container-item {
+  height: 100%;
+}
+
+.node-type-erpal-invoice fieldset.collapsible {
+  margin-bottom: 3px;
+}
+.node-type-erpal-invoice .views-table {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border-collapse: separate;
+}
+
+.group-form-left,
+.group-form-right,
+.group-form-advanced-left,
+.group-form-advanced-right {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+
+fieldset {
+  margin: 0px;
+}
+
+.page-contact .form-textarea-wrapper {
+  width: 500px;
+}
+
+.page-projects td.views-field-title a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/projects_.png") no-repeat 0 2px;
+  line-height: 18px;
+  display: block;
+}
+.page-projects td.views-field-title a:hover {
+  background: url("../images/menu_icons/projects_hover.png") no-repeat 0 2px;
+}
+.page-projects .node_erpal_contact a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
+  line-height: 18px;
+  display: block;
+}
+.page-projects .node_erpal_contact a:hover {
+  background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
+}
+
+.node-type-erpal-task .pane-page-content .views-table {
+  -webkit-border-radius: 0px 5px 0px 0px;
+  -moz-border-radius: 0px 5px 0px 0px;
+  -ms-border-radius: 0px 5px 0px 0px;
+  -o-border-radius: 0px 5px 0px 0px;
+  border-radius: 0px 5px 0px 0px;
+  border-collapse: separate;
+}
+
+/*-------------------------begin Page titles--------------------------------*/
+.erpal-content-left h2.pane-title,
+.page-node-pricing .pane-page-content h2.pane-title,
+.node-type-erpal-contract h2.pane-title,
+.page-tasks h2.pane-title,
+.page-bookmarks h2.pane-title,
+.page-user h2.pane-title,
+.page-projects-timetrackings h2.pane-title {
+  padding-left: 33px;
+}
+
+.page-projects .erpal-content-left h2.pane-title,
+.node-type-erpal-project .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
+}
+
+.page-contacts .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/contact_title.png") no-repeat 0 0;
+}
+
+.page-activities .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/activity_title.png") no-repeat 0 0;
+}
+
+.page-books .erpal-content-left h2.pane-title,
+.page-node-files .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/documents_title.png") no-repeat 0 0;
+}
+
+.page-files .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/file_title.png") no-repeat 0 0;
+}
+
+.page-invoice .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/invoice_title.png") no-repeat 0 0;
+}
+
+.page-contracts .erpal-content-left h2.pane-title,
+.node-type-erpal-contract h2.pane-title {
+  background: url("../images/menu_icons/contracts_title.png") no-repeat 0 0;
+}
+
+.node-type-erpal-contract .pane-page-title h2.pane-title {
+  background: none;
+  padding-left: 0;
+}
+
+.page-timekeeping .erpal-content-left h2.pane-title,
+.page-node-timetracking .erpal-content-left h2.pane-title,
+.page-projects-timetrackings h2.pane-title {
+  background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
+}
+
+.node-type-erpal-task .erpal-content-left h2.pane-title,
+.page-node-tasks .erpal-content-left h2.pane-title,
+.page-tasks h2.pane-title {
+  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+}
+
+.page-projects-pricing .erpal-content-left h2.pane-title,
+.page-projects-budgets .erpal-content-left h2.pane-title,
+.page-node-pricing .pane-page-content h2.pane-title {
+  background: url("../images/menu_icons/price.png") no-repeat 0 2px;
+}
+
+.page-node-tickets .erpal-content-left h2.pane-title {
+  background: url("../images/menu_icons/ticket.png") no-repeat 0 2px;
+}
+
+.node-type-erpal-invoice .erpal-content-left .pane-page-title h2.pane-title {
+  background: url("../images/menu_icons/invoice_title.png") no-repeat 0 2px;
+}
+
+.pane-invoice-header-fields h2 {
+  padding-left: 0 !important;
+  font-size: 18px !important;
+  margin: 0 !important;
+}
+.pane-invoice-header-fields a:hover {
+  color: #FC9822;
+}
+
+.page-bookmarks h2.pane-title {
+  background: url("../images/menu_icons/bookmarks.png") no-repeat 0 2px;
+}
+
+.page-user h2.pane-title {
+  background: url("../images/menu_icons/users.png") no-repeat 0 0;
+}
+
+.page-user-bookmarks h2.pane-title {
+  background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
+}
+
+.page-user-projects h2.pane-title {
+  background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
+}
+
+.page-user-tasks h2.pane-title {
+  background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
+}
+
+.profile .user-picture {
+  margin-top: 20px;
+}
+
+#field-phone-values .form-text .form-autocomplete {
+  position: relative;
+  top: 19px;
+}
+
+#edit-field-pricing .select,
+#edit-field-pricing input.form-autocomplete {
+  width: 180px;
+}
+
+/*-------------------------end Page titles--------------------------------*/

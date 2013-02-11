@@ -57,6 +57,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -129,6 +130,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -169,6 +171,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -178,7 +181,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_timetracking_button']['field'] = 'field_timetracking_button';
   $handler->display->display_options['fields']['field_timetracking_button']['label'] = 'Timetracking';
   $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
-  $handler->display->display_options['path'] = 'tasks';
+  $handler->display->display_options['path'] = 'user/tasks';
 
   /* Display: Assigned tasks block */
   $handler = $view->new_display('block', 'Assigned tasks block', 'block');
@@ -203,6 +206,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -731,6 +735,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -833,6 +838,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -1113,6 +1119,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );
@@ -1393,6 +1400,92 @@ function erpal_project_ui_views_default_views() {
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['inherit_panels_path'] = '1';
+
+  /* Display: Projects by user pane */
+  $handler = $view->new_display('panel_pane', 'Projects by user pane', 'panel_pane_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Project team (field_project_team) */
+  $handler->display->display_options['relationships']['field_project_team_value']['id'] = 'field_project_team_value';
+  $handler->display->display_options['relationships']['field_project_team_value']['table'] = 'field_data_field_project_team';
+  $handler->display->display_options['relationships']['field_project_team_value']['field'] = 'field_project_team_value';
+  $handler->display->display_options['relationships']['field_project_team_value']['delta'] = '-1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_user_target_id']['id'] = 'field_user_target_id';
+  $handler->display->display_options['relationships']['field_user_target_id']['table'] = 'field_data_field_user';
+  $handler->display->display_options['relationships']['field_user_target_id']['field'] = 'field_user_target_id';
+  $handler->display->display_options['relationships']['field_user_target_id']['relationship'] = 'field_project_team_value';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'erpal_project' => 'erpal_project',
+  );
+  /* Filter criterion: Field: Customer (field_customer_ref) */
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['id'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['table'] = 'field_data_field_customer_ref';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['field'] = 'field_customer_ref_target_id';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator_id'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['label'] = 'Customer';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['operator'] = 'field_customer_ref_target_id_op';
+  $handler->display->display_options['filters']['field_customer_ref_target_id']['expose']['identifier'] = 'field_customer_ref_target_id';
+  /* Filter criterion: Content: Status (field_project_status_term) */
+  $handler->display->display_options['filters']['field_project_status_term_tid']['id'] = 'field_project_status_term_tid';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['table'] = 'field_data_field_project_status_term';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['field'] = 'field_project_status_term_tid';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['operator_id'] = 'field_project_status_term_tid_op';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['operator'] = 'field_project_status_term_tid_op';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['identifier'] = 'field_project_status_term_tid';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_project_status_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_project_status_term_tid']['vocabulary'] = 'project_status_terms';
+  /* Filter criterion: Content: Priority (field_priority_term) */
+  $handler->display->display_options['filters']['field_priority_term_tid']['id'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['filters']['field_priority_term_tid']['field'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator_id'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['operator'] = 'field_priority_term_tid_op';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['identifier'] = 'field_priority_term_tid';
+  $handler->display->display_options['filters']['field_priority_term_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['field_priority_term_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_priority_term_tid']['vocabulary'] = 'priority_terms';
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'field_user_target_id';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $translatables['projects'] = array(
     t('Master'),
     t('more'),
@@ -1421,6 +1514,9 @@ function erpal_project_ui_views_default_views() {
     t('View panes'),
     t('Projects pane'),
     t('Search Terms'),
+    t('Projects by user pane'),
+    t('field collection item from field_project_team'),
+    t('User entity referenced from field_user'),
   );
   $export['projects'] = $view;
 
@@ -1740,6 +1836,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -3891,6 +3988,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -4201,6 +4299,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -4613,6 +4712,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_project_ref']['id'] = 'field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['table'] = 'field_data_field_project_ref';
   $handler->display->display_options['fields']['field_project_ref']['field'] = 'field_project_ref';
+  $handler->display->display_options['fields']['field_project_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_project_ref']['settings'] = array(
     'link' => 1,
   );
@@ -4649,6 +4749,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent_1']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent_1']['field'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent_1']['relationship'] = 'field_parent_target_id';
+  $handler->display->display_options['fields']['field_parent_1']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent_1']['settings'] = array(
     'link' => 1,
   );
@@ -6587,6 +6688,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -6881,6 +6983,7 @@ function erpal_project_ui_views_default_views() {
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_parent']['settings'] = array(
     'link' => 1,
   );
@@ -8546,16 +8649,22 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   $handler->display->display_options['fields']['field_project_tags']['field'] = 'field_project_tags';
   $handler->display->display_options['fields']['field_project_tags']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Subject (field_timetracking_subject) */
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['id'] = 'field_timetracking_subject_target_id';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['table'] = 'field_data_field_timetracking_subject';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['field'] = 'field_timetracking_subject_target_id';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['default_action'] = 'empty';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_timetracking_subject_target_id']['break_phrase'] = TRUE;
+  /* Contextual filter: Task: Task subtasks */
+  $handler->display->display_options['arguments']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['relationship'] = 'field_timetracking_subject_target_id';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['erpal_subtasks']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate_options']['types'] = array(
+    'erpal_task' => 'erpal_task',
+  );
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['fail'] = 'empty';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Title */
@@ -8637,27 +8746,6 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
     'erpal_timetracking' => 'erpal_timetracking',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Timetracking: Show subtasks */
-  $handler->display->display_options['filters']['timetracking_subtasks']['id'] = 'timetracking_subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['table'] = 'field_data_field_timetracking_subject';
-  $handler->display->display_options['filters']['timetracking_subtasks']['field'] = 'timetracking_subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['value'] = 0;
-  $handler->display->display_options['filters']['timetracking_subtasks']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['label'] = 'Show subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['operator'] = 'timetracking_subtasks_op';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['identifier'] = 'timetracking_subtasks';
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['timetracking_subtasks']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    6 => 0,
-    5 => 0,
-    7 => 0,
-    8 => 0,
-  );
   /* Filter criterion: Field: Category (field_project_tags) */
   $handler->display->display_options['filters']['field_project_tags_tid']['id'] = 'field_project_tags_tid';
   $handler->display->display_options['filters']['field_project_tags_tid']['table'] = 'field_data_field_project_tags';
@@ -8682,6 +8770,28 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   $handler->display->display_options['filters']['field_project_tags_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_project_tags_tid']['vocabulary'] = 'project_tags';
   $handler->display->display_options['filters']['field_project_tags_tid']['error_message'] = FALSE;
+  /* Filter criterion: Task: Task subtasks */
+  $handler->display->display_options['filters']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['filters']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['value'] = '0';
+  $handler->display->display_options['filters']['erpal_subtasks']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['label'] = 'Show subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['operator'] = 'erpal_subtasks_op';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['identifier'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+  );
   $handler->display->display_options['argument_input'] = array(
     'field_timetracking_subject_target_id' => array(
       'type' => 'panel',
@@ -9057,6 +9167,7 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
   $handler->display->display_options['fields']['field_timetracking_subject']['table'] = 'field_data_field_timetracking_subject';
   $handler->display->display_options['fields']['field_timetracking_subject']['field'] = 'field_timetracking_subject';
   $handler->display->display_options['fields']['field_timetracking_subject']['label'] = 'Task';
+  $handler->display->display_options['fields']['field_timetracking_subject']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_timetracking_subject']['settings'] = array(
     'link' => 1,
   );

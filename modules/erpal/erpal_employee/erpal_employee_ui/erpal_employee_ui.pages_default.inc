@@ -154,7 +154,7 @@ function erpal_employee_ui_default_page_manager_pages() {
     ),
   );
   $page->menu = array(
-    'type' => 'normal',
+    'type' => 'none',
     'title' => 'Timekeeping',
     'name' => 'menu-erpal-menu',
     'weight' => '10',

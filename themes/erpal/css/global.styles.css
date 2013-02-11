@@ -57,28 +57,45 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for alert*/
 /*color for mark*/
 /* left sidebar link*/
+/*for border*/
 /*grey link color*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
+/*for top menu border*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0 auto;
+  padding: 10px 20px 0px 10px;
   line-height: 1.5em;
   font-size: 12px;
   font-family: Arial,Helvetica,sans-serif;
-  min-width: 1020px;
+  min-width: 960px;
+  max-width: 1200px;
   min-height: 100%;
-  position: relative;
-  color: #525252;
-  background: #e5e5e5;
+  color: black;
+  background-color: #645c57;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFA69A91', endColorstr='#FF645C57');
+  background-image: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 60, color-stop(10%, #a69a91), color-stop(60%, #645c57));
+  background-image: -webkit-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: -moz-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: -o-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 body.admin-menu {
   /*if the admin menu is used change margin-top to padding-top */
   margin-top: 0 !important;
   padding-top: 20px !important;
+}
+
+body.references-dialog-in-dialog {
+  background: transparent;
 }
 
 /* =============================================================================
@@ -183,15 +200,33 @@ ul.links li {
   margin: 0;
 }
 
+.whitebox {
+  -webkit-border-radius: 5px 5px;
+  -moz-border-radius: 5px / 5px;
+  border-radius: 5px / 5px;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 0 5px black;
+}
+
+.erpal-region-left .whitebox {
+  margin-left: 10px;
+}
+.erpal-region-left .whitebox h2.pane-title {
+  background: none !important;
+  padding: 0 !important;
+  margin-bottom: 10px;
+}
+
 /* =============================================================================
  *   Links
  * ========================================================================== */
 a {
   text-decoration: none;
-  color: #525252;
+  color: #645c57;
 }
 a:link, a:visited {
-  color: #525252;
+  color: #645c57;
 }
 a:hover, a:focus {
   text-decoration: none;
@@ -347,7 +382,15 @@ ul.menu ul {
   margin-bottom: 0px;
 }
 .pane-page-breadcrumb.block .breadcrumb {
-  margin-left: 30px;
+  margin-left: 20px;
+  color: #645c57;
+  font-size: 11px;
+}
+.pane-page-breadcrumb.block .breadcrumb a {
+  color: #645c57;
+}
+.pane-page-breadcrumb.block .breadcrumb a:hover {
+  color: #fc9822;
 }
 
 /* =============================================================================
@@ -378,7 +421,7 @@ ul.pager li.pager-current {
 }
 ul.pager li a {
   font-size: 1.2em;
-  color: #525252 !important;
+  color: #645c57 !important;
 }
 
 /* =============================================================================
@@ -558,6 +601,8 @@ ul.action-links {
  */
 .comment-title {
   margin: 0;
+  font-weight: normal;
+  font-size: 14px;
 }
 
 /*
@@ -571,7 +616,7 @@ ul.action-links {
  * Nested comments are indented
  */
 .indented {
-  margin-left: 40px;
+  margin-left: 0px;
 }
 
 /* =============================================================================
@@ -651,6 +696,7 @@ table,
 td,
 th {
   vertical-align: middle;
+  color: #3d3835;
 }
 
 caption,
@@ -676,7 +722,7 @@ tr.odd td.active {
 }
 tr.info, tr.even, tr:nth-child(2n+2) {
   border-bottom: 0;
-  background-color: #f5f5f5;
+  background-color: transparent;
 }
 tr.even td.active {
   background-color: #ebebeb;
@@ -711,7 +757,7 @@ tbody tr {
  * ========================================================================== */
 /* Left and right margin are set by the global gutter width */
 div.messages {
-  margin: 0 30px 10px;
+  margin: 0 20px 10px;
 }
 div.messages ul {
   margin-top: 0;
@@ -807,18 +853,14 @@ select.form-select {
  */
 input.form-submit, a.button {
   cursor: pointer;
-  font-size: 0.929em;
-  font-weight: normal;
+  font-size: 10px;
   text-align: center;
   margin-bottom: 1em;
   margin-right: 0.6em;
   /* LTR */
   padding: 4px 17px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  -ms-border-radius: 15px;
-  -o-border-radius: 15px;
-  border-radius: 15px;
+  font-weight: bold;
+  border: 1px solid #cbcbcb;
 }
 
 a.button:link, a.button:visited, a.button:hover, a.button:focus, a.button:active {

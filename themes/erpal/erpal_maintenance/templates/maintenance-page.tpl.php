@@ -13,6 +13,7 @@
   <div class="body-wrapper">
   <div class="page-outer">
   <div id="page">
+    <div id="page-top">
     <div id="branding">
       <?php if ($logo): ?>
       <div class="logo-wrapper">
@@ -46,6 +47,8 @@
         <?php endif; ?>
         
       </div>
+	  </div>
+	  </div>
       <?php if (isset($screencasts)): ?>
           <div id="videos"><?php print $screencasts; ?></div>
       <?php endif; ?>

@@ -752,7 +752,7 @@ function _date_item_field_settings_form_alter(&$form, &$form_state) {
     $form['instance']['date_item']['handle_range'] = array(
       '#type' => 'select',
       '#options' => $handle_range_options,
-      '#title' => t('Date item type'),
+      '#title' => t('Date item mode'),
       '#description' => t('This only respected if you dont have repeating dates and date field collects end date'),
       '#default_value' => isset($date_item_instance['handle_range']) && $date_item_instance['handle_range'] ? $date_item_instance['handle_range'] : 'range',
       '#states' => array(

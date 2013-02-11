@@ -1,14 +1,15 @@
 /****************************
 	General
 ****************************/
+@import "global_vars_a_mixins";
 
 .group-form-left,
 .group-form-right,
 .group-form-advanced-onecolumn,
 .group-form-advanced-left,
 .group-form-advanced-right {
-  background-color: #EEEEEE;
   padding: 10px;
+  border: 1px solid $silver_light;
 }
 
 #erpal-project-node-form,
@@ -23,6 +24,11 @@ div.group-form-advanced-onecolumn:empty,
 div.group-form-advanced-left:empty,
 div.group-form-advanced-right:empty {
 	display: none;
+}
+
+.erpal-forms table td {
+  padding-left: 1px;
+  padding-right: 1px;
 }
 
 /****************************
@@ -60,18 +66,47 @@ div.group-form-advanced-right:empty {
 .group-form-right input:not([type='checkbox']),
 .group-form-advanced-right select,
 .group-form-advanced-right input:not([type='checkbox']){
-  width: 100%;
+  max-width: 200px;
 }
 
 .edit-field-customer-ref-und-0-target-id ul.references-dialog-links li a {
   display: block;
 }
+
+.group-form-right,
+.group-form-advanced-right {
+  &>.form-wrapper {
+    max-width: 250px;
+	&>.form-wrapper {
+	  max-width: 200px;
+	  &>.field-multiple-table {
+        max-width: 240px;
+      }
+	}
+  }
+  &>.form-wrapper.collapsible {
+    max-width: 240px;
+  }
+  .field-multiple-table {
+    max-width: 250px;
+  }
+  #field-phone-values {
+    input {
+	  width: 50px;
+	}
+  }
+}
+
+
+
 /****************************
 	Group advanced
 ****************************/
 
 .group-advanced {
   clear: both;
+  border: none;
+  border-top: 1px solid #CCCCCC;
 }
 
 .group-advanced > legend {

@@ -538,7 +538,7 @@ function erpal_invoice_ui_default_page_manager_pages() {
     $display->panels['sidebar_first_right'][0] = 'new-2';
     $pane = new stdClass();
     $pane->pid = 'new-3';
-    $pane->panel = 'sidebar_second_left';
+    $pane->panel = 'sidebar_first_right';
     $pane->type = 'block';
     $pane->subtype = 'erpal_invoice_helper-invoices_date_block';
     $pane->shown = TRUE;
@@ -549,14 +549,17 @@ function erpal_invoice_ui_default_page_manager_pages() {
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_collapsed' => 1,
+      ),
+      'style' => 'collapsible',
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
     $display->content['new-3'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-3';
+    $display->panels['sidebar_first_right'][1] = 'new-3';
     $pane = new stdClass();
     $pane->pid = 'new-4';
     $pane->panel = 'sidebar_second_left';
@@ -571,10 +574,10 @@ function erpal_invoice_ui_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $pane->locks = array();
     $display->content['new-4'] = $pane;
-    $display->panels['sidebar_second_left'][1] = 'new-4';
+    $display->panels['sidebar_second_left'][0] = 'new-4';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-3';
   $handler->conf['display'] = $display;
@@ -806,25 +809,28 @@ function erpal_invoice_ui_default_page_manager_pages() {
     $display->panels['sidebar_first_right'][0] = 'new-7';
     $pane = new stdClass();
     $pane->pid = 'new-8';
-    $pane->panel = 'sidebar_second_left';
+    $pane->panel = 'sidebar_first_right';
     $pane->type = 'block';
     $pane->subtype = 'erpal_invoice_helper-invoices_date_block';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => 'Invoice dates',
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_collapsed' => 1,
+      ),
+      'style' => 'collapsible',
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
     $display->content['new-8'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-8';
+    $display->panels['sidebar_first_right'][1] = 'new-8';
     $pane = new stdClass();
     $pane->pid = 'new-9';
     $pane->panel = 'sidebar_second_left';
@@ -842,10 +848,10 @@ function erpal_invoice_ui_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $pane->locks = array();
     $display->content['new-9'] = $pane;
-    $display->panels['sidebar_second_left'][1] = 'new-9';
+    $display->panels['sidebar_second_left'][0] = 'new-9';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-6';
   $handler->conf['display'] = $display;

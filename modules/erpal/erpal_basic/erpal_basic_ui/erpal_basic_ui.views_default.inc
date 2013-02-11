@@ -239,7 +239,6 @@ function erpal_basic_ui_views_default_views() {
     t('Type'),
     t('Contacts pane'),
     t('View panes'),
-    t('Contact Reference Project'),
     t('Contact Dialog Search Project'),
     t('Choose a contact'),
     t('Search a customer for a project'),

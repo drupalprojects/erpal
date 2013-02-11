@@ -15,7 +15,8 @@
  * @see system_install()
  */
 function erpal_install() { 
-   
+  // Set time limit to unlimited
+  drupal_set_time_limit(0);
   // adaptivetheme und theme erpal anschalten und auf default setzen
   $default_theme = 'erpal';
   $admin_theme = 'adaptivetheme_admin';

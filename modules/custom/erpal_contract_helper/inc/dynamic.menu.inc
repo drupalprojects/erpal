@@ -94,8 +94,9 @@ function erpal_contract_helper_erpal_menu_parents($router_item) {
 */
 function _erpal_contract_helper_get_menu_parents($router_item) {
   $contract_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTRACT_GLOBAL, $router_item);
-  
-  if ($contract_global) {
+  $contract = _erpal_basic_helper_has_context(ERPAL_CONTEXT_CONTRACT, $router_item);
+
+  if ($contract_global || $contract) {
     return 'contracts';
   }
 }

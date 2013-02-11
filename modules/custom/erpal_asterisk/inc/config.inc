@@ -26,11 +26,22 @@ function _erpal_asterisk_menu(){
     'file' => 'inc/config.inc',
     'type' => MENU_LOCAL_TASK,
   );
-  $items['asterisk/ingoingcall/%'] = array(
+  
+  $items['asterisk/ingoingcall'] = array(
     'page callback' => '_erpal_asterisk_call',    
-    'page arguments' => array(2,3),
     'access callback' => TRUE,
   );
+  
+  $items['asterisk/normalize'] = array(
+    'page callback' => '_erpal_asterisk_normalize',
+    'access callback' => TRUE,
+  );
+  
+  $items['asterisk/authenticate'] = array(
+    'page callback' => '_erpal_asterisk_create_key',
+    'access callback' => TRUE,
+  );
+  
   return $items;
 }
 
@@ -49,7 +60,6 @@ function _erpal_asterisk_config(){
  * Forms wich list all views in erpal
  * @return array $form  Forms  
  */
-
 function _erpal_asterisk_config_form() {
   
   $form= array();
@@ -75,18 +85,18 @@ function _erpal_asterisk_config_form() {
     '#description' => t('HTTP Port of NodeJs Server'),
   );
   
-  $form['asterisk']['socket_port'] = array(
+  $form['asterisk']['secret'] = array(
     '#type' => 'textfield', 
-    '#title' => t('Socket Port'),
-    '#default_value'     => variable_get('asterisk_nodejs_socket_port'),
-    '#description' => t('Socket Port of NodeJs Server'),
+    '#title' => t('Secret'),
+    '#default_value'     => variable_get('erpal_asterisk_secret'),
+    '#description' => t('Secret to comunicate with the nodejs server. The same secret has to be set in the config.ini of bs_asterisk_server'),
   );
   
   $form['asterisk']['lifetime'] = array(
     '#type' => 'textfield', 
     '#title' => t('Lifetime'),
-    '#default_value'     => variable_get('asterisk_nodejs_lifetime'),
-    '#description' => t('Lifetime of call'),
+    '#default_value'     => variable_get('erpal_asterisk_call_lifetime'),
+    '#description' => t('Time in seconds the notification should be active if noone is available to recieve'),
   );
   
   $form['libphonenumber'] = array(
@@ -133,14 +143,9 @@ function _erpal_asterisk_config_form() {
  * 
  */
 function _erpal_asterisk_config_form_validate(&$form, &$form_state){
-  if(!filter_var($form_state['values']['host'], FILTER_VALIDATE_IP)){
-    form_set_error('host', t('The entered Host is not a valid IP-Address'));
-  }
+  
   if(!is_numeric($form_state['values']['http_port'])){
     form_set_error('http_port', t('HTTP-Port has to be numeric'));
-  }
-  if(!is_numeric($form_state['values']['socket_port'])){
-    form_set_error('socket_port', t('Socket-Port has to be numeric'));
   }
   if(!is_numeric($form_state['values']['lifetime'])){
     form_set_error('lifetime', t('Lifetime has to be numeric'));
@@ -153,10 +158,10 @@ function _erpal_asterisk_config_form_validate(&$form, &$form_state){
  */
 function _erpal_asterisk_config_form_submit(&$form, &$form_state) {
 
-  variable_set('asterisk_nodejs_host'    , $form_state['values']['host']);
-  variable_set('asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
-  variable_set('asterisk_nodejs_socket_port'    , $form_state['values']['socket_port']);
-  variable_set('asterisk_nodejs_lifetime', $form_state['values']['lifetime']);
+  variable_set('erpal_asterisk_nodejs_host'    , $form_state['values']['host']);
+  variable_set('erpal_asterisk_nodejs_http_port'    , $form_state['values']['http_port']);
+  variable_set('erpal_asterisk_secret'    , $form_state['values']['secret']);
+  variable_set('erpal_asterisk_call_lifetime', $form_state['values']['lifetime']);
   
    // Save default country number in 'libphonenumber_default_country'  
   $country = $form_state['values']['country'];

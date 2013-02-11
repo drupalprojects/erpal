@@ -99,6 +99,32 @@ function _erpal_projects_helper_task_print_access() {
   return user_access('erpal print tasks');
 }
 
+/**
+ * Implements hook_block_info().
+ */
+function erpal_projects_helper_block_info() {
+  return array(
+    'last_timetracking_block' => array(
+      'info' => t('Last timetracking'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function erpal_projects_helper_block_view($delta) {
+  global $user;
+  if (!(user_access('use quick timetracking') || user_access('create timetracking'))) {
+    return NULL;
+  };
+
+  if ($delta == 'last_timetracking_block' ) {
+    $block['subject'] = '';
+    $block['content'] = _erpal_projects_helper_last_timetracking_block_render($user->uid);
+  } 
+  return $block;
+}
 
 /**
 * Implements hook_custom_node_content_block_content to provide content for the custom content block. Hook is provided by erpal_basic_helper
@@ -1165,9 +1191,11 @@ function erpal_projects_helper_node_insert($node){
   if ($node->type == 'erpal_task') {    
     _erpal_projects_helper_subscribe_task_assigned_users($node);       
   }
-  if ($node->type == 'erpal_project') {    
-    _erpal_projects_helper_subscribe_project_team($node);       
-  }
+  // We don't notify project if user is assigned to team. 
+  // This produces to many mails that are not relevant for the user
+  //if ($node->type == 'erpal_project') {    
+    //_erpal_projects_helper_subscribe_project_team($node);       
+  //}
 }
 
 /**

@@ -6,6 +6,9 @@ api = 2
 projects[acl][version] = "1.0"
 projects[acl][subdir] = "contrib"
 
+projects[admin_menu][version] = "3.0-rc4"
+projects[admin_menu][subdir]drush en  = "contrib"
+
 projects[auto_nodetitle][version] = "1.0"
 projects[auto_nodetitle][subdir] = "contrib"
 
@@ -106,6 +109,9 @@ projects[libraries][subdir] = "contrib"
 projects[link][version] = "1.0"
 projects[link][subdir] = "contrib"
 
+projects[menu_css_names][version] = "1.0-beta1"
+projects[menu_css_names][subdir] = "contrib"
+
 projects[panels][version] = "3.3"
 projects[panels][subdir] = "contrib"
 
@@ -161,8 +167,10 @@ projects[views][patch][] = "http://drupal.org/files/fixed_revisions_relationship
 
 projects[views_calc][version] = "1.0"
 projects[views_calc][subdir] = "contrib"
-projects[views_calc][patch][] = "http://drupal.org/files/views_calc_0.patch"
-projects[views_calc][patch][] = "http://drupal.org/files/views_calc-theme_render_fix-1876594-6896978.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1567108_0.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1868900.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc-usind_while_1900714.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/views_calc_1548552.patch"
 
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"
@@ -182,6 +190,11 @@ libraries[fullcalendar][destination] = ""
 libraries[ckeditor][download][type] = "file"
 libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.0.1/ckeditor_4.0.1_full.tar.gz"
 libraries[ckeditor][destination] = "modules/contrib/ckeditor"
+
+libraries[jstree][download][type] = "git"
+libraries[jstree][download][url] = "https://github.com/vakata/jstree.git"
+libraries[jstree][download][revision] = "96f9bebabe536a3ddf6118ebede3c92adfadb511"
+
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"

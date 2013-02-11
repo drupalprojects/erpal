@@ -45,11 +45,11 @@ function erpal_docs_helper_erpal_contexts($router_item) {
   }
   
   //CHECK Doc Global CONTEXT
-  if (drupal_match_path($path, 'documents/*') || drupal_match_path($path, 'documents')) {  
+  if (drupal_match_path($path, 'files/*') || drupal_match_path($path, 'files')) {  
     $contexts[ERPAL_CONTEXT_DOC_GLOBAL] = true;      
   }  
 
-  if (drupal_match_path($path, 'documents')) {  
+  if (drupal_match_path($path, 'files')) {  
     $contexts[ERPAL_CONTEXT_DOCS] = true;      
   }    
 
@@ -68,18 +68,18 @@ function erpal_docs_helper_dynamic_menu_items_alter(&$data, $router_item, $root_
   //Contracts contact context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_DOCS, $router_item)) {    
     _erpal_docs_helper_contacts_links($data);          
-    _erpal_docs_helper_docs_global_menu_tabs($data, $node, array('documents'));   
+    _erpal_docs_helper_docs_global_menu_tabs($data, $node, array('files'));   
   } 
   
   //CRM contacts context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_DOC, $router_item)) {    
     _erpal_docs_helper_doc_links($data, $node, $is_node_view); 
-    _erpal_docs_helper_docs_global_menu_tabs($data, $node, array('documents'));   
+    _erpal_docs_helper_docs_global_menu_tabs($data, $node, array('files'));   
   }
  
   //just global context
   if (_erpal_basic_helper_has_context(ERPAL_CONTEXT_DOC_GLOBAL, $router_item)) {    
-    _erpal_docs_helper_docs_global_menu_tabs($data, $node, array('documents'));   
+    _erpal_docs_helper_docs_global_menu_tabs($data, $node, array('files'));   
   }
 }
 
@@ -97,7 +97,7 @@ function _erpal_docs_helper_get_menu_parents($router_item) {
   $docs_global = _erpal_basic_helper_has_context(ERPAL_CONTEXT_DOC_GLOBAL, $router_item);
 
   if ($docs_global) {
-    return 'documents';
+    return 'files';
   }
 }
 
@@ -107,7 +107,7 @@ function _erpal_docs_helper_get_menu_parents($router_item) {
 function _erpal_docs_helper_contacts_links(&$data) {
   //docs list context
   $query = array('destination' => $_GET['q']);
-  erpal_make_action($data, t('Create a new document'), 'node/add/erpal-file', $query);
+  erpal_make_action($data, t('Create a new file'), 'node/add/erpal-file', $query);
 }
 
 
@@ -118,7 +118,7 @@ function _erpal_docs_helper_doc_links(&$data, $doc_node, $is_node_view=false) {
   //single doc context
   if ($is_node_view) {
     $query = array();
-    erpal_make_action($data, t('Edit this document'), 'node/'.$doc_node->nid.'/edit', $query);    
+    erpal_make_action($data, t('Edit this file'), 'node/'.$doc_node->nid.'/edit', $query);    
   }
 }
 
@@ -136,6 +136,6 @@ function _erpal_docs_helper_docs_global_menu_tabs(&$data, $current_nid=false, $a
   $processed = true;
 
   //thi will only be shown if we add another tab here!
-  erpal_make_local_tab($data, t('Documents'), 'documents', array(), in_array('documents', $active_tabs));
+  erpal_make_local_tab($data, t('Files'), 'files', array(), in_array('files', $active_tabs));
 
 } 

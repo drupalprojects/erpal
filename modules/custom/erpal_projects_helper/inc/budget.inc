@@ -151,6 +151,10 @@ function _erpal_projects_helper_field_pricing_presave($entity) {
 function _erpal_projects_helper_reorganize_timetrackings_to_budgets_queue($host_node, $new_budget_ids) {
   //get all timetrackings and add them to the queue
   $types = array('erpal_task');
+  
+  if (!isset($host_node->nid))
+    return;
+  
   $sub_tasks = _erpal_basic_helper_get_all_child_nids_deep_search($host_node->nid, $types);
   
   $child_nids = array($host_node->nid);

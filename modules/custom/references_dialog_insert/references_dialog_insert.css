@@ -1,0 +1,10 @@
+.references-dialog-insert-wrapper .form-type-select,
+.references-dialog-insert-wrapper .form-type-select label{
+  display: inline;
+  margin-right: 10px;
+}
+.references-dialog-insert-wrapper .form-type-select label{
+  margin-left: 10px;
+}
+
+

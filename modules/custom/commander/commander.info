@@ -1,12 +1,9 @@
 name = Commander
-description = Commander module, provides API for other modules to register their own commands, handle and execute them.
+description = Commander core module providing an interface to execute commands. Other modules may extend this module, adding commands as necessary. Includes permission handling by allowing admins to group commands.
+version = "7.x-1.0"
 core = 7.x
-package = "Misc"
+package = "Commander"
 
-scripts[] = assets/js/commander.js
-scripts[] = assets/js/jquery.shortcuts.min.js
-stylesheets[all][] = assets/css/commander.css
-; files[] = lib/GetOptionKit/Init.php
+scripts[] = js/commander.js
 
-php = 5.3
-version = "7.x-1.x-dev"
+stylesheets[all][] = css/commander.css

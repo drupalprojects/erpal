@@ -1,13 +1,53 @@
 /****************************
 	General
 ****************************/
+/*
+Document   : global_vars_a_mixins
+Created on : December, 2012, 
+Description:
+Purpose of the stylesheet follows.
+*/
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+/*******************/
+/* IMPORTS
+/*******************/
+/*******************/
+/* VARIABLES
+/*******************/
+/* color variables */
+/* main background*/
+/* background*/
+/*background for quicktabs li*/
+/*background for pane titles, table th*/
+/* color for right sidebar, pane title*/
+/* for pain search */
+/*for left menu*/
+/*for menu hover*/
+/*for menu item grey border, */
+/*link color*/
+/*styles for alert*/
+/*color for mark*/
+/* left sidebar link*/
+/*for border*/
+/*grey link color*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
+/*for top menu border*/
+/*styles for border*/
+/*styles for text*/
+/*styles for ul*/
+/*styles for mixins*/
+/*styles for h1, h2, h3, h4, h5, h6 mixins*/
 .group-form-left,
 .group-form-right,
 .group-form-advanced-onecolumn,
 .group-form-advanced-left,
 .group-form-advanced-right {
-  background-color: #EEEEEE;
   padding: 10px;
+  border: 1px solid #d9d5d2;
 }
 
 #erpal-project-node-form,
@@ -22,6 +62,11 @@ div.group-form-advanced-onecolumn:empty,
 div.group-form-advanced-left:empty,
 div.group-form-advanced-right:empty {
   display: none;
+}
+
+.erpal-forms table td {
+  padding-left: 1px;
+  padding-right: 1px;
 }
 
 /****************************
@@ -57,11 +102,36 @@ div.group-form-advanced-right:empty {
 .group-form-right input:not([type='checkbox']),
 .group-form-advanced-right select,
 .group-form-advanced-right input:not([type='checkbox']) {
-  width: 100%;
+  max-width: 200px;
 }
 
 .edit-field-customer-ref-und-0-target-id ul.references-dialog-links li a {
   display: block;
+}
+
+.group-form-right > .form-wrapper,
+.group-form-advanced-right > .form-wrapper {
+  max-width: 250px;
+}
+.group-form-right > .form-wrapper > .form-wrapper,
+.group-form-advanced-right > .form-wrapper > .form-wrapper {
+  max-width: 200px;
+}
+.group-form-right > .form-wrapper > .form-wrapper > .field-multiple-table,
+.group-form-advanced-right > .form-wrapper > .form-wrapper > .field-multiple-table {
+  max-width: 240px;
+}
+.group-form-right > .form-wrapper.collapsible,
+.group-form-advanced-right > .form-wrapper.collapsible {
+  max-width: 240px;
+}
+.group-form-right .field-multiple-table,
+.group-form-advanced-right .field-multiple-table {
+  max-width: 250px;
+}
+.group-form-right #field-phone-values input,
+.group-form-advanced-right #field-phone-values input {
+  width: 50px;
 }
 
 /****************************
@@ -69,6 +139,8 @@ div.group-form-advanced-right:empty {
 ****************************/
 .group-advanced {
   clear: both;
+  border: none;
+  border-top: 1px solid #CCCCCC;
 }
 
 .group-advanced > legend {

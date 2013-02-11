@@ -74,8 +74,7 @@ html {
   font-size: 100%;
   -webkit-text-size-adjust: 100%;
   line-height: 1.5;
-  height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   min-width: 1280px;
 }
 
@@ -601,13 +600,11 @@ header[role=banner],
 }
 
 a.button {
-  background: $white url(../images/buttons.png) 0 0 repeat-x;
-  border: 1px solid $light_grey;
-  border-bottom: 1px solid $dark_silver;
-  border-left-color: $white_grey;
-  border-right-color: $white_grey;
-  border-top-color: $white_grey;
-  color: #3a3a3a;
+  @include border-radius(5px);
+  background-color: rgb(233,229,226); 
+  @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+  @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+  color: $black_dark;
 }
 input.form-submit {
   @extend a.button;
@@ -621,4 +618,7 @@ html.js input.form-autocomplete {
   &.throbbing{
     background-position: 100% -15px;
   }
+}
+.token-tree {
+  margin-left: 0px;
 }

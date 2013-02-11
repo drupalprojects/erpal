@@ -3,14 +3,13 @@ description = Install ERPAL
 core = 7.x
 distribution_name = ERPAL
 
-
 ;core
 dependencies[] = php
 dependencies[] = menu
 dependencies[] = path
 dependencies[] = dblog
-dependencies[] = toolbar
-
+dependencies[] = admin_menu_toolbar
+dependencies[] = search
 
 ; core fields
 dependencies[] = field
@@ -115,6 +114,9 @@ dependencies[] = erpal_resource_helper
 dependencies[] = erpal_timetracking_export
 dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations
+dependencies[] = entityreference_unique
+dependencies[] = references_dialog_insert
+
 
 ; features 
 dependencies[] = erpal_basic
@@ -143,9 +145,8 @@ dependencies[] = erpal_project
 dependencies[] = erpal_project_ui
 dependencies[] = erpal_wysiwyg
 
-
 dependencies[] = erpal_layout
 
- 
 ; System Requirements.
 php_memory_limit = 256M
+

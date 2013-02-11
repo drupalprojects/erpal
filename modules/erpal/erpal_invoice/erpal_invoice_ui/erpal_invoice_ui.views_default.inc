@@ -791,49 +791,6 @@ function erpal_invoice_ui_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['billables'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No billable available'),
-    t('Contractor'),
-    t('Customer'),
-    t('Billable subject'),
-    t('Billable ID'),
-    t('.'),
-    t('Subject_nid'),
-    t('Subject'),
-    t('<a href="/node/[subject_nid]">[subject]</a>'),
-    t('Billed'),
-    t('Date delivery'),
-    t('Menge'),
-    t(','),
-    t('Single price'),
-    t('Summe Netto'),
-    t('MwSt.'),
-    t('Summe'),
-    t('Währung'),
-    t('Service category'),
-    t('Delivery'),
-    t('Billables by invoice pane'),
-    t('Content referencing Billable from field_billables_ref'),
-    t('gesetzl. MwSt,'),
-    t('All'),
-    t('View panes'),
-    t('Billables by contract pane'),
-    t('billables pane'),
-  );
   $export['billables'] = $view;
 
   $view = new view();
@@ -1054,6 +1011,7 @@ function erpal_invoice_ui_views_default_views() {
   $handler->display->display_options['fields']['field_contractor_ref']['id'] = 'field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['table'] = 'field_data_field_contractor_ref';
   $handler->display->display_options['fields']['field_contractor_ref']['field'] = 'field_contractor_ref';
+  $handler->display->display_options['fields']['field_contractor_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_contractor_ref']['settings'] = array(
     'link' => 1,
   );
@@ -1061,6 +1019,7 @@ function erpal_invoice_ui_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['id'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['table'] = 'field_data_field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
+  $handler->display->display_options['fields']['field_customer_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );
@@ -1988,43 +1947,6 @@ function erpal_invoice_ui_views_default_views() {
   );
   $handler->display->display_options['filters']['field_payed_value']['group'] = 1;
   $handler->display->display_options['inherit_panels_path'] = '1';
-  $translatables['invoices'] = array(
-    t('Master'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No invoices available'),
-    t('Invoice title'),
-    t('Invoice Date'),
-    t('Invoice Number'),
-    t('Paid'),
-    t('Payment date'),
-    t('Summe Netto'),
-    t('Total incl. VAT'),
-    t('Währung'),
-    t('Contractor'),
-    t('Customer'),
-    t('Paid (field_payed)'),
-    t('Exported'),
-    t('Invoices to contact pane'),
-    t('All'),
-    t('Paid till'),
-    t('Payed'),
-    t('View panes'),
-    t('Invoices pane'),
-    t('Paid invoices pane'),
-    t('Not paid invoices pane'),
-  );
   $export['invoices'] = $view;
 
   return $export;

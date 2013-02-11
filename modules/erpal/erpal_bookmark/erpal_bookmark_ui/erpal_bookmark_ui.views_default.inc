@@ -26,6 +26,7 @@ function erpal_bookmark_ui_views_default_views() {
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['use_more_always'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access bookmarks view';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -77,7 +78,7 @@ function erpal_bookmark_ui_views_default_views() {
   $handler->display->display_options['defaults']['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_always'] = TRUE;
   $handler->display->display_options['defaults']['use_more_text'] = FALSE;
-  $handler->display->display_options['path'] = 'bookmarks';
+  $handler->display->display_options['path'] = 'user/bookmarks';
 
   /* Display: Bookmarks block */
   $handler = $view->new_display('block', 'Bookmarks block', 'block');
@@ -85,6 +86,29 @@ function erpal_bookmark_ui_views_default_views() {
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $translatables['bookmarks'] = array(
+    t('Master'),
+    t('My Bookmarks'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No bookmarks available'),
+    t('flag'),
+    t('Title'),
+    t('Type'),
+    t('Bookmarks page'),
+    t('Bookmarks block'),
+  );
   $export['bookmarks'] = $view;
 
   return $export;

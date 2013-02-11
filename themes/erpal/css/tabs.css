@@ -28,99 +28,245 @@ Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
 /*styles for alert*/
 /*color for mark*/
 /* left sidebar link*/
+/*for border*/
 /*grey link color*/
+/*for quicktabs-tabs color*/
+/*----for buttons border---------------*/
+/*for top menu border*/
 /*styles for border*/
 /*styles for text*/
 /*styles for ul*/
 /*styles for mixins*/
 /*styles for h1, h2, h3, h4, h5, h6 mixins*/
+ul.primary li a {
+  background-color: transparent;
+}
+ul.primary li a:hover {
+  background-color: transparent;
+}
+
 #erpal_wrapper .panel-panel.panel-col-last {
   float: left;
   width: 100%;
+  height: 100%;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside {
-  margin-left: 150px;
+  margin-left: 141px;
   min-width: 440px;
+  height: 100%;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .ctools-collapsible-content .inside {
   margin-left: 0px;
   min-width: 0px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs {
-  -webkit-box-shadow: 2px 3px 4px #b6b6b6;
-  -moz-box-shadow: 2px 3px 4px #b6b6b6;
-  box-shadow: 2px 3px 4px #b6b6b6;
-  background-color: white;
+  margin-bottom: 0;
   width: 100%;
-  background-color: #eeeeee;
-  border-bottom: 2px solid #ffa800;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary {
   margin: 0px;
   padding: 0px;
-  overflow: hidden;
   *zoom: 1;
   list-style: none;
   white-space: nowrap;
-  background-color: white;
   border: none;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li {
-  margin: 0;
+  margin: 0 3px 0 0;
   float: left;
   display: block;
-  border-right: 1px solid #D9D9D9;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  -webkit-box-shadow: #545151 0 -2px 1px 0;
+  -moz-box-shadow: #545151 0 -2px 1px 0;
+  box-shadow: #545151 0 -2px 1px 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active {
+  background: white;
+  position: relative;
+  z-index: 10;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active:hover {
+  background: white;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
   margin: 0;
-  padding: 0 20px;
+  padding: 9px 12px 10px 35px;
   letter-spacing: 1px;
-  text-align: center;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
-  height: 42px;
-  line-height: 42px;
-  min-width: 80px;
-  background: white;
   border: none;
+  position: relative;
+  z-index: 1;
+  color: black;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  text-align: center;
+  min-width: 100px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:visited {
   margin: 0;
-  padding: 0 20px;
+  padding: 9px 12px 10px 35px;
   letter-spacing: 1px;
-  text-align: center;
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
   display: block;
   float: left;
-  height: 42px;
-  line-height: 42px;
-  min-width: 80px;
-  background: white;
   border: none;
-  color: #7b726b;
+  color: black;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:hover {
-  background-color: white;
-  color: black;
+  color: #fc9822;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active {
-  *zoom: 1;
-  background-color: #ffa800;
   color: black;
   border: medium none;
+  z-index: 10;
+  color: #fc9822;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
-  *zoom: 1;
-  background-color: #ffa800;
-  color: black;
-  background-color: #ffa800;
+  color: #fc9822;
 }
-#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary .active {
-  border-left: 2px solid #fd8300;
-  border-right: 2px solid #fd8300;
+
+/*--------------------------begin icons for tabs------------------------*/
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active-timetrackings a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timetrackings a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.all-timekeeping a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-offset a {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -2px;
 }
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active-timetrackings a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timetrackings a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.all-timekeeping a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-offset a:hover {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.active-timetrackings-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timetrackings-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.all-timekeeping-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.timekeeping-offset-active-tab a {
+  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.billables a {
+  background: url("../images/menu_icons/price_.png") no-repeat 9px 9px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.billables a:hover {
+  background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.fixed-price-items-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.time-budgets-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.billables-active-tab a {
+  background: url("../images/menu_icons/price_.png") no-repeat 9px -40px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.summary a {
+  background: url("../images/menu_icons/projects.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list a:hover, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.summary a:hover {
+  background: url("../images/menu_icons/projects.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.project-list-active-tab a, #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.summary-active-tab a {
+  background: url("../images/menu_icons/projects.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.home a {
+  background: url("../images/menu_icons/home.png") no-repeat 9px 7px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.home a:hover {
+  background: url("../images/menu_icons/home.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.home-active-tab a {
+  background: url("../images/menu_icons/home.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.documents a {
+  background: url("../images/menu_icons/docs.png") no-repeat 9px -1px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.documents a:hover {
+  background: url("../images/menu_icons/docs.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.documents-active-tab a {
+  background: url("../images/menu_icons/docs.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.files a {
+  background: url("../images/menu_icons/files.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.files a:hover {
+  background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.files-active-tab a {
+  background: url("../images/menu_icons/files.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contracts a {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -1px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contracts a:hover {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contracts-active-tab a {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contact a {
+  background: url("../images/menu_icons/contacts.png") no-repeat 9px -1px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contact a:hover {
+  background: url("../images/menu_icons/contacts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.contact-active-tab a {
+  background: url("../images/menu_icons/contracts.png") no-repeat 9px -37px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks a {
+  background: url("../images/menu_icons/tasks.png") no-repeat 9px 7px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks a:hover {
+  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks-active-tab a {
+  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar {
+  width: auto;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar a {
+  background: url("../images/menu_icons/calendar.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar a:hover {
+  background: url("../images/menu_icons/calendar.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar-active-tab a {
+  background: url("../images/menu_icons/calendar.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices-active-tab a {
+  background: url("../images/menu_icons/invoices.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices {
+  width: auto;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices a {
+  background: url("../images/menu_icons/invoices.png") no-repeat 9px -2px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.invoices a:hover {
+  background: url("../images/menu_icons/invoices.png") no-repeat 9px -38px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tickets a {
+  background: url("../images/menu_icons/ticket_.png") no-repeat 9px 8px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tickets a:hover {
+  background: url("../images/menu_icons/ticket_.png") no-repeat 9px -25px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tickets-active-tab a {
+  background: url("../images/menu_icons/ticket_.png") no-repeat 9px -25px;
+}
+
+.page-projects-projects #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a {
+  min-width: 140px;
+}
+
+/*--------------------------end icons for tabs------------------------*/

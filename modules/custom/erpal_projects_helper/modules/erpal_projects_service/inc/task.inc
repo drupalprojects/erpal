@@ -66,7 +66,7 @@ function _erpal_projects_service_task_index($start = 0, $count = PHP_INT_MAX, $c
 
 function _erpal_projects_service_task_out($nid, $details = FALSE) {
   $task = node_load($nid);
-  dpm($task);
+//  dpm($task);
   $task_out = array();
   $task_out['title'] = $task->title;
   $task_out['task'] = url('rest/projects/task/' . $task->nid, array('absolute' => TRUE));
