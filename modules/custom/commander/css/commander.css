@@ -1,0 +1,182 @@
+/**
+ *  @file commander/css/commander.css
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Style console overlay & execute-block
+ */
+#commander-console-overlay {
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:99999;
+  background:white;
+  background:rgba(255,255,255,.8);
+}
+#commander-console {
+  position:absolute;
+  top:20%;
+  right:20%;
+  bottom:20%;
+  left:20%;
+  background:#fd8300;
+  border-radius:15px;
+  box-shadow:0px 0px 15px rgba(0,0,0,.9);
+  font-family: Lucida Console;
+}
+#commander-console-menu {
+  position:absolute;
+  top:0;
+  right:0;
+  height:24px;
+  left:0;
+  border-top-left-radius:15px;
+  border-top-right-radius:15px;
+}
+#commander-console-menu h3 {
+  margin:0;
+  padding:0;
+  color: #000;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 6px 0px 0px 8px;
+  float:left;
+}
+#commander-console-content {
+  position:absolute;
+  top:24px;
+  bottom:32px;
+  left:0;
+  right:0;
+}
+#commander-console-log {
+  position:absolute;
+  top:4px;
+  right:25%;
+  bottom:4px;
+  left:4px;
+  overflow:auto;
+  overflow-x:show;
+  overflow-y:scroll;
+  cursor:text;
+  right:4px;
+}
+#commander-console-log .entry {
+  margin:2px 4px;
+  clear:both;
+}
+#commander-console-log .entry-type-debug {
+  color:#666;
+}
+#commander-console-log .entry-type-info {
+  color:#00F;
+}
+#commander-console-log .entry-type-warning {
+  color:#F80;
+}
+#commander-console-log .entry-type-error,
+#commander-console-log .entry-type-critical,
+#commander-console-log .entry-type-alert,
+#commander-console-log .entry-type-emergency {
+  color:#F00;
+}
+#commander-console-log .entry-datetime {
+  float:right;
+  visibility:hidden;
+  color:#666;
+  line-height:101%;
+}
+#commander-console-log .entry:hover .entry-datetime {
+  visibility:visible;
+}
+#commander-console-history {
+  position:absolute;
+  top:8px;
+  right:8px;
+  bottom:50%;
+  left:75%;
+  margin:-4px -4px 0px 0px;
+  overflow:auto;
+  overflow-x:show;
+  overflow-y:scroll;
+  display:none;
+}
+#commander-console-shortcuts {
+  position:absolute;
+  top:50%;
+  right:8px;
+  bottom:8px;
+  left:75%;
+  margin:0px -4px -4px 0px;
+  overflow:auto;
+  overflow-x:show;
+  overflow-y:scroll;
+  display:none;
+}
+#commander-console-log,
+#commander-console-history,
+#commander-console-shortcuts {
+  background:#FFF;
+}
+#commander-console-input {
+  position:absolute;
+  height:32px;
+  right:0;
+  bottom:0;
+  left:0;
+  border-bottom-right-radius:15px;
+  border-bottom-left-radius:15px;
+}
+#commander-console-input #commander-console-overlay-execute-form {
+  margin:0;
+}
+#commander-console-input .form-item {
+  margin:0;
+  /*float:left;*/
+}
+#commander-console-input .form-item-command {
+  position:absolute;
+  top:4px;
+  right:128px;
+  bottom:4px;
+  left:4px;
+}
+#commander-console-input #edit-command-commander-console-overlay {
+  border-bottom-left-radius: 12px;
+  outline:none;
+  background-color:#FFF;
+  margin:0px 0px 0px 0px;
+  height:100%;
+  width:100%;
+  padding:0px 0px 0px 4px;
+  border:1px solid #ffa800;
+  border:none;
+  box-shadow:0px 0px 3px rgba(0,0,0,.6);
+}
+#commander-console-input #edit-execute-commander-console-overlay {
+  position:absolute;
+  width:120px;
+  height:24px;
+  right:4px;
+  bottom:4px;
+  margin:0;
+  background:#FFF;
+  color:#000;
+  border:none;
+  outline:none;
+  border-radius:0px;
+  border-top-right-radius:3px;
+  border-bottom-right-radius:12px;
+  box-shadow:0px 0px 3px rgba(0,0,0,.6);
+}
+#commander-console-menu,
+#commander-console-input {
+  background:#ffa800;
+}
+
+
+#commander-execute-block .entry-datetime {
+  display:none;
+}

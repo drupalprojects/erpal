@@ -1,0 +1,80 @@
+<?php
+/**
+ *  @file commander_php/commander_php.module
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define hooks and global callbacks.
+ */
+
+define( 'MODULE_COMMANDER_PHP_EXECUTE_PERMISSION', 'execute commander php commands' );
+
+/**
+ *   Implementation of hook_commander_command()
+ */
+function commander_php_commander_command() {
+  
+  $commands = array(
+    'php'     => array(
+      'description'       => t('Execute the given PHP code. The returned value will be displayed as the result.'),
+      'access arguments'  => array( MODULE_COMMANDER_PHP_EXECUTE_PERMISSION ),
+      'execute'           => '_commander_php_execute',
+      'type'              => COMMANDER_COMMAND_TYPE_UNNAMED_ARGUMENTS,
+    ),
+  );
+  
+  return $commands;
+  
+}
+
+
+
+/**
+ * Implements hook_permission().
+ */
+function commander_php_permission() {
+  
+  return array(
+    
+    MODULE_COMMANDER_PHP_EXECUTE_PERMISSION => array(
+      'title'           => t('Execute PHP commands'),
+      'description'     => t('Allow users to execute PHP commands. USE WITH CAUTION!'),
+      'restrict access' => TRUE,
+    ),
+    
+  );
+  
+}
+
+
+
+/**
+ *  Execute the "php" command: Execute the given argument as php-function code. The returned value will be displayed as the result of the executed code.
+ *  
+ *  @param environment (array) The commander-style environment array
+ *  @param arguments (array) An associative list of all arguments. Each argument's value is an array with the values that have been given
+ *  @return (bool) Whether or not the command has been executed successfully
+ */
+function _commander_php_execute( $environment, $arguments ) {
+  
+  $arguments	= $arguments[MODULE_COMMANDER_UNNAMED_ARGUMENTS_INDEX];
+  
+  if( count($arguments)<1 ) {
+    drupal_set_message( t('The command %command requires exactly one argument!',array('%command'=>'php')), 'warning' );
+    return FALSE;
+  }
+  
+  try {
+    $function = create_function( '$environment', $arguments[0] );
+  }
+  catch(Exception $e) {
+    drupal_set_message( $e->getMessage(), 'error' );
+    $function = NULL;
+  }
+  
+  if( $function )
+    drupal_set_message( $function( $environment ) );
+  
+  return TRUE;
+  
+}
