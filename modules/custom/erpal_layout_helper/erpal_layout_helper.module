@@ -28,3 +28,9 @@ function _erpal_layout_helper_search_form_block_alter(&$form, $form_state) {
     $form['actions']['#attributes']['class'][] = 'element-invisible';
   }
 }
+
+function erpal_layout_helper_preprocess_html(&$vars) {
+  if (references_dialog_in_dialog()) {
+    $vars['classes_array'][] = 'references-dialog-in-dialog';
+  }
+}
