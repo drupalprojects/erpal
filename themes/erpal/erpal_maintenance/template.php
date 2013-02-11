@@ -71,7 +71,7 @@ function _erpal_maintenance_get_screencasts($max_entrys){
         $link = $picture_src->ownerElement->parentNode->getAttribute('href');  
         // create html 
         $html .= '<div class="video-box">' . PHP_EOL;
-        $html .= '<a href="'.$link.'">' . PHP_EOL;
+        $html .= '<a href="'.$link.'" target= "blank">' . PHP_EOL;
         $html .= '<img src="'.htmlspecialchars($picture_src->nodeValue) . '"></img><br/>' . PHP_EOL;   
         $html .= $title . PHP_EOL;
         $html .= '</a>' . PHP_EOL;
@@ -81,7 +81,7 @@ function _erpal_maintenance_get_screencasts($max_entrys){
     $html .= '<div>';
   } else {
     // If there is a problem with opening the rss feed
-    // Output file /screencasts.html 
+    // Output file /screencasts.html
     $filename = path_to_theme().'/screencasts.html';
     $file = fopen($filename, 'r');
     $text = fread($file, filesize($filename));
