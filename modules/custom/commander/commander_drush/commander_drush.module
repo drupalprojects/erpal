@@ -144,8 +144,8 @@ function commander_drush_menu() {
 
   $items    = array();
 
-  $items['admin/settings/commander-drush'] = array(
-    'title'             => 'Commander drush settings page',
+  $items['admin/config/development/commander-drush'] = array(
+    'title'             => 'Commander drush config page',
     'description'       => 'Set the path to drush. Windows may require a special configuration.',
     'page callback'     => 'drupal_get_form',
     'page arguments'    => array('commander_drush_admin'),

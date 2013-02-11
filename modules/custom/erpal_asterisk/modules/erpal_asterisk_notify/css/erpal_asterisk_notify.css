@@ -6,6 +6,7 @@ div.erpal-asterisk-notify {
   border:2px solid white;
   width:400px;
   padding:0 20px;
+  z-index: 100;
 }
 
 div.erpal-asterisk-notify div.asterisk-status-buttons {
