@@ -121,7 +121,7 @@ function _erpal_projects_access_manage_project_acl($node, $op) {
   //assign the ACL to the project (View Yes, Write No, Delete No, prio)
   acl_node_add_acl($node->nid,$project_view_acl,1,0,0,PROJECTS_ACL_PRIO);    
   $project_node = $node;
-  _erpal_project_access_manage_projects_file_access($project_node);
+  // _erpal_project_access_manage_projects_file_access($project_node);
   node_access_acquire_grants($project_node);
   
   //add all users to the list that are referenced to the project team  
@@ -228,7 +228,7 @@ function _erpal_projects_access_manage_task_acl_process($task_node, $op, $projec
   node_access_acquire_grants($task_node);  //@TODO i think this is very inperformant!!! But how to do it in another way?
   
   //now we need to manage the access for files of the task node
-  _erpal_project_access_manage_tasks_file_access($task_node, $project_node);
+  //_erpal_project_access_manage_tasks_file_access($task_node, $project_node);
 }
 
 /**
