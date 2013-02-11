@@ -4,19 +4,6 @@
 * Modifies some settings or widgets in relation module, integrate with references dialog for example
 */
 
-/**
-* Implements hook_field_formatter_info().
-*/
-function erpal_basic_helper_field_formatter_info() {
-  $info = array(
-    'relation_endpoint_simple_table' => array(
-      'label' => t('Endpoints simple table'),
-      'field types' => array('relation_endpoint'),
-    ),    
-  );
-
-  return $info;
-}
 
 /**
  * Implements hook_field_formatter_view().
