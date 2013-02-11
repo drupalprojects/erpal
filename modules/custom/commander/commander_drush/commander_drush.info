@@ -1,0 +1,6 @@
+name = Commander Drush
+description = Enables you to use any drush commands directly as commander commands. BE CAREFUL WITH THIS! NOT INTENDED TO BE USED OUTSIDE OF DEVELOPMENT SERVERS!
+version = "7.x-1.0"
+core = 7.x
+package = "Commander"
+dependencies[] = commander
