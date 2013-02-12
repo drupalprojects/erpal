@@ -550,7 +550,7 @@ function commander_init() {
     
     drupal_add_js( array( 'commander'=>array( 'environment'=>array( 'q'=>$_GET['q'] ) ) ), 'setting' );
     
-    //$form = drupal_get_form( 'commander_execute_form' );
+    //$form = drupal_get_form( 'commander_execute_form', '', array() );
   }
 }
 
@@ -1044,7 +1044,7 @@ function commander_execute_form( $form, &$form_state, $id, $environment ) {
       'effect'              => 'fade',
     ),
     '#attributes'         => array(
-      'id'                  => 'edit-execute-'.str_replace( '_', '-', $id ),
+      //'id'                  => 'edit-execute-'.str_replace( '_', '-', $id ),
     ),
   );
   
