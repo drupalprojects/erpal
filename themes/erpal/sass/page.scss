@@ -451,6 +451,20 @@ body {
 	p {
 	  font-size: 16px;
 	}
+	ul {
+    margin-left: 40px;
+      li {
+	    list-style-type: disc;
+	    line-height: 1.3em;
+	  }
+    }
+    ol {
+      margin-left: 46px;
+      li {
+	    list-style-type: decimal;
+	    line-height: 1.3em;
+	  }
+    }
   }
   .comment-header {
 	padding: {
@@ -876,14 +890,15 @@ body {
 } /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
 .ctools-collapsible-processed  {
-  a:hover {
-	color: $orange;
-  }
   .ctools-collapsible-handle {
     cursor: pointer;
   }
-  .block-content a {
-    font-size: 11px;
+  a {
+    font-size: 13px;
+	font-weight: normal;
+	&:hover {
+	  color: $orange;
+	}
   }
   .pane-node-author a {
     font-size: 13px;
@@ -914,13 +929,11 @@ body {
 	line-height: 12px;
 	color: $grey;
 	font-weight: normal;
+	font-size: 11px;
   }
   section, .field-name-field-books-ref {
     margin-bottom: 5px;
 	padding-left: 10px;
-	a {
-	  font-size: 13px;
-	} 
   }
   .field-name-field-task-assigned-users {
     padding-left: 0px;
@@ -1493,8 +1506,9 @@ body {
     background-color: rgb(233,229,226); 
 	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
-	&.views-field-views-bulk-operations {
-	  width: 50px;
+	&.views-field-field-date-1,
+    &.views-field-field-date {
+	  width: 100px;
 	}
   }
   tr.info, 
@@ -1520,7 +1534,7 @@ body {
 .not-logged-in {
   background-color: $grey;
   @include filter-gradient(#a69a91, $grey, horizontal); 
-  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 10%, $grey 60%));
+  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 20px, $grey 550px));
   background-position: center top;
   background-repeat: no-repeat;
   overflow: hidden;
@@ -1610,6 +1624,10 @@ body {
 }
 li.jstree-open ul {
   padding-left: 20px;
+}
+#erpal_wrapper {
+  margin: 0 auto;
+  width: 1200px;
 }
 #erpal_wrapper,
 .erpal-container,

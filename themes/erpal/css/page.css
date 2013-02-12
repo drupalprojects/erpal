@@ -508,6 +508,20 @@ body #user-login input.form-text {
 .comment .field-name-comment-body p {
   font-size: 16px;
 }
+.comment .field-name-comment-body ul {
+  margin-left: 40px;
+}
+.comment .field-name-comment-body ul li {
+  list-style-type: disc;
+  line-height: 1.3em;
+}
+.comment .field-name-comment-body ol {
+  margin-left: 46px;
+}
+.comment .field-name-comment-body ol li {
+  list-style-type: decimal;
+  line-height: 1.3em;
+}
 .comment .comment-header {
   padding-top: 10px;
   padding-right: 10px;
@@ -984,14 +998,15 @@ body #user-login input.form-text {
 
 /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
-.ctools-collapsible-processed a:hover {
-  color: #fc9822;
-}
 .ctools-collapsible-processed .ctools-collapsible-handle {
   cursor: pointer;
 }
-.ctools-collapsible-processed .block-content a {
-  font-size: 11px;
+.ctools-collapsible-processed a {
+  font-size: 13px;
+  font-weight: normal;
+}
+.ctools-collapsible-processed a:hover {
+  color: #fc9822;
 }
 .ctools-collapsible-processed .pane-node-author a {
   font-size: 13px;
@@ -1025,13 +1040,11 @@ body #user-login input.form-text {
   line-height: 12px;
   color: #645c57;
   font-weight: normal;
+  font-size: 11px;
 }
 .ctools-collapsible-processed section, .ctools-collapsible-processed .field-name-field-books-ref {
   margin-bottom: 5px;
   padding-left: 10px;
-}
-.ctools-collapsible-processed section a, .ctools-collapsible-processed .field-name-field-books-ref a {
-  font-size: 13px;
 }
 .ctools-collapsible-processed .field-name-field-task-assigned-users {
   padding-left: 0px;
@@ -1659,8 +1672,8 @@ body #user-login input.form-text {
   background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
-.block-content .view-content th.views-field-views-bulk-operations {
-  width: 50px;
+.block-content .view-content th.views-field-field-date-1, .block-content .view-content th.views-field-field-date {
+  width: 100px;
 }
 .block-content .view-content tr.info,
 .block-content .view-content tr.even,
@@ -1686,11 +1699,11 @@ body #user-login input.form-text {
   background-color: #645c57;
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFA69A91', endColorstr='#FF645C57');
-  background-image: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 60, color-stop(10%, #a69a91), color-stop(60%, #645c57));
-  background-image: -webkit-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
-  background-image: -moz-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
-  background-image: -o-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
-  background-image: radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 550, color-stop(3.63636%, #a69a91), color-stop(100%, #645c57));
+  background-image: -webkit-radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
+  background-image: -moz-radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
+  background-image: -o-radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
+  background-image: radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
   background-position: center top;
   background-repeat: no-repeat;
   overflow: hidden;
@@ -1801,6 +1814,11 @@ body #user-login input.form-text {
 
 li.jstree-open ul {
   padding-left: 20px;
+}
+
+#erpal_wrapper {
+  margin: 0 auto;
+  width: 1200px;
 }
 
 #erpal_wrapper,
