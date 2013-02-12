@@ -1,6 +1,6 @@
 <div id="commander-execute-block">
   <?php if( $allow_fullscreen ): ?>
-    <a href="#" onclick="shortcut_keys.execute( shortcut_keys.shortcuts.toggle_commander_console ); return false;"><?php print t( 'Show fullscreen' ); ?></a>
+    <a href="#" onclick="commander.toggle_console(); return false;"><?php print t( 'Show fullscreen' ); ?></a>
   <?php endif; ?>
   <div id="commander-execute-block-log">
     <?php foreach( $messages as $entry ) print theme( 'commander_log_entry', array('entry'=>$entry) ); ?>
