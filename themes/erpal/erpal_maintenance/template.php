@@ -72,7 +72,7 @@ function _erpal_maintenance_get_screencasts($max_entrys){
         // create html 
         $html .= '<div class="video-box">' . PHP_EOL;
         $html .= '<a href="'.$link.'" target= "blank">' . PHP_EOL;
-        $html .= '<img src="'.htmlspecialchars($picture_src->nodeValue) . '"></img><br/>' . PHP_EOL;   
+        $html .= '<img width="170" height="130" src="'.htmlspecialchars($picture_src->nodeValue) . '"></img><br/>' . PHP_EOL;   
         $html .= $title . PHP_EOL;
         $html .= '</a>' . PHP_EOL;
         $html .= '</div>'.PHP_EOL;
