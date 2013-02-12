@@ -5,5 +5,5 @@
   <div id="commander-execute-block-log">
     <?php foreach( $messages as $entry ) print theme( 'commander_log_entry', array('entry'=>$entry) ); ?>
   </div>
-  <?php print isset($form) ? drupal_render($form) : _commander_execute_form( 'commander_execute_block', array( 'q'=>$_GET['q'] ) ); ?>
+  <?php print isset($form) ? drupal_render($form) : _commander_execute_form( 'commander_execute_block', array( 'q'=>$_GET['q'] ), $allow_fullscreen ); ?>
 </div>

@@ -1021,7 +1021,7 @@ function _commander_init_command( &$types, &$commands, $name, $module ) {
  *  
  *  @scope private
  */
-function commander_execute_form( $form, &$form_state, $id, $environment ) {
+function commander_execute_form( $form, &$form_state, $id, $environment, $allow_fullscreen=FALSE ) {
   
   $form['command']      = array(
     '#type'               => 'textfield',
@@ -1052,6 +1052,7 @@ function commander_execute_form( $form, &$form_state, $id, $environment ) {
   
   $form_state['theme_id']     = $id;
   $form_state['environment']  = $environment;
+  $form_state['allow_fullscreen']  = $allow_fullscreen;
   
   return $form;
   
@@ -1063,7 +1064,7 @@ function commander_execute_form_callback( $form, &$form_state ) {
   $element['#markup'] = '';
   
   $function           = '_commander_theme_'.$form_state['theme_id'];
-  $element['#markup'] .= $function( $display, $form );
+  $element['#markup'] .= $function( $display, $form, $form_state['allow_fullscreen'] );
   
   return $element;
 }
@@ -1125,8 +1126,8 @@ function commander_execute_form_submit_handler( &$form_state ) {
  *  
  *  @scope private
  */
-function _commander_execute_form( $id, $environment=array() ) {
-  $execute  = drupal_get_form( 'commander_execute_form', $id, $environment );
+function _commander_execute_form( $id, $environment=array(), $allow_fullscreen=FALSE ) {
+  $execute  = drupal_get_form( 'commander_execute_form', $id, $environment, $allow_fullscreen );
   
   return drupal_render( $execute );
 }
@@ -1143,8 +1144,8 @@ function _commander_theme_commander_console_overlay( $messages=array(), $form=NU
  *  
  *  @scope private
  */
-function _commander_theme_commander_execute_block( $messages=array(), $form=NULL ) {
-  return theme( 'commander_execute_block', array( 'messages'=>$messages, 'form'=>$form ) );
+function _commander_theme_commander_execute_block( $messages=array(), $form=NULL, $allow_fullscreen=FALSE ) {
+  return theme( 'commander_execute_block', array( 'messages'=>$messages, 'form'=>$form, 'allow_fullscreen'=>$allow_fullscreen ) );
 }
 
 /**
