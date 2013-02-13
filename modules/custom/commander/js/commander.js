@@ -130,8 +130,9 @@ Drupal.behaviors.commander  = {
   attach  : function( context, settings ) {
     
     // Add environmental keys
-    for( var name in settings.commander.environment )
-      commander.environment[name]     = settings.commander.environment[name];
+    if( settings.commander && settings.commander.environment )
+      for( var name in settings.commander.environment )
+        commander.environment[name]     = settings.commander.environment[name];
     
   }
   
