@@ -44,6 +44,7 @@ body {
   background-color: $grey;
   @include filter-gradient(#a69a91, $grey, horizontal); 
   @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 50px, $grey 390px));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#A69A91', EndColorStr='#645C57');
   background-position: center top;
   background-repeat: no-repeat;
   &.admin-menu { /*if the admin menu is used change margin-top to padding-top */

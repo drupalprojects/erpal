@@ -84,6 +84,7 @@ body {
   background-image: -moz-radial-gradient(center top, ellipse cover, #a69a91 50px, #645c57 390px);
   background-image: -o-radial-gradient(center top, ellipse cover, #a69a91 50px, #645c57 390px);
   background-image: radial-gradient(center top, ellipse cover, #a69a91 50px, #645c57 390px);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#A69A91', EndColorStr='#645C57');
   background-position: center top;
   background-repeat: no-repeat;
   overflow: hidden;

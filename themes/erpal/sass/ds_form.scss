@@ -97,7 +97,14 @@ div.group-form-advanced-right:empty {
   }
 }
 
-
+#field-project-team-values {
+  .ui-multiselect {
+    margin-top: 17px;
+  }
+  #edit-field-project-team-und-0-remove-button {
+    margin-top: 27px;
+  }
+}
 
 /****************************
 	Group advanced

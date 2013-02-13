@@ -103,11 +103,11 @@ body {
 	  padding: 0;
 	  float: left;
 	  text-align: center;
+	  width: 25px;
 	  a {
 	    padding-left: 25px;
 		color: $grey;
 		display: block;
-		font-size: 0;
 		text-indent: -2000px;
 		&:hover{
 		  color: $orange;
@@ -481,6 +481,10 @@ body {
 	  right: 10px;
 	  left: 15px;
 	}
+	background-color: rgb(233,229,226); 
+	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+	height: 28px;
 	float: left;
 	.new {
       position: relative;
@@ -1200,6 +1204,10 @@ body {
     border: 1px solid $silver_light;
   }
 }
+.node-type-erpal-task #comment-form {
+  margin-top: -1px;
+  @include border-radius(0px 5px 5px 5px);
+}
 #comment-form {
   padding: 15px;
   margin-top: 20px;
@@ -1330,12 +1338,16 @@ body {
 	  padding-top: 2px;
 	  padding-bottom: 3px;
 	  padding-left: 26px;
+	  display: block;
 	}
     td.views-field-title a{
-	  background: url("../images/menu_icons/task.png") no-repeat 0 0; 
+	  background: url("../images/menu_icons/task.png") no-repeat 0 1px; 
 	  &:hover {
-	    background: url("../images/menu_icons/task_hover.png") no-repeat 0 0;
+	    background: url("../images/menu_icons/task_hover.png") no-repeat 0 1px;
 	  }
+	}
+	th.views-field-field-project-ref {
+	  width: 190px;
 	}
 	td.views-field-field-project-ref a{
 	  background: url("../images/menu_icons/projects_.png") no-repeat 0 0; 
@@ -1495,6 +1507,12 @@ body {
 /*-------------end contact styles------------------*/
 
 /* begin hightlight of different states of tasks/projects */
+.page-contacts .views-field-field-contact-image {
+  width: 30px;
+  img {
+    width: 20px;
+  }
+}
 .block-content .view-content {
   td {
     font-size: 10px;
@@ -1516,7 +1534,9 @@ body {
 	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 	&.views-field-field-date-1,
-    &.views-field-field-date {
+    &.views-field-field-date,
+    &.views-field-field-priority-term,
+	&.views-field-field-project-status-term {
 	  width: 100px;
 	}
   }
@@ -1546,6 +1566,7 @@ body {
   @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 20px, $grey 550px));
   background-position: center top;
   background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#A69A91', EndColorStr='#645C57');
   overflow: hidden;
   #login_mask_logo {
     margin: 75px auto 8px;
@@ -1601,8 +1622,7 @@ body {
 	    color: $white;
 		background-color: $orange;
 	    @include background(linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important);
-		background-image: none;
-	    font-weight: bold;
+		font-weight: bold;
 		@include border-radius(12px); 
 		display: block;
 	    border: 1px solid #fba124;
@@ -1779,6 +1799,9 @@ fieldset {
 .page-user-tasks h2.pane-title {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
+.page-node-calendar h2.pane-title {
+  background: url("../images/menu_icons/calendar_title.png") no-repeat 0 0;
+}
 .profile .user-picture {
   margin-top: 20px;
 }
@@ -1791,5 +1814,15 @@ fieldset {
   input.form-autocomplete {
     width: 180px;
   } 
+}
+.page-node-files td.views-field-title a,
+.page-books-books td.views-field-title a{
+  padding-left: 25px;
+  background: url("../images/menu_icons/docs.png") no-repeat 0 -7px;
+  display: block;
+  line-height: 20px;
+  &:hover {
+    background: url("../images/menu_icons/docs.png") no-repeat 0 -43px;
+  }
 }
 /*-------------------------end Page titles--------------------------------*/
