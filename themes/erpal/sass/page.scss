@@ -143,6 +143,15 @@ body {
 	      background: url("../images/menu_icons/projects.png") no-repeat 0px -39px;
 	    }
 	  }
+	  &.log-out {
+	    margin-left: 11px;
+	   a{
+	      background: url("../images/menu_icons/logout.png") no-repeat 0px 3px;
+		  &:hover{
+	        background: url("../images/menu_icons/logout.png") no-repeat 0px -21px;
+	      }
+	    }
+	  }
 	}
   }  /*----------end User menu-------------*/
 }
