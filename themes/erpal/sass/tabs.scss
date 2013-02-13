@@ -173,8 +173,41 @@ ul.primary li a {
 	    background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
 	  }
 	} 
+	&.templates a {
+	  background: url("../images/menu_icons/template.png") no-repeat 9px 5px;
+	  &:hover {
+	    background: url("../images/menu_icons/template.png") no-repeat 9px -32px;
+	  }
+	} 
 	&.tasks-active-tab a {
-	  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+	  background: url("../images/menu_icons/tasks.png") no-repeat 9px -32px;
+	}
+	&.edit a {
+	  background: url("../images/menu_icons/edit.png") no-repeat 9px 5px;
+	  &:hover {
+	    background: url("../images/menu_icons/edit.png") no-repeat 9px -33px;
+	  }
+	} 
+	&.edit-active-tab a {
+	  background: url("../images/menu_icons/edit.png") no-repeat 9px -33px;
+	}
+	&.notifications a {
+	  background: url("../images/menu_icons/notify_.png") no-repeat 9px 6px;
+	  &:hover {
+	    background: url("../images/menu_icons/notify_.png") no-repeat 9px -32px;
+	  }
+	} 
+	&.notifications-active-tab a {
+	  background: url("../images/menu_icons/notify_.png") no-repeat 9px -32px;
+	}
+	&.view a {
+	  background: url("../images/menu_icons/user.png") no-repeat 9px 3px;
+	  &:hover {
+	    background: url("../images/menu_icons/user.png") no-repeat 9px -31px;
+	  }
+	} 
+	&.view-active-tab a {
+	  background: url("../images/menu_icons/user.png") no-repeat 9px -31px;
 	}
 	&.calendar {
 	  width: auto;

@@ -126,9 +126,9 @@ body {
 	   }
 	  }
 	  &.my-account a{
-	    background: url("../images/menu_icons/user.png") no-repeat 0px 2px;
+	    background: url("../images/menu_icons/user.png") no-repeat 0px 1px;
 		&:hover{
-	      background: url("../images/menu_icons/user.png") no-repeat 0px -23px;
+	      background: url("../images/menu_icons/user.png") no-repeat 0px -33px;
 	   }
 	  }
 	  &.timekeeping a{
@@ -1677,21 +1677,21 @@ fieldset {
       background: url("../images/menu_icons/projects_hover.png") no-repeat 0 2px;
     }
   }
-  .node_erpal_contact a {
-    padding-top: 2px;
-    padding-left: 26px;
-    background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
-    line-height: 18px;
-	display: block;
-    &:hover {
-      background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
-    }
-  }
 }
 .node-type-erpal-task {
   .pane-page-content .views-table {
     @include border-radius(0px 5px 0px 0px);
 	border-collapse: separate;
+  }
+}
+.node_erpal_contact a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
+  line-height: 18px;
+  display: block;
+  &:hover {
+    background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
   }
 }
 /*-------------------------begin Page titles--------------------------------*/

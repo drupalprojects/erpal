@@ -228,8 +228,41 @@ ul.primary li a:hover {
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks a:hover {
   background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
 }
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.templates a {
+  background: url("../images/menu_icons/template.png") no-repeat 9px 5px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.templates a:hover {
+  background: url("../images/menu_icons/template.png") no-repeat 9px -32px;
+}
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks-active-tab a {
-  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
+  background: url("../images/menu_icons/tasks.png") no-repeat 9px -32px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.edit a {
+  background: url("../images/menu_icons/edit.png") no-repeat 9px 5px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.edit a:hover {
+  background: url("../images/menu_icons/edit.png") no-repeat 9px -33px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.edit-active-tab a {
+  background: url("../images/menu_icons/edit.png") no-repeat 9px -33px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.notifications a {
+  background: url("../images/menu_icons/notify_.png") no-repeat 9px 6px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.notifications a:hover {
+  background: url("../images/menu_icons/notify_.png") no-repeat 9px -32px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.notifications-active-tab a {
+  background: url("../images/menu_icons/notify_.png") no-repeat 9px -32px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.view a {
+  background: url("../images/menu_icons/user.png") no-repeat 9px 3px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.view a:hover {
+  background: url("../images/menu_icons/user.png") no-repeat 9px -31px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.view-active-tab a {
+  background: url("../images/menu_icons/user.png") no-repeat 9px -31px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.calendar {
   width: auto;
