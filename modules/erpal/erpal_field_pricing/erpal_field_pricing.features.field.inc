@@ -804,13 +804,19 @@ function erpal_field_pricing_field_default_fields() {
           1 => 'Allow grouping in invoices',
         ),
         'allowed_values_function' => '',
+        'profile2_private' => FALSE,
       ),
       'translatable' => '0',
       'type' => 'list_boolean',
     ),
     'field_instance' => array(
       'bundle' => 'service_category_terms',
-      'default_value' => NULL,
+      'comment_enabled' => 0,
+      'default_value' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -825,11 +831,12 @@ function erpal_field_pricing_field_default_fields() {
       'entity_type' => 'taxonomy_term',
       'field_name' => 'field_allow_grouping',
       'label' => 'Allow grouping',
-      'required' => FALSE,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'options',
         'settings' => array(
           'display_label' => 0,
