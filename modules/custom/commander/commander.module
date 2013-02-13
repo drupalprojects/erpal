@@ -424,7 +424,7 @@ function commander_execute( $environment, $input ) {
   }
   
   // Step IV  Auto add arguments to given default, if any
-  if( isset($command['auto_argument']) && !count($result[ $command['auto_argument'] ]) )
+  if( isset($command['auto_argument']) && !count($result[ $command['auto_argument'] ]) && isset($result[MODULE_COMMANDER_UNNAMED_ARGUMENTS_INDEX]) )
     $result[ $command['auto_argument'] ]  = $result[ MODULE_COMMANDER_UNNAMED_ARGUMENTS_INDEX ];
   
   // Step V   Validate and prepare all given arguments
