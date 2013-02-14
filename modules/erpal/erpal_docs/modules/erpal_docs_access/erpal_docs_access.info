@@ -1,0 +1,15 @@
+core = "7.x"
+description = "ERPAL Docs access"
+name = "ERPAL Docs access"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_docs_access"
+version = "7.x-1.0-dev"
+
+dependencies[] = erpal_docs
+dependencies[] = entityreference
+dependencies[] = acl
+
+files[] = erpal_docs_access.inc
+files[] = erpal_docs_access.admin.inc
+files[] = erpal_docs_access.batch.inc
