@@ -1,0 +1,400 @@
+<?php
+
+/**
+ * @file
+ * Code for the erpal_docs_access module.
+ */
+
+/**
+ * Implements hook_init()
+ */
+function erpal_docs_access_init() {
+  module_load_include('inc', 'erpal_docs_access');
+  module_load_include('inc', 'erpal_docs_access', 'erpal_docs_access.admin');
+  module_load_include('inc', 'erpal_docs_access', 'erpal_docs_access.batch');
+}
+
+/**
+ * Implements hook_menu()
+ */
+function erpal_docs_access_menu() {
+  $items = array();
+  $items['admin/erpal/docs/permissions'] = array(
+    'title' => 'Permissions rebuilding',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_erpal_docs_access_permissions', 1),
+    'access arguments' => array('administer erpal docs access'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'erpal_docs_access.admin.inc',
+    'file path' => drupal_get_path('module', 'erpal_docs_access'),
+  );
+  $items['admin/erpal/docs/settings'] = array(
+    'title' => 'Permissions settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_erpal_docs_access_settings', 1),
+    'access arguments' => array('administer erpal docs access'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'erpal_docs_access.admin.inc',
+    'file path' => drupal_get_path('module', 'erpal_docs_access'),
+  );
+  return $items;
+}
+
+/**
+ * implements hook_permission
+ */
+function erpal_docs_access_permission() {
+  return array(
+    'administer erpal docs access' => array(
+      'title' => t('Administer erpal docs access settings'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_entity_insert
+ */
+function erpal_docs_access_entity_insert($entity, $entity_type) {
+  _erpal_docs_access_entity_handle($entity, $entity_type, 'insert');
+}
+
+/**
+ * Implements hook_entity_update
+ */
+function erpal_docs_access_entity_update($entity, $entity_type) {
+  _erpal_docs_access_entity_handle($entity, $entity_type, 'update');
+}
+
+/**
+ * Implements hook_entity_delete
+ */
+function erpal_docs_access_entity_delete($entity, $entity_type) {
+  _erpal_docs_access_entity_handle($entity, $entity_type, 'delete');
+}
+
+/**
+ * helper function for entity insert/update/delete handling
+ */
+function _erpal_docs_access_entity_handle($entity, $entity_type, $action) {
+  // ACL works only with "node" entities
+  //if ($entity_type != 'node') @todo: check it
+  //return;
+  // get entity bundle
+  list($entity_id,, $bundle) = entity_extract_ids($entity_type, $entity);
+
+  // get fields that are entity references on erpal_file
+  foreach (field_info_instances($entity_type, $bundle) as $field_name => $instance) {
+
+    $field = field_info_field($field_name);
+    if ($field['type'] == 'entityreference') {
+      if (isset($field['settings']['handler_settings']['target_bundles'])) {
+        $bundles = $field['settings']['handler_settings']['target_bundles'];
+
+        // filter only fields that refers erpal_file
+        if ($bundles != array('erpal_file' => 'erpal_file'))
+          continue;
+
+        // save bundle and field in settings
+        erpal_docs_access_settings($entity_type, $bundle, $field_name);
+
+        if (empty($entity->{$field_name}))
+          continue;
+
+        // get all childs
+        $values = field_get_items($entity_type, $entity, $field_name);
+        $child_ids = array();
+        foreach ($values as $value) {
+          $child_id = $value['target_id'];
+          $child_ids[$child_id] = array(
+            'id' => $child_id,
+            'action' => 'updated',
+            'parent' => $entity_id
+          );
+          if ($action == 'delete')
+            $child_ids[$child_id]['action'] = 'removed';
+        }
+
+        // get all childs that were removed from entity
+        if (isset($entity->original)) {
+          $entity_origin = $entity->original;
+          if (!empty($entity_origin->{$field_name})) {
+            // get all deleted child nids
+            $values = field_get_items($entity_type, $entity_origin, $field_name);
+            foreach ($values as $value) {
+              $origin_nid = $value['target_id'];
+              // add nid in array if child was deleted
+              if (!array_key_exists($origin_nid, $child_ids)) {
+                $child_ids[$origin_nid] = array(
+                  'id' => $child_id,
+                  'action' => 'removed',
+                  'parent' => $entity_id
+                );
+              }
+            }
+          }
+        }
+
+        if (empty($child_ids)) // check if ids exist
+          return;
+
+        // check if there are many site users
+        $range = variable_get('erpal_docs_access_users_count', 30);
+        $users_count = db_select('users', 'u')
+          ->range(0, $range + 1)
+          ->countQuery()
+          ->execute()
+          ->fetchField();
+
+        // if there are many site users use cron queue for docs access
+        if ($users_count > $range) {
+          variable_set('erpal_docs_access_cron', TRUE);
+
+          // prepare queue
+          $queue = DrupalQueue::get('erpal_docs_access_update');
+          $queue->createQueue();
+          // @todo: move in cron
+          foreach ($child_ids as $child) {
+            $queue->createItem($child);
+          }
+        }
+        // if there aren't lots of users execute access rebuild now
+        else {
+          // execute access rebuild
+          _erpal_docs_access_handle_grants($child_ids);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * execute access rebuild for nodes list
+ * @param type $child_ids
+ * @return type
+ */
+function _erpal_docs_access_handle_grants($child_ids) {
+  if (empty($child_ids)) // check if ids exist
+    return;
+
+  // get all the site users
+  $users = db_select('users', 'u')
+    ->fields('u', array('uid'))
+    ->execute();
+
+  $uids = array();
+  foreach ($users as $row) {
+    if (!empty($row->uid) && $row->uid != 1) // ignore superuser
+      $uids[] = $row->uid;
+  }
+
+  if (empty($uids)) // check if users exist
+    return;
+
+  // get fields and bundles of docs references
+  $settings = variable_get('erpal_docs_access_fields', array());
+
+  // @todo: add cahce
+  foreach ($uids as $uid) {
+    _erpal_docs_access_handle_user($uid, $child_ids, $settings);
+  }
+}
+
+/**
+ * execute access rebuild for nodes list for user
+ * @param type $uid
+ *  uid of target user
+ * @param type $child_ids
+ *  nids list 
+ * @param type $settings
+ *  fields, bundles array from variable
+ * @return type
+ */
+function _erpal_docs_access_handle_user($uid, $child_ids, $settings) {
+  if (!$account = user_load($uid))
+    return;
+
+  $access_cache = array();
+  // loop all child entities
+  foreach ($child_ids as $child_id => $child) {
+    // load referenced entity
+    if (!$child_entity = node_load($child_id))
+      continue;
+
+    // handle child permissions
+    $bundle = 'erpal_file';
+
+    $erpal_docs_access = new erpal_docs_access(
+        $child_id,
+        $bundle,
+        $child['action'],
+        $child['parent'],
+        $child_entity
+    );
+    // apply parrents permissions
+    $erpal_docs_access->build_user_permissions_for_node($account, $settings, $access_cache);
+  }
+}
+
+/**
+ * storage of all reference fields and it's entity bundles, types
+ * @param type $entity_type
+ * @param type $bundle
+ * @param type $field_name
+ * @param type $delete
+ */
+function erpal_docs_access_settings($entity_type, $bundle, $field_name, $delete = FALSE) {
+  if ($entity_type && $bundle && $field_name) {
+    $data = variable_get('erpal_docs_access_fields', array());
+
+    if (is_array($data)) {
+      // delete item
+      if ($delete) {
+        unset($data[$entity_type][$bundle][$field_name]);
+        // Clear empty bundle too.
+        if (empty($data[$entity_type][$bundle])) {
+          unset($data[$entity_type][$bundle]);
+        }
+        if (empty($data[$entity_type])) {
+          unset($data[$entity_type]);
+        }
+      }
+      // add new item
+      else {
+        $data[$entity_type][$bundle][$field_name] = $field_name;
+      }
+      variable_set('erpal_docs_access_fields', $data);
+    }
+  }
+}
+
+/**
+ * Implements hook_field_delete_instance().
+ */
+function erpal_docs_access_field_delete_instance($instance) {
+  erpal_docs_access_settings($instance['bundle'], $instance['field_name'], TRUE);
+}
+
+/**
+ * Implements hook_module_implements_alter
+ */
+function erpal_docs_access_module_implements_alter(&$module_list, $context) {
+  // Execute insert or update hook after all implementations
+  // beacuse other module can implement some modifications in access on these
+  // actions
+  if (
+    $context === "entity_insert" ||
+    $context === "entity_update" ||
+    $context === "entity_delete"
+  ) {
+    if (!isset($module_list['erpal_docs_access']))
+      return;
+
+    $temp = $module_list['erpal_docs_access'];
+    // Removing the mymodule key/value
+    unset($module_list['erpal_docs_access']);
+    // Adding the mymodule key value as the last member in the list
+    $module_list['erpal_docs_access'] = $temp;
+  }
+
+  // Execute insert or delete before after all implementations
+  // ???
+  /* if ($context === "entity_delete") {
+    if (!isset($module_list['erpal_docs_access']))
+    return;
+
+    $temp = $module_list['erpal_docs_access'];
+    // Removing the mymodule key/value
+    unset($module_list['erpal_docs_access']);
+    // Adding the mymodule key value as the last member in the list
+    $module_list = array_merge(array('erpal_docs_access' => $temp), $module_list);
+    } */
+}
+
+/**
+ * get users with range
+ * @param type $start
+ * @param type $length
+ * @return type
+ */
+function _erpal_docs_access_get_users($start, $length) {
+  $results = db_select('users', 'u')
+    ->fields('u', array('uid'))
+    ->condition('uid', 0, '!=')
+    ->condition('uid', 1, '!=')
+    ->range($start, $length)
+    ->execute();
+  $users = array();
+  foreach ($results as $row) {
+    if(isset($row->uid))
+      $users[] = $row->uid;
+  }
+  return $users;
+}
+
+/**
+ * get users count
+ */
+function _erpal_docs_access_get_users_count() {
+  $users_count = db_select('users', 'u')
+    ->condition('uid', 0, '!=')
+    ->condition('uid', 1, '!=')
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+  return $users_count;
+}
+
+/**
+ * read queue by name
+ * @param string $name
+ * @return array queue contenrt
+ */
+function _erpal_docs_access_read_queue_by_name($name) {
+  $items = array();
+  $queue = DrupalQueue::get($name);
+  $queue->createQueue();
+  while ($item = $queue->claimItem()) {
+    $items[$item->data['id']] = $item->data;
+    $queue->deleteItem($item);
+  }
+  return $items;
+}
+
+/**
+ * @defgroup acl_helpers ACL: helpers
+ * @ingroup helpers
+ * @{
+ * These functions are needed to make the ACL module work
+ */
+
+/**
+ * Implements hook_enabled
+ * Used by the ACL module
+ */
+function erpal_docs_access_enabled() {
+  return !erpal_docs_access_disabling();
+}
+
+/**
+ * Implements hook_disable()
+ */
+function erpal_docs_access_disable() {
+  erpal_docs_access_disabling(TRUE);
+  node_access_rebuild();
+}
+
+/**
+ * Remembers if we have disabled access
+ */
+function erpal_docs_access_disabling($set = NULL) {
+  static $disabling = FALSE;
+
+  if (isset($set)) {
+    $disabling = $set;
+  }
+  return $disabling;
+}
+
+/**
+ * @} End of "defgroup acl_helpers".
+ */
