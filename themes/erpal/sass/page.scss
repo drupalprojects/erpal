@@ -57,7 +57,6 @@ body {
     li{
 	  list-style-type: none;
 	} 
-    
   } /*----------end node task-----------*/
 	
   &.page-node-tickets { /*----------begin node ticket-----------*/
@@ -338,7 +337,7 @@ body {
 	  }
 	  &.active-trail {
 	    a {
-	      color: $white;
+	      color: $white; 
 		  &:hover {
 		    color: $white;
 		  }
@@ -763,6 +762,7 @@ body {
     li {
 	  margin: 0 2px 4px 0;
 	  list-style-type: none;
+	  display: block;
 	  a {
 	    padding: {
 	      top: 5px;
@@ -1852,3 +1852,13 @@ fieldset {
   }
 }
 /*-------------------------end Page titles--------------------------------*/
+th.views-field-title {
+  width: 200px !important;
+}
+th.views-field-created,
+th.views-field-changed {
+  width: 100px;
+}
+th.views-field-field-invoice-number {
+  width: 50px;
+}
