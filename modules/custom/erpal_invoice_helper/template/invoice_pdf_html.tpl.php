@@ -78,7 +78,7 @@
                 <td style="height:1cm">&nbsp;</td>
               </tr>
               <tr>
-                <td>Rechnung Nr. <?php print $invoice_number; ?></td>                
+                <td><?php print t('Invoice Nr. !invoice_nr', array('!invoice_nr' => $invoice_number)); ?></td>                
               </tr>
               <tr>
                 <td><?php if ($customer['vat_number']) {print t('VAT number').':&nbsp;'; print $customer['vat_number']; print "<br />";} ?></td>
@@ -91,10 +91,10 @@
                 <td><?php if ($copy) : ?><?php print $copy; ?><?php endif; ?></td>
               </tr>
               <tr>
-                <td><?php if ($order_numbers_extern) : ?> Ihre Bestellnummer: <?php print $order_numbers_extern; ?><?php endif; ?></td>
+                <td><?php if ($order_numbers_extern) : ?><?php print t('Your order number: !your_number', array('!your_number' => $order_numbers_extern)); ?><?php endif; ?></td>
               </tr>
               <tr>
-                <td><?php if ($order_numbers_intern) : ?> Ihre Auftragsnummer: <?php print $order_numbers_intern; ?><?php endif; ?></td>
+                <td><?php if ($order_numbers_intern) : ?><?php print t('Our order number: !our_number', array('!our_number' => $order_numbers_intern)); ?><?php endif; ?></td>
               </tr>
               <tr>
                 <td style="height:1cm">&nbsp;</td>
