@@ -1635,6 +1635,32 @@ body {
   }
 }
 /*------------------------------------invoice-----------------------*/
+#field-billables-ref-values {
+  #edit-field-billables-ref-und-0-remove-group {
+    float: left;
+  }
+  .form-type-billable-element {
+    margin-left: 10px;
+    float: left;
+	.field-type-taxonomy-term-reference {
+	  float: left;
+    }
+	.form-item {
+	  margin-right: 4px;
+	  float: left;
+	}
+	.form-type-textfield {
+	  float: left;
+	  input {
+	    width: 80px;
+	  }
+	}
+	#edit-field-billables-ref-und-0-target-id-quantity ,
+	#edit-field-billables-ref-und-0-target-id-single-price {
+	  width: 40px;
+	}
+  }
+}
 .page-invoice-invoices {
   table.views-table {
     border-collapse: collapse;

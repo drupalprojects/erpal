@@ -1836,6 +1836,31 @@ body #user-login input.form-text {
 }
 
 /*------------------------------------invoice-----------------------*/
+#field-billables-ref-values #edit-field-billables-ref-und-0-remove-group {
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element {
+  margin-left: 10px;
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .field-type-taxonomy-term-reference {
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .form-item {
+  margin-right: 4px;
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .form-type-textfield {
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .form-type-textfield input {
+  width: 80px;
+}
+#field-billables-ref-values .form-type-billable-element #edit-field-billables-ref-und-0-target-id-quantity,
+#field-billables-ref-values .form-type-billable-element #edit-field-billables-ref-und-0-target-id-single-price {
+  width: 40px;
+}
+
 .page-invoice-invoices table.views-table {
   border-collapse: collapse;
 }
