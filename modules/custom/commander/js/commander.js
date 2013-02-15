@@ -65,7 +65,7 @@ commander = {
           
         } );
         
-        Drupal.attachBehaviors( commander.console );
+        Drupal.attachBehaviors();
       },
       error   : function() {
         console.error( 'The console could not be loaded!' );

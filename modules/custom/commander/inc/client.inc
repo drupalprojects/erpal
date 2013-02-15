@@ -41,13 +41,35 @@ function _commander_ajax_execute() {
  *
  *  @return NULL
  */
-function _commander_console() {
-  if( !isset($_GET['environment']) )
-    die( 'Environment missing!' );
+function _commander_console( $js=FALSE ) {
+  if( !isset($_GET['environment']) ) {
+    if( $js )
+      die( t('Environment missing!') );
+    else
+      return t( 'Environment missing!' );
+  }
   
-  $console  = theme( 'commander_console_overlay', array( 'environment'=>json_decode( $_GET['environment'] ) ) );
   
-  die( $console );
+  $environment  = is_array($_GET['environment']) ? $_GET['environment'] : json_decode( $_GET['environment'] );
+  $console      = theme( 'commander_console_overlay', array( 'environment'=>$environment ) );
+  
+  if( $js ) {
+    ctools_include('ajax');
+    ctools_include('modal');
+    ctools_modal_add_js();
+    
+    $form_state = array();
+    $form_state['title']              = t('Console');
+    $form_state['ajax']               = true;
+    $form_state['build_info']['args'] = array( 'commander_console_overlay', $environment );
+    $output = ctools_modal_form_wrapper( 'commander_execute_form', $form_state );
+    
+    die( ajax_render( $output ) );
+    
+    return ctools_modal_render( 'Console', $console );
+  }
+  
+  return $console;
 }
 
 /**
@@ -156,7 +178,7 @@ function _commander_autocomplete( $value ) {
       
       if( $join_unknown ) {
         
-        $prepend  = $environment['input'] . (in_array($environment['input'][ strlen($environment['input'])-1 ],array(' ','-','+'))?'':' ');
+        $prepend  = $environment['input'];// . (in_array($environment['input'][ strlen($environment['input'])-1 ],array(' ','-','+'))?'':' ');
         $entered  = '';
         $start    = strlen($prepend);
         $end      = -1;

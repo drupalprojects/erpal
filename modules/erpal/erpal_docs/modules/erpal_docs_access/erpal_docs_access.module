@@ -125,7 +125,7 @@ function _erpal_docs_access_entity_handle($entity, $entity_type, $action) {
               // add nid in array if child was deleted
               if (!array_key_exists($origin_nid, $child_ids)) {
                 $child_ids[$origin_nid] = array(
-                  'id' => $child_id,
+                  'id' => $origin_nid,
                   'action' => 'removed',
                   'parent' => $entity_id
                 );
@@ -135,7 +135,7 @@ function _erpal_docs_access_entity_handle($entity, $entity_type, $action) {
         }
 
         if (empty($child_ids)) // check if ids exist
-          return;
+          continue;
 
         // check if there are many site users
         $range = variable_get('erpal_docs_access_users_count', 30);
@@ -215,7 +215,8 @@ function _erpal_docs_access_handle_user($uid, $child_ids, $settings) {
 
   $access_cache = array();
   // loop all child entities
-  foreach ($child_ids as $child_id => $child) {
+  foreach ($child_ids as $child) {
+    $child_id = $child['id'];
     // load referenced entity
     if (!$child_entity = node_load($child_id))
       continue;
@@ -325,7 +326,7 @@ function _erpal_docs_access_get_users($start, $length) {
     ->execute();
   $users = array();
   foreach ($results as $row) {
-    if(isset($row->uid))
+    if (isset($row->uid))
       $users[] = $row->uid;
   }
   return $users;
@@ -354,7 +355,7 @@ function _erpal_docs_access_read_queue_by_name($name) {
   $queue = DrupalQueue::get($name);
   $queue->createQueue();
   while ($item = $queue->claimItem()) {
-    $items[$item->data['id']] = $item->data;
+    $items[] = $item->data;
     $queue->deleteItem($item);
   }
   return $items;
