@@ -9,8 +9,11 @@
 
 /**
  *  Implements hook_enable()
+ *
+ *  @TODO Implement using CTools modal dialog...
  */
 function commander_shortcut_keys_enable() {
+  return;
   
   // Add shortcut to toggle the console
   $shortcuts  = array(
@@ -40,6 +43,7 @@ function commander_shortcut_keys_enable() {
  *  Implements hook_disable
  */
 function commander_shortcut_keys_disable() {
+  return;
   
   if( !module_exists( 'shortcut_keys' ) )
     return;

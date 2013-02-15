@@ -550,6 +550,8 @@ function commander_init() {
     
     drupal_add_js( array( 'commander'=>array( 'environment'=>array( 'q'=>$_GET['q'] ) ) ), 'setting' );
     
+    //drupal_add_js( drupal_get_path('module','commander').'/js/clipboard-image.js' );
+    
     //$form = drupal_get_form( 'commander_execute_form', '', array() );
   }
 }
@@ -609,8 +611,9 @@ function commander_permission() {
 function commander_menu() {
   $items = array();
   
-  $items['commander/ajax/console']      = array(
+  $items['commander/ajax/console/%ctools_js']      = array(
     'page callback'     => '_commander_console',
+    'page arguments'    => array( 3 ),
     'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_COMMANDER_PERMISSION_ACCESS),
     'type'              => MENU_CALLBACK,
@@ -693,6 +696,10 @@ function commander_block_view( $delta='' ) {
   $block  = array();
   
   if( $delta=='execute_command' ) {
+    
+    ctools_include('ajax');
+    ctools_include('modal');
+    ctools_modal_add_js();
     
     $block  = array(
       'subject' => t( 'Execute command' ),
@@ -1023,6 +1030,21 @@ function _commander_init_command( &$types, &$commands, $name, $module ) {
  */
 function commander_execute_form( $form, &$form_state, $id, $environment, $allow_fullscreen=FALSE ) {
   
+  
+  $hyphen_id  = str_replace( '_', '-', $id );
+  
+  if( $id=='commander_console_overlay' ) {
+    $log                = '<div id="'.$hyphen_id.'-log">';
+    $entries            = commander_get_log();
+    foreach( $entries as $entry )
+      $log                .= theme( 'commander_log_entry', array('entry'=>$entry) );
+    $log                .= '</div>';
+    
+    $form['log']        = array(
+      '#markup'           => $log,
+    );
+  }
+  
   $form['command']      = array(
     '#type'               => 'textfield',
     '#default_value'      => '',
@@ -1047,6 +1069,9 @@ function commander_execute_form( $form, &$form_state, $id, $environment, $allow_
       //'id'                  => 'edit-execute-'.str_replace( '_', '-', $id ),
     ),
   );
+  
+  if( $id=='commander_console_overlay' )
+    unset($form['execute']['#ajax']);
   
   $form['#attributes']['id']  = str_replace( '_', '-', $id ).'-execute-form';
   
@@ -1145,6 +1170,10 @@ function _commander_theme_commander_console_overlay( $messages=array(), $form=NU
  *  @scope private
  */
 function _commander_theme_commander_execute_block( $messages=array(), $form=NULL, $allow_fullscreen=FALSE ) {
+  ctools_include('ajax');
+  ctools_include('modal');
+  ctools_modal_add_js();
+  
   return theme( 'commander_execute_block', array( 'messages'=>$messages, 'form'=>$form, 'allow_fullscreen'=>$allow_fullscreen ) );
 }
 
