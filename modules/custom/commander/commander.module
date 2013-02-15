@@ -441,13 +441,13 @@ function commander_execute( $environment, $input ) {
       $arg_def  = _commander_get_by_name_or_alias( $command['arguments'], $name );
       if( $arg_def ) {
         $type     = $arg_def['type'];
-        if( isset($arg_def['required']) && $arg_def['required'] && !count($values) ) {
+        if( !count($values) ) {
           
           if( isset($arg_def['alias']) && count($result[ $arg_def['alias'] ]) ) {
             $name   = $arg_def['alias'];
             $values = $result[ $name ];
           }
-          else {
+          elseif( isset($arg_def['required']) && $arg_def['required'] ) {
             drupal_set_message( t('%name is required!',array('%name'=>$name)) );
             
             return FALSE;

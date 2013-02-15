@@ -26,7 +26,7 @@
 }
 #commander-console-overlay-execute-form #commander-console-overlay-log .entry,
 #commander-console-log .entry {
-  margin:2px 4px;
+  padding:2px 4px;
   clear:both;
 }
 #commander-console-overlay-execute-form #commander-console-overlay-log .entry-type-debug,
@@ -50,6 +50,18 @@
 #commander-console-log .entry-type-alert,
 #commander-console-log .entry-type-emergency {
   color:#F00;
+}
+#commander-console-overlay-execute-form #commander-console-overlay-log .request-message,
+#commander-console-log .request-message {
+  background:#88F;
+}
+#commander-console-overlay-execute-form #commander-console-overlay-log .request-message.fade,
+#commander-console-log .request-message.fade {
+  background:#FFF;
+  transition: background 2s;
+  -moz-transition: background 2s; /* Firefox 4 */
+  -webkit-transition: background 2s; /* Safari and Chrome */
+  -o-transition: background 2s; /* Opera */
 }
 #commander-console-overlay-execute-form #commander-console-overlay-log .entry-datetime,
 #commander-console-log .entry-datetime {
