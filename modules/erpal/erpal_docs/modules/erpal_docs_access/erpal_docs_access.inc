@@ -185,7 +185,7 @@ class erpal_docs_access {
    * @param type $bundle
    * @return type
    */
-  function get_parents($field_name, $bundle, $reset = FALSE) {
+  function get_parents($field_name, $bundle) {
     $target_id = $this->nid;
     // set offset of entity_id for parrent if child was removed from parent
     $offset = FALSE;
