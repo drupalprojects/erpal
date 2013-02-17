@@ -12,6 +12,9 @@ projects[admin_menu][subdir] = "contrib"
 projects[auto_nodetitle][version] = "1.0"
 projects[auto_nodetitle][subdir] = "contrib"
 
+projects[page_title][version] = "2.7"
+projects[page_title][subdir] = "contrib"
+
 projects[better_exposed_filters][version] = "3.0-beta3"
 projects[better_exposed_filters][subdir] = "contrib"
 
