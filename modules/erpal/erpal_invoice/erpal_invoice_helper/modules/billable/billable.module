@@ -193,7 +193,7 @@ function billable_access($op, $billable = NULL, $account = NULL) {
  */
 function billable_theme() {
   //themes for our billable entity
-  require_once('billable.entity.inc');
+  module_load_include('inc', 'billable', 'billable.entity'); 
   $themes = _billable_entity_theme();
   return $themes;
 }  
