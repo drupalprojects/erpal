@@ -1,0 +1,8 @@
+name = "Screenshot paste"
+description = "Allows the user to paste a screenshot from clipboard"
+core = "7.x"
+package = "Misc"
+
+files[] = screenshot_pastes.module
+
+version = "7.x-1.0-dev"
