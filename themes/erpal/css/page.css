@@ -157,12 +157,12 @@ body #user-login input.form-text {
   padding: 0;
   float: left;
   text-align: center;
+  width: 25px;
 }
 .pane-system-user-menu ul li a {
   padding-left: 25px;
   color: #645c57;
   display: block;
-  font-size: 0;
   text-indent: -2000px;
 }
 .pane-system-user-menu ul li a:hover {
@@ -181,10 +181,10 @@ body #user-login input.form-text {
   background: url("../images/menu_icons/tasks.png") no-repeat 0px -25px;
 }
 .pane-system-user-menu ul li.my-account a {
-  background: url("../images/menu_icons/user.png") no-repeat 0px 2px;
+  background: url("../images/menu_icons/user.png") no-repeat 0px 1px;
 }
 .pane-system-user-menu ul li.my-account a:hover {
-  background: url("../images/menu_icons/user.png") no-repeat 0px -23px;
+  background: url("../images/menu_icons/user.png") no-repeat 0px -33px;
 }
 .pane-system-user-menu ul li.timekeeping a {
   background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -3px;
@@ -197,6 +197,15 @@ body #user-login input.form-text {
 }
 .pane-system-user-menu ul li.my-projects a:hover {
   background: url("../images/menu_icons/projects.png") no-repeat 0px -39px;
+}
+.pane-system-user-menu ul li.log-out {
+  margin-left: 11px;
+}
+.pane-system-user-menu ul li.log-out a {
+  background: url("../images/menu_icons/logout.png") no-repeat 0px 3px;
+}
+.pane-system-user-menu ul li.log-out a:hover {
+  background: url("../images/menu_icons/logout.png") no-repeat 0px -21px;
 }
 
 #mini-panel-user_bar .panel-panel {
@@ -508,10 +517,33 @@ body #user-login input.form-text {
 .comment .field-name-comment-body p {
   font-size: 16px;
 }
+.comment .field-name-comment-body ul {
+  margin-left: 40px;
+}
+.comment .field-name-comment-body ul li {
+  list-style-type: disc;
+  line-height: 1.3em;
+}
+.comment .field-name-comment-body ol {
+  margin-left: 46px;
+}
+.comment .field-name-comment-body ol li {
+  list-style-type: decimal;
+  line-height: 1.3em;
+}
 .comment .comment-header {
   padding-top: 10px;
   padding-right: 10px;
   padding-left: 15px;
+  background-color: #e9e5e2;
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
+  background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
+  height: 28px;
   float: left;
 }
 .comment .comment-header .new {
@@ -823,6 +855,7 @@ body #user-login input.form-text {
 .erpal-content-right .local_tasks li {
   margin: 0 2px 4px 0;
   list-style-type: none;
+  display: block;
 }
 .erpal-content-right .local_tasks li a {
   padding-top: 5px;
@@ -984,14 +1017,15 @@ body #user-login input.form-text {
 
 /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
-.ctools-collapsible-processed a:hover {
-  color: #fc9822;
-}
 .ctools-collapsible-processed .ctools-collapsible-handle {
   cursor: pointer;
 }
-.ctools-collapsible-processed .block-content a {
-  font-size: 11px;
+.ctools-collapsible-processed a {
+  font-size: 13px;
+  font-weight: normal;
+}
+.ctools-collapsible-processed a:hover {
+  color: #fc9822;
 }
 .ctools-collapsible-processed .pane-node-author a {
   font-size: 13px;
@@ -1025,13 +1059,11 @@ body #user-login input.form-text {
   line-height: 12px;
   color: #645c57;
   font-weight: normal;
+  font-size: 11px;
 }
 .ctools-collapsible-processed section, .ctools-collapsible-processed .field-name-field-books-ref {
   margin-bottom: 5px;
   padding-left: 10px;
-}
-.ctools-collapsible-processed section a, .ctools-collapsible-processed .field-name-field-books-ref a {
-  font-size: 13px;
 }
 .ctools-collapsible-processed .field-name-field-task-assigned-users {
   padding-left: 0px;
@@ -1302,6 +1334,15 @@ body #user-login input.form-text {
   border: 1px solid #d9d5d2;
 }
 
+.node-type-erpal-task #comment-form {
+  margin-top: -1px;
+  -webkit-border-radius: 0px 5px 5px 5px;
+  -moz-border-radius: 0px 5px 5px 5px;
+  -ms-border-radius: 0px 5px 5px 5px;
+  -o-border-radius: 0px 5px 5px 5px;
+  border-radius: 0px 5px 5px 5px;
+}
+
 #comment-form {
   padding: 15px;
   margin-top: 20px;
@@ -1451,12 +1492,16 @@ body #user-login input.form-text {
   padding-top: 2px;
   padding-bottom: 3px;
   padding-left: 26px;
+  display: block;
 }
 #homebox .view-assigned-tasks td.views-field-title a {
-  background: url("../images/menu_icons/task.png") no-repeat 0 0;
+  background: url("../images/menu_icons/task.png") no-repeat 0 1px;
 }
 #homebox .view-assigned-tasks td.views-field-title a:hover {
-  background: url("../images/menu_icons/task_hover.png") no-repeat 0 0;
+  background: url("../images/menu_icons/task_hover.png") no-repeat 0 1px;
+}
+#homebox .view-assigned-tasks th.views-field-field-project-ref {
+  width: 190px;
 }
 #homebox .view-assigned-tasks td.views-field-field-project-ref a {
   background: url("../images/menu_icons/projects_.png") no-repeat 0 0;
@@ -1634,6 +1679,13 @@ body #user-login input.form-text {
 
 /*-------------end contact styles------------------*/
 /* begin hightlight of different states of tasks/projects */
+.page-contacts .views-field-field-contact-image {
+  width: 30px;
+}
+.page-contacts .views-field-field-contact-image img {
+  width: 20px;
+}
+
 .block-content .view-content td {
   font-size: 10px;
   font-weight: bold;
@@ -1659,8 +1711,8 @@ body #user-login input.form-text {
   background-image: -o-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
 }
-.block-content .view-content th.views-field-views-bulk-operations {
-  width: 50px;
+.block-content .view-content th.views-field-field-date-1, .block-content .view-content th.views-field-field-date, .block-content .view-content th.views-field-field-priority-term, .block-content .view-content th.views-field-field-project-status-term {
+  width: 100px;
 }
 .block-content .view-content tr.info,
 .block-content .view-content tr.even,
@@ -1686,13 +1738,14 @@ body #user-login input.form-text {
   background-color: #645c57;
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFA69A91', endColorstr='#FF645C57');
-  background-image: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 60, color-stop(10%, #a69a91), color-stop(60%, #645c57));
-  background-image: -webkit-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
-  background-image: -moz-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
-  background-image: -o-radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
-  background-image: radial-gradient(center top, ellipse cover, #a69a91 10%, #645c57 60%);
+  background-image: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 550, color-stop(3.63636%, #a69a91), color-stop(100%, #645c57));
+  background-image: -webkit-radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
+  background-image: -moz-radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
+  background-image: -o-radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
+  background-image: radial-gradient(center top, ellipse cover, #a69a91 20px, #645c57 550px);
   background-position: center top;
   background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#A69A91', EndColorStr='#645C57');
   overflow: hidden;
 }
 .not-logged-in #login_mask_logo {
@@ -1765,7 +1818,6 @@ body #user-login input.form-text {
   background: -moz-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
   background: -o-linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
   background: linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important;
-  background-image: none;
   font-weight: bold;
   -webkit-border-radius: 12px;
   -moz-border-radius: 12px;
@@ -1785,6 +1837,31 @@ body #user-login input.form-text {
 }
 
 /*------------------------------------invoice-----------------------*/
+#field-billables-ref-values #edit-field-billables-ref-und-0-remove-group {
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element {
+  margin-left: 10px;
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .field-type-taxonomy-term-reference {
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .form-item {
+  margin-right: 4px;
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .form-type-textfield {
+  float: left;
+}
+#field-billables-ref-values .form-type-billable-element .form-type-textfield input {
+  width: 80px;
+}
+#field-billables-ref-values .form-type-billable-element #edit-field-billables-ref-und-0-target-id-quantity,
+#field-billables-ref-values .form-type-billable-element #edit-field-billables-ref-und-0-target-id-single-price {
+  width: 40px;
+}
+
 .page-invoice-invoices table.views-table {
   border-collapse: collapse;
 }
@@ -1801,6 +1878,11 @@ body #user-login input.form-text {
 
 li.jstree-open ul {
   padding-left: 20px;
+}
+
+#erpal_wrapper {
+  margin: 0 auto;
+  width: 1200px;
 }
 
 #erpal_wrapper,
@@ -1850,16 +1932,6 @@ fieldset {
 .page-projects td.views-field-title a:hover {
   background: url("../images/menu_icons/projects_hover.png") no-repeat 0 2px;
 }
-.page-projects .node_erpal_contact a {
-  padding-top: 2px;
-  padding-left: 26px;
-  background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
-  line-height: 18px;
-  display: block;
-}
-.page-projects .node_erpal_contact a:hover {
-  background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
-}
 
 .node-type-erpal-task .pane-page-content .views-table {
   -webkit-border-radius: 0px 5px 0px 0px;
@@ -1868,6 +1940,17 @@ fieldset {
   -o-border-radius: 0px 5px 0px 0px;
   border-radius: 0px 5px 0px 0px;
   border-collapse: separate;
+}
+
+.node_erpal_contact a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
+  line-height: 18px;
+  display: block;
+}
+.node_erpal_contact a:hover {
+  background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
 }
 
 /*-------------------------begin Page titles--------------------------------*/
@@ -1972,6 +2055,10 @@ fieldset {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 
+.page-node-calendar h2.pane-title {
+  background: url("../images/menu_icons/calendar_title.png") no-repeat 0 0;
+}
+
 .profile .user-picture {
   margin-top: 20px;
 }
@@ -1986,4 +2073,28 @@ fieldset {
   width: 180px;
 }
 
+.page-node-files td.views-field-title a,
+.page-books-books td.views-field-title a {
+  padding-left: 25px;
+  background: url("../images/menu_icons/docs.png") no-repeat 0 -7px;
+  display: block;
+  line-height: 20px;
+}
+.page-node-files td.views-field-title a:hover,
+.page-books-books td.views-field-title a:hover {
+  background: url("../images/menu_icons/docs.png") no-repeat 0 -43px;
+}
+
 /*-------------------------end Page titles--------------------------------*/
+th.views-field-title {
+  width: 200px !important;
+}
+
+th.views-field-created,
+th.views-field-changed {
+  width: 100px;
+}
+
+th.views-field-field-invoice-number {
+  width: 50px;
+}

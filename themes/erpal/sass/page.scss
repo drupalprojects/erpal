@@ -57,7 +57,6 @@ body {
     li{
 	  list-style-type: none;
 	} 
-    
   } /*----------end node task-----------*/
 	
   &.page-node-tickets { /*----------begin node ticket-----------*/
@@ -103,11 +102,11 @@ body {
 	  padding: 0;
 	  float: left;
 	  text-align: center;
+	  width: 25px;
 	  a {
 	    padding-left: 25px;
 		color: $grey;
 		display: block;
-		font-size: 0;
 		text-indent: -2000px;
 		&:hover{
 		  color: $orange;
@@ -126,9 +125,9 @@ body {
 	   }
 	  }
 	  &.my-account a{
-	    background: url("../images/menu_icons/user.png") no-repeat 0px 2px;
+	    background: url("../images/menu_icons/user.png") no-repeat 0px 1px;
 		&:hover{
-	      background: url("../images/menu_icons/user.png") no-repeat 0px -23px;
+	      background: url("../images/menu_icons/user.png") no-repeat 0px -33px;
 	   }
 	  }
 	  &.timekeeping a{
@@ -141,6 +140,15 @@ body {
 	    background: url("../images/menu_icons/projects.png") no-repeat 0px -3px;
 		&:hover{
 	      background: url("../images/menu_icons/projects.png") no-repeat 0px -39px;
+	    }
+	  }
+	  &.log-out {
+	    margin-left: 11px;
+	   a{
+	      background: url("../images/menu_icons/logout.png") no-repeat 0px 3px;
+		  &:hover{
+	        background: url("../images/menu_icons/logout.png") no-repeat 0px -21px;
+	      }
 	    }
 	  }
 	}
@@ -329,7 +337,7 @@ body {
 	  }
 	  &.active-trail {
 	    a {
-	      color: $white;
+	      color: $white; 
 		  &:hover {
 		    color: $white;
 		  }
@@ -451,6 +459,20 @@ body {
 	p {
 	  font-size: 16px;
 	}
+	ul {
+    margin-left: 40px;
+      li {
+	    list-style-type: disc;
+	    line-height: 1.3em;
+	  }
+    }
+    ol {
+      margin-left: 46px;
+      li {
+	    list-style-type: decimal;
+	    line-height: 1.3em;
+	  }
+    }
   }
   .comment-header {
 	padding: {
@@ -458,6 +480,10 @@ body {
 	  right: 10px;
 	  left: 15px;
 	}
+	background-color: rgb(233,229,226); 
+	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
+	height: 28px;
 	float: left;
 	.new {
       position: relative;
@@ -736,6 +762,7 @@ body {
     li {
 	  margin: 0 2px 4px 0;
 	  list-style-type: none;
+	  display: block;
 	  a {
 	    padding: {
 	      top: 5px;
@@ -876,14 +903,15 @@ body {
 } /*----------------end panel-display-----------------------*/
 /*------------------------end ctools-collapsible-processed -region-sidebar-right----------------------------------*/
 .ctools-collapsible-processed  {
-  a:hover {
-	color: $orange;
-  }
   .ctools-collapsible-handle {
     cursor: pointer;
   }
-  .block-content a {
-    font-size: 11px;
+  a {
+    font-size: 13px;
+	font-weight: normal;
+	&:hover {
+	  color: $orange;
+	}
   }
   .pane-node-author a {
     font-size: 13px;
@@ -914,13 +942,11 @@ body {
 	line-height: 12px;
 	color: $grey;
 	font-weight: normal;
+	font-size: 11px;
   }
   section, .field-name-field-books-ref {
     margin-bottom: 5px;
 	padding-left: 10px;
-	a {
-	  font-size: 13px;
-	} 
   }
   .field-name-field-task-assigned-users {
     padding-left: 0px;
@@ -1178,6 +1204,10 @@ body {
     border: 1px solid $silver_light;
   }
 }
+.node-type-erpal-task #comment-form {
+  margin-top: -1px;
+  @include border-radius(0px 5px 5px 5px);
+}
 #comment-form {
   padding: 15px;
   margin-top: 20px;
@@ -1308,12 +1338,16 @@ body {
 	  padding-top: 2px;
 	  padding-bottom: 3px;
 	  padding-left: 26px;
+	  display: block;
 	}
     td.views-field-title a{
-	  background: url("../images/menu_icons/task.png") no-repeat 0 0; 
+	  background: url("../images/menu_icons/task.png") no-repeat 0 1px; 
 	  &:hover {
-	    background: url("../images/menu_icons/task_hover.png") no-repeat 0 0;
+	    background: url("../images/menu_icons/task_hover.png") no-repeat 0 1px;
 	  }
+	}
+	th.views-field-field-project-ref {
+	  width: 190px;
 	}
 	td.views-field-field-project-ref a{
 	  background: url("../images/menu_icons/projects_.png") no-repeat 0 0; 
@@ -1473,6 +1507,12 @@ body {
 /*-------------end contact styles------------------*/
 
 /* begin hightlight of different states of tasks/projects */
+.page-contacts .views-field-field-contact-image {
+  width: 30px;
+  img {
+    width: 20px;
+  }
+}
 .block-content .view-content {
   td {
     font-size: 10px;
@@ -1493,8 +1533,11 @@ body {
     background-color: rgb(233,229,226); 
 	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
-	&.views-field-views-bulk-operations {
-	  width: 50px;
+	&.views-field-field-date-1,
+    &.views-field-field-date,
+    &.views-field-field-priority-term,
+	&.views-field-field-project-status-term {
+	  width: 100px;
 	}
   }
   tr.info, 
@@ -1520,9 +1563,10 @@ body {
 .not-logged-in {
   background-color: $grey;
   @include filter-gradient(#a69a91, $grey, horizontal); 
-  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 10%, $grey 60%));
+  @include background-image(radial-gradient(center top, ellipse cover,  #a69a91 20px, $grey 550px));
   background-position: center top;
   background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#A69A91', EndColorStr='#645C57');
   overflow: hidden;
   #login_mask_logo {
     margin: 75px auto 8px;
@@ -1578,8 +1622,7 @@ body {
 	    color: $white;
 		background-color: $orange;
 	    @include background(linear-gradient(bottom, #fdae15 37%, #f9b942 69%) !important);
-		background-image: none;
-	    font-weight: bold;
+		font-weight: bold;
 		@include border-radius(12px); 
 		display: block;
 	    border: 1px solid #fba124;
@@ -1592,6 +1635,32 @@ body {
   }
 }
 /*------------------------------------invoice-----------------------*/
+#field-billables-ref-values {
+  #edit-field-billables-ref-und-0-remove-group {
+    float: left;
+  }
+  .form-type-billable-element {
+    margin-left: 10px;
+    float: left;
+	.field-type-taxonomy-term-reference {
+	  float: left;
+    }
+	.form-item {
+	  margin-right: 4px;
+	  float: left;
+	}
+	.form-type-textfield {
+	  float: left;
+	  input {
+	    width: 80px;
+	  }
+	}
+	#edit-field-billables-ref-und-0-target-id-quantity ,
+	#edit-field-billables-ref-und-0-target-id-single-price {
+	  width: 40px;
+	}
+  }
+}
 .page-invoice-invoices {
   table.views-table {
     border-collapse: collapse;
@@ -1610,6 +1679,10 @@ body {
 }
 li.jstree-open ul {
   padding-left: 20px;
+}
+#erpal_wrapper {
+  margin: 0 auto;
+  width: 1200px;
 }
 #erpal_wrapper,
 .erpal-container,
@@ -1650,21 +1723,21 @@ fieldset {
       background: url("../images/menu_icons/projects_hover.png") no-repeat 0 2px;
     }
   }
-  .node_erpal_contact a {
-    padding-top: 2px;
-    padding-left: 26px;
-    background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
-    line-height: 18px;
-	display: block;
-    &:hover {
-      background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
-    }
-  }
 }
 .node-type-erpal-task {
   .pane-page-content .views-table {
     @include border-radius(0px 5px 0px 0px);
 	border-collapse: separate;
+  }
+}
+.node_erpal_contact a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
+  line-height: 18px;
+  display: block;
+  &:hover {
+    background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
   }
 }
 /*-------------------------begin Page titles--------------------------------*/
@@ -1752,6 +1825,9 @@ fieldset {
 .page-user-tasks h2.pane-title {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
+.page-node-calendar h2.pane-title {
+  background: url("../images/menu_icons/calendar_title.png") no-repeat 0 0;
+}
 .profile .user-picture {
   margin-top: 20px;
 }
@@ -1765,4 +1841,24 @@ fieldset {
     width: 180px;
   } 
 }
+.page-node-files td.views-field-title a,
+.page-books-books td.views-field-title a{
+  padding-left: 25px;
+  background: url("../images/menu_icons/docs.png") no-repeat 0 -7px;
+  display: block;
+  line-height: 20px;
+  &:hover {
+    background: url("../images/menu_icons/docs.png") no-repeat 0 -43px;
+  }
+}
 /*-------------------------end Page titles--------------------------------*/
+th.views-field-title {
+  width: 200px !important;
+}
+th.views-field-created,
+th.views-field-changed {
+  width: 100px;
+}
+th.views-field-field-invoice-number {
+  width: 50px;
+}

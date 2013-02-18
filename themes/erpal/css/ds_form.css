@@ -134,6 +134,13 @@ div.group-form-advanced-right:empty {
   width: 50px;
 }
 
+#field-project-team-values .ui-multiselect {
+  margin-top: 17px;
+}
+#field-project-team-values #edit-field-project-team-und-0-remove-button {
+  margin-top: 27px;
+}
+
 /****************************
 	Group advanced
 ****************************/
