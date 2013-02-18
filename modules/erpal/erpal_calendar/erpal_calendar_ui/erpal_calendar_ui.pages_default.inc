@@ -418,35 +418,11 @@ function erpal_calendar_ui_default_page_manager_pages() {
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'Calendar';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-1';
-    $pane->panel = 'sidebar_first_left';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'markup' => 'h1',
-      'class' => '',
-      'id' => '',
-      'override_title' => 1,
-      'override_title_text' => 'Calendar',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-1';
-    $pane = new stdClass();
-    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -461,10 +437,10 @@ function erpal_calendar_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-2';
+    $display->content['new-1'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-1';
     $pane = new stdClass();
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'full_calendar-panel_pane_1';
@@ -479,10 +455,10 @@ function erpal_calendar_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-3';
+    $display->content['new-2'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-2';
     $pane = new stdClass();
-    $pane->pid = 'new-4';
+    $pane->pid = 'new-3';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'fullcalendar_legend';
     $pane->subtype = 'fullcalendar_legend';
@@ -502,10 +478,10 @@ function erpal_calendar_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['sidebar_second_left'][1] = 'new-4';
-  $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-1';
+    $display->content['new-3'] = $pane;
+    $display->panels['sidebar_second_left'][1] = 'new-3';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['full_calendar_pane'] = $page;

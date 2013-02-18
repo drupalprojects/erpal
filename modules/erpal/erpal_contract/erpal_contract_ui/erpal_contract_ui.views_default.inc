@@ -150,7 +150,6 @@ function erpal_contract_ui_views_default_views() {
   $handler->display->display_options['fields']['field_customer_ref']['field'] = 'field_customer_ref';
   $handler->display->display_options['fields']['field_customer_ref']['relationship'] = 'field_contract_payment_value';
   $handler->display->display_options['fields']['field_customer_ref']['type'] = 'entityreference_typed_label';
-  $handler->display->display_options['fields']['field_customer_ref']['type'] = 'entityreference_typed_label';
   $handler->display->display_options['fields']['field_customer_ref']['settings'] = array(
     'link' => 1,
   );
