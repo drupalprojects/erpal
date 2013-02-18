@@ -1,0 +1,9 @@
+name = Commander Shortcut Keys
+description = Enables you to add "Commander" shortcut keys. The given commands (provided in the "value" field) will be executed using the commander module.
+version = "7.x-1.0"
+core = 7.x
+package = "Commander"
+dependencies[] = commander
+dependencies[] = shortcut_keys
+
+scripts[] = js/commander_shortcut_keys.js

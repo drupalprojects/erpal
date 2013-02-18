@@ -1,10 +1,14 @@
+.pane-system-user-menu {
+  margin-right: 15px;
+}
+.pane-system-user-menu li a {
+  font-size: 12px;
+  line-height: 28px;
+}
+
 /*
  * left region
  */
-.pane-system-user-menu li a {
-  font-size: 11px;
-}
-
 /*
  * middle region
  */
@@ -25,21 +29,3 @@
 #erpal_wrapper > .panel-col-first .inside {
   margin: 0 0 1em;
 }
-
-/*
- * middle region left column
- */
-/*
-.panel-2col .panel-col-first {
-	margin-right: -250px;
-    float: left;
-    width: 100%;
-	max-width: 800px;
-}*/
-/*
- * middle region right column
- */
-/*.panel-2col .panel-col-last {
-    float: right;
-    width: 250px;
-}*/

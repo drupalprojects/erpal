@@ -1,0 +1,125 @@
+<?php
+/**
+* @file
+* Code for the erpal_hacks_helper module.
+*/
+
+/**
+* Implements hook_node_form_alter
+*/
+function erpal_hacks_helper_form_alter(&$form, &$form_state, $form_id) {
+  _erpal_hacks_fix_editablefields_problem($form);
+  _erpal_hacks_fix_quick_tabs_exposed_filter_form_action($form, $form_state);
+
+  /**
+   * bugfix: display suite has a bug rendering any form in a ds context with the ds forms template. 
+   * Regardless which form will be displayed but ds should only use the ds forms template on node edit forms. 
+   */
+  if (function_exists('ds_build_load')) {
+    if ($ds_form = ds_build_load($form, $form_id)) {
+      if (preg_match('/^editablefields_form_/', $form_id)) {
+      $form['#theme'] = array($form['#form_id'] , 'editablefields_form');
+      }
+    } 
+  }
+}
+
+/**
+* Limit token tree recrsion to avaoid timeout because of memory limit on content type edit form
+*/
+function erpal_hacks_helper_preprocess_token_tree(&$variables) {
+  $max_recursion_limit = 2;
+  $variables['recursion_limit'] = min($max_recursion_limit, $variables['recursion_limit']);
+}
+
+
+/**
+* Editable fields seams not to work, when the submit button with ajax processing inserted by editbale fields module is in subarray [actions] it will not be rendered (after that it will be removed by editable fields ajax, but submithandler will stay), so we just move it to another subarray
+*/
+function _erpal_hacks_fix_editablefields_problem(&$form) {
+  if (isset($form['#form_id']) && $form['#form_id'] && strpos($form['#form_id'], 'editablefields_form') !== false) {
+    //this is a editbale fields form
+    $form['actions_hack_editable'] = $form['actions'];
+    unset($form['actions']);
+  }
+}
+
+/**
+* If we have views (pane or block) with exposed filter embedded in quicktabs and these quicktabs in a panel, the action of the filter form is not set which redirects to the frontpage after submitting a views exposed filter form. So we set the action to the current page here
+*/
+function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form, &$form_state) {
+  static $processed = array(); //stores information if we have already processed a certain form, if we dont do that we get an endless redirect for example after form reet button.
+  if (isset($form['#form_id']) && $form['#form_id'] == 'views_exposed_form') {
+      //if we don't do this, the form loops on reset till timeout....
+      $url = $_GET['q'];
+      $form['reset']['#submit'] = array('_erpal_hacks_exposed_form_reset_submit');
+      if (!isset($processed[$form['#form_id']])) {                
+        $form['#action'] = '/'.$url;
+        $processed[$form['#form_id']] = true;       
+        _erpal_hacks_helper_add_qt_parameters_to_exposed_form($form);
+      }
+  }
+}
+
+/**
+* Redirect for reset button on exposed filter forms. If we miss that, we get endless redirect loops...don't know exactly why
+*/
+function _erpal_hacks_exposed_form_reset_submit($form, &$form_state) {
+  $query = array();
+  foreach ($_GET as $name => $value) {
+    $pos = strpos($name, 'qt-');
+    if ($pos === 0) {
+      //redirect to q and add all the qtab state parameters to have the correct quickt tab active after reset
+      $query[$name] = $value;      
+    }
+  }
+
+  //unset the exposed filter values in the session, otherwise they will still appear as defaults in the exposed filter form
+  $view_name = isset($form_state['view']->name) ? $form_state['view']->name : false;
+  $display_name = isset($form_state['view']->current_display) ? $form_state['view']->current_display : false;
+
+  if (isset($_SESSION['views'][$view_name][$display_name])) {
+    unset($_SESSION['views'][$view_name][$display_name]);
+  }
+  if (isset($_SESSION['views'][$view_name]['default'])) {
+    unset($_SESSION['views'][$view_name]['default']);
+  }
+  drupal_goto($_GET['q'], array('query' => $query));
+}
+
+/**
+* Returns true, if the exposed form given in argument is a tabbed view
+*/
+function _erpal_hacks_is_tabbed_view_exposed_form($form) {
+
+  foreach ($form['#theme'] as $theme) {
+    switch ($theme) {
+      case 'views_exposed_form__tasks':
+      case 'views_exposed_form__tickets':
+      case 'views_exposed_form__invoices':
+      case 'views_exposed_form__crm_activities':
+      case 'views_exposed_form__working_times':
+      case 'views_exposed_form__working_time':
+      return $theme;
+    }
+  }
+  
+  return false;
+}
+
+/**
+* Adds the quicktabs current tab values to the filter, so they are kept persistent in the url during exposed filter submit
+*/
+function _erpal_hacks_helper_add_qt_parameters_to_exposed_form(&$form) {
+  
+  foreach ($_GET as $name => $value) {
+    $pos = strpos($name, 'qt-');
+    if ($pos === 0) {
+      //this is a qucick tab current-tab parameter
+      $form[$name] = array(
+        '#type' => 'hidden',
+        '#default_value' => $value,
+      );
+    }
+  }
+}

@@ -1,0 +1,57 @@
+<?php
+/**
+ *  @file commander_shortcut_keys/commander_shortcut_keys.install
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Handle enable/disable process, offering our console shortcut
+ */
+
+/**
+ *  Implements hook_enable()
+ *
+ *  @TODO Implement using CTools modal dialog...
+ */
+function commander_shortcut_keys_enable() {
+  return;
+  
+  // Add shortcut to toggle the console
+  $shortcuts  = array(
+    
+    'toggle_commander_console'  => array(
+      'name'            => t('Toggle commander console'),
+      'machine_name'    => 'toggle_commander_console',
+      'groups'          => array(),
+      'type'            => 'javascript',
+      'value'           => 'commander.toggle_console();',
+      'keys'            => 'GRAVE_ACCENT',
+      'press_double'    => TRUE,
+      'confirm_dialog'  => FALSE,
+      'always_execute'  => FALSE,
+      'active'          => TRUE,
+      'module'          => 'commander_shortcut_keys',
+    ),
+    
+  );
+  
+  if( count( shortcut_keys_import_shortcuts( $shortcuts ) ) )
+    drupal_set_message( t( 'Console shortcut has been created.' ) );
+  
+}
+
+/**
+ *  Implements hook_disable
+ */
+function commander_shortcut_keys_disable() {
+  return;
+  
+  if( !module_exists( 'shortcut_keys' ) )
+    return;
+  
+  $shortcuts  = shortcut_keys_get_shortcuts( NULL, TRUE );
+  
+  if( isset($shortcuts['toggle_commander_console']) && isset($shortcuts['toggle_commander_console']['module']) && $shortcuts['toggle_commander_console']['module']=='commander_shortcut_keys' ) {
+    shortcut_keys_delete_shortcut( 'toggle_commander_console' );
+  }
+  
+}

@@ -55,9 +55,9 @@ function _erpal_asterisk_notify_get_view_form() {
   $form['description']['default_message'] = array(
     '#title' => t('Default message'),
     '#type' => 'textarea',
-    '#description' => t('This message will show up when the Number is given/ For number set: %number%'),
+    '#description' => t('This message will show up when the Number is given/ For number set: [callerid]'),
     '#default_value' => variable_get('asterisk_default_message'),
-    '#rows' => 10,
+    '#rows' => 6,
     '#cols' => 60,
     '#resizable' => TRUE,
   );
@@ -67,7 +67,7 @@ function _erpal_asterisk_notify_get_view_form() {
     '#type' => 'textarea',
     '#description' => t('This message will show up for calls from unknown number'),
     '#default_value' => variable_get('asterisk_unknown_number_message'),
-    '#rows' => 10,
+    '#rows' => 6,
     '#cols' => 60,
     '#resizable' => TRUE,
   );

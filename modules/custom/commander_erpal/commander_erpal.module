@@ -1,0 +1,255 @@
+<?php
+/**
+ *  @file commander_erpal/commander_erpal.module
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define hooks and global callbacks.
+ */
+
+define( 'MODULE_COMMANDER_ERPAL_EXECUTE_ADDTASK_PERMISSION', 'execute commander erpal addtask commands' );
+
+/**
+ *  Check permission for the given command
+ *  Since we're manipulating nodes we can't simply provide an execute-permission only, but also have to take care of the node permission management
+ *  
+ *  @param command (string) The name of the command to be executed
+ *  @return (bool Whether or not the command may be executed by the current user
+ */
+function _commander_erpal_access( $command ) {
+  
+  if( $command=='addtask' ) {
+    $hyphen_name  = 'erpal-task';
+    $menu_item    = menu_get_item( 'node/add/'.$hyphen_name );
+    
+    return user_access( MODULE_COMMANDER_ERPAL_EXECUTE_ADDTASK_PERMISSION ) && call_user_func_array( $menu_item['access_callback'], unserialize( $menu_item['access_arguments'] ) );
+  }
+  
+}
+
+
+/**
+ *   Implementation of hook_commander_command()
+ */
+function commander_erpal_commander_command() {
+  
+  $commands = array(
+    'addtask' => array(
+      'description'       => t('Add a task.'),
+      //'access arguments'  => array( MODULE_COMMANDER_ERPAL_EXECUTE_ADDTASK_PERMISSION ),
+      'access callback'   => '_commander_erpal_access',
+      'access arguments'  => array( 'addtask' ),
+      'execute'           => '_commander_erpal_execute_addtask',
+      'auto_argument'     => 'title',
+      'arguments'         => array(
+        'user'              => array(
+          'alias'             => 'u',
+          'description'       => 'The user to assign the task to.',
+          'type'              => 'user',
+          'required'          => FALSE,
+        ),
+        'startdate'         => array(
+          'alias'             => 's',
+          'description'       => 'The date this task should be started.',
+          'type'              => 'datetime',
+          'required'          => FALSE,
+        ),
+        'enddate'           => array(
+          'alias'             => 'e',
+          'description'       => 'The deadline of the task.',
+          'type'              => 'datetime',
+          'required'          => FALSE,
+        ),
+        'parent'            => array(
+          'alias'             => 'p',
+          'description'       => 'The parent project or task (i.e. node) of the task.',
+          'type'              => 'node',
+          'required'          => TRUE,
+          'default'           => 'viewed_node',
+        ),
+        'title'             => array(
+          'alias'             => 't',
+          'description'       => 'The name of the task (resolves to title).',
+          'type'              => 'string',
+          'required'          => TRUE,
+        ),
+        'description'       => array(
+          'alias'             => 'd',
+          'description'       => 'The description of the task (resolves to body).',
+          'type'              => 'string',
+          'required'          => FALSE,
+        ),
+        'priority'          => array(
+          'alias'             => 'prio',
+          'description'       => 'The priority of the task.',
+          'type'              => 'taxonomy_term',
+          'vocabulary'        => 'priority_terms',
+          'required'          => FALSE,
+        ),
+        'estimation'        => array(
+          'alias'             => 'est',
+          'description'       => 'The estimated time consumption of the task.',
+          'type'              => 'number',
+          'required'          => FALSE,
+        ),
+        'status'            => array(
+          'alias'             => 'stat',
+          'description'       => 'The status of the task.',
+          'type'              => 'taxonomy_term',
+          'vocabulary'        => 'task_status_terms',
+          'required'          => FALSE,
+        ),
+      ),
+    ),
+  );
+  
+  return $commands;
+  
+}
+
+
+
+/**
+ * Implements hook_permission().
+ */
+function commander_erpal_permission() {
+  
+  return array(
+    
+    MODULE_COMMANDER_ERPAL_EXECUTE_ADDTASK_PERMISSION => array(
+      'title'           => t('Execute "addtask" commands'),
+      'description'     => t('Allow users to execute addtask commands.'),
+    ),
+    
+  );
+  
+}
+
+
+
+/**
+ *  Helper function to set the form value of the given argument
+ *  
+ *  @param form_state (array) The drupal form_state array of the form to be manipulated
+ *  @param field (string) The name of the field to set the value for
+ *  @param key (string) The value-key
+ *  @param value (mixed) Whatsoever value to set (string actually)
+ *  @param subkey (string) The subkey for the given key
+ *  @return NULL
+ */
+function _commander_erpal_set_form_value( &$form_state, $field, $key, $value, $subkey=NULL ) {
+  
+  if( !isset($form_state['values'][$field]) )
+    $form_state['values'][$field] = array();
+  
+  if( $key===NULL ) {
+    $form_state['values'][$field][LANGUAGE_NONE]  = $value;
+    return;
+  }
+  
+  if( !isset($form_state['values'][$field][LANGUAGE_NONE]) )
+    $form_state['values'][$field][LANGUAGE_NONE]  = array();
+  
+  if( !isset($form_state['values'][$field][LANGUAGE_NONE][0]) )
+    $form_state['values'][$field][LANGUAGE_NONE][0] = array();
+  
+  if( $subkey ) {
+    if( !isset($form_state['values'][$field][LANGUAGE_NONE][0][$key]) )
+      $form_state['values'][$field][LANGUAGE_NONE][0][$key] = array();
+    
+    $form_state['values'][$field][LANGUAGE_NONE][0][$key][$subkey]  = $value;
+    return;
+  }
+  
+  $form_state['values'][$field][LANGUAGE_NONE][0][$key] = $value;
+  
+}
+
+/**
+ *  Execute the "addtask" command: Add a new task to the given project/parent task that is usually derived from the project being viewed.
+ *  
+ *  @param environment (array) The commander-style environment array
+ *  @param arguments (array) An associative list of all arguments. Each argument's value is an array with the values that have been given
+ *  @return (bool) Whether or not the command has been executed successfully
+ */
+function _commander_erpal_execute_addtask( $environment, $arguments ) {
+  
+  global $user;
+  
+  $name         = 'erpal_task';
+  $hyphen_name  = 'erpal-task';
+  $menu_item    = menu_get_item( 'node/add/'.$hyphen_name );
+  include_once( $menu_item['include_file'] );
+  $node         = (object) array('uid' => $user->uid, 'name' => (isset($user->name) ? $user->name : ''), 'type' => $name, 'language' => LANGUAGE_NONE);
+  
+  /*$form         = drupal_get_form( 'erpal_task_node_form', $node );
+  dpm( $form );
+  
+  drupal_set_message( print_r( $arguments, 1 ) );*/
+  // addtask -title "Mein cooler Task!"
+  
+  $form_state   = array();
+  
+  if( count($arguments['user']) ) {
+    $assigned_user  = $arguments['user'][0];
+    
+    _commander_erpal_set_form_value( $form_state, 'field_task_assigned_users', 'target_id', $assigned_user->name . ' ('.$assigned_user->uid.')' );
+  }
+  
+  if( count($arguments['startdate']) ) {
+    _commander_erpal_set_form_value( $form_state, 'field_date', 'value', date( 'd.m.Y', $arguments['startdate'][0] ), 'date' );
+    _commander_erpal_set_form_value( $form_state, 'field_date', 'value', date( 'H:i', $arguments['startdate'][0] ), 'time' );
+  }
+  
+  if( count($arguments['enddate']) ) {
+    _commander_erpal_set_form_value( $form_state, 'field_date', 'show_todate', '1' );
+    
+    _commander_erpal_set_form_value( $form_state, 'field_date', 'value2', date( 'd.m.Y', $arguments['enddate'][0] ), 'date' );
+    _commander_erpal_set_form_value( $form_state, 'field_date', 'value2', date( 'H:i', $arguments['enddate'][0] ), 'time' );
+  }
+  
+  if( count($arguments['parent']) ) {
+    $parent = $arguments['parent'][0];
+    
+    if( $parent->type=='erpal_project' ) {
+      _commander_erpal_set_form_value( $form_state, 'field_project_ref', 'target_id', $parent->title . ' ('.$parent->nid.')' );
+    }
+    elseif( $parent->type=='erpal_task' ) {
+      _commander_erpal_set_form_value( $form_state, 'field_parent', 'target_id', $parent->title . ' ('.$parent->nid.')' );
+      $project  = node_load( $parent->field_project_ref[LANGUAGE_NONE][0]['target_id'] );
+      _commander_erpal_set_form_value( $form_state, 'field_project_ref', 'target_id', $project->title . '('.$project->nid.')' );
+    }
+    else {
+      drupal_set_message( t( '%type is not a valid parent node type!', array( '%type'=>$parent->type ) ), 'error' );
+      
+      return FALSE;
+    }
+  }
+  
+  if( count($arguments['title']) )
+    $form_state['values']['title']  = implode( ' ', $arguments['title'] );
+  
+  if( count($arguments['description']) )
+    _commander_erpal_set_form_value( $form_state, 'body', 'value', implode( ' ', $arguments['description'] ) );
+  
+  if( count($arguments['priority']) )
+    _commander_erpal_set_form_value( $form_state, 'field_priority_term', NULL, $arguments['priority'][0]->tid );
+  
+  if( count($arguments['estimation']) )
+    _commander_erpal_set_form_value( $form_state, 'field_estimated_time', 'value', $arguments['estimation'][0] );
+  
+  if( count($arguments['status']) )
+    _commander_erpal_set_form_value( $form_state, 'field_task_status_term', NULL, $arguments['status'][0]->tid );
+  
+  $form_state['values']['op'] = t('Save');
+  
+  //dpm( $arguments );
+  //dpm( $form_state['values'] );
+  
+  drupal_form_submit( $name.'_node_form', $form_state, $node );
+  
+  $errors = form_get_errors();
+  
+  return TRUE;
+  
+}

@@ -164,6 +164,16 @@ class timetracking extends Entity {
     parent::save();
   }
   
+  /**
+  * Timetrackings that are still tracking time have not been stopped and have no endtime so they don't have a duration. For this reason we calculate the duration for not yet stopped timetracking
+  */
+  public function get_duration() {
+    $duration = ($this->time_end - $this->time_start) / (60 * 60);
+    $duration = round($duration, 2);
+ 
+    return $duration;
+  }
+  
   public function delete() {
     
     parent::delete();

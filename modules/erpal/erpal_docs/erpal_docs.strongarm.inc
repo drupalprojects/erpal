@@ -122,7 +122,6 @@ function erpal_docs_strongarm() {
   $strongarm->name = 'node_options_erpal_file';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
     2 => 'revision',
   );
   $export['node_options_erpal_file'] = $strongarm;

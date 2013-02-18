@@ -15,7 +15,7 @@ function erpal_book_ui_menu_default_menu_links() {
     'menu_name' => 'menu-erpal-menu',
     'link_path' => 'books/books',
     'router_path' => 'books/%',
-    'link_title' => 'Books',
+    'link_title' => 'Documents',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -30,7 +30,7 @@ function erpal_book_ui_menu_default_menu_links() {
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('Books');
+  t('Documents');
 
 
   return $menu_links;

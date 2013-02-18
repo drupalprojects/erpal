@@ -61,35 +61,11 @@ function erpal_docs_ui_default_page_manager_handlers() {
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = '%node:title';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-1';
-    $pane->panel = 'sidebar_first_left';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'markup' => 'h1',
-      'class' => '',
-      'id' => '',
-      'override_title' => 1,
-      'override_title_text' => '%node:title',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-1';
-    $pane = new stdClass();
-    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -104,10 +80,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-2';
+    $display->content['new-1'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-1';
     $pane = new stdClass();
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_docs_file';
@@ -132,10 +108,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-3';
+    $display->content['new-2'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-2';
     $pane = new stdClass();
-    $pane->pid = 'new-4';
+    $pane->pid = 'new-3';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'documents_usage_comments-panel_pane_1';
@@ -150,10 +126,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['sidebar_second_left'][1] = 'new-4';
+    $display->content['new-3'] = $pane;
+    $display->panels['sidebar_second_left'][1] = 'new-3';
     $pane = new stdClass();
-    $pane->pid = 'new-5';
+    $pane->pid = 'new-4';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'documents-panel_pane_1';
@@ -168,10 +144,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-5'] = $pane;
-    $display->panels['sidebar_second_left'][2] = 'new-5';
+    $display->content['new-4'] = $pane;
+    $display->panels['sidebar_second_left'][2] = 'new-4';
     $pane = new stdClass();
-    $pane->pid = 'new-6';
+    $pane->pid = 'new-5';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'node_revisions-panel_pane_1';
@@ -186,10 +162,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['sidebar_second_left'][3] = 'new-6';
+    $display->content['new-5'] = $pane;
+    $display->panels['sidebar_second_left'][3] = 'new-5';
     $pane = new stdClass();
-    $pane->pid = 'new-7';
+    $pane->pid = 'new-6';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'panels_mini';
     $pane->subtype = 'body_and_comments';
@@ -210,10 +186,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 4;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['sidebar_second_left'][4] = 'new-7';
+    $display->content['new-6'] = $pane;
+    $display->panels['sidebar_second_left'][4] = 'new-6';
     $pane = new stdClass();
-    $pane->pid = 'new-8';
+    $pane->pid = 'new-7';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'custom_node_content';
     $pane->subtype = 'custom_node_content';
@@ -231,10 +207,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-8'] = $pane;
-    $display->panels['sidebar_second_right'][0] = 'new-8';
+    $display->content['new-7'] = $pane;
+    $display->panels['sidebar_second_right'][0] = 'new-7';
     $pane = new stdClass();
-    $pane->pid = 'new-9';
+    $pane->pid = 'new-8';
     $pane->panel = 'sidebar_second_right';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_file_tags';
@@ -262,10 +238,10 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-9'] = $pane;
-    $display->panels['sidebar_second_right'][1] = 'new-9';
-  $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-3';
+    $display->content['new-8'] = $pane;
+    $display->panels['sidebar_second_right'][1] = 'new-8';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-2';
   $handler->conf['display'] = $display;
   $export['node_view_panel_context_7'] = $handler;
 
@@ -283,7 +259,7 @@ function erpal_docs_ui_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'Documents Panel';
   $page->admin_description = '';
-  $page->path = 'documents';
+  $page->path = 'files';
   $page->access = array(
     'plugins' => array(
       0 => array(
@@ -336,35 +312,11 @@ function erpal_docs_ui_default_page_manager_pages() {
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'Files';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-1';
-    $pane->panel = 'sidebar_first_left';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'markup' => 'h1',
-      'class' => '',
-      'id' => '',
-      'override_title' => 1,
-      'override_title_text' => 'Documents',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-1';
-    $pane = new stdClass();
-    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -379,10 +331,10 @@ function erpal_docs_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-2';
+    $display->content['new-1'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-1';
     $pane = new stdClass();
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'documents-panel_pane_2';
@@ -397,9 +349,9 @@ function erpal_docs_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-3';
-  $display->hide_title = PANELS_TITLE_NONE;
+    $display->content['new-2'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-2';
+  $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;

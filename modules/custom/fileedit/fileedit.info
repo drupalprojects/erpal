@@ -1,9 +1,8 @@
-core = "7.x"
-description = "ERPAL file edit local"
 name = "fileedit"
-package = "ERPAL"
-php = "5.2.4"
-project = "fileedit"
-version = "7.x-1.0-dev"
+description = "Download, open, monitor and upload file changes automatically."
+core = "7.x"
+package = "Misc"
 
 files[] = fileedit.module
+
+version = "7.x-1.0-dev"

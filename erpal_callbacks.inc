@@ -148,8 +148,20 @@ function _erpal_create_relations(&$context){
  */
 function _erpal_various_settings(&$context){
   $context['message'] = st('Configured ERPAL');
+  
+  module_load_include('install', 'erpal_basic_helper', 'erpal_basic_helper');
+  
+  //insert date and time format if they dont exist
+  _erpal_basic_helper_ensure_format('d.m.Y');
+  _erpal_basic_helper_ensure_format('d.m.Y - H:i');
+  
+  //now add these formats to the format types that we need
+  _erpal_basic_helper_ensure_format_type('ERPAL date', 'erpal_date', 'd.m.Y');
+  _erpal_basic_helper_ensure_format_type('ERPAL date time', 'erpal_date_time', 'd.m.Y - H:i');
+  
   variable_set('date_format_erpal_date', 'd.m.Y');
-  variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');  
+  variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');
+  
   variable_set('erpal_docs_doc_file_extensions', 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml');
 }
 
@@ -184,11 +196,14 @@ function _erpal_projects_config(&$context){
  */
 function _erpal_calendar_config(&$context){ 
   $context['message'] = st('Configured ERPAL-Calendar');
+  module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
   _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
   _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
+  _erpal_calendar_helper_field_tag('node', 'erpal_project', 'field_date', 'project');
+  _erpal_calendar_helper_field_tag('node', 'erpal_task', 'field_date', 'task');
 }
  
 

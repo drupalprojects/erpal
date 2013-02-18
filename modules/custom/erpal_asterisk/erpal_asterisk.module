@@ -7,18 +7,7 @@
 /**
  * Adds the profile2 asterisk-settings with a field phone for the normalized phone number
  */
-// module_load_include('inc', 'erpal_asterisk', 'inc/profile');
-/**
- * Provides a basic configuration for local testing
- */
-function erpal_asterisk_install(){
-  variable_set('asterisk_nodejs_host'    , "127.0.0.1");
-  variable_set('asterisk_nodejs_http_port'    , 8080);
-  variable_set('asterisk_nodejs_socket_port'    , 3081);
-  variable_set('asterisk_nodejs_lifetime', 60); 
-}
-
-
+// module_load_include('inc', 'erpal_asterisk', 'inc/profile');
 /*
 * Implements hook_menu
 */ 
@@ -41,70 +30,83 @@ function erpal_asterisk_permission(){
   );
 }
 
-/*
- *	Send data to the data dispatch server
- *
- *	@param data (string) The data to be sent
- *	@result A boolean indicating whether the communication was successful or not
+
+function _erpal_asterisk_create_key(){
+  
+  $secret = variable_get('erpal_asterisk_secret', 'erpal');
+  // if(isset($_POST['secret']) && $_POST['secret'] == $secret){
+  if(isset($_POST['secret']) && $_POST['secret'] == $secret){
+    $key = drupal_hmac_base64(drupal_random_bytes(512), drupal_get_private_key() . drupal_get_hash_salt());
+    $lifetime = variable_get('erpal_asterisk_call_lifetime', '60');
+
+    $url = 'http://' . variable_get('erpal_asterisk_nodejs_host', '127.0.0.1') 
+    . ':' . variable_get('erpal_asterisk_nodejs_port', '8080');
+
+    $response = drupal_http_request($url . '/asterisk/authenticate',
+      array(
+        'method' => 'POST',
+        'data' => json_encode(array(
+          'secret' => $secret, 
+          'key' => $key, 
+          'call_lifetime' => $lifetime,
+        )),
+        'headers' => array(
+          'Content-Type' => 'application/json', 
+          'Accept' => 'application/json'
+        ),
+      )
+    );
+    if(isset($response) && $response->data == 'ok'){
+      variable_set('erpal_asterisk_authentication', $key);    
+      print_r('ok');
+      die();
+    }
+  }
+  print_r('');
+  die();
+}
+
+
+/**
+ * Returns the html code of the asterisk_notification to the html request 
  */
-function erpal_asterisk_send_dispatch_data( $data, $source, $destination ) {
-  
-  $url = 'http://' . variable_get('asterisk_nodejs_host') . ':' . variable_get('asterisk_nodejs_http_port') . '/ingoing';
-  
-  $phone_number = libphonenumber_normalize($destination);
-
-  $fields = array(
-      'destination' => $phone_number,
-      'caller_data' => urlencode($data)
-  );
-  $fields_string = '';
-  foreach ($fields as $key => $value) {
-    $fields_string .= $key . '=' . $value . '&';
-  } 
-  $fields_string = rtrim($fields_string, '&');
-  $options = array(
-    'method' => 'POST',
-    'data' => $fields_string,
-  );
-
-  //send data to node.js server
-  drupal_http_request($url, $options);
+function _erpal_asterisk_call(){
+  if(isset($_POST['authentication']) && $_POST['authentication'] == variable_get('erpal_asterisk_authentication')){
+    $source = isset($_POST['source']) ? $_POST['source'] : NULL;
+     // // Implements hook_ingoing_call to inform other modules about a call
+     // // module_invoke_all('ingoing_call', $destination, $source);
+    $notification = erpal_asterisk_notify_ingoing_call($source);
+    print_r($notification);
+    die();
+  }
+  print_r('');
+  die();
 }
 
-/*
- * This function implements hook of asterisknotify module and get view of an contact
+/**
+ * Takes a phonenumber given in $_POST['number'] and returns the normalized number via html
  */
-function _erpal_asterisk_call($destination, $source = NULL){
-  
-  module_invoke_all('ingoing_call', $destination, $source);
-  $s = ($source == NULL) ? 'NULL' : $source;
-  return 'call notification with destination ' 
-    . $destination 
-    . ' and source ' 
-    . $s 
-    . ' forwarded to asterisk_notify.';
-    
-  return implode (
-  	'', 
-    module_invoke_all('ingoing_call', $destination, $source)
-  ); 
-  //_erpal_asterisk_request();
+function _erpal_asterisk_normalize(){
+  if(isset($_POST['authentication']) && $_POST['authentication'] == variable_get('erpal_asterisk_authentication')){
+    $destination = (isset($_POST['destination'])) 
+      ? $destination = libphonenumber_normalize($_POST['destination'])
+      : 'unknown';
+    $source = (isset($_POST['source'])) 
+      ? $source = libphonenumber_normalize($_POST['source'])
+      : 'unknown';
+    $out = json_encode(array('destination' => $destination, 'source' => $source)); 
+    print_r($out);
+    die();
+  }
+  print_r('');
+  die();
 }
-
-
-function _erpal_asterisk_request($destination, $source = False, $html){
-
-   // JAVASCRIPT REQUEST FOLGT HIER
-   return $html; 
-}
-
 
 /**
  * implements hook_field_attach_presave() to save normalized phone numbers 
  * everytime a field collection of type phone_number is saved
  */
-function erpal_asterisk_field_attach_presave($type, $entity){
-    
+function erpal_asterisk_field_attach_presave($type, $entity){ 
   if($type == 'field_collection_item' && $entity->field_name == 'field_phone') {
     $phone_number = $entity->field_phone_number[LANGUAGE_NONE][0]['value'];
     if(!isset($entity->field_phone_number_normalized[LANGUAGE_NONE][0])) $phone_number_normalized_old = "";

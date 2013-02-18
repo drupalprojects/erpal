@@ -30,7 +30,7 @@ $weight_normal: normal;
 /* color variables */
 $bright_grey: #E5E5E5;         /* main background*/
 $white: #ffffff;
-$grey: #525252;
+$grey: #645c57;
 $light_grey: #EEEEEE;   /* background*/
 $dark_white: #F6F6F6; /*background for quicktabs li*/
 $dark_grey: #888888;
@@ -50,16 +50,20 @@ $pink: #eed0d5;
 $red: #CC000C;
 $light_pink: #FFDFE4;
 $green: #088A58;
+$green_dark: #098a58;
 $dark_pink: #ff0ff0; /*color for mark*/
-
 $dark_brown: #7b726b;        /* left sidebar link*/
 $silver_grey: #b6b6b6; 
 $brown: #908984;
 $black: #000000;
-$orange: #FFA800;
+$orange: #FC9822;
 $dark_orange: #fd8300;
-
+$silver_light: #d9d5d2; /*for border*/
 $grey_dark: #5a5a5a; /*grey link color*/
+$black_dark: #393431;
+$dark_black: #3d3835; /*for quicktabs-tabs color*/
+$gray_silver: #cbcbcb; /*----for buttons border---------------*/
+$light_gray: #d0cac6; /*for top menu border*/
 /*styles for border*/
 $radius_8: 8px;
 $radius_5: 5px;
@@ -129,14 +133,9 @@ $light_drab: #959595;
 
 @mixin a_black{
 	margin: 0;
-	padding: 0 20px;
+	padding: 9px 12px 10px 35px;
 	letter-spacing: 1px;
-	text-align: center;
 	@include text_bold_12;
-	height: 42px;
-	line-height: 42px;
-	min-width: 80px;
-	background: $white;
 	border: none;
 }
 @mixin a_orange{

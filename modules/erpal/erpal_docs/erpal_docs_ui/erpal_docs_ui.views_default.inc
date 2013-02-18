@@ -293,23 +293,23 @@ function erpal_docs_ui_views_default_views() {
   $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_asset_files_node';
   $handler->display->display_options['fields']['title_1']['label'] = 'Attached at';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: File Usage: Show files of child tasks */
-  $handler->display->display_options['arguments']['child_tasks_files']['id'] = 'child_tasks_files';
-  $handler->display->display_options['arguments']['child_tasks_files']['table'] = 'field_data_field_asset_files';
-  $handler->display->display_options['arguments']['child_tasks_files']['field'] = 'child_tasks_files';
-  $handler->display->display_options['arguments']['child_tasks_files']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['child_tasks_files']['default_argument_type'] = 'user';
-  $handler->display->display_options['arguments']['child_tasks_files']['default_argument_options']['user'] = FALSE;
-  $handler->display->display_options['arguments']['child_tasks_files']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['child_tasks_files']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['child_tasks_files']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['child_tasks_files']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['child_tasks_files']['validate']['type'] = 'node';
-  $handler->display->display_options['arguments']['child_tasks_files']['validate_options']['types'] = array(
+  /* Contextual filter: Task: Task subtasks */
+  $handler->display->display_options['arguments']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['arguments']['erpal_subtasks']['relationship'] = 'reverse_field_asset_files_node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['erpal_subtasks']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['erpal_subtasks']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['erpal_subtasks']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate_options']['types'] = array(
     'erpal_project' => 'erpal_project',
     'erpal_task' => 'erpal_task',
   );
-  $handler->display->display_options['arguments']['child_tasks_files']['validate']['fail'] = 'empty';
+  $handler->display->display_options['arguments']['erpal_subtasks']['validate']['fail'] = 'empty';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -371,27 +371,27 @@ function erpal_docs_ui_views_default_views() {
     7 => 0,
     8 => 0,
   );
-  /* Filter criterion: File Usage: Show files of child tasks */
-  $handler->display->display_options['filters']['child_tasks_files']['id'] = 'child_tasks_files';
-  $handler->display->display_options['filters']['child_tasks_files']['table'] = 'field_data_field_asset_files';
-  $handler->display->display_options['filters']['child_tasks_files']['field'] = 'child_tasks_files';
-  $handler->display->display_options['filters']['child_tasks_files']['value'] = '1';
-  $handler->display->display_options['filters']['child_tasks_files']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['child_tasks_files']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['child_tasks_files']['expose']['label'] = 'Show sub-files';
-  $handler->display->display_options['filters']['child_tasks_files']['expose']['operator'] = 'child_tasks_files_op';
-  $handler->display->display_options['filters']['child_tasks_files']['expose']['identifier'] = 'child_tasks_files';
-  $handler->display->display_options['filters']['child_tasks_files']['expose']['required'] = TRUE;
-  $handler->display->display_options['filters']['child_tasks_files']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['child_tasks_files']['expose']['remember_roles'] = array(
+  /* Filter criterion: Task: Task subtasks */
+  $handler->display->display_options['filters']['erpal_subtasks']['id'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['table'] = 'node';
+  $handler->display->display_options['filters']['erpal_subtasks']['field'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['value'] = '1';
+  $handler->display->display_options['filters']['erpal_subtasks']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['label'] = 'Show sub-files';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['operator'] = 'erpal_subtasks_op';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['identifier'] = 'erpal_subtasks';
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['erpal_subtasks']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
     4 => 0,
-    6 => 0,
     5 => 0,
+    6 => 0,
     7 => 0,
     8 => 0,
+    9 => 0,
   );
   $handler->display->display_options['argument_input'] = array(
     'child_tasks_files' => array(

@@ -28,11 +28,7 @@ function _libphonenumber_include_library(){
         array('!link' => $libphonenumber_link)), 'warning');    
     return false;
   }
-  
-  
   require_once $libphonenumber_path . '/PhoneNumberUtil.php';
-  
-  
   return true;
 
 }
@@ -49,11 +45,12 @@ function libphonenumber_permission(){
 
 function libphonenumber_menu(){
   
-  $items['admin/libphonenumber'] = array(
-    'title' => t('Libphonenumber config'),
+  $items['admin/config/regional/libphonenumber'] = array(
+    'title' => 'Libphonenumber',
+    'description' => t('Basic settings for phonenumber normalisation'),
     'page callback' => '_libphonenumber_config',    
     'access arguments' => array('config libphonenumber'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_NORMAL_ITEM,
   );
   return $items;
   
@@ -83,6 +80,12 @@ function _libphonenumber_config_form(){
       '#default_value' => variable_get('libphonenumber_default_country'), 
     );
     
+    $form['config']['area'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Default area code'),
+      '#description' => t('Enter the country code of your phonenumber. Such as "06151" for Darmstadt or "030" for Berlin'),
+      '#default_value' => variable_get('libphonenumber_default_area'),
+    );
     
     $form['config']['format'] = array(
       '#type' => 'select', 
@@ -109,6 +112,9 @@ function _libphonenumber_config_form_submit(&$form, &$form_state){
   
   $format = $form_state['values']['format'];
   variable_set('libphonenumber_default_format', $format);
+  
+  $area = $form_state['values']['area'];
+  variable_set('libphonenumber_default_area', $area);
 }
 
 /**
@@ -165,7 +171,6 @@ function _libphonenumber_parse($phone_number, $region) {
 }
 
 
-
 /**
  * Checks if a phonenumber is valid for the given region
  */
@@ -214,6 +219,12 @@ function libphonenumber_is_number_match($phone_number_a, $phone_number_b, $regio
 function libphonenumber_normalize($phone_number){
   if(_libphonenumber_include_library()){
     $phone_util = PhoneNumberUtil::getInstance();
+    // If the number doesn't start with '0' and doesn't start with '+'
+    // Add the default area code entered in the settings
+    if(($phone_number[0]!='0')&&($phone_number[0] != '+')){
+      $area = variable_get('libphonenumber_default_area', '06151');
+      $phone_number = $area . $phone_number;      
+    }
     $format = variable_get('libphonenumber_default_format', PhoneNumberFormat::E164);
     $region_code = variable_get('libphonenumber_default_country', 49);
     $regions = $phone_util->getSupportedRegions();
