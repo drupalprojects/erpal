@@ -1070,8 +1070,10 @@ function commander_execute_form( $form, &$form_state, $id, $environment, $allow_
     ),
   );
   
-  if( $id=='commander_console_overlay' )
+  if( $id=='commander_console_overlay' ) {
+    $form['execute']['#submit'] = array( '_commander_execute_form_submit' );
     unset($form['execute']['#ajax']);
+  }
   
   $form['#attributes']['id']  = str_replace( '_', '-', $id ).'-execute-form';
   
@@ -1093,7 +1095,7 @@ function commander_execute_form_callback( $form, &$form_state ) {
   
   return $element;
 }
-function commander_execute_form_submit( $form, &$form_state ) {
+function _commander_execute_form_submit( $form, &$form_state ) {
   $display  = commander_execute_form_submit_handler( $form_state );
 }
 function commander_execute_form_submit_handler( &$form_state ) {
