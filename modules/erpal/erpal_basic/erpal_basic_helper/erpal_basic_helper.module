@@ -1112,3 +1112,7 @@ function erpal_date_as_unix_timestamp($value, $tz_string=NULL) {
   $unix_time = mktime($date_arr['hour'], $date_arr['minute'], $date_arr['second'], $date_arr['month'], $date_arr['day'], $date_arr['year']);
   return $unix_time;
 }
+
+function erpal_basic_helper_menu_alter(&$items){
+  unset($items['node']);
+}

@@ -110,7 +110,6 @@ dependencies[] = erpal_print
 dependencies[] = erpal_profile_helper
 dependencies[] = erpal_projects_billable
 dependencies[] = erpal_projects_helper
-dependencies[] = erpal_resource_helper
 dependencies[] = erpal_timetracking_export
 dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations

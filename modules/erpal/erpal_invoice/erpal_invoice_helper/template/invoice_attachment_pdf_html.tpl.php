@@ -11,7 +11,7 @@
 ?>
 <link rel="stylesheet" type="text/css" href="<?php print drupal_get_path('module', 'erpal_invoice_helper'); ?>/template/common.css">
 <br>&nbsp;<br>&nbsp;
-<h1>Rechnungsanhang</h1>
+<h1><?php print t('Invoice details'); ?></h1>
 <br>&nbsp;<br>&nbsp;<br>
 <?php
 
@@ -56,7 +56,7 @@ foreach ($billables as $billable) {
       $row[] = array('data' => number_format($reduced_billable->single_price, 2, ',', '.'),
           "class" => "right");
       // total
-      $row[] = array('data' => number_format($reduced_billable->total_price, 2, ',', '.'),
+      $row[] = array('data' => number_format($reduced_billable->total_price_no_vat, 2, ',', '.'),
           "class" => "right");
 
       // Add the Row to the array:
