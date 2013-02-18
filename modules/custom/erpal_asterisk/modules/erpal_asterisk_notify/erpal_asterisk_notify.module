@@ -13,7 +13,7 @@ define("VIEWCONTENTTYPE", "erpal_contact");
  * Adds bs_asterisk_client.js and now.js to every page
  */
 function erpal_asterisk_notify_init() {
-
+  
   global $user; 
   $profile = profile2_load_by_user($user);
     

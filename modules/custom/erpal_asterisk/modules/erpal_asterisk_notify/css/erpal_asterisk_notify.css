@@ -2,11 +2,15 @@ div.erpal-asterisk-notify {
   position:fixed;
   right:0;
   bottom:0;
-  background:#eeef99;
-  border:2px solid white;
+  background:#645C57;
+  border:1px solid white;
   width:400px;
-  padding:0 20px;
+  padding: 0px 10px 0px 10px;
   z-index: 100;
+}
+
+.erpal-asterisk-notify .view-content{
+  border-radius: 5px;
 }
 
 div.erpal-asterisk-notify div.asterisk-status-buttons {
@@ -14,12 +18,12 @@ div.erpal-asterisk-notify div.asterisk-status-buttons {
 }
 
 div.erpal-asterisk-notify div.asterisk-status-buttons a#asterisk-available {
-  color:green;
+  color:#098A58;
   font-weight:bold;
 }
 
 div.erpal-asterisk-notify div.asterisk-status-buttons a#asterisk-not-available {
-  color:red;
+  color:#FC9822;
   font-weight:bold;
 }
 
