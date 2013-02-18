@@ -119,9 +119,11 @@ commander = {
     
   },
   
-  console_loading   : false,  // Are we loading the console already? (fight unpatience)
-  console           : null,   // The console overlay top element
-  environment       : {}      // Environmental variables to overwrite defaults. Currently used for the 'q' key
+  check_log_scrolling	: null,	// Since CTools is loading the good stuff we 
+  
+  console_loading   : false,  	// Are we loading the console already? (fight unpatience)
+  console           : null,   	// The console overlay top element
+  environment       : {}      	// Environmental variables to overwrite defaults. Currently used for the 'q' key
   
 };
 
@@ -134,6 +136,9 @@ Drupal.behaviors.commander  = {
       for( var name in settings.commander.environment )
         commander.environment[name]     = settings.commander.environment[name];
     
+	jQuery(context).find('#commander-console-overlay-log').scrollTop( 999999 );
+	jQuery(context).find('#commander-console-overlay-log .request-message:not(.fade)').addClass('fade');
+	
   }
   
 };
