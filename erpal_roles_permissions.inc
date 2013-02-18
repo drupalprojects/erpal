@@ -139,6 +139,7 @@ $export = array(
       'flag project_subscriptions',
       'flag task_subscriptions',
       'post comments',
+      'search content',
       'skip comment approval',
       'unflag bookmark_flag',
       'unflag project_subscriptions',
