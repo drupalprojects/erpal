@@ -69,8 +69,6 @@ body #erpal_wrapper .erpal-top {
   margin-bottom: 15px;
   margin-left: 10px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -536,8 +534,6 @@ body #user-login input.form-text {
   padding-right: 10px;
   padding-left: 15px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -553,8 +549,6 @@ body #user-login input.form-text {
 .comment .submitted {
   padding: 10px 15px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -638,8 +632,6 @@ body #user-login input.form-text {
   -o-border-radius: 5px;
   border-radius: 5px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -780,8 +772,6 @@ body #user-login input.form-text {
   -o-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -845,6 +835,9 @@ body #user-login input.form-text {
   position: absolute;
   width: 248px;
   z-index: 10;
+}
+.erpal-content-right .local_tasks_menu {
+  height: 40px;
 }
 .erpal-content-right .local_tasks {
   margin-top: 2px;
