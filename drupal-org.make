@@ -9,6 +9,12 @@ projects[acl][subdir] = "contrib"
 projects[admin_menu][version] = "3.0-rc4"
 projects[admin_menu][subdir] = "contrib"
 
+projects[colors][version] = "1.0-rc1"
+projects[colors][subdir] = "contrib"
+
+projects[maxlength][version] = "3.0-beta1"
+projects[maxlength][subdir] = "contrib"
+
 projects[auto_nodetitle][version] = "1.0"
 projects[auto_nodetitle][subdir] = "contrib"
 
@@ -148,6 +154,9 @@ projects[relation][subdir] = "contrib"
 
 projects[relation_add][version] = "1.0-beta1"
 projects[relation_add][subdir] = "contrib"
+
+projects[r4032login][version] = "1.5"
+projects[r4032login][subdir] = "contrib"
 
 projects[strongarm][version] = "2.0"
 projects[strongarm][subdir] = "contrib"

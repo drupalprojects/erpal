@@ -482,6 +482,8 @@ function erpal_basic_ui_views_default_views() {
 
   /* Display: Project notifications */
   $handler = $view->new_display('panel_pane', 'Project notifications', 'panel_pane_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Project notifications';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Flags: project_subscriptions */

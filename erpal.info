@@ -90,6 +90,10 @@ dependencies[] = views_bulk_operations
 dependencies[] = views_content
 dependencies[] = views_jstree
 
+dependencies[] = colors
+dependencies[] = maxlength
+
+
 ; custom
 dependencies[] = date_item_calendar
 dependencies[] = content_access_view
@@ -115,7 +119,7 @@ dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations
 dependencies[] = entityreference_unique
 dependencies[] = references_dialog_insert
-
+dependencies[] = r4032login
 
 ; features 
 dependencies[] = erpal_basic
