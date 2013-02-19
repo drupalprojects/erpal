@@ -339,6 +339,7 @@ body {
 	      color: $white; 
 		  &:hover {
 		    color: $white;
+			text-shadow: none;
 		  }
 	    }
 	    &.active-trail {
@@ -355,6 +356,7 @@ body {
 		background-repeat: no-repeat;
 		&:hover {
 		  color: $orange;
+		  text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
 		}
 		&.active {
 		  color: $white;

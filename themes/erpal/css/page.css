@@ -394,6 +394,7 @@ body #user-login input.form-text {
 }
 .pane-menu-menu-erpal-menu ul li.active-trail a:hover {
   color: white;
+  text-shadow: none;
 }
 .pane-menu-menu-erpal-menu ul li.active-trail.active-trail {
   background: url("../images/li_active.png") no-repeat 0 0;
@@ -409,6 +410,7 @@ body #user-login input.form-text {
 }
 .pane-menu-menu-erpal-menu ul li a:hover {
   color: #fc9822;
+  text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
 }
 .pane-menu-menu-erpal-menu ul li a.active {
   color: white;
