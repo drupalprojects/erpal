@@ -69,8 +69,6 @@ body #erpal_wrapper .erpal-top {
   margin-bottom: 15px;
   margin-left: 10px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -396,6 +394,7 @@ body #user-login input.form-text {
 }
 .pane-menu-menu-erpal-menu ul li.active-trail a:hover {
   color: white;
+  text-shadow: none;
 }
 .pane-menu-menu-erpal-menu ul li.active-trail.active-trail {
   background: url("../images/li_active.png") no-repeat 0 0;
@@ -411,6 +410,7 @@ body #user-login input.form-text {
 }
 .pane-menu-menu-erpal-menu ul li a:hover {
   color: #fc9822;
+  text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
 }
 .pane-menu-menu-erpal-menu ul li a.active {
   color: white;
@@ -536,8 +536,6 @@ body #user-login input.form-text {
   padding-right: 10px;
   padding-left: 15px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -553,8 +551,6 @@ body #user-login input.form-text {
 .comment .submitted {
   padding: 10px 15px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -638,8 +634,6 @@ body #user-login input.form-text {
   -o-border-radius: 5px;
   border-radius: 5px;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -780,8 +774,6 @@ body #user-login input.form-text {
   -o-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -845,6 +837,9 @@ body #user-login input.form-text {
   position: absolute;
   width: 248px;
   z-index: 10;
+}
+.erpal-content-right .local_tasks_menu {
+  height: 40px;
 }
 .erpal-content-right .local_tasks {
   margin-top: 2px;
@@ -1038,6 +1033,7 @@ body #user-login input.form-text {
   font-size: 11px;
   line-height: 11px;
   color: #645c57;
+  background: none !important;
 }
 .ctools-collapsible-processed h2.pane-title.ctools-collapsible-handle {
   padding: 3px 5px 3px 0px;
@@ -1048,7 +1044,7 @@ body #user-login input.form-text {
 .ctools-collapsible-processed .ctools-collapsible-content h2.pane-title {
   padding-left: 0;
   color: #645c57;
-  background: none;
+  background: none !important;
 }
 .ctools-collapsible-processed .ctools-collapsible-content .field-items {
   clear: both;
@@ -1837,28 +1833,30 @@ body #user-login input.form-text {
 }
 
 /*------------------------------------invoice-----------------------*/
-#field-billables-ref-values #edit-field-billables-ref-und-0-remove-group {
+.node-type-erpal-invoice .field-multiple-table .field-multiple-drag a {
+  padding-right: 0px;
+}
+.node-type-erpal-invoice .field-multiple-table .form-wrapper {
   float: left;
 }
-#field-billables-ref-values .form-type-billable-element {
+.node-type-erpal-invoice .field-multiple-table .form-type-billable-element {
   margin-left: 10px;
   float: left;
 }
-#field-billables-ref-values .form-type-billable-element .field-type-taxonomy-term-reference {
+.node-type-erpal-invoice .field-multiple-table .form-type-billable-element .field-type-taxonomy-term-reference {
   float: left;
 }
-#field-billables-ref-values .form-type-billable-element .form-item {
+.node-type-erpal-invoice .field-multiple-table .form-type-billable-element .form-item {
   margin-right: 4px;
   float: left;
 }
-#field-billables-ref-values .form-type-billable-element .form-type-textfield {
+.node-type-erpal-invoice .field-multiple-table .form-type-billable-element .form-type-textfield {
   float: left;
 }
-#field-billables-ref-values .form-type-billable-element .form-type-textfield input {
+.node-type-erpal-invoice .field-multiple-table .form-type-billable-element .form-type-textfield input {
   width: 80px;
 }
-#field-billables-ref-values .form-type-billable-element #edit-field-billables-ref-und-0-target-id-quantity,
-#field-billables-ref-values .form-type-billable-element #edit-field-billables-ref-und-0-target-id-single-price {
+.node-type-erpal-invoice .field-multiple-table .form-type-billable-element input.form-text {
   width: 40px;
 }
 
@@ -1942,19 +1940,19 @@ fieldset {
   border-collapse: separate;
 }
 
-.node_erpal_contact a {
+.pane-contacts-panel-pane-1 td a {
   padding-top: 2px;
   padding-left: 26px;
   background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
   line-height: 18px;
   display: block;
 }
-.node_erpal_contact a:hover {
+.pane-contacts-panel-pane-1 td a:hover {
   background: url("../images/menu_icons/contact_hover.png") no-repeat 0 2px;
 }
 
 /*-------------------------begin Page titles--------------------------------*/
-.erpal-content-left h2.pane-title,
+.pane-page-content h2.pane-title,
 .page-node-pricing .pane-page-content h2.pane-title,
 .node-type-erpal-contract h2.pane-title,
 .page-tasks h2.pane-title,
@@ -1964,33 +1962,33 @@ fieldset {
   padding-left: 33px;
 }
 
-.page-projects .erpal-content-left h2.pane-title,
-.node-type-erpal-project .erpal-content-left h2.pane-title {
+.page-projects .pane-page-content h2.pane-title,
+.node-type-erpal-project .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
 }
 
-.page-contacts .erpal-content-left h2.pane-title {
+.page-contacts .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/contact_title.png") no-repeat 0 0;
 }
 
-.page-activities .erpal-content-left h2.pane-title {
+.page-activities .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/activity_title.png") no-repeat 0 0;
 }
 
-.page-books .erpal-content-left h2.pane-title,
-.page-node-files .erpal-content-left h2.pane-title {
+.page-books .pane-page-content h2.pane-title,
+.page-node-files .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/documents_title.png") no-repeat 0 0;
 }
 
-.page-files .erpal-content-left h2.pane-title {
+.page-files .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/file_title.png") no-repeat 0 0;
 }
 
-.page-invoice .erpal-content-left h2.pane-title {
+.page-invoice .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/invoice_title.png") no-repeat 0 0;
 }
 
-.page-contracts .erpal-content-left h2.pane-title,
+.page-contracts .pane-page-content h2.pane-title,
 .node-type-erpal-contract h2.pane-title {
   background: url("../images/menu_icons/contracts_title.png") no-repeat 0 0;
 }
@@ -2000,29 +1998,29 @@ fieldset {
   padding-left: 0;
 }
 
-.page-timekeeping .erpal-content-left h2.pane-title,
-.page-node-timetracking .erpal-content-left h2.pane-title,
+.page-timekeeping .pane-page-content h2.pane-title,
+.page-node-timetracking .pane-page-content h2.pane-title,
 .page-projects-timetrackings h2.pane-title {
   background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
 }
 
-.node-type-erpal-task .erpal-content-left h2.pane-title,
-.page-node-tasks .erpal-content-left h2.pane-title,
+.node-type-erpal-task .pane-page-content h2.pane-title,
+.page-node-tasks .pane-page-content h2.pane-title,
 .page-tasks h2.pane-title {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 
-.page-projects-pricing .erpal-content-left h2.pane-title,
-.page-projects-budgets .erpal-content-left h2.pane-title,
+.page-projects-pricing .pane-page-content h2.pane-title,
+.page-projects-budgets .pane-page-content h2.pane-title,
 .page-node-pricing .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/price.png") no-repeat 0 2px;
 }
 
-.page-node-tickets .erpal-content-left h2.pane-title {
+.page-node-tickets .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/ticket.png") no-repeat 0 2px;
 }
 
-.node-type-erpal-invoice .erpal-content-left .pane-page-title h2.pane-title {
+.node-type-erpal-invoice .pane-page-content .pane-page-title h2.pane-title {
   background: url("../images/menu_icons/invoice_title.png") no-repeat 0 2px;
 }
 
@@ -2047,7 +2045,7 @@ fieldset {
   background: url("../images/menu_icons/bookmark_title.png") no-repeat 0 0;
 }
 
-.page-user-projects h2.pane-title {
+.page-user-projects > h2.pane-title {
   background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
 }
 
@@ -2055,7 +2053,7 @@ fieldset {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 
-.page-node-calendar h2.pane-title {
+.page-calendar h2.pane-title {
   background: url("../images/menu_icons/calendar_title.png") no-repeat 0 0;
 }
 
