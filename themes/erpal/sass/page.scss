@@ -355,8 +355,8 @@ body {
 		font-weight: bold;
 		background-repeat: no-repeat;
 		&:hover {
-		  color: $orange;
-		  text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+		  color: rgba($orange, 0.8);
+		  text-shadow: 1px 1px 1px $silver, 0 0 0 $black, 1px 1px 1px $silver;
 		}
 		&.active {
 		  color: $white;

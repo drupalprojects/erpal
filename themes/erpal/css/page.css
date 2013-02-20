@@ -409,8 +409,8 @@ body #user-login input.form-text {
   background-repeat: no-repeat;
 }
 .pane-menu-menu-erpal-menu ul li a:hover {
-  color: #fc9822;
-  text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+  color: rgba(252, 152, 34, 0.8);
+  text-shadow: 1px 1px 1px #dedede, 0 0 0 black, 1px 1px 1px #dedede;
 }
 .pane-menu-menu-erpal-menu ul li a.active {
   color: white;
