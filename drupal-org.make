@@ -190,6 +190,57 @@ projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa
 projects[views_bulk_operations][version] = "3.0-rc1"
 projects[views_bulk_operations][subdir] = "contrib"
 
+;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
+projects[erpal_core][version] = "1.x-dev"
+projects[erpal_core][subdir] = "erpal"
+projects[erpal_core][download][type] = "git"
+projects[erpal_core][download][url] = "http://git.drupal.org/project/erpal_core.git"
+projects[erpal_core][download][revision] = "HEAD"
+
+projects[erpal_book][version] = "1.x-dev"
+projects[erpal_book][subdir] = "erpal"
+projects[erpal_book][download][type] = "git"
+projects[erpal_book][download][url] = "http://git.drupal.org/project/erpal_book.git"
+projects[erpal_book][download][revision] = "HEAD"
+
+projects[erpal_calendar][version] = "1.x-dev"
+projects[erpal_calendar][subdir] = "erpal"
+projects[erpal_calendar][download][type] = "git"
+projects[erpal_calendar][download][url] = "http://git.drupal.org/project/erpal_calendar.git"
+projects[erpal_calendar][download][revision] = "HEAD"
+
+;projects[erpal_contract][version] = "1.x-dev"
+;projects[erpal_contract][subdir] = "erpal"
+;projects[erpal_contract][download][type] = "git"
+;projects[erpal_contract][download][url] = "http://git.drupal.org/project/erpal_contract.git"
+;projects[erpal_contract][download][revision] = "HEAD"
+
+projects[erpal_employee][version] = "1.x-dev"
+projects[erpal_employee][subdir] = "erpal"
+projects[erpal_employee][download][type] = "git"
+projects[erpal_employee][download][url] = "http://git.drupal.org/project/erpal_employee.git"
+projects[erpal_employee][download][revision] = "HEAD"
+
+projects[erpal_invoice][version] = "1.x-dev"
+projects[erpal_invoice][subdir] = "erpal"
+projects[erpal_invoice][download][type] = "git"
+projects[erpal_invoice][download][url] = "http://git.drupal.org/project/erpal_invoice.git"
+projects[erpal_invoice][download][revision] = "HEAD"
+
+projects[erpal_project][version] = "1.x-dev"
+projects[erpal_project][subdir] = "erpal"
+projects[erpal_project][download][type] = "git"
+projects[erpal_project][download][url] = "http://git.drupal.org/project/erpal_project.git"
+projects[erpal_project][download][revision] = "HEAD"
+
+;projects[erpal_git][version] = "1.x-dev"
+;projects[erpal_git][subdir] = "erpal"
+;projects[erpal_git][download][type] = "git"
+;projects[erpal_git][download][url] = "http://drupalcode.org/project/erpal_git.git"
+;projects[erpal_git][download][revision] = "HEAD"
+
+
+
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
 libraries[fullcalendar][download][url] = "http://arshaw.com/fullcalendar/downloads/fullcalendar-1.5.4.zip"
@@ -207,4 +258,9 @@ libraries[jstree][download][revision] = "96f9bebabe536a3ddf6118ebede3c92adfadb51
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
+
+projects[erpal_theme][version] = "1.x-dev"
+projects[erpal_theme][download][type] = "git"
+projects[erpal_theme][download][url] = "http://git.drupal.org/project/erpal_theme.git"
+projects[erpal_theme][download][revision] = "HEAD"
 
