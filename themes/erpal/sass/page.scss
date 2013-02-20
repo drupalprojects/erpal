@@ -750,7 +750,8 @@ body {
     z-index: 10;
   }
   .local_tasks_menu {
-    height: 40px;
+    height: 35px;
+	margin-bottom: 10px;
   }
   .local_tasks {
 	margin: {
@@ -774,7 +775,7 @@ body {
 	    display: block;
 	    @include border-radius(5px); 
 	    color: $black;
-	    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	    background-color: $silver;
 		@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 		text-align: center;
 	    font-size: 13px;
