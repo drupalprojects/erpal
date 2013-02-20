@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the erpal_invoice_ui feature.
- */
-
-include_once('erpal_invoice_ui.features.inc');

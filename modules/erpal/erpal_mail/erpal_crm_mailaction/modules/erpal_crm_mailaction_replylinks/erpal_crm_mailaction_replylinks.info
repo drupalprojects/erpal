@@ -1,9 +1,0 @@
-name        = "erpal_crm_mailaction_reply_links"
-description = "An extension for adding reply links to the CRM actions."
-core        = "7.x"
-php         = "5.3.x"
-version     = "7.x-1.00-dev"
-package     = "ERPAL CRM"
-project     = "erpal_crm_mailaction"
-
-dependencies[] = "erpal_crm_mailaction"

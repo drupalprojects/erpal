@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the asterisk-settings feature.
- */
-
-include_once 'feature_erpal_asterisk_profile.features.inc';

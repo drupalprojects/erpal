@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the erpal_project feature.
- */
-
-include_once('erpal_project.features.inc');
