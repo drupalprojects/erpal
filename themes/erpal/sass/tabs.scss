@@ -60,7 +60,8 @@ ul.primary li a {
 			  color: $black;
 			}
 			&:hover {
-			  color: $orange;
+			  color: rgba($orange, 0.8);
+		      text-shadow: 1px 1px 1px $silver, 0 0 0 $black, 1px 1px 1px $silver;
 			}
 			&.active {
 			  color: $black;
