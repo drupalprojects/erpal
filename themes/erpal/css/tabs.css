@@ -135,7 +135,8 @@ ul.primary li a:hover {
   color: black;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:hover {
-  color: #fc9822;
+  color: rgba(252, 152, 34, 0.8);
+  text-shadow: 1px 1px 1px #dedede, 0 0 0 black, 1px 1px 1px #dedede;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active {
   color: black;

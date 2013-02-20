@@ -133,6 +133,17 @@ div.group-form-advanced-right:empty {
 .group-form-advanced-right #field-phone-values input {
   width: 50px;
 }
+.group-form-right .token-tree,
+.group-form-advanced-right .token-tree {
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+.group-form-right .token-tree .token-key,
+.group-form-advanced-right .token-tree .token-key {
+  white-space: normal;
+  padding-left: 3px;
+  padding-right: 3px;
+}
 
 #field-project-team-values .ui-multiselect {
   margin-top: 17px;
