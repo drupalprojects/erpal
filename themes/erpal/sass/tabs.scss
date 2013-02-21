@@ -81,7 +81,6 @@ ul.primary li a {
 /*--------------------------begin icons for tabs------------------------*/
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary {
   li {
-    &.active-timetrackings a,
 	&.timetrackings a,
 	&.timekeeping a,
 	&.all-timekeeping a,
@@ -91,12 +90,20 @@ ul.primary li a {
 	    background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
 	  }
 	}
-	&.active-timetrackings-active-tab a,
 	&.timetrackings-active-tab a,
 	&.timekeeping-active-tab a,
 	&.all-timekeeping-active-tab a,
     &.timekeeping-offset-active-tab a {
 	  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
+	}
+	&.active-timetrackings a {
+      background: url("../images/menu_icons/active-timetrackings.png") no-repeat 9px -2px;
+	  &:hover {
+	    background: url("../images/menu_icons/active-timetrackings.png") no-repeat 9px -38px;
+	  }
+	}
+	&.active-timetrackings-active-tab a {
+	  background: url("../images/menu_icons/active-timetrackings.png") no-repeat 9px -38px;
 	}
 	&.fixed-price-items a,
     &.billables a {

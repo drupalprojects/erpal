@@ -1759,7 +1759,7 @@ fieldset {
 .page-projects-timetrackings h2.pane-title  {
   padding-left: 33px;
 }
-.page-projects .pane-page-content h2.pane-title,
+.page-projects-projects .pane-page-content h2.pane-title,
 .node-type-erpal-project .pane-page-content h2.pane-title{
   background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
 }
@@ -1795,10 +1795,12 @@ fieldset {
 }
 .page-timekeeping .pane-page-content h2.pane-title,
 .page-node-timetracking .pane-page-content h2.pane-title,
-.page-projects-timetrackings h2.pane-title,
 .node-type-erpal-timetracking  h2.pane-title,
 .page-node-add-erpal-working-time h2.pane-title{
   background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
+}
+.page-projects-timetrackings h2.pane-title {
+  background: url("../images/menu_icons/active_timetrackings_title.png") no-repeat 0 2px;
 }
 .node-type-erpal-task .pane-page-content h2.pane-title,
 .page-node-tasks .pane-page-content h2.pane-title,
