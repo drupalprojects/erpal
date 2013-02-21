@@ -103,7 +103,7 @@ class erpal_docs_access {
         foreach ($fields as $field) { // foreach 2
           if (!$field)
             continue;
-
+          
           // get all child entity parents
           if (!$parents = $this->get_parents($field, $bundle))
             continue;
@@ -197,16 +197,17 @@ class erpal_docs_access {
     //$results = &drupal_static(__FUNCTION__);
     //if($reset)
     $results = array();
-
-    if (empty($results)) {
-      $query = db_select('field_data_' . $field_name, 'f');
+    $table = 'field_data_' . $field_name;
+    $field =  $field_name . '_target_id';
+    if (empty($results) && db_field_exists($table, $field)) {
+      $query = db_select($table, 'f');
       $query->fields('f', array('entity_id'));
       // set offset of entity_id 
       if ($offset) {
         $query->condition('f.entity_id', $offset, '!=');
       }
       $query->condition('f.bundle', $bundle);
-      $query->condition('f.' . $field_name . '_target_id', $target_id);
+      $query->condition('f.' . $field, $target_id);
       // $query->condition('f.entity_type', 'node')
       $query->distinct();
 
