@@ -99,7 +99,6 @@ ul.primary li a {
 	  background: url("../images/menu_icons/timekeeping.png") no-repeat 9px -38px;
 	}
 	&.fixed-price-items a,
-    &.time-budgets a,
     &.billables a {
 	  background: url("../images/menu_icons/price_.png") no-repeat 9px 9px;
 	  &:hover {
@@ -107,9 +106,17 @@ ul.primary li a {
 	  }
 	}
 	&.fixed-price-items-active-tab  a,
-    &.time-budgets-active-tab a, 
     &.billables-active-tab a {
 	  background: url("../images/menu_icons/price_.png") no-repeat 9px -40px; 
+	}
+	&.time-budgets a {
+	  background: url("../images/menu_icons/budgets.png") no-repeat 9px 4px;
+	  &:hover {
+	    background: url("../images/menu_icons/budgets.png") no-repeat 9px -33px;
+	  }
+	}
+	&.time-budgets-active-tab a {
+	  background: url("../images/menu_icons/budgets.png") no-repeat 9px -33px; 
 	}
 	&.project-list a,
     &.summary a {
