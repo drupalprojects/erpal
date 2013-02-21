@@ -161,7 +161,7 @@ projects[token][subdir] = "contrib"
 projects[serial][version] = "1.2"
 projects[serial][subdir] = "contrib"
 
-projects[services][version] = "3.1"
+projects[services][version] = "3.3"
 projects[services][subdir] = "contrib"
 
 projects[views][version] = "3.5"
