@@ -124,9 +124,9 @@ body {
 	   }
 	  }
 	  &.my-account a{
-	    background: url("../images/menu_icons/user.png") no-repeat 0px 1px;
+	    background: url("../images/menu_icons/account.png") no-repeat 0px 1px;
 		&:hover{
-	      background: url("../images/menu_icons/user.png") no-repeat 0px -33px;
+	      background: url("../images/menu_icons/account.png") no-repeat 0px -33px;
 	   }
 	  }
 	  &.timekeeping a{
@@ -1637,6 +1637,7 @@ body {
   }
 }
 /*------------------------------------invoice-----------------------*/
+.page-node-add-erpal-invoice,
 .node-type-erpal-invoice {
   .field-multiple-table {
     .field-multiple-drag {
