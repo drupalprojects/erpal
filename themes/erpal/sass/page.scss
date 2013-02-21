@@ -25,7 +25,6 @@ body {
 	  margin-bottom: 15px;
 	  margin-left: 10px;
       background-color: rgb(233,229,226); 
-	  @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	  @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 	  height: 28px;
 	  position: relative;
@@ -340,6 +339,7 @@ body {
 	      color: $white; 
 		  &:hover {
 		    color: $white;
+			text-shadow: none;
 		  }
 	    }
 	    &.active-trail {
@@ -355,7 +355,8 @@ body {
 		font-weight: bold;
 		background-repeat: no-repeat;
 		&:hover {
-		  color: $orange;
+		  color: rgba($orange, 0.8);
+		  text-shadow: 1px 1px 1px $silver, 0 0 0 $black, 1px 1px 1px $silver;
 		}
 		&.active {
 		  color: $white;
@@ -481,7 +482,6 @@ body {
 	  left: 15px;
 	}
 	background-color: rgb(233,229,226); 
-	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 	height: 28px;
 	float: left;
@@ -493,7 +493,6 @@ body {
   .submitted {
 	padding: 10px 15px;
 	background-color: rgb(233,229,226); 
-	@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
    .author-datetime {
      margin-bottom: 0px;
@@ -569,7 +568,6 @@ body {
 	    display: block;
 	    @include border-radius(5px);
 	    background-color: rgb(233,229,226); 
-	    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 	    @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 		@include headline(10px, 10px, 0, bold);
 		color: $black_dark;
@@ -692,7 +690,6 @@ body {
 	    float: left;
 		@include border-radius(5px 5px 0 0);
 		background-color: rgb(233,229,226); 
-		@include filter-gradient(#e9e5e2, #d4d4d4, vertical);
 		@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 		text-align: center;
 		border: 1px solid #CBCBCB;
@@ -752,6 +749,10 @@ body {
 	width: 248px;
     z-index: 10;
   }
+  .local_tasks_menu {
+    height: 35px;
+	margin-bottom: 10px;
+  }
   .local_tasks {
 	margin: {
 	  top: 2px;
@@ -774,7 +775,7 @@ body {
 	    display: block;
 	    @include border-radius(5px); 
 	    color: $black;
-	    @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
+	    background-color: $silver;
 		@include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
 		text-align: center;
 	    font-size: 13px;

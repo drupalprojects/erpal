@@ -76,8 +76,6 @@ ul.primary li a:hover {
   float: left;
   display: block;
   background-color: #e9e5e2;
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9E5E2', endColorstr='#FFD4D4D4');
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e9e5e2), color-stop(100%, #d4d4d4));
   background-image: -webkit-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
   background-image: -moz-linear-gradient(top, #e9e5e2 0%, #d4d4d4 100%);
@@ -137,7 +135,8 @@ ul.primary li a:hover {
   color: black;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a:hover {
-  color: #fc9822;
+  color: rgba(252, 152, 34, 0.8);
+  text-shadow: 1px 1px 1px #dedede, 0 0 0 black, 1px 1px 1px #dedede;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active {
   color: black;
