@@ -1,9 +1,0 @@
-core = "7.x"
-description = "ERPAL contract Helper"
-name = "erpal_contract_helper"
-package = "ERPAL"
-php = "5.2.4"
-project = "erpal_contract_helper"
-version = "7.x-1.0-dev"
-
-files[] = erpal_contract_helper.module
