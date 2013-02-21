@@ -88,15 +88,16 @@ function _erpal_asterisk_call(){
  */
 function _erpal_asterisk_normalize(){
   if(isset($_POST['authentication']) && $_POST['authentication'] == variable_get('erpal_asterisk_authentication')){
-    $destination = (isset($_POST['destination'])) 
-      ? $destination = libphonenumber_normalize($_POST['destination'])
-      : 'unknown';
-    $source = (isset($_POST['source'])) 
-      ? $source = libphonenumber_normalize($_POST['source'])
-      : 'unknown';
-    $out = json_encode(array('destination' => $destination, 'source' => $source)); 
-    print_r($out);
-    die();
+    if(isset($_POST['numbers'])){
+      $numbers = json_decode($_POST['numbers']);
+      $normalized = array();
+      foreach ($numbers as $key => $value) {
+        $normalized[$key] = libphonenumber_normalize($value);
+      }
+      $out = json_encode($normalized);
+      print_r($out);
+      die();
+    }
   }
   print_r('');
   die();

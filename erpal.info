@@ -39,11 +39,13 @@ dependencies[] = date_repeat_field
 dependencies[] = date_views
 dependencies[] = ds
 dependencies[] = ds_forms
+
 dependencies[] = editablefields
 dependencies[] = entity
 dependencies[] = entity_token
 dependencies[] = entityreference
 dependencies[] = entityreference_prepopulate
+dependencies[] = entitycache
 dependencies[] = fe_block
 dependencies[] = features
 dependencies[] = features_plumber
@@ -53,9 +55,8 @@ dependencies[] = field_group
 dependencies[] = fileedit
 dependencies[] = flag
 dependencies[] = front_page
-dependencies[] = homebox
-dependencies[] = entitycache
 
+dependencies[] = homebox
 dependencies[] = jquery_ui_multiselect_widget
 dependencies[] = jquery_update
 dependencies[] = libraries
@@ -66,15 +67,15 @@ dependencies[] = panels
 dependencies[] = panels_everywhere
 dependencies[] = panels_mini
 dependencies[] = panels_style_collapsible
-
 dependencies[] = path_breadcrumbs
 dependencies[] = pathauto
-
 dependencies[] = pm_existing_pages
 dependencies[] = post_hooks
 dependencies[] = profile2
 dependencies[] = profile2_page
 dependencies[] = quicktabs
+
+dependencies[] = r4032login
 dependencies[] = references_dialog
 dependencies[] = relation
 dependencies[] = relation_add
@@ -110,13 +111,11 @@ dependencies[] = erpal_print
 dependencies[] = erpal_profile_helper
 dependencies[] = erpal_projects_billable
 dependencies[] = erpal_projects_helper
-dependencies[] = erpal_resource_helper
 dependencies[] = erpal_timetracking_export
 dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations
 dependencies[] = entityreference_unique
 dependencies[] = references_dialog_insert
-
 
 ; features 
 dependencies[] = erpal_basic
