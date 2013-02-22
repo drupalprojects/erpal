@@ -91,6 +91,10 @@ dependencies[] = views_bulk_operations
 dependencies[] = views_content
 dependencies[] = views_jstree
 
+dependencies[] = colors
+dependencies[] = maxlength
+
+
 ; custom
 dependencies[] = date_item_calendar
 dependencies[] = content_access_view
