@@ -150,6 +150,7 @@ ul.primary li a:hover {
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li a.active:hover {
   color: #fc9822;
+  text-shadow: 1px 1px 1px white, 0 0 0 black, 1px 1px 1px white;
 }
 
 /*--------------------------begin icons for tabs------------------------*/
