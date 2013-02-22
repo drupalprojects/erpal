@@ -45,6 +45,10 @@ ul.primary li a:hover {
   background-color: transparent;
 }
 
+.erpal-region-tabs {
+  height: 34px;
+}
+
 #erpal_wrapper .panel-panel.panel-col-last {
   float: left;
   width: 100%;
@@ -249,6 +253,9 @@ ul.primary li a:hover {
   background: url("../images/menu_icons/template.png") no-repeat 9px 5px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.templates a:hover {
+  background: url("../images/menu_icons/template.png") no-repeat 9px -32px;
+}
+#erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.templates-active-tab a {
   background: url("../images/menu_icons/template.png") no-repeat 9px -32px;
 }
 #erpal_wrapper .panel-panel.panel-col-last .inside .pane-page-tabs ul.primary li.tasks-active-tab a {

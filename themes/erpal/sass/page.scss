@@ -124,15 +124,15 @@ body {
 	   }
 	  }
 	  &.my-account a{
-	    background: url("../images/menu_icons/account.png") no-repeat 0px 1px;
+	    background: url("../images/menu_icons/user.png") no-repeat 0px 1px;
 		&:hover{
-	      background: url("../images/menu_icons/account.png") no-repeat 0px -33px;
+	      background: url("../images/menu_icons/user.png") no-repeat 0px -33px;
 	   }
 	  }
 	  &.timekeeping a{
-	    background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -3px;
+	    background: url("../images/menu_icons/account.png") no-repeat 0px 1px;
 		&:hover{
-	      background: url("../images/menu_icons/timekeeping.png") no-repeat 0px -39px;
+	      background: url("../images/menu_icons/account.png") no-repeat 0px -33px;
 	    }
 	  }
 	  &.my-projects a{
@@ -202,6 +202,8 @@ body {
 	    margin-right: 2px;
 	    line-height: 30px;
 		float: left;
+		max-width: 300px;
+		overflow: hidden;
 	  }
 	  .timetracking {
 	    float: left;
@@ -1032,6 +1034,9 @@ body {
   padding: 10px 20px;
   @include border-radius(5px);
   border: 1px solid $silver_light;
+   h2.pane-title {
+	background: none;
+   }
   .panel-separator {
     display: none;
   }
@@ -1721,16 +1726,48 @@ fieldset {
     width: 500px;
   }
 }
-.page-projects {
-  td.views-field-title a {
-    padding-top: 2px;
-    padding-left: 26px;
-    background: url("../images/menu_icons/projects_.png") no-repeat 0 2px;
-    line-height: 18px;
-	display: block;
-    &:hover {
-      background: url("../images/menu_icons/projects_hover.png") no-repeat 0 2px;
-    }
+.page-projects  td.views-field-title a,
+.page-projects-budgets .views-field-php-1 a,
+.page-projects-timetrackings  td.views-field-title-2  a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/projects_.png") no-repeat 0 2px;
+  line-height: 18px;
+  display: block;
+  &:hover {
+    background: url("../images/menu_icons/projects_hover.png") no-repeat 0 2px;
+  }
+}
+.page-projects-budgets  td.views-field-php  a,
+.page-node-tasks td.views-field-title a,
+.page-projects-timetrackings  td.views-field-title-1  a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/task.png") no-repeat 0 3px;
+  line-height: 21px;
+  display: block;
+  &:hover {
+    background: url("../images/menu_icons/task_hover.png") no-repeat 0 3px;
+  }
+}
+.page-projects-timetrackings  td.views-field-title  a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/timetracking.png") no-repeat 0 4px;
+  line-height: 22px;
+  display: block;
+  &:hover {
+    background: url("../images/menu_icons/timetracking_hover.png") no-repeat 0 4px;
+  }
+}
+.page-files  td.views-field-title  a {
+  padding-top: 2px;
+  padding-left: 26px;
+  background: url("../images/menu_icons/files_.png") no-repeat 0 -6px;
+  line-height: 20px;
+  display: block;
+  &:hover {
+    background: url("../images/menu_icons/files_hover.png") no-repeat 0 -7px;
   }
 }
 .node-type-erpal-task {
@@ -1739,7 +1776,7 @@ fieldset {
 	border-collapse: separate;
   }
 }
-.pane-contacts-panel-pane-1 td a {
+.pane-contacts-panel-pane-1 td.views-field-title a {
   padding-top: 2px;
   padding-left: 26px;
   background: url("../images/menu_icons/contact_.png") no-repeat 0 2px;
@@ -1760,47 +1797,63 @@ fieldset {
   padding-left: 33px;
 }
 .page-projects-projects .pane-page-content h2.pane-title,
-.node-type-erpal-project .pane-page-content h2.pane-title{
+.node-type-erpal-project .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/project_title.png") no-repeat 0 0;
 }
 .page-contacts .pane-page-content h2.pane-title,
-.page-node-add-erpal-contact .pane-page-content h2.pane-title{
+.page-node-add-erpal-contact .pane-page-content h2.pane-title,
+.node-type-erpal-contact .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/contact_title.png") no-repeat 0 0;
 }
 .page-activities .pane-page-content h2.pane-title,
-.page-node-add-erpal-crm-activity h2.pane-title{
+.page-node-add-erpal-crm-activity h2.pane-title,
+.node-type-erpal-crm-activity  h2.pane-title {
   background: url("../images/menu_icons/activity_title.png") no-repeat 0 0;
 }
 .page-books .pane-page-content h2.pane-title,
-.page-node-add-erpal-book .pane-page-content h2.pane-title{
+.page-node-add-erpal-book .pane-page-content h2.pane-title,
+.node-type-erpal-book .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/documents_title.png") no-repeat 0 0;
 }
 .page-files .pane-page-content h2.pane-title,
 .page-node-files .pane-page-content h2.pane-title,
-.page-node-add-erpal-file  .pane-page-content h2.pane-title{
+.page-node-add-erpal-file .pane-page-content h2.pane-title,
+.node-type-erpal-file .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/file_title.png") no-repeat 0 0;
 }
-.page-invoice .pane-page-content h2.pane-title,
-.page-node-add-erpal-invoice .pane-page-content h2.pane-title{
+.node-type-erpal-file .erpal-content-left h2.pane-title {
+  padding-left: 0;
+  background: none;
+}
+.page-invoice-invoices h2.pane-title,
+.page-node-add-erpal-invoice .pane-page-content h2.pane-title,
+.node-type-erpal-invoice .pane-page-content h2.pane-title{
   background: url("../images/menu_icons/invoice_title.png") no-repeat 0 0;
 }
+
 .page-contracts .pane-page-content h2.pane-title,
 .node-type-erpal-contract h2.pane-title,
 .page-node-add-erpal-contract .pane-page-content h2.pane-title{
   background: url("../images/menu_icons/contracts_title.png") no-repeat 0 0;
 }
-.node-type-erpal-contract .pane-page-title h2.pane-title {
+.node-type-erpal-contract .pane-page-title h2.pane-title,
+#mini-panel-invoice_header_fields h2.pane-title {
   background: none;
   padding-left: 0;
 }
 .page-timekeeping .pane-page-content h2.pane-title,
 .page-node-timetracking .pane-page-content h2.pane-title,
 .node-type-erpal-timetracking  h2.pane-title,
-.page-node-add-erpal-working-time h2.pane-title{
+.page-node-add-erpal-working-time h2.pane-title,
+.page-projects-timetrackings  h2.pane-title,
+.page-user.page-user-timekeeping-offsets h2.pane-title{
   background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
 }
-.page-projects-timetrackings h2.pane-title {
+.page-projects-timetrackings-tmp h2.pane-title {
   background: url("../images/menu_icons/active_timetrackings_title.png") no-repeat 0 2px;
+}
+.page-books.page-books-templates  h2.pane-title {
+  background: url("../images/menu_icons/template_title.png") no-repeat 0 2px;
 }
 .node-type-erpal-task .pane-page-content h2.pane-title,
 .page-node-tasks .pane-page-content h2.pane-title,
@@ -1808,11 +1861,14 @@ fieldset {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 .page-projects-pricing .pane-page-content h2.pane-title,
-.page-node-pricing .pane-page-content h2.pane-title{
+.page-node-pricing .pane-page-content h2.pane-title,
+.page-invoice-billables .pane-page-content h2.pane-title,
+.page-billable-add .pane-page-content h2.pane-title{
   background: url("../images/menu_icons/price.png") no-repeat 0 2px;
 }
-.page-projects-budgets .pane-page-content h2.pane-title {
-  background: url("../images/menu_icons/price.png") no-repeat 0 2px;
+.page-projects-budgets .pane-page-content h2.pane-title,
+.page-budget-edit .pane-page-content h2.pane-title{
+  background: url("../images/menu_icons/budget_titles.png") no-repeat 0 2px;
 }
 .page-node-tickets .pane-page-content h2.pane-title {
   background: url("../images/menu_icons/ticket.png") no-repeat 0 2px;
@@ -1849,7 +1905,8 @@ fieldset {
   background: url("../images/menu_icons/task_title.png") no-repeat 0 0;
 }
 .page-calendar h2.pane-title,
-.page-node-add-erpal-date h2.pane-title{
+.page-node-add-erpal-date h2.pane-title,
+.page-node-calendar h2.pane-title{
   background: url("../images/menu_icons/calendar_title.png") no-repeat 0 0;
 }
 .profile .user-picture {
@@ -1886,3 +1943,4 @@ th.views-field-changed {
 th.views-field-field-invoice-number {
   width: 50px;
 }
+ 
