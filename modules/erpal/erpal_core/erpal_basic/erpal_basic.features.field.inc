@@ -1161,6 +1161,12 @@ function erpal_basic_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_contact',
+      'comment_enabled' => 0,
+      'date_item' => array(
+        'create_date_item' => 1,
+        'date_item_type' => 'simple_date',
+        'handle_range' => 'single',
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -1224,6 +1230,7 @@ function erpal_basic_field_default_fields() {
           'input_format' => 'd.m.Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
           'repeat_collapsed' => 0,
           'text_parts' => array(),
           'year_range' => '-100:+0',
