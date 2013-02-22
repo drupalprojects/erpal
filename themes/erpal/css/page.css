@@ -2122,7 +2122,8 @@ fieldset {
 .node-type-erpal-timetracking h2.pane-title,
 .page-node-add-erpal-working-time h2.pane-title,
 .page-projects-timetrackings h2.pane-title,
-.page-user.page-user-timekeeping-offsets h2.pane-title {
+.page-user.page-user-timekeeping-offsets h2.pane-title,
+.page-node-add-erpal-timetracking h2.pane-title {
   background: url("../images/menu_icons/timetracking_title.png") no-repeat 0 0;
 }
 
