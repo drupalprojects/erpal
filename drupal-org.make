@@ -166,7 +166,7 @@ projects[screenshot_paste][subdir] = "contrib"
 projects[entityreference_unique][version] = "1.0-alpha1"
 projects[entityreference_unique][subdir] = "contrib"
 
-projects[date_item][version] = "1.0-alpha1"
+projects[date_item][version] = "1.0-alpha2"
 projects[date_item][subdir] = "contrib"
 
 projects[content_access_view][version] = "1.0-alpha1"
