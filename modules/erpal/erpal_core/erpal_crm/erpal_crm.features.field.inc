@@ -465,6 +465,81 @@ function erpal_crm_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-erpal_crm_activity-field_activity_origin'.
+  $fields['node-erpal_crm_activity-field_activity_origin'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_activity_origin',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'activity_origin',
+            'parent' => '0',
+          ),
+        ),
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Where the activity started',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 19,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_activity_origin',
+      'label' => 'Origin',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        ),
+        'type' => 'options_select',
+        'weight' => 6,
+      ),
+    ),
+  );
+
   // Exported field: 'node-erpal_crm_activity-field_activity_status_term'.
   $fields['node-erpal_crm_activity-field_activity_status_term'] = array(
     'field_config' => array(
@@ -961,6 +1036,12 @@ function erpal_crm_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'erpal_crm_activity',
+      'comment_enabled' => 0,
+      'date_item' => array(
+        'create_date_item' => 0,
+        'date_item_type' => 'simple_date',
+        'handle_range' => 'range',
+      ),
       'deleted' => '0',
       'description' => 'When do you expect the order',
       'display' => array(
@@ -990,7 +1071,7 @@ function erpal_crm_field_default_fields() {
       'label' => 'Expected date',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
+        'default_value' => 'blank',
         'default_value2' => 'same',
         'default_value_code' => '',
         'default_value_code2' => '',
@@ -1004,6 +1085,7 @@ function erpal_crm_field_default_fields() {
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
           'repeat_collapsed' => 0,
           'text_parts' => array(),
           'year_range' => '-3:+3',
@@ -1248,81 +1330,6 @@ function erpal_crm_field_default_fields() {
         ),
         'type' => 'text_textfield',
         'weight' => 8,
-      ),
-    ),
-  );
-
-  // Exported field: 'node-erpal_crm_activity-field_activity_origin'.
-  $fields['node-erpal_crm_activity-field_activity_origin'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_activity_origin',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'activity_origin',
-            'parent' => '0',
-          ),
-        ),
-        'profile2_private' => FALSE,
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'erpal_crm_activity',
-      'comment_enabled' => 0,
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Where the activity started',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'taxonomy',
-          'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 19,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_activity_origin',
-      'label' => 'Origin',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
-        ),
-        'type' => 'options_select',
-        'weight' => 6,
       ),
     ),
   );
