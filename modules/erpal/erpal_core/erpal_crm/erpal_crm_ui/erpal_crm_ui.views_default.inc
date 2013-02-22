@@ -208,7 +208,7 @@ function erpal_crm_ui_views_default_views() {
     'field_next_contact' => 'field_next_contact',
     'field_volume' => 'field_volume',
     'field_chance' => 'field_chance',
-    'field_origin' => 'field_origin',
+    'field_activity_origin' => 'field_activity_origin',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -268,7 +268,7 @@ function erpal_crm_ui_views_default_views() {
       'has_calc' => 0,
       'calc' => array(),
     ),
-    'field_origin' => array(
+    'field_activity_origin' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -340,10 +340,10 @@ function erpal_crm_ui_views_default_views() {
   $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
   $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
   /* Field: Content: Origin */
-  $handler->display->display_options['fields']['field_origin']['id'] = 'field_origin';
-  $handler->display->display_options['fields']['field_origin']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['fields']['field_origin']['field'] = 'field_origin';
-  $handler->display->display_options['fields']['field_origin']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_activity_origin']['id'] = 'field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['field'] = 'field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['type'] = 'taxonomy_term_reference_plain';
   /* Sort criterion: Content: Updated/commented date */
   $handler->display->display_options['sorts']['last_updated']['id'] = 'last_updated';
   $handler->display->display_options['sorts']['last_updated']['table'] = 'node_comment_statistics';
@@ -432,18 +432,18 @@ function erpal_crm_ui_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Origin (field_origin) */
-  $handler->display->display_options['filters']['field_origin_tid']['id'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['filters']['field_origin_tid']['field'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator_id'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['label'] = 'Origin';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['identifier'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Origin (field_activity_origin) */
+  $handler->display->display_options['filters']['field_activity_origin_tid']['id'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['field'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator_id'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['label'] = 'Origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['identifier'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -453,9 +453,9 @@ function erpal_crm_ui_views_default_views() {
     7 => 0,
     8 => 0,
   );
-  $handler->display->display_options['filters']['field_origin_tid']['reduce_duplicates'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_origin_tid']['vocabulary'] = 'activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['vocabulary'] = 'activity_origin';
 
   /* Display: Activities by customer */
   $handler = $view->new_display('panel_pane', 'Activities by customer', 'panel_pane_1');
@@ -515,18 +515,18 @@ function erpal_crm_ui_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Origin (field_origin) */
-  $handler->display->display_options['filters']['field_origin_tid']['id'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['filters']['field_origin_tid']['field'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator_id'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['label'] = 'Origin';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['identifier'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Origin (field_activity_origin) */
+  $handler->display->display_options['filters']['field_activity_origin_tid']['id'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['field'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator_id'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['label'] = 'Origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['identifier'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -536,9 +536,9 @@ function erpal_crm_ui_views_default_views() {
     7 => 0,
     8 => 0,
   );
-  $handler->display->display_options['filters']['field_origin_tid']['reduce_duplicates'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_origin_tid']['vocabulary'] = 'activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['vocabulary'] = 'activity_origin';
   $handler->display->display_options['argument_input'] = array(
     'field_customer_ref_nid' => array(
       'type' => 'panel',
@@ -647,19 +647,19 @@ function erpal_crm_ui_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Origin (field_origin) */
-  $handler->display->display_options['filters']['field_origin_tid']['id'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['filters']['field_origin_tid']['field'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['group'] = 1;
-  $handler->display->display_options['filters']['field_origin_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator_id'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['label'] = 'Origin';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['identifier'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Origin (field_activity_origin) */
+  $handler->display->display_options['filters']['field_activity_origin_tid']['id'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['field'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator_id'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['label'] = 'Origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['identifier'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -669,9 +669,9 @@ function erpal_crm_ui_views_default_views() {
     7 => 0,
     8 => 0,
   );
-  $handler->display->display_options['filters']['field_origin_tid']['reduce_duplicates'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_origin_tid']['vocabulary'] = 'activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['vocabulary'] = 'activity_origin';
   /* Filter criterion: Content: Next Contact (field_next_contact) */
   $handler->display->display_options['filters']['field_next_contact_value']['id'] = 'field_next_contact_value';
   $handler->display->display_options['filters']['field_next_contact_value']['table'] = 'field_data_field_next_contact';
@@ -790,19 +790,19 @@ function erpal_crm_ui_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Origin (field_origin) */
-  $handler->display->display_options['filters']['field_origin_tid']['id'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['filters']['field_origin_tid']['field'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['group'] = 1;
-  $handler->display->display_options['filters']['field_origin_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator_id'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['label'] = 'Origin';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['identifier'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Origin (field_activity_origin) */
+  $handler->display->display_options['filters']['field_activity_origin_tid']['id'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['field'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator_id'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['label'] = 'Origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['identifier'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -812,9 +812,9 @@ function erpal_crm_ui_views_default_views() {
     7 => 0,
     8 => 0,
   );
-  $handler->display->display_options['filters']['field_origin_tid']['reduce_duplicates'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_origin_tid']['vocabulary'] = 'activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['vocabulary'] = 'activity_origin';
   /* Filter criterion: Content: Next Contact (field_next_contact) */
   $handler->display->display_options['filters']['field_next_contact_value']['id'] = 'field_next_contact_value';
   $handler->display->display_options['filters']['field_next_contact_value']['table'] = 'field_data_field_next_contact';
@@ -880,10 +880,10 @@ function erpal_crm_ui_views_default_views() {
   $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
   $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
   /* Field: Content: Origin */
-  $handler->display->display_options['fields']['field_origin']['id'] = 'field_origin';
-  $handler->display->display_options['fields']['field_origin']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['fields']['field_origin']['field'] = 'field_origin';
-  $handler->display->display_options['fields']['field_origin']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_activity_origin']['id'] = 'field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['field'] = 'field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Field: Contacts (field_contacts_ref) */
   $handler->display->display_options['arguments']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
@@ -946,18 +946,18 @@ function erpal_crm_ui_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Origin (field_origin) */
-  $handler->display->display_options['filters']['field_origin_tid']['id'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['filters']['field_origin_tid']['field'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator_id'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['label'] = 'Origin';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['identifier'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Origin (field_activity_origin) */
+  $handler->display->display_options['filters']['field_activity_origin_tid']['id'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['field'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator_id'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['label'] = 'Origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['identifier'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -967,9 +967,9 @@ function erpal_crm_ui_views_default_views() {
     7 => 0,
     8 => 0,
   );
-  $handler->display->display_options['filters']['field_origin_tid']['reduce_duplicates'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_origin_tid']['vocabulary'] = 'activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['vocabulary'] = 'activity_origin';
   $handler->display->display_options['argument_input'] = array(
     'field_contacts_ref_target_id' => array(
       'type' => 'panel',
@@ -1033,10 +1033,10 @@ function erpal_crm_ui_views_default_views() {
   $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
   $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
   /* Field: Content: Origin */
-  $handler->display->display_options['fields']['field_origin']['id'] = 'field_origin';
-  $handler->display->display_options['fields']['field_origin']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['fields']['field_origin']['field'] = 'field_origin';
-  $handler->display->display_options['fields']['field_origin']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_activity_origin']['id'] = 'field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['field'] = 'field_activity_origin';
+  $handler->display->display_options['fields']['field_activity_origin']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -1110,18 +1110,18 @@ function erpal_crm_ui_views_default_views() {
     'erpal_crm_activity' => 'erpal_crm_activity',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Origin (field_origin) */
-  $handler->display->display_options['filters']['field_origin_tid']['id'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['table'] = 'field_data_field_origin';
-  $handler->display->display_options['filters']['field_origin_tid']['field'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator_id'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['label'] = 'Origin';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['operator'] = 'field_origin_tid_op';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['identifier'] = 'field_origin_tid';
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Origin (field_activity_origin) */
+  $handler->display->display_options['filters']['field_activity_origin_tid']['id'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['table'] = 'field_data_field_activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['field'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator_id'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['label'] = 'Origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['operator'] = 'field_activity_origin_tid_op';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['identifier'] = 'field_activity_origin_tid';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -1131,9 +1131,9 @@ function erpal_crm_ui_views_default_views() {
     7 => 0,
     8 => 0,
   );
-  $handler->display->display_options['filters']['field_origin_tid']['reduce_duplicates'] = TRUE;
-  $handler->display->display_options['filters']['field_origin_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_origin_tid']['vocabulary'] = 'activity_origin';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['field_activity_origin_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_activity_origin_tid']['vocabulary'] = 'activity_origin';
   $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['crm_activities'] = array(
     t('Master'),

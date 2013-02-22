@@ -1252,14 +1252,14 @@ function erpal_crm_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-erpal_crm_activity-field_origin'.
-  $fields['node-erpal_crm_activity-field_origin'] = array(
+  // Exported field: 'node-erpal_crm_activity-field_activity_origin'.
+  $fields['node-erpal_crm_activity-field_activity_origin'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_origin',
+      'field_name' => 'field_activity_origin',
       'foreign keys' => array(
         'tid' => array(
           'columns' => array(
@@ -1309,7 +1309,7 @@ function erpal_crm_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_origin',
+      'field_name' => 'field_activity_origin',
       'label' => 'Origin',
       'required' => 0,
       'settings' => array(

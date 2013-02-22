@@ -30,7 +30,7 @@ function erpal_crm_ui_ds_layout_settings_info() {
         0 => 'field_customer_ref',
         1 => 'field_activity_status_term',
         2 => 'field_next_contact',
-        3 => 'field_origin',
+        3 => 'field_activity_origin',
       ),
       'advancedright' => array(
         0 => 'field_volume',
@@ -57,7 +57,7 @@ function erpal_crm_ui_ds_layout_settings_info() {
       'field_customer_ref' => 'right',
       'field_activity_status_term' => 'right',
       'field_next_contact' => 'right',
-      'field_origin' => 'right',
+      'field_activity_origin' => 'right',
       'field_volume' => 'advancedright',
       'field_contacts_ref' => 'advancedleft',
       'field_chance' => 'advancedright',
