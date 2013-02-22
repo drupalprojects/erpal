@@ -103,7 +103,7 @@ function erpal_crm_tasks_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 10,
+        'weight' => 11,
       ),
     ),
   );
