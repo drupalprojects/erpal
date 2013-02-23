@@ -230,7 +230,7 @@ function _commander_erpal_execute_addtask( $environment, $arguments ) {
     $form_state['values']['title']  = implode( ' ', $arguments['title'] );
   
   if( count($arguments['description']) )
-    _commander_erpal_set_form_value( $form_state, 'body', 'value', $arguments['description'][0] );
+    _commander_erpal_set_form_value( $form_state, 'body', 'value', implode( ' ', $arguments['description'] ) );
   
   if( count($arguments['priority']) )
     _commander_erpal_set_form_value( $form_state, 'field_priority_term', NULL, $arguments['priority'][0]->tid );

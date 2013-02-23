@@ -82,7 +82,7 @@
 
 ;----------// Regions
 
-  ;regions[sidebar_first]      = Sidebar first
+  regions[sidebar_first]      = Sidebar first
   ;regions[sidebar_second]     = Sidebar second
   regions[content]            = Main Content
   ;regions[highlighted]        = Highlighted
@@ -94,8 +94,8 @@
   regions[header]             = Header
   ;regions[menu_bar]           = Menu Bar
   regions[help]               = Help
-  ;regions[page_top]           = Page top
-  ;regions[page_bottom]        = Page bottom
+  regions[page_top]           = Page top
+  regions[page_bottom]        = Page bottom
   regions[sidebar_first_left] = First left row
   regions[sidebar_first_right]= First right row
   regions[sidebar_second_left]= Second left row

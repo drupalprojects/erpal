@@ -424,7 +424,7 @@ function commander_execute( $environment, $input ) {
   }
   
   // Step IV  Auto add arguments to given default, if any
-  if( isset($command['auto_argument']) && !count($result[ $command['auto_argument'] ]) )
+  if( isset($command['auto_argument']) && !count($result[ $command['auto_argument'] ]) && isset($result[MODULE_COMMANDER_UNNAMED_ARGUMENTS_INDEX]) )
     $result[ $command['auto_argument'] ]  = $result[ MODULE_COMMANDER_UNNAMED_ARGUMENTS_INDEX ];
   
   // Step V   Validate and prepare all given arguments
@@ -441,13 +441,13 @@ function commander_execute( $environment, $input ) {
       $arg_def  = _commander_get_by_name_or_alias( $command['arguments'], $name );
       if( $arg_def ) {
         $type     = $arg_def['type'];
-        if( isset($arg_def['required']) && $arg_def['required'] && !count($values) ) {
+        if( !count($values) ) {
           
           if( isset($arg_def['alias']) && count($result[ $arg_def['alias'] ]) ) {
             $name   = $arg_def['alias'];
             $values = $result[ $name ];
           }
-          else {
+          elseif( isset($arg_def['required']) && $arg_def['required'] ) {
             drupal_set_message( t('%name is required!',array('%name'=>$name)) );
             
             return FALSE;
@@ -550,7 +550,9 @@ function commander_init() {
     
     drupal_add_js( array( 'commander'=>array( 'environment'=>array( 'q'=>$_GET['q'] ) ) ), 'setting' );
     
-    //$form = drupal_get_form( 'commander_execute_form' );
+    //drupal_add_js( drupal_get_path('module','commander').'/js/clipboard-image.js' );
+    
+    //$form = drupal_get_form( 'commander_execute_form', '', array() );
   }
 }
 
@@ -609,8 +611,9 @@ function commander_permission() {
 function commander_menu() {
   $items = array();
   
-  $items['commander/ajax/console']      = array(
+  $items['commander/ajax/console/%ctools_js']      = array(
     'page callback'     => '_commander_console',
+    'page arguments'    => array( 3 ),
     'access callback'   => 'user_access',
     'access arguments'  => array(MODULE_COMMANDER_PERMISSION_ACCESS),
     'type'              => MENU_CALLBACK,
@@ -693,6 +696,10 @@ function commander_block_view( $delta='' ) {
   $block  = array();
   
   if( $delta=='execute_command' ) {
+    
+    ctools_include('ajax');
+    ctools_include('modal');
+    ctools_modal_add_js();
     
     $block  = array(
       'subject' => t( 'Execute command' ),
@@ -1021,7 +1028,22 @@ function _commander_init_command( &$types, &$commands, $name, $module ) {
  *  
  *  @scope private
  */
-function commander_execute_form( $form, &$form_state, $id, $environment ) {
+function commander_execute_form( $form, &$form_state, $id, $environment, $allow_fullscreen=FALSE ) {
+  
+  
+  $hyphen_id  = str_replace( '_', '-', $id );
+  
+  if( $id=='commander_console_overlay' ) {
+    $log                = '<div id="'.$hyphen_id.'-log">';
+    $entries            = commander_get_log();
+    foreach( $entries as $entry )
+      $log                .= theme( 'commander_log_entry', array('entry'=>$entry) );
+    $log                .= '</div>';
+    
+    $form['log']        = array(
+      '#markup'           => $log,
+    );
+  }
   
   $form['command']      = array(
     '#type'               => 'textfield',
@@ -1044,14 +1066,20 @@ function commander_execute_form( $form, &$form_state, $id, $environment ) {
       'effect'              => 'fade',
     ),
     '#attributes'         => array(
-      'id'                  => 'edit-execute-'.str_replace( '_', '-', $id ),
+      //'id'                  => 'edit-execute-'.str_replace( '_', '-', $id ),
     ),
   );
+  
+  if( $id=='commander_console_overlay' ) {
+    $form['execute']['#submit'] = array( '_commander_execute_form_submit' );
+    unset($form['execute']['#ajax']);
+  }
   
   $form['#attributes']['id']  = str_replace( '_', '-', $id ).'-execute-form';
   
   $form_state['theme_id']     = $id;
   $form_state['environment']  = $environment;
+  $form_state['allow_fullscreen']  = $allow_fullscreen;
   
   return $form;
   
@@ -1063,11 +1091,11 @@ function commander_execute_form_callback( $form, &$form_state ) {
   $element['#markup'] = '';
   
   $function           = '_commander_theme_'.$form_state['theme_id'];
-  $element['#markup'] .= $function( $display, $form );
+  $element['#markup'] .= $function( $display, $form, $form_state['allow_fullscreen'] );
   
   return $element;
 }
-function commander_execute_form_submit( $form, &$form_state ) {
+function _commander_execute_form_submit( $form, &$form_state ) {
   $display  = commander_execute_form_submit_handler( $form_state );
 }
 function commander_execute_form_submit_handler( &$form_state ) {
@@ -1125,8 +1153,8 @@ function commander_execute_form_submit_handler( &$form_state ) {
  *  
  *  @scope private
  */
-function _commander_execute_form( $id, $environment=array() ) {
-  $execute  = drupal_get_form( 'commander_execute_form', $id, $environment );
+function _commander_execute_form( $id, $environment=array(), $allow_fullscreen=FALSE ) {
+  $execute  = drupal_get_form( 'commander_execute_form', $id, $environment, $allow_fullscreen );
   
   return drupal_render( $execute );
 }
@@ -1143,8 +1171,12 @@ function _commander_theme_commander_console_overlay( $messages=array(), $form=NU
  *  
  *  @scope private
  */
-function _commander_theme_commander_execute_block( $messages=array(), $form=NULL ) {
-  return theme( 'commander_execute_block', array( 'messages'=>$messages, 'form'=>$form ) );
+function _commander_theme_commander_execute_block( $messages=array(), $form=NULL, $allow_fullscreen=FALSE ) {
+  ctools_include('ajax');
+  ctools_include('modal');
+  ctools_modal_add_js();
+  
+  return theme( 'commander_execute_block', array( 'messages'=>$messages, 'form'=>$form, 'allow_fullscreen'=>$allow_fullscreen ) );
 }
 
 /**

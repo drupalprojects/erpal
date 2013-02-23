@@ -4,6 +4,7 @@
  * This script migrates previous ERPAL versions to the newest ERPAL based on a clean installation profile
  */
 
+define('MIGRATE_VERSION', 'erpal_migrated_3');
 ini_set('memory_limit', -1);
 define('DRUPAL_ROOT', define_drupal_root());
 chdir(DRUPAL_ROOT);
@@ -81,7 +82,7 @@ migrate_do_revert_all_features($features);
 migrate_do_finish();
 
 function do_migrate_check_migrated() {
-  return variable_get('erpal_migrated_2', false);
+  return variable_get(MIGRATE_VERSION, false);
 }
 
 function do_migrate_flush() {
@@ -158,7 +159,7 @@ function migrate_do_finish() {
   variable_set('install_profile', 'erpal');
   print "Ready to go!";
   
-  variable_set('erpal_migrated_2', time());
+  variable_set(MIGRATE_VERSION, time());
 }
 
 function migrate_do_revert_all_features($modules) {

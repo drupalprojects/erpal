@@ -78,35 +78,11 @@ function erpal_employee_ui_default_page_manager_pages() {
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'All timekeeping';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-1';
-    $pane->panel = 'sidebar_first_left';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'markup' => 'h1',
-      'class' => '',
-      'id' => '',
-      'override_title' => 1,
-      'override_title_text' => 'All timekeeping',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-1';
-    $pane = new stdClass();
-    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'block';
     $pane->subtype = 'quicktabs-all_timekeeping_tabs';
@@ -124,10 +100,10 @@ function erpal_employee_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-2';
-  $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-1';
+    $display->content['new-1'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-1';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['all_timekeepings'] = $page;
@@ -202,35 +178,11 @@ function erpal_employee_ui_default_page_manager_pages() {
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'Timekeeping';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-3';
-    $pane->panel = 'sidebar_first_left';
-    $pane->type = 'page_title';
-    $pane->subtype = 'page_title';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'markup' => 'h1',
-      'class' => '',
-      'id' => '',
-      'override_title' => 1,
-      'override_title_text' => 'Timekeeping',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-3';
-    $pane = new stdClass();
-    $pane->pid = 'new-4';
+    $pane->pid = 'new-2';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -245,10 +197,10 @@ function erpal_employee_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-4';
+    $display->content['new-2'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-2';
     $pane = new stdClass();
-    $pane->pid = 'new-5';
+    $pane->pid = 'new-3';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'block';
     $pane->subtype = 'quicktabs-timekeeping_tabs';
@@ -266,10 +218,10 @@ function erpal_employee_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-5'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-5';
-  $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-3';
+    $display->content['new-3'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-3';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['timekeeping'] = $page;
@@ -355,7 +307,7 @@ function erpal_employee_ui_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-6';
+    $pane->pid = 'new-4';
     $pane->panel = 'sidebar_first_left';
     $pane->type = 'page_title';
     $pane->subtype = 'page_title';
@@ -376,10 +328,10 @@ function erpal_employee_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['sidebar_first_left'][0] = 'new-6';
+    $display->content['new-4'] = $pane;
+    $display->panels['sidebar_first_left'][0] = 'new-4';
     $pane = new stdClass();
-    $pane->pid = 'new-7';
+    $pane->pid = 'new-5';
     $pane->panel = 'sidebar_first_right';
     $pane->type = 'page_actions';
     $pane->subtype = 'page_actions';
@@ -394,10 +346,10 @@ function erpal_employee_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['sidebar_first_right'][0] = 'new-7';
+    $display->content['new-5'] = $pane;
+    $display->panels['sidebar_first_right'][0] = 'new-5';
     $pane = new stdClass();
-    $pane->pid = 'new-8';
+    $pane->pid = 'new-6';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'views_panes';
     $pane->subtype = 'working_times-panel_pane_3';
@@ -412,10 +364,10 @@ function erpal_employee_ui_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-8'] = $pane;
-    $display->panels['sidebar_second_left'][0] = 'new-8';
+    $display->content['new-6'] = $pane;
+    $display->panels['sidebar_second_left'][0] = 'new-6';
   $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-6';
+  $display->title_pane = 'new-4';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['user_working_time_offset'] = $page;

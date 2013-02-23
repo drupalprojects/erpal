@@ -7,3 +7,5 @@ package = "Commander"
 scripts[] = js/commander.js
 
 stylesheets[all][] = css/commander.css
+
+dependencies[] = ctools

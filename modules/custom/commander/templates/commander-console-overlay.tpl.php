@@ -1,8 +1,4 @@
-<div id="commander-console-overlay">
   <div id="commander-console">
-    <div id="commander-console-menu">
-      <h3><?php print t( 'Console' ); ?></h3>
-    </div>
     <div id="commander-console-content">
       <div id="commander-console-log">
         <?php
@@ -26,4 +22,3 @@
       ?>
     </div>
   </div>
-</div>

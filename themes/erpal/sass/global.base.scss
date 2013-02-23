@@ -602,7 +602,6 @@ header[role=banner],
 a.button {
   @include border-radius(5px);
   background-color: rgb(233,229,226); 
-  @include filter-gradient(#e9e5e2, #d4d4d4, vertical);
   @include background-image(linear-gradient(top,  rgba(233,229,226,1) 0%,rgba(212,212,212,1) 100%));
   color: $black_dark;
 }

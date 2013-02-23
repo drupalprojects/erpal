@@ -133,6 +133,24 @@ div.group-form-advanced-right:empty {
 .group-form-advanced-right #field-phone-values input {
   width: 50px;
 }
+.group-form-right .token-tree,
+.group-form-advanced-right .token-tree {
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+.group-form-right .token-tree .token-key,
+.group-form-advanced-right .token-tree .token-key {
+  white-space: normal;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+#field-project-team-values .ui-multiselect {
+  margin-top: 17px;
+}
+#field-project-team-values #edit-field-project-team-und-0-remove-button {
+  margin-top: 27px;
+}
 
 /****************************
 	Group advanced
@@ -204,4 +222,10 @@ div.group-form-advanced-right:empty {
 .group-invoice-sonstiges {
   clear: both;
   display: none;
+}
+
+/*** Contacts ***/
+#field-phone-values #edit-field-phone-und-0-field-number-type-terms-und {
+  float: left;
+  margin-top: 17px;
 }
