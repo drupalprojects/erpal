@@ -120,8 +120,11 @@ function fileedit_upload($fid, $sid) {
     if (count($revisions)) {
         // Thiemo; Bad revisioning if the user isn't known...
 //        global $user;
-        $user = _fileedit_user_by_sid($sid);
-
+        global $user;
+        $session_user = _fileedit_user_by_sid($sid);
+        $old_user = $user;
+        $user = $session_user;
+        
         $name = 'userfile';
 
         // Make it a multiple-upload form submit...
@@ -179,19 +182,21 @@ function fileedit_upload($fid, $sid) {
 
             if ($changed) {
                 $entity->revision = TRUE;
-
+                
                 if ($type == 'node')
                     node_save($entity);
                 else
                     $entity->save();
 
-                if ($node != $entity) {
-                    $node->revision = TRUE;
-                    node_save($node);
+                if ($node != $entity) {                    
+                  $node->revision = TRUE;
+                  
+                  node_save($node);
                 }
             }
         }
 
+        $user = $old_user;
         //session_write_close();
         die();
 
