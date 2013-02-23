@@ -74,7 +74,7 @@ function erpal_field_pricing_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 4,
+        'weight' => 5,
       ),
     ),
   );
@@ -189,7 +189,7 @@ function erpal_field_pricing_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => 3,
+        'weight' => 4,
       ),
     ),
   );
@@ -267,7 +267,7 @@ function erpal_field_pricing_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 2,
+        'weight' => 3,
       ),
     ),
   );
@@ -357,7 +357,7 @@ function erpal_field_pricing_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => 5,
+        'weight' => 6,
       ),
     ),
   );
@@ -515,7 +515,7 @@ function erpal_field_pricing_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 6,
+        'weight' => 1,
       ),
     ),
   );
@@ -593,7 +593,7 @@ function erpal_field_pricing_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 1,
+        'weight' => 2,
       ),
     ),
   );
