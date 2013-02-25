@@ -258,6 +258,9 @@ body #user-login input.form-text {
   overflow: hidden;
   height: 28px;
 }
+#mini-panel-user_bar .panel-panel .last_timetracking .timetracking_subject a:hover {
+  color: #fc9822;
+}
 #mini-panel-user_bar .panel-panel .last_timetracking .timetracking {
   float: left;
   font-weight: bold;
