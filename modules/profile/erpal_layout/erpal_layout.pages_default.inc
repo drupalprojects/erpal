@@ -67,7 +67,22 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->type = 'page_breadcrumb';
     $pane->subtype = 'page_breadcrumb';
     $pane->shown = TRUE;
-    $pane->access = array();
+    $pane->access = array(
+      'logic' => 'and',
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_access',
+          'settings' => array(
+            'type' => 'view',
+          ),
+          'context' => array(
+            0 => 'logged-in-user',
+            1 => 'node',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+    );
     $pane->configuration = array();
     $pane->cache = array();
     $pane->style = array(

@@ -8263,6 +8263,7 @@ echo _erpal_projects_helper_timetracking_view_field_billable($data->nid);
 
   /* Display: Timetrackings by task */
   $handler = $view->new_display('panel_pane', 'Timetrackings by task', 'panel_pane_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;

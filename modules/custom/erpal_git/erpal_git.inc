@@ -21,6 +21,10 @@
  *      url: GIT-URL
  */
 function _erpal_git_commit($data) {
+  if (!isset($data['payload']) || empty($data['payload']))
+    return (object) array('error' => 'Can\'t find payload');
+  $payload = $data['payload'];
+  $data = drupal_json_decode($payload);
   // handle commits array
   if (!isset($data['commits']) || empty($data['commits']) || !is_array($data['commits']))
     return (object) array('error' => 'Can\'t find commits');
