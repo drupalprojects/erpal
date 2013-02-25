@@ -204,6 +204,10 @@ body {
 		float: left;
 		max-width: 300px;
 		overflow: hidden;
+		height: 28px;
+		a:hover {
+		  color: $orange;
+		}
 	  }
 	  .timetracking {
 	    float: left;
