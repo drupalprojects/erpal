@@ -1,5 +1,5 @@
 core = "7.x"
-description = "Provides a block to upload files fast, allowing you to simply drag and drop any file into your browser window. It will also add drag&drop functionality to any form providing file field items. Currently only supported by WebKit browsers (like Chrome and Safari)."
+description = "Provides a block to upload files fast, allowing you to simply drag and drop any file into your browser window. It will also add drag&drop functionality to any form providing file field items. Currently only supported by WebKit browsers (like Chrome and Safari). When editing a node that references ERPAL Files you can use drag&drop for both the autocomplete widget (the block must be included in the page in this case) and the inline entitiy reference widget (block is not necessarily required then)."
 
 name = "Erpal File Drag & Drop"
 package = "ERPAL UI"
