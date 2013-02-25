@@ -1563,10 +1563,10 @@ body {
   tr.even.alert{
 	background-color: $light_pink !important;
   }
-  tr.odd.alert .active,
+ /* tr.odd.alert .active,
   tr.even.alert .active {
 	background-color: $pink !important;
-  }
+  }*/
   tr.odd.completed,
   tr.even.completed {
 	background-color: $light_grey !important;
@@ -1835,6 +1835,12 @@ fieldset {
 .page-user h2.pane-title,
 .page-projects-timetrackings h2.pane-title  {
   padding-left: 33px;
+}
+.page-dashboard .pane-page-content h2.pane-title {
+  background: url("../images/menu_icons/home_title.png") no-repeat 0 0;
+}
+.page-user-notifications .pane-page-content h2.pane-title {
+  background: url("../images/menu_icons/notify_title.png") no-repeat 0 0;
 }
 .page-projects-projects .pane-page-content h2.pane-title,
 .node-type-erpal-project .pane-page-content h2.pane-title {

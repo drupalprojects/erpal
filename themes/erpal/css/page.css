@@ -1694,6 +1694,12 @@ body #user-login input.form-text {
   width: 20px;
 }
 
+.block-content .view-content {
+ /* tr.odd.alert .active,
+  tr.even.alert .active {
+	background-color: $pink !important;
+  }*/
+}
 .block-content .view-content td {
   font-size: 10px;
   font-weight: bold;
@@ -1730,10 +1736,6 @@ body #user-login input.form-text {
 .block-content .view-content tr.odd.alert,
 .block-content .view-content tr.even.alert {
   background-color: #ffdfe4 !important;
-}
-.block-content .view-content tr.odd.alert .active,
-.block-content .view-content tr.even.alert .active {
-  background-color: #eed0d5 !important;
 }
 .block-content .view-content tr.odd.completed,
 .block-content .view-content tr.even.completed {
@@ -2060,6 +2062,14 @@ fieldset {
 .page-user h2.pane-title,
 .page-projects-timetrackings h2.pane-title {
   padding-left: 33px;
+}
+
+.page-dashboard .pane-page-content h2.pane-title {
+  background: url("../images/menu_icons/home_title.png") no-repeat 0 0;
+}
+
+.page-user-notifications .pane-page-content h2.pane-title {
+  background: url("../images/menu_icons/notify_title.png") no-repeat 0 0;
 }
 
 .page-projects-projects .pane-page-content h2.pane-title,
