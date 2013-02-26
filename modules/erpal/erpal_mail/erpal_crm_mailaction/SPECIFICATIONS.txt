@@ -1,7 +1,0 @@
-Ticket number in the subject of a mail
---------------------------------------------------
-Example: Subject text [ticket:123]
-Regex: /.+\[ticket:([0-9]+)\]/
-Semantic: ANY TEXT [ticket:NODE ID OF A CRM ACTION]
-
-

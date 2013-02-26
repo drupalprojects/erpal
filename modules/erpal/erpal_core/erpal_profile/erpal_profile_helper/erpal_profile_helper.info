@@ -1,9 +1,0 @@
-core = "7.x"
-description = "ERPAL Profile Helper"
-name = "erpal_profile_helper"
-package = "ERPAL"
-php = "5.2.4"
-project = "erpal_profile_helper"
-version = "7.x-1.0-dev"
-
-files[] = erpal_profile_helper.module
