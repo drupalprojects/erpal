@@ -152,4 +152,3 @@ dependencies[] = erpal_layout
 
 ; System Requirements.
 php_memory_limit = 256M
-

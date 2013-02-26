@@ -1,7 +1,0 @@
-name = Post hooks
-description = A module allowing altering every hook at very last
-package = ERPAL
-core = 7.x
-files[] = post_hooks.module
-files[] = post_hooks.install
-

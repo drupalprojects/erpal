@@ -1,8 +1,0 @@
-name = Erpal Projects Relations
-description = Extends access control in project teams
-package = ERPAL
-core = 7.x
-files[] = erpal_projects_relations.module
-files[] = erpal_projects_relations.views.inc
-files[] = erpal_projects_relations_handler_erpal_projects_relations_filter.inc
-

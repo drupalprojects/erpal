@@ -1,5 +1,0 @@
-name = Entity Reference Unique
-description = Provides validation plugin "validate unique entities" for the Entity Reference
-core = 7.x
-package = Fields
-dependencies[] = entityreference
