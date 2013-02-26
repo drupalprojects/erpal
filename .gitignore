@@ -1,3 +1,5 @@
 modules/contrib
+modules/custom
+modules/erpal
 libraries
 .project
