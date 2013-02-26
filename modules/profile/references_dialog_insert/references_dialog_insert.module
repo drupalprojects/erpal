@@ -1,0 +1,352 @@
+<?php
+/**
+ * Implements hook_menu
+ */
+function references_dialog_insert_menu() {
+  $items['references-dialog-insert/%/%'] = array(
+    'access callback' => '_references_dialog_insert_access',
+    'access arguments' => array(1, 2),
+    'page callback' => '_references_dialog_insert_callback',
+    'page arguments' => array(1, 2),
+  );
+
+  return $items;
+}
+
+/**
+ * access callback for ajax requests
+ */
+function _references_dialog_insert_access($entity_id, $entity_type) {
+  if (isset($_POST['bundles']))
+    if (isset($entity_id) && isset($entity_type))
+      if ($entity = current(entity_load($entity_type, array($entity_id))))
+        if (entity_access('create', $entity_type, $entity)) {
+          $bundles = explode(',', $_POST['bundles']);
+          if (isset($entity->type) && in_array($entity->type, $bundles))
+            return TRUE;
+        }
+}
+
+/**
+ * provides ajax callback.
+ * returns rendered "send to textarea" form section
+ */
+function _references_dialog_insert_callback($entity_id, $entity_type) {
+  // check arguments  
+  if (isset($entity_id) && isset($entity_type)) {
+    if ($entity = current(entity_load($entity_type, array($entity_id)))) {
+      // get entity link
+      if ($link = _references_dialog_insert_generate_link($entity_id, $entity_type)) {
+        $result = array('success' => render($link));
+        print drupal_json_encode($result);
+        exit();
+      }
+    }
+  }
+
+  $result = array('error' => 'bad request');
+  print drupal_json_encode($error);
+  exit();
+}
+
+/**
+ * Implements hook_element_info_alter().
+ * Add #after_builds to widgets that needs them.
+ */
+function references_dialog_insert_element_info_alter(&$info) {
+  // If this element type is specified as a type that a widget should be
+  // attached to, go ahead and make it so.
+  if (isset($info['textfield']) && (!isset($info['textfield']['#after_build']) || !in_array('references_dialog_insert_process_widget', $info['textfield']['#after_build']))) {
+    $info['textfield']['#after_build'][] = 'references_dialog_insert_process_widget';
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter
+ */
+function references_dialog_insert_form_field_ui_field_edit_form_alter(&$form, $form_state) {
+  if ($form['instance']['widget']['type']['#value'] == 'entityreference_autocomplete') {
+
+    $instance = field_info_instance($form['instance']['entity_type']['#value'], $form['instance']['field_name']['#value'], $form['instance']['bundle']['#value']);
+
+    // A widget settings form for our references dialog fields.
+    $widget = $instance['widget'];
+    $defaults = field_info_widget_settings($widget['type']);
+    $settings = array_merge($defaults, $widget['settings']);
+
+    // Add our own additions.
+    $form['instance']['widget']['settings']['references_dialog_send'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Send to textarea'),
+      '#default_value' => isset($settings['references_dialog_send']) ? $settings['references_dialog_send'] : FALSE,
+    );
+
+    return $form;
+  }
+}
+
+/**
+ * Add our references dialog fields to the existing element
+ */
+function references_dialog_insert_process_widget(&$element) {
+  if (!isset($element['#entity_type'])) {
+    return $element;
+  }
+  $wrapper = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'references-dialog-insert',
+      ),
+    ),
+  );
+  $wrapper['element'] = $element;
+
+  $item = $element['#value'];
+  $field = field_info_field($element['#field_name']);
+  $instance = field_info_instance($element['#entity_type'], $element['#field_name'], $element['#bundle']);
+
+  $widget_settings = $instance['widget']['settings'];
+  $widget_type = $instance['widget']['type'];
+
+  // Add "Send to textarea" button
+  if ($widget_type == 'entityreference_autocomplete') {
+    if (isset($widget_settings['references_dialog_send']) && $widget_settings['references_dialog_send']) {
+
+      // "Send to textarea" link
+      if ($send_link = references_dialog_insert_entityreference_send_link($element, $widget_settings, $field, $instance)) {
+        $wrapper['send'] = $send_link;
+      }
+
+      // referenced entity type
+      $target_entity_type = $field['settings']['target_type'];
+      $wrapper['entity_type'] = array(
+        '#type' => 'hidden',
+        '#value' => $target_entity_type,
+        '#attributes' => array(
+          'class' => array(
+            'references-dialog-target-type',
+          ),
+        ),
+      );
+
+      // referenced entity bundles
+      $target_entity_bundles = implode(',', $field['settings']['handler_settings']['target_bundles']);
+      $wrapper['entity_bundles'] = array(
+        '#type' => 'hidden',
+        '#value' => $target_entity_bundles,
+        '#attributes' => array(
+          'class' => array(
+            'references-dialog-target-bundles',
+          ),
+        ),
+      );
+    }
+  }
+  drupal_add_js(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.js');
+  drupal_add_css(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.css');
+
+  return $wrapper;
+}
+
+/**
+ * Edit link callback for entity references.
+ */
+function references_dialog_insert_entityreference_send_link($element, $widget_settings, $field, $instance) {
+  if (isset($element['#default_value'])) {
+    $entity_type = $field['settings']['target_type'];
+    // Take "label (entity id)', match the id from parenthesis.
+    if (preg_match("/.+\((\d+)\)/", $element['#default_value'], $matches)) {
+      if ($entity_id = $matches[1]) {
+        if ($send_link = _references_dialog_insert_generate_link($entity_id, $entity_type)) {
+          return $send_link;
+        }
+      }
+    }
+  }
+  return array();
+}
+
+/**
+ * generates "Send to textarea" form section
+ * @param int $entity_id referenced entity id
+ * @param string $entity_type referenced entity type
+ * @return array "Send to textarea" render array
+ */
+function _references_dialog_insert_generate_link($entity_id, $entity_type) {
+  // check the entity
+  $entity = current(entity_load($entity_type, array($entity_id)));
+  if (entity_access('create', $entity_type, $entity)) {
+    $file = $file_fields = $file_is_image = $alt = $title = FALSE;
+    list(, , $bundle) = entity_extract_ids($entity_type, $entity);
+    
+    // let's find all file fields in needle entity
+    $fields_info = field_info_instances($entity_type, $bundle);
+
+    // get first file field
+    $allowed_fields = array('file', 'image');
+    foreach ($fields_info as $field_name => $field_info) {
+      $field = field_info_field($field_name);
+      if (in_array($field['type'], $allowed_fields)) {
+        $file_field = $field_name;
+        break;
+      }
+    }
+    // get file from a referenced entity
+    if (empty($file_field))
+      return FASLE;
+
+    // get file
+    $file_field = array_shift(field_get_items($entity_type, $entity, $file_field));
+    // file id
+    $fid = $file_field['fid'];
+    if (!$file = file_load($fid))
+      return FALSE;
+
+    $errors = file_validate_is_image($file);
+    if (empty($errors)) {
+      $file_is_image = TRUE;
+
+      // image alt
+      if (!empty($file_field['alt']))
+        $alt = $file_field['alt'];
+      else
+        $alt = $entity->title;
+
+      // image title
+      if (!empty($file_field['title']))
+        $title = $file_field['title'];
+      else
+        $title = $entity->title;
+    }
+
+    $send_link = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array(
+          'references-dialog-insert-wrapper',
+        ),
+      ),
+    );
+
+    // "Send to textarea" link button
+    $send_link['button'] = array(
+      '#type' => 'markup',
+      '#markup' => '<a class="button references-dialog-insert-send" href="#">' . t('Send to textarea') . '</a>',
+    );
+
+    // Insert embedded image
+    if ($file_is_image) {
+
+      // image styles select
+      $image_styles = _references_dialog_insert_image_styles();
+      $send_link['styles'] = array(
+        '#type' => 'select',
+        '#title' => t('Image style') . ':',
+        '#options' => $image_styles,
+      );
+
+      // generate image links
+      foreach ($image_styles as $image_style_key => $image_style) {
+        $send_link[] = _references_dialog_insert_image($entity_id, $entity, $file, $image_style_key, $alt, $title);
+      }
+    }
+
+    // Insert link if file is not image
+    else {
+      // Simple link to entity page
+      $send_link[] = _references_dialog_insert_file_link($entity_id, $entity, $file);
+    }
+    return $send_link;
+  }
+}
+
+/**
+ * Get all image styles in array
+ * @return array image styles
+ */
+function _references_dialog_insert_image_styles() {
+  $image_styles = image_styles();
+  $insert_styles = array('original' => t('original image'));
+  foreach ($image_styles as $style_key => $style) {
+    $insert_styles[$style_key] = $style['name'];
+  }
+  return $insert_styles;
+}
+
+/**
+ * Generates image links
+ * @return array image link hidden input
+ */
+function _references_dialog_insert_image($entity_id, $entity, $file, $image_style, $alt, $title) {
+  if ($image_style == 'original') {
+    $variables = array(
+      'attributes' => array(
+        'alt' => ''
+      ),
+      'path' => file_create_url($file->uri),
+    );
+    $image = theme_image($variables);
+  } else {
+    // image render array
+    $image_render = array(
+      '#theme' => 'image_formatter',
+      '#image_style' => $image_style,
+      '#item' => array(
+        'uri' => $file->uri,
+        'alt' => $alt,
+        'title' => $title,
+      ),
+    );
+    $image = render($image_render);
+  }
+
+  // $image_link = l(render($image), url('node/' . $entity_id, array('absolute' => TRUE)), array('html' => TRUE));
+  // image link hidden input
+  $send_link['image'] = array(
+    '#type' => 'hidden',
+    '#value' => $image,
+    '#attributes' => array(
+      'class' => array(
+        'references-dialog-insert-image',
+      ),
+      'name' => 'references-dialog-insert-image-' . $image_style,
+    ),
+  );
+
+  return $send_link;
+}
+
+/**
+ * Generates file link
+ * @return array filke link hidden input
+ */
+function _references_dialog_insert_file_link($entity_id, $entity, $file) {
+
+  // create file icon
+  $image = '';
+  if ($icon_path = file_icon_url($file)) {
+    $variables = array(
+      'attributes' => array(
+        'alt' => ''
+      ),
+      'path' => $icon_path,
+    );
+    $image = theme_image($variables);
+  }
+
+  // file link
+  $url = file_create_url($file->uri);
+
+  $send_link = array(
+    '#type' => 'hidden',
+    '#value' => $image . l($entity->title, $url),
+    '#attributes' => array(
+      'class' => array(
+        'references-dialog-insert-link',
+      ),
+    ),
+  );
+
+  return $send_link;
+}
