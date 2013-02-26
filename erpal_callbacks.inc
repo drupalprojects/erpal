@@ -202,14 +202,14 @@ function _erpal_calendar_config(&$context){
   module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
   _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
 
-  colors_set_colors(
-    'colors_taxonomy_term_70', 
-    array(
-      'background' => '#336699',
-      'border' => '#336699',
-      'text' => '#FFFFFF',
-    ), 
-  );
+  // colors_set_colors(
+    // 'colors_taxonomy_term_70', 
+    // array(
+      // 'background' => '#336699',
+      // 'border' => '#336699',
+      // 'text' => '#FFFFFF',
+    // ), 
+  // );
   
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
