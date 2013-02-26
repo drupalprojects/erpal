@@ -46,7 +46,6 @@ dependencies[] = entity_token
 dependencies[] = entityreference
 dependencies[] = entityreference_prepopulate
 dependencies[] = entitycache
-dependencies[] = fe_block
 dependencies[] = features
 dependencies[] = features_plumber
 dependencies[] = field_collection
