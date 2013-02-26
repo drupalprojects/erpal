@@ -2,6 +2,38 @@
 
 function erpal_create_taxonomy(){
   
+  $activity_origin_vocabulary = new stdClass();
+  $activity_origin_vocabulary->name = 'Activity origin';
+  $activity_origin_vocabulary->machine_name = 'activity_origin';
+  $activity_origin_terms = array(
+    array(
+      'name' => 'Called us',
+      'is_default' => 1,
+    ),
+    array(
+      'name' => 'Personal contacted',
+      'is_default' => 0,
+    ),
+    array(
+      'name' => 'Cold call',
+      'is_default' => 0,
+    ),
+    array(
+      'name' => 'Event',
+      'is_default' => 0,
+    ),
+    array(
+      'name' => 'Email',
+      'is_default' => 0,
+    ),
+    array(
+      'name' => 'Website',
+      'is_default' => 0,
+    ),
+  );
+  erpal_taxonomy_add($activity_origin_vocabulary, $activity_origin_terms);
+  
+  
   //  Create taxonomy 
   $task_type_vocabulary = new stdClass();
   $task_type_vocabulary->name = 'Task type terms';
@@ -407,7 +439,6 @@ function erpal_taxonomy_add($vocabulary, $names){
       }
       taxonomy_term_save($term);
     }
-    
 }
 
 

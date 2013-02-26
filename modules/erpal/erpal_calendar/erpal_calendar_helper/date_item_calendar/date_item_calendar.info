@@ -1,9 +1,0 @@
-name = Date Item Calendar
-description = Creates date field for date item entites
-package = Date Item
-core = 7.x
-
-dependencies[] = entity
-dependencies[] = date
-dependencies[] = date_item
-

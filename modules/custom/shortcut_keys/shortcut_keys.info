@@ -1,7 +1,0 @@
-name = Shortcut Keys
-description = Add shortcuts to URLs and JavaScript functions as required. Other modules may extend this module by providing their own suggestions or callbacks.
-version = "7.x-1.0"
-core = 7.x
-package = "Misc"
-
-scripts[] = js/shortcut_keys.js

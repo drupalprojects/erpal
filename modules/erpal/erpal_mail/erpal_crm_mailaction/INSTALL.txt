@@ -1,7 +1,0 @@
-INSTALLATION OF THE MODULE
-
-CRON
-
-The module is using drupals cron mechanism for fetching and importing mails to the action queues.
-So it is necessary configure a cronjob which has short call intervals.
-
