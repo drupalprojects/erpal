@@ -296,19 +296,6 @@ function erpal_docs_access_module_implements_alter(&$module_list, $context) {
     // Adding the mymodule key value as the last member in the list
     $module_list['erpal_docs_access'] = $temp;
   }
-
-  // Execute insert or delete before after all implementations
-  // ???
-  /* if ($context === "entity_delete") {
-    if (!isset($module_list['erpal_docs_access']))
-    return;
-
-    $temp = $module_list['erpal_docs_access'];
-    // Removing the mymodule key/value
-    unset($module_list['erpal_docs_access']);
-    // Adding the mymodule key value as the last member in the list
-    $module_list = array_merge(array('erpal_docs_access' => $temp), $module_list);
-    } */
 }
 
 /**

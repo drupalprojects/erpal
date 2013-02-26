@@ -94,7 +94,9 @@ class erpal_docs_access {
       'update' => 0,
       'delete' => 0,
     );
-
+    if(empty($settings))
+      return FALSE;
+    
     // loop all needed fields in saved entitiy types and bundles
     foreach ($settings as $entity_type => $bundles) { // foreach 4
       foreach ($bundles as $bundle => $fields) { // foreach 3
