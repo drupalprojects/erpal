@@ -1,0 +1,9 @@
+core = "7.x"
+description = "ERPAL Bookmark Helper"
+name = "erpal_bookmark_helper"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_bookmark_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_bookmark_helper.module
