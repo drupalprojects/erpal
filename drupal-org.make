@@ -71,9 +71,6 @@ projects[features][version] = "2.0-beta1"
 projects[features][subdir] = "contrib"
 projects[features][patch][] = "http://drupal.org/files/1721926.features.field-weight-ping-pong.patch"
 
-projects[features_extra][version] = "1.0-alpha1"
-projects[features_extra][subdir] = "contrib"
-
 projects[features_plumber][version] = "1.0-alpha3"
 projects[features_plumber][subdir] = "contrib"
 

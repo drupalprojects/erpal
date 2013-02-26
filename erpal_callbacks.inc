@@ -196,8 +196,21 @@ function _erpal_projects_config(&$context){
  */
 function _erpal_calendar_config(&$context){ 
   $context['message'] = st('Configured ERPAL-Calendar');
+  // module_load_include('module', 'colors');
+  
+  
   module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
   _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
+
+  colors_set_colors(
+    'colors_taxonomy_term_70', 
+    array(
+      'background' => '#336699',
+      'border' => '#336699',
+      'text' => '#FFFFFF',
+    ), 
+  );
+  
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact  date');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
@@ -228,3 +241,6 @@ function _erpal_invoice_config(&$context){
   variable_set('erpal_invoice_skonto_text', $skontoText);  
   
 }
+
+
+
