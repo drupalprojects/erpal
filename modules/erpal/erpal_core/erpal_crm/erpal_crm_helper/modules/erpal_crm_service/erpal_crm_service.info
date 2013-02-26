@@ -1,0 +1,14 @@
+core = "7.x"
+description = "ERPAL CRM service integrates crm functionallity with services for apps"
+
+name = "ERPAL CRM service"
+package = "ERPAL Services"
+php = "5.2.4"
+project = "erpal_crm_service"
+version = "7.x-1.0-dev"
+
+files[] = erpal_crm_service.module
+files[] = inc/activity.inc
+
+dependencies[] = rest_server
+dependencies[] = erpal_crm

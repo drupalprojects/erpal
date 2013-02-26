@@ -1,0 +1,105 @@
+<?php
+/**
+* @file
+* Code for the erpal_basic_service module.
+* ERPAL basic service adds services integration to allow data transfer for external apps
+*/
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_basic_service_services_resources() {
+  return array(
+    'contact' => array(
+      'create' => array(
+        'help' => 'Creates a contact',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'callback' => '_erpal_basic_service_contact_create',
+        'access callback' => '_erpal_basic_service_contact_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'contact',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The contact node data to create',
+            'type' => 'array',
+          ),         
+        ),
+      ),
+    ),  
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_basic_service_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+    );
+  }
+}
+
+ /**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_basic_service_default_services_endpoint() {
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'erpal_basic_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/basic';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'rest_server' => array(
+      'formatters' => array(
+        'bencode' => TRUE,
+        'json' => TRUE,
+        'php' => TRUE,
+        'rss' => TRUE,
+        'xml' => TRUE,
+        'yaml' => TRUE,
+        'jsonp' => FALSE,
+      ),
+      'parsers' => array(
+        'application/json' => TRUE,
+        'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
+        'application/x-yaml' => TRUE,
+        'multipart/form-data' => TRUE,
+      ),
+    ),
+  );
+  $endpoint->resources = array(
+    'contact' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ),        
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+
+  $endpoints[] = $endpoint;
+
+  return $endpoints;
+}
