@@ -6,6 +6,7 @@
  */  
 
 module_load_include('inc', 'budget', 'budget.entity');   
+module_load_include('inc', 'budget', 'budget.admin');  
 
 /**
  * Implements hook_views_api().
