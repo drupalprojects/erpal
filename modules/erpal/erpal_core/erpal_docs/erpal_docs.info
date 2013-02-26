@@ -14,6 +14,7 @@ dependencies[] = references_dialog
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text
+depencencies[] = erpal_docs_access
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:1
 features[field][] = comment-comment_node_erpal_file-comment_body

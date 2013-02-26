@@ -92,7 +92,7 @@ function erpal_crm_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '12',
+          'weight' => '13',
         ),
       ),
       'display' => array(),

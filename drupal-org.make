@@ -9,6 +9,12 @@ projects[acl][subdir] = "contrib"
 projects[admin_menu][version] = "3.0-rc4"
 projects[admin_menu][subdir] = "contrib"
 
+projects[colors][version] = "1.0-rc1"
+projects[colors][subdir] = "contrib"
+
+projects[maxlength][version] = "3.0-beta1"
+projects[maxlength][subdir] = "contrib"
+
 projects[auto_nodetitle][version] = "1.0"
 projects[auto_nodetitle][subdir] = "contrib"
 

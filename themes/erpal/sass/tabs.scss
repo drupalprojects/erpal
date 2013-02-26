@@ -5,6 +5,9 @@ ul.primary li a {
     background-color: transparent;
   }
 }
+.erpal-region-tabs {
+  height: 34px;
+}
 #erpal_wrapper .panel-panel.panel-col-last {
   float: left;
   width: $value100;
@@ -70,6 +73,7 @@ ul.primary li a {
 			  color: $orange;
 			  &:hover{
 			    color: $orange;
+				text-shadow: 1px 1px 1px $white, 0 0 0 $black, 1px 1px 1px $white;
 			  }
 			}
 		  }		
@@ -193,6 +197,9 @@ ul.primary li a {
 	    background: url("../images/menu_icons/template.png") no-repeat 9px -32px;
 	  }
 	} 
+	&.templates-active-tab a {
+	  background: url("../images/menu_icons/template.png") no-repeat 9px -32px;
+	}
 	&.tasks-active-tab a {
 	  background: url("../images/menu_icons/tasks.png") no-repeat 9px -22px;
 	}

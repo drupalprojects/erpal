@@ -384,6 +384,28 @@
         
       }
       
+      var sSelector         = '.field-type-entityreference-form.field-name-field-asset-files-form.field-widget-inline-entity-form';
+      var pInlineReferences = $(sSelector);
+      var pFileField        = $( sSelector+' .form-file:not(.erpal-file-drag-drop-processed)' ); 
+      if( pFileField.size() ) {
+        
+        var sID         = pFileField.attr("id");
+        
+        pFileField.addClass( 'erpal-file-drag-drop-processed' );
+        
+        addFileItem( sID, sSelector+' #'+sID, sID, pInlineReferences.find('fieldset>legend>span').text() );
+        
+        
+      }
+      else if( pInlineReferences.size() ) {
+        
+        pInlineReferences.find('#edit-field-asset-files-und-actions-ief-add')
+          .mousedown()
+          .click()
+          .mouseup();
+        
+      }
+      
     }
     
   };
