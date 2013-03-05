@@ -223,88 +223,37 @@ function _erpal_calendar_config(&$context){
     $terms[$term->name] = $term->tid;
   }
   
-  // Enable taxonomy in colors module
-  variable_set('colors_taxonomy_term_'.$voc->vid.'_enabled', TRUE);
-  
   // configure erpal_calendar_helper and set colors 
   module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
-  _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
 
-  colors_set_colors(
-    'colors_taxonomy_term_'.$terms['crm'], 
-    array(
-      'background' => '#336699',
-      'border' => '#336699',
-      'text' => '#FFFFFF',
-    ) 
-  );
-  
-  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact date');
-  
-  colors_set_colors(
-    'colors_taxonomy_term_' . $terms['contact date'], 
-    array(
-      'background' => '#33cccc',
-      'border' => '#33cccc',
-      'text' => '#FFFFFF',
-    ) 
-  );
+  _erpal_calendar_helper_field_tag('node', 'erpal_crm_activity', 'field_next_contact', 'crm');
+  _colors_set_colors('colors_taxonomy_term_' . $terms['crm'], 'taxonomy_term', '#336699');
+
+  _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_date', 'contact date');  
+  _colors_set_colors('colors_taxonomy_term_' . $terms['contact date'], 'taxonomy_term', '#33cccc');
   
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period', 'contact customer');
- 
-  colors_set_colors(
-    'colors_taxonomy_term_'.$terms['contact customer'], 
-    array(
-      'background' => '#18e132',
-      'border' => '#18e132',
-      'text' => '#FFFFFF',
-    ) 
-  );
- 
+  _colors_set_colors('colors_taxonomy_term_' . $terms['contact customer'], 'taxonomy_term', '#18e132');
+   
   _erpal_calendar_helper_field_tag('node', 'erpal_contract', 'field_cancelation_period_con', 'contact agency');
-
-  colors_set_colors(
-    'colors_taxonomy_term_'.$terms['contact agency'], 
-    array(
-      'background' => '#f7f31b',
-      'border' => '#f7f31b',
-      'text' => '#FFFFFF',
-    ) 
-  );
+  _colors_set_colors('colors_taxonomy_term_' . $terms['contact agency'], 'taxonomy_term', '#f7f31b');
 
   _erpal_calendar_helper_field_tag('node', 'erpal_date', 'field_date_repeat', 'appointment');  
-  
-  colors_set_colors(
-    'colors_taxonomy_term_'.$terms['appointment'], 
-    array(
-      'background' => '#fa9c21',
-      'border' => '#fa9c21',
-      'text' => '#FFFFFF',
-    ) 
-  );
+  _colors_set_colors('colors_taxonomy_term_' . $terms['appointment'], 'taxonomy_term', '#fa9c21');
   
   _erpal_calendar_helper_field_tag('node', 'erpal_project', 'field_date', 'project');
-  
-  colors_set_colors(
-    'colors_taxonomy_term_'.$terms['project'], 
-    array(
-      'background' => '#d8120b',
-      'border' => '#d8120b',
-      'text' => '#FFFFFF',
-    ) 
-  );
+  _colors_set_colors('colors_taxonomy_term_' . $terms['project'], 'taxonomy_term', '#d8120b');
   
   _erpal_calendar_helper_field_tag('node', 'erpal_task', 'field_date', 'task');
+  _colors_set_colors('colors_taxonomy_term_' . $terms['task'], 'taxonomy_term', '#d80ba8');
+
   
-  colors_set_colors(
-    'colors_taxonomy_term_'.$terms['task'], 
-    array(
-      'background' => '#d80ba8',
-      'border' => '#d80ba8',
-      'text' => '#FFFFFF',
-    ) 
-  );
+  // Enable taxonomy in colors module
+  variable_set('colors_taxonomy_term_enabled', TRUE);
+  variable_set('colors_taxonomy_term_'.$voc->vid.'_enabled', TRUE);
   
+  // recreate stylesheet
+  colors_css_clear();
 }
  
 
