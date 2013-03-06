@@ -4,6 +4,7 @@ projects[drupal][version] = 7.19
 
 ; Patches for Core
 projects[drupal][patch][] = "http://drupal.org/files/1146244-82-node-save-on-insert.patch"
+projects[drupal][patch][] = "http://drupal.org/files/d7_move_access_to_join_condition-1349080-89.patch"
 
 
 projects[drupal][patch][] = "http://drupal.org/files/issues/1074108-skip-profile-2.patch"
