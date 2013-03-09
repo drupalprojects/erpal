@@ -12,6 +12,9 @@ projects[admin_menu][subdir] = "contrib"
 projects[colors][version] = "1.0-rc1"
 projects[colors][subdir] = "contrib"
 
+projects[image_url_formatter][version] = "1.0"
+projects[image_url_formatter][subdir] = "contrib"
+
 projects[maxlength][version] = "3.0-beta1"
 projects[maxlength][subdir] = "contrib"
 
