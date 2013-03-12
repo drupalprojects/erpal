@@ -93,35 +93,24 @@ function references_dialog_insert_process_widget($element) {
   if (!isset($element['#entity_type']))
     return $element;
 
-  $wrapper = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'references-dialog-insert',
-      ),
-    ),
-  );
-
   $instance = field_info_instance($element['#entity_type'], $element['#field_name'], $element['#bundle']);
 
+  // if field is autocomplete
   $widget_type = $instance['widget']['type'];
   if ($widget_type != 'entityreference_autocomplete')
     return $element;
-  
+
+  // If references dialog send is enabled
   $widget_settings = $instance['widget']['settings'];
   if (empty($widget_settings['references_dialog_send']))
     return $element;
 
   // Add "Send to textarea" button
   $field = field_info_field($element['#field_name']);
-  
+
   // "Send to textarea" link
   if (!$send_link = references_dialog_insert_entityreference_send_link($element, $widget_settings, $field, $instance))
-    return $element;
-  
-  $wrapper['element'] = $element;
-  
-  $wrapper['send'] = $send_link;
+    $wrapper['send'] = $send_link;
 
   // referenced entity type
   $target_entity_type = $field['settings']['target_type'];
@@ -147,10 +136,21 @@ function references_dialog_insert_process_widget($element) {
     ),
   );
 
+  if (!isset($element['#prefix']))
+    $element['#prefix'] = '';
+  if (!isset($element['#suffix']))
+    $element['#suffix'] = '';
+
+  // Add widget in prefix
+  $element['#prefix'] = '<div class="references-dialog-insert">' . $element['#prefix'];
+  $element['#prefix'] .= render($wrapper);
+  $element['#suffix'] .= '</div>';
+  
+  // Adding JS and CSS
   drupal_add_js(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.js');
   drupal_add_css(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.css');
 
-  return $wrapper;
+  return $element;
 }
 
 /**
@@ -179,7 +179,7 @@ function references_dialog_insert_entityreference_send_link($element, $widget_se
  */
 function _references_dialog_insert_generate_link($entity_id, $entity_type) {
   // check the entity
-  if(!$entity = current(entity_load($entity_type, array($entity_id))))
+  if (!$entity = current(entity_load($entity_type, array($entity_id))))
     return FALSE;
   if (entity_access('create', $entity_type, $entity)) {
     $file = $file_fields = $file_is_image = $alt = $title = FALSE;
