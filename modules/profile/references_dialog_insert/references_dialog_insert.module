@@ -145,7 +145,7 @@ function references_dialog_insert_process_widget($element) {
   $element['#prefix'] = '<div class="references-dialog-insert">' . $element['#prefix'];
   $element['#prefix'] .= render($wrapper);
   $element['#suffix'] .= '</div>';
-  
+
   // Adding JS and CSS
   drupal_add_js(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.js');
   drupal_add_css(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.css');
@@ -207,10 +207,13 @@ function _references_dialog_insert_generate_link($entity_id, $entity_type) {
     $fid = $file_field['fid'];
     if (!$file = file_load($fid))
       return FALSE;
+    
+    // Check if file is an image
+    // $file_is_image = image_get_info($file->uri);
+    // $errors = file_validate_is_image($file);
+    $file_is_image = references_dialog_insert_is_image($file->uri);
 
-    $errors = file_validate_is_image($file);
-    if (empty($errors)) {
-      $file_is_image = TRUE;
+    if ($file_is_image) {
 
       // image alt
       if (!empty($file_field['alt']))
@@ -263,6 +266,19 @@ function _references_dialog_insert_generate_link($entity_id, $entity_type) {
       $send_link[] = _references_dialog_insert_file_link($entity_id, $entity, $file);
     }
     return $send_link;
+  }
+}
+
+/**
+ * Check if file is an image by path
+ */
+function references_dialog_insert_is_image($path) {
+  $img = drupal_realpath($path);
+  if (filesize($img)) {
+    $info = getimagesize($img);
+    $image_type = $info[2];
+    if (in_array($image_type, array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_BMP)))
+      return TRUE;
   }
 }
 
