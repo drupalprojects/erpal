@@ -163,6 +163,20 @@ function _erpal_various_settings(&$context){
   variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');
   
   variable_set('erpal_docs_doc_file_extensions', 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml');
+  
+  //set saved searches for certain views
+  $views = array(
+    'assigned_tasks', 
+    'crm_activities',
+    'full_calendar', 
+    'projects', 
+    'tasks', 
+    'tickets', 
+    'timetrackings', 
+    'working_time', 
+    'working_times', 
+  );
+  variable_set('views_savedsearches', $views);
 }
 
 /**

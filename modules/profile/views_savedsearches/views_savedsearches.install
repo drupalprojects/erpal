@@ -1,0 +1,79 @@
+<?php
+// $Id: views_savedsearches.install,v 1.4 2010/01/14 13:48:24 aronnovak Exp $
+
+/**
+ * @file
+ * This module allows you to save your current configuration of exposed
+ * filters for later use. This can be especially useful for Views with a lot
+ * of exposed filters.
+ *
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function views_savedsearches_schema() {
+  $schema['views_savedsearches'] = array(
+    'fields' => array(
+      'sid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'vid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'view_name' => array(
+        'type' => 'varchar',
+        'length' => '32',
+        'default' => '',
+        'not null' => FALSE,
+      ),
+      'display' => array(
+        'type' => 'varchar',
+        'length' => '32',
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => '30',
+        'default' => '',
+        'not null' => TRUE,
+      ),
+      'filters' => array(
+        'type' => 'text',
+        'size' => 'big',
+      ),
+    ),
+    'primary key' => array('sid'),
+  );
+  return $schema;
+}
+
+function views_savedsearches_update_6101() {
+  $ret = array();
+  db_add_field($ret, 'views_savedsearches', 'display', array('type' => 'varchar', 'length' => '32', 'not null' => TRUE, 'default' => ''));
+  return $ret;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function views_savedsearches_install() {
+  // drupal_install_schema('views_savedsearches');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function views_savedsearches_uninstall() {
+  drupal_uninstall_schema('views_savedsearches');
+  variable_del('views_savedsearches');
+}
