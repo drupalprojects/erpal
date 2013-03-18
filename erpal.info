@@ -27,6 +27,7 @@ dependencies[] = taxonomy
 ;contrib
 dependencies[] = auto_nodetitle
 dependencies[] = better_exposed_filters
+dependencies[] = views_savedsearches
 dependencies[] = ckeditor
 dependencies[] = comment
 dependencies[] = computed_field
