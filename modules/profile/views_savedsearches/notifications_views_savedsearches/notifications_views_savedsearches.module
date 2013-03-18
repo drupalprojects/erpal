@@ -1,0 +1,332 @@
+<?php
+// $Id: notifications_views_savedsearches.module,v 1.1 2009/12/18 15:47:47 aronnovak Exp $
+
+/**
+ * @file
+ * Subscriptions to Views Saved Searches
+ *
+ * This module defines
+ * - Event types: viewsnewitem
+ * - Subscription type: savedsearch
+ *
+ */
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Builds subscription user interface for views savedsearch
+ */
+function notifications_views_savedsearches_form_alter(&$form, $form_state, $form_id) {
+  global $user;
+  if ($form_id == 'views_savedsearches_delete_search_form' && user_access('subscribe to views savedsearch')) {
+    $curr_subs = notifications_user_get_subscriptions($user->uid, 'viewsnewitem', NULL);
+    $sids = array();
+    foreach ($curr_subs as $k => $sub) {
+      $sids[$sub->fields['sid']] = $sub->sid;
+    }
+    $view = views_get_current_view();
+    if (empty($view)) {
+      // It's an AHAH-request then
+      $view = views_get_view($form['variables']['vid']['#value']);
+    }
+    $saved_searches = views_savedsearches_load_multiple($user->uid, $view->vid);
+    $links = array();
+    foreach ($saved_searches as  $k => $option) {
+      $link = '';
+      if (isset($sids[$option->sid])) {
+        $link = notifications_get_link('unsubscribe', array('sid' => $sids[$option->sid], 'signed' => TRUE, 'absolute' => TRUE, 'destination' => $view->get_path()));
+        $links[] = l(t('Unsubscribe from !search', array('!search' => $option->name)), $link['href'], $link['options']);
+      }
+      else {
+        $link = notifications_get_link('subscribe', array('uid' => $user->uid, 'type' => 'savedsearch', 'confirm' => TRUE, 'fields' => array('sid' => $option->sid), 'destination' => $view->get_path()));
+        $links[] = l(t('Subscribe to !search', array('!search' => $option->name)), $link['href'], $link['options']);
+      }
+    }
+    $form['saved_collapse']['#suffix'] = theme('notifications_views_savedsearches_links', $links);
+  }
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function notifications_views_savedsearches_theme() {
+   return array(
+    'notifications_views_savedsearches_links' => array(
+      'arguments' => array('links' => NULL),
+    ));
+ }
+
+/**
+ * Menu access callback.
+ */
+function notifications_views_savedsearches_access($account) {
+  global $user;
+  return
+  ($account->uid && $account->uid == $user->uid && user_access('subscribe to views savedsearch')) ||
+      (user_access('administer notifications') && user_access('subscribe to views savedsearch', $account));
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function notifications_views_savedsearches_perm() {
+  return array('subscribe to views savedsearch');
+}
+
+/**
+ * Implementation of hook_notifications().
+ */
+function notifications_views_savedsearches_notifications($op, &$arg0, $arg1 = NULL, $arg2 = NULL) {
+  switch ($op) {
+    case 'names':
+      $subs = &$arg0;
+      if ($subs->event_type == 'savedsearch') {
+        if (!empty($subs->fields['sid'])) {
+          $data = db_fetch_row(db_query("SELECT name, vid FROM {views_savedsearches} WHERE sid = %d", $subs->fields['sid']));
+          $viewname = db_result(db_query("SELECT name FROM {views_view} WHERE vid = %d", $data['vid']));
+          $subs->names['sid'] = t('Views Saved Search: %name, belongs to: %view', array('%name' => $data['name'], '%view' => $viewname));
+        }
+      }
+      break;
+    case 'subscription types':
+      $types['savedsearch'] = array(
+        'title' => t('Views Savedsearch'),
+        'access' => 'subscribe to views savedsearch',
+        'fields' => array('sid'),
+        'event_type' => 'viewsnewitem',
+        'description' => t('Subscribe to incoming new items to the given views.'),
+      );
+      return $types;
+    case 'subscription fields':
+    // Information about available fields for subscriptions
+      $fields['sid'] = array(
+        'name' => t('Views Savedsearch'),
+        'field' => 'sid',
+        'type' => 'int',
+        'format callback' => 'notifications_views_savedsearches_2title',
+      );
+      return $fields;
+    case 'event types':
+      $types[] = array(
+        'type' => 'viewsnewitem',
+        'action' => 'new',
+        'name' => 'Views Saved Search: [savedsearches-title]',
+        'line' => "The Views Saved Search [savedsearches-title] has been updated\n[views-arrived-items]",
+        'digest' => array('feed', 'type'),
+      );
+      return $types;
+    case 'query':
+    // $arg2 is $event array.
+      if ($arg0 == 'event' && $arg1 == 'viewsnewitem' && ($vs = $arg2->subscription)) {
+        $query[]['fields'] = array(
+          'sid' => $vs->sid,
+        );
+        return $query;
+      }
+      break;
+    case 'event objects':
+      return array('viewsnewitem' => t('Views Saved Searches'));
+    case 'event load':
+      $event = &$arg0;
+      if ($event->type == 'viewsnewitem') {
+        if (!empty($event->params['sid'])) {
+          $event->savedsearch = views_savedsearches_load($event->params['sid']);
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Converts sid to savedsearches name
+ */
+function notifications_views_savedsearches_2title($sid) {
+  return db_result(db_query("SELECT name FROM {views_savedsearches} WHERE sid = %d", $sid));
+}
+
+/**
+ * Implementation of hook_cron().
+ *
+ * Detects views changes and pass to notification.
+ */
+function notifications_views_savedsearches_cron() {
+  $result = db_query("SELECT n.sid as id, fs.value as sid FROM {notifications} n NATURAL JOIN {notifications_fields} fs where n.type = 'savedsearch' and n.event_type='viewsnewitem'");
+
+  while ($subscription = db_fetch_array($result)) {
+    $already_seen = db_result(db_query("SELECT COUNT(*) FROM {notifications_views_savedsearches_seen} WHERE sid = %d", $subscription['sid']));
+    if (!$already_seen) {
+      db_query("INSERT INTO {notifications_views_savedsearches_seen} VALUES (%d)", $subscription['sid']);
+    }
+    $vs = views_savedsearches_load($subscription['sid']);
+    $view_name = db_result(db_query("SELECT name FROM {views_view} WHERE vid = %d", $vs->vid));
+    $view = views_get_view($view_name);
+
+    // Apply $vs->filters
+    $view->set_exposed_input($vs->filters);
+
+    // Run the query
+    $view->execute();
+    // Get ids in the views from the past
+    $current_ids = notifications_views_savedsearches_get_ids($vs->sid);
+    $new_items = array();
+    foreach ($view->result as $item) {
+      $identifier = array_shift(get_object_vars($item));
+      if (!in_array($identifier, $current_ids)) {
+      // Send out a notification
+        $current_ids[] = $identifier;
+        $new_items[] = $item;
+      }
+    }
+    notifications_views_savedsearches_store_ids($vs->sid, $current_ids);
+    if (count($new_items) > 0 && $already_seen) {
+    // Generate list of titles
+      $titles = array();
+      foreach ($new_items as $item) {
+      // We're working with nodes, send out the teaser
+        if (isset($item->nid)) {
+          $node = node_load($item->nid);
+          $titles[] = node_view($node, TRUE, FALSE, FALSE);
+        }
+        // Something weird, user, other object, find the first textual field, no way to generate something nice
+        else {
+          $item = (array) $item;
+          foreach ($item as $k => $v) {
+            if (!is_numeric($v) && strlen($v) > 2) {
+              $titles[] = $v;
+              break;
+            }
+          }
+        }
+      }
+      $event = array(
+          'module' => 'notifications_views_savedsearches',
+          'uid' => 0,
+          'type' => 'viewsnewitem',
+          'action' => 'new',
+          'subscription' => $vs,
+          'params' => array('items' => theme('item_list', $titles), 'sid' => $vs->sid),
+      );
+      notifications_event($event);
+    }
+  }
+}
+
+/**
+ * Gets already known ids for the given views.
+ *
+ * @param $sid
+ *  Id of the subscription
+ */
+function notifications_views_savedsearches_get_ids($sid) {
+  $result = db_query("SELECT itemid FROM {notifications_views_savedsearches} WHERE sid = %d", $sid);
+  $ids = array();
+  while ($row = db_fetch_array($result)) {
+    $ids[] = $row['itemid'];
+  }
+  return $ids;
+}
+
+/**
+ * Store the item ids for the given savedsearch.
+ *
+ * @param $sid
+ *  Id of the subscription
+ */
+function notifications_views_savedsearches_store_ids($sid, $ids) {
+  foreach ($ids as $id) {
+    if (db_result(db_query("SELECT COUNT(*) FROM {notifications_views_savedsearches} WHERE sid = %d AND itemid = %d", $sid, $id)) == 0) {
+      db_query("INSERT INTO {notifications_views_savedsearches} VALUES (%d, %d)", $sid, $id);
+    }
+  }
+}
+
+/**
+ * Implementation of hook_messaging().
+ */
+function notifications_views_savedsearches_messaging($op, $type = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
+  switch ($op) {
+    case 'message groups':
+    // Generic notifications event
+      $info['notifications-event-viewsnewitem'] = array(
+        'module' => 'notifications_views_savedsearches',
+        'name' => t('Notifications for views saved searches events'),
+        'fallback' => 'notifications-event',
+      );
+      return $info;
+    case 'message keys':
+      switch ($type) {
+        case 'notifications-event-viewsnewitem':
+        // Some parts will be re-used from 'notifications-event' group
+        // So we specify only subject and main message
+          return array(
+            'subject' => t('Subject'),
+            'main' => t('Content'),
+            'digest' => t('Digest line'),
+          );
+          break;
+      }
+      break;
+    case 'messages':
+    // Event notifications
+      switch ($type) {
+        case 'notifications-event-viewsnewitem':
+          return array(
+            'subject' => t('Saved search updated: [savedsearches-title]'),
+            'main' => array(
+              t('There are new items in the views:'), '[views-items]',
+            ),
+            'digest' => t('New content for saved search [savedsearches-title].'),
+          );
+      }
+      break;
+    case 'tokens':
+      if ($type == 'notifications-event-viewsnewitem') {
+        return array('viewsnewitem');
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_token_list().
+ *
+ * Documents the individual tokens handled by the module.
+ */
+function notifications_views_savedsearches_token_list($type = 'all') {
+  $tokens = array();
+  if ($type == 'viewsnewitem' || $type == 'all') {
+    $tokens['viewsnewitem']['savedsearches-title'] = t('The title of the saved search.');
+    $tokens['viewsnewitem']['views-items'] = t('List of new items in the view. For nodes, it\'s teasers, for others, the list of first textual field');
+  }
+  return $tokens;
+}
+
+/**
+ * Implementation of hook_token_values().
+ */
+function notifications_views_savedsearches_token_values($type, $object = NULL, $options = array()) {
+  if (is_object($object)) {
+    switch ($object->type) {
+      case 'viewsnewitem':
+      // FIXME this should be loaded elsewhere
+        $vs = views_savedsearches_load($object->params['sid']);
+	$values = array();
+        $values['savedsearches-title'] = $vs->name;
+        $values['views-items'] = $object->params['items'];
+        return $values;
+        break;
+
+    }
+  }
+}
+
+/**
+ * Theme function for extending Saved Searches form with subscription links.
+ */
+function theme_notifications_views_savedsearches_links($links) {
+  $output = '';
+  $output .= '<div class="notifications_views_savedsearches_subscription">';
+  $output .= theme('item_list', $links);
+  $output .= '</div>';
+  return $output;
+}
