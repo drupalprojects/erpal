@@ -786,6 +786,12 @@ function theme_views_savedsearches_list($variables) {
   $current_view_matches_sid = $variables['current_view_matches_sid'];
   $output = '';
   $display = $view->current_display;
+  
+  //If view doesn't have exposed filters at all, we don't show anything, because there is nothing to save
+  $has_exposed = _views_savedsearches_view_has_exposed_filter($view, $display);
+  if (!$has_exposed)
+    return $output;
+  
   // Load saved searches for the current user, to use them as form options.
   if(user_access('use all savedsearches')){
     $saved_searches = views_savedsearches_load_multiple(NULL, $view->vid, $view->name, $display);
@@ -807,4 +813,23 @@ function theme_views_savedsearches_list($variables) {
   }
 
   return $output;
+}
+
+/**
+* Checks, if a view display has at least one exposed filter that could be saved
+*/
+function _views_savedsearches_view_has_exposed_filter($view, $display) {
+  $display_obj = $view->display[$display];
+  $options = $display_obj->display_options;
+  $filters = $options['filters'];
+  $has_exposed = false;
+  
+  foreach ($filters as $filter) {
+    if (isset($filter['expose']['operator']) && $filter['expose']['operator']) {
+      $has_exposed = true;
+      break;
+    }  
+  }
+  
+  return $has_exposed;
 }
