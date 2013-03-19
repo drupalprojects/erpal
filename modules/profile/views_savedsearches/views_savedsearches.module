@@ -782,6 +782,7 @@ function theme_views_savedsearches_container($variables) {
  */
 function theme_views_savedsearches_list($variables) {
   global $user;
+  
   $view = $variables['view'];
   $current_view_matches_sid = $variables['current_view_matches_sid'];
   $output = '';
@@ -789,8 +790,9 @@ function theme_views_savedsearches_list($variables) {
   
   //If view doesn't have exposed filters at all, we don't show anything, because there is nothing to save
   $has_exposed = _views_savedsearches_view_has_exposed_filter($view, $display);
-  if (!$has_exposed)
+  if (!$has_exposed) {
     return $output;
+  }  
   
   // Load saved searches for the current user, to use them as form options.
   if(user_access('use all savedsearches')){
@@ -821,8 +823,12 @@ function theme_views_savedsearches_list($variables) {
 function _views_savedsearches_view_has_exposed_filter($view, $display) {
   $display_obj = $view->display[$display];
   $options = $display_obj->display_options;
-  $filters = isset($options['filters']) ? isset($options['filters']) : array();
+  $filters = isset($options['filters']) ? $options['filters'] : array();
   $has_exposed = false;
+
+  //@TODO otherwise with fullcalendar module it doensn't work, but I don't know why, yet
+  if (isset($view->style_plugin->plugin_name) && $view->style_plugin->plugin_name == 'fullcalendar')
+    return true;
   
   foreach ($filters as $filter) {
     if (isset($filter['expose']['operator']) && $filter['expose']['operator']) {
