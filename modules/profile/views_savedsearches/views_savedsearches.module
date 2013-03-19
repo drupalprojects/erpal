@@ -821,7 +821,7 @@ function theme_views_savedsearches_list($variables) {
 function _views_savedsearches_view_has_exposed_filter($view, $display) {
   $display_obj = $view->display[$display];
   $options = $display_obj->display_options;
-  $filters = $options['filters'];
+  $filters = isset($options['filters']) ? isset($options['filters']) : array();
   $has_exposed = false;
   
   foreach ($filters as $filter) {
