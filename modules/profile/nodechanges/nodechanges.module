@@ -1,0 +1,423 @@
+<?php
+
+/**
+ * Implements hook_node_update().
+ */
+function nodechanges_node_update($node) {
+  if (!$diff_field_name = nodechanges_get_field_name('comment_node_'. $node->type)) {
+    // Skip if there is no diff field on the comment bundle for this node type
+    return;
+  }
+
+  if (!empty($node->nodechanges_skip)) {
+    // Allow programmatic node_save() calls to bypass nodechanges.
+    // This is needed sometimes during migrations.
+    return;
+  }
+
+  $field_info = field_info_field($diff_field_name);
+
+  // This comes from entity_load_unchanged() so I call it unchanged.
+  $unchanged = $node->original;
+  $items = array();
+
+  foreach ($field_info['settings']['properties'] as $property => $property_name) {
+    $token_name = $property;
+    // Match node property to token name
+    $property = ($property == 'author') ? 'uid' : $property;
+    $old_value = empty($unchanged->$property) ? NULL : $unchanged->$property;
+    $new_value = empty($node->$property) ? NULL : $node->$property;
+    $same = $old_value == $new_value;
+    if (!$same && !empty($old_value) && !empty($new_value)) {
+      $item = array('field_name' => "node_property:$token_name");
+      $item['old_value'] = $unchanged->$property;
+      $item['new_value'] = $node->$property;
+      $items[] = $item;
+    }
+  }
+
+  foreach (field_info_instances('node', $node->type) as $field_name => $instance) {
+    $field = field_info_field($field_name);
+    $old_value = empty($unchanged->{$field_name}[$unchanged->language]) ? NULL : $unchanged->{$field_name}[$unchanged->language];
+    $new_value = empty($node->{$field_name}[$node->language]) ? NULL : $node->{$field_name}[$node->language];
+    $same = empty($old_value) == empty($new_value);
+    if ($same && !empty($old_value)) {
+      $old_deltas = array_keys($old_value);
+      $new_deltas = array_keys($new_value);
+      $same = !array_diff($old_deltas, $new_deltas) && !array_diff($new_deltas, $old_deltas);
+      if ($same) {
+        $columns = array_keys($field['columns']);
+        foreach ($old_value as $delta => $old_items) {
+          foreach ($columns as $column) {
+            $set = isset($old_items[$column]);
+            if (($set != isset($new_value[$delta][$column])) || ($set && $old_items[$column] != $new_value[$delta][$column])) {
+              $same = FALSE;
+              break;
+            }
+          }
+        }
+      }
+    }
+    if (!$same) {
+      $item = array('field_name' => $field_name);
+      if ($field['type'] == 'text_long' || $field['type'] == 'text_with_summary') {
+        $item['old_value'] = $unchanged->vid;
+        $item['new_value'] = $node->vid;
+      }
+      else {
+        $item['old_value'] = serialize($old_value);
+        $item['new_value'] = serialize($new_value);
+      }
+      $items[] = $item;
+    }
+  }
+  if ($items || !empty($node->nodechanges_comment_body['value'])) {
+    if (isset($node->nodechanges_cid)) {
+      // Use the original comment object.
+      $comment = entity_load_unchanged('comment', $node->nodechanges_cid);
+    }
+    else {
+      $comment = isset($node->nodechanges_comment) ? $node->nodechanges_comment : new stdClass;
+      $comment->node_type = 'comment_node_' . $node->type;
+      if (isset($node->nodechanges_body)) {
+        $comment->comment_body[LANGUAGE_NONE][0]['value'] = $node->nodechanges_body;
+      }
+      elseif (isset($node->nodechanges_comment_body)) {
+        $comment->comment_body[LANGUAGE_NONE][0]['value'] = $node->nodechanges_comment_body['value'];
+      }
+      if (isset($node->nodechanges_body_format)) {
+        // Allow setting the format. This is needed during migrations.
+        $comment->comment_body[LANGUAGE_NONE][0]['format'] = $node->nodechanges_body_format;
+      }
+      elseif (isset($node->nodechanges_comment_body)) {
+        $comment->comment_body[LANGUAGE_NONE][0]['format'] = $node->nodechanges_comment_body['format'];
+      }
+      $comment->nid = $node->nid;
+      // Allow passing pid and cid through. This is needed during migrations.
+      $comment->pid = isset($node->nodechanges_pid) ? $node->nodechanges_pid : NULL;
+      $comment->cid = isset($node->nodechanges_cid) ? $node->nodechanges_cid : NULL;
+      // Only use $node->revision_uid if we are editing an existing revision.
+      // If we are creating a new revision, $node->revision_uid will not be
+      // up to date.
+      if (isset($node->nodechanges_uid)) {
+        $comment->uid = $node->nodechanges_uid;
+      }
+      else {
+        $comment->uid = empty($node->revision) ? $node->revision_uid : $GLOBALS['user']->uid;
+      }
+    }
+    $comment->{$diff_field_name}[LANGUAGE_NONE] = $items;
+    comment_save($comment);
+    // Copy the cid back to the node so migration code can capture it.
+    $node->nodechanges_cid = $comment->cid;
+  }
+}
+
+/**
+ * Implements hook_field_info().
+ */
+function nodechanges_field_info() {
+  return array(
+    'nodechanges_revision_diff' => array(
+      'label' => t('Comment diff'),
+      'default_widget' => 'field_extrawidgets_hidden',
+      'default_formatter' => 'nodechanges_diff_default',
+    ),
+  );
+}
+
+/**
+ * Implements hook_formatter_info().
+ */
+function nodechanges_field_formatter_info() {
+  return array(
+    'nodechanges_diff_default' => array(
+      'label' => t('Comment diff'),
+      'field types' => array(
+        'nodechanges_revision_diff',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function nodechanges_field_settings_form($field, $instance, $has_data) {
+  $form = array();
+  $settings = $field['settings'];
+
+  $form['properties'] = array(
+    '#type' => 'checkboxes',
+    '#title' => 'Properties to include in diff',
+    '#options' => array(
+      'title' => t('Node title'),
+      'created' => t('Authored on date'),
+      'author' => t('Authored by')
+    ),
+    '#default_value' => $settings['properties'],
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_load().
+ */
+function nodechanges_field_load($entity_type, $entities, $field, $instances, $langcode, &$items, $age) {
+  $false_serialized = 'b:0;';
+  foreach ($entities as $id => $entity) {
+    foreach ($items[$id] as $delta => $item) {
+      foreach (array('old_value', 'new_value') as $key) {
+        $value = &$items[$id][$delta][$key];
+        // Don't try to unserialize numbers, once unserialized, the value
+        // can be all sorts of empty or the original might've been simply
+        // FALSE.
+        if (!is_numeric($value) && (($unserialize = @unserialize($value)) || $unserialize !== FALSE || $value === $false_serialized)) {
+          $value = $unserialize;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_update().
+ */
+function nodechanges_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  foreach ($items as $delta => $item) {
+    $ref_field = field_info_field($items[$delta]['field_name']);
+    foreach (array('old_value', 'new_value') as $key) {
+      if ($ref_field['type'] == 'text_long' || $ref_field['type'] == 'text_with_summary') {
+        // No serialization for these types as they are stored as vids.
+        continue;
+      }
+      else {
+        $items[$delta][$key] = serialize($items[$delta][$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_is_empty().
+ *
+ * Emptiness check for nodechanges fields.
+ */
+function nodechanges_field_is_empty($item, $field) {
+  return (empty($item['old_value']) && empty($item['new_value']));
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function nodechanges_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $fields = field_info_fields();
+  // Remove  'comment_node_'.
+  $bundle = substr($instance['bundle'], 13);
+  $instances = field_info_instances('node', $bundle);
+  $list = array();
+  foreach ($items as $item) {
+    $field_name = $item['field_name'];
+
+    // Check if this is a property
+    if (substr($field_name, 0, 14) == 'node_property:') {
+      $property = substr($field_name, 14);
+
+      // Is there a helper?
+      $function = "_nodechanges_format_changes_$property";
+      if (function_exists($function)) {
+        $diff = $function($item, $entity->nid, $bundle, $property);
+      }
+      else {
+        $old_value = _nodechanges_view_property($entity->nid, $bundle, $property, $item['old_value']);
+        $new_value = _nodechanges_view_property($entity->nid, $bundle, $property, $item['new_value']);
+        $diff = "$old_value &raquo; $new_value";
+      }
+      $tokens = token_build_tree('node');
+      $list[] = check_plain($tokens["[node:$property]"]['name']) . ": $diff";
+
+    }
+    else {
+      $type = $fields[$field_name]['type'];
+
+      // Is there a helper?
+      $function = "_nodechanges_format_changes_$type";
+      if (function_exists($function)) {
+        $diff = $function($item, $entity->nid, $bundle, $field_name);
+      }
+      else {
+        $old_value = _nodechanges_view_field($entity->nid, $bundle, $field_name, $item['old_value']);
+        $new_value = _nodechanges_view_field($entity->nid, $bundle, $field_name, $item['new_value']);
+        $diff = "$old_value &raquo; $new_value";
+      }
+      $list[] = check_plain($instances[$field_name]['label']) . ": $diff";
+    }
+  }
+  return $list ? array(
+    '#theme' => 'item_list',
+    '#items' => $list,
+  ) : array();
+}
+
+/**
+ * Helper to render a field token-like.
+ */
+function _nodechanges_view_field($nid, $bundle, $field_name, $value, $prefix = '') {
+  $node = entity_create_stub_entity('node', array($nid, NULL, $bundle));
+  $node->{$field_name}[LANGUAGE_NONE] = $value;
+  _field_invoke_multiple('load', 'node', array($node->nid => $node));
+  return token_replace("[node:$field_name]", array('node' => $node), array('join' => $prefix));
+}
+
+/**
+ * Helper to render a node property token-like.
+ */
+function _nodechanges_view_property($nid, $bundle, $property, $value) {
+  $token_name = $property;
+  // Match node property to token name
+  $property = ($property == 'author') ? 'uid' : $property;
+  $node = entity_create_stub_entity('node', array($nid, NULL, $bundle));
+  $node->$property = $value;
+  return token_replace("[node:$token_name]", array('node' => $node));
+}
+
+/**
+ * Helper to show the difference in terms.
+ */
+function _nodechanges_format_changes_taxonomy_term_reference($item, $nid, $bundle, $field_name) {
+  $output = '';
+  foreach (array('old_value', 'new_value') as $key) {
+    $tids[$key] = array();
+    if ($item[$key]) {
+      foreach ($item[$key] as $data) {
+        $tids[$key][] = $data['tid'];
+      }
+    }
+  }
+  $tasks = array(
+    array('old_value', 'new_value', 'separator' => '-'),
+    array('new_value', 'old_value', 'separator' => '+'),
+  );
+  foreach ($tasks as $task) {
+    $pseudo_field_values = array();
+    foreach (array_diff($tids[$task[0]], $tids[$task[1]]) as $tid) {
+      $pseudo_field_values[] = array('tid' => $tid);
+    }
+    if ($pseudo_field_values) {
+      if ($output) {
+        $output .= ', ';
+      }
+      $output .= _nodechanges_view_field($nid, $bundle, $field_name, $pseudo_field_values, $task['separator']);
+    }
+  }
+  return $output;
+}
+
+/**
+ * Helper to show file field differences.
+ */
+function _nodechanges_format_changes_file($item, $nid, $bundle, $field_name) {
+  $output = '';
+  foreach (array('old_value', 'new_value') as $key) {
+    $fids[$key] = array();
+    if ($item[$key]) {
+      foreach ($item[$key] as $data) {
+        $fids[$key][] = $data['fid'];
+      }
+    }
+  }
+  $tasks = array(
+    array('old_value', 'new_value', 'separator' => '-'),
+    array('new_value', 'old_value', 'separator' => '+'),
+  );
+  foreach ($tasks as $task) {
+    $pseudo_field_values = array();
+    foreach (array_diff($fids[$task[0]], $fids[$task[1]]) as $fid) {
+      $pseudo_field_values[] = $fid;
+    }
+    if ($task['separator'] == '-') {
+      $output .= '<strike>';
+    }
+    foreach ($pseudo_field_values as $fid) {
+      $output .= '<br />' . $task['separator'] . theme('file_link', array('file' => file_load($fid)));
+    }
+    if ($task['separator'] == '-') {
+      $output .= '</strike>';
+    }
+  }
+  return $output;
+}
+
+/**
+ * Helper for long text fields: link to the revision view.
+ */
+function _nodechanges_format_changes_text_with_summary($item, $nid) {
+  return _nodechanges_format_changes_text_long($item, $nid);
+}
+
+/**
+ * Helper for long text fields: link to the revision view.
+ */
+function _nodechanges_format_changes_text_long($item, $nid) {
+  if (module_exists('diff')) {
+    return l(t('View changes'), "node/$nid/revisions/view/" . $item['old_value'] . '/' . $item['new_value']);
+  }
+  else {
+    return
+      l(t('Old'), "node/$nid/revisions/" . $item['old_value'] . '/view') .
+      ' &raquo;' .
+      l(t('New'), "node/$nid/revisions/" . $item['new_value'] . '/view');
+  }
+}
+
+/**
+ * Implement hook_form_field_ui_field_overview_form_alter().
+ */
+function nodechanges_form_field_ui_field_overview_form_alter(&$form) {
+  if ($form['#entity_type'] != 'comment' || nodechanges_get_field_name($form['#bundle'])) {
+    unset($form['fields']['_add_new_field']['type']['#options']['nodechanges_revision_diff']);
+  }
+}
+
+/**
+ * Get the node revision diff field name on a comment if it exists.
+ */
+function nodechanges_get_field_name($bundle) {
+  $instances = field_info_instances('comment', $bundle);
+  $fields = field_info_fields();
+  foreach (array_keys($instances) as $field_name) {
+    if ($fields[$field_name]['type'] == 'nodechanges_revision_diff') {
+      return $field_name;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function nodechanges_form_alter(&$form, &$form_state, $form_id) {
+  if (!empty($form['#node_edit_form'])) {
+    $node = $form_state['build_info']['args'][0];
+    if (empty($node->nid)) {
+      // Only modify the form during update, not create.
+      return;
+    }
+    if (!$diff_field_name = nodechanges_get_field_name('comment_node_' . $node->type)) {
+      // Only operate on node types that have a diff field on their comments.
+      return;
+    }
+    // Note that nodechanges_node_update() has some logic where it looks in
+    // $node to harvest certain things, so we have to name this form element
+    // to avoid conflicting with any of the magic properties there.
+    $form['nodechanges_comment_body'] = array(
+      '#type' => 'text_format',
+      // TODO: should we harvest the label from the comment bundle?
+      '#title' => t('Revision comment'),
+      '#description' => t('Provide an explanation of the changes you are making. This will be used for an auto-generated comment about your edit, and will help others understand your motivations.'),
+      '#rows' => 5,
+      '#weight' => -10,
+      '#required' => FALSE, // TODO: should there be times this is required?
+    );
+  }
+}

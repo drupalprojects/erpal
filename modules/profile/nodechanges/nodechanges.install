@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_field_schema
+ */
+function nodechanges_field_schema() {
+  $columns = array(
+    'field_name' => array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+      'description' => 'field name.',
+    ),
+    'old_value' => array(
+      'type' => 'text',
+      'not null' => TRUE,
+      'description' => 'old value',
+    ),
+    'new_value' => array(
+      'type' => 'text',
+      'not null' => TRUE,
+      'description' => 'new value',
+    ),
+  );
+  return array(
+    'columns' => $columns,
+  );
+}
