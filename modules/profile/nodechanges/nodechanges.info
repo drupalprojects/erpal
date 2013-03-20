@@ -1,0 +1,13 @@
+name = Nodechanges
+description = Records node changes into a comment diff field.
+core = 7.x
+dependencies[] = comment
+dependencies[] = field_extrawidgets
+dependencies[] = token
+
+; Information added by drupal.org packaging script on 2012-10-26
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "nodechanges"
+datestamp = "1351213917"
+

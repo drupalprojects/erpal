@@ -9,7 +9,7 @@ function cne_form_field_ui_field_edit_form_alter(&$form, $form_state, $form_id) 
     '#type' => 'checkbox',
     '#title' => t('Editable by comments'),
     '#description' => t('If checked, commenters will be able to edit the node when commenting.'),
-    '#default_value' => isset($form['#instance']['comment_enabled']) ? $form['#instance']['comment_enabled'] : FALSE,
+    '#default_value' => isset($form['#instance']['comment_enabledfnode_save']) ? $form['#instance']['comment_enabled'] : FALSE,
     '#weight' => $form['instance']['label']['#weight'] + 1,
   );	
 }
@@ -79,13 +79,17 @@ function cne_form_validate($form, &$form_state) {
 	*/
 function  cne_form_submit(&$form, &$form_state) {
   $form_state_node = _cne_prepare_form_state($form, $form_state);
+  $cid = $form_state['values']['cid'];
 	field_attach_submit('node', $form['#node'], $form, $form_state_node);
   $node = $form['#node'];
+  $node->nodechanges_cid = $cid; //integrate with nodechanges module to update this comment!
+
   $node_options = variable_get('node_options_' . $node->type, false);
   //check if node should create a revision
   if (is_array($node_options) && in_array('revision', $node_options)) {
     $node->revision = true;
   }
+  
   if(node_save($node)){
     // save node in form for other submits
     $form['#node'] = $node;

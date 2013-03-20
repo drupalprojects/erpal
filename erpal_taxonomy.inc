@@ -282,6 +282,10 @@ function erpal_create_taxonomy(){
       'name' => 'United Kingdom',
       'vat_rates' => '19',
     ),
+    array(
+      'name' => 'United States',
+      'vat_rates' => '19',
+    ),
   );
   erpal_taxonomy_add($countries_vocabulary, $countries_terms);
   

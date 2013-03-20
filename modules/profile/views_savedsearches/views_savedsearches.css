@@ -1,0 +1,46 @@
+/* $Id: views_savedsearches.css,v 1.2 2009/01/27 03:59:07 quicksketch Exp $ */
+
+/* Saved searches container. */
+div.views-savedsearches-container {
+	padding: 0 1em 0 1em;
+}
+
+
+/* List of saved searches */
+div.form-checkboxes-horizontal div.form-item {
+	float: left;
+	width: 25em;
+	margin-right: 2em;
+}
+
+
+/* Saved search is active (is currently being viewed) */
+a.views-savedsearches-is-active {
+	font-weight: 900;
+}
+
+
+/* Delete saved search form */
+form#views-savedsearches-delete-search-form input.form-submit {
+	margin-top: 0.5em;
+	clear: left;
+	float: left;
+}
+
+
+/* Save search form */
+form#views-savedsearches-save-search-form {
+	clear: left;
+}
+
+form#views-savedsearches-save-search-form * {
+	margin: 0px 0px .75em;
+}
+
+form#views-savedsearches-save-search-form div.form-item,
+form#views-savedsearches-save-search-form div.form-item label,
+form#views-savedsearches-save-search-form input.form-submit  {
+	display: inline;
+	float: left;
+	margin-right: 1em;
+}

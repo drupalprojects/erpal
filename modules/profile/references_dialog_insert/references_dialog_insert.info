@@ -8,4 +8,5 @@ files[] = inc/references_dialog_insert_form.inc
 
 dependencies[] = entityreference
 dependencies[] = references_dialog
- 
+
+

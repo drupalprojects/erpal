@@ -1,0 +1,55 @@
+<?php
+// $Id: notifications_views_savedsearches.install,v 1.1 2009/12/18 15:47:47 aronnovak Exp $
+
+/**
+ * @file
+ * Install file for Views Saved Searches Subscriptions module
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function notifications_views_savedsearches_schema() {
+  $schema['notifications_views_savedsearches'] = array(
+    'description' => 'Stores items for each savedsearches',
+    'fields' => array(
+      'sid' => array(
+        'description' => 'The subscription id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'itemid' => array(
+        'description' => 'Identifier of the item (can be whatever item .',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+    ),
+    'primary key' => array('sid', 'itemid'),
+  );
+  $schema['notifications_views_savedsearches_seen'] = array(
+    'description' => 'Store the fact if the module just did the first check for new items',
+    'fields' => array(
+      'sid' => array(
+        'description' => 'The subscription id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+    ),
+    'primary key' => array('sid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function notifications_views_savedsearches_install() {
+  drupal_install_schema('notifications_views_savedsearches');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function notifications_views_savedsearches_uninstall() {
+  drupal_uninstall_schema('notifications_views_savedsearches');
+}

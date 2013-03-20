@@ -82,6 +82,12 @@
     if (typeof(insertTextarea) == 'undefined') {
       insertTextarea = $('#edit-body textarea.text-full').get(0) || false;
     }
+    if (typeof(insertTextarea) == 'undefined' || !insertTextarea) {
+      insertTextarea = $('#comment-form textarea.text-full').get(0) || false;
+    }
+    if (typeof(insertTextarea) == 'undefined' || !insertTextarea) {
+      insertTextarea = $('textarea.text-full').get(0) || false;
+    }
 
     // Keep track of the last active textarea (if not using WYSIWYG).
     $('textarea:not([name$="[data][title]"]):not(.insert-processed)', context).addClass('insert-processed').focus(insertSetActive).blur(insertRemoveActive);
@@ -117,7 +123,7 @@
       
       return false;
     });
-    
+
     function insertSetActive() {
       insertTextarea = this;
       this.insertHasFocus = true;
@@ -131,7 +137,6 @@
         }, 1000);
       }
     }
-
   };
 
   // General Insert API functions.

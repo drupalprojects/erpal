@@ -1,6 +1,7 @@
 name = ERPAL
 description = Install ERPAL
 core = 7.x
+php = 5.3
 distribution_name = ERPAL
 
 ;core
@@ -27,6 +28,7 @@ dependencies[] = taxonomy
 ;contrib
 dependencies[] = auto_nodetitle
 dependencies[] = better_exposed_filters
+dependencies[] = views_savedsearches
 dependencies[] = ckeditor
 dependencies[] = comment
 dependencies[] = computed_field
