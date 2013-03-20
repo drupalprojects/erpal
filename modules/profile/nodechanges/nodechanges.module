@@ -38,17 +38,22 @@ function nodechanges_node_update($node) {
 
   foreach (field_info_instances('node', $node->type) as $field_name => $instance) {
     $field = field_info_field($field_name);
-    $old_value = empty($unchanged->{$field_name}[$unchanged->language]) ? NULL : $unchanged->{$field_name}[$unchanged->language];
-    $new_value = empty($node->{$field_name}[$node->language]) ? NULL : $node->{$field_name}[$node->language];
+    $field_language = field_language('node', $node, $field_name);
+    $old_value = empty($unchanged->{$field_name}[$field_language]) ? NULL : $unchanged->{$field_name}[$field_language];
+    $new_value = empty($node->{$field_name}[$field_language]) ? NULL : $node->{$field_name}[$field_language];
+
     $same = empty($old_value) == empty($new_value);
     if ($same && !empty($old_value)) {
       $old_deltas = array_keys($old_value);
       $new_deltas = array_keys($new_value);
       $same = !array_diff($old_deltas, $new_deltas) && !array_diff($new_deltas, $old_deltas);
       if ($same) {
+        
         $columns = array_keys($field['columns']);
         foreach ($old_value as $delta => $old_items) {
           foreach ($columns as $column) {
+            if ($column == 'revision_id')
+              continue;  //if we have a field collection with revisions, the revision ID will change, we don't want this to show up in diff
             $set = isset($old_items[$column]);
             if (($set != isset($new_value[$delta][$column])) || ($set && $old_items[$column] != $new_value[$delta][$column])) {
               $same = FALSE;
@@ -71,6 +76,7 @@ function nodechanges_node_update($node) {
       $items[] = $item;
     }
   }
+
   if ($items || !empty($node->nodechanges_comment_body['value'])) {
     if (isset($node->nodechanges_cid)) {
       // Use the original comment object.
@@ -173,7 +179,7 @@ function nodechanges_field_load($entity_type, $entities, $field, $instances, $la
         // Don't try to unserialize numbers, once unserialized, the value
         // can be all sorts of empty or the original might've been simply
         // FALSE.
-        if (!is_numeric($value) && (($unserialize = @unserialize($value)) || $unserialize !== FALSE || $value === $false_serialized)) {
+        if (!is_numeric($value) && (($unserialize = unserialize($value)) || $unserialize !== FALSE || $value === $false_serialized)) {
           $value = $unserialize;
         }
       }
@@ -192,8 +198,8 @@ function nodechanges_field_update($entity_type, $entity, $field, $instance, $lan
         // No serialization for these types as they are stored as vids.
         continue;
       }
-      else {
-        $items[$delta][$key] = serialize($items[$delta][$key]);
+      else { 
+        $items[$delta][$key] = ($items[$delta][$key]);
       }
     }
   }
@@ -217,6 +223,7 @@ function nodechanges_field_formatter_view($entity_type, $entity, $field, $instan
   $bundle = substr($instance['bundle'], 13);
   $instances = field_info_instances('node', $bundle);
   $list = array();
+  
   foreach ($items as $item) {
     $field_name = $item['field_name'];
 
@@ -243,6 +250,7 @@ function nodechanges_field_formatter_view($entity_type, $entity, $field, $instan
 
       // Is there a helper?
       $function = "_nodechanges_format_changes_$type";
+      
       if (function_exists($function)) {
         $diff = $function($item, $entity->nid, $bundle, $field_name);
       }
