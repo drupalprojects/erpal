@@ -24,6 +24,9 @@ projects[auto_nodetitle][subdir] = "contrib"
 projects[better_exposed_filters][version] = "3.0-beta3"
 projects[better_exposed_filters][subdir] = "contrib"
 
+projects[field_extrawidgets][version] = "1.1"
+projects[field_extrawidgets][subdir] = "contrib"
+
 projects[ckeditor][version] = "1.12"
 projects[ckeditor][subdir] = "contrib"
 projects[ctools][version] = "1.2"
@@ -213,7 +216,7 @@ libraries[fullcalendar][directory_name] = "libraries"
 libraries[fullcalendar][destination] = ""
 
 libraries[ckeditor][download][type] = "file"
-libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.0.1/ckeditor_4.0.1_full.tar.gz"
+libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.0.2/ckeditor_4.0.2_full.tar.gz"
 libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 
 libraries[jstree][download][type] = "git"
