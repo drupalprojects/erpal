@@ -199,6 +199,8 @@ function nodechanges_field_update($entity_type, $entity, $field, $instance, $lan
         continue;
       }
       else { 
+        if (is_array($items[$delta][$key]))
+          $items[$delta][$key] = serialize(($items[$delta][$key]));
         $items[$delta][$key] = ($items[$delta][$key]);
       }
     }
