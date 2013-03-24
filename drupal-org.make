@@ -161,49 +161,49 @@ projects[views_bulk_operations][subdir] = "contrib"
 
 
 projects[views_jstree][subdir] = "contrib"
-projects[views_jstree][branch] = "7.x-stable"
+projects[views_jstree][branch] = "7.x-release"
 
 projects[timetracking][subdir] = "contrib"
-projects[timetracking][branch] = "7.x-stable"
+projects[timetracking][branch] = "7.x-release"
 
 projects[fileedit][subdir] = "contrib"
-projects[fileedit][branch] = "7.x-stable"
+projects[fileedit][branch] = "7.x-release"
 
 projects[screenshot_paste][subdir] = "contrib"
-projects[screenshot_paste][branch] = "7.x-stable"
+projects[screenshot_paste][branch] = "7.x-release"
 
 projects[entityreference_unique][subdir] = "contrib"
-projects[entityreference_unique][branch] = "7.x-stable"
+projects[entityreference_unique][branch] = "7.x-release"
 
 projects[date_item][subdir] = "contrib"
-projects[date_item][branch] = "7.x-stable"
+projects[date_item][branch] = "7.x-release"
 
 projects[content_access_view][subdir] = "contrib"
-projects[content_access_view][branch] = "7.x-stable"
+projects[content_access_view][branch] = "7.x-release"
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
 projects[erpal_core][subdir] = "erpal"
-projects[erpal_core][branch] = "7.x-stable"
+projects[erpal_core][branch] = "7.x-release"
 
 projects[erpal_book][subdir] = "erpal"
-projects[erpal_book][branch] = "7.x-stable"
+projects[erpal_book][branch] = "7.x-release"
 
 projects[erpal_calendar][subdir] = "erpal"
-projects[erpal_calendar][branch] = "7.x-stable"
+projects[erpal_calendar][branch] = "7.x-release"
 
 projects[erpal_contract][subdir] = "erpal"
-projects[erpal_contract][branch] = "7.x-stable"
+projects[erpal_contract][branch] = "7.x-release"
 
 projects[erpal_employee][subdir] = "erpal"
-projects[erpal_employee][branch] = "7.x-stable"
+projects[erpal_employee][branch] = "7.x-release"
 
 projects[erpal_invoice][subdir] = "erpal"
-projects[erpal_invoice][branch] = "7.x-stable"
+projects[erpal_invoice][branch] = "7.x-release"
 
 projects[erpal_project][subdir] = "erpal"
-projects[erpal_project][branch] = "7.x-stable"
+projects[erpal_project][branch] = "7.x-release"
 
 
 ; Libraries
@@ -225,5 +225,5 @@ libraries[jstree][download][revision] = "96f9bebabe536a3ddf6118ebede3c92adfadb51
 projects[adaptivetheme][version] = "3.1"
 
 projects[erpal_theme][subdir] = "erpal"
-projects[erpal_theme][branch] = "7.x-stable"
+projects[erpal_theme][branch] = "7.x-release"
 
