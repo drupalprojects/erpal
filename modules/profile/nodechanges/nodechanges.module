@@ -179,7 +179,7 @@ function nodechanges_field_load($entity_type, $entities, $field, $instances, $la
         // Don't try to unserialize numbers, once unserialized, the value
         // can be all sorts of empty or the original might've been simply
         // FALSE.
-        if (!is_numeric($value) && (($unserialize = unserialize($value)) || $unserialize !== FALSE || $value === $false_serialized)) {
+        if (!is_numeric($value) && (($unserialize = @unserialize($value)) || $unserialize !== FALSE || $value === $false_serialized)) {
           $value = $unserialize;
         }
       }
@@ -191,18 +191,37 @@ function nodechanges_field_load($entity_type, $entities, $field, $instances, $la
  * Implements hook_field_update().
  */
 function nodechanges_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  
+  static $changed=array();
+  
+  $ids = entity_extract_ids($entity_type, $entity);
+  $id = $ids[0];
+  if (isset($changed[$id]))
+    return;  //we only want to change once
+  
+  $changed[$id] = true;
+
   foreach ($items as $delta => $item) {
     $ref_field = field_info_field($items[$delta]['field_name']);
-    foreach (array('old_value', 'new_value') as $key) {
+    
+    //initially old and new valus have been updated. But if there is already an old value set, leave it as it is. 
+    //Otherwise, if a user edits his comment and saves it again, no nodechanges will appear anymore because nothing changed.
+    $keys = array('new_value', 'old_value');
+    foreach ($keys as $key) {
+      
       if ($ref_field['type'] == 'text_long' || $ref_field['type'] == 'text_with_summary') {
         // No serialization for these types as they are stored as vids.
         continue;
       }
       else { 
-        $items[$delta][$key] = ($items[$delta][$key]);
+        if (is_array($items[$delta][$key]))
+          $items[$delta][$key] = serialize(($items[$delta][$key]));
+          
+        $items[$delta][$key] = $items[$delta][$key];
       }
     }
   }
+  
 }
 
 /**

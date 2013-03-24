@@ -10,6 +10,12 @@ require_once('erpal_relations.inc');
 require_once('erpal_roles_permissions.inc');
 
 
+function _erpal_create_files(&$context){
+  $context['message'] = st('Creating Files');
+  // Upload task_status images
+}
+
+
 /**
  * BatchAPI callback
  * enables the display of warnings in erpal_basic_helper

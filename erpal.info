@@ -79,16 +79,17 @@ dependencies[] = quicktabs
 
 dependencies[] = r4032login
 dependencies[] = references_dialog
+dependencies[] = relation_endpoint
 dependencies[] = relation
 dependencies[] = relation_add
 dependencies[] = relation_dummy_field
-dependencies[] = relation_endpoint
 dependencies[] = relation_ui
 dependencies[] = strongarm
 
 dependencies[] = timetracking
 dependencies[] = token
 dependencies[] = views
+dependencies[] = views_php
 dependencies[] = views_bulk_operations
 dependencies[] = views_content
 dependencies[] = views_jstree
@@ -96,6 +97,7 @@ dependencies[] = views_jstree
 dependencies[] = colors
 dependencies[] = maxlength
 
+dependencies[] = nodechanges
 
 ; custom
 dependencies[] = date_item_calendar

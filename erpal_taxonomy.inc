@@ -42,14 +42,17 @@ function erpal_create_taxonomy(){
     array(
       'name' => 'task', 
       'is_default' => 1,
+      'term_image' => 'erpal_task_icons/type_task.png',
     ),
     array(
       'name' => 'bug', 
       'is_default' => 0,  
+      'term_image' => 'erpal_task_icons/type_bug.png',
     ),
     array(
       'name' => 'feature', 
       'is_default' => 0,
+      'term_image' => 'erpal_task_icons/type_feature.png',
     ),  
   );   
   erpal_taxonomy_add($task_type_vocabulary, $task_type_terms);
@@ -62,14 +65,17 @@ function erpal_create_taxonomy(){
     array(
       'name' => 'low', 
       'is_default' => 0,
+      'term_image' => 'erpal_task_icons/priority_low.png',
     ),
     array(
       'name' => 'middle',
       'is_default' => 1,
+      'term_image' => 'erpal_task_icons/priority_medium.png',
     ),
     array(
       'name' => 'high',
       'is_default' => 0,
+      'term_image' => 'erpal_task_icons/priority_high.png',
     ),
   );
   erpal_taxonomy_add($priority_vocabulary, $priority_terms);
@@ -118,41 +124,49 @@ function erpal_create_taxonomy(){
       'name' => 'inserted',
       'is_default' => 1,
       'semantic_process' => 'in_progress',
+      'term_image' => 'erpal_task_icons/status_new.png',
     ),
     array(
       'name' => 'unclear',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
+      'term_image' => 'erpal_task_icons/status_question.png',      
     ),
     array(
       'name' => 'buggy',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
+      'term_image' => 'erpal_task_icons/status_buggy.png',
     ),
     array(
       'name' => 'tested',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
+      'term_image' => 'erpal_task_icons/status_resolved.png',
     ),
     array(
       'name' => 'ready to test',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
+      'term_image' => 'erpal_task_icons/status_needsreview.png',
     ),
     array(
       'name' => 'in progress',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
+      'term_image' => 'erpal_task_icons/status_inprogress.png',
     ),
     array(
       'name' => 'aborted',
       'is_default' => 0,
       'semantic_process' => 'aborted',
+      'term_image' => 'erpal_task_icons/status_aborted.png',
     ),
     array(
       'name' => 'completed',
       'is_default' => 0,
       'semantic_process' => 'completed',
+      'term_image' => 'erpal_task_icons/status_closed.png',
     ),
   );
   erpal_taxonomy_add($task_status_vocabulary, $task_status_terms);    
@@ -405,11 +419,28 @@ function erpal_taxonomy_add($vocabulary, $names){
   $is_default = array_key_exists('is_default', reset($names));
   $vat_rates = array_key_exists('vat_rates', reset($names));
   $allow_grouping = array_key_exists('allow_grouping', reset($names));
+  $term_image = array_key_exists('term_image', reset($names));
   
   foreach($names as $name){
       $term = new stdClass();
       $term->name = $name['name'];
       $term->vid = $vocabulary->vid;
+      if($term_image){
+        // Upload image to drupal files dir
+        $path = drupal_get_path('profile', 'erpal') 
+          . '/files/' . $name['term_image'];  
+        $file = file_get_contents($path);
+        $filename = basename($path);
+        $file = file_save_data($file, 'public://' . 'term_images/' . $filename);
+        
+        // 
+        $term->field_term_image = array(
+          LANGUAGE_NONE => array(
+            0 => (array) $file,
+          ),
+        );
+      }
+      
       if($semantic_process){
         $term->field_simple_process_status = array(
           LANGUAGE_NONE => array(
