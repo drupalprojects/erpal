@@ -130,6 +130,7 @@ function _erpal_set_theme($target_theme) {
 
 function erpal_preconfigure_site(){
   $operations = array(
+    array('_erpal_create_files', array()),
     array('_erpal_create_roles_and_permissions', array()),
     array('_erpal_create_relations', array()),
     array('_erpal_create_taxonomy', array()),
