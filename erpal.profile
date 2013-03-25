@@ -130,10 +130,15 @@ function _erpal_set_theme($target_theme) {
 
 function erpal_preconfigure_site(){
   $operations = array(
-    array('_erpal_create_files', array()),
+    array('_erpal_taxonomy_prepare', array()),
+    array('_erpal_taxonomy_create_various_taxonomies', array()),
+    array('_erpal_taxonomy_create_task_taxonomies', array()),
+    array('_erpal_taxonomy_create_project_taxonomies', array()),
+    array('_erpal_taxonomy_create_country_taxonomies', array()),
+    array('_erpal_taxonomy_create_activity_taxonomies', array()),
+    
     array('_erpal_create_roles_and_permissions', array()),
     array('_erpal_create_relations', array()),
-    array('_erpal_create_taxonomy', array()),
     array('_erpal_invoice_config', array()),
     array('_erpal_projects_config', array()),
     array('_erpal_calendar_config', array()),
