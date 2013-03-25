@@ -1,7 +1,11 @@
 <?php
 
-function erpal_create_taxonomy(){
-  
+function _erpal_taxonomy_prepare_directory(){
+  $directory = 'public://term_images/';
+  file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+}
+
+function _erpal_taxonomy_create_activity_origin_vocabulary(){
   $activity_origin_vocabulary = new stdClass();
   $activity_origin_vocabulary->name = 'Activity origin';
   $activity_origin_vocabulary->machine_name = 'activity_origin';
@@ -32,8 +36,9 @@ function erpal_create_taxonomy(){
     ),
   );
   erpal_taxonomy_add($activity_origin_vocabulary, $activity_origin_terms);
-  
-  
+}
+ 
+function _erpal_taxonomy_create_task_type_vocabulary(){ 
   //  Create taxonomy 
   $task_type_vocabulary = new stdClass();
   $task_type_vocabulary->name = 'Task type terms';
@@ -56,8 +61,10 @@ function erpal_create_taxonomy(){
     ),  
   );   
   erpal_taxonomy_add($task_type_vocabulary, $task_type_terms);
-    
+}
 
+function _erpal_taxonomy_create_priority_vocabulary(){
+  
   $priority_vocabulary = new stdClass();
   $priority_vocabulary->name = 'Priority terms';
   $priority_vocabulary->machine_name = 'priority_terms';
@@ -79,9 +86,10 @@ function erpal_create_taxonomy(){
     ),
   );
   erpal_taxonomy_add($priority_vocabulary, $priority_terms);
+}
   
-  
-  
+function _erpal_taxonomy_create_project_status_vocabulary(){
+   
   $project_status_vocabulary = new stdClass();
   $project_status_vocabulary->name = 'Project status terms';
   $project_status_vocabulary->machine_name =  'project_status_terms';
@@ -113,9 +121,10 @@ function erpal_create_taxonomy(){
     ),
   );
   erpal_taxonomy_add($project_status_vocabulary, $project_status_terms);
+}
 
-
-
+function _erpal_taxonomy_create_task_status_vocabulary(){
+  
   $task_status_vocabulary = new stdClass();
   $task_status_vocabulary->name = 'Task status terms';
   $task_status_vocabulary->machine_name = 'task_status_terms';
@@ -170,7 +179,9 @@ function erpal_create_taxonomy(){
     ),
   );
   erpal_taxonomy_add($task_status_vocabulary, $task_status_terms);    
-  
+}
+
+function _erpal_taxonomy_create_countries_vocabulary(){
   
   $countries_vocabulary = new stdClass();
   $countries_vocabulary->name = 'Countries';
@@ -257,10 +268,6 @@ function erpal_create_taxonomy(){
       'vat_rates' => '19',
     ),
     array(
-      'name' => 'Austria',
-      'vat_rates' => '19',
-    ),
-    array(
       'name' => 'Poland',
       'vat_rates' => '19',
     ),
@@ -302,7 +309,10 @@ function erpal_create_taxonomy(){
     ),
   );
   erpal_taxonomy_add($countries_vocabulary, $countries_terms);
-  
+}
+
+function _erpal_taxonomy_create_project_tags_vocabulary(){
+
   $project_vocabulary = new stdClass();
   $project_vocabulary->name = 'Project Tags';
   $project_vocabulary->machine_name = 'project_tags';
@@ -316,8 +326,10 @@ function erpal_create_taxonomy(){
     array('name' => 'Server',), 
   );
   erpal_taxonomy_add($project_vocabulary, $project_terms);
+}
 
-  
+function _erpal_taxonomy_create_service_category_vocabulary(){
+    
   $service_category_vocabulary = new stdClass();
   $service_category_vocabulary->name = 'Service category terms';
   $service_category_vocabulary->machine_name = 'service_category_terms';
@@ -345,7 +357,9 @@ function erpal_create_taxonomy(){
   );
   erpal_taxonomy_add($service_category_vocabulary, $service_category_terms);
 
+}
 
+function _erpal_taxonomy_create_activity_status_vocabulary(){
  
   $activity_vocabulary = new stdClass();
   $activity_vocabulary->name = 'Activity status terms'; 
@@ -393,6 +407,7 @@ function erpal_create_taxonomy(){
     ),
   );
  erpal_taxonomy_add($activity_vocabulary, $activity_terms);
+
 }
 
 
@@ -420,6 +435,7 @@ function erpal_taxonomy_add($vocabulary, $names){
   $vat_rates = array_key_exists('vat_rates', reset($names));
   $allow_grouping = array_key_exists('allow_grouping', reset($names));
   $term_image = array_key_exists('term_image', reset($names));
+  
   
   foreach($names as $name){
       $term = new stdClass();
@@ -475,7 +491,3 @@ function erpal_taxonomy_add($vocabulary, $names){
       taxonomy_term_save($term);
     }
 }
-
-
-
-
