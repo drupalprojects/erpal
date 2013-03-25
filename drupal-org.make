@@ -205,6 +205,8 @@ projects[erpal_invoice][branch] = "7.x-1.x"
 projects[erpal_project][subdir] = "erpal"
 projects[erpal_project][branch] = "7.x-1.x"
 
+projects[erpal_project_release][subdir] = "erpal"
+projects[erpal_project_release][branch] = "7.x-1.x"
 
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
