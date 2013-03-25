@@ -335,23 +335,23 @@ function _erpal_taxonomy_create_service_category_vocabulary(){
   $service_category_vocabulary->machine_name = 'service_category_terms';
   $service_category_terms = array(
     array(
-      'name' => 'Beratung',
+      'name' => 'Consulting',
       'allow_grouping' => TRUE,
     ),
     array(
-      'name' => 'Backend-Entwicklung',
+      'name' => 'Backend development',
       'allow_grouping' => TRUE,
     ),
     array(
-      'name' => 'Reisekosten',
+      'name' => 'Travel costs',
       'allow_grouping' => TRUE,
     ),
     array(
-      'name' => 'Frontend-Entwicklung',
+      'name' => 'Frontend development',
       'allow_grouping' => TRUE,
     ),
     array(
-      'name' => 'Schulung',
+      'name' => 'Training',
       'allow_grouping' => TRUE,
     ),
   );
