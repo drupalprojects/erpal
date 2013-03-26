@@ -160,53 +160,105 @@ projects[views_bulk_operations][subdir] = "contrib"
 
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;; Own contrib modules
+
 projects[views_jstree][subdir] = "contrib"
-projects[views_jstree][branch] = "7.x-1.x"
+projects[views_jstree][download][type] = "git"
+projects[views_jstree][download][url] = "http://git.drupal.org/project/views_jstree.git"
+projects[views_jstree][download][branch] = "7.x-1.x"
+projects[views_jstree][download][revision] = "HEAD"
+
 
 projects[timetracking][subdir] = "contrib"
-projects[timetracking][branch] = "7.x-1.x"
+projects[timetracking][download][type] = "git"
+projects[timetracking][download][url] = "http://git.drupal.org/project/timetracking.git"
+projects[timetracking][download][branch] = "7.x-1.x"
+projects[timetracking][download][revision] = "HEAD"
 
 projects[fileedit][subdir] = "contrib"
-projects[fileedit][branch] = "7.x-1.x"
+projects[fileedit][download][type] = "git"
+projects[fileedit][download][url] = "http://git.drupal.org/project/fileedit.git"
+projects[fileedit][download][branch] = "7.x-1.x"
+projects[fileedit][download][revision] = "HEAD"
 
 projects[screenshot_paste][subdir] = "contrib"
-projects[screenshot_paste][branch] = "7.x-1.x"
+projects[screenshot_paste][download][type] = "git"
+projects[screenshot_paste][download][url] = "http://git.drupal.org/project/screenshot_paste.git"
+projects[screenshot_paste][download][branch] = "7.x-1.x"
+projects[screenshot_paste][download][revision] = "HEAD"
 
 projects[entityreference_unique][subdir] = "contrib"
-projects[entityreference_unique][branch] = "7.x-1.x"
+projects[entityreference_unique][download][type] = "git"
+projects[entityreference_unique][download][url] = "http://git.drupal.org/project/entityreference_unique.git"
+projects[entityreference_unique][download][branch] = "7.x-1.x"
+projects[entityreference_unique][download][revision] = "HEAD"
 
 projects[date_item][subdir] = "contrib"
-projects[date_item][branch] = "7.x-1.x"
+projects[date_item][download][type] = "git"
+projects[date_item][download][url] = "http://git.drupal.org/project/date_item.git"
+projects[date_item][download][branch] = "7.x-1.x"
+projects[date_item][download][revision] = "HEAD"
 
 projects[content_access_view][subdir] = "contrib"
-projects[content_access_view][branch] = "7.x-1.x"
+projects[content_access_view][download][type] = "git"
+projects[content_access_view][download][url] = "http://git.drupal.org/project/content_access_view.git"
+projects[content_access_view][download][branch] = "7.x-1.x"
+projects[content_access_view][download][revision] = "HEAD"
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
 projects[erpal_core][subdir] = "erpal"
-projects[erpal_core][branch] = "7.x-1.x"
+projects[erpal_core][download][type] = "git"
+projects[erpal_core][download][url] = "http://git.drupal.org/project/erpal_core.git"
+projects[erpal_core][download][branch] = "7.x-1.x"
+projects[erpal_core][download][revision] = "HEAD"
 
 projects[erpal_book][subdir] = "erpal"
-projects[erpal_book][branch] = "7.x-1.x"
+projects[erpal_book][download][type] = "git"
+projects[erpal_book][download][url] = "http://git.drupal.org/project/erpal_book.git"
+projects[erpal_book][download][branch] = "7.x-1.x"
+projects[erpal_book][download][revision] = "HEAD"
 
 projects[erpal_calendar][subdir] = "erpal"
-projects[erpal_calendar][branch] = "7.x-1.x"
+projects[erpal_calendar][download][type] = "git"
+projects[erpal_calendar][download][url] = "http://git.drupal.org/project/erpal_calendar.git"
+projects[erpal_calendar][download][branch] = "7.x-1.x"
+projects[erpal_calendar][download][revision] = "HEAD"
 
 projects[erpal_contract][subdir] = "erpal"
-projects[erpal_contract][branch] = "7.x-1.x"
+projects[erpal_contract][download][type] = "git"
+projects[erpal_contract][download][url] = "http://git.drupal.org/project/erpal_contract.git"
+projects[erpal_contract][download][branch] = "7.x-1.x"
+projects[erpal_contract][download][revision] = "HEAD"
 
 projects[erpal_employee][subdir] = "erpal"
-projects[erpal_employee][branch] = "7.x-1.x"
+projects[erpal_employee][download][type] = "git"
+projects[erpal_employee][download][url] = "http://git.drupal.org/project/erpal_employee.git"
+projects[erpal_employee][download][branch] = "7.x-1.x"
+projects[erpal_employee][download][revision] = "HEAD"
 
 projects[erpal_invoice][subdir] = "erpal"
-projects[erpal_invoice][branch] = "7.x-1.x"
+projects[erpal_invoice][download][type] = "git"
+projects[erpal_invoice][download][url] = "http://git.drupal.org/project/erpal_invoice.git"
+projects[erpal_invoice][download][branch] = "7.x-1.x"
+projects[erpal_invoice][download][revision] = "HEAD"
 
 projects[erpal_project][subdir] = "erpal"
-projects[erpal_project][branch] = "7.x-1.x"
+projects[erpal_project][download][type] = "git"
+projects[erpal_project][download][url] = "http://git.drupal.org/project/erpal_project.git"
+projects[erpal_project][download][branch] = "7.x-1.x"
+projects[erpal_project][download][revision] = "HEAD"
 
-projects[erpal_project_release][subdir] = "erpal"
-projects[erpal_project_release][branch] = "7.x-1.x"
+;projects[erpal_project_release][subdir] = "erpal"
+;projects[erpal_project_release][download][type] = "git"
+;projects[erpal_project_release][download][url] = "http://git.drupal.org/project/erpal_project_release.git"
+;projects[erpal_project_release][download][branch] = "7.x-1.x"
+;projects[erpal_project_release][download][revision] = "HEAD"
+
+
+
 
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
@@ -227,5 +279,7 @@ libraries[jstree][download][revision] = "96f9bebabe536a3ddf6118ebede3c92adfadb51
 projects[adaptivetheme][version] = "3.1"
 
 projects[erpal_theme][subdir] = "erpal"
-projects[erpal_theme][branch] = "7.x-1.x"
-
+projects[erpal_theme][download][type] = "git"
+projects[erpal_theme][download][url] = "http://git.drupal.org/project/erpal_theme.git"
+projects[erpal_theme][download][branch] = "7.x-1.x"
+projects[erpal_theme][download][revision] = "HEAD"
