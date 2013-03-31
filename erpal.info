@@ -12,6 +12,7 @@ dependencies[] = dblog
 dependencies[] = admin_menu_toolbar
 dependencies[] = search
 dependencies[] = image_url_formatter
+dependencies[] = update
 
 ; core fields
 dependencies[] = field

@@ -251,11 +251,11 @@ projects[erpal_project][download][url] = "http://git.drupal.org/project/erpal_pr
 projects[erpal_project][download][branch] = "7.x-1.x"
 projects[erpal_project][download][revision] = "HEAD"
 
-;projects[erpal_project_release][subdir] = "erpal"
-;projects[erpal_project_release][download][type] = "git"
-;projects[erpal_project_release][download][url] = "http://git.drupal.org/project/erpal_project_release.git"
-;projects[erpal_project_release][download][branch] = "7.x-1.x"
-;projects[erpal_project_release][download][revision] = "HEAD"
+projects[erpal_project_release][subdir] = "erpal"
+projects[erpal_project_release][download][type] = "git"
+projects[erpal_project_release][download][url] = "http://git.drupal.org/project/erpal_project_release.git"
+projects[erpal_project_release][download][branch] = "7.x-1.x"
+projects[erpal_project_release][download][revision] = "HEAD"
 
 
 
@@ -270,9 +270,8 @@ libraries[ckeditor][download][type] = "file"
 libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.0.2/ckeditor_4.0.2_full.tar.gz"
 libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 
-libraries[jstree][download][type] = "git"
-libraries[jstree][download][url] = "https://github.com/vakata/jstree.git"
-libraries[jstree][download][revision] = "96f9bebabe536a3ddf6118ebede3c92adfadb511"
+libraries[jstree][download][type] = "file"
+libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
 
 
 ; Themes
