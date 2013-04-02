@@ -277,7 +277,6 @@ libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.p
 ; Themes
 projects[adaptivetheme][version] = "3.1"
 
-projects[erpal_theme][subdir] = "erpal"
 projects[erpal_theme][download][type] = "git"
 projects[erpal_theme][download][url] = "http://git.drupal.org/project/erpal_theme.git"
 projects[erpal_theme][download][branch] = "7.x-1.x"
