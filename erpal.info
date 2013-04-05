@@ -107,6 +107,7 @@ dependencies[] = nodechanges
 
 ; custom
 dependencies[] = acl
+dependencies[] = aul
 dependencies[] = date_item_calendar
 dependencies[] = content_access
 dependencies[] = content_access_view
