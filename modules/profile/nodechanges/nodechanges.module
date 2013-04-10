@@ -38,6 +38,12 @@ function nodechanges_node_update($node) {
 
   foreach (field_info_instances('node', $node->type) as $field_name => $instance) {
     $field = field_info_field($field_name);
+    
+    //@TODO it would be nice to have some settings where we can set, for which fields the changes should be recorded.
+    //may add them as part of field instance settings. Until we have this, we will hard exclude text fields
+    if ($field['type'] == 'text_long' || $field['type'] == 'text_with_summary')
+      continue;
+    
     $field_language = field_language('node', $node, $field_name);
     $old_value = empty($unchanged->{$field_name}[$field_language]) ? NULL : $unchanged->{$field_name}[$field_language];
     $new_value = empty($node->{$field_name}[$field_language]) ? NULL : $node->{$field_name}[$field_language];

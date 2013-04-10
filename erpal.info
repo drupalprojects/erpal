@@ -5,15 +5,21 @@ php = 5.3
 distribution_name = ERPAL
 
 ;core
+dependencies[] = user
 dependencies[] = php
 dependencies[] = menu
 dependencies[] = path
 dependencies[] = dblog
+dependencies[] = admin_menu
 dependencies[] = admin_menu_toolbar
 dependencies[] = search
 dependencies[] = image_url_formatter
-
-; core fields
+dependencies[] = update
+dependencies[] = text
+dependencies[] = system
+dependencies[] = node
+dependencies[] = filter
+dependencies[] = comment
 dependencies[] = field
 dependencies[] = field_sql_storage
 dependencies[] = field_ui
@@ -22,27 +28,28 @@ dependencies[] = file
 dependencies[] = image
 dependencies[] = options
 dependencies[] = number
-
 dependencies[] = taxonomy
+dependencies[] = color
+dependencies[] = block
 
 ;contrib
 dependencies[] = auto_nodetitle
 dependencies[] = better_exposed_filters
 dependencies[] = views_savedsearches
 dependencies[] = ckeditor
-dependencies[] = comment
 dependencies[] = computed_field
 dependencies[] = conditional_fields
 dependencies[] = ctools
 dependencies[] = date
+dependencies[] = date_api
 dependencies[] = date_item
+dependencies[] = date_item_calendar
 dependencies[] = date_popup
 dependencies[] = date_repeat
 dependencies[] = date_repeat_field
 dependencies[] = date_views
 dependencies[] = ds
 dependencies[] = ds_forms
-
 dependencies[] = editablefields
 dependencies[] = entity
 dependencies[] = entity_token
@@ -54,16 +61,18 @@ dependencies[] = features_plumber
 dependencies[] = field_collection
 dependencies[] = field_collection_table
 dependencies[] = field_group
+dependencies[] = field_extrawidgets
 dependencies[] = fileedit
 dependencies[] = flag
 dependencies[] = front_page
-
+dependencies[] = fullcalendar
+dependencies[] = fullcalendar_colors
+dependencies[] = fullcalendar_legend
 dependencies[] = homebox
 dependencies[] = jquery_ui_multiselect_widget
 dependencies[] = jquery_update
 dependencies[] = libraries
 dependencies[] = link
-
 dependencies[] = page_manager
 dependencies[] = panels
 dependencies[] = panels_everywhere
@@ -76,7 +85,6 @@ dependencies[] = post_hooks
 dependencies[] = profile2
 dependencies[] = profile2_page
 dependencies[] = quicktabs
-
 dependencies[] = r4032login
 dependencies[] = references_dialog
 dependencies[] = relation_endpoint
@@ -85,7 +93,6 @@ dependencies[] = relation_add
 dependencies[] = relation_dummy_field
 dependencies[] = relation_ui
 dependencies[] = strongarm
-
 dependencies[] = timetracking
 dependencies[] = token
 dependencies[] = views
@@ -93,14 +100,16 @@ dependencies[] = views_php
 dependencies[] = views_bulk_operations
 dependencies[] = views_content
 dependencies[] = views_jstree
-
+dependencies[] = views_calc
 dependencies[] = colors
 dependencies[] = maxlength
-
 dependencies[] = nodechanges
 
 ; custom
+dependencies[] = acl
+dependencies[] = aul
 dependencies[] = date_item_calendar
+dependencies[] = content_access
 dependencies[] = content_access_view
 dependencies[] = billable
 dependencies[] = budget

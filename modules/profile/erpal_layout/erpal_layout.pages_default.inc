@@ -317,8 +317,8 @@ function erpal_layout_default_page_manager_handlers() {
     $pane = new stdClass();
     $pane->pid = 'new-10';
     $pane->panel = 'middle';
-    $pane->type = 'pane_messages';
-    $pane->subtype = 'pane_messages';
+    $pane->type = 'page_messages';
+    $pane->subtype = 'page_messages';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
