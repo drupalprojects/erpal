@@ -2,7 +2,7 @@
 core = 7.x
 api = 2
 
-includes[] = erpal-dev.make
+includes[] = erpal-stable.make
 
 ; Basic contributed modules.
 projects[acl][version] = "1.0"
