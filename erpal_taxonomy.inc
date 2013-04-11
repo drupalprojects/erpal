@@ -5,6 +5,53 @@ function _erpal_taxonomy_prepare_directory(){
   file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
 }
 
+function _erpal_taxonomy_create_number_type_vocabulary(){
+  $number_type_vocabulary = new stdClass();
+  $number_type_vocabulary->name = 'Number types';
+  $number_type_vocabulary->machine_name = 'number_types';
+  $number_type_terms = array(
+    array(
+      array(
+        'name' => 'private',
+        'is_default' => 0,
+      ),
+      array(
+        'name' => 'mobile',
+        'is_default' => 0,
+      ),
+      array(
+        'name' => 'office',
+        'is_default' => 1,
+      ),
+    ),
+  );
+  erpal_taxonomy_add($number_type_vocabulary, $number_type_terms);
+}
+
+function _erpal_taxonomy_create_address_type_vocabulary(){
+  $address_type_vocabulary = new stdClass();
+  $address_type_vocabulary->name = 'Address types';
+  $address_type_vocabulary->machine_name = 'address_types';
+  $address_type_terms = array(
+    array(
+      array(
+        'name' => 'invoice',
+        'is_default' => 0,
+      ),
+      array(
+        'name' => 'private',
+        'is_default' => 0,
+      ),
+      array(
+        'name' => 'office',
+        'is_default' => 1,
+      ),
+    ),
+  );
+  erpal_taxonomy_add($address_type_vocabulary, $address_type_terms);
+}
+
+
 function _erpal_taxonomy_create_activity_origin_vocabulary(){
   $activity_origin_vocabulary = new stdClass();
   $activity_origin_vocabulary->name = 'Activity origin';
