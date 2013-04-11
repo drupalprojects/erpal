@@ -140,9 +140,8 @@ projects[serial][subdir] = "contrib"
 projects[services][version] = "3.3"
 projects[services][subdir] = "contrib"
 
-projects[views][version] = "3.5"
+projects[views][version] = "3.7"
 projects[views][subdir] = "contrib"
-projects[views][patch][] = "http://drupal.org/files/fixed_revisions_relationship-1754354-4.patch"
 
 projects[views_calc][version] = "1.0"
 projects[views_calc][subdir] = "contrib"
