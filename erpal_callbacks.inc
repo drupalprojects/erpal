@@ -187,6 +187,8 @@ function _erpal_taxonomy_create_various_taxonomies(&$context){
   $context['message'] = st('Created service category and priority taxonomies');
   _erpal_taxonomy_create_service_category_vocabulary();
   _erpal_taxonomy_create_priority_vocabulary();
+  _erpal_taxonomy_create_number_type_vocabulary();
+  _erpal_taxonomy_create_address_type_vocabulary();
 }
 
 /**
