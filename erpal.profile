@@ -46,7 +46,7 @@ function erpal_file_private_path_validate($form, $form_state){
 
 function erpal_file_private_path_submit($form, $form_state){
   variable_set('file_private_path', $form_state['values']['file_private_path']);
-
+  variable_set('file_default_scheme', 'private'); 
 }
 
 /** 
