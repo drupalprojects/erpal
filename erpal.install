@@ -3,7 +3,20 @@
  * @file
  * Install, update and uninstall functions for the erpal install profile.
  */
-
+ 
+/**
+ * Implements hook_update_n() to attach the task term images to 
+ * task_type, priority_term and task_status vocabularies 
+ */
+function erpal_update_7001(){
+  
+  require_once('erpal_taxonomy.inc');
+  _erpal_taxonomy_prepare_directory();
+  _erpal_taxonomy_create_task_type_vocabulary();
+  _erpal_taxonomy_create_priority_vocabulary();
+  _erpal_taxonomy_create_task_status_vocabulary();
+  
+}
 
 
 

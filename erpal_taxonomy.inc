@@ -10,19 +10,17 @@ function _erpal_taxonomy_create_number_type_vocabulary(){
   $number_type_vocabulary->name = 'Number types';
   $number_type_vocabulary->machine_name = 'number_types';
   $number_type_terms = array(
-    array(
-      array(
+    'private' => array(
         'name' => 'private',
         'is_default' => 0,
-      ),
-      array(
+    ),
+    'mobile' => array(
         'name' => 'mobile',
         'is_default' => 0,
-      ),
-      array(
+    ),
+    'office' => array(
         'name' => 'office',
         'is_default' => 1,
-      ),
     ),
   );
   erpal_taxonomy_add($number_type_vocabulary, $number_type_terms);
@@ -33,20 +31,19 @@ function _erpal_taxonomy_create_address_type_vocabulary(){
   $address_type_vocabulary->name = 'Address types';
   $address_type_vocabulary->machine_name = 'address_types';
   $address_type_terms = array(
-    array(
-      array(
-        'name' => 'invoice',
-        'is_default' => 0,
-      ),
-      array(
-        'name' => 'private',
-        'is_default' => 0,
-      ),
-      array(
-        'name' => 'office',
-        'is_default' => 1,
-      ),
-    ),
+	  'invoice' => array(
+	    'name' => 'invoice',
+	    'is_default' => 0,
+	  ),
+	  'private' => array(
+	    'name' => 'private',
+	    'is_default' => 0,
+	  ),
+	  'office' => array(
+	    'name' => 'office',
+	    'is_default' => 1,
+	  ),
+	   
   );
   erpal_taxonomy_add($address_type_vocabulary, $address_type_terms);
 }
@@ -57,27 +54,27 @@ function _erpal_taxonomy_create_activity_origin_vocabulary(){
   $activity_origin_vocabulary->name = 'Activity origin';
   $activity_origin_vocabulary->machine_name = 'activity_origin';
   $activity_origin_terms = array(
-    array(
+    'Called us' => array(
       'name' => 'Called us',
       'is_default' => 1,
     ),
-    array(
+    'Personal contacted' => array(
       'name' => 'Personal contacted',
       'is_default' => 0,
     ),
-    array(
+    'Cold call' => array(
       'name' => 'Cold call',
       'is_default' => 0,
     ),
-    array(
+    'Event' => array(
       'name' => 'Event',
       'is_default' => 0,
     ),
-    array(
+    'Email' => array(
       'name' => 'Email',
       'is_default' => 0,
     ),
-    array(
+    'Website' => array(
       'name' => 'Website',
       'is_default' => 0,
     ),
@@ -91,17 +88,17 @@ function _erpal_taxonomy_create_task_type_vocabulary(){
   $task_type_vocabulary->name = 'Task type terms';
   $task_type_vocabulary->machine_name = 'task_type_terms';
   $task_type_terms = array(
-    array(
+    'task' => array(
       'name' => 'task', 
       'is_default' => 1,
       'term_image' => 'erpal_task_icons/type_task.png',
     ),
-    array(
+    'bug' => array(
       'name' => 'bug', 
       'is_default' => 0,  
       'term_image' => 'erpal_task_icons/type_bug.png',
     ),
-    array(
+    'feature' => array(
       'name' => 'feature', 
       'is_default' => 0,
       'term_image' => 'erpal_task_icons/type_feature.png',
@@ -116,17 +113,17 @@ function _erpal_taxonomy_create_priority_vocabulary(){
   $priority_vocabulary->name = 'Priority terms';
   $priority_vocabulary->machine_name = 'priority_terms';
   $priority_terms = array(
-    array(
+    'low' => array(
       'name' => 'low', 
       'is_default' => 0,
       'term_image' => 'erpal_task_icons/priority_low.png',
     ),
-    array(
+    'middle' => array(
       'name' => 'middle',
       'is_default' => 1,
       'term_image' => 'erpal_task_icons/priority_medium.png',
     ),
-    array(
+    'high' => array(
       'name' => 'high',
       'is_default' => 0,
       'term_image' => 'erpal_task_icons/priority_high.png',
@@ -141,27 +138,27 @@ function _erpal_taxonomy_create_project_status_vocabulary(){
   $project_status_vocabulary->name = 'Project status terms';
   $project_status_vocabulary->machine_name =  'project_status_terms';
   $project_status_terms = array(
-    array(
+    'inserted' => array(
       'name' => 'inserted',
       'is_default' => 1,
       'semantic_process' => 'in_progress',
     ),
-    array(
+    'on hold' => array(
       'name' => 'on hold',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
     ),
-    array(
+    'in progress' => array(
       'name' => 'in progress',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
     ),
-    array(
+    'aborted' => array(
       'name' => 'aborted',
       'is_default' => 0,
       'semantic_process' => 'aborted',
     ),
-    array(
+    'completed' => array(
       'name' => 'completed',
       'is_default' => 0,
       'semantic_process' => 'completed',
@@ -176,49 +173,49 @@ function _erpal_taxonomy_create_task_status_vocabulary(){
   $task_status_vocabulary->name = 'Task status terms';
   $task_status_vocabulary->machine_name = 'task_status_terms';
   $task_status_terms = array(
-    array(
+    'inserted' => array(
       'name' => 'inserted',
       'is_default' => 1,
       'semantic_process' => 'in_progress',
       'term_image' => 'erpal_task_icons/status_new.png',
     ),
-    array(
+    'unclear' => array(
       'name' => 'unclear',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
       'term_image' => 'erpal_task_icons/status_question.png',      
     ),
-    array(
+    'buggy' => array(
       'name' => 'buggy',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
       'term_image' => 'erpal_task_icons/status_buggy.png',
     ),
-    array(
+    'tested' => array(
       'name' => 'tested',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
       'term_image' => 'erpal_task_icons/status_resolved.png',
     ),
-    array(
+    'ready to test' => array(
       'name' => 'ready to test',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
       'term_image' => 'erpal_task_icons/status_needsreview.png',
     ),
-    array(
+    'in progress' => array(
       'name' => 'in progress',
       'is_default' => 0,
       'semantic_process' => 'in_progress',
       'term_image' => 'erpal_task_icons/status_inprogress.png',
     ),
-    array(
+    'aborted' => array(
       'name' => 'aborted',
       'is_default' => 0,
       'semantic_process' => 'aborted',
       'term_image' => 'erpal_task_icons/status_aborted.png',
     ),
-    array(
+    'completed' => array(
       'name' => 'completed',
       'is_default' => 0,
       'semantic_process' => 'completed',
@@ -234,123 +231,123 @@ function _erpal_taxonomy_create_countries_vocabulary(){
   $countries_vocabulary->name = 'Countries';
   $countries_vocabulary->machine_name = 'countries';
   $countries_terms = array(
-    array(
+    'Austria' => array(
       'name' => 'Austria',
       'vat_rates' => '19',
     ),
-    array(
+    'Belgium' => array(
       'name' => 'Belgium',
       'vat_rates' => '19',
     ),
-    array(
+    'Bulgaria' => array(
       'name' => 'Bulgaria',
       'vat_rates' => '19',
     ),
-    array(
+    'Czeck Republic' => array(
       'name' => 'Czeck Republic',
       'vat_rates' => '19',
     ),
-    array(
+    'Denmark' => array(
       'name' => 'Denmark',
       'vat_rates' => '19',
     ),
-    array(
+    'Estonia' => array(
       'name' => 'Estonia',
       'vat_rates' => '19',
     ),
-    array(
+    'Germany' => array(
       'name' => 'Germany',
       'vat_rates' => '19',
     ),
-    array(
+    'Greece' => array(
       'name' => 'Greece',
       'vat_rates' => '19',
     ),
-    array(
+    'Spain' => array(
       'name' => 'Spain',
       'vat_rates' => '19',
     ),
-    array(
+    'France' => array(
       'name' => 'France',
       'vat_rates' => '19',
     ),
-    array(
+    'India' => array(
       'name' => 'India',
       'vat_rates' => '19',
     ),
-    array(
+    'Ireland' => array(
       'name' => 'Ireland',
       'vat_rates' => '19',
     ),
-    array(
+    'Italy' => array(
       'name' => 'Italy',
       'vat_rates' => '19',
     ),
-    array(
+    'Cyprus' => array(
       'name' => 'Cyprus',
       'vat_rates' => '19',
     ),
-    array(
+    'Lativa' => array(
       'name' => 'Latvia',
       'vat_rates' => '19',
     ),
-    array(
+    'Lithuania' => array(
       'name' => 'Lithuania',
       'vat_rates' => '19',
     ),
-    array(
+    'Luxembourg' => array(
       'name' => 'Luxembourg',
       'vat_rates' => '19',
     ),
-    array(
+    'Hungary' => array(
       'name' => 'Hungary',
       'vat_rates' => '19',
     ),
-    array(
+    'Malta' => array(
       'name' => 'Malta',
       'vat_rates' => '19',
     ),
-    array(
+    'Netherlands' => array(
       'name' => 'Netherlands',
       'vat_rates' => '19',
     ),
-    array(
+    'Poland' => array(
       'name' => 'Poland',
       'vat_rates' => '19',
     ),
-    array(
+    'Portugal' => array(
       'name' => 'Portugal',
       'vat_rates' => '19',
     ),
-    array(
+    'Romania' => array(
       'name' => 'Romania',
       'vat_rates' => '19',
     ),
-    array(
+    'Slovenia' => array(
       'name' => 'Slovenia',
       'vat_rates' => '19',
     ),
-    array(
+    'Slovakia' => array(
       'name' => 'Slovakia',
       'vat_rates' => '19',
     ),
-    array(
+    'Swizerland' => array(
       'name' => 'Swizerland',
       'vat_rates' => '19',
     ),
-    array(
+    'Finland' => array(
       'name' => 'Finland',
       'vat_rates' => '19',
     ),
-    array(
+    'Sweden' => array(
       'name' => 'Sweden',
       'vat_rates' => '19',
     ),
-    array(
+    'United Kingdom' => array(
       'name' => 'United Kingdom',
       'vat_rates' => '19',
     ),
-    array(
+    'United States' => array(
       'name' => 'United States',
       'vat_rates' => '19',
     ),
@@ -364,13 +361,13 @@ function _erpal_taxonomy_create_project_tags_vocabulary(){
   $project_vocabulary->name = 'Project Tags';
   $project_vocabulary->machine_name = 'project_tags';
   $project_terms = array(
-    array('name' => 'Sitebuilding',),
-    array('name' => 'Backend development',),
-    array('name' => 'Updates',),
-    array('name' => 'Security',), 
-    array('name' => 'Frontend',), 
-    array('name' => 'Concept',),
-    array('name' => 'Server',), 
+    'Sitebuilding' => array('name' => 'Sitebuilding',),
+    'Backend development' => array('name' => 'Backend development',),
+    'Updates' => array('name' => 'Updates',),
+    'Security' => array('name' => 'Security',), 
+    'Frontend' => array('name' => 'Frontend',), 
+    'Concept' => array('name' => 'Concept',),
+    'Server' => array('name' => 'Server',), 
   );
   erpal_taxonomy_add($project_vocabulary, $project_terms);
 }
@@ -381,23 +378,23 @@ function _erpal_taxonomy_create_service_category_vocabulary(){
   $service_category_vocabulary->name = 'Service category terms';
   $service_category_vocabulary->machine_name = 'service_category_terms';
   $service_category_terms = array(
-    array(
+    'Consulting' => array(
       'name' => 'Consulting',
       'allow_grouping' => TRUE,
     ),
-    array(
+    'Backend development' => array(
       'name' => 'Backend development',
       'allow_grouping' => TRUE,
     ),
-    array(
+    'Travel costs' => array(
       'name' => 'Travel costs',
       'allow_grouping' => TRUE,
     ),
-    array(
+    'Frontend development' => array(
       'name' => 'Frontend development',
       'allow_grouping' => TRUE,
     ),
-    array(
+    'Training' => array(
       'name' => 'Training',
       'allow_grouping' => TRUE,
     ),
@@ -412,42 +409,42 @@ function _erpal_taxonomy_create_activity_status_vocabulary(){
   $activity_vocabulary->name = 'Activity status terms'; 
   $activity_vocabulary->machine_name = 'activity_status_terms';
   $activity_terms = array(
-    array(
+    'other' => array(
       'name' => 'other',
       'semantic_process' => 'in_progress',
       'is_default' => 0,
     ),
-    array(
+    'customer request' => array(
       'name' => 'customer request',
       'semantic_process' => 'in_progress',
       'is_default' => 1,
     ),
-    array(
+    'waiting for feedback' => array(
       'name' => 'waiting for feedback',
       'semantic_process' => 'in_progress',
       'is_default' => 0,
     ),
-    array(
+    'quote submitted' => array(
       'name' => 'quote submitted',
       'semantic_process' => 'in_progress',
       'is_default' => 0,
     ),
-    array(
+    'revise quote' => array(
       'name' => 'revise quote',
       'semantic_process' => 'in_progress',
       'is_default' => 0,
     ),
-    array(
+    'quote rejected' => array(
       'name' => 'quote rejected',
       'semantic_process' => 'aborted',
       'is_default' => 0,
     ),
-    array(
+    'quote accepted' => array(
       'name' => 'quote accepted',
       'semantic_process' => 'completed',
       'is_default' => 0,
     ),
-    array(
+    'aborted' => array(
       'name' => 'aborted',
       'semantic_process' => 'aborted',
       'is_default' => 0,
@@ -483,58 +480,67 @@ function erpal_taxonomy_add($vocabulary, $names){
   $allow_grouping = array_key_exists('allow_grouping', reset($names));
   $term_image = array_key_exists('term_image', reset($names));
   
-  
-  foreach($names as $name){
-      $term = new stdClass();
-      $term->name = $name['name'];
-      $term->vid = $vocabulary->vid;
-      if($term_image){
-        // Upload image to drupal files dir
-        $path = drupal_get_path('profile', 'erpal') 
-          . '/files/' . $name['term_image'];  
-        $file = file_get_contents($path);
-        $filename = basename($path);
-        $file = file_save_data($file, 'public://' . 'term_images/' . $filename);
-        
-        // 
-        $term->field_term_image = array(
-          LANGUAGE_NONE => array(
-            0 => (array) $file,
-          ),
-        );
-      }
-      
-      if($semantic_process){
-        $term->field_simple_process_status = array(
-          LANGUAGE_NONE => array(
-            0 => array('value' => $name['semantic_process'])
-          )
-        );
-      }
-        
-      if($is_default){
-        $term->field_is_default_term = array(
-          LANGUAGE_NONE => array(
-            0 => array('value' => $name['is_default'])
-          )
-        );
-      }
-        
-      if($vat_rates){
-        $term->field_vat_rate = array(
-          LANGUAGE_NONE => array(
-            0 => array('value' => $name['vat_rates'])
-          )
-        );
-      }
-        
-      if($allow_grouping){
-        $term->field_allow_grouping = array(
-          LANGUAGE_NONE => array(
-            0 => array('value' => $name['allow_grouping'])
-          )
-        );        
-      }
-      taxonomy_term_save($term);
-    }
+  // Delete all existing terms with the same id
+  if($existing_terms = taxonomy_get_tree($vocabulary->vid)){
+  	foreach ($existing_terms as $existing_term) {
+	  if(array_key_exists($existing_term->name, $names)){
+	  	taxonomy_term_delete($existing_term->tid);
+	  }
+	}
+  }
+    
+  foreach($names as $name => $fields){
+  	
+	  $term = new stdClass();
+	  $term->name = $name;
+	  $term->vid = $vocabulary->vid;
+	  if($term_image){
+	    // Upload image to drupal files dir
+	    $path = drupal_get_path('profile', 'erpal') 
+	      . '/files/' . $fields['term_image'];  
+	    $file = file_get_contents($path);
+	    $filename = 'public://term_images/' . basename($path);
+	    $file = file_save_data($file, $filename, FILE_EXISTS_REPLACE);
+	    
+	    // 
+	    $term->field_term_image = array(
+	      LANGUAGE_NONE => array(
+	        0 => (array) $file,
+	      ),
+	    );
+	  }
+	  
+	  if($semantic_process){
+	    $term->field_simple_process_status = array(
+	      LANGUAGE_NONE => array(
+	        0 => array('value' => $fields['semantic_process'])
+	      )
+	    );
+	  }
+	    
+	  if($is_default){
+	    $term->field_is_default_term = array(
+	      LANGUAGE_NONE => array(
+	        0 => array('value' => $fields['is_default'])
+	      )
+	    );
+	  }
+	    
+	  if($vat_rates){
+	    $term->field_vat_rate = array(
+	      LANGUAGE_NONE => array(
+	        0 => array('value' => $fields['vat_rates'])
+	      )
+	    );
+	  }
+	    
+	  if($allow_grouping){
+	    $term->field_allow_grouping = array(
+	      LANGUAGE_NONE => array(
+	        0 => array('value' => $fields['allow_grouping'])
+	      )
+	    );        
+	  }
+	  taxonomy_term_save($term);
+	}
 }
