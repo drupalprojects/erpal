@@ -331,7 +331,19 @@ function erpal_contact_information_form_submit($form, $form_state){
   variable_set('crm_tasks_project', $project_node->nid);
   
   
-    // create Internal work project:
+  
+    // create "Work on CRM activities" task:
+  module_load_include('module', 'erpal_basic_helper');
+  
+  $priority_vid = _erpal_basic_helper_term_field_get_vid('field_priority_term'); 
+  $priority_default_tid = _erpal_basic_helper_get_default_tid($priority_vid);  
+  
+  $task_status_vid = _erpal_basic_helper_term_field_get_vid('field_task_status_term'); 
+  $task_status_default_tid = _erpal_basic_helper_get_default_tid($task_status_vid);
+  
+  $task_type_vid = _erpal_basic_helper_term_field_get_vid('field_task_type_term'); 
+  $task_type_default_tid = _erpal_basic_helper_get_default_tid($task_type_vid);
+  
   $task_node = (object) array(
     'uid' => $user->uid,
     'name' => (isset($user->name)) ? $user->name : '',
@@ -343,6 +355,21 @@ function erpal_contact_information_form_submit($form, $form_state){
         0 => array('target_id' => $project_node->nid,),
       ),
     ),
+    'field_priority_term' => array(
+	  LANGUAGE_NONE => array(
+	  	0 => array('tid' => $priority_default_tid),
+	  ),
+	),
+	'field_task_status_term' => array(
+	  LANGUAGE_NONE => array(
+	  	0 => array('tid' => $task_status_default_tid),
+	  ),
+	),
+	'field_task_type_term' => array(
+	  LANGUAGE_NONE => array(
+	  	0 => array('tid' => $task_type_default_tid),
+	  ),
+	),
   );
   node_object_prepare($task_node); 
   node_save($task_node);
