@@ -5,6 +5,7 @@ package = ERPAL UI
 php = 5.2.4
 version = 7.x-1.0-dev
 project = erpal_wysiwyg
+dependencies[] = ajax_checklist
 dependencies[] = ckeditor
 dependencies[] = features
 dependencies[] = filter
