@@ -22,7 +22,7 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
     [\'Cut\',\'Copy\',\'Paste\',\'PasteText\',\'PasteFromWord\',\'-\',\'SpellChecker\',\'Scayt\'],
     [\'Undo\',\'Redo\',\'Find\',\'Replace\',\'-\',\'RemoveFormat\'],
     [\'Image\',\'Table\',\'HorizontalRule\',\'SpecialChar\'],
-    [\'Maximize\'],
+    [\'Maximize\',\'ScreenshotPaste\'],
     \'/\',
     [\'Format\',\'Styles\',\'Font\',\'FontSize\'],
     [\'Bold\',\'Italic\',\'Underline\',\'Strike\',\'-\',\'Subscript\',\'Superscript\'],
@@ -86,6 +86,17 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
               ),
             ),
             'default' => 'f',
+          ),
+          'screenshot_paste' => array(
+            'name' => 'screenshot_paste',
+            'desc' => 'Plugin allowing users to paste screenshots right into the editor',
+            'path' => '%base_path%sites/all/libraries/screenshot_paste/',
+            'buttons' => array(
+              'ScreenshotPaste' => array(
+                'icon' => 'click.png',
+                'label' => 'Click to paste screenshot',
+              ),
+            ),
           ),
         ),
       ),
