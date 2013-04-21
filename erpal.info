@@ -57,7 +57,6 @@ dependencies[] = entityreference
 dependencies[] = entityreference_prepopulate
 dependencies[] = entitycache
 dependencies[] = features
-dependencies[] = features_plumber
 dependencies[] = field_collection
 dependencies[] = field_collection_table
 dependencies[] = field_group
