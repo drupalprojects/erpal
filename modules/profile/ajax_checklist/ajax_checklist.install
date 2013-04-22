@@ -1,0 +1,15 @@
+<?php 
+
+function ajax_checklist_schema() {
+  $schema['ajax_checklist'] = array(
+    'fields' => array(
+      'nid'  => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
+      'user' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
+      'qid'  => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),
+      'state'=> array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
+      ),
+    'primary key' => array('nid','user','qid'),
+    );
+  return $schema;
+}
+
