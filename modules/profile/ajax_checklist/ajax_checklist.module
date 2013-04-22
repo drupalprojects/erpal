@@ -1,0 +1,185 @@
+<?php
+
+// People w/o this permission will be able to see and toggle the checklists but it
+// will not write to the database. 
+function ajax_checklist_permission() {
+   return array(
+    'update ajax checklists' => array(
+      'title' => t('Update ajax checklists'),
+      'description' => t('Allows the user to update checkboxes from AJAX checklist'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+// 2 menu callback functions to implement the ajax load and save routines
+function ajax_checklist_menu() {
+  $items = array();
+  $items['ajaxchecklist/loadnid'] = array(
+      'page callback' => 'ajax_checklist_loadnid',
+      'type' => MENU_CALLBACK,
+      'access callback' => TRUE,
+      );
+  $items['ajaxchecklist/save'] = array(
+      'page callback' => 'ajax_checklist_save',
+      'type' => MENU_CALLBACK,
+      'access arguments' => array('update ajax checklists'),
+      );
+  $items['ajaxchecklist/update-access'] = array(
+      'page callback' => 'ajax_checklist_update_access',
+      'type' => MENU_CALLBACK,
+      'access callback' => TRUE,
+      );
+  return $items;	
+}
+
+function ajax_checklist_update_access() {
+  $access["update"]=user_access('update ajax checklists');
+  print drupal_json_encode($access);
+  exit();
+}
+
+// function to load the settings of all the checkboxes on this node
+// note that checkboxes that has never been checked will not have an entry in the database
+function ajax_checklist_loadnid ($nid) {
+
+  $access=user_access('update ajax checklists');
+  $dcvals = array();
+  // any checkbox id that starts with user- we remember the current user's settings
+  // any other id is global and we use user=0
+  $result=db_query("select qid,state from ajax_checklist ".
+                   " where nid=:nid1",array(':nid1' => $nid));
+  
+  foreach ($result as $row) {
+    $dcvals[] = array ('qid' => $row->qid, 'state' => $row->state, 'access' => $access);
+  }
+  
+  print drupal_json_encode($dcvals);
+  exit();
+}
+
+// function to save/update the state of a checkbox when toggled
+function ajax_checklist_save ($nid,$qid,$state) {
+  global $user;
+  /*
+  if (preg_match("/^user-/",$qid)==1) {
+    $uid=$user->uid;
+  } else {
+    $uid=0;
+  }
+  */
+  $uid = $user->uid;
+  
+  $query = db_select('ajax_checklist', 'ac')
+    ->fields('ac', array('state'))
+    ->condition('ac.nid', $nid)
+    //->condition('ac.user', $uid)
+    ->condition('ac.qid', $qid)
+    ->execute();
+
+  $existing = $query->rowCount();
+ 
+  if ($existing == 0) {
+    $nid = db_insert('ajax_checklist')
+      ->fields(array(
+        'nid' => $nid,
+        'user' => $uid,
+        'qid' => $qid,
+        'state' => $state, 
+      ))
+      ->execute();
+    
+  } else {
+
+    $query = db_select('ajax_checklist', 'ac')
+      ->fields('ac', array('state'))
+      ->condition('ac.nid', $nid)
+      //->condition('ac.user', $uid)
+      ->condition('ac.qid', $qid)
+      ->execute();
+    $current = $query->fetchAssoc();
+    $current = $current['state'];
+    
+    if ($current != $state) {
+
+      db_update('ajax_checklist')
+        ->fields(array(          
+          'state' => $state, 
+        ))
+        ->condition('nid', $nid)
+        //->condition('user', $uid)
+        ->condition('qid', $qid)
+        ->execute();
+    }
+  }
+  print drupal_json_encode("1");
+  exit();
+}
+
+// implementation of hool_filter_info to create the checkbox filter
+function ajax_checklist_filter_info() {
+
+  $filters['ajax_checklist'] = array(
+    'title' => t('Ajax Checkbox filter'),
+    'description' => t('Allows checkboxes in nodes with [cb someid "Example?"]that saves their state with AJAX to the database'),
+    'process callback' => 'ajax_checklist_filter_process',
+    'tips callback' => 'ajax_checklist_filter_tips',
+    'cache' => FALSE,
+  );
+  return $filters;
+
+}
+
+/**
+ * Tips callback for Display Suite php filter.
+ */
+function ajax_checklist_filter_tips($filter, $format, $long = FALSE) {
+  global $base_url;
+  if ($long) {
+    $output = '<h4>' . t('Adding checkboxes in text') . '</h4>';
+    $output .= t('Add checklists using [cb ID TEXT]');
+    return $output;
+  }
+  else {
+    return t('Add checklists using [cb ID TEXT]');
+  }
+}
+
+/**
+* Process function for ajax_checkbox filter process
+*/
+function ajax_checklist_filter_process($text, $entity, $build = array()) {
+  // generate some header code, form tag and we save the node id so that the 
+  // javascript has a convenient place to get it from
+
+  if (strpos($text,"[cb") === false) {
+    return $text;
+  }
+  else {
+    $js_path = drupal_get_path('module', 'ajax_checklist');
+    drupal_add_js($js_path . '/ajax_checklist.js');
+    
+    $nid = arg(1);
+    if (!$nid || arg(0) != 'node')
+      return $text;    
+
+    $output  = "<form action=\"/dummy\" method=\"post\" class=\"ajaxchecklist\" id=\"".$nid."\">\n";
+    $output .= "<input name=\"nid\" class=\"ajaxchecklist-nid\" value=\"".$nid."\" type=\"hidden\">\n";
+    $output .= preg_replace_callback("|\[cb ([^]]*)\]|i",'ajax_checklist_docheckbox',$text);
+    $output .="</form>";
+    
+    return $output;
+  }
+  break;
+}
+
+// helper function for preg_replace_callback to generate the html for each checkbox
+// Form API not used as that would float all the checkboxes to the top/bottom of the page.
+function ajax_checklist_docheckbox ($matches) {
+  $id = md5($matches[1]);
+  $output=<<<OUTPUT
+     <label class="option form-item"> <input name="$id" id="$id" value="1" class="form-checkbox" type="checkbox" disabled="true" > $matches[1] </label>
+OUTPUT;
+  return $output;
+}
+

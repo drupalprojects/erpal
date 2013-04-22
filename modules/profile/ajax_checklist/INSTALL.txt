@@ -1,0 +1,23 @@
+Installation:
+-------------
+
+Enable the module. (Administer->Site building->Modules)
+Set the user access. (Administer->User management->Access control)
+   Find ajax_checklist module, assign update ajax checklists to the appropriate roles.
+
+   NB: Any role will be able to see and toggle the checklists. Only roles allowed here
+       will save that info to the database.
+
+Create an input format. (Administer->Site configuration->Input formats)
+   Add an input format (eg. Checklist)
+     For filters select Ajax Checkbox filter and any others you'd like, 
+       eg. URL and the line break converter.
+     Save
+
+Create a node of some type. Set the input format to your input filter (eg. Checklist).
+In the body add something like the example above. Click some options. Open the same URL in
+a different tab and see your checkbox status retained!
+
+Have phun
+
+Anton
