@@ -100,6 +100,7 @@ dependencies[] = views_bulk_operations
 dependencies[] = views_content
 dependencies[] = views_jstree
 dependencies[] = views_calc
+dependencies[] = views_gantt
 dependencies[] = colors
 dependencies[] = maxlength
 dependencies[] = nodechanges
@@ -160,6 +161,9 @@ dependencies[] = erpal_profile
 dependencies[] = erpal_project
 dependencies[] = erpal_project_ui
 dependencies[] = erpal_wysiwyg
+dependencies[] = erpal_project_release
+dependencies[] = erpal_project_release_ui
+
 
 dependencies[] = erpal_layout
 
