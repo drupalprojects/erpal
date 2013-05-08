@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * Provides some improvements for Views combine filter using views hooks
+ */
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function views_better_combine_views_query_alter($view, &$query) {
+  if (empty($view->filter)) {
+    return;
+  }
+
+  $fields = array();
+
+  // Find combined filters.
+  foreach ($view->filter as $filter) {
+
+    // Checks.
+    if ($filter->field != 'combine') {
+      continue;
+    }
+
+    // Check "Exclude from SELECT" value.
+    if (!isset($filter->options['exclude_from_select_area']) || !$filter->options['exclude_from_select_area']) {
+      continue;
+    }
+
+    if (!isset($filter->options['fields']) || empty($filter->options['fields'])) {
+      continue;
+    }
+
+    // Get fields that are in combine filter.
+    $combines = $filter->options['fields'];
+
+    foreach ($combines as $field_name => $combine) {
+      if (!isset($view->field[$field_name])) {
+        continue;
+      }
+
+      $field_data = $view->field[$field_name];
+
+      if (!isset($field_data->field_alias)) {
+        continue;
+      }
+
+      // Get field name.
+      $fields[] = $field_data->field_alias;
+      // Get field alias.
+      if (isset($field_data->aliases) && is_array($field_data->aliases)) {
+        $fields[] = reset($field_data->aliases);
+      }
+    }
+  }
+
+  if (empty($fields)) {
+    return;
+  }
+
+  // Remove fields.
+  foreach ($fields as $field) {
+    unset($query->fields[$field]);
+  }
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function views_better_combine_views_data_alter(&$data) {
+  // Add new handler for all combine filters.
+  $data['views']['combine']['filter']['handler'] = 'views_better_combine_handler_filter';
+}
