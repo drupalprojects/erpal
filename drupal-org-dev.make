@@ -3,6 +3,11 @@ core = 7.x
 api = 2
 
 ;;;;;;;;;;;;;;;;;;;;;;; Own contrib modules
+projects[relation_dialog][subdir] = "contrib"
+projects[relation_dialog][download][type] = "git"
+projects[relation_dialog][download][url] = "http://git.drupal.org/project/relation_dialog.git"
+projects[relation_dialog][download][branch] = "7.x-1.x"
+
 projects[views_gantt][subdir] = "contrib"
 projects[views_gantt][download][type] = "git"
 projects[views_gantt][download][url] = "http://git.drupal.org/project/views_gantt.git"
