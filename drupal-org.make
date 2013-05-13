@@ -3,23 +3,30 @@ core = 7.x
 api = 2
 
 ;;;;;;;;;;;;;;;;;;;;;;; Own contrib modules
+
+projects[relation_dialog][subdir] = "contrib"
+projects[relation_dialog][download][type] = "git"
+projects[relation_dialog][download][url] = "http://git.drupal.org/project/relation_dialog.git"
+projects[relation_dialog][download][branch] = "7.x-stable"
+;projects[relation_dialog][download][tag] = TAG_PLACEHOLDER
+
 projects[views_gantt][subdir] = "contrib"
 projects[views_gantt][download][type] = "git"
 projects[views_gantt][download][url] = "http://git.drupal.org/project/views_gantt.git"
 projects[views_gantt][download][branch] = "7.x-stable"
- ;projects[views_gantt][download][tag] = TAG_PLACEHOLDER
+;projects[views_gantt][download][tag] = TAG_PLACEHOLDER
 
 projects[views_jstree][subdir] = "contrib"
 projects[views_jstree][download][type] = "git"
 projects[views_jstree][download][url] = "http://git.drupal.org/project/views_jstree.git"
 projects[views_jstree][download][branch] = "7.x-stable"
-; projects[views_jstree][download][tag] = TAG_PLACEHOLDER
+;projects[views_jstree][download][tag] = TAG_PLACEHOLDER
 
 projects[timetracking][subdir] = "contrib"
 projects[timetracking][download][type] = "git"
 projects[timetracking][download][url] = "http://git.drupal.org/project/timetracking.git"
 projects[timetracking][download][branch] = "7.x-stable"
- ; projects[timetracking][download][tag] = TAG_PLACEHOLDER
+;projects[timetracking][download][tag] = TAG_PLACEHOLDER
 
 projects[fileedit][subdir] = "contrib"
 projects[fileedit][download][type] = "git"
