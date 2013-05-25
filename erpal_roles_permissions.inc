@@ -10,8 +10,21 @@
  * Creates userroles and configures permissions as defined in  _erpal_roles_permissions_get_config()
  */
 function erpal_save_roles_and_configure_permissions(){
+  
+  // Remove all permissions from the database:
+  db_delete('role_permission')->execute();
+  drupal_static_reset('user_access');
+  drupal_static_reset('user_role_permissions');
+    
+  // Get permission configuration
   $config = _erpal_roles_permissions_get_config();
+  
+  // set permissions configuration
   _erpal_save_roles_permissions($config);
+
+  if(function_exists('content_access_view_sync')){
+   content_access_view_sync();
+  }
 }
 
 /**
