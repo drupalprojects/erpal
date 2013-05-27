@@ -164,6 +164,7 @@ projects[content_access][subdir] = "contrib"
 
 projects[date][version] = "2.6"
 projects[date][subdir] = "contrib"
+projects[date][patch][] = "http://drupal.org/files/date-date_limit_format-static-cache-1835184-5.patch"
 
 projects[ds][version] = "1.7"
 projects[ds][subdir] = "contrib"
