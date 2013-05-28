@@ -142,10 +142,10 @@ projects[better_exposed_filters][subdir] = "contrib"
 projects[field_extrawidgets][version] = "1.1"
 projects[field_extrawidgets][subdir] = "contrib"
 
-projects[ckeditor][version] = "1.12"
+projects[ckeditor][version] = "1.13"
 projects[ckeditor][subdir] = "contrib"
 
-projects[ctools][version] = "1.2"
+projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-1727804-6_0.patch"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-fix-warning-message-1739718-32.patch"
@@ -186,7 +186,7 @@ projects[entityreference][version] = "1.0"
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][patch][] = "http://drupal.org/files/entityreference-1459540-47-workaround-fatal-error.patch"
 
-projects[entityreference_prepopulate][version] = "1.2"
+projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
 
 projects[features][version] = "2.0-beta1"
