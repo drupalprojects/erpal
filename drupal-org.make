@@ -298,6 +298,11 @@ projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa
 projects[views_bulk_operations][version] = "3.1"
 projects[views_bulk_operations][subdir] = "contrib"
 
+projects[message][version] = "1.8"
+projects[message][subdir] = "contrib"
+
+projects[message_notify][version] = "2.5"
+projects[message_notify][subdir] = "contrib"
 
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
