@@ -234,6 +234,10 @@ function _erpal_various_settings(&$context){
     'working_times', 
   );
   variable_set('views_savedsearches', $views);
+  
+  //set variables for messages purging
+  variable_set('message_purge_enable', true);
+  variable_set('message_purge_days', 14);
 }
 
 /**
