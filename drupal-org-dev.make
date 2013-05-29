@@ -128,6 +128,8 @@ projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
+projects[ctools][patch][] = "http://drupal.org/files/ctools-1727804-6_0.patch"
+projects[ctools][patch][] = "http://drupal.org/files/ctools-fix-warning-message-1739718-32.patch"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
@@ -138,11 +140,12 @@ projects[conditional_fields][download][type] = "git"
 projects[conditional_fields][download][url] = "http://git.drupal.org/project/conditional_fields.git"
 projects[conditional_fields][download][revision] = "cd29b003a592d375f3fdb4c46f5639d0f26ed0be"
 
-projects[content_access][version] = "1.2-beta2"
+projects[content_access][version] = "1.2-beta1"
 projects[content_access][subdir] = "contrib"
 
 projects[date][version] = "2.6"
 projects[date][subdir] = "contrib"
+projects[date][patch][] = "http://drupal.org/files/date-date_limit_format-static-cache-1835184-5.patch"
 
 projects[ds][version] = "1.7"
 projects[ds][subdir] = "contrib"
