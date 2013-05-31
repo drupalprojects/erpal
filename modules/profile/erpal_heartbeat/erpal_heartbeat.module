@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * ERPAL Heartbeat messages showing user activity.
+ */
+
+include_once('erpal_heartbeat.features.inc');
+
+/**
+* Implements hook_permission
+*/
+function erpal_heartbeat_permission() {
+  $permissions = array(
+    'access erpal heartbeat' => array(
+      'title' => t('Access ERPAL heartbeat'),
+      'description' => t('Allows a user to access the ERPAL heartbeat'),
+    ),
+  );
+  
+  return $permissions;
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function erpal_heartbeat_node_insert($node) {
+  _erpal_heartbeat_handle_node_beat($node, 'insert');
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function erpal_heartbeat_node_update($node) {
+  _erpal_heartbeat_handle_node_beat($node, 'update');
+}
+
+
+/**
+ * Implements hook_comment_insert().
+ */
+function erpal_heartbeat_comment_insert($comment) {
+  _erpal_heartbeat_handle_comment_beat($comment, 'insert');
+}
+
+/**
+ * Implements hook_comment_update().
+ */
+function erpal_heartbeat_comment_update($comment) {
+  _erpal_heartbeat_handle_comment_beat($comment, 'update');
+}
+
+/**
+* Handles a node update
+*/
+function _erpal_heartbeat_handle_node_beat($node, $op) {
+  // Save the message and assign it to the user
+  $message = message_create('erpal_heartbeat_node_message', array('uid' => $node->uid));
+  // Save reference to the node in the node reference field, and the
+  // "publish" state (i.e. if the node is published or unpublished).
+  $wrapper = entity_metadata_wrapper('message', $message);
+  $wrapper->field_erpal_hb_node_ref->set($node);
+  $wrapper->field_erpal_hb_published->set($node->status);
+  $wrapper->field_erpal_hb_operation->set($op);
+  $wrapper->save();
+}
+
+/**
+* Handles a node update
+*/
+function _erpal_heartbeat_handle_comment_beat($comment, $op) {
+  $account = user_load($comment->uid);
+  $node = node_load($comment->nid);
+
+  $message = message_create('erpal_heartbeat_comment_message', array(), $account);
+  
+  $wrapper = entity_metadata_wrapper('message', $message);
+  $wrapper->field_erpal_hb_node_ref->set($node);
+  $wrapper->field_erpal_hb_comment_ref->set($comment);
+  $wrapper->field_erpal_hb_operation->set($op);
+
+  // The message should be published only if the node and the comment are
+  // both published.
+  $published = $node->status && $comment->status;
+  $wrapper->field_erpal_hb_published->set($published);
+  $wrapper->save();
+}

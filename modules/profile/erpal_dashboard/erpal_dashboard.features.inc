@@ -4,7 +4,6 @@
  * erpal_dashboard.features.inc
  */
 
-
 /**
  * Implements hook_homebox().
  */
