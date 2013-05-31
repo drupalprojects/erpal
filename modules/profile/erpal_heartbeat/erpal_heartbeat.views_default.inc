@@ -25,6 +25,7 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['title'] = 'Global heartbeat';
   $handler->display->display_options['css_class'] = 'erpal-heartbeat';
   $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['link_display'] = 'page_1';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'access erpal heartbeat';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -32,7 +33,10 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '30';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'entity';
   /* No results behavior: Global: Text area */
@@ -94,6 +98,57 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['filters']['uid']['field'] = 'uid';
   $handler->display->display_options['filters']['uid']['relationship'] = 'user';
   $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  /* Filter criterion: Date: Date (message) */
+  $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['table'] = 'message';
+  $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['operator'] = 'between';
+  $handler->display->display_options['filters']['date_filter']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
+  $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Date';
+  $handler->display->display_options['filters']['date_filter']['expose']['operator'] = 'date_filter_op';
+  $handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['date_filter']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+  );
+  $handler->display->display_options['filters']['date_filter']['form_type'] = 'date_popup';
+  $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
+    'message.timestamp' => 'message.timestamp',
+  );
+
+  /* Display: Heartbeat Page All */
+  $handler = $view->new_display('page', 'Heartbeat Page All', 'page');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Message: Published (field_erpal_hb_published) */
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['id'] = 'field_erpal_hb_published_value';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['table'] = 'field_data_field_erpal_hb_published';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['field'] = 'field_erpal_hb_published_value';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'user';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['label'] = 'User';
   $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
@@ -136,10 +191,6 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
     'message.timestamp' => 'message.timestamp',
   );
-
-  /* Display: Heartbeat Page All */
-  $handler = $view->new_display('page', 'Heartbeat Page All', 'page');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'heartbeat/all';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Message example';
@@ -193,6 +244,62 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'user';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $handler->display->display_options['path'] = 'heartbeat';
+
+  /* Display: Global heartbeat block */
+  $handler = $view->new_display('block', 'Global heartbeat block', 'block_1');
+  $handler->display->display_options['defaults']['use_more'] = FALSE;
+  $handler->display->display_options['use_more'] = TRUE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_text'] = FALSE;
+  $handler->display->display_options['defaults']['link_display'] = FALSE;
+  $handler->display->display_options['link_display'] = 'page';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Message: Published (field_erpal_hb_published) */
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['id'] = 'field_erpal_hb_published_value';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['table'] = 'field_data_field_erpal_hb_published';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['field'] = 'field_erpal_hb_published_value';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['value'] = array(
+    1 => '1',
+  );
+
+  /* Display: Own heartbeat block */
+  $handler = $view->new_display('block', 'Own heartbeat block', 'block_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'My heartbeat';
+  $handler->display->display_options['defaults']['use_more'] = FALSE;
+  $handler->display->display_options['use_more'] = TRUE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_text'] = FALSE;
+  $handler->display->display_options['defaults']['link_display'] = FALSE;
+  $handler->display->display_options['link_display'] = 'page_1';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Message: Published (field_erpal_hb_published) */
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['id'] = 'field_erpal_hb_published_value';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['table'] = 'field_data_field_erpal_hb_published';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['field'] = 'field_erpal_hb_published_value';
+  $handler->display->display_options['filters']['field_erpal_hb_published_value']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'user';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $translatables['erpal_heartbeat'] = array(
     t('Master'),
     t('Global heartbeat'),
@@ -214,10 +321,13 @@ function erpal_heartbeat_views_default_views() {
 
 '),
     t('User'),
+    t('Name'),
     t('Date'),
     t('Heartbeat Page All'),
     t('Heartbeat page own'),
     t('My heartbeat'),
+    t('Global heartbeat block'),
+    t('Own heartbeat block'),
   );
   $export['erpal_heartbeat'] = $view;
 

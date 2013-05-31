@@ -244,10 +244,9 @@ function erpal_heartbeat_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 5,
+          'type' => 'hidden',
+          'weight' => 1,
         ),
         'full' => array(
           'label' => 'above',

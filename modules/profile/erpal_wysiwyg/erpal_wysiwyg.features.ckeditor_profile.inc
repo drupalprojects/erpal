@@ -101,7 +101,8 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
         ),
       ),
       'input_formats' => array(
-        'plain_text' => 'Plain text',
+        'filtered_html' => 'Filtered HTML',
+        'full_html' => 'Full HTML',
       ),
     ),
   );
