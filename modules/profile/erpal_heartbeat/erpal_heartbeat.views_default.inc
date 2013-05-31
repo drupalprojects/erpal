@@ -196,6 +196,29 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
     'message.timestamp' => 'message.timestamp',
   );
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['relationship'] = 'field_erpal_hb_node_ref_target_id';
+  $handler->display->display_options['filters']['type']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Content type';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+  );
   $handler->display->display_options['path'] = 'heartbeat/all';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Message example';
@@ -248,6 +271,29 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'user';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['relationship'] = 'field_erpal_hb_node_ref_target_id';
+  $handler->display->display_options['filters']['type']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Content type';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+  );
   $handler->display->display_options['path'] = 'heartbeat';
 
   /* Display: Global heartbeat block */
@@ -330,6 +376,7 @@ function erpal_heartbeat_views_default_views() {
     t('Name'),
     t('Date'),
     t('Heartbeat Page All'),
+    t('Content type'),
     t('Heartbeat page own'),
     t('My heartbeat'),
     t('Global heartbeat block'),
