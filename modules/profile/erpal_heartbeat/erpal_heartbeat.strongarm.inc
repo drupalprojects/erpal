@@ -48,6 +48,10 @@ function erpal_heartbeat_strongarm() {
             'weight' => '0',
             'visible' => TRUE,
           ),
+          'full' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
@@ -107,6 +111,14 @@ function erpal_heartbeat_strongarm() {
           'message_notify_email_body' => array(
             'visible' => FALSE,
             'weight' => 0,
+          ),
+          'default' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'full' => array(
+            'weight' => '0',
+            'visible' => TRUE,
           ),
         ),
         'message__message_text__1' => array(

@@ -36,18 +36,18 @@ function erpal_heartbeat_default_message_type() {
       "token options" : { "clear" : 1 },
       "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
     },
-    "language" : "en",
+    "language" : "de",
     "arguments" : null,
     "message_text" : {
       "de" : [
         {
-          "value" : "\\u003Cp\\u003E\\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation]ed a comment \\u0022[message:field-erpal-hb-comment-ref:body]\\u0022 at \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E\\u003C\\/p\\u003E\\n",
+          "value" : "\\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation]ed a comment \\u0022[message:field-erpal-hb-comment-ref:body]\\u0022 at [message:field-erpal-hb-node-ref:content-type] \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E",
           "format" : "full_html"
         }
       ],
       "en" : [
         {
-          "value" : "\\u003Cp\\u003E\\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation]ed a comment \\u0022[message:field-erpal-hb-comment-ref:body]\\u0022 at \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E\\u003C\\/p\\u003E\\r\\n",
+          "value" : "\\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation]ed a comment \\u0022[message:field-erpal-hb-comment-ref:body]\\u0022 at [message:field-erpal-hb-node-ref:content-type] \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E",
           "format" : "full_html"
         }
       ],

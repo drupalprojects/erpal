@@ -163,12 +163,15 @@ function erpal_heartbeat_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 2,
+          'module' => 'erpal_basic_helper',
+          'settings' => array(
+            'link' => 1,
+          ),
+          'type' => 'entityreference_typed_label',
+          'weight' => 1,
         ),
         'full' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => 3,
@@ -246,13 +249,13 @@ function erpal_heartbeat_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 1,
+          'weight' => 2,
         ),
         'full' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => 1,
         ),
       ),
       'entity_type' => 'message',
@@ -397,15 +400,18 @@ function erpal_heartbeat_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 3,
+          'module' => 'erpal_basic_helper',
+          'settings' => array(
+            'link' => 1,
+          ),
+          'type' => 'entityreference_typed_label',
+          'weight' => 1,
         ),
         'full' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 5,
+          'weight' => 1,
         ),
       ),
       'entity_type' => 'message',
@@ -478,16 +484,15 @@ function erpal_heartbeat_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 4,
+          'type' => 'hidden',
+          'weight' => 3,
         ),
         'full' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => 2,
         ),
       ),
       'entity_type' => 'message',
@@ -555,7 +560,7 @@ function erpal_heartbeat_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 4,
+          'weight' => 3,
         ),
       ),
       'entity_type' => 'message',

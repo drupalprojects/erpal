@@ -9,6 +9,7 @@ dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = entity_token
 dependencies[] = entityreference
+dependencies[] = erpal_basic_helper
 dependencies[] = features
 dependencies[] = list
 dependencies[] = message

@@ -53,6 +53,11 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['relationships']['user']['id'] = 'user';
   $handler->display->display_options['relationships']['user']['table'] = 'message';
   $handler->display->display_options['relationships']['user']['field'] = 'user';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_erpal_hb_node_ref_target_id']['id'] = 'field_erpal_hb_node_ref_target_id';
+  $handler->display->display_options['relationships']['field_erpal_hb_node_ref_target_id']['table'] = 'field_data_field_erpal_hb_node_ref';
+  $handler->display->display_options['relationships']['field_erpal_hb_node_ref_target_id']['field'] = 'field_erpal_hb_node_ref_target_id';
+  $handler->display->display_options['relationships']['field_erpal_hb_node_ref_target_id']['required'] = TRUE;
   /* Field: User picture - (Partial 0) */
   $handler->display->display_options['fields']['message_render']['id'] = 'message_render';
   $handler->display->display_options['fields']['message_render']['table'] = 'message';
@@ -321,6 +326,7 @@ function erpal_heartbeat_views_default_views() {
 
 '),
     t('User'),
+    t('Content entity referenced from field_erpal_hb_node_ref'),
     t('Name'),
     t('Date'),
     t('Heartbeat Page All'),
