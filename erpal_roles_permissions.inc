@@ -174,6 +174,7 @@ $export = array(
       'view own simple_date date_item',
       'view revisions',
       'view simple_date date_item',
+      'access erpal heartbeat',
       ),
     ),
   'customer' => array(
