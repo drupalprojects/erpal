@@ -22,8 +22,10 @@ function erpal_save_roles_and_configure_permissions(){
   // set permissions configuration
   _erpal_save_roles_permissions($config);
 
+
+  module_load_include('module', 'content_access_view');
   if(function_exists('content_access_view_sync')){
-   content_access_view_sync();
+    content_access_view_sync();
   }
 }
 
@@ -172,6 +174,7 @@ $export = array(
       'view own simple_date date_item',
       'view revisions',
       'view simple_date date_item',
+      'access erpal heartbeat',
       ),
     ),
   'customer' => array(

@@ -142,10 +142,10 @@ projects[better_exposed_filters][subdir] = "contrib"
 projects[field_extrawidgets][version] = "1.1"
 projects[field_extrawidgets][subdir] = "contrib"
 
-projects[ckeditor][version] = "1.12"
+projects[ckeditor][version] = "1.13"
 projects[ckeditor][subdir] = "contrib"
 
-projects[ctools][version] = "1.2"
+projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-1727804-6_0.patch"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-fix-warning-message-1739718-32.patch"
@@ -186,7 +186,7 @@ projects[entityreference][version] = "1.0"
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][patch][] = "http://drupal.org/files/entityreference-1459540-47-workaround-fatal-error.patch"
 
-projects[entityreference_prepopulate][version] = "1.2"
+projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
 
 projects[features][version] = "2.0-beta1"
@@ -300,6 +300,11 @@ projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa
 projects[views_bulk_operations][version] = "3.1"
 projects[views_bulk_operations][subdir] = "contrib"
 
+projects[message][version] = "1.8"
+projects[message][subdir] = "contrib"
+
+projects[message_notify][version] = "2.5"
+projects[message_notify][subdir] = "contrib"
 
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
