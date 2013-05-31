@@ -15,7 +15,7 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
         'ss' => '2',
         'default' => 't',
         'show_toggle' => 't',
-        'uicolor' => 'custom',
+        'uicolor' => 'default',
         'uicolor_user' => 'default',
         'toolbar' => '[
     [\'Source\'],
@@ -50,7 +50,7 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
             'pre_indent' => 0,
           ),
         ),
-        'css_mode' => 'theme',
+        'css_mode' => 'none',
         'css_path' => '',
         'css_style' => 'theme',
         'styles_path' => '',
