@@ -48,6 +48,16 @@ projects[content_access_view][download][type] = "git"
 projects[content_access_view][download][url] = "http://git.drupal.org/project/content_access_view.git"
 projects[content_access_view][download][branch] = "7.x-1.x"
 
+projects[inline_relation_form][subdir] = "contrib"
+projects[inline_relation_form][download][type] = "git"
+projects[inline_relation_form][download][url] = "http://git.drupal.org/project/inline_relation_form.git"
+projects[inline_relation_form][download][branch] = "7.x-1.x"
+
+projects[views_better_combine][subdir] = "contrib"
+projects[views_better_combine][download][type] = "git"
+projects[views_better_combine][download][url] = "http://git.drupal.org/project/views_better_combine.git"
+projects[views_better_combine][download][branch] = "7.x-1.x"
+
 
 ;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
 projects[erpal_core][subdir] = "erpal"

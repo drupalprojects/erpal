@@ -4,7 +4,6 @@
  * erpal_dashboard.features.inc
  */
 
-
 /**
  * Implements hook_homebox().
  */
@@ -26,6 +25,18 @@ function erpal_dashboard_homebox() {
     ),
     'blocks' => 
     array (
+      'timetracking_block' => 
+      array (
+        'module' => 'timetracking',
+        'delta' => 'block',
+        'region' => 1,
+        'movable' => 1,
+        'status' => 1,
+        'open' => 1,
+        'closable' => 1,
+        'title' => '',
+        'weight' => -39,
+      ),
       'views_assigned_tasks-block' => 
       array (
         'module' => 'views',
@@ -48,7 +59,7 @@ function erpal_dashboard_homebox() {
         'open' => 1,
         'closable' => 1,
         'title' => '',
-        'weight' => -23,
+        'weight' => -38,
       ),
       'views_timetracking_entities-block_1' => 
       array (
@@ -62,17 +73,29 @@ function erpal_dashboard_homebox() {
         'title' => '',
         'weight' => -23,
       ),
-      'timetracking_block' => 
+      'views_erpal_heartbeat-block_1' => 
       array (
-        'module' => 'timetracking',
-        'delta' => 'block',
+        'module' => 'views',
+        'delta' => 'erpal_heartbeat-block_1',
+        'region' => 2,
+        'movable' => 1,
+        'status' => 1,
+        'open' => 1,
+        'closable' => 1,
+        'title' => '',
+        'weight' => -39,
+      ),
+      'views_erpal_heartbeat-block_2' => 
+      array (
+        'module' => 'views',
+        'delta' => 'erpal_heartbeat-block_2',
         'region' => 1,
         'movable' => 1,
         'status' => 1,
         'open' => 1,
         'closable' => 1,
         'title' => '',
-        'weight' => -24,
+        'weight' => -37,
       ),
     ),
     'widths' => 
