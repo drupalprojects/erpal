@@ -158,8 +158,6 @@ projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
-projects[ctools][patch][] = "http://drupal.org/files/ctools-1727804-6_0.patch"
-projects[ctools][patch][] = "http://drupal.org/files/ctools-fix-warning-message-1739718-32.patch"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
