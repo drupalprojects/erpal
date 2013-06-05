@@ -203,6 +203,7 @@ projects[front][subdir] = "contrib"
 
 projects[fullcalendar][version] = "2.0"
 projects[fullcalendar][subdir] = "contrib"
+projects[fullcalendar][patch][] = "https://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
