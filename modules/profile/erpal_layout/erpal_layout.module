@@ -6,4 +6,23 @@
 
 include_once 'erpal_layout.features.inc';
 
+/**
+* Implements hook_form_alter
+*/
+function erpal_layout_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_login') {
+    _erpal_layout_user_login_form_alter($form, $form_state);
+  }
+}
+
+/**
+* Alter user login form
+*/
+function _erpal_layout_user_login_form_alter(&$form, &$form_state) {
+  //set focus on username field
+  //drupal_add_js('(function ($) {$("input#edit-name").focus();})(jQuery);', 'inline');
+  $base_path = drupal_get_path('module', 'erpal_layout');
+  drupal_add_js('/'.$base_path.'/js/focus_login.js');
+}
+
 
