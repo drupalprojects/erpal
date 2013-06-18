@@ -330,6 +330,9 @@ libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 libraries[jstree][download][type] = "file"
 libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
 
+libraries[screenshot_paste][download][type] = "file"
+libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
+
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"

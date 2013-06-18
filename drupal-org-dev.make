@@ -291,6 +291,11 @@ projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa
 projects[views_bulk_operations][version] = "3.1"
 projects[views_bulk_operations][subdir] = "contrib"
 
+projects[message][version] = "1.8"
+projects[message][subdir] = "contrib"
+
+projects[message_notify][version] = "2.5"
+projects[message_notify][subdir] = "contrib"
 
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
@@ -305,6 +310,8 @@ libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 libraries[jstree][download][type] = "file"
 libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
 
+libraries[screenshot_paste][download][type] = "file"
+libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
