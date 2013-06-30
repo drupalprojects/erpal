@@ -234,122 +234,147 @@ function _erpal_taxonomy_create_countries_vocabulary(){
     'Austria' => array(
       'name' => 'Austria',
       'vat_rates' => '19',
+      'field_country_code' => 'AT',
     ),
     'Belgium' => array(
       'name' => 'Belgium',
       'vat_rates' => '19',
+      'field_country_code' => 'BE',
     ),
     'Bulgaria' => array(
       'name' => 'Bulgaria',
       'vat_rates' => '19',
+      'field_country_code' => 'BG',
     ),
     'Czeck Republic' => array(
       'name' => 'Czeck Republic',
       'vat_rates' => '19',
-    ),
-    'Denmark' => array(
-      'name' => 'Denmark',
-      'vat_rates' => '19',
-    ),
-    'Estonia' => array(
-      'name' => 'Estonia',
-      'vat_rates' => '19',
-    ),
-    'Germany' => array(
-      'name' => 'Germany',
-      'vat_rates' => '19',
-    ),
-    'Greece' => array(
-      'name' => 'Greece',
-      'vat_rates' => '19',
-    ),
-    'Spain' => array(
-      'name' => 'Spain',
-      'vat_rates' => '19',
-    ),
-    'France' => array(
-      'name' => 'France',
-      'vat_rates' => '19',
-    ),
-    'India' => array(
-      'name' => 'India',
-      'vat_rates' => '19',
-    ),
-    'Ireland' => array(
-      'name' => 'Ireland',
-      'vat_rates' => '19',
-    ),
-    'Italy' => array(
-      'name' => 'Italy',
-      'vat_rates' => '19',
+      'field_country_code' => 'CZ',
     ),
     'Cyprus' => array(
       'name' => 'Cyprus',
       'vat_rates' => '19',
+      'field_country_code' => 'CY',
     ),
-    'Lativa' => array(
-      'name' => 'Latvia',
+    'Denmark' => array(
+      'name' => 'Denmark',
       'vat_rates' => '19',
+      'field_country_code' => 'DK',
     ),
-    'Lithuania' => array(
-      'name' => 'Lithuania',
+    'Estonia' => array(
+      'name' => 'Estonia',
       'vat_rates' => '19',
+      'field_country_code' => 'EE',
+    ),                                   
+    'France' => array(
+      'name' => 'France',
+      'vat_rates' => '19',
+      'field_country_code' => 'FR',
     ),
-    'Luxembourg' => array(
-      'name' => 'Luxembourg',
+    'Germany' => array(
+      'name' => 'Germany',
       'vat_rates' => '19',
+      'field_country_code' => 'DE',
     ),
     'Hungary' => array(
       'name' => 'Hungary',
       'vat_rates' => '19',
+      'field_country_code' => 'HU',
+    ),
+    'India' => array(
+      'name' => 'India',
+      'vat_rates' => '19',
+      'field_country_code' => 'IN',
+    ),
+    'Ireland' => array(
+      'name' => 'Ireland',
+      'vat_rates' => '19',
+      'field_country_code' => 'IE',
+    ),
+    'Italy' => array(
+      'name' => 'Italy',
+      'vat_rates' => '19',
+      'field_country_code' => 'IT',
+    ),
+    'Lativa' => array(
+      'name' => 'Latvia',
+      'vat_rates' => '19',
+      'field_country_code' => 'LV',
+    ),
+    'Lithuania' => array(
+      'name' => 'Lithuania',
+      'vat_rates' => '19',
+      'field_country_code' => 'LT',
+    ),
+    'Luxembourg' => array(
+      'name' => 'Luxembourg',
+      'vat_rates' => '19',
+      'field_country_code' => 'LU',
     ),
     'Malta' => array(
       'name' => 'Malta',
       'vat_rates' => '19',
+      'field_country_code' => 'MT',
     ),
     'Netherlands' => array(
       'name' => 'Netherlands',
       'vat_rates' => '19',
+      'field_country_code' => 'NL',
     ),
     'Poland' => array(
       'name' => 'Poland',
       'vat_rates' => '19',
+      'field_country_code' => 'PL',
     ),
     'Portugal' => array(
       'name' => 'Portugal',
       'vat_rates' => '19',
+      'field_country_code' => 'PT',
     ),
     'Romania' => array(
       'name' => 'Romania',
       'vat_rates' => '19',
+      'field_country_code' => 'RO',
     ),
     'Slovenia' => array(
       'name' => 'Slovenia',
       'vat_rates' => '19',
+      'field_country_code' => 'SI',
     ),
     'Slovakia' => array(
       'name' => 'Slovakia',
       'vat_rates' => '19',
+      'field_country_code' => 'SK',
     ),
-    'Swizerland' => array(
+    'Spain' => array(     
+      'name' => 'Spain',  
+      'vat_rates' => '19',
+      'field_country_code' => 'ES',
+    ),  
+    'Switzerland' => array(
       'name' => 'Swizerland',
       'vat_rates' => '19',
+      'field_country_code' => 'CH',
     ),
     'Finland' => array(
       'name' => 'Finland',
       'vat_rates' => '19',
+      'field_country_code' => 'FI',
     ),
     'Sweden' => array(
       'name' => 'Sweden',
       'vat_rates' => '19',
+      'field_country_code' => 'SE',
     ),
     'United Kingdom' => array(
       'name' => 'United Kingdom',
       'vat_rates' => '19',
+      'field_country_code' => 'UK',
     ),
     'United States' => array(
       'name' => 'United States',
       'vat_rates' => '19',
+      'field_country_code' => 'US',
     ),
   );
   erpal_taxonomy_add($countries_vocabulary, $countries_terms);
@@ -479,6 +504,7 @@ function erpal_taxonomy_add($vocabulary, $names){
   $vat_rates = array_key_exists('vat_rates', reset($names));
   $allow_grouping = array_key_exists('allow_grouping', reset($names));
   $term_image = array_key_exists('term_image', reset($names));
+  $country_code = array_key_exists('field_country_code', reset($names));
   
   // Delete all existing terms with the same id
   if($existing_terms = taxonomy_get_tree($vocabulary->vid)){
@@ -503,18 +529,18 @@ function erpal_taxonomy_add($vocabulary, $names){
 	    $file = file_save_data($file, $filename, FILE_EXISTS_REPLACE);
 	    
 	    // 
-	    $term->field_term_image = array(
-	      LANGUAGE_NONE => array(
-	        0 => (array) $file,
-	      ),
-	    );
+	    $term->field_term_image[LANGUAGE_NONE][0] = (array) $file;
 	  }
+    
+    if($country_code){
+      $term->field_country_code[LANGUAGE_NONE][0] = array(
+        'value' => $fields['field_country_code'],
+      );
+    }
 	  
 	  if($semantic_process){
-	    $term->field_simple_process_status = array(
-	      LANGUAGE_NONE => array(
-	        0 => array('value' => $fields['semantic_process'])
-	      )
+	    $term->field_simple_process_status[LANGUAGE_NONE][0] = array(
+	      'value' => $fields['semantic_process'],
 	    );
 	  }
 	    

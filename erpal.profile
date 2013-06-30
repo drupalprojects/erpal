@@ -179,6 +179,7 @@ function erpal_last_config_steps(){
  */
 function erpal_contact_information_form($form, &$form_state){
   drupal_set_title(st('Contact information'));
+  
   $form = array();  
   $form['contact_name'] = array(
     '#type' => 'fieldset',
@@ -188,6 +189,7 @@ function erpal_contact_information_form($form, &$form_state){
   $form['contact_name']['company_name'] = array(
     '#type' => 'textfield',    
     '#title' => st('Company name:'),
+    '#maxlength' => 255,
     '#required' => TRUE,
   );
   $form['company_address'] = array(
@@ -197,16 +199,19 @@ function erpal_contact_information_form($form, &$form_state){
   $form['company_address']['street'] = array(
     '#title' => st('Street:'),
     '#type' => 'textfield', 
+    '#maxlength' => 255,
     '#required' => TRUE,     
   );
   $form['company_address']['zip_code'] = array(
     '#title' => st('ZIP-Code:'),
     '#type' => 'textfield',
+    '#maxlength' => 10,
     '#required' => TRUE,
   );
   $form['company_address']['city'] = array(
     '#title' => st('City:'),
     '#type' => 'textfield',
+    '#maxlength' => 80,
     '#required' => TRUE,
   );
   
@@ -226,11 +231,13 @@ function erpal_contact_information_form($form, &$form_state){
   $form['contact_information']['phone_number'] = array(
     '#title' => st('Phone number:'),
     '#type' => 'textfield',
+    '#maxlength' => 255,
     '#required' => TRUE,
   );
   $form['contact_information']['email_address'] = array(
     '#title' => st('Email:'),
     '#type' => 'textfield',
+    '#maxlength' => 255,
     '#required' => TRUE,
   
   );
