@@ -133,6 +133,7 @@ dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations
 dependencies[] = entityreference_unique
 dependencies[] = references_dialog_insert
+dependencies[] = screenshot_paste
 
 ; features 
 dependencies[] = erpal_basic
