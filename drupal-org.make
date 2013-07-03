@@ -70,6 +70,12 @@ projects[views_better_combine][download][url] = "http://git.drupal.org/project/v
 projects[views_better_combine][download][branch] = "7.x-stable"
 ;projects[views_better_combine][download][tag] = TAG_PLACEHOLDER
 
+projects[bs_uniquenode][subdir] = "contrib"
+projects[bs_uniquenode][download][type] = "git"
+projects[bs_uniquenode][download][url] = "http://git.drupal.org/project/bs_uniquenode.git"
+projects[bs_uniquenode][download][branch] = "7.x-stable"
+;projects[bs_uniquenode][download][tag] = TAG_PLACEHOLDER
+
 ;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
 projects[erpal_core][subdir] = "erpal"
 projects[erpal_core][download][type] = "git"
@@ -158,6 +164,7 @@ projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
+projects[ctools][patch][] = "https://drupal.org/files/ctools-1925018-61.patch"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
@@ -223,6 +230,7 @@ projects[front][subdir] = "contrib"
 
 projects[fullcalendar][version] = "2.0"
 projects[fullcalendar][subdir] = "contrib"
+projects[fullcalendar][patch][] = "https://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
@@ -327,6 +335,9 @@ libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 
 libraries[jstree][download][type] = "file"
 libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
+
+libraries[screenshot_paste][download][type] = "file"
+libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
 
 ; Themes
