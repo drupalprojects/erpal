@@ -164,6 +164,7 @@ projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
+projects[ctools][patch][] = "https://drupal.org/files/ctools-1925018-61.patch"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
@@ -229,6 +230,7 @@ projects[front][subdir] = "contrib"
 
 projects[fullcalendar][version] = "2.0"
 projects[fullcalendar][subdir] = "contrib"
+projects[fullcalendar][patch][] = "https://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
@@ -333,6 +335,9 @@ libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 
 libraries[jstree][download][type] = "file"
 libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
+
+libraries[screenshot_paste][download][type] = "file"
+libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
 
 ; Themes

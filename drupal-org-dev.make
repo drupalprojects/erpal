@@ -138,6 +138,7 @@ projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
+projects[ctools][patch][] = "https://drupal.org/files/ctools-1925018-61.patch"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
@@ -203,6 +204,7 @@ projects[front][subdir] = "contrib"
 
 projects[fullcalendar][version] = "2.0"
 projects[fullcalendar][subdir] = "contrib"
+projects[fullcalendar][patch][] = "https://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
@@ -289,6 +291,11 @@ projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa
 projects[views_bulk_operations][version] = "3.1"
 projects[views_bulk_operations][subdir] = "contrib"
 
+projects[message][version] = "1.8"
+projects[message][subdir] = "contrib"
+
+projects[message_notify][version] = "2.5"
+projects[message_notify][subdir] = "contrib"
 
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
@@ -303,6 +310,8 @@ libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 libraries[jstree][download][type] = "file"
 libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
 
+libraries[screenshot_paste][download][type] = "file"
+libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
