@@ -70,6 +70,12 @@ projects[views_better_combine][download][url] = "http://git.drupal.org/project/v
 projects[views_better_combine][download][branch] = "7.x-stable"
 ;projects[views_better_combine][download][tag] = TAG_PLACEHOLDER
 
+projects[bs_uniquenode][subdir] = "contrib"
+projects[bs_uniquenode][download][type] = "git"
+projects[bs_uniquenode][download][url] = "http://git.drupal.org/project/bs_uniquenode.git"
+projects[bs_uniquenode][download][branch] = "7.x-stable"
+;projects[bs_uniquenode][download][tag] = TAG_PLACEHOLDER
+
 ;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
 projects[erpal_core][subdir] = "erpal"
 projects[erpal_core][download][type] = "git"
