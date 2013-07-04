@@ -186,8 +186,10 @@ projects[features][patch][] = "http://drupal.org/files/1721926.features.field-we
 projects[field_collection][version] = "1.0-beta5"
 projects[field_collection][subdir] = "contrib"
 projects[field_collection][patch][] = "http://drupal.org/files/field_collection-1679328-1.patch"
+
 projects[field_collection_table][version] = "1.0-beta1"
 projects[field_collection_table][subdir] = "contrib"
+projects[field_collection_table][patch][] = "https://drupal.org/files/field-collection-table-1877218.patch"
 
 projects[field_group][version] = "1.1"
 projects[field_group][subdir] = "contrib"
