@@ -1,8 +1,0 @@
-name = Views better combine
-description = Better combine filter for views
-core = 7.x
-package = Views
-
-dependencies[] = views
-
-files[] = views_better_combine_handler_filter.inc
