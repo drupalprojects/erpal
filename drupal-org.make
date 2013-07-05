@@ -182,7 +182,7 @@ projects[date][version] = "2.6"
 projects[date][subdir] = "contrib"
 projects[date][patch][] = "http://drupal.org/files/date-date_limit_format-static-cache-1835184-5.patch"
 
-projects[ds][version] = "1.7"
+projects[ds][version] = "1.8"
 projects[ds][subdir] = "contrib"
 
 projects[editablefields][version] = "1.x"
@@ -260,7 +260,7 @@ projects[panels_style_collapsible][version] = "1.0"
 projects[panels_style_collapsible][subdir] = "contrib"
 
 projects[path_breadcrumbs][subdir] = "contrib"
-projects[path_breadcrumbs][version] = "3.0-beta2"
+projects[path_breadcrumbs][version] = "3.0-beta3"
 
 projects[pathauto][version] = "1.2"
 projects[pathauto][subdir] = "contrib"
@@ -298,7 +298,7 @@ projects[token][subdir] = "contrib"
 projects[serial][version] = "1.2"
 projects[serial][subdir] = "contrib"
 
-projects[services][version] = "3.3"
+projects[services][version] = "3.4"
 projects[services][subdir] = "contrib"
 
 projects[views][version] = "3.7"
