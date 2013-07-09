@@ -234,6 +234,10 @@ function _erpal_various_settings(&$context){
     'working_times', 
   );
   variable_set('views_savedsearches', $views);
+  
+  //set variables for messages purging
+  variable_set('message_purge_enable', true);
+  variable_set('message_purge_days', 14);
 }
 
 /**
@@ -335,9 +339,9 @@ function _erpal_calendar_config(&$context){
 function _erpal_invoice_config(&$context){
   $context['message'] = st('Configured ERPAL-Invoice');
   //set default vat-rate for erpal invoice
-  $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%#Steuerbefreiung nach §3a Abs. 2 UstG.';
+  $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%';
   variable_set('erpal_invoice_vat_rates_string', $vatRates);
-  variable_set('erpal_invoice_default_vat_rate', '19'); 
+  variable_set('erpal_invoice_default_vat_rate', '19.000'); 
   
   $manualNote = 'Thanks for your order. Please pay the amount of [erpal_invoice:total]'
     . '[erpal_invoice:currency] till [erpal_invoice:invoice_date].'

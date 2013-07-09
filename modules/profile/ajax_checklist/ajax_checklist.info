@@ -1,0 +1,7 @@
+name = Ajax Checklist
+description = Creates filter-driven checklists with ajax updating to the database
+package = Other
+project = "ajax_checklist"
+core = 7.x
+
+files[] = ajax_checklist.info

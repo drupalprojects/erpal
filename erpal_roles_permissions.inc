@@ -7,12 +7,26 @@
  
  
 /**
- * Creates userroles defined in _erpal_roles_permissions_user_default_roles() and 
- * configures permissions as defined in _erpal_roles_permissions_user_default_permissions
+ * Creates userroles and configures permissions as defined in  _erpal_roles_permissions_get_config()
  */
 function erpal_save_roles_and_configure_permissions(){
+  
+  // Remove all permissions from the database:
+  db_delete('role_permission')->execute();
+  drupal_static_reset('user_access');
+  drupal_static_reset('user_role_permissions');
+    
+  // Get permission configuration
   $config = _erpal_roles_permissions_get_config();
+  
+  // set permissions configuration
   _erpal_save_roles_permissions($config);
+
+
+  module_load_include('module', 'content_access_view');
+  if(function_exists('content_access_view_sync')){
+    content_access_view_sync();
+  }
 }
 
 /**
@@ -142,6 +156,7 @@ $export = array(
       'unflag bookmark_flag',
       'unflag project_subscriptions',
       'unflag task_subscriptions',
+      'use text format filtered_html',
       'view own contract profile',
       'view own erpal_book content',
       'view own erpal_book_page content',
@@ -159,6 +174,7 @@ $export = array(
       'view own simple_date date_item',
       'view revisions',
       'view simple_date date_item',
+      'access erpal heartbeat',
       ),
     ),
   'customer' => array(
@@ -230,13 +246,16 @@ $export = array(
       'update any simple_date date_item',
       'update own simple_date date_item',
       'use quick timetracking',
+      'use text format full_html',
       'view any erpal_contact content',
       'view any erpal_file content',
       'view any erpal_project content',
+      'view any erpal_project_release content',
       'view any erpal_task content',
       'view any main profile',
       'view any timetracking',
       'view own erpal_contact content',
+      'view own erpal_project_release content',
       'view timekeeping',
       ),
     ),
@@ -265,6 +284,7 @@ $export = array(
       'update any simple_date date_item',
       'update own simple_date date_item',
       'use quick timetracking',
+      'use text format full_html',
       'view timekeeping',
       ),
     ),
@@ -345,13 +365,13 @@ $export = array(
       'update any simple_date date_item',
       'update own simple_date date_item',
       'use quick timetracking',
+      'use text format full_html',
       'view any billable',
       'view any budget',
       'view any erpal_book content',
       'view any erpal_book_page content',
       'view any erpal_contact content',
       'view any erpal_contract content',
-      'view any erpal_crm_activity content',
       'view any erpal_file content',
       'view any erpal_invoice content',
       'view any erpal_project content',
@@ -419,12 +439,12 @@ $export = array(
       'update any simple_date date_item',
       'update own simple_date date_item',
       'use quick timetracking',
+      'use text format full_html',
       'view any contract profile',
       'view any erpal_book content',
       'view any erpal_book_page content',
       'view any erpal_contact content',
       'view any erpal_contract content',
-      'view any erpal_crm_activity content',
       'view any erpal_file content',
       'view any erpal_invoice content',
       'view any erpal_project content',
@@ -509,6 +529,7 @@ $export = array(
       'update any simple_date date_item',
       'update own simple_date date_item',
       'use quick timetracking',
+      'use text format full_html',
       'view any erpal_book content',
       'view any erpal_book_page content',
       'view any erpal_contact content',
@@ -553,6 +574,7 @@ $export = array(
       'create erpal_date content',
       'create erpal_invoice content',
       'create erpal_project content',
+      'create erpal_project_release content',
       'create erpal_timetracking content',
       'create erpal_working_time content',
       'create relations',
@@ -565,6 +587,7 @@ $export = array(
       'delete any erpal_file content',
       'delete any erpal_invoice content',
       'delete any erpal_project content',
+      'delete any erpal_project_release content',
       'delete any erpal_task content',
       'delete any erpal_timetracking content',
       'delete any erpal_working_time content',
@@ -578,6 +601,7 @@ $export = array(
       'delete own erpal_file content',
       'delete own erpal_invoice content',
       'delete own erpal_project content',
+      'delete own erpal_project_release content',
       'delete own erpal_timetracking content',
       'delete own erpal_working_time content',
       'delete relations',
@@ -592,6 +616,7 @@ $export = array(
       'edit any erpal_file content',
       'edit any erpal_invoice content',
       'edit any erpal_project content',
+      'edit any erpal_project_release content',
       'edit any erpal_task content',
       'edit any erpal_timetracking content',
       'edit any erpal_working_time content',
@@ -604,6 +629,7 @@ $export = array(
       'edit own erpal_date content',
       'edit own erpal_invoice content',
       'edit own erpal_project content',
+      'edit own erpal_project_release content',
       'edit own erpal_timetracking content',
       'edit own erpal_working_time content',
       'edit relations',
@@ -616,13 +642,16 @@ $export = array(
       'update any simple_date date_item',
       'update own simple_date date_item',
       'use quick timetracking',
+      'use text format full_html',
       'view any billable',
       'view any budget',
       'view any erpal_book content',
       'view any erpal_book_page content',
       'view any erpal_contact content',
+      'view any erpal_crm_activity content',
       'view any erpal_file content',
       'view any erpal_project content',
+      'view any erpal_project_release content',
       'view any erpal_task content',
       'view any erpal_timetracking content',
       'view any erpal_working_time content',
@@ -630,6 +659,7 @@ $export = array(
       'view any timekeeping',
       'view any timetracking',
       'view own erpal_contact content',
+      'view own erpal_project_release content',
       'view timekeeping',
       ),
     ),

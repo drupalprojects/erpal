@@ -57,7 +57,6 @@ dependencies[] = entityreference
 dependencies[] = entityreference_prepopulate
 dependencies[] = entitycache
 dependencies[] = features
-dependencies[] = features_plumber
 dependencies[] = field_collection
 dependencies[] = field_collection_table
 dependencies[] = field_group
@@ -101,9 +100,12 @@ dependencies[] = views_bulk_operations
 dependencies[] = views_content
 dependencies[] = views_jstree
 dependencies[] = views_calc
+dependencies[] = views_gantt
 dependencies[] = colors
 dependencies[] = maxlength
 dependencies[] = nodechanges
+dependencies[] = message
+dependencies[] = message_notify
 
 ; custom
 dependencies[] = acl
@@ -133,6 +135,12 @@ dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations
 dependencies[] = entityreference_unique
 dependencies[] = references_dialog_insert
+dependencies[] = screenshot_paste
+dependencies[] = views_better_combine
+dependencies[] = erpal_project_notify
+dependencies[] = inline_relation_form
+dependencies[] = bs_uniquenode
+
 
 ; features 
 dependencies[] = erpal_basic
@@ -160,6 +168,10 @@ dependencies[] = erpal_profile
 dependencies[] = erpal_project
 dependencies[] = erpal_project_ui
 dependencies[] = erpal_wysiwyg
+dependencies[] = erpal_project_release
+dependencies[] = erpal_project_release_ui
+dependencies[] = erpal_heartbeat
+
 
 dependencies[] = erpal_layout
 
