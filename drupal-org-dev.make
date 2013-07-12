@@ -179,7 +179,7 @@ projects[entityreference][patch][] = "http://drupal.org/files/entityreference-14
 projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
 
-projects[features][version] = "2.0-beta1"
+projects[features][version] = "2.0-rc1"
 projects[features][subdir] = "contrib"
 projects[features][patch][] = "http://drupal.org/files/1721926.features.field-weight-ping-pong.patch"
 
