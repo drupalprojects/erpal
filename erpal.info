@@ -124,6 +124,7 @@ dependencies[] = erpal_contract_helper
 dependencies[] = erpal_crm_helper
 dependencies[] = erpal_dashboard_helper
 dependencies[] = erpal_docs_helper
+dependencies[] = erpal_docs_access
 dependencies[] = erpal_hacks_helper
 dependencies[] = erpal_invoice_helper
 dependencies[] = erpal_layout_helper
