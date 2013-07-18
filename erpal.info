@@ -153,6 +153,7 @@ dependencies[] = erpal_bookmark
 dependencies[] = erpal_bookmark_ui
 dependencies[] = erpal_calendar
 dependencies[] = erpal_calendar_ui
+dependencies[] = erpal_calendar_crm
 dependencies[] = erpal_contract 
 dependencies[] = erpal_contract_ui
 dependencies[] = erpal_crm
