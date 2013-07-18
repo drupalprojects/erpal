@@ -156,6 +156,7 @@ dependencies[] = erpal_calendar_ui
 dependencies[] = erpal_calendar_crm
 dependencies[] = erpal_contract 
 dependencies[] = erpal_contract_ui
+dependencies[] = erpal_contract_crm
 dependencies[] = erpal_crm
 dependencies[] = erpal_crm_ui
 dependencies[] = erpal_crm_tasks
