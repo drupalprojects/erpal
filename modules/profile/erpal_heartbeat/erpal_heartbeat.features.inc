@@ -36,7 +36,7 @@ function erpal_heartbeat_default_message_type() {
       "token options" : { "clear" : 1 },
       "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
     },
-    "language" : "de",
+    "language" : "en",
     "arguments" : null,
     "message_text" : {
       "de" : [
@@ -47,7 +47,7 @@ function erpal_heartbeat_default_message_type() {
       ],
       "en" : [
         {
-          "value" : "[message:timestamp:erpal_date_time]: \\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation]ed a comment \\u0022[message:field-erpal-hb-comment-ref:comment-body:value]\\u0022 at [message:field-erpal-hb-node-ref:content-type] \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E",
+          "value" : "\\u003Cdiv class=\\u0022hb_date_time\\u0022\\u003E[message:timestamp:erpal_date_time]\\u003C\\/div\\u003E\\u003Cdiv class=\\u0022hb_content\\u0022\\u003E: \\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation]ed a comment \\u0022[message:field-erpal-hb-comment-ref:comment-body:value]\\u0022 at [message:field-erpal-hb-node-ref:content-type] \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E\\u003C\\/div\\u003E\\r\\n",
           "format" : "full_html"
         }
       ],
@@ -73,18 +73,18 @@ function erpal_heartbeat_default_message_type() {
       "token options" : { "clear" : 1 },
       "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
     },
-    "language" : "de",
+    "language" : "en",
     "arguments" : [],
     "message_text" : {
       "de" : [
         {
-          "value" : "[message:timestamp:erpal_date_time]: \\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation] a [message:field-erpal-hb-node-ref:content-type] at \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E\\r\\n",
+          "value" : "\\u003Cdiv class=\\u0022hb_date_time\\u0022\\u003E[message:timestamp:erpal_date_time]\\u003C\\/div\\u003E\\u003Cdiv class=\\u0022hb_content\\u0022\\u003E: \\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation]ed a comment \\u0022[message:field-erpal-hb-comment-ref:comment-body:value]\\u0022 at [message:field-erpal-hb-node-ref:content-type] \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E\\u003C\\/div\\u003E",
           "format" : "full_html"
         }
       ],
       "en" : [
         {
-          "value" : "[message:timestamp:erpal_date_time]: \\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation] a [message:field-erpal-hb-node-ref:content-type] at \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E",
+          "value" : "\\u003Cdiv class=\\u0022hb_date_time\\u0022\\u003E[message:timestamp:erpal_date_time]\\u003C\\/div\\u003E\\n\\n\\u003Cdiv class=\\u0022hb_content\\u0022\\u003E: \\u003Ca href=\\u0022[message:user:url]\\u0022\\u003E[message:user:name]\\u003C\\/a\\u003E [message:field_erpal_hb_operation] a [message:field-erpal-hb-node-ref:content-type] at \\u003Ca href=\\u0022[message:field-erpal-hb-node-ref:url]\\u0022\\u003E[message:field-erpal-hb-node-ref:title]\\u003C\\/a\\u003E\\u003C\\/div\\u003E\\n",
           "format" : "full_html"
         }
       ],
