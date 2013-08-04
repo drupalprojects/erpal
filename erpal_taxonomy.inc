@@ -356,6 +356,11 @@ function _erpal_taxonomy_create_countries_vocabulary(){
       'vat_rates' => '19',
       'field_country_code' => 'CH',
     ),
+    'South Africa' => array(
+      'name' => 'South Africa',
+      'vat_rates' => '19',
+      'field_country_code' => 'ZA',
+    ),
     'Finland' => array(
       'name' => 'Finland',
       'vat_rates' => '19',
