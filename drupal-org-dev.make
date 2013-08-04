@@ -155,7 +155,7 @@ projects[conditional_fields][download][type] = "git"
 projects[conditional_fields][download][url] = "http://git.drupal.org/project/conditional_fields.git"
 projects[conditional_fields][download][revision] = "cd29b003a592d375f3fdb4c46f5639d0f26ed0be"
 
-projects[content_access][version] = "1.2-beta1"
+projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
 
 projects[date][version] = "2.6"
