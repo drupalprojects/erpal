@@ -181,9 +181,8 @@ projects[features][version] = "2.0-rc1"
 projects[features][subdir] = "contrib"
 projects[features][patch][] = "http://drupal.org/files/1721926.features.field-weight-ping-pong.patch"
 
-projects[features_override][version] = "2.0-beta2"
+projects[features_override][version] = "2.0-beta3"
 projects[features_override][subdir] = "contrib"
-projects[features_override][patch][] = "https://drupal.org/files/features_override_array_filter-1915318-2.patch"
 
 projects[field_collection][version] = "1.0-beta5"
 projects[field_collection][subdir] = "contrib"
