@@ -43,6 +43,12 @@ projects[date_item][download][type] = "git"
 projects[date_item][download][url] = "http://git.drupal.org/project/date_item.git"
 projects[date_item][download][branch] = "7.x-1.x"
 
+projects[aul][subdir] = "contrib"
+projects[aul][download][type] = "git"
+projects[aul][download][url] = "http://git.drupal.org/project/aul.git"
+projects[aul][download][branch] = "7.x-stable"
+;projects[aul][download][tag] = TAG_PLACEHOLDER
+
 projects[content_access_view][subdir] = "contrib"
 projects[content_access_view][download][type] = "git"
 projects[content_access_view][download][url] = "http://git.drupal.org/project/content_access_view.git"
