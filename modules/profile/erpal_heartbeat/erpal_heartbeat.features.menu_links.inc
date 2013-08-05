@@ -17,8 +17,11 @@ function erpal_heartbeat_menu_default_menu_links() {
     'router_path' => 'heartbeat/all',
     'link_title' => 'Heartbeat',
     'options' => array(
-      'attributes' => array(
-        'title' => '',
+      'attributes' => array(),
+      'item_attributes' => array(
+        'id' => 'erpal_menu_heartbeat',
+        'class' => 'heartbeat',
+        'style' => '',
       ),
     ),
     'module' => 'menu',
