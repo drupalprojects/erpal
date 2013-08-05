@@ -318,6 +318,14 @@ projects[views_php][download][type] = "git"
 projects[views_php][download][url] = "http://git.drupal.org/project/views_php.git"
 projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa6f6"
 
+projects[menu_attributes][subdir] = "contrib"
+projects[menu_attributes][version] = "1.x-dev"
+projects[menu_attributes][download][type] = "git"
+projects[menu_attributes][download][url] = "http://git.drupal.org/project/menu_attributes.git"
+projects[menu_attributes][download][revision] = "ee015518326ed04bbd13828b89cacc415ac5c78e"
+projects[menu_attributes][patch][] = "http://drupal.org/files/menu_attributes-attributes_for_li-1488960-25.patch"
+; we use this commit as the patch only works with this commit. As soon as there is a new release with this patch, we use the new release
+
 projects[views_bulk_operations][version] = "3.1"
 projects[views_bulk_operations][subdir] = "contrib"
 

@@ -73,6 +73,7 @@ dependencies[] = jquery_ui_multiselect_widget
 dependencies[] = jquery_update
 dependencies[] = libraries
 dependencies[] = link
+dependencies[] = menu_attributes
 dependencies[] = page_manager
 dependencies[] = panels
 dependencies[] = panels_everywhere
