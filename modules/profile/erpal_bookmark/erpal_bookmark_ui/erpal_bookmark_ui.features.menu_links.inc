@@ -17,16 +17,19 @@ function erpal_bookmark_ui_menu_default_menu_links() {
     'router_path' => 'user/bookmarks',
     'link_title' => 'My bookmarks',
     'options' => array(
-      'attributes' => array(
-        'title' => '',
+      'attributes' => array(),
+      'item_attributes' => array(
+        'id' => 'user_menu_my_bookmarks',
+        'class' => 'my-bookmarks',
+        'style' => '',
       ),
     ),
     'module' => 'menu',
-    'hidden' => '0',
-    'external' => '0',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '-45',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -45,
   );
   // Translatables
   // Included for use with string extractors like potx.
