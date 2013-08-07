@@ -17,16 +17,19 @@ function erpal_heartbeat_menu_default_menu_links() {
     'router_path' => 'heartbeat/all',
     'link_title' => 'Heartbeat',
     'options' => array(
-      'attributes' => array(
-        'title' => '',
+      'attributes' => array(),
+      'item_attributes' => array(
+        'id' => 'erpal_menu_heartbeat',
+        'class' => 'heartbeat',
+        'style' => '',
       ),
     ),
     'module' => 'menu',
-    'hidden' => '0',
-    'external' => '0',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '-41',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -41,
   );
   // Exported menu link: user-menu:heartbeat
   $menu_links['user-menu:heartbeat'] = array(
@@ -40,11 +43,11 @@ function erpal_heartbeat_menu_default_menu_links() {
       ),
     ),
     'module' => 'menu',
-    'hidden' => '0',
-    'external' => '0',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '-45',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -45,
   );
   // Translatables
   // Included for use with string extractors like potx.

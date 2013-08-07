@@ -8,4 +8,5 @@ includes[] = drupal-org-core.make
 projects[erpal][download][type] = git
 projects[erpal][download][url] = http://git.drupal.org/project/erpal.git
 projects[erpal][download][branch] = 7.x-stable
+;projects[erpal][download][tag] = TAG_PLACEHOLDER
 projects[erpal][type] = profile

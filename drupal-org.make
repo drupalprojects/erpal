@@ -52,6 +52,12 @@ projects[date_item][download][url] = "http://git.drupal.org/project/date_item.gi
 projects[date_item][download][branch] = "7.x-stable"
 ;projects[date_item][download][tag] = TAG_PLACEHOLDER
 
+projects[aul][subdir] = "contrib"
+projects[aul][download][type] = "git"
+projects[aul][download][url] = "http://git.drupal.org/project/aul.git"
+projects[aul][download][branch] = "7.x-stable"
+;projects[aul][download][tag] = TAG_PLACEHOLDER
+
 projects[content_access_view][subdir] = "contrib"
 projects[content_access_view][download][type] = "git"
 projects[content_access_view][download][url] = "http://git.drupal.org/project/content_access_view.git"
@@ -169,11 +175,9 @@ projects[ctools][patch][] = "https://drupal.org/files/ctools-1925018-61.patch"
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
 
-projects[conditional_fields][subdir] = "contrib"
-projects[conditional_fields][version] = "3.x-dev"
-projects[conditional_fields][download][type] = "git"
-projects[conditional_fields][download][url] = "http://git.drupal.org/project/conditional_fields.git"
-projects[conditional_fields][download][revision] = "cd29b003a592d375f3fdb4c46f5639d0f26ed0be"
+projects[field-conditional-state][version] = "1.0"
+projects[field-conditional-state][subdir] = "contrib"
+projects[field-conditional-state][patch][] = "https://drupal.org/files/field-conditional-state-support-for-features-1083554-12.patch"
 
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
@@ -205,9 +209,12 @@ projects[entityreference][patch][] = "http://drupal.org/files/entityreference-14
 projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
 
-projects[features][version] = "2.0-beta1"
+projects[features][version] = "2.0-rc1"
 projects[features][subdir] = "contrib"
 projects[features][patch][] = "http://drupal.org/files/1721926.features.field-weight-ping-pong.patch"
+
+projects[features_override][version] = "2.0-beta3"
+projects[features_override][subdir] = "contrib"
 
 projects[field_collection][version] = "1.0-beta5"
 projects[field_collection][subdir] = "contrib"
@@ -316,6 +323,14 @@ projects[views_php][version] = "1.x-dev"
 projects[views_php][download][type] = "git"
 projects[views_php][download][url] = "http://git.drupal.org/project/views_php.git"
 projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa6f6"
+
+projects[menu_attributes][subdir] = "contrib"
+projects[menu_attributes][version] = "1.x-dev"
+projects[menu_attributes][download][type] = "git"
+projects[menu_attributes][download][url] = "http://git.drupal.org/project/menu_attributes.git"
+projects[menu_attributes][download][revision] = "ed7e9aa882e9bb98d4d30aa13eb463498f1756c2"
+projects[menu_attributes][patch][] = "http://drupal.org/files/menu_attributes-attributes_for_li-1488960-25.patch"
+; we use this commit as the patch only works with this commit. As soon as there is a new release with this patch, we use the new release
 
 projects[views_bulk_operations][version] = "3.1"
 projects[views_bulk_operations][subdir] = "contrib"

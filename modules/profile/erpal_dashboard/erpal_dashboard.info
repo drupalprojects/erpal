@@ -8,5 +8,5 @@ project = erpal_dashboard
 dependencies[] = erpal_dashboard_helper
 dependencies[] = front_page
 dependencies[] = homebox
-features[features_api][] = api:1
+features[features_api][] = api:2
 features[homebox][] = user_dashboard
