@@ -221,6 +221,9 @@ function _erpal_various_settings(&$context){
   
   variable_set('erpal_docs_doc_file_extensions', 'txt pdf doc docx xls xlsx csv bmp jpg jpeg gif png mm ppt pptx bmml');
   
+  //multiselect widget set filter enabled
+  variable_set('jquery_ui_multiselect_widget_filter', true);
+  
   //set saved searches for certain views
   $views = array(
     'assigned_tasks', 
