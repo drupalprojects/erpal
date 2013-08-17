@@ -144,14 +144,15 @@ projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
-projects[ctools][patch][] = "https://drupal.org/files/ctools-1925018-61.patch"
+projects[ctools][patch][] = "http://drupal.org/files/ctools-1925018-61.patch"
+projects[ctools][patch][] = "http://drupal.org/files/ctools-uuids_for_exported_objects-1277908-118.patch"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
 
 projects[field-conditional-state][version] = "1.0"
 projects[field-conditional-state][subdir] = "contrib"
-projects[field-conditional-state][patch][] = "https://drupal.org/files/field-conditional-state-support-for-features-1083554-12.patch"
+projects[field-conditional-state][patch][] = "http://drupal.org/files/field-conditional-state-support-for-features-1083554-12.patch"
 
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
@@ -196,7 +197,7 @@ projects[field_collection][patch][] = "http://drupal.org/files/field_collection-
 
 projects[field_collection_table][version] = "1.0-beta1"
 projects[field_collection_table][subdir] = "contrib"
-projects[field_collection_table][patch][] = "https://drupal.org/files/field-collection-table-1877218.patch"
+projects[field_collection_table][patch][] = "http://drupal.org/files/field-collection-table-1877218.patch"
 
 projects[field_group][version] = "1.1"
 projects[field_group][subdir] = "contrib"
@@ -213,7 +214,7 @@ projects[front][subdir] = "contrib"
 
 projects[fullcalendar][version] = "2.0"
 projects[fullcalendar][subdir] = "contrib"
-projects[fullcalendar][patch][] = "https://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
+projects[fullcalendar][patch][] = "http://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
@@ -233,6 +234,7 @@ projects[link][subdir] = "contrib"
 
 projects[panels][version] = "3.3"
 projects[panels][subdir] = "contrib"
+projects[panels][patch][] = "http://drupal.org/files/panels-uuids_for_exported_objects-1277908-100.patch"
 
 projects[panels_everywhere][version] = "1.0-rc1"
 projects[panels_everywhere][subdir] = "contrib"
@@ -259,7 +261,7 @@ projects[quicktabs][patch][] = "http://drupal.org/files/1940332-set-override_url
 
 projects[references_dialog][version] = "1.0-alpha4"
 projects[references_dialog][subdir] = "contrib"
-projects[references_dialog][patch][] = "https://drupal.org/files/references_dialog-1856978-4.patch"
+projects[references_dialog][patch][] = "http://drupal.org/files/references_dialog-1856978-4.patch"
 
 projects[relation][version] = "1.0-rc4"
 projects[relation][subdir] = "contrib"
@@ -326,10 +328,10 @@ libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEd
 libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 
 libraries[jstree][download][type] = "file"
-libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
+libraries[jstree][download][url] = "http://github.com/vakata/jstree/archive/v.pre1.0.zip"
 
 libraries[screenshot_paste][download][type] = "file"
-libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
+libraries[screenshot_paste][download][url] = "http://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
