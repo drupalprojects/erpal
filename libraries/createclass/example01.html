@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>createClass - Example 1</title>
+	<script type="text/javascript" src="createclass.js"></script>
+	<script type="text/javascript">
+		createClass( "Example01.Animal" );
+		Example01.Animal.prototype.sName	= null;
+		Example01.Animal.prototype.Animal	= function( sName ) {
+			this.sName	= sName;
+		};
+		
+		createClass( "Example01.Dog", "Example01.Animal" );
+		Example01.Dog.prototype.bark		= function() {
+			alert( "Dog barks:\n\nHi, my name is "+this.sName+"." );
+		};
+		
+		var pDog	= new Example01.Dog( "Hans" );
+		pDog.bark();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

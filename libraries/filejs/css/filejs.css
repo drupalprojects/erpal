@@ -1,0 +1,300 @@
+html.boxjs-frame, html.boxjs-frame > body {
+	overflow:hidden;
+}
+
+.uploadbox > .boxjs-box-body {
+	/*overflow:visible;*/
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+
+.uploadbox > .boxjs-box-body > iframe {
+	border-bottom-right-radius:5px;
+	border-bottom-left-radius:5px;
+}
+.filebox.boxjs-not-maximized .boxjs-box-body {
+	height:200px;
+}
+
+.filejs-files-selected #filejs-select-form form,
+.filejs-processing #filejs-select-form form,
+.filejs-finished #filejs-select-form form,
+.filejs-failed #filejs-select-form form {
+	display:none;
+}
+.uploadbox.boxjs-framed-box.boxjs-not-maximized .boxjs-box-body {
+	height:150px;
+}
+.uploadbox.boxjs-framed-box.filejs-files-selected .boxjs-box-body,
+.uploadbox.boxjs-framed-box.filejs-processing .boxjs-box-body,
+.uploadbox.boxjs-framed-box.filejs-finished .boxjs-box-body,
+.uploadbox.boxjs-framed-box.filejs-failed .boxjs-box-body {
+	height:auto;
+	overflow:auto;
+}
+.uploadbox.boxjs-framed-box.boxjs-not-maximized.filejs-files-selected .boxjs-box-body,
+.uploadbox.boxjs-framed-box.boxjs-not-maximized.filejs-processing .boxjs-box-body,
+.uploadbox.boxjs-framed-box.boxjs-not-maximized.filejs-finished .boxjs-box-body,
+.uploadbox.boxjs-framed-box.boxjs-not-maximized.filejs-failed .boxjs-box-body {
+	max-height:200px;
+	overflow:auto;
+	overflow-x:hidden;
+}
+#filejs-select-form form {
+	height:100%;
+	width:100%;
+	position:absolute;
+}
+.boxjs-not-maximized #filejs-select-form form {
+	height:150px;
+}
+#filejs-select-form .drop-target,
+#filejs-select-form .file-input {
+	opacity:0;
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	cursor:pointer;
+}
+
+#filejs-select-form .message-click-here {
+	position:absolute;
+	top:0;
+	width:100%;
+	text-align:center;
+	font-weight:bold;
+	font-size:120%;
+}
+
+#filejs-select-form .message-drop-here {
+	position:absolute;
+	bottom:0;
+	width:100%;
+	text-align:center;
+	color:#CCC;
+}
+
+
+
+.filejs-no-files-selected #filejs-progress-box>.message,
+.filejs-no-files-selected #filejs-progress-box>.list,
+.filejs-no-files-selected #filejs-progress-box>.actions {
+	display:none;
+}
+#filejs-progress-box .progress-bar,
+#filejs-progress-box .progress-bar>.progress-bar-progress {
+	line-height: 24px;
+	display:inline-block;
+	background:#888;
+	height:24px;
+	border:1px solid #777;
+	border-radius:8px;
+	box-shadow:2px 0px 3px rgba(0,0,0,.5);
+	width:100px;
+	font-weight:bold;
+	margin:2px 4px;
+	padding:0px 4px;
+	transition:border-color .33s;
+}
+#filejs-progress-box,
+#filejs-progress-box table {
+	width:100%;
+	max-width:100%;
+	border-collapse:collapse;
+	border-spacing:0;
+}
+#filejs-progress-box th {
+	text-shadow: 1px 1px 0px rgba(0,0,0,.4);
+	color:#AAA;
+}
+#filejs-progress-box td {
+	/*width:25%;
+	word-wrap: break-word;*/
+	padding:2px 4px;
+	text-align:center;
+}
+#filejs-progress-box td .contents {
+	height:20px;
+	/*word-wrap: break-word;*/
+}
+.boxjs-not-maximized #filejs-progress-box td .contents {
+	max-width:130px;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+#filejs-progress-box th.file-preview,
+#filejs-progress-box th.file-size {
+	width:130px;
+}
+.boxjs-maximized #filejs-progress-box th.file-progress,
+.boxjs-maximized #filejs-progress-box th.file-actions {
+	width:25%;
+}
+.boxjs-maximized #filejs-progress-box td.file-progress .progress-bar {
+	width:100%;
+}
+.boxjs-not-maximized #filejs-progress-box .file-preview,
+.boxjs-not-maximized #filejs-progress-box .file-size,
+.filejs-finished #filejs-progress-box .file-progress,
+.filejs-failed #filejs-progress-box .file-progress,
+.filejs-no-files-selected #filejs-progress-box .file-actions,
+.filejs-files-selected #filejs-progress-box .file-actions,
+.filejs-processing #filejs-progress-box .file-actions,
+.filejs-failed #filejs-progress-box .file-actions {
+	display:none;
+}
+#filejs-progress-box img {
+	max-width:100%;
+	max-height:100px;
+	margin:0;
+}
+#filejs-progress-box .progress-bar {
+	text-align: left;
+	padding:0;
+	margin:0;
+	box-shadow:inset 0px 0px 5px rgba(0,0,0,.5);
+}
+.filejs-processing #filejs-progress-box .progress-bar {
+	border-color:#AAA;
+	box-shadow: inset 0px 0px 8px rgba(0,0,0,1);
+}
+.filejs-processing #filejs-progress-box .progress-bar>.progress-bar-progress {
+	height:22px;
+}
+#filejs-progress-box .progress-bar>.progress-bar-progress {
+	text-align:center;
+	width:0px;
+	padding:0px;
+	margin:0;
+	border:1px solid #BBB;
+	border-radius:6px;
+	border-right-width:2px;
+	
+	background: #57b329; /* Old browsers */
+	background: -moz-linear-gradient(top, #57b329 0%, #448d20 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#57b329), color-stop(100%,#448d20)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #57b329 0%,#448d20 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #57b329 0%,#448d20 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #57b329 0%,#448d20 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #57b329 0%,#448d20 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#57b329', endColorstr='#448d20',GradientType=0 ); /* IE6-9 */
+}
+#filejs-progress-box .progress-bar.disabled>.progress-bar-progress {
+	display:none;
+}
+#filejs-progress-box>.message {
+	display:none;
+}
+#filejs-progress-box>.actions {
+	margin-top:20px;
+}
+.boxjs-maximized #filejs-progress-box>.actions {
+	margin-top:60px;
+}
+/*.filejs-inactive #filejs-progress-box .boxjs-box-action-add_file { display:none; }*/
+.filejs-inactive #filejs-progress-box .boxjs-box-action-add_file input { display:none; }
+#filejs-progress-box .boxjs-box-action-add_file .icon {
+	float:left;
+}
+#filejs-progress-box .boxjs-box-action-add_file .caption {
+	float:left;
+	width:56px;
+}
+#filejs-progress-box .boxjs-box-action-add_file .file-input {
+	height:24px;
+	clear:both;
+	margin-left:-100px;
+	width:100px;
+	opacity:0;
+	cursor:pointer;
+}
+#filejs-progress-box .boxjs-box-action-view_file .icon { width:24px; background:url('img/view-file.png') center center no-repeat; }
+#filejs-progress-box .boxjs-box-action-add_file .icon { width:24px; background:url('img/add-file.png') center center no-repeat; }
+#filejs-progress-box .boxjs-box-action-upload_files .icon { width:24px; background:url('img/upload-files.png') center center no-repeat; }
+#filejs-progress-box .boxjs-box-action-cancel_upload .icon { width:24px; background:url('img/cancel-upload.png') center center no-repeat; }
+#filejs-progress-box .file-actions>.boxjs-box-action .caption,
+#filejs-progress-box .actions>.boxjs-box-action .caption {
+	line-height:24px;
+	display:inline-block;
+	cursor:pointer;
+	vertical-align: top;
+	margin:0px 10px 0px 4px;
+}
+.filejs-no-files-selected #filejs-progress-box .boxjs-box-action-upload_files,
+.filejs-no-files-selected #filejs-progress-box .boxjs-box-action-cancel_upload,
+.filejs-files-selected #filejs-progress-box .boxjs-box-action-cancel_upload,
+.filejs-processing #filejs-progress-box .boxjs-box-action-add_file,
+.filejs-processing #filejs-progress-box .boxjs-box-action-upload_files,
+.filejs-finished #filejs-progress-box .boxjs-box-action-add_file,
+.filejs-finished #filejs-progress-box .boxjs-box-action-upload_files,
+.filejs-finished #filejs-progress-box .boxjs-box-action-cancel_upload,
+.filejs-failed #filejs-progress-box .boxjs-box-action-add_file,
+.filejs-failed #filejs-progress-box .boxjs-box-action-upload_files,
+.filejs-failed #filejs-progress-box .boxjs-box-action-cancel_upload {
+	display:none;
+}
+/*.filejs-not-processing #filejs-progress-box .boxjs-box-action-add_file,
+.filejs-not-processing #filejs-progress-box .boxjs-box-action-upload_files,
+.filejs-processing #filejs-progress-box .boxjs-box-action-cancel_upload {
+	display:inline-block;
+}*/
+
+.filejs-file-preview {
+	text-align:center;
+}
+.boxjs-not-maximized .filejs-file-preview img {
+	max-width:250px;
+	max-height:200px;
+}
+.boxjs-maximized .filejs-file-preview img {
+	max-height:100%;
+}
+
+
+
+.doesnt-support-file-drop .drop-target {
+	display:none;
+}
+
+.doesnt-support-file-drop.doesnt-support-file-input-drop #filejs-select-form .message-click-here {
+	top:auto;
+	width:auto;
+	margin:auto;
+}
+
+.doesnt-support-file-drop.doesnt-support-file-input-drop #filejs-select-form .message-drop-here {
+	display:none;
+}
+
+
+
+.filejs-dragging .uploadbox.supports-xhr-file-upload.supports-file-drop {
+	border-color:#d80084;
+}
+.filejs-dragging .uploadbox.supports-xhr-file-upload.supports-file-drop .boxjs-box-head {
+	background:#d80084;
+}
+
+
+.uploadbox .drop-target {
+	display:none;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+	position:fixed;
+	z-index:1001;
+}
+.filejs-dragging .uploadbox.supports-xhr-file-upload.supports-file-drop .file-input {
+	display:none; /* IE won't let us set this element to the back, no matter what z-index used. smart shit. */
+}
+.filejs-dragging .uploadbox.supports-xhr-file-upload.supports-file-drop .drop-target {
+	display:block;
+}
+.filejs-dragging .uploadbox.supports-xhr-file-upload.supports-file-drop .boxjs-box-body {
+	background:#d80084;
+}

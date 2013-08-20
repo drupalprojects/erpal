@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Inter Tab JS - Example 1</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="../createclass/createclass.js"></script>
+	<script type="text/javascript" src="../web-filesystem/web-filesystem.js"></script>
+	<script type="text/javascript" src="inter-tab-js.js"></script>
+	<script type="text/javascript">
+		
+		$( function() {
+			
+			function log( sMessage ) {
+				
+				$('<div class="message" />')
+					.text( sMessage )
+					.appendTo( $('#log') );
+				
+			}
+			
+			$(window).on( 'sample_event', null, null, function(e,pEventData,iTimeStamp,iSessionID,pManager) {
+				
+				log( 'Clicked at ' + pEventData.iPageX + '/' + pEventData.iPageY );
+				
+			} );
+			
+			$('#trigger-sample-event').click( function(e) {
+				
+				INTER_TAB_JS.instance.pHandlers.events.trigger( 'sample_event', {iPageX:e.pageX,iPageY:e.pageY} );
+				
+			} );
+			
+		} );
+		
+	</script>
+</head>
+<body>
+	<input type="button" id="trigger-sample-event" value="Trigger sample event" />
+	<div id="log"></div>
+</body>
+</html>

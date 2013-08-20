@@ -1,0 +1,109 @@
+<?php
+/**
+ *  @file erpal_file_drag_drop/erpal_file_drag_drop.module
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define all public functions, hooks and globally available (i.e. reused) private functions
+ */
+
+function erpal_file_drag_drop_filejs_files_alter( &$result ) {
+  
+  module_load_include( 'inc', 'node', 'node.pages' );
+	
+	$type       = 'erpal_file';
+	if( !node_access( 'create', $type ) )
+		return;
+  
+  foreach( $result as $i=>$info ) {
+    if( $info['error'] || $info['url'] )
+      return;
+    
+    $name       = 'file_'.$i;
+    $file       = $_FILES[ 'file-'.$info[ 'index' ] ];
+    
+    $field      = 'field_docs_file';
+    
+    $_FILES['files']['name'][ $name ]     = $file[ 'name' ];
+    $_FILES['files']['type'][ $name ]     = $file[ 'type' ];
+    $_FILES['files']['tmp_name'][ $name ] = $file[ 'tmp_name' ];
+    $_FILES['files']['error'][ $name ]    = $file[ 'error' ];
+    $_FILES['files']['size'][ $name ]     = $file[ 'size' ];
+    
+    $fieldinfo    = field_info_field( $field );
+    $instance     = field_info_instance( 'node', $field, $type );
+    $destination  = file_field_widget_uri( $fieldinfo, $instance );
+    $validators   = file_field_widget_upload_validators( $fieldinfo, $instance );
+		
+		$file					= NULL;
+		// Sometimes requests fire overlapping which confuses Drupal's file system. So we're being nice and give it three tries before firing an error...
+    for( $n=0; $n<3; $n++ ) {
+      try {
+        $file         = file_save_upload( $name, $validators, $destination );
+        break;
+      }
+      catch(Exception $e) {
+				$result[$i]['error']	= $e;
+      }
+    }
+    
+    if( !$file || !$file->fid ) {
+      $result[$i]['node']  = array( 'nid'=>0, 'type'=>'' );
+      continue;
+    }
+		
+		// We fixed it already.
+		$result[$i]['error']	= false;
+    
+    global $user;
+    $node       = (object) array('uid' => $user->uid, 'name' => (isset($user->name) ? $user->name : ''), 'type' => $type, 'language' => LANGUAGE_NONE);
+    $form_state = array( 'values'=>array( $field=>array( LANGUAGE_NONE=>array( 0=>array( 'fid'=>$file->fid ) ) ), 'op'=>t('Save') ), 'build_info'=>array( 'args'=>array( $node ) ) );
+    
+    $form_state['triggering_element'] = array( '#parents'=>array( 'actions', 'submit' ) );
+    
+    drupal_form_submit( $type.'_node_form', $form_state );
+    
+    $node = $form_state['node'];
+    
+    $result[$i]['url']              = file_create_url( $file->uri );
+    //$delete_form                    = drupal_get_form( 'node_delete_confirm', $node );
+    $result[$i]['node']             = array(
+      'title'                         => $node->title,
+      'nid'                           => $node->nid,
+      'type'                          => $node->type,
+      //'delete_form'                   => drupal_render( $delete_form ),
+    );
+    
+  }
+  
+}
+
+/**
+ *	Implements hook_init
+ */
+function erpal_file_drag_drop_init() {
+	
+	if( isset($_SESSION['erpal_file_drag_drop_node_deleted']) && (arg(0)!='node' || arg(2)!='delete') ) {
+		
+		$content	= '';
+		foreach( $_SESSION['erpal_file_drag_drop_node_deleted'] as $nid )
+			$content	.= 'Drupal.NodeBox.close( '.$nid.' );';
+		
+		$content	= 'function erpal_file_drag_drop_node_deleted(){console.error();'.$content.'};';
+		
+		$content  .= 'jQuery( function() { if( jQuery("body").hasClass("boxjs") ) erpal_file_drag_drop_node_deleted(); else jQuery("body").bind( "boxjs", erpal_file_drag_drop_node_deleted ); } );';
+		
+		drupal_add_js( $content, array( 'type'=>'inline', 'weight'=>100 ) );
+		
+		unset( $_SESSION['erpal_file_drag_drop_node_deleted'] );
+	}
+	
+}
+
+/**
+ *	Implements hook_node_delete
+ */
+function erpal_file_drag_drop_node_delete( $node ) {
+  $_SESSION['erpal_file_drag_drop_node_deleted'][]	= $node->nid;
+}
+

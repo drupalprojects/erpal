@@ -1,0 +1,66 @@
+#erpal-file-block {
+  padding:5px;
+}
+#erpal-file-block .vertical-tabs,
+#erpal-file-block .vertical-tabs-panes,
+#erpal-file-block #edit-preview {
+  display:none;
+}
+.erpal-file-drag-drop-message,
+#erpal-file-block-message,
+#erpal-file-block-edit-message,
+#erpal-file-block-ajax-message {
+  background:#FFF;
+  background:rgba(255,255,255,.8);
+  font-size:100px;
+  padding:100px;
+  font-weight:bold;
+  text-align:center;
+  
+  display:none;
+}
+.erpal-file-drag-drop-message .message-inner,
+#erpal-file-block-message .message-inner,
+#erpal-file-block-edit-message .message-inner,
+#erpal-file-block-ajax-message .message-inner {
+  display:block;
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  padding: 100px 0px;
+  border:40px dashed #AAA;
+  color:#AAA;
+  line-height:120%;
+}
+#erpal-file-block-message .message-inner.active,
+#erpal-file-block-edit-message .message-inner.active {
+  color:#888;
+  border-color:#888;
+}
+#erpal-file-block-message.error .message-inner,
+#erpal-file-block-edit-message.error .message-inner {
+  border-color:#F00;
+  color:#F00;
+}
+#erpal-file-block-edit-message .edit-title {
+  display:none;
+}
+
+#erpal-file-block-edit form>div>*,
+#erpal-file-block-edit label,
+#erpal-file-block-edit .description,
+#erpal-file-block-ajax form>div>*,
+#erpal-file-block-ajax label,
+#erpal-file-block-ajax .description {
+  display:none;
+}
+#erpal-file-block-edit form>div>.field-type-file-form,
+#erpal-file-block-ajax form>div>.field-type-file-form,
+#erpal-file-block-ajax form>div>.form-actions {
+  display:block;
+  overflow:hidden;
+  width:0;
+  height:0;
+}

@@ -1,0 +1,44 @@
+{
+  "name"                  : "createclass",
+  "version"               : "0.2.6",
+  "description"           : "A fully functional OOP framework that's still based on JavaScript's own OOP understanding, tools and syntax (i.e. Prototyping).",
+  
+  "author"                : {
+    "name"                  : "Thiemo Müller",
+    "email"                 : "createclass@morpol.de"
+  },
+  
+  "repository"            : {
+    "type"                  : "git",
+    "url"                   : "https://github.com/MORPOL/createClass.git"
+  },
+  
+  "main"                  : "./createclass",
+  
+  "scripts"               : {
+  },
+  
+  "engines"               : {
+    "node": "*"
+  },
+  
+  "dependencies"          : {
+  },
+  "devDependencies"       : {
+  },
+  "optionalDependencies"  : {
+  },
+  
+  "keywords"              : [
+    "createclass",
+    "create",
+    "class",
+    "object",
+    "oop",
+    "prototype",
+    "prototyping"
+  ],
+  
+  "license" : "GNU GPL 2"
+  
+}

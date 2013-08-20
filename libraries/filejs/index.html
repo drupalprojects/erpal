@@ -1,0 +1,217 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>File JS - Example 1</title>
+	<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+	<script src="../jquery.transit/jquery.transit.js"></script>
+	<script src="../modernizr/modernizr.js"></script>
+	
+	<script type="text/javascript" src="../createclass/createclass.js"></script>
+	<script type="text/javascript" src="../web-filesystem/web-filesystem.js"></script>
+	<script type="text/javascript" src="../inter-tab-js/inter-tab-js.js"></script>
+	<script type="text/javascript" src="../boxjs/boxjs.js"></script>
+	<script type="text/javascript" src="filejs.js"></script>
+	<link rel="stylesheet" media="all" type="text/css" href="../boxjs/css/boxjs.css" />
+	<link rel="stylesheet" media="all" type="text/css" href="css/filejs.css" />
+	<script type="text/javascript">
+		
+		createClass( 'UploadBoxExtension', 'FileJS.UploadBox' );
+		BoxJS.pBoxTypes.upload_extension				= UploadBoxExtension;
+		UploadBoxExtension.prototype.sUploadURL			= 'upload.php';
+		UploadBoxExtension.prototype.sClassName			= 'UploadBoxExtension';
+		UploadBoxExtension.prototype.aPreviewFiles		= null;
+		UploadBoxExtension.prototype.UploadBoxExtension	= function( pBoxJS, pBoxData, iFrameMode ) {
+			pBoxData	= this.ensureBoxData( pBoxJS, pBoxData, [ 'minimize', 'restore', 'maximize', 'close', 'add_file', 'upload_files', 'cancel_upload', 'view_file' ] );
+			
+			this.aPreviewFiles	= [];
+			
+			this.UploadBox( pBoxJS, pBoxData, iFrameMode );
+			
+			this.on( 'updated', function(aFiles,aContents) {
+				if( this.pConfig.action=='upload' ) {
+					this.aPreviewFiles	= this.aFiles;
+					this.sync();
+				}
+			}, this );
+		};
+		UploadBoxExtension.prototype.registerActions	= function() {
+			this.__parent.registerActions.apply( this, [] );
+			
+			this.pActions.view_file		= {
+				caption						: 'View',
+				container					: 'tr.has-preview>td.file-actions'
+			};
+		};
+		UploadBoxExtension.prototype.handleAction		= function( sAction, pContainer ) {
+			if( sAction=='view_file' ) {
+				var pRow	= pContainer.parent();
+				var pFile	= pRow.data( 'file' );
+				
+				if( pFile.contents ) {
+					for( var i=0; i<this.aPreviewFiles.length; i++ ) {
+						if( this.aPreviewFiles[i].contents.url==pFile.contents.url )
+							break;
+					}
+					
+					if( i==this.aPreviewFiles.length ) {
+						this.aPreviewFiles.push( pFile );
+						this.sync();
+					}
+				}
+				
+				return true;
+			}
+			
+			return this.__parent.handleAction.apply( this, arguments );
+		};
+		UploadBoxExtension.prototype.setSyncData		= function( pData ) {
+			
+			this.aPreviewFiles	= pData.aPreviewFiles;
+			
+			if( this.aPreviewFiles.length && !this.iFrameMode ) {
+				var pBox	= null;
+				for( var i=0, pFile; pFile=this.aPreviewFiles[i]; i++ ) {
+					if( !pFile.preview_box /*&& pFile.type.substr(0,6)=='image/'*/ ) {
+						var pBoxData		= { pConfig:{ sync:this.pConfig.action=='upload' }, pFile:pFile };
+						pBox				= this.pBoxJS.createBox( pBoxData, 'file' );
+						pFile.preview_box	= pBoxData.sID;
+						
+						if( i==this.aPreviewFiles.length-1 && this.pStates.maximized.state ) {
+							//this.handleAction( 'restore' );
+							
+							//pBox.handleAction( 'maximize' );
+						}
+					}
+				}
+				
+				if( pBox )
+					this.sync();
+				
+				if( this.pConfig.action=='upload' )
+					this.destroy();
+			}
+			
+			this.__parent.setSyncData.apply( this, arguments );
+		};
+		UploadBoxExtension.prototype.getSyncData		= function() {
+			var pData		= this.__parent.getSyncData.apply( this, [] );
+			
+			pData.aPreviewFiles	= this.aPreviewFiles;
+			
+			return pData;
+		};
+		
+		$( function() {
+			
+			var sBox	= location.hash.substr(1);
+			var pConfig	= {};
+			if( sBox ) {
+				var aParts	= sBox.split( '&' );
+				for( var i=0, sPart; sPart=aParts[i]; i++ ) {
+					var aPair	= sPart.split( '=' );
+					pConfig[ aPair[0] ]	= aPair[1];
+				}
+			}
+			var pBoxes	= $('body').boxjs( pConfig );
+			
+			if( !sBox ) {
+				
+				$('<input type="button" id="create-static-box" value="Create static box" />')
+					.appendTo( $('body') )
+					.click( function(e) {
+						
+						var pBoxJS	= pBoxes.boxjs( 'create', {sync:true,caption:'Sample box',html:'THIS IS GREAT!<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />It is.'} );
+						
+					} );
+				
+				$('<input type="button" id="create-batch-file-upload-box" value="Create immediate-upload box" />')
+					.appendTo( $('body') )
+					.click( function(e) {
+						
+						pBoxes.boxjs( 'create', {sync:true,caption:'Immediate-Upload File Box',action:'upload'}, 'upload_extension' );
+						
+					} );
+				
+				$('<input type="button" id="create-file-upload-box" value="Create batch file upload box" />')
+					.appendTo( $('body') )
+					.click( function(e) {
+						
+						var pBoxJS	= pBoxes.boxjs('instance');
+						
+						pBoxes.boxjs( 'create', {sync:true,caption:'File Upload Box'}, 'upload_extension' );
+						
+					} );
+				
+				pBoxes.on( 'box_drag_start', '.boxjs-box', null, function(e,pBox) {
+					if( pBox.instanceOf(UploadBoxExtension) || pBox.instanceOf(FileJS.FileBox) )
+						pBox.pDropTargets	= pBox.pDropTargets.add( $('#file-drop-target').get(0) );
+					else if( pBox.instanceOf(BoxJS.SimpleBox) )
+						pBox.pDropTargets	= pBox.pDropTargets.add( $('#simplebox-drop-target').get(0) );
+				} );
+				
+				$('#simplebox-drop-target').on( 'box_drop', function(e,pBox) {
+					var pTarget	= $(e.target);
+					
+					pTarget.html( 'Dropped ' ).append( $('<em />').text( pBox.pConfig.caption ) );
+				} );
+				
+				$('#file-drop-target').on( 'box_drop', function(e,pBox) {
+					if( pBox.instanceOf(UploadBoxExtension) ) {
+						var pTarget	= $(e.target);
+						
+						if( pBox.iState!=FileJS.STATES.FILES_PROCESSED ) {
+							pTarget.text( 'Please upload one or more files first!' );
+							return;
+						}
+						
+						var aFiles	= pBox.aFiles;
+						pTarget.text( 'Dropped '+aFiles.length+' files:' );
+						for( var i=0, pFile; pFile=aFiles[i]; i++ ) {
+							
+							$('<div />')
+								.text( pFile.name + ' ('+pFile.size+' bytes)' )
+								.appendTo( pTarget );
+							
+						}
+					}
+					else if( pBox.instanceOf(FileJS.FileBox) ) {
+						var pTarget	= $(e.target);
+						pTarget.text( 'Dropped '+pBox.pFile.name );
+					}
+					
+				} );
+				
+			}
+			
+		} );
+		
+	</script>
+	<style type="text/css">
+		.custom-drop-target {
+			width:200px;
+			height:200px;
+			margin:20px;
+			border:20px dashed #AAA;
+			background:#EEE;
+			float:left;
+		}
+		.boxjs-frame .custom-drop-target {
+			display:none;
+		}
+		.custom-drop-target.boxjs-possible-drop-target {
+			background:#FF0;
+		}
+		.custom-drop-target.boxjs-active-drop-target {
+			border-color:#88F;
+		}
+	</style>
+</head>
+<body>
+	<div id="file-drop-target" class="custom-drop-target"></div>
+	<div id="simplebox-drop-target" class="custom-drop-target"></div>
+</body>
+</html>

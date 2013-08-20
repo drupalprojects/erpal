@@ -1,0 +1,87 @@
+<?php
+	
+	$aResult	= array();
+	$sError		= NULL;
+	
+	function out() {
+		global $aResult, $sError;
+		
+		header( 'Content-type: application/json' );
+		die( json_encode( array('contents'=>$aResult, 'error'=>!!$sError, 'error_message'=>$sError) ) );
+	}
+	
+	/*var_dump( $_POST );
+	var_dump( $_GET );
+	var_dump( $_FILES );
+	die();*/
+	
+	$iCount	= isset($_POST['file-count']) ? $_POST['file-count'] : 0;
+	if( !$iCount ) {
+		$sError	= 'Missing files!';
+		out();
+	}
+	
+	$sReadAs	= isset($_GET['read_as']) ? $_GET['read_as'] : NULL;
+	
+	$sTargetDir	= 'uploaded/';
+	$sIndexFile	= $sTargetDir.'.index';
+	$sLockFile	= $sTargetDir.'.lock';
+	
+	while( file_exists( $sLockFile ) )
+		sleep( 1 );
+	
+	file_put_contents( $sLockFile, '1' );
+	
+	$iIndex		= file_exists( $sIndexFile ) ? (int)file_get_contents( $sIndexFile ) : 0;
+	if( !$sReadAs ) {
+		$iNewIndex	= $iIndex;
+		
+		for( $i=0; $i<$iCount; $i++ )
+			if( !$_FILES[ 'file-'.$i ]['error'] )
+					$iNewIndex++;
+		
+		file_put_contents( $sIndexFile, $iNewIndex.'' );
+	}
+	
+	for( $i=0; $i<$iCount; $i++ ) {
+		$aFile		= $_FILES[ 'file-'.$i ];
+		if( $aFile['error'] ) {
+			if( $sReadAs )
+				$aResult[]	= '';
+			else
+				$aResult[]	= array( 'error'=>$aFile['error'] );
+		}
+		else {
+			if( $sReadAs ) {
+				$sContents	= file_get_contents( $aFile['tmp_name'] );
+				if( $sReadAs=='array_buffer' ) {
+					$sContents	= mb_convert_encoding( $sContents, 'UTF-16', mb_detect_encoding( $sContents ) );
+					$mResult	= array();
+					for( $i=0; $i<strlen($sContents); $i++ )
+						$mResult[]	= $sContents[$i];
+				}
+				elseif( $sReadAs=='data_url' ) {
+					$aResult[]	= 'data:'.$aFile['type'].';base64,'.base64_encode( $sContents );
+				}
+				else {
+					$aResult[]	= $sContents;
+				}
+				continue;
+			}
+			
+			$sTarget	= $sTargetDir . 'file-' . ($iIndex++) . '.' . pathinfo( $aFile['name'], PATHINFO_EXTENSION );
+			
+			if( !move_uploaded_file( $aFile['tmp_name'], $sTarget ) ) {
+				$aResult[]	= array( 'error'=>TRUE );
+			}
+			else {
+				$aResult[]	= array( 'url'=>$sTarget, 'id'=>$iIndex, 'error'=>FALSE );
+			}
+		}
+	}
+	
+	@unlink( $sLockFile );
+	
+	out();
+	
+?>

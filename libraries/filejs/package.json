@@ -1,0 +1,46 @@
+{
+  "name"                  : "FileJS",
+  "version"               : "0.1.0",
+  "description"           : "File JS encapsulates the features of the HTML5 File API and adds advanced functionality like background/framed file uploads.",
+  
+  "author"                : {
+    "name"                  : "Thiemo Müller",
+    "email"                 : "filejs@morpol.de"
+  },
+  
+  "repository"            : {
+    "type"                  : "git",
+    "url"                   : "https://github.com/MORPOL/filejs.git"
+  },
+  
+  "main"                  : "./filejs",
+  
+  "scripts"               : {
+  },
+  
+  "engines"               : {
+    "node": "*"
+  },
+  
+  "dependencies"          : {
+  },
+  "devDependencies"       : {
+  },
+  "optionalDependencies"  : {
+  },
+  
+  "keywords"              : [
+    "createclass",
+    "file",
+    "api",
+    "js",
+    "javascript",
+    "webpage",
+    "upload",
+    "html5",
+    "fapi"
+  ],
+  
+  "license" : "GNU GPL 2"
+  
+}

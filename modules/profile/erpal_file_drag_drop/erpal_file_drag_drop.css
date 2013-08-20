@@ -1,0 +1,8 @@
+.field-widget-entityreference-autocomplete .form-type-textfield .boxjs-possible-drop-target,
+.field-widget-entityreference-autocomplete .references-dialog-insert .boxjs-possible-drop-target {
+  background:#d466a9;
+}
+.field-widget-entityreference-autocomplete .form-type-textfield .boxjs-active-drop-target,
+.field-widget-entityreference-autocomplete .references-dialog-insert .boxjs-active-drop-target {
+  background:#d80084;
+}

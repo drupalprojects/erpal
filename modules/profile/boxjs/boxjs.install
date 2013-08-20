@@ -1,0 +1,36 @@
+<?php
+/**
+ *  @file boxjs/boxjs.install
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define all install/enabled hooks
+ */
+
+function boxjs_requirements( $phase ) {
+  
+  drupal_load( 'module', 'boxjs' );
+  
+  $requirements = array();
+  
+  $t  = get_t();
+  if( $phase=='runtime' ) {
+    
+    $name       = 'boxjs';
+    $library    = libraries_detect( $name );
+    $installed  = $library['installed'];
+    
+    $requirements['boxjs'] = array(
+      'title'       => $t( 'BoxJS' ),
+      'value'       => $installed ? $library['version'] : $t( 'not installed' ),
+      'description' => $installed ? '' : $t('Please install the !link!',array('!link'=>l($t('BoxJS library'),$library['download url']))).($library['error message']?' '.$library['error message']:''),
+      'severity'    => $installed ? REQUIREMENT_OK : REQUIREMENT_ERROR,
+    );
+    
+  }
+  
+  return $requirements;
+  
+}
+
+?>
