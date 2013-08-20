@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>createClass - Example 2</title>
+	<script type="text/javascript" src="createclass.js"></script>
+	<script type="text/javascript">
+		createClass( "Example02.Animal" );
+		Example02.Animal.prototype.sName	= null;
+		Example02.Animal.prototype.Animal	= function( sName ) {
+			this.sName	= sName;
+		};
+		// Demonstrate virtual functions
+		Example02.Animal.prototypeVirtual( "getSpecies" );	// ():string
+		
+		createClass( "Example02.Dog", "Example02.Animal" );
+		Example02.Dog.prototype.sOwner		= null;
+		Example02.Dog.prototype.Dog			= function( sName, sOwner ) {
+			this.Animal( sName );
+			
+			this.sOwner	= sOwner;
+		};
+		Example02.Dog.prototype.getSpecies	= function() {
+			return "Dog";
+		};
+		Example02.Dog.prototype.bark		= function() {
+			alert( "Dog barks:\n\nHi, my name is "+this.sName+".\nMy owner is "+this.sOwner+".\n" );
+		};
+		
+		createClass( "Example02.BatDog", "Example02.Dog" );
+		Example02.BatDog.prototype.bTransformed	= false;
+		Example02.BatDog.prototype.transform	= function() {
+			this.bTransformed	= !this.bTransformed;
+		};
+		Example02.BatDog.prototype.getSpecies	= function() {
+			return "BatDog";
+		};
+		Example02.BatDog.prototype.bark			= function() {
+			if( this.bTransformed )
+				alert( "BatDog barks for justice:\n\nHi, my name is "+this.sName+".\nMy owner is "+this.sOwner+".\n" );
+			else
+				this.__parent.bark.apply( this );
+		};
+		
+		var pDog	= new Example02.BatDog( "Hans", "Franz" );
+		pDog.bark();
+		pDog.transform();
+		pDog.bark();
+		
+		alert( pDog.getSpecies() );
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

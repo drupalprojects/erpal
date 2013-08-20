@@ -1,0 +1,42 @@
+{
+  "name"                  : "BoxJS",
+  "version"               : "0.1.0",
+  "description"           : "BoxJS is a simple JavaScript web framework allowing you to easily manage and display small content boxes shown above your actual webpage, e.g. background file upload handlers, progress boxes or small forms. Requires createClass as well as jQuery. Will use Inter Tab JS to sync boxes between tabs/windows if available and configured.",
+  
+  "author"                : {
+    "name"                  : "Thiemo Müller",
+    "email"                 : "boxjs@morpol.de"
+  },
+  
+  "repository"            : {
+    "type"                  : "git",
+    "url"                   : "https://github.com/MORPOL/boxjs.git"
+  },
+  
+  "main"                  : "./boxjs",
+  
+  "scripts"               : {
+  },
+  
+  "engines"               : {
+    "node": "*"
+  },
+  
+  "dependencies"          : {
+  },
+  "devDependencies"       : {
+  },
+  "optionalDependencies"  : {
+  },
+  
+  "keywords"              : [
+    "createclass",
+    "box",
+    "js",
+    "javascript",
+    "webpage"
+  ],
+  
+  "license" : "GNU GPL 2"
+  
+}

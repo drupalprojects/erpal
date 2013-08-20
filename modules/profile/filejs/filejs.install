@@ -1,0 +1,83 @@
+<?php
+/**
+ *  @file filejs/filejs.install
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define all install/enabled hooks
+ */
+
+function filejs_requirements( $phase ) {
+  
+  drupal_load( 'module', 'filejs' );
+  
+  $requirements = array();
+  
+  $t  = get_t();
+  if( $phase=='runtime' ) {
+    
+    $name       = 'filejs';
+    $library    = libraries_detect( $name );
+    $installed  = $library['installed'];
+    
+    $requirements['filejs'] = array(
+      'title'       => $t( 'FileJS' ),
+      'value'       => $installed ? $library['version'] : $t( 'not installed' ),
+      'description' => $installed ? '' : $t('Please install the !link!',array('!link'=>l($t('FileJS library'),$library['download url']))).($library['error message']?' '.$library['error message']:''),
+      'severity'    => $installed ? REQUIREMENT_OK : REQUIREMENT_ERROR,
+    );
+    
+  }
+  
+  return $requirements;
+  
+}
+
+/**
+ *  Implements hook_enable()
+ */
+function filejs_enable() {
+  
+  if( !module_exists( 'shortcut_keys' ) )
+    return;
+  
+  // Add shortcut to toggle the console
+  $shortcuts  = array(
+    
+    'open_filebox'	=> array(
+      'name'            		=> t('Open File Upload Box'),
+      'machine_name'    		=> 'open_filebox',
+      'groups'          		=> array(),
+      'type'            		=> 'javascript',
+      'value'           		=> 'jQuery("body").boxjs( "create", {sync:true,caption:"Upload Box",action:"upload"}, "drupal_filebox" );',
+      'keys'            		=> 'CTRL+U',
+      'press_double'    		=> FALSE,
+      'confirm_dialog'  		=> FALSE,
+      'always_execute'  		=> TRUE,
+      'active'          		=> TRUE,
+      'module'          		=> 'filejs',
+    ),
+    
+  );
+  
+  if( count( shortcut_keys_import_shortcuts( $shortcuts ) ) )
+    drupal_set_message( t( 'FileJS "Open File Upload Box" shortcut has been created.' ) );
+  
+}
+
+/**
+ *  Implements hook_disable
+ */
+function filejs_disable() {
+  
+  if( !module_exists( 'shortcut_keys' ) )
+    return;
+  
+  $shortcuts  = shortcut_keys_get_shortcuts( NULL, TRUE );
+  
+  if( isset($shortcuts['open_filebox']) && isset($shortcuts['open_filebox']['module']) && $shortcuts['open_filebox']['module']=='filejs' ) {
+    shortcut_keys_delete_shortcut( 'open_filebox' );
+  }
+  
+}
+

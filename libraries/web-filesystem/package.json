@@ -1,0 +1,44 @@
+{
+  "name"                  : "web-filesystem",
+  "version"               : "0.1.0-beta",
+  "description"           : "A simple web-filesystem using sessionStorage, localStorage, cookies or web requests to save and retrieve files as well as checking their existence. Requires createClass.",
+  
+  "author"                : {
+    "name"                  : "Thiemo Müller",
+    "email"                 : "web-filesystem@morpol.de"
+  },
+  
+  "repository"            : {
+    "type"                  : "git",
+    "url"                   : "https://github.com/MORPOL/web-filesystem.git"
+  },
+  
+  "main"                  : "./web-filesystem",
+  
+  "scripts"               : {
+  },
+  
+  "engines"               : {
+    "node": "*"
+  },
+  
+  "dependencies"          : {
+    "createclass"           : "0.2.x"
+  },
+  "devDependencies"       : {
+  },
+  "optionalDependencies"  : {
+  },
+  
+  "keywords"              : [
+    "createclass",
+    "web-filesystem",
+    "filesystem",
+    "read",
+    "write",
+    "exists"
+  ],
+  
+  "license" : "GNU GPL 2"
+  
+}

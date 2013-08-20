@@ -1,0 +1,88 @@
+<?php
+/**
+ *  @file boxjs/boxjs.module
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define all public functions, hooks and globally available (i.e. reused) private functions
+ */
+
+function boxjs_menu() {
+  $items['boxjs/frame']  = array(
+    'page callback'         => 'boxjs_render_frame',
+    'access callback'       => TRUE,
+    'type'                  => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+function boxjs_theme( $existing, $type, $theme, $path ) {
+  return array(
+    'boxjs_frame' => array(
+      'variables'   => array(),
+      'template'    => 'templates/boxjs_frame',
+    ),
+  );
+}
+
+function boxjs_render_frame() {
+  die( theme( 'boxjs_frame' ) );
+}
+
+function boxjs_init() {
+  
+  drupal_add_library( 'system', 'ui.draggable' );
+  
+  $libraries  = array( 'createclass', 'web-filesystem', 'inter-tab-js', 'jquery.transit', 'boxjs' );
+  $paths      = array();
+  for( $i=0; $i<count($libraries); $i++ ) {
+    $paths[$i]  = libraries_get_path( $libraries[$i] ) . '/' . $libraries[$i] . '.js';
+    if( !file_exists( $paths[$i] ) )
+      break;
+  }
+  
+  if( $i==count($libraries) ) {
+    for( $i=0; $i<count($libraries); $i++ )
+      drupal_add_js( $paths[$i], array( 'weight'=>$i*3 ) );
+    
+    drupal_add_css( libraries_get_path( 'boxjs' ) . '/css/boxjs.css' );
+    
+    drupal_add_js( drupal_get_path( 'module', 'boxjs' ) . '/js/boxjs.js', array( 'weight'=>$i*3 ) );
+  }
+  else
+    drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install boxjs.', array( '@name'=>$libraries[$i] ) ) );
+  
+}
+
+/**
+ *  Implements hook_libraries_info
+ *  
+ *  Disabled until on DO whitelist
+ */
+function _boxjs_libraries_info() {
+  
+  $libraries['boxjs'] = array(
+    'name'          => 'BoxJS',
+    'vendor url'    => 'http://www.morpol.de/',
+    'download url'  => 'https://github.com/MORPOL/boxjs',
+    'files'         => array(
+      'js'            => array(
+        'boxjs.js',
+      ),
+    ),
+    'dependencies'	=> array(
+      'createclass (0.2)',
+      'boxjs (0.1)',
+    ),
+    'version callback'  =>'_createclass_get_version',
+    'version arguments' => array(
+      'file'    => 'package.json',
+    ),
+  );
+  
+  return $libraries;
+  
+}
+
+?>

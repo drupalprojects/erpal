@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>createClass - Example 3</title>
+	<script type="text/javascript" src="createclass.js"></script>
+	<script type="text/javascript">
+		var pCopyCat	= {
+			prototype		: {
+				somethingALotOfObjectsNeedInNoStaticWay	: function() {
+					console.log( 'Yes, this is dog.' );
+				}
+			}
+		};
+		
+		// Third arguments enables "Lazy Loading", fourth will make it copy the pCopyCat's function
+		createClass( "Example03.ChildClass", ["Example03.BaseClass","Example03.BaseClassEx"], true, pCopyCat );
+		/**
+		 *	We only inherit this function so that iYet becomes optional.
+		 *	But since the base class will call .count() again, we need to use .applyEx since this is recursion.
+		 *
+		 *	@param iYet (optional) The number to count up
+		 */
+		Example03.ChildClass.prototype.count	= function( iYet ) {
+			
+			console.log( "ChildClass knows how to count!" );
+			
+			if( typeof iYet=='undefined' )
+				iYet	= 1;
+			
+			return this.__parent.count.applyEx( this, [ iYet ], Example03.ChildClass );
+			
+		};
+		
+		// Demonstrate recursive methods
+		createClass( "Example03.BaseClass" );
+		Example03.BaseClass.MAX_COUNT			= 3;	// Static variable
+		Example03.BaseClass.prototype.count		= function( iYet ) {
+			
+			console.log( "BaseClass knows how to count as well!" );
+			
+			if( iYet<Example03.BaseClass.MAX_COUNT )
+				return this.count( iYet+1 );
+			
+			return iYet;
+			
+		};
+		
+		// Demonstrate multiple inheritance
+		createClass( "Example03.BaseClassEx", "Destructable" );
+		Example03.BaseClassEx.prototype.whatsYourName	= function() {
+			return this.__className;
+		};
+		Example03.BaseClassEx.prototype.$BaseClassEx	= function() {
+			console.log( this.whatsYourName() + " knows how to destruct!" );
+		};
+		
+		// Since we're using lazy loading we have to initialize the class before it's first usage
+		createClass.initialize( "Example03.ChildClass" );
+		
+		var pChild	= new Example03.ChildClass();
+		alert( pChild.whatsYourName() + " counts to " + pChild.count() );
+		
+		// Demonstrate difference between instanceof and .instanceOf()
+		alert( pChild+":\n\n" + pChild.instanceOf(Example03.BaseClass) + " vs. " + (pChild instanceof Example03.BaseClass) + "\n" + pChild.instanceOf(Example03.BaseClassEx) + " vs. " + (pChild instanceof Example03.BaseClassEx) );
+		
+		// Demonstrate copy cat
+		pChild.somethingALotOfObjectsNeedInNoStaticWay();
+		
+		// Demonstrate usage of destructors
+		pChild.destroy();
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

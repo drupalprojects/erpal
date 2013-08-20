@@ -1,0 +1,324 @@
+html, body {
+	min-height:100%;
+	min-width:100%;
+	padding:0;
+	margin:0;
+}
+
+html.boxjs-frame,
+.boxjs-box-body {
+	background:#666;
+	color:#FFF;
+}
+
+.boxjs-no-boxes #boxjs-box-boxjs-control-box {
+	display:none;
+}
+
+#boxjs-background {
+	border-radius:20px;
+	display:none;
+}
+#boxjs-background-inner {
+	border-radius:20px;
+	width:100%;
+	height:100%;
+}
+
+.boxjs-dragging {
+	opacity:.5;
+}
+.boxjs-drag-handle {
+	background:#444;
+	color:#FFF;
+	border-radius:10px;
+	width:256px;
+	height:24px;
+	padding:4px;
+	line-height:24px;
+	font-size:100%;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	position:fixed;
+	opacity:.5;
+	margin-top:-10px;
+}
+
+.boxjs-dialog {
+	position:absolute;
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background:#666;
+}
+.boxjs-dialog-message {
+	padding:4px;
+}
+.boxjs-dialog-buttons {
+	margin-top:20px;
+}
+
+.boxjs-box-body .boxjs-box-action {
+	color:#EEE;
+	line-height: 24px;
+	height:24px;
+	margin:2px 4px;
+	display:inline-block;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+	border-color: #444 #333 #444 #333;
+	border-radius: 4px;
+	background:#444;
+	font-weight:normal;
+	text-shadow:1px 1px 0px #000;
+	box-shadow:inset 0px 0px 3px rgba(0,0,0,.33);
+	padding:0px 6px 0px 2px;
+	vertical-align:bottom;
+	
+	transition:border-color .33s;
+	
+	background: #666666; /* Old browsers */
+	background: -moz-linear-gradient(top, #666666 0%, #444444 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(100%,#444444)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #666666 0%,#444444 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #666666 0%,#444444 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #666666 0%,#444444 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #666666 0%,#444444 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#444444',GradientType=0 ); /* IE6-9 */
+}
+.boxjs-box-body .boxjs-box-action:hover {
+	border-color:#999;
+	transition:border-color .33s;
+}
+.boxjs-box-body .boxjs-box-action .icon,
+.boxjs-box-body .boxjs-box-action .caption {
+	opacity:.8;
+}
+.boxjs-box-body .boxjs-box-action:hover .icon,
+.boxjs-box-body .boxjs-box-action:hover .caption {
+	opacity:1;
+	transition:opacity .33s;
+}
+.boxjs-box-body .boxjs-box-action .icon {
+	margin-left: 10px;
+	display:inline-block;
+	width:0px;
+	height:24px;
+}
+
+.boxjs-box.boxjs-not-maximized {
+	opacity:.9;
+}
+.boxjs-box:hover {
+	opacity:1;
+}
+.boxjs-box.ui-draggable>.boxjs-box-head {
+	cursor:move;
+}
+.boxjs-box.boxjs-maximized.ui-draggable>.boxjs-box-head {
+	cursor:default;
+}
+.boxjs-box.boxjs-framed-box {
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+}
+.boxjs-box.boxjs-unframed-box {
+	position:fixed;
+	width:256px;
+	margin:-4px;
+	border:4px solid #444;
+	border-radius:10px;
+	box-shadow:1px 1px 5px rgba(0,0,0,.75);
+}
+.boxjs-box.boxjs-unframed-box,
+.boxjs-box > .boxjs-box-head {
+	background:#444;
+	color:#FFF;
+}
+.boxjs-box.boxjs-box-actions.ui-draggable {
+	cursor:move;
+}
+.boxjs-box > .boxjs-box-head > h1 {
+	font-size:100%;
+	margin:0;
+	padding:0px 0px 0px 4px;
+	float:left;
+	overflow:hidden;
+	height:20px;
+	line-height:20px;
+	width:180px;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.boxjs-box.boxjs-maximized > .boxjs-box-head > h1 {
+	width:auto;
+	transition:width .33s;
+}
+.boxjs-box .boxjs-box-actions {
+	float:right;
+}
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-minimize-all,
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-close-all,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-minimize,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-restore,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-maximize,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-close {
+	width:0px;
+	padding-left:16px;
+	height:16px;
+	overflow:hidden;
+	font-size:1px;
+	font-size:0px;
+	display:block;
+	float:left;
+	margin:2px 2px;
+	opacity:.5;
+}
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-minimize-all,
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-close-all {
+	float:right;
+	margin:3px 3px;
+	cursor:pointer;
+}
+.boxjs-box.boxjs-box-actions > .switch-button {
+  height: 23px;
+	float:left;
+	border-radius:3px;
+	margin:0px 4px;
+	cursor:default;
+	
+	background: #CCC; /* Old browsers */
+	background: -moz-linear-gradient(top, #CCC 0%, #AAA 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#CCC), color-stop(100%,#AAA)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #CCC 0%,#AAA 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #CCC 0%,#AAA 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #CCC 0%,#AAA 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #CCC 0%,#AAA 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CCC', endColorstr='#AAA',GradientType=0 ); /* IE6-9 */
+}
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option {
+  height: 21px;
+	float:none;
+	display:inline-block;
+	border-radius:3px;
+	padding:0px 2px;
+	margin:1px 2px;
+	cursor:pointer;
+}
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.active-option,
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option:hover {
+	background: #AAA; /* Old browsers */
+	background: -moz-linear-gradient(top, #AAA 0%, #CCC 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#AAA), color-stop(100%,#CCC)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #AAA 0%,#CCC 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #AAA 0%,#CCC 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #AAA 0%,#CCC 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #AAA 0%,#CCC 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#AAA', endColorstr='#CCC',GradientType=0 ); /* IE6-9 */
+}
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.active-option {
+	box-shadow:inset 0px 0px 3px rgba(0,0,0,.8);
+	cursor:default;
+}
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option > .caption {
+	display:none;
+}
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option > .icon {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	opacity:.5;
+	padding:2px 2px;
+}
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-halign-to-left .icon { background:url('img/halign-left.png') center center no-repeat; }
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-halign-to-right .icon { background:url('img/halign-right.png') center center no-repeat; }
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-valign-to-top .icon { background:url('img/valign-top.png') center center no-repeat; }
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-valign-to-bottom .icon { background:url('img/valign-bottom.png') center center no-repeat; }
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-orientation-to-horizontal .icon { background:url('img/orientation-horizontal.png') center center no-repeat; }
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-orientation-to-vertical .icon { background:url('img/orientation-vertical.png') center center no-repeat; }
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-actions-to-minimizeAll .icon { background:url('img/minimize-all.png') center center no-repeat; }
+.boxjs-box.boxjs-box-actions > .switch-button > .switch-option.switch-actions-to-closeAll .icon { background:url('img/close-all.png') center center no-repeat; }
+.boxjs-box.boxjs-minimized .boxjs-box-action-minimize,
+.boxjs-box.boxjs-maximized .boxjs-box-action-maximize,
+.boxjs-box.boxjs-not-minimized.boxjs-not-maximized .boxjs-box-action-restore,
+.boxjs-maximized-box .boxjs-box.boxjs-minimized .boxjs-box-action-restore,
+.boxjs-maximized-box .boxjs-box.boxjs-minimized .boxjs-box-action-maximize {
+	display:none;
+}
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-minimize-all:hover,
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-close-all:hover,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-minimize:hover,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-restore:hover,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-maximize:hover,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-close:hover {
+	opacity:1;
+	transition:opacity .33s, background-color .33s;
+	border-radius:3px;
+	background-color:rgba(255,255,255,.1);
+}
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-minimize-all,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-minimize { background:url('img/minimize.png') 0px 0px repeat; }
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-restore { background:url('img/restore.png') 0px 0px repeat; }
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-maximize { background:url('img/maximize.png') 0px 0px repeat; }
+.boxjs-box.boxjs-box-actions > .boxjs-box-action-close-all,
+.boxjs-box .boxjs-box-actions > .boxjs-box-action-close { background:url('img/close.png') 0px 0px repeat; }
+.boxjs-box .boxjs-box-head-closure {
+	clear:both;
+}
+.boxjs-box > .boxjs-box-body {
+	padding:3px;
+	overflow:auto;
+	max-height:200px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	
+	transition: max-height .5s ease;
+}
+.boxjs-box.boxjs-minimized > .boxjs-box-body {
+	padding:0;
+	overflow:hidden;
+	max-height:0px;
+}
+
+.boxjs-box-iframe {
+	width:100%;
+	height:100%;
+	border:none;
+	margin:0;
+}
+
+
+.boxjs-maximized .boxjs-box-head {
+	
+}
+.boxjs-maximized.boxjs-unframed-box .boxjs-box-body {
+	max-height:none;
+	
+	position:absolute;
+	top:20px;
+	left:0;
+	right:0;
+	bottom:0;
+	
+	transition: max-height 0s;
+}
+.boxjs-maximized.boxjs-framed-box .boxjs-box-body {
+	max-height:none;
+	
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	
+	transition: max-height 0s;
+}
+.boxjs-maximized .boxjs-box-iframe {
+	width:100% !important;
+	height:100% !important;
+}

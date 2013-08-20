@@ -1,0 +1,48 @@
+{
+  "name"                  : "inter-tab-js",
+  "version"               : "0.1.0-beta",
+  "description"           : "A framework allowing you to communicate between tabs/windows of the same (i.e. your) origin using sessionStorage, localStorage or cookies. Requires web-filesystem and createClass as well as jQuery.",
+  
+  "author"                : {
+    "name"                  : "Thiemo Müller",
+    "email"                 : "inter-tab-js@morpol.de"
+  },
+  
+  "repository"            : {
+    "type"                  : "git",
+    "url"                   : "https://github.com/MORPOL/inter-tab-js.git"
+  },
+  
+  "main"                  : "./inter-tab-js",
+  
+  "scripts"               : {
+  },
+  
+  "engines"               : {
+    "node": "*"
+  },
+  
+  "dependencies"          : {
+    "web-filesystem"        : "0.1.x",
+    "createclass"           : "0.2"
+  },
+  "devDependencies"       : {
+  },
+  "optionalDependencies"  : {
+  },
+  
+  "keywords"              : [
+    "createclass",
+    "web-filesystem",
+    "inter-tab-js",
+    "communication",
+    "inter",
+    "tab",
+    "window",
+    "javascript",
+    "js"
+  ],
+  
+  "license" : "GNU GPL 2"
+  
+}

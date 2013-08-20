@@ -1,0 +1,26 @@
+.boxjs-box a:link,
+.boxjs-box a:visited {
+  color:#FFF;
+}
+.nodebox a.view-node,
+.nodebox a.edit-node,
+.nodebox a.delete-node {
+  margin:0px 4px;
+}
+.filebox.boxjs-not-maximized.boxjs-not-minimized .boxjs-box-body {
+  height:20px;
+}
+.filebox.boxjs-maximized .preview {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	left: 5px;
+	top: 22px;
+}
+.filebox.boxjs-maximized .preview img {
+	max-width:100%;
+	max-height:100%;
+}
+.filebox.boxjs-not-maximized .preview {
+	display:none;
+}

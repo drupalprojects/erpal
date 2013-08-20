@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Box JS - Example 1</title>
+	<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+	<script src="../jquery.transit/jquery.transit.js"></script>
+	
+	<script type="text/javascript" src="../createclass/createclass.js"></script>
+	<script type="text/javascript" src="../web-filesystem/web-filesystem.js"></script>
+	<script type="text/javascript" src="../inter-tab-js/inter-tab-js.js"></script>
+	<script type="text/javascript" src="boxjs.js"></script>
+	<link rel="stylesheet" media="all" type="text/css" href="css/boxjs.css" />
+	<script type="text/javascript">
+		
+		$( function() {
+			
+			var sBox	= location.hash.substr(1);
+			var pConfig	= {};
+			if( sBox ) {
+				var aParts	= sBox.split( '&' );
+				for( var i=0, sPart; sPart=aParts[i]; i++ ) {
+					var aPair	= sPart.split( '=' );
+					pConfig[ aPair[0] ]	= aPair[1];
+				}
+			}
+			var pBoxes	= $('#boxes').boxjs( pConfig );
+			
+			if( !sBox ) {
+				var iID	= 0;
+				
+				$('<input type="button" id="create-static-box" value="Create static box" />')
+					.appendTo( $('body') )
+					.click( function(e) {
+						
+						var pBoxJS	= pBoxes.boxjs('instance');
+						
+						while( $('#boxjs-box-sample-box-'+iID).size() )
+							iID++;
+						
+						new BoxJS.SimpleBox( pBoxJS, {id:'sample-box-'+iID++,sync:true,caption:'Sample box No. '+iID,html:'THIS IS GREAT!<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />It is.'} );
+						
+					} );
+				
+				function addSelect( sOptionName, pOptions ) {
+					var pSelect	 = $('<select id="set-'+sOptionName+'" name="'+sOptionName+'" />')
+						.appendTo( $('body') )
+						.change( function(e) {
+							
+							var sValues	= $(e.target).val();
+							pBoxes.boxjs(sOptionName,sValues);
+							
+						} );
+					
+					for( var sKey in pOptions )
+						$('<option value="'+sKey+'"></option>')
+							.text( pOptions[sKey] )
+							.appendTo( pSelect );
+					
+					pSelect.change();
+				}
+				
+				addSelect( 'valign', {top:'Top',bottom:'Bottom'} );
+				addSelect( 'halign', {left:'Left',right:'Right'} );
+				addSelect( 'orientation', {horizontal:'Horizontal',vertical:'Vertical'} );
+			}
+			
+		} );
+		
+	</script>
+	<style type="text/css">
+		#boxes {
+			position:absolute;
+			left:0;
+			top:200px;
+			right:0;
+			bottom:0;
+		}
+	</style>
+</head>
+<body>
+	<div id="boxes"></div>
+</body>
+</html>

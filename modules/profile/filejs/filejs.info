@@ -1,0 +1,6 @@
+name        = FileJS
+description = This is an extension enabling you to use the HTML5 File API in combination with the BoxJS Framework.
+version     = "7.x-1.0"
+core        = 7.x
+
+dependencies[]  = boxjs
