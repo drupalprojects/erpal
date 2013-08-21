@@ -170,7 +170,7 @@ projects[editablefields][download][type] = "git"
 projects[editablefields][download][url] = "http://git.drupal.org/project/editablefields.git"
 projects[editablefields][download][revision] = "bcfa4d111add31985eda8fbc0382cc7f81bec0bc"
 
-projects[entity][version] = "1.0"
+projects[entity][version] = "1.2"
 projects[entity][subdir] = "contrib"
 projects[entity][patch][] = "http://drupal.org/files/entity-node-access-1780646-8.patch"
 
