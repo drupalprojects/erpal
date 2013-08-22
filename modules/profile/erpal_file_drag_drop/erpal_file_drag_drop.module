@@ -34,7 +34,8 @@ function erpal_file_drag_drop_filejs_files_alter( &$result ) {
     $instance     = field_info_instance( 'node', $field, $type );
     $destination  = file_field_widget_uri( $fieldinfo, $instance );
     $validators   = file_field_widget_upload_validators( $fieldinfo, $instance );
-		
+    $validators['file_validate_extensions'] = array(_erpal_docs_helper_doc_extensions());
+    watchdog('file box', print_r($validators, true));
 		$file					= NULL;
 		// Sometimes requests fire overlapping which confuses Drupal's file system. So we're being nice and give it three tries before firing an error...
     for( $n=0; $n<3; $n++ ) {
