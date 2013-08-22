@@ -1,0 +1,649 @@
+<?php
+/**
+ *  @file shortcut_keys/shortcut_keys.module
+ *  @author Thiemo Müller
+ *  @version 1.0
+ *  
+ *  Define all public functions, hooks and globally available (i.e. reused) private functions
+ */
+
+// Permission keys
+define( 'MODULE_SHORTCUT_KEYS_PERMISSION_USE_ALL',                    'use any shortcut key' );
+define( 'MODULE_SHORTCUT_KEYS_PERMISSION_USE_URL',                    'use url shortcut type' );
+define( 'MODULE_SHORTCUT_KEYS_PERMISSION_USE_JAVASCRIPT',             'use javascript shortcut type' );
+define( 'MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS',       'administer shortcuts' );
+define( 'MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS', 'administer shortcut groups' );
+
+// Include files
+define( 'MODULE_SHORTCUT_KEYS_ADMIN_FILE', 'inc/admin.inc' );
+
+// Custom hooks
+define( 'MODULE_SHORTCUT_KEYS_SHORTCUT_TYPE_HOOK',  'shortcut_keys_shortcut_type' );
+define( 'MODULE_SHORTCUT_KEYS_API_HOOK',            'shortcut_keys_api' );
+
+// Variables
+define( 'MODULE_SHORTCUT_KEYS_VARIABLE_GROUPS',     'shortcut_keys_shortcut_groups' );
+define( 'MODULE_SHORTCUT_KEYS_VARIABLE_SHORTCUTS',  'shortcut_keys_shortcuts' );
+
+/**
+ *  Get a list of all keys and their correspondig JavaScript KeyCode equivalents
+ *  
+ *  @scope public
+ *  @return An associative array as array( 'key name' => keycode )
+ */
+function shortcut_keys_get_javascript_keycodes() {
+  static $codes = NULL;
+  if( $codes )
+    return $codes;
+  
+  $codes          = array(
+    'BACKSPACE'     => 8,
+    'TAB'           => 9,
+    'ENTER'         => 13,
+    'SHIFT'         => 16,
+    'CTRL'          => 17,
+    'ALT'           => 18,
+    'PAUSE'         => 19,
+    'CAPS_LOCK'     => 20,
+    'ESCAPE'        => 27,
+    'SPACEBAR'      => 32,
+    'PAGE_UP'       => 33,
+    'PAGE_DOWN'     => 34,
+    'END'           => 35,
+    'HOME'          => 36,
+    'LEFT_ARROW'    => 37,
+    'UP_ARROW'      => 38,
+    'RIGHT_ARROW'   => 39,
+    'DOWN_ARROW'    => 40,
+    'INSERT'        => 45,
+    'DELETE'        => 46,
+    
+    'LEFT_WINDOW'   => 91,
+    'RIGHT_WINDOW'  => 92,
+    'SELECT'        => 93,
+    'MULTIPLY'      => 106,
+    'ADD'           => 107,
+    'SUBTRACT'      => 109,
+    'DECIMAL_POINT' => 110,
+    'DIVIDE'        => 111,
+    
+    'SEMICOLON'     => 186,
+    'EQUAL'         => 187,
+    'COMMA'         => 188,
+    'DASH'          => 189,
+    'PERIOD'        => 190,
+    'FORWARD_SLASH' => 191,
+    'GRAVE_ACCENT'  => 192,
+    'OPEN_BRACKET'  => 219,
+    'BACK_SLASH'    => 220,
+    'CLOSE_BRACKET' => 221,
+    'SINGLE_QUOTE'  => 222,
+  );
+  
+  // 0-9, both regular and numpad
+  for( $i=0; $i<10; $i++ ) {
+    $codes[ (string)$i ]    = 48 + $i;
+    $codes[ 'NUMPAD_'.$i ]  = 96 + $i;
+  }
+  
+  // A-Z
+  for( $i=0; $i<26; $i++ )
+    $codes[ chr( 65+$i ) ]  = 65 + $i;
+  
+  // F1-F12
+  for( $i=1; $i<=12; $i++ )
+    $codes[ 'F'.$i ]  = 111 + $i;
+  
+  return $codes;
+}
+
+/**
+ *  Get all registered shortcut groups, optionally filtered by permission check for the given user
+ *  
+ *  @scope public
+ *  @param user (user) The user to filter against using the group permissions
+ *  @return An array of all registered shortcut groups
+ */
+function shortcut_keys_get_shortcut_groups( $user=NULL ) {
+  
+  $groups = variable_get( MODULE_SHORTCUT_KEYS_VARIABLE_GROUPS, array() );
+  
+  if( !$user )
+    return $groups;
+  
+  foreach( $groups as $group_name=>$config ) {
+    
+    if( !user_access( _shortcut_keys_get_group_permission_key( $group_name ), $user ) ) {
+      $groups[ $group_name ]  = NULL;
+      unset( $groups[ $group_name ] );
+    }
+    
+  }
+  
+  return $groups;
+  
+}
+
+/**
+ *  Set all shortcut groups
+ *  
+ *  @scope public
+ *  @param groups (array) The list of new groups to replace the previous ones
+ *  @return NULL
+ */
+function shortcut_keys_set_shortcut_groups( $groups ) {
+  
+  variable_set( MODULE_SHORTCUT_KEYS_VARIABLE_GROUPS, $groups );
+  
+}
+
+/**
+ *  Delete the given shortcut group, removing all links to it from all current shortcuts
+ *  
+ *  @scope public
+ *  @param group (array) The group definition
+ *  @return NULL
+ */
+function shortcut_keys_delete_shortcut_group( $group ) {
+  
+  // Pass by reference!
+  foreach( module_implements( MODULE_SHORTCUT_KEYS_API_HOOK ) as $module ) {
+    
+    $function = $module . '_' . MODULE_SHORTCUT_KEYS_API_HOOK;
+    $function( 'delete_shortcut_group', $group );
+    
+  }
+  
+  $groups  = shortcut_keys_get_shortcut_groups( NULL, TRUE );
+  
+  $groups[ $group[ 'machine_name' ] ]  = NULL;
+  unset( $groups[ $group[ 'machine_name' ] ] );
+  
+  shortcut_keys_set_shortcut_groups( $groups );
+  
+  
+  // Remove links to this group
+  $shortcuts  = shortcut_keys_get_shortcuts( NULL, TRUE );
+  
+  foreach( $shortcuts as $machine_name=>$shortcut ) {
+    
+    if( isset( $shortcut['groups'][ $group['machine_name'] ] ) ) {
+      
+      unset( $shortcuts[$machine_name]['groups'][ $group['machine_name'] ] );
+      
+    }
+    
+  }
+  
+  shortcut_keys_set_shortcuts( $shortcuts );
+  
+}
+
+/**
+ *  Get all registered shortcut types, optionally filtered by permission check for the given user
+ *  
+ *  @scope public
+ *  @param user (user) The user to filter against using the shortcut type permissions
+ *  @return An array of all registered shortcut types
+ */
+function shortcut_keys_get_shortcut_types( $user=NULL ) {
+  
+  $types  = module_invoke_all( MODULE_SHORTCUT_KEYS_SHORTCUT_TYPE_HOOK );
+  if( !$user )
+    return $types;
+  
+  foreach( $types as $machine_name=>$type ) {
+    
+    if( !isset($type['access callback']) ) {
+      
+      if( !isset($type['access arguments']) || empty($type['access arguments']) )
+        $access = user_access( MODULE_SHORTCUT_KEYS_PERMISSION_USE_ALL, $user );
+      else
+        $access = user_access( $type['access arguments'][0], $user );
+      
+    }
+    else {
+      
+      $access = isset($type['access arguments']) && !empty($type['access arguments']) ? call_user_func_array( $type['access callback'], $type['access arguments'] ) : $type['access callback']();
+      
+    }
+    
+    if( !$access ) {
+      $types[ $machine_name ]  = NULL;
+      unset( $types[ $machine_name ] );
+    }
+    
+  }
+  
+  return $types;
+  
+}
+
+/**
+ *  Get all registered shortcuts, optionally filtered by permission check for the given user
+ *  
+ *  @scope public
+ *  @param user (user) The user to filter against using the group permissions
+ *  @param include_inactive (bool) Also return inactive shortcuts
+ *  @return An array of all registered shortcuts
+ */
+function shortcut_keys_get_shortcuts( $user=NULL, $include_inactive=FALSE ) {
+  
+  $shortcuts  = variable_get( MODULE_SHORTCUT_KEYS_VARIABLE_SHORTCUTS, array() );
+  $types      = shortcut_keys_get_shortcut_types( $user );
+  
+  // Exclude inactive
+  if( !$include_inactive ) {
+    
+    foreach( $shortcuts as $machine_name=>$shortcut ) {
+      
+      if( !$shortcut['active'] ) {
+        $shortcuts[ $machine_name ]  = NULL;
+        unset( $shortcuts[ $machine_name ] );
+      }
+      
+    }
+    
+  }
+  
+  ksort( $shortcuts );
+  
+  if( !$user )
+    return $shortcuts;
+  
+  // Filter by command group permission
+  foreach( $shortcuts as $machine_name=>$shortcut ) {
+    
+    $access = !count( $shortcut['groups'] );
+    foreach( $shortcut['groups'] as $group_name ) {
+      
+      if( user_access( _shortcut_keys_get_group_permission_key( $group_name ), $user ) ) {
+        $access = true;
+        break;
+      }
+      
+    }
+    
+    if( !$access || !isset($types[ $shortcut[ 'type' ] ]) ) {
+      $shortcuts[ $machine_name ]  = NULL;
+      unset( $shortcuts[ $machine_name ] );
+    }
+    
+  }
+  
+  return $shortcuts;
+  
+}
+
+/**
+ *  Remove the given shortcut
+ *  
+ *  @scope public
+ *  @param name (string) The name of the shortcut to be removed
+ *  @return (bool) Whether or not the shortcut was found
+ */
+function shortcut_keys_delete_shortcut( $name ) {
+  
+  $shortcuts  = shortcut_keys_get_shortcuts( NULL, TRUE );
+  if( !isset($shortcuts[$name]) )
+    return FALSE;
+  
+  // Pass by reference!
+  foreach( module_implements( MODULE_SHORTCUT_KEYS_API_HOOK ) as $module ) {
+    
+    $function = $module . '_' . MODULE_SHORTCUT_KEYS_API_HOOK;
+    $function( 'delete_shortcut', $shortcut );
+    
+  }
+  
+  $shortcuts[ $name ]  = NULL;
+  unset( $shortcuts[ $name ] );
+  
+  shortcut_keys_set_shortcuts( $shortcuts );
+  
+  return TRUE;
+  
+}
+
+/**
+ *  Import a set of shortcuts, optionally overwriting existing
+ *  
+ *  @scope public
+ *  @param shortcuts (array) A list of shortcuts to be imported
+ *  @param overwrite_existing (boolean) Whether or not to overwrite existing shortcuts with the same name. Defaults to FALSE
+ *  @return (array) A list of the names of all imported commands
+ */
+function shortcut_keys_import_shortcuts( $shortcuts, $overwrite_existing=FALSE ) {
+  
+  $existing = shortcut_keys_get_shortcuts( NULL, TRUE );
+  $types    = shortcut_keys_get_shortcut_types();
+  $groups   = shortcut_keys_get_shortcut_groups();
+  
+  $imported = array();
+  
+  foreach( $shortcuts as $machine_name=>$shortcut ) {
+    
+    if( isset($existing[$machine_name]) && !$overwrite_existing )
+      continue;
+    
+    if( !isset($types[ $shortcut[ 'type' ] ]) )
+      continue;
+    
+    foreach( $shortcut['groups'] as $group_name ) {
+      if( !isset($groups[$group_name]) )
+        unset( $shortcut['groups'][$group_name] );
+    }
+    
+    // Pass by reference!
+    foreach( module_implements( MODULE_SHORTCUT_KEYS_API_HOOK ) as $module ) {
+      
+      $function = $module . '_' . MODULE_SHORTCUT_KEYS_API_HOOK;
+      $function( 'save_shortcut', $shortcut, isset($existing[$machine_name]) ? $existing[$machine_name] : NULL );
+      
+    }
+    
+    $existing[ $machine_name ]  = $shortcut;
+    
+    $imported[ $machine_name ]  = $machine_name;
+    
+  }
+  
+  shortcut_keys_set_shortcuts( $existing );
+  
+  return $imported;
+  
+}
+
+/**
+ *  Set all shortcuts
+ *  
+ *  @scope public
+ *  @param shortcuts (array) The list of new shortcuts to replace the previous ones
+ *  @return NULL
+ */
+function shortcut_keys_set_shortcuts( $shortcuts ) {
+  
+  variable_set( MODULE_SHORTCUT_KEYS_VARIABLE_SHORTCUTS, $shortcuts );
+  
+}
+
+/**
+ *  Get the access permission key for a given shortcut group
+ *  
+ *  @scope private
+ *  @param name (string) The name of the shortcut group to get the permission key for
+ *  @return The actual key
+ */
+function _shortcut_keys_get_group_permission_key( $name ) {
+  return 'use '.$name.' shortcut keys';
+}
+
+/**
+ *  Implements hook_load() for pseudo entity shortcut
+ *  
+ *  @scope public
+ *  @param machine_name (string) The machine name of the given shortcut
+ *  @return The loaded shortcut
+ */
+function shortcut_keys_shortcut_load( $machine_name ) {
+  $shortcuts = shortcut_keys_get_shortcuts( NULL, TRUE );
+  
+  return isset($shortcuts[$machine_name]) ? $shortcuts[$machine_name] : NULL;
+}
+/**
+ *  Implements hook_load() for pseudo entity shortcut group
+ *  
+ *  @scope public
+ *  @param machine_name (string) The machine name of the given shortcut group
+ *  @return The loaded shortcut group
+ */
+function shortcut_keys_shortcut_group_load( $machine_name ) {
+  $groups = shortcut_keys_get_shortcut_groups();
+  
+  return isset($groups[$machine_name]) ? $groups[$machine_name] : NULL;
+}
+
+/**
+ *  Implements hook_init()
+ */
+function shortcut_keys_init() {
+  $codes      = shortcut_keys_get_javascript_keycodes();
+  
+  global $user;
+  $shortcuts  = shortcut_keys_get_shortcuts( $user );
+  
+  // Pass by reference!
+  foreach( module_implements( MODULE_SHORTCUT_KEYS_API_HOOK ) as $module ) {
+    
+    $function = $module . '_' . MODULE_SHORTCUT_KEYS_API_HOOK;
+    $function( 'use_shortcuts', $shortcuts );
+    
+  }
+  
+  drupal_add_js( array( 'shortcut_keys'=>array( 'keycode_table'=>$codes, 'shortcuts'=>$shortcuts, 'q'=>$_GET['q'], 'arg'=>arg() ) ), 'setting' );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function shortcut_keys_permission() {
+  
+  $permissions    = array(
+    MODULE_SHORTCUT_KEYS_PERMISSION_USE_ALL                     => array(
+      'title'           => t('Use any shortcut key'),
+      'description'     => t('Allow users to use any shortcut you added regardless of groups and type.'),
+      'restrict access' => TRUE,
+    ),
+    MODULE_SHORTCUT_KEYS_PERMISSION_USE_URL                     => array(
+      'title'       => t('Use URL shortcuts'),
+      'description' => t('Allow users to generally use URL shortcuts. Permissions can then be refined by using shortcut groups.'),
+    ),
+    MODULE_SHORTCUT_KEYS_PERMISSION_USE_JAVASCRIPT              => array(
+      'title'       => t('Use JavaScript shortcuts'),
+      'description' => t('Allow users to generally use JavaScript shortcuts. Permissions can then be refined by using shortcut groups.'),
+    ),
+    MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS        => array(
+      'title'           => t('Administer shortcuts'),
+      'description'     => t('Allow these users to manage all shortcuts.'),
+      'restrict access' => TRUE,
+    ),
+    MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS  => array(
+      'title'           => t('Administer shortcuts'),
+      'description'     => t('Allow these users to manage all shortcut groups.'),
+      'restrict access' => TRUE,
+    ),
+  );
+  
+  $groups = shortcut_keys_get_shortcut_groups();
+  foreach( $groups as $machine_name=>$config ) {
+    $permissions[ _shortcut_keys_get_group_permission_key( $machine_name ) ] = array(
+      'title'       => t('Use all !name shortcut keys',array('!name'=>$config['name'])),
+      'description' => t('Allow users to use any shortcut you added to this group.'),
+    );
+  }
+  
+  return $permissions;
+  
+}
+
+/**
+ * Implements hook_menu().
+ */
+function shortcut_keys_menu() {
+  $items = array();
+  
+  // Enable tabs...
+  $items['admin/config/user-interface/shortcut-keys'] = array(
+    'title'             => 'Shortcut Keys',
+    'page callback'     => '_shortcut_keys_admin_shortcuts',
+    'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
+    //'type'              => MENU_NORMAL_ITEM,
+    'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
+  );
+  
+  // Manage shortcuts
+  $items['admin/config/user-interface/shortcut-keys/shortcuts'] = array(
+    'title'             => 'Shortcuts',
+    //'page callback'     => '_shortcut_keys_admin_shortcuts',
+    'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
+    'type'              => MENU_DEFAULT_LOCAL_TASK,
+    'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
+  );
+  
+  // Edit shortcut
+  $items['admin/config/user-interface/shortcut-keys/shortcuts/edit/%shortcut_keys_shortcut'] = array(
+    'title'             => 'Edit shortcut',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array( 'shortcut_keys_admin_shortcut_edit_form', 6 ),
+    'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
+  );
+  
+  // Delete shortcut
+  $items['admin/config/user-interface/shortcut-keys/shortcuts/delete/%shortcut_keys_shortcut'] = array(
+    'title'             => 'Delete shortcut',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array( 'shortcut_keys_admin_shortcut_delete_form', 6 ),
+    'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUTS),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
+  );
+  
+  // Manage shortcut groups
+  $items['admin/config/user-interface/shortcut-keys/groups'] = array(
+    'title'             => 'Groups',
+    'page callback'     => '_shortcut_keys_admin_groups',
+    'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS),
+    'type'              => MENU_LOCAL_TASK,
+    'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
+  );
+  
+  // Edit shortcut groups
+  $items['admin/config/user-interface/shortcut-keys/groups/edit/%shortcut_keys_shortcut_group'] = array(
+    'title'             => 'Edit shortcut group',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array( 'shortcut_keys_admin_shortcut_group_edit_form', 6 ),
+    'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
+  );
+  
+  // Delete shortcut groups
+  $items['admin/config/user-interface/shortcut-keys/groups/delete/%shortcut_keys_shortcut_group'] = array(
+    'title'             => 'Delete shortcut group',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array( 'shortcut_keys_admin_shortcut_group_delete_form', 6 ),
+    'access arguments'  => array(MODULE_SHORTCUT_KEYS_PERMISSION_ADMINISTER_SHORTCUT_GROUPS),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => MODULE_SHORTCUT_KEYS_ADMIN_FILE,
+  );
+  
+  return $items;
+}
+
+/**
+ *  Implements hook_theme()
+ */
+function shortcut_keys_theme( $existing, $type, $theme, $path ) {
+  
+  $items['shortcut_keys_block']       = array(
+    'variables'   => array(
+      'shortcuts'   => array(),
+      'append'      => '',
+    ),
+    'template'  => 'templates/shortcut-keys-block',
+  );
+  
+  return $items;
+  
+}
+
+/**
+ *  Implements hook_block_info()
+ */
+function shortcut_keys_block_info() {
+  $blocks       = array(
+    
+    'shortcuts'   => array(
+      'info'        => t('Shortcut Keys'),
+    ),
+    
+  );
+  
+  return $blocks;
+}
+
+/**
+ *  Implements hook_block_view()
+ */
+function shortcut_keys_block_view( $delta='' ) {
+  
+  $block  = array();
+  
+  if( $delta=='shortcuts' ) {
+    
+    global $user;
+    $shortcuts  = shortcut_keys_get_shortcuts( $user );
+    
+    $append     = '';
+    $types      = shortcut_keys_get_shortcut_types( $user );
+    foreach( $types as $type ) {
+      if( isset($type['block']) )
+        $append   .= $type['block']( $shortcuts );
+    }
+    
+    $block  = array(
+      'subject' => t( 'Keyboard shortcuts' ),
+      'content' => theme( 'shortcut_keys_block', array( 'shortcuts'=>$shortcuts, 'append'=>$append ) ),
+    );
+    
+  }
+  
+  return $block;
+  
+}
+
+/**
+ *  Implements hook_shortcut_keys_shortcut_type()
+ */
+function shortcut_keys_shortcut_keys_shortcut_type() {
+  
+  return array(
+    
+    'url'               => array(
+      'name'              => t('open a URL'),
+      'block'             => '_shortcut_keys_url_block',
+      'access arguments'  => array( MODULE_SHORTCUT_KEYS_PERMISSION_USE_URL ),
+    ),
+    
+    'javascript'        => array(
+      'name'              => t('execute a JavaScript snippet'),
+      'access arguments'  => array( MODULE_SHORTCUT_KEYS_PERMISSION_USE_JAVASCRIPT ),
+    ),
+    
+  );
+  
+}
+
+/**
+ *  Extend the shortcuts-block by adding a link to add a shortcut to the current page
+ *  
+ *  @scope private
+ *  @param shortcuts (array) The current shortcuts to be displayed
+ *  @return The HTML to be appended to the block element
+ */
+function _shortcut_keys_url_block( &$shortcuts ) {
+  
+  $path           = $_GET['q'];
+  $query          = array(
+    'destination'   => $path,
+    'type'          => 'url',
+    'value'         => $path,
+    'name'          => t('Go to !url',array('!url'=>$path)),
+    'machine_name'  => 'go_to_'.preg_replace( '@([^a-z0-9_]+)@', '_', $path ),
+  );
+  
+  return l( t('Add shortcut to current page'), 'admin/config/user-interface/shortcut-keys/shortcuts', array( 'query'=>$query ) );
+  
+}
