@@ -7,5 +7,6 @@ version = "7.x-1.0-dev"
 
 dependencies[] = erpal_docs
 dependencies[] = filejs
+dependencies[] = boxjs
 
 stylesheets[all][]  = erpal_file_drag_drop.css
