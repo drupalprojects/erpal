@@ -101,6 +101,26 @@ function erpal_file_drag_drop_init() {
 }
 
 /**
+* Implements hook_field_widget_form_alter
+*/
+function erpal_file_drag_drop_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (!empty($element['target_id']['#field_name'])) {
+    $field_name = $element['target_id']['#field_name'];
+    $bundle = $element['target_id']['#bundle'];
+    $entity_type = $element['target_id']['#entity_type'];
+    $field_instance = field_info_instance($entity_type, $field_name, $bundle);
+    $field_info = field_info_field($field_name);
+    if ($field_info['type'] == 'entityreference') {
+      if (!empty($field_info['settings']['handler_settings']['target_bundles']['erpal_file'])) {
+        //this is an entityreference field referencing erpal_file nodes
+        $element['target_id']['#description'] .= t('CTRL+B opens a file box that you can drag&drop here.');
+      }
+        
+    }
+  }
+}
+
+/**
  *	Implements hook_node_delete
  */
 function erpal_file_drag_drop_node_delete( $node ) {
