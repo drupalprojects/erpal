@@ -111,7 +111,7 @@ function filejs_init() {
     drupal_add_js( $path . '/js/filejs.js', array( 'weight'=>$i*3 ) );
   }
   else
-    drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install filejs.', array( '@name'=>$libraries[$i] ) ) );
+    drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install filejs.', array( '@name'=>$libraries[$i] ) ), 'status', FALSE );
   
 }
 
