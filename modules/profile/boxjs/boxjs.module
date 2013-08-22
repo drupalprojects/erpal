@@ -51,7 +51,7 @@ function boxjs_init() {
     drupal_add_js( drupal_get_path( 'module', 'boxjs' ) . '/js/boxjs.js', array( 'weight'=>$i*3 ) );
   }
   else
-    drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install boxjs.', array( '@name'=>$libraries[$i] ) ) );
+    drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install boxjs.', array( '@name'=>$libraries[$i] ) ), 'status', FALSE );
   
 }
 
