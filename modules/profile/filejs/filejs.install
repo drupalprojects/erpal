@@ -50,7 +50,7 @@ function filejs_enable() {
       'groups'          		=> array(),
       'type'            		=> 'javascript',
       'value'           		=> 'jQuery("body").boxjs( "create", {sync:true,caption:"Upload Box",action:"upload"}, "drupal_filebox" );',
-      'keys'            		=> 'CTRL+U',
+      'keys'            		=> 'CTRL+B',
       'press_double'    		=> FALSE,
       'confirm_dialog'  		=> FALSE,
       'always_execute'  		=> TRUE,
