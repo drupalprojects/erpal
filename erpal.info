@@ -4,8 +4,6 @@ core = 7.x
 php = 5.3
 distribution_name = ERPAL
 
-dependencies[] = devel
-
 ;core
 dependencies[] = user
 dependencies[] = php
