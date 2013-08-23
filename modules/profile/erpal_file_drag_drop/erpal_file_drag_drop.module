@@ -34,7 +34,7 @@ function erpal_file_drag_drop_filejs_files_alter( &$result ) {
     $instance     = field_info_instance( 'node', $field, $type );
     $destination  = file_field_widget_uri( $fieldinfo, $instance );
     $validators   = file_field_widget_upload_validators( $fieldinfo, $instance );
-		
+    $validators['file_validate_extensions'] = array(_erpal_docs_helper_doc_extensions());
 		$file					= NULL;
 		// Sometimes requests fire overlapping which confuses Drupal's file system. So we're being nice and give it three tries before firing an error...
     for( $n=0; $n<3; $n++ ) {
@@ -98,6 +98,26 @@ function erpal_file_drag_drop_init() {
 		unset( $_SESSION['erpal_file_drag_drop_node_deleted'] );
 	}
 	
+}
+
+/**
+* Implements hook_field_widget_form_alter
+*/
+function erpal_file_drag_drop_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (!empty($element['target_id']['#field_name'])) {
+    $field_name = $element['target_id']['#field_name'];
+    $bundle = $element['target_id']['#bundle'];
+    $entity_type = $element['target_id']['#entity_type'];
+    $field_instance = field_info_instance($entity_type, $field_name, $bundle);
+    $field_info = field_info_field($field_name);
+    if ($field_info['type'] == 'entityreference') {
+      if (!empty($field_info['settings']['handler_settings']['target_bundles']['erpal_file'])) {
+        //this is an entityreference field referencing erpal_file nodes
+        $element['target_id']['#description'] .= t('CTRL+B opens a file box that you can drag&drop here.');
+      }
+        
+    }
+  }
 }
 
 /**
