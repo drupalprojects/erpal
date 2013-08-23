@@ -56,8 +56,8 @@ function erpal_install_tasks(){
   
   $tasks = array();
   
-  $tasks['erpal_preconfigure_site'] = array(
-    'display_name' => st('Preparing site'),
+  $tasks['erpal_create_vocabularies_and_taxonomies'] = array(
+    'display_name' => st('Creating taxonomies'),
     'display' => TRUE,
     'type' => 'batch',
   );
@@ -66,6 +66,12 @@ function erpal_install_tasks(){
     'display_name' => st('Contact information'),
     'display' => TRUE,
     'type' => 'form',
+  );
+  
+  $tasks['erpal_preconfigure_site'] = array(
+    'display_name' => st('Preparing site'),
+    'display' => TRUE,
+    'type' => 'batch',
   );
   
   $tasks['erpal_last_config_steps'] = array(
@@ -128,25 +134,51 @@ function _erpal_set_theme($target_theme) {
   }
 }
 
-function erpal_preconfigure_site(){
-  $operations = array(
-    array('_erpal_taxonomy_prepare', array()),
-    array('_erpal_taxonomy_create_various_taxonomies', array()),
-    array('_erpal_taxonomy_create_task_taxonomies', array()),
-    array('_erpal_taxonomy_create_project_taxonomies', array()),
-    array('_erpal_taxonomy_create_country_taxonomies', array()),
-    array('_erpal_taxonomy_create_activity_taxonomies', array()),
+function erpal_create_vocabularies_and_taxonomies(){
+  require_once(DRUPAL_ROOT . '/profiles/erpal/erpal_taxonomy.inc'); 
     
-    array('_erpal_create_roles_and_permissions', array()),
-    array('_erpal_create_relations', array()),
-    array('_erpal_invoice_config', array()),
-    array('_erpal_projects_config', array()),
-    array('_erpal_calendar_config', array()),
-    array('_erpal_configure_layout', array()),
-    array('_erpal_configure_pathauto', array()),
-    array('_erpal_various_settings', array()),
+  $operations = array();
+  
+  // Prepare directories for term_images
+  $operations[] = array('_erpal_taxonomy_prepare', array());
+  
+  // Create Taxonomies
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_service_category_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_priority_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_number_type_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_address_type_vocabulary());
+  
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_task_status_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_task_type_vocabulary());  
+  
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_status_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_status_vocabulary());
+  
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_countries_vocabulary());
+  
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_origin_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_status_vocabulary());
 
+  $batch = array(
+    'title' => st('Creating taxonomies'),
+    'operations' => $operations,
+    'file' => drupal_get_path('profile', 'erpal') . '/erpal_taxonomy.inc',
   );
+  return $batch;  
+}
+
+function erpal_preconfigure_site(){
+  $operations = array();
+      
+  $operations[] = array('_erpal_create_roles_and_permissions', array());
+  $operations[] = array('_erpal_create_relations', array());
+  $operations[] = array('_erpal_invoice_config', array());
+  $operations[] = array('_erpal_projects_config', array());
+  $operations[] = array('_erpal_calendar_config', array());
+  $operations[] = array('_erpal_configure_layout', array());
+  $operations[] = array('_erpal_configure_pathauto', array());
+  $operations[] = array('_erpal_various_settings', array());
+
   $batch = array(
     'title' => st('Preparing site'),
     'operations' => $operations,
@@ -155,6 +187,23 @@ function erpal_preconfigure_site(){
   return $batch;  
 }
 
+/**
+ * Adds Taxonomy callbacks to a BatchAPI operations array
+ * @param $operations array() operations array with callbacks to process
+ * @param $data array() with vocabulary and term data as given from the 
+ * _erpal_taxonomy_get...() functions in erpal_taxonomy.inc  
+ */
+function _erpal_add_taxonomy_callbacks(&$operations, $data){
+  $taxonomy = array_shift($data);
+  $terms = array_chunk(array_shift($data), 5, TRUE);
+  
+  $index = 1;
+  $parts = count($terms);
+  foreach ($terms as $terms_chunk){
+    $operations[] = array('erpal_taxonomy_add', array($taxonomy, $terms_chunk, $parts, $index));
+    $index++;
+  } 
+}
 
 function erpal_last_config_steps(){
   
@@ -222,7 +271,15 @@ function erpal_contact_information_form($form, &$form_state){
     '#type' => 'select',
     '#options' => $countries,
     '#default_value' => array_search('Germany', $countries),
-  );  
+  );
+  
+  $form['company_address']['vat_rate'] = array(
+    '#title' => st('Default VAT rate'),
+    '#type' => 'textfield',
+    '#description' => st('Enter the default VAT rate in percent for your country!'),
+    '#maxlength' => 255,
+    '#required' => TRUE,
+  );    
     
   $form['contact_information'] = array(
     '#type' => 'fieldset',
@@ -239,9 +296,7 @@ function erpal_contact_information_form($form, &$form_state){
     '#type' => 'textfield',
     '#maxlength' => 255,
     '#required' => TRUE,
-  
   );
-  
   
   $form['submit'] = array(
     '#value' => st('Save and continue'),
@@ -256,7 +311,11 @@ function erpal_contact_information_form_validate($form, $form_state){
   $values = $form_state['values'];
   
   if(!valid_email_address($values['email_address']))
-    form_set_error('email_address', 'The Email-address is not valid.');
+    form_set_error('email_address', st('The Email-address is not valid!'));
+  
+  if(!is_numeric($values['vat_rate']))
+    form_set_error('vat_rate', st('The VAT rate has to be a numeric value!'));
+  
 }
 
 
@@ -381,6 +440,14 @@ function erpal_contact_information_form_submit($form, $form_state){
   node_object_prepare($task_node); 
   node_save($task_node);
   variable_set('crm_tasks_task', $task_node->nid);
+  
+  
+  $vat_string = $values['vat_rate'] . '#' . $values['vat_rate'] . '%';
+  
+  variable_set('erpal_invoice_vat_rates_string', $vat_string);
+  variable_set('erpal_invoice_default_vat_rate', (float) $vat_string);
+  
+  
   
 }
 
