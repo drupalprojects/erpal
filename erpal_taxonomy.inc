@@ -1,11 +1,18 @@
 <?php
 
-function _erpal_taxonomy_prepare_directory(){
+
+/**
+ * BatchAPI callback
+ * creates Taxonomy
+ */
+function _erpal_taxonomy_prepare_directory(&$context){
+  $context['message'] = st('Prepared to create taxonomies');
   $directory = 'public://term_images/';
   file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
 }
 
-function _erpal_taxonomy_create_number_type_vocabulary(){
+
+function _erpal_taxonomy_get_number_type_vocabulary(){
   $number_type_vocabulary = new stdClass();
   $number_type_vocabulary->name = 'Number types';
   $number_type_vocabulary->machine_name = 'number_types';
@@ -23,10 +30,10 @@ function _erpal_taxonomy_create_number_type_vocabulary(){
         'is_default' => 1,
     ),
   );
-  erpal_taxonomy_add($number_type_vocabulary, $number_type_terms);
+  return array($number_type_vocabulary, $number_type_terms);
 }
 
-function _erpal_taxonomy_create_address_type_vocabulary(){
+function _erpal_taxonomy_get_address_type_vocabulary(){
   $address_type_vocabulary = new stdClass();
   $address_type_vocabulary->name = 'Address types';
   $address_type_vocabulary->machine_name = 'address_types';
@@ -45,11 +52,11 @@ function _erpal_taxonomy_create_address_type_vocabulary(){
 	  ),
 	   
   );
-  erpal_taxonomy_add($address_type_vocabulary, $address_type_terms);
+  return array($address_type_vocabulary, $address_type_terms);
 }
 
 
-function _erpal_taxonomy_create_activity_origin_vocabulary(){
+function _erpal_taxonomy_get_activity_origin_vocabulary(){
   $activity_origin_vocabulary = new stdClass();
   $activity_origin_vocabulary->name = 'Activity origin';
   $activity_origin_vocabulary->machine_name = 'activity_origin';
@@ -79,10 +86,10 @@ function _erpal_taxonomy_create_activity_origin_vocabulary(){
       'is_default' => 0,
     ),
   );
-  erpal_taxonomy_add($activity_origin_vocabulary, $activity_origin_terms);
+  return array($activity_origin_vocabulary, $activity_origin_terms);
 }
  
-function _erpal_taxonomy_create_task_type_vocabulary(){ 
+function _erpal_taxonomy_get_task_type_vocabulary(){ 
   //  Create taxonomy 
   $task_type_vocabulary = new stdClass();
   $task_type_vocabulary->name = 'Task type terms';
@@ -104,10 +111,10 @@ function _erpal_taxonomy_create_task_type_vocabulary(){
       'term_image' => 'erpal_task_icons/type_feature.png',
     ),  
   );   
-  erpal_taxonomy_add($task_type_vocabulary, $task_type_terms);
+  return array($task_type_vocabulary, $task_type_terms);
 }
 
-function _erpal_taxonomy_create_priority_vocabulary(){
+function _erpal_taxonomy_get_priority_vocabulary(){
   
   $priority_vocabulary = new stdClass();
   $priority_vocabulary->name = 'Priority terms';
@@ -129,10 +136,10 @@ function _erpal_taxonomy_create_priority_vocabulary(){
       'term_image' => 'erpal_task_icons/priority_high.png',
     ),
   );
-  erpal_taxonomy_add($priority_vocabulary, $priority_terms);
+  return array($priority_vocabulary, $priority_terms);
 }
   
-function _erpal_taxonomy_create_project_status_vocabulary(){
+function _erpal_taxonomy_get_project_status_vocabulary(){
    
   $project_status_vocabulary = new stdClass();
   $project_status_vocabulary->name = 'Project status terms';
@@ -164,10 +171,10 @@ function _erpal_taxonomy_create_project_status_vocabulary(){
       'semantic_process' => 'completed',
     ),
   );
-  erpal_taxonomy_add($project_status_vocabulary, $project_status_terms);
+  return array($project_status_vocabulary, $project_status_terms);
 }
 
-function _erpal_taxonomy_create_task_status_vocabulary(){
+function _erpal_taxonomy_get_task_status_vocabulary(){
   
   $task_status_vocabulary = new stdClass();
   $task_status_vocabulary->name = 'Task status terms';
@@ -222,170 +229,31 @@ function _erpal_taxonomy_create_task_status_vocabulary(){
       'term_image' => 'erpal_task_icons/status_closed.png',
     ),
   );
-  erpal_taxonomy_add($task_status_vocabulary, $task_status_terms);    
+  return array($task_status_vocabulary, $task_status_terms);    
 }
 
-function _erpal_taxonomy_create_countries_vocabulary(){
+function _erpal_taxonomy_get_countries_vocabulary(){
+  
+  require_once(DRUPAL_ROOT . '/includes/iso.inc');
+      
+  $countries = _country_get_predefined_list();
+  $countries_terms = array();
+  
+  foreach ($countries as $country_code => $country){
+    $countries_terms[$country] = array(
+      'name' => $country,
+      'field_country_code' => $country_code,
+    );
+  }
   
   $countries_vocabulary = new stdClass();
   $countries_vocabulary->name = 'Countries';
   $countries_vocabulary->machine_name = 'countries';
-  $countries_terms = array(
-    'Austria' => array(
-      'name' => 'Austria',
-      'vat_rates' => '19',
-      'field_country_code' => 'AT',
-    ),
-    'Belgium' => array(
-      'name' => 'Belgium',
-      'vat_rates' => '19',
-      'field_country_code' => 'BE',
-    ),
-    'Bulgaria' => array(
-      'name' => 'Bulgaria',
-      'vat_rates' => '19',
-      'field_country_code' => 'BG',
-    ),
-    'Czeck Republic' => array(
-      'name' => 'Czeck Republic',
-      'vat_rates' => '19',
-      'field_country_code' => 'CZ',
-    ),
-    'Cyprus' => array(
-      'name' => 'Cyprus',
-      'vat_rates' => '19',
-      'field_country_code' => 'CY',
-    ),
-    'Denmark' => array(
-      'name' => 'Denmark',
-      'vat_rates' => '19',
-      'field_country_code' => 'DK',
-    ),
-    'Estonia' => array(
-      'name' => 'Estonia',
-      'vat_rates' => '19',
-      'field_country_code' => 'EE',
-    ),                                   
-    'France' => array(
-      'name' => 'France',
-      'vat_rates' => '19',
-      'field_country_code' => 'FR',
-    ),
-    'Germany' => array(
-      'name' => 'Germany',
-      'vat_rates' => '19',
-      'field_country_code' => 'DE',
-    ),
-    'Hungary' => array(
-      'name' => 'Hungary',
-      'vat_rates' => '19',
-      'field_country_code' => 'HU',
-    ),
-    'India' => array(
-      'name' => 'India',
-      'vat_rates' => '19',
-      'field_country_code' => 'IN',
-    ),
-    'Ireland' => array(
-      'name' => 'Ireland',
-      'vat_rates' => '19',
-      'field_country_code' => 'IE',
-    ),
-    'Italy' => array(
-      'name' => 'Italy',
-      'vat_rates' => '19',
-      'field_country_code' => 'IT',
-    ),
-    'Lativa' => array(
-      'name' => 'Latvia',
-      'vat_rates' => '19',
-      'field_country_code' => 'LV',
-    ),
-    'Lithuania' => array(
-      'name' => 'Lithuania',
-      'vat_rates' => '19',
-      'field_country_code' => 'LT',
-    ),
-    'Luxembourg' => array(
-      'name' => 'Luxembourg',
-      'vat_rates' => '19',
-      'field_country_code' => 'LU',
-    ),
-    'Malta' => array(
-      'name' => 'Malta',
-      'vat_rates' => '19',
-      'field_country_code' => 'MT',
-    ),
-    'Netherlands' => array(
-      'name' => 'Netherlands',
-      'vat_rates' => '19',
-      'field_country_code' => 'NL',
-    ),
-    'Poland' => array(
-      'name' => 'Poland',
-      'vat_rates' => '19',
-      'field_country_code' => 'PL',
-    ),
-    'Portugal' => array(
-      'name' => 'Portugal',
-      'vat_rates' => '19',
-      'field_country_code' => 'PT',
-    ),
-    'Romania' => array(
-      'name' => 'Romania',
-      'vat_rates' => '19',
-      'field_country_code' => 'RO',
-    ),
-    'Slovenia' => array(
-      'name' => 'Slovenia',
-      'vat_rates' => '19',
-      'field_country_code' => 'SI',
-    ),
-    'Slovakia' => array(
-      'name' => 'Slovakia',
-      'vat_rates' => '19',
-      'field_country_code' => 'SK',
-    ),
-    'Spain' => array(     
-      'name' => 'Spain',  
-      'vat_rates' => '19',
-      'field_country_code' => 'ES',
-    ),  
-    'Switzerland' => array(
-      'name' => 'Swizerland',
-      'vat_rates' => '19',
-      'field_country_code' => 'CH',
-    ),
-    'South Africa' => array(
-      'name' => 'South Africa',
-      'vat_rates' => '19',
-      'field_country_code' => 'ZA',
-    ),
-    'Finland' => array(
-      'name' => 'Finland',
-      'vat_rates' => '19',
-      'field_country_code' => 'FI',
-    ),
-    'Sweden' => array(
-      'name' => 'Sweden',
-      'vat_rates' => '19',
-      'field_country_code' => 'SE',
-    ),
-    'United Kingdom' => array(
-      'name' => 'United Kingdom',
-      'vat_rates' => '19',
-      'field_country_code' => 'UK',
-    ),
-    'United States' => array(
-      'name' => 'United States',
-      'vat_rates' => '19',
-      'field_country_code' => 'US',
-    ),
-  );
-  erpal_taxonomy_add($countries_vocabulary, $countries_terms);
+  
+  return array($countries_vocabulary, $countries_terms);
 }
 
-function _erpal_taxonomy_create_project_tags_vocabulary(){
+function _erpal_taxonomy_get_project_tags_vocabulary(){
 
   $project_vocabulary = new stdClass();
   $project_vocabulary->name = 'Project Tags';
@@ -399,10 +267,10 @@ function _erpal_taxonomy_create_project_tags_vocabulary(){
     'Concept' => array('name' => 'Concept',),
     'Server' => array('name' => 'Server',), 
   );
-  erpal_taxonomy_add($project_vocabulary, $project_terms);
+  return array($project_vocabulary, $project_terms);
 }
 
-function _erpal_taxonomy_create_service_category_vocabulary(){
+function _erpal_taxonomy_get_service_category_vocabulary(){
     
   $service_category_vocabulary = new stdClass();
   $service_category_vocabulary->name = 'Service category terms';
@@ -429,11 +297,11 @@ function _erpal_taxonomy_create_service_category_vocabulary(){
       'allow_grouping' => TRUE,
     ),
   );
-  erpal_taxonomy_add($service_category_vocabulary, $service_category_terms);
+  return array($service_category_vocabulary, $service_category_terms);
 
 }
 
-function _erpal_taxonomy_create_activity_status_vocabulary(){
+function _erpal_taxonomy_get_activity_status_vocabulary(){
  
   $activity_vocabulary = new stdClass();
   $activity_vocabulary->name = 'Activity status terms'; 
@@ -480,21 +348,29 @@ function _erpal_taxonomy_create_activity_status_vocabulary(){
       'is_default' => 0,
     ),
   );
- erpal_taxonomy_add($activity_vocabulary, $activity_terms);
-
+  return array($activity_vocabulary, $activity_terms);
 }
 
 
 
 /**
  * 
+ * BatchAPI callback
  * This function adds a new vocabulary and fills it with terms
  * @param 
  *  $vocabulary: array with information about the vocabulary
  *  $names: list of arrays with information about the terms to create.
+ *  $parts: number of chunks the actual taxonomy is divided to
+ *  $index: number of the actual chunk
  *      
  */
-function erpal_taxonomy_add($vocabulary, $names){
+//function erpal_taxonomy_add($vocabulary, $names){
+function erpal_taxonomy_add($vocabulary, $names, $parts, $index, &$context){
+
+  $name = $vocabulary->name;
+  
+  $context['message'] = st("Added '$vocabulary->name' (Part $index of $parts)");
+
   // check if vocabulray already exists 
   if(($existing_vocabulary = taxonomy_vocabulary_machine_name_load($vocabulary->machine_name)) == NULL){
     taxonomy_vocabulary_save($vocabulary);
@@ -511,14 +387,14 @@ function erpal_taxonomy_add($vocabulary, $names){
   $term_image = array_key_exists('term_image', reset($names));
   $country_code = array_key_exists('field_country_code', reset($names));
   
-  // Delete all existing terms with the same id
-  if($existing_terms = taxonomy_get_tree($vocabulary->vid)){
-  	foreach ($existing_terms as $existing_term) {
-	  if(array_key_exists($existing_term->name, $names)){
-	  	taxonomy_term_delete($existing_term->tid);
-	  }
-	}
-  }
+  // // Delete all existing terms with the same id
+  // if($existing_terms = taxonomy_get_tree($vocabulary->vid)){
+  	// foreach ($existing_terms as $existing_term) {
+  	  // if(array_key_exists($existing_term->name, $names)){
+  	  	// taxonomy_term_delete($existing_term->tid);
+  	  // }
+	  // }
+  // }
     
   foreach($names as $name => $fields){
   	
