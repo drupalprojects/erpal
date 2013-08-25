@@ -266,7 +266,7 @@ projects[references_dialog][patch][] = "http://drupal.org/files/references_dialo
 projects[relation][version] = "1.0-rc4"
 projects[relation][subdir] = "contrib"
 
-projects[relation_add][version] = "1.0-beta1"
+projects[relation_add][version] = "1.1"
 projects[relation_add][subdir] = "contrib"
 
 projects[r4032login][version] = "1.5"
