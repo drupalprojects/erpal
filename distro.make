@@ -2,7 +2,7 @@ api = 2
 core = 7.x
 
 projects[drupal][type] = core
-projects[drupal][version] = 7.21
+projects[drupal][version] = 7.22
 
 ; Patches for Core
 projects[drupal][patch][] = "http://drupal.org/files/1146244-82-node-save-on-insert.patch"
