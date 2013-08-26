@@ -131,65 +131,6 @@ function _erpal_rebuild_content_access(&$context){
   node_access_rebuild(); 
 }
 
-/**
- * BatchAPI callback
- * creates Taxonomy
- */
-function _erpal_taxonomy_prepare(&$context){
-  $context['message'] = st('Prepared to create taxonomies');
-  _erpal_taxonomy_prepare_directory();
-}
-
-/**
- * BatchAPI callback
- * creates Activity Taxonomies
- */
-function _erpal_taxonomy_create_activity_taxonomies(&$context){
-  $context['message'] = st('Created activity taxonomies');
-  _erpal_taxonomy_create_activity_origin_vocabulary();
-  _erpal_taxonomy_create_activity_status_vocabulary();
-}
-
-/**
- * BatchAPI callback
- * creates Project taxonomies
- */
-function _erpal_taxonomy_create_project_taxonomies(&$context){
-  $context['message'] = st('Created project taxonomies');
-  _erpal_taxonomy_create_project_status_vocabulary();
-  _erpal_taxonomy_create_project_tags_vocabulary();
-}
-
-/**
- * BatchAPI callback
- * creates Task taxonomies
- */
-function _erpal_taxonomy_create_task_taxonomies(&$context){
-  $context['message'] = st('Created task taxonomies');
-  _erpal_taxonomy_create_task_status_vocabulary();
-  _erpal_taxonomy_create_task_type_vocabulary();
-}
-
-/**
- * BatchAPI callback
- * creates country taxonomies
- */
-function _erpal_taxonomy_create_country_taxonomies(&$context){
-  $context['message'] = st('Created countries');
-  _erpal_taxonomy_create_countries_vocabulary();
-}
-
-/**
- * BatchAPI callback
- * creates country taxonomies
- */
-function _erpal_taxonomy_create_various_taxonomies(&$context){
-  $context['message'] = st('Created service category and priority taxonomies');
-  _erpal_taxonomy_create_service_category_vocabulary();
-  _erpal_taxonomy_create_priority_vocabulary();
-  _erpal_taxonomy_create_number_type_vocabulary();
-  _erpal_taxonomy_create_address_type_vocabulary();
-}
 
 /**
  * BatchAPI callback
@@ -343,8 +284,9 @@ function _erpal_invoice_config(&$context){
   $context['message'] = st('Configured ERPAL-Invoice');
   //set default vat-rate for erpal invoice
   $vatRates = '7#7%' . "\r\n" . '19#19%' . "\r\n" . '0#0%';
-  variable_set('erpal_invoice_vat_rates_string', $vatRates);
-  variable_set('erpal_invoice_default_vat_rate', '19.000'); 
+  
+  // variable_set('erpal_invoice_vat_rates_string', $vatRates);
+  // variable_set('erpal_invoice_default_vat_rate', '19.000'); 
   
   $manualNote = 'Thanks for your order. Please pay the amount of [erpal_invoice:total]'
     . '[erpal_invoice:currency] till [erpal_invoice:invoice_date].'
