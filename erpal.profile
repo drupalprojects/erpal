@@ -152,12 +152,14 @@ function erpal_create_vocabularies_and_taxonomies(){
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_task_type_vocabulary());  
   
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_status_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_status_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_tags_vocabulary());
   
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_countries_vocabulary());
   
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_origin_vocabulary());
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_status_vocabulary());
+  
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_date_item_vocabulary());
 
   $batch = array(
     'title' => st('Creating taxonomies'),

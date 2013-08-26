@@ -217,23 +217,7 @@ function _erpal_calendar_config(&$context){
   $context['message'] = st('Configured ERPAL-Calendar');
   
   module_load_include('module', 'colors');
-  module_load_include('inc', 'erpal', 'erpal_taxonomy');
-  
-  // Create Taxonomy
-  $date_item_vocabulary = new stdClass();
-  $date_item_vocabulary->name = 'Date item tags';
-  $date_item_vocabulary->machine_name = 'date_item_tags';
-  $date_item_terms = array(
-    array('name' => 'crm',),
-    array('name' => 'contact date',),
-    array('name' => 'contact customer',),
-    array('name' => 'contact agency',), 
-    array('name' => 'appointment',), 
-    array('name' => 'project',),
-    array('name' => 'task',), 
-  );
-  erpal_taxonomy_add($date_item_vocabulary, $date_item_terms);
-  
+    
   // Get taxonomy
   $voc = taxonomy_vocabulary_machine_name_load('date_item_tags');
   $tree = taxonomy_get_tree($voc->vid);
