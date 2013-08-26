@@ -9,7 +9,7 @@
           var nodeid = $(this).val();
 
           // load the current state of the checkboxes once on loading page
-          $.getJSON("/ajaxchecklist/loadnid/"+nodeid, 
+          $.getJSON(Drupal.settings.basePath + "ajaxchecklist/loadnid/"+nodeid,
             function(json) {
               
               for( var i=0; i < json.length; i++ ) {
@@ -33,7 +33,7 @@
   }
   // setup an onclick for each checkbox that writes it state back to the database
   // when toggled. The label text is turned red while writing to the db.
-  $.getJSON("/ajaxchecklist/update-access",
+  $.getJSON(Drupal.settings.basePath + "ajaxchecklist/update-access",
     function(json) {      
       $.ajaxchecklist_access=json.update;
       $("form.ajaxchecklist label.form-item :input").each(
@@ -47,14 +47,14 @@
                 var colorbefore=thislabel.css("color");
                 if ( $(this).attr("checked") === false || !$(this).attr("checked") ) {
                   $(thislabel).css("color","red"); 
-                  $.get("/ajaxchecklist/save/"+nodeid+"/"+$(this).attr("id")+"/0",
+                  $.get(Drupal.settings.basePath + "ajaxchecklist/save/"+nodeid+"/"+$(this).attr("id")+"/0",
                     function() {
                        $(thislabel).css("color",colorbefore); 
                      }
                   );
                 } else {
                   $(this).parent().css("color","red"); 
-                  $.get("/ajaxchecklist/save/"+nodeid+"/"+$(this).attr("id")+"/1",
+                  $.get(Drupal.settings.basePath + "ajaxchecklist/save/"+nodeid+"/"+$(this).attr("id")+"/1",
                     function() {
                       $(thislabel).css("color",colorbefore); 
                     }
