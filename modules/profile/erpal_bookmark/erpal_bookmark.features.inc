@@ -13,7 +13,7 @@ function erpal_bookmark_flag_default_flags() {
   $flags['bookmark_flag'] = array(
     'entity_type' => 'node',
     'title' => 'bookmark flag',
-    'global' => '0',
+    'global' => 0,
     'types' => array(
       0 => 'erpal_crm_activity',
       1 => 'erpal_book',
@@ -27,6 +27,7 @@ function erpal_bookmark_flag_default_flags() {
       9 => 'erpal_task',
       10 => 'erpal_timetracking',
     ),
+    'errors' => array(),
     'flag_short' => 'bookmark this',
     'flag_long' => 'Add content to your bookmarks',
     'flag_message' => 'Added to bookmarks',
@@ -36,11 +37,14 @@ function erpal_bookmark_flag_default_flags() {
     'unflag_denied_text' => '',
     'link_type' => 'toggle',
     'weight' => 0,
+    'show_in_links' => array(
+      'teaser' => TRUE,
+      'full' => TRUE,
+    ),
+    'show_as_field' => FALSE,
     'show_on_form' => 0,
     'access_author' => '',
     'show_contextual_link' => 0,
-    'show_on_page' => 1,
-    'show_on_teaser' => 1,
     'i18n' => 0,
     'module' => 'erpal_bookmark',
     'locked' => array(
