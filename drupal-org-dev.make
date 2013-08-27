@@ -184,7 +184,7 @@ projects[entityreference][patch][] = "http://drupal.org/files/entityreference-14
 projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
 
-projects[features][version] = "2.0-rc1"
+projects[features][version] = "2.0-rc3"
 projects[features][subdir] = "contrib"
 projects[features][patch][] = "http://drupal.org/files/1721926.features.field-weight-ping-pong.patch"
 
@@ -206,10 +206,10 @@ projects[finder][version] = "2.0"
 projects[finder][subdir] = "contrib"
 projects[finder][patch][] = "http://drupal.org/files/finder-stripped_obsolete_row_index_increment-1814772-2.patch"
 
-projects[flag][version] = "3.0-alpha4"
+projects[flag][version] = "3.0"
 projects[flag][subdir] = "contrib"
 
-projects[front][version] = "2.3"
+projects[front][version] = "2.4"
 projects[front][subdir] = "contrib"
 
 projects[fullcalendar][version] = "2.0"
@@ -220,7 +220,7 @@ projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
 projects[homebox][patch][] = "http://drupal.org/files/homebox-undefined_propert_module_delta-1088242-3.patch"
 
-projects[jquery_ui_multiselect_widget][version] = "1.5"
+projects[jquery_ui_multiselect_widget][version] = "1.6"
 projects[jquery_ui_multiselect_widget][subdir] = "contrib"
 
 projects[jquery_update][version] = "2.3"
@@ -242,8 +242,8 @@ projects[panels_everywhere][subdir] = "contrib"
 projects[panels_style_collapsible][version] = "1.0"
 projects[panels_style_collapsible][subdir] = "contrib"
 
+projects[path_breadcrumbs][version] = "3.0-beta4"
 projects[path_breadcrumbs][subdir] = "contrib"
-projects[path_breadcrumbs][version] = "3.0-beta2"
 
 projects[pathauto][version] = "1.2"
 projects[pathauto][subdir] = "contrib"
@@ -281,7 +281,7 @@ projects[token][subdir] = "contrib"
 projects[serial][version] = "1.2"
 projects[serial][subdir] = "contrib"
 
-projects[services][version] = "3.3"
+projects[services][version] = "3.5"
 projects[services][subdir] = "contrib"
 projects[services][patch][] = "http://drupal.org/files/services_1355952-52.patch"
 
@@ -312,7 +312,7 @@ projects[menu_attributes][patch][] = "http://drupal.org/files/menu_attributes-at
 projects[views_bulk_operations][version] = "3.1"
 projects[views_bulk_operations][subdir] = "contrib"
 
-projects[message][version] = "1.8"
+projects[message][version] = "1.9"
 projects[message][subdir] = "contrib"
 
 projects[message_notify][version] = "2.5"
