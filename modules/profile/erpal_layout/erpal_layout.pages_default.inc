@@ -409,6 +409,28 @@ function erpal_layout_default_page_manager_handlers() {
     $pane->uuid = 'fc3576b7-d684-4b74-5523-c86e4526ea6b';
     $display->content['new-fc3576b7-d684-4b74-5523-c86e4526ea6b'] = $pane;
     $display->panels['middle'][3] = 'new-fc3576b7-d684-4b74-5523-c86e4526ea6b';
+    $pane = new stdClass();
+    $pane->pid = 'new-f24637ce-8657-f014-b534-507f9d5c7d5f';
+    $pane->panel = 'middle';
+    $pane->type = 'powered_by';
+    $pane->subtype = 'powered_by';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'types' => array(),
+      'field_name' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 4;
+    $pane->locks = array();
+    $pane->uuid = 'f24637ce-8657-f014-b534-507f9d5c7d5f';
+    $display->content['new-f24637ce-8657-f014-b534-507f9d5c7d5f'] = $pane;
+    $display->panels['middle'][4] = 'new-f24637ce-8657-f014-b534-507f9d5c7d5f';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
