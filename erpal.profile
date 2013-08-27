@@ -140,7 +140,7 @@ function erpal_create_vocabularies_and_taxonomies(){
   $operations = array();
   
   // Prepare directories for term_images
-  $operations[] = array('_erpal_taxonomy_prepare', array());
+  $operations[] = array('_erpal_taxonomy_prepare_directory', array());
   
   // Create Taxonomies
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_service_category_vocabulary());

@@ -6,7 +6,7 @@
  * creates Taxonomy
  */
 function _erpal_taxonomy_prepare_directory(&$context){
-  $context['message'] = st('Prepared to create taxonomies');
+  $context['message'] = st('Prepared to create taxonomies'); 
   $directory = 'public://term_images/';
   file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
 }

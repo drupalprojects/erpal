@@ -12,6 +12,15 @@ function erpal_layout_helper_preprocess_pane_messages(&$variables) {
 }
 
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_layout_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+} 
+
+/**
 * Implements hok_form_alter
 */
 function erpal_layout_helper_form_alter(&$form, $form_state, $form_id) {
