@@ -11,6 +11,22 @@ function _erpal_taxonomy_prepare_directory(&$context){
   file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
 }
 
+function _erpal_taxonomy_get_date_item_vocabulary(){
+
+  $date_item_vocabulary = new stdClass();
+  $date_item_vocabulary->name = 'Date item tags';
+  $date_item_vocabulary->machine_name = 'date_item_tags';
+  $date_item_terms = array(
+    'crm' => array('name' => 'crm',),
+    'contact date' => array('name' => 'contact date',),
+    'contact customer' => array('name' => 'contact customer',),
+    'contact agency' => array('name' => 'contact agency',), 
+    'appointment' => array('name' => 'appointment',), 
+    'project' => array('name' => 'project',),
+    'task' => array('name' => 'task',), 
+  );
+  return array($date_item_vocabulary, $date_item_terms);
+}
 
 function _erpal_taxonomy_get_number_type_vocabulary(){
   $number_type_vocabulary = new stdClass();

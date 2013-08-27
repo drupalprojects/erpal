@@ -18,5 +18,5 @@ projects[drupal][patch][] = "http://drupal.org/files/allow_change_system-require
 ; Download the install profile and recursively build all its dependencies:
 projects[erpal][download][type] = git
 projects[erpal][download][url] = http://git.drupal.org/project/erpal.git
-projects[erpal][download][branch] = 7.x-2.x
+projects[erpal][download][branch] = 7.x-stable
 projects[erpal][type] = profile
