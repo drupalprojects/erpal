@@ -23,7 +23,7 @@ function erpal_layout_helper_powered_by_content_type_render($subtype, $conf, $ar
   $supported_by = '<span class="supported_by_text">'.t('supported and maintained by').'</span><span class="bs_text"> '.l('Bright Solutions GmbH', 'http://www.brightsolutions.de').'</span>';
   $support_powered_by = '<div class="support_powered_by">'.$powered_by.' - '.$supported_by.'</div>';
   $block->module = 'erpal_layout_helper';
-  $block->content = '<div class="powered_by_content">'.'<div class="bs_powered_by_logo"></div>'.$support_powered_by.'</div>';
+  $block->content = '<div class="powered_by_content">'.$support_powered_by.'<div class="bs_powered_by_logo"></div>'.'</div>';
   return $block;
 }
 
