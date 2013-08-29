@@ -118,5 +118,8 @@ function _cne_prepare_form_state($form, $form_state) {
       }
     }
   }
+  
+  drupal_alter('cne_form', $form, $form_state);
+   
   return $form_state;
 }
