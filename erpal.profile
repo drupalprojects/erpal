@@ -447,9 +447,8 @@ function erpal_contact_information_form_submit($form, $form_state){
   $vat_string = $values['vat_rate'] . '#' . $values['vat_rate'] . '%';
   
   variable_set('erpal_invoice_vat_rates_string', $vat_string);
-  variable_set('erpal_invoice_default_vat_rate', (float) $vat_string);
-  
-  
+  $vat_rate = number_format((float)$values['vat_rate'], 3);
+  variable_set('erpal_invoice_default_vat_rate', $vat_rate);
   
 }
 
