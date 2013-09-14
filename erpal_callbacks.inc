@@ -113,14 +113,6 @@ function _erpal_create_roles_and_permissions(&$context){
   erpal_save_roles_and_configure_permissions();
 }
 
-/**
- * BatchAPI callback
- * reverts all features
- */ 
-function _erpal_revert_features(&$context){
-  $context['message'] = st('Reverted all features');
-  features_revert();
-}
  
 /**
  * BatchAPI callback
