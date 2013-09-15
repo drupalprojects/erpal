@@ -232,7 +232,7 @@ projects[finder][version] = "2.0"
 projects[finder][subdir] = "contrib"
 projects[finder][patch][] = "http://drupal.org/files/finder-stripped_obsolete_row_index_increment-1814772-2.patch"
 
-projects[flag][version] = "3.0"
+projects[flag][version] = "3.2"
 projects[flag][subdir] = "contrib"
 
 projects[front][version] = "2.4"
