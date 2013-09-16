@@ -1,7 +1,7 @@
 <?php
 /**
  *  @file filejs/filejs.module
- *  @author Thiemo Müller
+ *  @author Thiemo Mï¿½ller
  *  @version 1.0
  *  
  *  Define all public functions, hooks and globally available (i.e. reused) private functions
@@ -93,13 +93,14 @@ function filejs_init() {
   
   $libraries  = array( 'createclass', 'web-filesystem', 'inter-tab-js', 'jquery.transit', 'boxjs', 'modernizr', 'filejs' );
   $paths      = array();
+  $missing = array();
   for( $i=0; $i<count($libraries); $i++ ) {
     $paths[$i]  = libraries_get_path( $libraries[$i] ) . '/' . ($libraries[$i]=='modernizr'?$libraries[$i].'.min':$libraries[$i]) . '.js';
     if( !file_exists( $paths[$i] ) )
-      break;
+      $missing[] = array('name' => $libraries[$i], 'path' => $paths[$i]);
   }
   
-  if( $i==count($libraries) ) {
+  if( !count($missing) ) {
     for( $i=0; $i<count($libraries); $i++ )
       drupal_add_js( $paths[$i], array( 'weight'=>$i*3 ) );
     
@@ -110,8 +111,12 @@ function filejs_init() {
     drupal_add_css( $path . '/css/filejs-module.css' );
     drupal_add_js( $path . '/js/filejs.js', array( 'weight'=>$i*3 ) );
   }
-  else
-    drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install filejs.', array( '@name'=>$libraries[$i] ) ), 'status', FALSE );
+  else {
+    foreach ($missing as $missing_arr) {      
+      drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install.', array( '@name'=>$missing_arr['name'] ) ), 'status', FALSE );
+    }
+  }
+    
   
 }
 
