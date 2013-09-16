@@ -1,7 +1,7 @@
 <?php
 /**
  *  @file boxjs/boxjs.module
- *  @author Thiemo Müller
+ *  @author Thiemo Mï¿½ller
  *  @version 1.0
  *  
  *  Define all public functions, hooks and globally available (i.e. reused) private functions
@@ -36,13 +36,14 @@ function boxjs_init() {
   
   $libraries  = array( 'createclass', 'web-filesystem', 'inter-tab-js', 'jquery.transit', 'boxjs' );
   $paths      = array();
+  $missing = array();
   for( $i=0; $i<count($libraries); $i++ ) {
     $paths[$i]  = libraries_get_path( $libraries[$i] ) . '/' . $libraries[$i] . '.js';
     if( !file_exists( $paths[$i] ) )
-      break;
+      $missing[] = array('name' => $libraries[$i], 'path' => $paths[$i]);
   }
   
-  if( $i==count($libraries) ) {
+  if( !count($missing) ) {
     for( $i=0; $i<count($libraries); $i++ )
       drupal_add_js( $paths[$i], array( 'weight'=>$i*3 ) );
     
@@ -50,8 +51,11 @@ function boxjs_init() {
     
     drupal_add_js( drupal_get_path( 'module', 'boxjs' ) . '/js/boxjs.js', array( 'weight'=>$i*3 ) );
   }
-  else
-    drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install boxjs.', array( '@name'=>$libraries[$i] ) ), 'status', FALSE );
+  else {
+    foreach ($missing as $missing_arr) {      
+      drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install boxjs.', array( '@name'=>$missing_arr['name'] ) ), 'status', FALSE );
+    }
+  }  
   
 }
 

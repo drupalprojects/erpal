@@ -56,6 +56,13 @@ function erpal_install_tasks(){
   
   $tasks = array();
   
+  $tasks['_erpal_revert_features'] = array(
+    'display_name' => st('Reverting features'),
+    'display' => TRUE,
+    'type' => 'batch',
+    'file' => 'erpal_callbacks.inc',
+  );
+  
   $tasks['erpal_create_vocabularies_and_taxonomies'] = array(
     'display_name' => st('Creating taxonomies'),
     'display' => TRUE,
@@ -82,6 +89,41 @@ function erpal_install_tasks(){
   return $tasks;
 }
 
+/**
+ * Batch function callback to revert a feature
+ * @param $feature is an array with key as feature name and value an array of components
+ */
+function _erpal_revert_feature($feature_name, &$context) {
+  features_revert_module($feature_name);
+  $context['message'] = st("Reverted feature '$feature_name'");
+}
+
+/**
+ * BatchAPI callback
+ * reverts all features
+ */ 
+function _erpal_revert_features(&$context){
+  module_load_include('inc', 'features', 'features.export');
+  features_include();
+  $context['message'] = st('Reverted all features');
+  
+  $operations = array();
+  
+  //for each feature add an operation to the batch process
+  $states = features_get_component_states(array(), FALSE, TRUE);
+  foreach ($states as $feature_name => $components) {
+    $operations[] = array('_erpal_revert_feature', array($feature_name));
+  }
+
+  $batch = array(
+    'title' => st('Reverting feature'),
+    'operations' => $operations,
+    //'file' => drupal_get_path('profile', 'erpal') . '/erpal_taxonomy.inc',
+  );
+  return $batch;  
+
+  //features_revert();
+}
 
 /**
  * Implements hook_install_tasks_alter().
@@ -211,7 +253,7 @@ function erpal_last_config_steps(){
   
   $operations = array(
     array('_erpal_rebuild_content_access', array()),
-    array('_erpal_revert_features', array()),
+    //array('_erpal_revert_features', array()),
     array('_erpal_config_finish', array()),
   );
     
@@ -447,9 +489,8 @@ function erpal_contact_information_form_submit($form, $form_state){
   $vat_string = $values['vat_rate'] . '#' . $values['vat_rate'] . '%';
   
   variable_set('erpal_invoice_vat_rates_string', $vat_string);
-  variable_set('erpal_invoice_default_vat_rate', (float) $vat_string);
-  
-  
+  $vat_rate = number_format((float)$values['vat_rate'], 3);
+  variable_set('erpal_invoice_default_vat_rate', $vat_rate);
   
 }
 
