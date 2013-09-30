@@ -12,7 +12,7 @@
  * different names in the vocabularies, are not touched by this update
  */
 function erpal_update_7001(){
-  
+  return; //@TODO: Need to replace by erpal_taxonomy_add functions
   require_once('erpal_taxonomy.inc');
   _erpal_taxonomy_prepare_directory();
   _erpal_taxonomy_create_task_type_vocabulary();
