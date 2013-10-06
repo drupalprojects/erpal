@@ -145,6 +145,9 @@ dependencies[] = inline_relation_form
 dependencies[] = bs_uniquenode
 dependencies[] = shortcut_keys
 dependencies[] = erpal_file_drag_drop
+dependencies[] = createclass
+dependencies[] = filejs
+dependencies[] = boxjs
 
 
 ; features 

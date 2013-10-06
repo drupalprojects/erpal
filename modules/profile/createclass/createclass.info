@@ -1,0 +1,4 @@
+name        = CreateClass
+description = This module allows you to use the CreateClass Framework in your Drupal installation.
+version     = "7.x-1.0"
+core        = 7.x
