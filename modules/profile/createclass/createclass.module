@@ -1,0 +1,37 @@
+<?php
+/**
+ * @file createclass/createclass.module
+ * @author Sergey Grigorenko
+ * @version 1.0
+ *
+ *  Define all public functions, hooks and globally available (i.e. reused) private functions
+ */
+
+/**
+ *  Implements hook_libraries_info
+ */
+function createclass_libraries_info() {
+
+  $libraries['createclass'] = array(
+    'name' => 'CreateClass',
+    'vendor url' => 'https://github.com/MORPOL/createClass',
+    'download url' => 'https://github.com/MORPOL/createClass/archive/master.zip',
+    'files' => array(
+      'js' => array(
+        'createclass.js',
+      ),
+    ),
+    'dependencies' => array(
+      'createclass (>=0.2)',
+    ),
+    'version callback' => 'libraries_get_version',
+    'version arguments' => array(
+      'file' => 'package.json',
+      'pattern' => '@version"\s+:\s+"([0-9a-zA-Z\.-]+)",@'
+
+    ),
+  );
+
+  return $libraries;
+
+}
