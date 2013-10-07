@@ -108,6 +108,7 @@ dependencies[] = maxlength
 dependencies[] = nodechanges
 dependencies[] = message
 dependencies[] = message_notify
+dependencies[] = freelinking
 
 ; custom
 dependencies[] = acl
