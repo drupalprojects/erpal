@@ -338,7 +338,7 @@ libraries[screenshot_paste][download][type] = "file"
 libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
 libraries[dhtmlxgantt][download][type] = "file"
-libraries[dhtmlxgantt][download][url] = "http://www.dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
+libraries[dhtmlxgantt][download][url] = "http://www.dhtmlx.com/docs/products/dhtmlxGantt/download/dhtmlxGantt.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
