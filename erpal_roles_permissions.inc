@@ -175,6 +175,8 @@ $export = array(
       'view revisions',
       'view simple_date date_item',
       'access erpal heartbeat',
+      'use any shortcut key',
+      'use javascript shortcut type',
       ),
     ),
   'customer' => array(
