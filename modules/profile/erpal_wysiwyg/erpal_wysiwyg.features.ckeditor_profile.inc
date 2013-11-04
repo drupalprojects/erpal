@@ -12,7 +12,7 @@ function erpal_wysiwyg_ckeditor_profile_defaults() {
     'ERPAL' => array(
       'name' => 'ERPAL',
       'settings' => array(
-        'ss' => '2',
+        'ss' => 2,
         'default' => 't',
         'show_toggle' => 't',
         'uicolor' => 'default',

@@ -1,0 +1,34 @@
+<?php
+/**
+ * @file createclass/createclass.install
+ * @author Sergey Grigorenko
+ * @version 1.0
+ *
+ *  Define all install/enabled hooks
+ */
+
+function createclass_requirements($phase) {
+
+  drupal_load('module', 'createclass');
+
+  $requirements = array();
+
+  $t = get_t();
+  if ($phase == 'runtime') {
+
+    $name = 'createclass';
+    $library = libraries_detect($name);
+    $installed = $library['installed'];
+
+    $requirements['createclass'] = array(
+      'title' => $t('CreateClass'),
+      'value' => $installed ? $library['version'] : $t('not installed'),
+      'description' => $installed ? '' : $t('Please install the !link!', array('!link' => l($t('CreateClass library'), $library['download url']))) . ($library['error message'] ? ' ' . $library['error message'] : ''),
+      'severity' => $installed ? REQUIREMENT_OK : REQUIREMENT_ERROR,
+    );
+
+  }
+
+  return $requirements;
+
+}

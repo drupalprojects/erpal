@@ -127,6 +127,9 @@ projects[image_url_formatter][subdir] = "contrib"
 projects[colors][version] = "1.0-rc1"
 projects[colors][subdir] = "contrib"
 
+projects[freelinking][version] = "3.2"
+projects[freelinking][subdir] = "contrib"
+
 projects[maxlength][version] = "3.0-beta1"
 projects[maxlength][subdir] = "contrib"
 
@@ -206,7 +209,7 @@ projects[finder][version] = "2.0"
 projects[finder][subdir] = "contrib"
 projects[finder][patch][] = "http://drupal.org/files/finder-stripped_obsolete_row_index_increment-1814772-2.patch"
 
-projects[flag][version] = "3.0"
+projects[flag][version] = "3.2"
 projects[flag][subdir] = "contrib"
 
 projects[front][version] = "2.4"
@@ -333,6 +336,9 @@ libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.p
 
 libraries[screenshot_paste][download][type] = "file"
 libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
+
+libraries[dhtmlxgantt][download][type] = "file"
+libraries[dhtmlxgantt][download][url] = "http://www.dhtmlx.com/docs/products/dhtmlxGantt/download/dhtmlxGantt.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"

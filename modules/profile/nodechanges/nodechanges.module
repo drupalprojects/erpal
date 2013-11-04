@@ -223,11 +223,11 @@ function nodechanges_field_update($entity_type, $entity, $field, $instance, $lan
         if (is_array($items[$delta][$key]))
           $items[$delta][$key] = serialize(($items[$delta][$key]));
           
-        $items[$delta][$key] = $items[$delta][$key];
+        $items[$delta][$key] = !empty($items[$delta][$key]) ? $items[$delta][$key] : '';
       }
     }
   }
-  
+
 }
 
 /**

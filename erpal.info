@@ -108,6 +108,7 @@ dependencies[] = maxlength
 dependencies[] = nodechanges
 dependencies[] = message
 dependencies[] = message_notify
+dependencies[] = freelinking
 
 ; custom
 dependencies[] = acl
@@ -133,6 +134,8 @@ dependencies[] = erpal_print
 dependencies[] = erpal_profile_helper
 dependencies[] = erpal_projects_billable
 dependencies[] = erpal_projects_helper
+dependencies[] = erpal_project_book
+dependencies[] = erpal_projects_books_access
 dependencies[] = erpal_timetracking_export
 dependencies[] = erpal_projects_access
 dependencies[] = erpal_projects_relations
@@ -145,6 +148,9 @@ dependencies[] = inline_relation_form
 dependencies[] = bs_uniquenode
 dependencies[] = shortcut_keys
 dependencies[] = erpal_file_drag_drop
+dependencies[] = createclass
+dependencies[] = filejs
+dependencies[] = boxjs
 
 
 ; features 
