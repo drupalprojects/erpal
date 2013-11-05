@@ -505,4 +505,89 @@ function _erpal_get_countries(){
   }  
   return $countries;
 }
+
+/**
+ * Implements hook_update_projects_alter().
+ */
+function erpal_update_projects_alter(&$projects) {
+  // Enable update status for the erpal profile.
+  $modules = system_rebuild_module_data();
+  // The module object is shared in the request, so we need to clone it here.
+  $erpal = clone $modules['erpal'];
+  $erpal->info['hidden'] = FALSE;
+  _update_process_info_list($projects, array('erpal' => $erpal), 'module', TRUE);
+}
+
+/**
+ * Implements hook_update_status_alter().
+ *
+ * Disable reporting of projects that are in the distribution, but only
+ * if they have not been updated manually.
+ *
+ * Projects with insecure / revoked / unsupported releases are only shown
+ * after two days, which gives enough time to prepare a new erpal release
+ * which the users can install and solve the problem.
+ */
+function erpal_update_status_alter(&$projects) {
+  $bad_statuses = array(
+    UPDATE_NOT_SECURE,
+    UPDATE_REVOKED,
+    UPDATE_NOT_SUPPORTED,
+  );
+
+  $make_filepath = drupal_get_path('module', 'erpal') . '/drupal-org.make';
+  if (!file_exists($make_filepath)) {
+    return;
+  }
+
+  $make_info = drupal_parse_info_file($make_filepath);
+  foreach ($projects as $project_name => $project_info) {
+    // Never unset the drupal project to avoid hitting an error with
+    // _update_requirement_check(). See http://drupal.org/node/1875386.
+    if ($project_name == 'drupal' || !isset($project_info['releases']) || !isset($project_info['recommended'])) {
+      continue;
+    }
+    // Hide erpal projects, they have no update status of their own.
+    if (strpos($project_name, 'erpal_') !== FALSE) {
+      unset($projects[$project_name]);
+    }
+    // Hide bad releases (insecure, revoked, unsupported) if they are younger
+    // than 5 days (giving erpal time to prepare an update).
+    elseif (isset($project_info['status']) && in_array($project_info['status'], $bad_statuses)) {
+      $two_days_ago = strtotime('5 days ago');
+      if ($project_info['releases'][$project_info['recommended']]['date'] < $two_days_ago) {
+        unset($projects[$project_name]);
+      }
+    }
+    // Hide projects shipped with erpal if they haven't been manually
+    // updated.
+    elseif (isset($make_info['projects'][$project_name])) {
+      $version = $make_info['projects'][$project_name]['version'];
+      if (strpos($version, 'dev') !== FALSE || (DRUPAL_CORE_COMPATIBILITY . '-' . $version == $project_info['info']['version'])) {
+        unset($projects[$project_name]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disable the update for ERPAL.
+ */
+function erpal_form_update_manager_update_form_alter(&$form, &$form_state, $form_id) {
+  if (isset($form['projects']['#options']) && isset($form['projects']['#options']['erpal'])) {
+    if (count($form['projects']['#options']) > 1) {
+      unset($form['projects']['#options']['erpal']);
+    }
+    else {
+      unset($form['projects']);
+      // Hide Download button if there's no other (disabled) projects to update.
+      if (!isset($form['disabled_projects'])) {
+        $form['actions']['#access'] = FALSE;
+      }
+      $form['message']['#markup'] = t('All of your projects are up to date.');
+    }
+  }
+}
  
