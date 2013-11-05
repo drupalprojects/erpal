@@ -3,7 +3,7 @@
   $( function() {
     
     var sConfig = location.hash.substr(1);
-    var pConfig	= { frame_url:Drupal.settings.basePath + 'boxjs/frame#box=[box]&parent=[parent]' };
+    var pConfig	= { frame_url:Drupal.settings.boxjs.base_path + 'boxjs/frame#box=[box]&parent=[parent]' };
     if( sConfig ) {
       var aParts	= sConfig.split( '&' );
       for( var i=0, sPart; sPart=aParts[i]; i++ ) {

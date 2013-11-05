@@ -56,6 +56,8 @@ function erpal_install_tasks(){
   
   $tasks = array();
   
+  drupal_get_messages('status', TRUE); //remove all messages we don't need them
+  
   $tasks['_erpal_revert_features'] = array(
     'display_name' => st('Reverting features'),
     'display' => TRUE,

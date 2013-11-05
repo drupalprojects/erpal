@@ -112,8 +112,8 @@ function filejs_init() {
     drupal_add_js( $path . '/js/filejs.js', array( 'weight'=>$i*3 ) );
   }
   else {
-    foreach ($missing as $missing_arr) {      
-      drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install.', array( '@name'=>$missing_arr['name'] ) ), 'status', FALSE );
+    foreach ($missing as $missing_arr) {
+      drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install filejs.', array( '@name'=>$missing_arr['name'] ) ), 'status', FALSE );
     }
   }
     
@@ -125,7 +125,7 @@ function filejs_init() {
  *  
  *  Disabled until on DO whitelist
  */
-function _filejs_libraries_info() {
+function filejs_libraries_info() {
   
   $libraries['filejs'] = array(
     'name'          => 'FileJS',
@@ -137,12 +137,13 @@ function _filejs_libraries_info() {
       ),
     ),
     'dependencies'	=> array(
-      'createclass (0.2)',
-      'boxjs (0.1)',
+      'createclass (=>0.2)',
+      'boxjs (=>0.1)',
     ),
-    'version callback'  =>'_createclass_get_version',
+    'version callback'  => 'libraries_get_version',
     'version arguments' => array(
       'file'    => 'package.json',
+      'pattern' => '@version"\s+:\s+"([0-9a-zA-Z\.-]+)",@'
     ),
   );
   
