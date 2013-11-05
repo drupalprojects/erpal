@@ -3,6 +3,7 @@ description = Install ERPAL
 core = 7.x
 php = 5.3
 distribution_name = ERPAL
+exclusive = 1
 
 ;core
 dependencies[] = user
