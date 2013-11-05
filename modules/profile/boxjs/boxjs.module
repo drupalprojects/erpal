@@ -36,7 +36,7 @@ function boxjs_init() {
   
   $libraries  = array( 'createclass', 'web-filesystem', 'inter-tab-js', 'jquery.transit', 'boxjs' );
   $paths      = array();
-  $missing = array();
+  $missing    = array();
   for( $i=0; $i<count($libraries); $i++ ) {
     $paths[$i]  = libraries_get_path( $libraries[$i] ) . '/' . $libraries[$i] . '.js';
     if( !file_exists( $paths[$i] ) )
@@ -50,9 +50,18 @@ function boxjs_init() {
     drupal_add_css( libraries_get_path( 'boxjs' ) . '/css/boxjs.css' );
     
     drupal_add_js( drupal_get_path( 'module', 'boxjs' ) . '/js/boxjs.js', array( 'weight'=>$i*3 ) );
+    
+    global $base_url;
+    $path = $base_url;
+    if( variable_get('clean_url', 0) )
+      $path .= '/';
+    else
+      $path .= '?q=';
+    
+    drupal_add_js( array( 'boxjs' => array( 'base_path' => $path ) ), 'setting' );
   }
   else {
-    foreach ($missing as $missing_arr) {      
+    foreach ($missing as $missing_arr) {
       drupal_set_message( t( 'Please install the following library: @name. See README for details on how to install boxjs.', array( '@name'=>$missing_arr['name'] ) ), 'status', FALSE );
     }
   }  
@@ -61,10 +70,8 @@ function boxjs_init() {
 
 /**
  *  Implements hook_libraries_info
- *  
- *  Disabled until on DO whitelist
  */
-function _boxjs_libraries_info() {
+function boxjs_libraries_info() {
   
   $libraries['boxjs'] = array(
     'name'          => 'BoxJS',
@@ -76,12 +83,12 @@ function _boxjs_libraries_info() {
       ),
     ),
     'dependencies'	=> array(
-      'createclass (0.2)',
-      'boxjs (0.1)',
+      'createclass (>=0.2)',
     ),
-    'version callback'  =>'_createclass_get_version',
+    'version callback'  => 'libraries_get_version',
     'version arguments' => array(
       'file'    => 'package.json',
+      'pattern' => '@version"\s+:\s+"([0-9a-zA-Z\.-]+)",@'
     ),
   );
   
