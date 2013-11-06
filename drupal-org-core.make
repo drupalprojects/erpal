@@ -3,7 +3,7 @@ core = 7.x
 projects[drupal][version] = 7.22
 
 ; Patches for Core
-projects[drupal][patch][] = "https://drupal.org/files/node-access-records-1146244-110.patch"
+projects[drupal][patch][] = "http://drupal.org/files/node-access-records-1146244-110.patch"
 projects[drupal][patch][] = "http://drupal.org/files/d7-move-access-to-join-condition-1349080-131.patch"
 
 ;projects[drupal][patch][] = "http://drupal.org/files/issues/1074108-skip-profile-2.patch"
