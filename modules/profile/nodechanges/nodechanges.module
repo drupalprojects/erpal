@@ -41,8 +41,13 @@ function nodechanges_node_update($node) {
     
     //@TODO it would be nice to have some settings where we can set, for which fields the changes should be recorded.
     //may add them as part of field instance settings. Until we have this, we will hard exclude text fields
+    
     if ($field['type'] == 'text_long' || $field['type'] == 'text_with_summary')
       continue;
+
+    if ($field['type'] == 'datestamp' && !empty($field['settings']['repeat'])) {
+      continue;
+    }
     
     $field_language = field_language('node', $node, $field_name);
     $old_value = empty($unchanged->{$field_name}[$field_language]) ? NULL : $unchanged->{$field_name}[$field_language];
