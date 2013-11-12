@@ -7,9 +7,9 @@ class Odf_Element_Image extends Odf_Element {
   private $mimetype;
 
   public function __construct($filepath) {
-
-    if ($info = getimagesize($filepath)) {
-      $this->filepath = $filepath;
+    
+    if ($info = getimagesize(urldecode($filepath))) {
+      $this->filepath = urldecode($filepath);
       $this->filename = basename($filepath);
       $this->mimetype = $info['mime'];
     }
