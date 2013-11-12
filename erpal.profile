@@ -4,6 +4,8 @@
  * Enables modules and site configuration for a erpal site installation.
  */
  
+ define('MAX_ALLOWED_PACKET_SIZE_MIN', 20);  //minimum value of max allowed packet size in MB for installation process
+ 
 /**
  * Implements hook_form_FORM_ID_alter() for install_configure_form().
  *
@@ -131,6 +133,7 @@ function _erpal_revert_features(&$context){
  * Implements hook_install_tasks_alter().
  */
 function erpal_install_tasks_alter(&$tasks, $install_state) {
+  
   $tasks['install_select_profile']['display'] = FALSE;
   $welcome['erpal_welcome_message'] = array(
     'display_name' => st('Welcome'),
@@ -138,14 +141,169 @@ function erpal_install_tasks_alter(&$tasks, $install_state) {
     'type' => 'form',
     'run' => isset($install_state['parameters']['welcome']) ? INSTALL_TASK_SKIP : INSTALL_TASK_RUN_IF_REACHED,
   );
+  
+  _erpal_install_tasks_inject_database_requirements($tasks, $install_state);
+  
   $old_tasks = $tasks;
   $tasks = array_slice($old_tasks, 0, 1) + $welcome+ array_slice($old_tasks, 1);
   _erpal_set_theme('erpal_maintenance');
 }
 
+/**
+* Inject database check for additional requirements, after adding database information
+*/
+function _erpal_install_tasks_inject_database_requirements(&$tasks, $install_state) {
+
+  $new_tasks = array();
+  foreach ($tasks as $task_name => $task) {
+    $new_tasks[$task_name] = $task;
+    if ($task_name == 'install_settings_form') {
+      //add additional task before all features are reverted and ensure database settings are "strong" enough
+      $new_tasks['_erpal_install_verify_db_requirements'] = array(
+        'display_name' => 'Verify DB requirements',
+        'type' => 'form',
+        'display' => TRUE,
+      );
+    }
+  }
+  
+  $tasks = $new_tasks;
+}
+
+/**
+* Returns the max allowed packet size in MB
+*/
+function _erpal_install_get_mysql_max_allowed_packet_size() {
+  $res = db_query('SELECT @@global.max_allowed_packet AS value');
+  $result = $res->fetchAssoc();
+  
+  $ret = 0;
+  if (!empty($result['value'])) {
+    $ret = $result['value'] / (1024 * 1024);
+  }
+  
+  return $ret;
+}
+
+/**
+* Tries to set the max allowed packet size to the minimum value
+*/
+function _erpal_install_set_mysql_max_allowed_packet_size() {
+  db_query('SET @@global.max_allowed_packet = '.MAX_ALLOWED_PACKET_SIZE_MIN * 1024 * 1024);
+}
+
+/**
+* Test database requirements especially max_allowed_packet size
+*/
+function _erpal_install_verify_db_requirements() {
+  
+  global $install_state;
+  $install_state['parameters']['verify_db_requirements'] = 'done';
+  
+  $form = array();
+  
+  //check the requirements
+  $driver = db_driver();
+  $is_mysql = $driver == 'mysql';
+  
+  $req_ok = true;
+  $tried_to_set = false;
+  $min_value = MAX_ALLOWED_PACKET_SIZE_MIN;
+  if ($is_mysql) {
+    //check if the database has correct configuration with enough power for installation
+    
+    $max_allowed_packet_size = _erpal_install_get_mysql_max_allowed_packet_size();
+    if ($max_allowed_packet_size && $max_allowed_packet_size < $min_value) {
+    
+      $req_ok = false;
+    }
+  }
+  
+  //currently only verify requirements for mysql
+  $form['req_ok'] = array(
+    '#type' => 'value',
+    '#value' => $req_ok,
+  );
+  
+  $problems = 'MAX_ALLOWED_PACKET size is lower than '.$min_value." MB. Current value is ".$max_allowed_packet_size." MB";
+  if ($req_ok) { 
+    $form['explain'] = array(
+      '#type' => 'markup',
+      '#markup' => st('Your database is configured to install ERPAL now.'),
+    );
+    
+    $button_text = st('Continue');
+  } else {
+    
+    $form['explain'] = array(
+      '#type' => 'markup',
+      '#markup' => st("Your database configuration does not match the installation requirements.<br/><br/><b>".$problems."</b>"),
+    );
+    
+    $form['warn_db'] = array(
+      '#type' => 'checkbox',
+      '#title' => st('Yes, I know that there may appear some problems with these database settings, and I want to PROCEED ANYWAY.'),
+    );
+    
+    $button_text = st('Proceed anyway');
+    
+    $form['try_fix'] = array(
+    '#type' => 'submit',
+    '#value' => st('Try to change this value'),
+    );
+  }
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => $button_text,
+  );
+  
+  return $form;
+}
+
+function _erpal_install_verify_db_requirements_validate($form, &$form_state) {
+  global $install_state;
+  $install_state['parameters']['verify_db_requirements'] = 'done';
+  
+  $values = $form_state['values'];
+  
+  if (!empty($form['try_fix']['#value'])) {
+    if ($form_state['clicked_button']['#value'] == $form['try_fix']['#value']) {
+      //try to fix the problem and if it works proceed, otherwise show message again with form error
+      _erpal_install_set_mysql_max_allowed_packet_size();
+      
+      //check again if it didn't work, show error
+      $value = _erpal_install_get_mysql_max_allowed_packet_size();
+      if ($value < MAX_ALLOWED_PACKET_SIZE_MIN) {
+        //sorry but the value could not be changed
+        form_set_error('try_fix', st('Sorry, but it was not possible to change the value automatically.'));
+      }
+      
+    } else {
+      if (empty($values['warn_db']) && !$values['req_ok']) {
+        form_set_error('warn_db', st('Please confirm that you are aware of problems that may occur during installation!'));
+      }
+    }
+  }
+
+  
+}
+
+function _erpal_install_verify_db_requirements_submit($form, &$form_state) {
+  global $install_state;
+  
+  if (!empty($form['try_fix']['#value'])) {
+    if ($form_state['clicked_button']['#value'] == $form['try_fix']['#value']) {
+      drupal_set_message(st('The database configuration was updated successfully!'));
+    }
+  } 
+ 
+}
+
+
 function erpal_welcome_message($form, $form_state){
   drupal_set_title(st('Welcome'));
-  $welcome = st('<p>The following steps will guide you throuh the installation '
+  $welcome = st('<p>The following steps will guide you through the installation '
   . 'and configuration of your new ERPAL-Site. This project is still under '
   . 'development so feel free to visit our ' 
   . l('homepage', 'http://www.erpal.info')
