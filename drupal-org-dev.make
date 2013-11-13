@@ -260,7 +260,7 @@ projects[profile2][patch][] = "http://drupal.org/files/profile2-1387268-9.patch"
 
 projects[quicktabs][version] = "3.6"
 projects[quicktabs][subdir] = "contrib"
-;projects[quicktabs][patch][] = "http://drupal.org/files/1940332-set-override_url-to-view-pane-content-0.patch"
+projects[quicktabs][patch][] = "http://drupal.org/files/1940332-set-override_url-to-view-pane-content-0.patch"
 
 projects[references_dialog][version] = "1.0-alpha4"
 projects[references_dialog][subdir] = "contrib"
