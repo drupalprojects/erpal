@@ -702,13 +702,17 @@ function erpal_update_status_alter(&$projects) {
   foreach ($projects as $project_name => $project_info) {
     // Never unset the drupal project to avoid hitting an error with
     // _update_requirement_check(). See http://drupal.org/node/1875386.
+    
+    // Hide erpal projects, they have no update status of their own.
+    if (strpos($project_name, 'erpal_') !== FALSE) {
+      
+      unset($projects[$project_name]);
+    }
+    
     if ($project_name == 'drupal' || !isset($project_info['releases']) || !isset($project_info['recommended'])) {
       continue;
     }
-    // Hide erpal projects, they have no update status of their own.
-    if (strpos($project_name, 'erpal_') !== FALSE) {
-      unset($projects[$project_name]);
-    }
+    
     // Hide bad releases (insecure, revoked, unsupported) if they are younger
     // than 5 days (giving erpal time to prepare an update).
     elseif (isset($project_info['status']) && in_array($project_info['status'], $bad_statuses)) {
@@ -718,10 +722,17 @@ function erpal_update_status_alter(&$projects) {
       }
     }
     // Hide projects shipped with erpal if they haven't been manually
-    // updated.
+    // updated. We also hide patched modules
     elseif (isset($make_info['projects'][$project_name])) {
       $version = !empty($make_info['projects'][$project_name]['version']) ? $make_info['projects'][$project_name]['version'] : '';
-      if (strpos($version, 'dev') !== FALSE || (DRUPAL_CORE_COMPATIBILITY . '-' . $version == $project_info['info']['version'])) {
+      
+      //has it patches applied?
+      if (!empty($make_info['projects'][$project_name]['patch']) && count($make_info['projects'][$project_name]['patch'])) {
+        unset($projects[$project_name]);
+      }
+      
+      //if not manually updated than also hide
+      if (strpos($version, 'dev') !== FALSE || strpos($version, 'erpal') !== FALSE || (DRUPAL_CORE_COMPATIBILITY . '-' . $version == $project_info['info']['version'])) {
         unset($projects[$project_name]);
       }
     }
