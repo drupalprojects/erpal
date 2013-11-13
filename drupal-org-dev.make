@@ -164,7 +164,7 @@ projects[date][version] = "2.6"
 projects[date][subdir] = "contrib"
 projects[date][patch][] = "http://drupal.org/files/date-date_limit_format-static-cache-1835184-5.patch"
 
-projects[ds][version] = "1.7"
+projects[ds][version] = "1.9"
 projects[ds][subdir] = "contrib"
 
 projects[editablefields][version] = "1.x"
@@ -258,9 +258,9 @@ projects[profile2][version] = "1.3"
 projects[profile2][subdir] = "contrib"
 projects[profile2][patch][] = "http://drupal.org/files/profile2-1387268-9.patch"
 
-projects[quicktabs][version] = "3.4"
+projects[quicktabs][version] = "3.6"
 projects[quicktabs][subdir] = "contrib"
-projects[quicktabs][patch][] = "http://drupal.org/files/1940332-set-override_url-to-view-pane-content-0.patch"
+;projects[quicktabs][patch][] = "http://drupal.org/files/1940332-set-override_url-to-view-pane-content-0.patch"
 
 projects[references_dialog][version] = "1.0-alpha4"
 projects[references_dialog][subdir] = "contrib"
