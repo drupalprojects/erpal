@@ -121,7 +121,6 @@ dependencies[] = billable
 dependencies[] = budget
 dependencies[] = cne
 dependencies[] = createclass
-dependencies[] = filejs
 dependencies[] = boxjs
 dependencies[] = erpal_basic_helper
 dependencies[] = erpal_bookmark_helper
@@ -152,7 +151,7 @@ dependencies[] = inline_relation_form
 dependencies[] = bs_uniquenode
 dependencies[] = shortcut_keys
 dependencies[] = erpal_file_drag_drop
-
+dependencies[] = filejs
 
 ; features 
 dependencies[] = erpal_basic
