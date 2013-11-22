@@ -4,7 +4,7 @@
  * This script migrates previous ERPAL versions to the newest ERPAL based on a clean installation profile
  */
 
-define('MIGRATE_VERSION', 'erpal_migrated_7');
+define('MIGRATE_VERSION', 'erpal_migrated_8');
 ini_set('memory_limit', -1);
 define('DRUPAL_ROOT', define_drupal_root());
 chdir(DRUPAL_ROOT);
