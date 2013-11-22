@@ -153,9 +153,9 @@ projects[ctools][patch][] = "http://drupal.org/files/ctools-uuids_for_exported_o
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
 
-projects[field-conditional-state][version] = "1.0"
+projects[field-conditional-state][version] = "1.1"
 projects[field-conditional-state][subdir] = "contrib"
-projects[field-conditional-state][patch][] = "http://drupal.org/files/field-conditional-state-support-for-features-1083554-12.patch"
+projects[field-conditional-state][patch][] = "https://drupal.org/files/issues/field-conditional-state-features-integration-1083554-17-dev.patch"
 
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
