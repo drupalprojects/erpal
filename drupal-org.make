@@ -206,7 +206,7 @@ projects[entity][patch][] = "http://drupal.org/files/entity-node-access-1780646-
 projects[entitycache][version] = "1.1"
 projects[entitycache][subdir] = "contrib"
 
-projects[entityreference][version] = "1.0"
+projects[entityreference][version] = "1.1"
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][patch][] = "http://drupal.org/files/entityreference-1459540-47-workaround-fatal-error.patch"
 
