@@ -114,6 +114,7 @@ dependencies[] = freelinking
 ; custom
 dependencies[] = acl
 dependencies[] = aul
+dependencies[] = aul_ui
 dependencies[] = date_item_calendar
 dependencies[] = content_access
 dependencies[] = content_access_view
