@@ -9,7 +9,7 @@ class Odf_Style_List extends Odf_Style {
   private $numSuffix = ' ';
   private $numFormat = 1;
   private $marginLeft = 0.1;
-  private $marginStep = 0.6;
+  private $marginStep = 0.33;
 
   public function __construct($type = 'bullet') {
 
