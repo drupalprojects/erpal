@@ -330,6 +330,10 @@ projects[views_php][download][type] = "git"
 projects[views_php][download][url] = "http://git.drupal.org/project/views_php.git"
 projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa6f6"
 
+projects[views_savedsearches][version] = "1.0-beta2"
+projects[views_savedsearches][subdir] = "contrib"
+projects[views_savedsearches][patch][] = "http://drupal.org/files/issues/views-savedsearches-undefined-varaible-query-2157163-1.patch"
+
 projects[menu_attributes][subdir] = "contrib"
 projects[menu_attributes][version] = "1.x-dev"
 projects[menu_attributes][download][type] = "git"
