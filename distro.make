@@ -6,7 +6,7 @@ projects[drupal][version] = 7.23
 
 ; Patches for Core
 projects[drupal][patch][] = "http://drupal.org/files/node-access-records-1146244-110.patch"
-projects[drupal][patch][] = "http://drupal.org/files/d7-move-access-to-join-condition-1349080-131.patch"
+projects[drupal][patch][] = "http://drupal.org/files/issues/1349080-149-d7-move-access-to-join-condition-update-do-not-test.patch"
 
 projects[drupal][patch][] = "http://drupal.org/files/issues/install-redirect-on-empty-database-728702-36.patch"
 projects[drupal][patch][] = "http://drupal.org/files/drupal-1470656-14.patch"
