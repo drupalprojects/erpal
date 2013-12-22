@@ -127,6 +127,12 @@ projects[image_url_formatter][subdir] = "contrib"
 projects[colors][version] = "1.0-rc1"
 projects[colors][subdir] = "contrib"
 
+projects[comment_alter][version] = "1.0-rc4"
+projects[comment_alter][subdir] = "contrib"
+
+projects[diff][version] = "3.2"
+projects[diff][subdir] = "contrib"
+
 projects[freelinking][version] = "3.2"
 projects[freelinking][subdir] = "contrib"
 

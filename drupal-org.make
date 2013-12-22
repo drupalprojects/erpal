@@ -153,6 +153,12 @@ projects[image_url_formatter][subdir] = "contrib"
 projects[colors][version] = "1.0-rc1"
 projects[colors][subdir] = "contrib"
 
+projects[comment_alter][version] = "1.0-rc4"
+projects[comment_alter][subdir] = "contrib"
+
+projects[diff][version] = "3.2"
+projects[diff][subdir] = "contrib"
+
 projects[freelinking][version] = "3.2"
 projects[freelinking][subdir] = "contrib"
 
@@ -181,7 +187,7 @@ projects[computed_field][subdir] = "contrib"
 
 projects[field-conditional-state][version] = "1.1"
 projects[field-conditional-state][subdir] = "contrib"
-projects[field-conditional-state][patch][] = "https://drupal.org/files/issues/field-conditional-state-features-integration-1083554-17-dev.patch"
+projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/field-conditional-state-features-integration-1083554-17-dev.patch"
 
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
