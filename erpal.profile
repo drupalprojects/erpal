@@ -569,10 +569,13 @@ function erpal_contact_information_form_submit($form, $form_state){
   $address->field_country_term[LANGUAGE_NONE][0]['tid'] = $values['country'];
   $address->save(TRUE);
 
-  $phone_number = entity_create('field_collection_item', array('field_name' => 'field_phone'));
-  $phone_number->setHostEntity('node', $node);
-  $phone_number->field_phone_number[LANGUAGE_NONE][0]['value'] = $values['phone_number'];
-  $phone_number->save(TRUE);
+  //add phone number
+  $collection = entity_create('field_collection_item', array('field_name' => 'field_communication'));
+  $collection->setHostEntity('node', $node);
+  $collection_wrapper = entity_metadata_wrapper('field_collection_item', $collection);
+  $collection_wrapper->field_communication_type->set('phone');
+  $collection_wrapper->field_communication_address->set($values['phone_number']);
+  $collection->save(TRUE);
   
   node_save($node);
   
