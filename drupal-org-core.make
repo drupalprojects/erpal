@@ -1,9 +1,8 @@
 api = 2
 core = 7.x
-projects[drupal][version] = 7.24
+projects[drupal][version] = 7.25
 
 ; Patches for Core
-projects[drupal][patch][] = "http://drupal.org/files/node-access-records-1146244-110.patch"
 projects[drupal][patch][] = "http://drupal.org/files/issues/1349080-149-d7-move-access-to-join-condition-update-do-not-test.patch"
 
 projects[drupal][patch][] = "http://drupal.org/files/drupal7-allow_change_system-requirements-1772316-18.patch"
