@@ -192,9 +192,8 @@ projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/fie
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
 
-projects[date][version] = "2.6"
+projects[date][version] = "2.7"
 projects[date][subdir] = "contrib"
-projects[date][patch][] = "http://drupal.org/files/date-date_limit_format-static-cache-1835184-5.patch"
 
 projects[ds][version] = "1.9"
 projects[ds][subdir] = "contrib"
