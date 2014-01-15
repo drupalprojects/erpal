@@ -127,6 +127,12 @@ projects[image_url_formatter][subdir] = "contrib"
 projects[colors][version] = "1.0-rc1"
 projects[colors][subdir] = "contrib"
 
+projects[comment_alter][version] = "1.0-rc4"
+projects[comment_alter][subdir] = "contrib"
+
+projects[diff][version] = "3.2"
+projects[diff][subdir] = "contrib"
+
 projects[freelinking][version] = "3.2"
 projects[freelinking][subdir] = "contrib"
 
@@ -160,9 +166,8 @@ projects[field-conditional-state][patch][] = "https://drupal.org/files/issues/fi
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
 
-projects[date][version] = "2.6"
+projects[date][version] = "2.7"
 projects[date][subdir] = "contrib"
-projects[date][patch][] = "http://drupal.org/files/date-date_limit_format-static-cache-1835184-5.patch"
 
 projects[ds][version] = "1.9"
 projects[ds][subdir] = "contrib"
@@ -180,7 +185,7 @@ projects[entity][patch][] = "http://drupal.org/files/entity-node-access-1780646-
 projects[entitycache][version] = "1.1"
 projects[entitycache][subdir] = "contrib"
 
-projects[entityreference][version] = "1.0"
+projects[entityreference][version] = "1.1"
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][patch][] = "http://drupal.org/files/entityreference-1459540-47-workaround-fatal-error.patch"
 
@@ -297,6 +302,7 @@ projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1567108_0.pa
 projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1868900.patch"
 projects[views_calc][patch][] = "http://drupal.org/files/views_calc-usind_while_1900714.patch"
 projects[views_calc][patch][] = "http://drupal.org/files/views_calc_1548552.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-field_collection_work-1426164-7.patch"
 
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"

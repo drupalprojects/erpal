@@ -274,7 +274,7 @@ function _references_dialog_insert_generate_link($entity_id, $entity_type) {
  */
 function references_dialog_insert_is_image($path) {
   $img = drupal_realpath($path);
-  if (filesize($img)) {
+  if (file_exists($img) && filesize($img)) {
     $info = getimagesize($img);
     $image_type = $info[2];
     if (in_array($image_type, array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_BMP)))
