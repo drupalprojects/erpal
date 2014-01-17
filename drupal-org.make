@@ -64,12 +64,6 @@ projects[content_access_view][download][url] = "http://git.drupal.org/project/co
 projects[content_access_view][download][branch] = "7.x-stable"
 ;projects[content_access_view][download][tag] = TAG_PLACEHOLDER
 
-projects[inline_relation_form][subdir] = "contrib"
-projects[inline_relation_form][download][type] = "git"
-projects[inline_relation_form][download][url] = "http://git.drupal.org/project/inline_relation_form.git"
-projects[inline_relation_form][download][branch] = "7.x-stable"
-;projects[inline_relation_form][download][tag] = TAG_PLACEHOLDER
-
 projects[views_better_combine][subdir] = "contrib"
 projects[views_better_combine][download][type] = "git"
 projects[views_better_combine][download][url] = "http://git.drupal.org/project/views_better_combine.git"
@@ -302,6 +296,8 @@ projects[relation][subdir] = "contrib"
 
 projects[relation_add][version] = "1.1"
 projects[relation_add][subdir] = "contrib"
+projects[relation_add][patch][] = "http://drupal.org/files/relation_add-fix_reference_error-2083101-2.patch"
+projects[relation_add][patch][] = "http://drupal.org/files/issues/relation_add-error-on-empty-item-2108291.patch"
 
 projects[r4032login][version] = "1.5"
 projects[r4032login][subdir] = "contrib"
