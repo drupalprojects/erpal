@@ -148,7 +148,6 @@ dependencies[] = references_dialog_insert
 dependencies[] = screenshot_paste
 dependencies[] = views_better_combine
 dependencies[] = erpal_project_notify
-dependencies[] = inline_relation_form
 dependencies[] = bs_uniquenode
 dependencies[] = shortcut_keys
 dependencies[] = erpal_file_drag_drop
