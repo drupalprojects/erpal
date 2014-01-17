@@ -297,6 +297,7 @@ projects[relation][subdir] = "contrib"
 projects[relation_add][version] = "1.1"
 projects[relation_add][subdir] = "contrib"
 projects[relation_add][patch][] = "http://drupal.org/files/relation_add-fix_reference_error-2083101-2.patch"
+projects[relation_add][patch][] = "http://drupal.org/files/issues/relation_add-error-on-empty-item-2108291.patch"
 
 projects[r4032login][version] = "1.5"
 projects[r4032login][subdir] = "contrib"
