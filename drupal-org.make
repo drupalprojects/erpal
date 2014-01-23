@@ -135,6 +135,9 @@ projects[erpal_theme][download][branch] = "7.x-stable"
 
 
 ; Basic contributed modules.
+projects[balance][version] = "1.0"
+projects[balance][subdir] = "contrib"
+
 projects[acl][version] = "1.0"
 projects[acl][subdir] = "contrib"
 
