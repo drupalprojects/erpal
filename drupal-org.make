@@ -263,6 +263,9 @@ projects[libraries][subdir] = "contrib"
 projects[link][version] = "1.1"
 projects[link][subdir] = "contrib"
 
+projects[menu_token][version] = "1.0-beta5"
+projects[menu_token][subdir] = "contrib"
+
 projects[panels][version] = "3.3"
 projects[panels][subdir] = "contrib"
 projects[panels][patch][] = "http://drupal.org/files/panels-uuids_for_exported_objects-1277908-100.patch"
