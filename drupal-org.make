@@ -16,6 +16,12 @@ projects[views_gantt][download][url] = "http://git.drupal.org/project/views_gant
 projects[views_gantt][download][branch] = "7.x-stable"
 ;projects[views_gantt][download][tag] = TAG_PLACEHOLDER
 
+projects[cat][subdir] = "contrib"
+projects[cat][download][type] = "git"
+projects[cat][download][url] = "http://git.drupal.org/project/cat.git"
+projects[cat][download][branch] = "7.x-stable"
+;projects[cat][download][tag] = TAG_PLACEHOLDER
+
 projects[views_jstree][subdir] = "contrib"
 projects[views_jstree][download][type] = "git"
 projects[views_jstree][download][url] = "http://git.drupal.org/project/views_jstree.git"
@@ -133,10 +139,6 @@ projects[erpal_theme][download][url] = "http://git.drupal.org/project/erpal_them
 projects[erpal_theme][download][branch] = "7.x-stable"
 ;projects[erpal_theme][download][tag] = TAG_PLACEHOLDER
 
-
-; Basic contributed modules.
-projects[balance][version] = "1.0"
-projects[balance][subdir] = "contrib"
 
 projects[acl][version] = "1.0"
 projects[acl][subdir] = "contrib"
