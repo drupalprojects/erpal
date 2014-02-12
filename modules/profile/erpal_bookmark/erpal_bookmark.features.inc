@@ -5,6 +5,15 @@
  */
 
 /**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_bookmark_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "cat" && $api == "cat") {
+    return array("version" => "1");
+  }
+}
+
+/**
  * Implements hook_flag_default_flags().
  */
 function erpal_bookmark_flag_default_flags() {
@@ -27,7 +36,6 @@ function erpal_bookmark_flag_default_flags() {
       9 => 'erpal_task',
       10 => 'erpal_timetracking',
     ),
-    'errors' => array(),
     'flag_short' => 'bookmark this',
     'flag_long' => 'Add content to your bookmarks',
     'flag_message' => 'Added to bookmarks',

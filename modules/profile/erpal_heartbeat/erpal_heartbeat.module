@@ -7,8 +7,6 @@
 
 include_once('erpal_heartbeat.features.inc');
 
-module_load_include('inc', 'erpal_heartbeat', 'inc/dynamic.menu');  
-
 
 /**
 * Implements hook_permission
