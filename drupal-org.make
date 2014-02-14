@@ -176,9 +176,8 @@ projects[field_extrawidgets][subdir] = "contrib"
 projects[ckeditor][version] = "1.13"
 projects[ckeditor][subdir] = "contrib"
 
-projects[ctools][version] = "1.3"
+projects[ctools][version] = "1.4"
 projects[ctools][subdir] = "contrib"
-projects[ctools][patch][] = "http://drupal.org/files/ctools-1925018-61.patch"
 projects[ctools][patch][] = "http://drupal.org/files/ctools-uuids_for_exported_objects-1277908-118.patch"
 
 projects[computed_field][version] = "1.0-beta1"
@@ -217,11 +216,10 @@ projects[entityreference][patch][] = "http://drupal.org/files/entityreference-14
 projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
 
-projects[features][version] = "2.0-rc3"
+projects[features][version] = "2.0"
 projects[features][subdir] = "contrib"
-projects[features][patch][] = "http://drupal.org/files/1721926.features.field-weight-ping-pong.patch"
 
-projects[features_override][version] = "2.0-beta3"
+projects[features_override][version] = "2.0-rc1"
 projects[features_override][subdir] = "contrib"
 
 projects[field_collection][version] = "1.0-beta5"
@@ -319,9 +317,8 @@ projects[token][subdir] = "contrib"
 projects[serial][version] = "1.2"
 projects[serial][subdir] = "contrib"
 
-projects[services][version] = "3.5"
+projects[services][version] = "3.7"
 projects[services][subdir] = "contrib"
-projects[services][patch][] = "http://drupal.org/files/services_1355952-52.patch"
 
 projects[views][version] = "3.7"
 projects[views][subdir] = "contrib"
