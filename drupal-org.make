@@ -202,9 +202,8 @@ projects[editablefields][download][type] = "git"
 projects[editablefields][download][url] = "http://git.drupal.org/project/editablefields.git"
 projects[editablefields][download][revision] = "bcfa4d111add31985eda8fbc0382cc7f81bec0bc"
 
-projects[entity][version] = "1.2"
+projects[entity][version] = "1.3"
 projects[entity][subdir] = "contrib"
-projects[entity][patch][] = "http://drupal.org/files/entity-node-access-1780646-8.patch"
 
 projects[entitycache][version] = "1.1"
 projects[entitycache][subdir] = "contrib"
@@ -287,7 +286,6 @@ projects[pm_existing_pages][subdir] = "contrib"
 
 projects[profile2][version] = "1.3"
 projects[profile2][subdir] = "contrib"
-projects[profile2][patch][] = "http://drupal.org/files/profile2-1387268-9.patch"
 
 projects[quicktabs][version] = "3.6"
 projects[quicktabs][subdir] = "contrib"
