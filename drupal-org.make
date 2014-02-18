@@ -269,7 +269,7 @@ projects[panels_everywhere][subdir] = "contrib"
 projects[panels_style_collapsible][version] = "1.0"
 projects[panels_style_collapsible][subdir] = "contrib"
 
-projects[path_breadcrumbs][version] = "3.0-beta4"
+projects[path_breadcrumbs][version] = "3.0-rc2"
 projects[path_breadcrumbs][subdir] = "contrib"
 
 projects[pathauto][version] = "1.2"
