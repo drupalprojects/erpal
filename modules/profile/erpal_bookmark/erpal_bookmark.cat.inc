@@ -14,6 +14,7 @@ function erpal_bookmark_cat_items_settings_info() {
   $cat_item->api_version = 1;
   $cat_item->machine_name = 'erpal_bookmarks_my_bookmarks';
   $cat_item->name = 'Erpal Bookmarks: My Bookmarks';
+  $cat_item->catch_subpaths = 0;
   $cat_item->category = 'Bookmarks';
   $cat_item->path = 'user/bookmarks';
   $cat_item->data = array(

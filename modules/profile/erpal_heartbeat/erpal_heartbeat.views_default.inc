@@ -351,37 +351,6 @@ function erpal_heartbeat_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'user';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $translatables['erpal_heartbeat'] = array(
-    t('Master'),
-    t('Global heartbeat'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Items per page'),
-    t('- All -'),
-    t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
-    t('No messages created yet'),
-    t('No heartbeat activity available
-
-'),
-    t('User'),
-    t('Content entity referenced from field_erpal_hb_node_ref'),
-    t('Name'),
-    t('Date'),
-    t('Heartbeat Page All'),
-    t('Content type'),
-    t('Heartbeat page own'),
-    t('My heartbeat'),
-    t('Global heartbeat block'),
-    t('Own heartbeat block'),
-  );
   $export['erpal_heartbeat'] = $view;
 
   return $export;
