@@ -306,6 +306,7 @@ projects[serial][subdir] = "contrib"
 
 projects[services][version] = "3.7"
 projects[services][subdir] = "contrib"
+projects[services][patch][] = "https://drupal.org/files/issues/services_1355952-53.patch"
 
 projects[views][version] = "3.7"
 projects[views][subdir] = "contrib"
