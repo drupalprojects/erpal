@@ -14,6 +14,7 @@ function erpal_heartbeat_cat_items_settings_info() {
   $cat_item->api_version = 1;
   $cat_item->machine_name = 'erpal_heartbeat';
   $cat_item->name = 'Erpal Heartbeat (default)';
+  $cat_item->catch_subpaths = 0;
   $cat_item->category = 'Heartbeat';
   $cat_item->path = 'heartbeat/all';
   $cat_item->data = array(
@@ -74,6 +75,7 @@ function erpal_heartbeat_cat_items_settings_info() {
   $cat_item->api_version = 1;
   $cat_item->machine_name = 'erpal_heartbeat_own_heartbeat';
   $cat_item->name = 'Erpal Heartbeat: Own heartbeat';
+  $cat_item->catch_subpaths = 0;
   $cat_item->category = 'Heartbeat';
   $cat_item->path = 'heartbeat';
   $cat_item->data = array(

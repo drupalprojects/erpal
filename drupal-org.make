@@ -228,8 +228,9 @@ projects[field_collection_table][version] = "1.0-beta1"
 projects[field_collection_table][subdir] = "contrib"
 projects[field_collection_table][patch][] = "http://drupal.org/files/field-collection-table-1877218.patch"
 
-projects[field_group][version] = "1.1"
+projects[field_group][version] = "1.3"
 projects[field_group][subdir] = "contrib"
+projects[field_group][patch][] = "http://drupal.org/files/issues/field_group-add_group_name_to_tab_buttons-2172645-11.patch"
 
 projects[flag][version] = "3.2"
 projects[flag][subdir] = "contrib"
@@ -306,6 +307,7 @@ projects[serial][subdir] = "contrib"
 
 projects[services][version] = "3.7"
 projects[services][subdir] = "contrib"
+projects[services][patch][] = "https://drupal.org/files/issues/services_1355952-53.patch"
 
 projects[views][version] = "3.7"
 projects[views][subdir] = "contrib"
@@ -365,7 +367,7 @@ libraries[screenshot_paste][download][type] = "file"
 libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
 libraries[dhtmlxgantt][download][type] = "file"
-libraries[dhtmlxgantt][download][url] = "http://www.dhtmlx.com/docs/products/dhtmlxGantt/download/dhtmlxGantt.zip"
+libraries[dhtmlxgantt][download][url] = "http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
