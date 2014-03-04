@@ -319,6 +319,7 @@ projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1868900.patc
 projects[views_calc][patch][] = "http://drupal.org/files/views_calc-usind_while_1900714.patch"
 projects[views_calc][patch][] = "http://drupal.org/files/views_calc_1548552.patch"
 projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-field_collection_work-1426164-7.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-2210327-drop-unnecessary-validation-1.patch"
 
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"
