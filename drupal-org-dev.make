@@ -207,6 +207,7 @@ projects[field_collection_table][patch][] = "http://drupal.org/files/field-colle
 
 projects[field_group][version] = "1.1"
 projects[field_group][subdir] = "contrib"
+projects[field_group][patch][] = "http://drupal.org/files/issues/field_group-add_group_name_to_tab_buttons-2172645-11.patch"
 
 projects[finder][version] = "2.0"
 projects[finder][subdir] = "contrib"
