@@ -239,6 +239,9 @@ projects[libraries][subdir] = "contrib"
 projects[link][version] = "1.1"
 projects[link][subdir] = "contrib"
 
+projects[languagefield][version] = "1.2"
+projects[languagefield][subdir] = "contrib"
+
 projects[menu_token][version] = "1.0-beta5"
 projects[menu_token][subdir] = "contrib"
 
