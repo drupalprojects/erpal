@@ -207,6 +207,7 @@ projects[field_collection_table][patch][] = "http://drupal.org/files/field-colle
 
 projects[field_group][version] = "1.1"
 projects[field_group][subdir] = "contrib"
+projects[field_group][patch][] = "http://drupal.org/files/issues/field_group-add_group_name_to_tab_buttons-2172645-11.patch"
 
 projects[finder][version] = "2.0"
 projects[finder][subdir] = "contrib"
@@ -237,6 +238,9 @@ projects[libraries][subdir] = "contrib"
 
 projects[link][version] = "1.1"
 projects[link][subdir] = "contrib"
+
+projects[languagefield][version] = "1.2"
+projects[languagefield][subdir] = "contrib"
 
 projects[menu_token][version] = "1.0-beta5"
 projects[menu_token][subdir] = "contrib"
@@ -304,6 +308,7 @@ projects[views_calc][patch][] = "http://drupal.org/files/views_calc-1868900.patc
 projects[views_calc][patch][] = "http://drupal.org/files/views_calc-usind_while_1900714.patch"
 projects[views_calc][patch][] = "http://drupal.org/files/views_calc_1548552.patch"
 projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-field_collection_work-1426164-7.patch"
+projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-2210327-drop-unnecessary-validation-1.patch"
 
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"
