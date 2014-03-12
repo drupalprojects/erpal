@@ -28,6 +28,14 @@ class Odf_Style_List extends Odf_Style {
   public function setMarginStep($margin_step) {
     $this->marginStep = $margin_step;
   }
+  
+  public function setNumPrefix($numPrefix) {
+    $this->numPrefix = $numPrefix;
+  }
+
+  public function setNumSuffix($numSuffix) {
+    $this->numSuffix = $numSuffix;
+  }
 
   public function render(Odf_File $document, DOMElement $element) {
 

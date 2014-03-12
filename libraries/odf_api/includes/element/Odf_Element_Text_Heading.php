@@ -89,6 +89,8 @@ class Odf_Element_Text_Heading extends Odf_Element {
         self::$style->setMarginLeft(0);
         self::$style->setMarginStep(0);
       }
+      self::$style->setNumPrefix('');
+      self::$style->setNumSuffix('  ');
       self::$style->render($document, $root_list);
 
       $root = $root_list_item;

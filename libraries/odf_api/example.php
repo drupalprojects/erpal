@@ -10,7 +10,7 @@
  * Register class autoloader for the ODF documents.
  */
 
-include 'odf_api/Odf_Class_Autoloader.php';
+include 'Odf_Class_Autoloader.php';
 Odf_Class_Autoloader::init();
 
 /**
