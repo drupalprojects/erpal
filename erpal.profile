@@ -455,7 +455,7 @@ function erpal_contact_information_form($form, &$form_state){
     '#required' => TRUE,     
   );
   $form['company_address']['zip_code'] = array(
-    '#title' => st('ZIP-Code:'),
+    '#title' => st('Postal Code:'),
     '#type' => 'textfield',
     '#maxlength' => 10,
     '#required' => TRUE,
