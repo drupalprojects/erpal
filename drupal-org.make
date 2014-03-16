@@ -184,7 +184,7 @@ projects[computed_field][subdir] = "contrib"
 
 projects[field-conditional-state][version] = "1.1"
 projects[field-conditional-state][subdir] = "contrib"
-projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/field-conditional-state-features-integration-1083554-17-dev.patch"
+projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/field-conditional-state-features-integration-1083554-22.patch"
 
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
