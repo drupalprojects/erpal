@@ -230,7 +230,7 @@ projects[field_collection_table][patch][] = "http://drupal.org/files/field-colle
 
 projects[field_group][version] = "1.1"
 projects[field_group][subdir] = "contrib"
-projects[field_group][patch][] = "http://www.brightsolutions.de/files/field_group-add_group_name_to_tab_buttons-2172645-13.patch"
+projects[field_group][patch][] = "http://drupal.org/files/issues/field_group-add_group_name_to_tab_buttons-2172645-13.patch"
 
 projects[flag][version] = "3.2"
 projects[flag][subdir] = "contrib"
@@ -370,8 +370,9 @@ libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.p
 libraries[screenshot_paste][download][type] = "file"
 libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
-libraries[dhtmlxgantt][download][type] = "file"
-libraries[dhtmlxgantt][download][url] = "http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
+;commented this as it cannot be unzipped du to https://drupal.org/node/2205413
+;libraries[dhtmlxgantt][download][type] = "file"
+;libraries[dhtmlxgantt][download][url] = "http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"
