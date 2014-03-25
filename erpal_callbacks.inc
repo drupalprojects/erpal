@@ -271,6 +271,7 @@ function _erpal_invoice_config(&$context){
   
   // variable_set('erpal_invoice_vat_rates_string', $vatRates);
   // variable_set('erpal_invoice_default_vat_rate', '19.000'); 
+  variable_set('erpal_invoice_currencies_string', 'EUR#Euro'."\r\n".'USD#USD');
   
   $manualNote = 'Thanks for your order. Please pay the amount of [erpal_invoice:total]'
     . '[erpal_invoice:currency] till [erpal_invoice:invoice_date].'
