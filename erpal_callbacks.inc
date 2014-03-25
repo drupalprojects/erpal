@@ -123,6 +123,14 @@ function _erpal_rebuild_content_access(&$context){
   node_access_rebuild(); 
 }
 
+/**
+ * Some cleanup steps
+ */
+function _erpal_install_cleanup(&$context) {
+  //remove all messages that have been created during installation
+  $context['message'] = st('Clean up process');
+  erpal_clear_messages();
+}
 
 /**
  * BatchAPI callback
@@ -275,5 +283,17 @@ function _erpal_invoice_config(&$context){
   
 }
 
-
+/**
+ * Remove all messages created during the installation process
+ */
+function erpal_clear_messages() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'message')
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+  $result = $query->execute();
+  if (isset($result['message'])) {
+    $mids = array_keys($result['message']);
+    entity_delete_multiple('message', $mids);
+  }
+}
 

@@ -2,7 +2,6 @@ name = ERPAL Dashboard
 description = ERPAL Dashboard Module
 core = 7.x
 package = ERPAL UI
-php = 5.2.4
 version = 7.x-1.0-dev
 project = erpal_dashboard
 dependencies[] = erpal_dashboard_helper

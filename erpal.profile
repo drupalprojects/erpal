@@ -414,6 +414,7 @@ function erpal_last_config_steps(){
   $operations = array(
     array('_erpal_rebuild_content_access', array()),
     array('_erpal_config_finish', array()),
+    array('_erpal_install_cleanup', array()),
   );
     
   $batch = array(
