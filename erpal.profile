@@ -414,6 +414,7 @@ function erpal_last_config_steps(){
   $operations = array(
     array('_erpal_rebuild_content_access', array()),
     array('_erpal_config_finish', array()),
+    array('_erpal_install_cleanup', array()),
   );
     
   $batch = array(
@@ -455,7 +456,7 @@ function erpal_contact_information_form($form, &$form_state){
     '#required' => TRUE,     
   );
   $form['company_address']['zip_code'] = array(
-    '#title' => st('ZIP-Code:'),
+    '#title' => st('Postal Code:'),
     '#type' => 'textfield',
     '#maxlength' => 10,
     '#required' => TRUE,
@@ -476,10 +477,18 @@ function erpal_contact_information_form($form, &$form_state){
     '#default_value' => array_search('Germany', $countries),
   );
   
+  $form['company_address']['currency'] = array(
+    '#title' => st('Default currency'),
+    '#type' => 'textfield',
+    '#description' => st('Enter the default currency shortcode like USD or EUR.'),
+    '#maxlength' => 255,
+    '#required' => TRUE,
+  );  
+  
   $form['company_address']['vat_rate'] = array(
     '#title' => st('Default VAT rate'),
     '#type' => 'textfield',
-    '#description' => st('Enter the default VAT rate in percent for your country!'),
+    '#description' => st('Enter the default VAT rate in percent for your country.'),
     '#maxlength' => 255,
     '#required' => TRUE,
   );    
@@ -647,13 +656,16 @@ function erpal_contact_information_form_submit($form, $form_state){
   node_save($task_node);
   variable_set('crm_tasks_task', $task_node->nid);
   
-  
+  //set vat rate
   $vat_string = $values['vat_rate'] . '#' . $values['vat_rate'] . '%';
-  
   variable_set('erpal_invoice_vat_rates_string', $vat_string);
   $vat_rate = number_format((float)$values['vat_rate'], 3);
   variable_set('erpal_invoice_default_vat_rate', $vat_rate);
   
+  //set currency
+  $currency_string = $values['currency'] . '#' . $values['currency'];
+  variable_set('erpal_invoice_currencies_string', $currency_string);
+  variable_set('erpal_invoice_default_currency', $values['currency']);
 }
 
 function _erpal_get_countries(){

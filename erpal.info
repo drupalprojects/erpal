@@ -77,6 +77,7 @@ dependencies[] = fullcalendar_legend
 dependencies[] = homebox
 dependencies[] = jquery_ui_multiselect_widget
 dependencies[] = jquery_update
+dependencies[] = languagefield
 dependencies[] = libraries
 dependencies[] = link
 dependencies[] = menu_attributes

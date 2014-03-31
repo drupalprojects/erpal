@@ -184,7 +184,7 @@ projects[computed_field][subdir] = "contrib"
 
 projects[field-conditional-state][version] = "1.1"
 projects[field-conditional-state][subdir] = "contrib"
-projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/field-conditional-state-features-integration-1083554-17-dev.patch"
+projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/field-conditional-state-features-integration-1083554-22.patch"
 
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
@@ -230,7 +230,7 @@ projects[field_collection_table][patch][] = "http://drupal.org/files/field-colle
 
 projects[field_group][version] = "1.1"
 projects[field_group][subdir] = "contrib"
-projects[field_group][patch][] = "http://drupal.org/files/issues/field_group-add_group_name_to_tab_buttons-2172645-11.patch"
+projects[field_group][patch][] = "http://drupal.org/files/issues/field_group-add_group_name_to_tab_buttons-2172645-13.patch"
 
 projects[flag][version] = "3.2"
 projects[flag][subdir] = "contrib"
@@ -370,8 +370,9 @@ libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.p
 libraries[screenshot_paste][download][type] = "file"
 libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
-libraries[dhtmlxgantt][download][type] = "file"
-libraries[dhtmlxgantt][download][url] = "http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
+;commented this as it cannot be unzipped du to https://drupal.org/node/2205413
+;libraries[dhtmlxgantt][download][type] = "file"
+;libraries[dhtmlxgantt][download][url] = "http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
 
 ; Themes
 projects[adaptivetheme][version] = "3.1"

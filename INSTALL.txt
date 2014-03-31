@@ -1,11 +1,20 @@
 ----------------------------------------------
 |                                            |
-|        Erpal makefile installation         |
+|        ERPAL makefile installation         |
 |                                            |
 |   2013, Bright Solutions GmbH, Germany     |
 ----------------------------------------------
 
-How to install Erpal using drush make:
+How to install ERPAL using drush make:
+
+######## Requirements for installation ###########
+- make sure to have you php memory_limit set to at least 256M during installation
+- Please set your mySQL to max_allowed_packet=20MB in your my.ini
+- For more up to date system requirements please check out the project page at https://drupal.org/project/erpal
+- Code is tested with PHP 5.4
+
+
+######## Install with Drush make ##########
 
 1. Clone this repository - Success!
 
@@ -18,10 +27,10 @@ Make sure, drush is set as a path variable in windows:
  - Create a new variable "PATH" with the value "C:\ProgramData\Drush\"
 // END Windows
 
-2. Go to the erpal folder where the makefile is:
+2. Go to the ERPAL folder where the makefile is located:
 Execute "drush make build-erpal.make ../www" in your console/bash. It will now download all necessary files and put them in the folder "../www".
 
-3. The root directory of the erpal installation should be the "www" folder just created.
+3. The root directory of the ERPAL installation should be the "www" folder just created.
 
-4. Setup erpal and go!
+4. Setup ERPAL and go!
  
