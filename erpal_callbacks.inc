@@ -154,8 +154,8 @@ function _erpal_various_settings(&$context){
   _erpal_basic_helper_ensure_format('d.m.Y - H:i');
   
   //now add these formats to the format types that we need
-  _erpal_basic_helper_ensure_format_type('ERPAL date', 'erpal_date', 'd.m.Y');
-  _erpal_basic_helper_ensure_format_type('ERPAL date time', 'erpal_date_time', 'd.m.Y - H:i');
+ // _erpal_basic_helper_ensure_format_type('ERPAL date', 'erpal_date', 'd.m.Y');
+ // _erpal_basic_helper_ensure_format_type('ERPAL date time', 'erpal_date_time', 'd.m.Y - H:i');
   
   variable_set('date_format_erpal_date', 'd.m.Y');
   variable_set('date_format_erpal_date_time', 'd.m.Y - H:i');

@@ -13,6 +13,7 @@ class Odf_Style_Text extends Odf_Style {
   private $lineHeight;
   private $textAlign;
   private $marginLeft;
+  private $marginRight;
   private $break;
   private $includeTabStops = FALSE;
   private $tabStopPosition = '17cm';
@@ -51,6 +52,10 @@ class Odf_Style_Text extends Odf_Style {
 
   public function setMarginLeft($margin_left) {
     $this->marginLeft = $margin_left;
+  }
+
+  public function setMarginRight($margin_right) {
+    $this->marginRight = $margin_right;
   }
 
   public function setLineHeight($line_height) {
@@ -115,6 +120,10 @@ class Odf_Style_Text extends Odf_Style {
 
     if (!empty($this->marginLeft)) {
       $paragrapth_properties->setAttribute('fo:margin-left', $this->marginLeft);
+    }
+
+    if (!empty($this->marginRight)) {
+      $paragrapth_properties->setAttribute('fo:margin-right', $this->marginRight);
     }
 
     if (!empty($this->includeTabStops)) {
