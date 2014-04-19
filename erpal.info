@@ -52,6 +52,7 @@ dependencies[] = date_repeat
 dependencies[] = date_repeat_field
 dependencies[] = date_views
 dependencies[] = diff
+dependencies[] = draggableviews
 dependencies[] = ds
 dependencies[] = ds_forms
 dependencies[] = editablefields

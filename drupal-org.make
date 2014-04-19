@@ -182,6 +182,9 @@ projects[ctools][subdir] = "contrib"
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
 
+projects[draggableviews][version] = "2.0"
+projects[draggableviews][subdir] = "contrib"
+
 projects[field-conditional-state][version] = "1.1"
 projects[field-conditional-state][subdir] = "contrib"
 projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/field-conditional-state-features-integration-1083554-22.patch"
