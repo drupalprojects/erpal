@@ -5,6 +5,7 @@ package = ERPAL UI
 version = 7.x-1.0-dev
 project = erpal_bookmark_ui
 dependencies[] = ctools
+dependencies[] = draggableviews
 dependencies[] = erpal_basic_ui
 dependencies[] = erpal_bookmark
 dependencies[] = views

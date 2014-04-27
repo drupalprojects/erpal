@@ -16,21 +16,22 @@ function erpal_form_install_configure_form_alter(&$form, $form_state) {
   $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
   
   // Add textfield for private filesystem settings
-   
-  $form['filesystem_settings'] = array(
-    '#title' => st('Filesystem settings'),
-    '#type' => 'fieldset',
-  );
-  $form['filesystem_settings']['file_private_path'] = array(
-    '#type' => 'textfield', 
-    '#title' => st('Private file system path'), 
-    '#default_value' => variable_get('file_private_path', 'sites/default/files/private'), 
-    '#maxlength' => 255,
-    '#required' => TRUE, 
-  );
+  if (!drupal_is_cli()) {
+    $form['filesystem_settings'] = array(
+      '#title' => st('Filesystem settings'),
+      '#type' => 'fieldset',
+    );
+    $form['filesystem_settings']['file_private_path'] = array(
+      '#type' => 'textfield', 
+      '#title' => st('Private file system path'), 
+      '#default_value' => variable_get('file_private_path', 'sites/default/files/private'), 
+      '#maxlength' => 255,
+      '#required' => TRUE, 
+    );
 
-  $form['#validate'][] = 'erpal_file_private_path_validate';
-  $form['#submit'][] = 'erpal_file_private_path_submit';
+    $form['#validate'][] = 'erpal_file_private_path_validate';
+    $form['#submit'][] = 'erpal_file_private_path_submit';
+  }
 }
 
 function erpal_file_private_path_validate($form, $form_state){ 
@@ -72,13 +73,13 @@ function erpal_install_tasks(){
     'display' => TRUE,
     'type' => 'batch',
   );
-
-  $tasks['erpal_contact_information_form'] = array(
-    'display_name' => st('Contact information'),
-    'display' => TRUE,
-    'type' => 'form',
-  );
-  
+  if (!drupal_is_cli()) {
+    $tasks['erpal_contact_information_form'] = array(
+      'display_name' => st('Contact information'),
+      'display' => TRUE,
+      'type' => 'form',
+    );
+  }
   $tasks['erpal_preconfigure_site'] = array(
     'display_name' => st('Preparing site'),
     'display' => TRUE,
@@ -135,17 +136,19 @@ function _erpal_revert_features(&$context){
 function erpal_install_tasks_alter(&$tasks, $install_state) {
   
   $tasks['install_select_profile']['display'] = FALSE;
-  $welcome['erpal_welcome_message'] = array(
-    'display_name' => st('Welcome'),
-    'display' => TRUE,
-    'type' => 'form',
-    'run' => isset($install_state['parameters']['welcome']) ? INSTALL_TASK_SKIP : INSTALL_TASK_RUN_IF_REACHED,
-  );
-  
-  _erpal_install_tasks_inject_database_requirements($tasks, $install_state);
-  
-  $old_tasks = $tasks;
+  if (!drupal_is_cli()) {
+    $welcome['erpal_welcome_message'] = array(
+      'display_name' => st('Welcome'),
+      'display' => TRUE,
+      'type' => 'form',
+      'run' => isset($install_state['parameters']['welcome']) ? INSTALL_TASK_SKIP : INSTALL_TASK_RUN_IF_REACHED,
+    );
+    
+    _erpal_install_tasks_inject_database_requirements($tasks, $install_state);
+    
+    $old_tasks = $tasks;
   $tasks = array_slice($old_tasks, 0, 1) + $welcome+ array_slice($old_tasks, 1);
+  }
   _erpal_set_theme('erpal_maintenance');
 }
 
