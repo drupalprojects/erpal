@@ -25,6 +25,30 @@ function erpal_dashboard_homebox() {
     ),
     'blocks' => 
     array (
+      'views_assigned_tasks-block' => 
+      array (
+        'module' => 'views',
+        'delta' => 'assigned_tasks-block',
+        'region' => 2,
+        'movable' => 1,
+        'status' => 1,
+        'open' => 1,
+        'closable' => 1,
+        'title' => '',
+        'weight' => -36,
+      ),
+      'views_erpal_heartbeat-block_2' => 
+      array (
+        'module' => 'views',
+        'delta' => 'erpal_heartbeat-block_2',
+        'region' => 1,
+        'movable' => 1,
+        'status' => 1,
+        'open' => 1,
+        'closable' => 1,
+        'title' => '',
+        'weight' => -42,
+      ),
       'views_bookmarks-block' => 
       array (
         'module' => 'views',
@@ -47,31 +71,7 @@ function erpal_dashboard_homebox() {
         'open' => 1,
         'closable' => 1,
         'title' => '',
-        'weight' => -35,
-      ),
-      'views_erpal_heartbeat-block_2' => 
-      array (
-        'module' => 'views',
-        'delta' => 'erpal_heartbeat-block_2',
-        'region' => 1,
-        'movable' => 1,
-        'status' => 1,
-        'open' => 1,
-        'closable' => 1,
-        'title' => '',
-        'weight' => -36,
-      ),
-      'views_assigned_tasks-block' => 
-      array (
-        'module' => 'views',
-        'delta' => 'assigned_tasks-block',
-        'region' => 2,
-        'movable' => 1,
-        'status' => 1,
-        'open' => 1,
-        'closable' => 1,
-        'title' => '',
-        'weight' => -36,
+        'weight' => -41,
       ),
       'views_timetracking_entities-block_1' => 
       array (
@@ -84,6 +84,18 @@ function erpal_dashboard_homebox() {
         'closable' => 1,
         'title' => '',
         'weight' => -34,
+      ),
+      'views_full_calendar-block_1' => 
+      array (
+        'module' => 'views',
+        'delta' => 'full_calendar-block_1',
+        'region' => 1,
+        'movable' => 1,
+        'status' => 1,
+        'open' => 1,
+        'closable' => 1,
+        'title' => '',
+        'weight' => -43,
       ),
     ),
     'widths' => 
