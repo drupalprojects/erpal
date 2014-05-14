@@ -40,7 +40,7 @@ class Odf_File {
   /**
    * Path to the folder with default template for ODF file.
    */
-  private $odf_template =  '/template/default.odt';
+  private $odf_template = '/template/default.odt';
 
   /**
    * Params for a new ODF file.
@@ -60,12 +60,13 @@ class Odf_File {
   public $styles;
   public $manifest;
 
-  public function __construct($file_name, $file_path = '') {
+  public function __construct($file_name, $file_path = '', $odf_template_file = false) {
     $this->odf_file_path = $file_path ? $file_path . '/' : '';
     $this->odf_file_name = $file_name;
 
     $zip = new ZipArchive();
-    $zip->open(dirname(dirname(__DIR__)) . $this->odf_template);
+    $this->odf_template = $odf_template_file ? $odf_template_file : dirname(dirname(__DIR__)).$this->odf_template;
+    $zip->open($this->odf_template);
 
     // Get the template data of ODF document.
     $this->content  = new Odf_File_Content($zip);
