@@ -21,10 +21,11 @@ function erpal_form_install_configure_form_alter(&$form, $form_state) {
       '#title' => st('Filesystem settings'),
       '#type' => 'fieldset',
     );
+   
     $form['filesystem_settings']['file_private_path'] = array(
       '#type' => 'textfield', 
       '#title' => st('Private file system path'), 
-      '#default_value' => variable_get('file_private_path', 'sites/default/files/private'), 
+      '#default_value' => variable_get('file_private_path', conf_path().'/files/private'), 
       '#maxlength' => 255,
       '#required' => TRUE, 
     );
