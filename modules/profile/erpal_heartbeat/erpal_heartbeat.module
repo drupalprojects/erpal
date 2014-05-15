@@ -41,6 +41,7 @@ function erpal_heartbeat_node_update($node) {
  * Implements hook_comment_insert().
  */
 function erpal_heartbeat_comment_insert($comment) {
+dpm('in');
   _erpal_heartbeat_handle_comment_beat($comment, 'insert');
 }
 
