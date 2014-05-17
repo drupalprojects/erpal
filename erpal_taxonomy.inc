@@ -104,6 +104,30 @@ function _erpal_taxonomy_get_activity_origin_vocabulary(){
   );
   return array($activity_origin_vocabulary, $activity_origin_terms);
 }
+
+/**
+* Create some default terms for the target audience vocabulary
+*/
+function _erpal_taxonomy_get_target_audience_vocabulary() {
+  $target_audience_vocabulary = new stdClass();
+  $target_audience_vocabulary->name = 'Target audience terms';
+  $target_audience_vocabulary->machine_name = 'target_audience_terms';
+  $target_audience_terms = array(
+    'Manufactoring company' => array(
+      'name' => 'Manufactoring company',
+    ),
+    'Service provider' => array(
+      'name' => 'Personal contacted',
+    ),
+    'Drupal shop' => array(
+      'name' => 'Drupal shop',
+    ),
+    'Government' => array(
+      'name' => 'Government',
+    ),
+  );
+  return array($target_audience_vocabulary, $target_audience_terms);
+}
  
 function _erpal_taxonomy_get_task_type_vocabulary(){ 
   //  Create taxonomy 

@@ -35,6 +35,10 @@ dependencies[] = color
 dependencies[] = block
 
 ;contrib
+dependencies[] = entity
+dependencies[] = entitycache
+dependencies[] = profile2
+dependencies[] = profile2_page
 dependencies[] = auto_nodetitle
 dependencies[] = better_exposed_filters
 dependencies[] = views_savedsearches
@@ -56,13 +60,9 @@ dependencies[] = draggableviews
 dependencies[] = ds
 dependencies[] = ds_forms
 dependencies[] = editablefields
-dependencies[] = entity
 dependencies[] = entity_token
 dependencies[] = entityreference
 dependencies[] = entityreference_prepopulate
-dependencies[] = entitycache
-dependencies[] = profile2
-dependencies[] = profile2_page
 dependencies[] = features
 dependencies[] = features_override
 dependencies[] = field_collection
