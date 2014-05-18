@@ -367,6 +367,9 @@ function erpal_create_vocabularies_and_taxonomies(){
   
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_date_item_vocabulary());
 
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_target_audience_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_salutation_terms_vocabulary());
+  
   $batch = array(
     'title' => st('Creating taxonomies'),
     'operations' => $operations,

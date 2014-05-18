@@ -204,10 +204,10 @@ projects[editablefields][download][type] = "git"
 projects[editablefields][download][url] = "http://git.drupal.org/project/editablefields.git"
 projects[editablefields][download][revision] = "bcfa4d111add31985eda8fbc0382cc7f81bec0bc"
 
-projects[entity][version] = "1.3"
+projects[entity][version] = "1.5"
 projects[entity][subdir] = "contrib"
 
-projects[entitycache][version] = "1.1"
+projects[entitycache][version] = "1.2"
 projects[entitycache][subdir] = "contrib"
 
 projects[entityreference][version] = "1.1"
