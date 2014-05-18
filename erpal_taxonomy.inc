@@ -128,6 +128,33 @@ function _erpal_taxonomy_get_target_audience_vocabulary() {
   );
   return array($target_audience_vocabulary, $target_audience_terms);
 }
+
+/**
+* Create some default salutation terms
+*/
+function _erpal_taxonomy_get_salutation_terms_vocabulary() {
+  $target_audience_vocabulary = new stdClass();
+  $target_audience_vocabulary->name = 'Salutation terms';
+  $target_audience_vocabulary->machine_name = 'salutation_terms';
+  $target_audience_terms = array(
+    'Mr.' => array(
+      'name' => 'Mr.',
+    ),
+    'Ms.' => array(
+      'name' => 'Ms.',
+    ),
+    'Mrs.' => array(
+      'name' => 'Mrs.',
+    ),
+    'Dr.' => array(
+      'name' => 'Dr.',
+    ),
+    'Prof.' => array(
+      'name' => 'Prof.',
+    ),
+  );
+  return array($target_audience_vocabulary, $target_audience_terms);
+}
  
 function _erpal_taxonomy_get_task_type_vocabulary(){ 
   //  Create taxonomy 
