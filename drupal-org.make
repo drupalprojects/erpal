@@ -315,7 +315,7 @@ projects[services][version] = "3.7"
 projects[services][subdir] = "contrib"
 projects[services][patch][] = "https://drupal.org/files/issues/services_1355952-53.patch"
 
-projects[views][version] = "3.7"
+projects[views][version] = "3.8"
 projects[views][subdir] = "contrib"
 
 projects[views_calc][version] = "1.0"
