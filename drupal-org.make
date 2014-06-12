@@ -338,6 +338,7 @@ projects[views_php][version] = "1.x-dev"
 projects[views_php][download][type] = "git"
 projects[views_php][download][url] = "http://git.drupal.org/project/views_php.git"
 projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa6f6"
+projects[views_php][patch][] = "http://drupal.org/files/issues/views_php-pager_missing-2276165-2.patch"
 
 projects[views_savedsearches][version] = "1.0-beta2"
 projects[views_savedsearches][subdir] = "contrib"
