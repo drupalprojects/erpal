@@ -328,10 +328,7 @@ projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-field
 projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-2210327-drop-unnecessary-validation-1.patch"
 
 projects[views_calc_distinct][subdir] = "contrib"
-projects[views_calc_distinct][version] = "1.x-dev"
-projects[views_calc_distinct][download][type] = "git"
-projects[views_calc_distinct][download][url] = "http://git.drupal.org/project/views_calc_distinct.git"
-projects[views_calc_distinct][download][revision] = "b3d81bd6829481fb98ef622e8969e1b64175aae4"
+projects[views_calc_distinct][version] = "1.0-alpha1"
 
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"

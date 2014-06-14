@@ -155,6 +155,31 @@ function _erpal_taxonomy_get_salutation_terms_vocabulary() {
   );
   return array($target_audience_vocabulary, $target_audience_terms);
 }
+
+
+/**
+* Create some default salutation terms
+*/
+function _erpal_taxonomy_get_project_role_tags_vocabulary() {
+  $project_role_tags_vocabulary = new stdClass();
+  $project_role_tags_vocabulary->name = 'Project role tags';
+  $project_role_tags_vocabulary->machine_name = 'project_role_tags';
+  $project_role_terms = array(
+    'project manager' => array(
+      'name' => 'project manager',
+    ),
+    'team lead' => array(
+      'name' => 'team lead',
+    ),
+    'customer' => array(
+      'name' => 'customer',
+    ),
+    'project controler' => array(
+      'name' => 'project controler',
+    ),    
+  );
+  return array($project_role_tags_vocabulary, $project_role_terms);
+}
  
 function _erpal_taxonomy_get_task_type_vocabulary(){ 
   //  Create taxonomy 
