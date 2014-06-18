@@ -665,8 +665,8 @@
 		}
 	};
 	BoxJS.prototype.removeBox				= function( pBox ) {
-		this.aBoxes.findAndRemove( pBox );
-		this.aInPageBoxes.findAndRemove( pBox );
+		createClass.Tools.findAndRemove( this.aBoxes, pBox );
+		createClass.Tools.findAndRemove( this.aInPageBoxes, pBox );
 		
 		pBox.pContainer.detach();
 		
