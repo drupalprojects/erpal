@@ -8,128 +8,128 @@ projects[relation_dialog][subdir] = "contrib"
 projects[relation_dialog][download][type] = "git"
 projects[relation_dialog][download][url] = "http://git.drupal.org/project/relation_dialog.git"
 projects[relation_dialog][download][branch] = "7.x-stable"
-;projects[relation_dialog][download][tag] = TAG_PLACEHOLDER
+projects[relation_dialog][download][tag] = erpal_7.x-2.0-beta3
 
 projects[views_gantt][subdir] = "contrib"
 projects[views_gantt][download][type] = "git"
 projects[views_gantt][download][url] = "http://git.drupal.org/project/views_gantt.git"
 projects[views_gantt][download][branch] = "7.x-stable"
-;projects[views_gantt][download][tag] = TAG_PLACEHOLDER
+projects[views_gantt][download][tag] = erpal_7.x-2.0-beta3
 
 projects[cat][subdir] = "contrib"
 projects[cat][download][type] = "git"
 projects[cat][download][url] = "http://git.drupal.org/project/cat.git"
 projects[cat][download][branch] = "7.x-stable"
-;projects[cat][download][tag] = TAG_PLACEHOLDER
+projects[cat][download][tag] = erpal_7.x-2.0-beta3
 
 projects[views_jstree][subdir] = "contrib"
 projects[views_jstree][download][type] = "git"
 projects[views_jstree][download][url] = "http://git.drupal.org/project/views_jstree.git"
 projects[views_jstree][download][branch] = "7.x-stable"
-;projects[views_jstree][download][tag] = TAG_PLACEHOLDER
+projects[views_jstree][download][tag] = erpal_7.x-2.0-beta3
 
 projects[timetracking][subdir] = "contrib"
 projects[timetracking][download][type] = "git"
 projects[timetracking][download][url] = "http://git.drupal.org/project/timetracking.git"
 projects[timetracking][download][branch] = "7.x-stable"
-;projects[timetracking][download][tag] = TAG_PLACEHOLDER
+projects[timetracking][download][tag] = erpal_7.x-2.0-beta3
 
 projects[fileedit][subdir] = "contrib"
 projects[fileedit][download][type] = "git"
 projects[fileedit][download][url] = "http://git.drupal.org/project/fileedit.git"
 projects[fileedit][download][branch] = "7.x-stable"
-;projects[fileedit][download][tag] = TAG_PLACEHOLDER
+projects[fileedit][download][tag] = erpal_7.x-2.0-beta3
 
 projects[screenshot_paste][subdir] = "contrib"
 projects[screenshot_paste][download][type] = "git"
 projects[screenshot_paste][download][url] = "http://git.drupal.org/project/screenshot_paste.git"
 projects[screenshot_paste][download][branch] = "7.x-stable"
-;projects[screenshot_paste][download][tag] = TAG_PLACEHOLDER
+projects[screenshot_paste][download][tag] = erpal_7.x-2.0-beta3
 
 projects[entityreference_unique][subdir] = "contrib"
 projects[entityreference_unique][download][type] = "git"
 projects[entityreference_unique][download][url] = "http://git.drupal.org/project/entityreference_unique.git"
 projects[entityreference_unique][download][branch] = "7.x-stable"
-;projects[entityreference_unique][download][tag] = TAG_PLACEHOLDER
+projects[entityreference_unique][download][tag] = erpal_7.x-2.0-beta3
 
 projects[date_item][subdir] = "contrib"
 projects[date_item][download][type] = "git"
 projects[date_item][download][url] = "http://git.drupal.org/project/date_item.git"
 projects[date_item][download][branch] = "7.x-stable"
-;projects[date_item][download][tag] = TAG_PLACEHOLDER
+projects[date_item][download][tag] = erpal_7.x-2.0-beta3
 
 projects[aul][subdir] = "contrib"
 projects[aul][download][type] = "git"
 projects[aul][download][url] = "http://git.drupal.org/project/aul.git"
 projects[aul][download][branch] = "7.x-stable"
-;projects[aul][download][tag] = TAG_PLACEHOLDER
+projects[aul][download][tag] = erpal_7.x-2.0-beta3
 
 projects[content_access_view][subdir] = "contrib"
 projects[content_access_view][download][type] = "git"
 projects[content_access_view][download][url] = "http://git.drupal.org/project/content_access_view.git"
 projects[content_access_view][download][branch] = "7.x-stable"
-;projects[content_access_view][download][tag] = TAG_PLACEHOLDER
+projects[content_access_view][download][tag] = erpal_7.x-2.0-beta3
 
 projects[views_better_combine][subdir] = "contrib"
 projects[views_better_combine][download][type] = "git"
 projects[views_better_combine][download][url] = "http://git.drupal.org/project/views_better_combine.git"
 projects[views_better_combine][download][branch] = "7.x-stable"
-;projects[views_better_combine][download][tag] = TAG_PLACEHOLDER
+projects[views_better_combine][download][tag] = erpal_7.x-2.0-beta3
 
 projects[bs_uniquenode][subdir] = "contrib"
 projects[bs_uniquenode][download][type] = "git"
 projects[bs_uniquenode][download][url] = "http://git.drupal.org/project/bs_uniquenode.git"
 projects[bs_uniquenode][download][branch] = "7.x-stable"
-;projects[bs_uniquenode][download][tag] = TAG_PLACEHOLDER
+projects[bs_uniquenode][download][tag] = erpal_7.x-2.0-beta3
 
 ;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
 projects[erpal_core][subdir] = "erpal"
 projects[erpal_core][download][type] = "git"
 projects[erpal_core][download][url] = "http://git.drupal.org/project/erpal_core.git"
 projects[erpal_core][download][branch] = "7.x-stable"
-;projects[erpal_core][download][tag] = TAG_PLACEHOLDER
+projects[erpal_core][download][tag] = erpal_7.x-2.0-beta3
 
 projects[erpal_book][subdir] = "erpal"
 projects[erpal_book][download][type] = "git"
 projects[erpal_book][download][url] = "http://git.drupal.org/project/erpal_book.git"
 projects[erpal_book][download][branch] = "7.x-stable"
-;projects[erpal_book][download][tag] = TAG_PLACEHOLDER
+projects[erpal_book][download][tag] = erpal_7.x-2.0-beta3
 
 projects[erpal_calendar][subdir] = "erpal"
 projects[erpal_calendar][download][type] = "git"
 projects[erpal_calendar][download][url] = "http://git.drupal.org/project/erpal_calendar.git"
 projects[erpal_calendar][download][branch] = "7.x-stable"
-;projects[erpal_calendar][download][tag] = TAG_PLACEHOLDER
+projects[erpal_calendar][download][tag] = erpal_7.x-2.0-beta3
 
 projects[erpal_contract][subdir] = "erpal"
 projects[erpal_contract][download][type] = "git"
 projects[erpal_contract][download][url] = "http://git.drupal.org/project/erpal_contract.git"
 projects[erpal_contract][download][branch] = "7.x-stable"
-;projects[erpal_contract][download][tag] = TAG_PLACEHOLDER
+projects[erpal_contract][download][tag] = erpal_7.x-2.0-beta3
 
 projects[erpal_employee][subdir] = "erpal"
 projects[erpal_employee][download][type] = "git"
 projects[erpal_employee][download][url] = "http://git.drupal.org/project/erpal_employee.git"
 projects[erpal_employee][download][branch] = "7.x-stable"
-;projects[erpal_employee][download][tag] = TAG_PLACEHOLDER
+projects[erpal_employee][download][tag] = erpal_7.x-2.0-beta3
 
 projects[erpal_invoice][subdir] = "erpal"
 projects[erpal_invoice][download][type] = "git"
 projects[erpal_invoice][download][url] = "http://git.drupal.org/project/erpal_invoice.git"
 projects[erpal_invoice][download][branch] = "7.x-stable"
-;projects[erpal_invoice][download][tag] = TAG_PLACEHOLDER
+projects[erpal_invoice][download][tag] = erpal_7.x-2.0-beta3
 
 projects[erpal_project][subdir] = "erpal"
 projects[erpal_project][download][type] = "git"
 projects[erpal_project][download][url] = "http://git.drupal.org/project/erpal_project.git"
 projects[erpal_project][download][branch] = "7.x-stable"
-;projects[erpal_project][download][tag] = TAG_PLACEHOLDER
+projects[erpal_project][download][tag] = erpal_7.x-2.0-beta3
 
 projects[erpal_project_release][subdir] = "erpal"
 projects[erpal_project_release][download][type] = "git"
 projects[erpal_project_release][download][url] = "http://git.drupal.org/project/erpal_project_release.git"
 projects[erpal_project_release][download][branch] = "7.x-stable"
-;projects[erpal_project_release][download][tag] = TAG_PLACEHOLDER
+projects[erpal_project_release][download][tag] = erpal_7.x-2.0-beta3
 
 
 ;;;;;;;;;;;;;;;;;;;;Erpal Contributed Themes
@@ -137,7 +137,7 @@ projects[erpal_theme][type] = "theme"
 projects[erpal_theme][download][type] = "git"
 projects[erpal_theme][download][url] = "http://git.drupal.org/project/erpal_theme.git"
 projects[erpal_theme][download][branch] = "7.x-stable"
-;projects[erpal_theme][download][tag] = TAG_PLACEHOLDER
+projects[erpal_theme][download][tag] = erpal_7.x-2.0-beta3
 
 
 projects[acl][version] = "1.0"
