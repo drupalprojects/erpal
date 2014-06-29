@@ -331,7 +331,7 @@ projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-field
 projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-2210327-drop-unnecessary-validation-1.patch"
 
 projects[views_calc_distinct][subdir] = "contrib"
-projects[views_calc_distinct][version] = "1.0-alpha1"
+projects[views_calc_distinct][version] = "1.0-beta1"
 
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"
