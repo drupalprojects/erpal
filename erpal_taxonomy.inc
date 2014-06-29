@@ -130,6 +130,30 @@ function _erpal_taxonomy_get_target_audience_vocabulary() {
 }
 
 /**
+* Create some default terms for the activity lost reasons
+*/
+function _erpal_taxonomy_get_activity_lost_reasons_vocabulary() {
+  $activity_lost_reasons_vocabulary = new stdClass();
+  $activity_lost_reasons_vocabulary->name = 'Activity lost reasons';
+  $activity_lost_reasons_vocabulary->machine_name = 'activity_lost_reasons';
+  $activity_lost_reasons_terms = array(
+    'Price to high' => array(
+      'name' => 'Price to high',
+    ),
+    'Not enough experience' => array(
+      'name' => 'Not enough experience',
+    ),
+    'Not enough references' => array(
+      'name' => 'Not enough references',
+    ),
+    'No resources' => array(
+      'name' => 'No resources',
+    ),
+  );
+  return array($activity_lost_reasons_vocabulary, $activity_lost_reasons_terms);
+}
+
+/**
 * Create some default salutation terms
 */
 function _erpal_taxonomy_get_salutation_terms_vocabulary() {
