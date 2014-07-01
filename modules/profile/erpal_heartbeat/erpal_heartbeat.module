@@ -56,7 +56,8 @@ function erpal_heartbeat_comment_update($comment) {
 */
 function _erpal_heartbeat_handle_node_beat($node, $op) {
   // Save the message and assign it to the user
-  $message = message_create('erpal_heartbeat_node_message', array('uid' => $node->uid));
+  global $user;
+  $message = message_create('erpal_heartbeat_node_message', array('uid' => $user->uid));
   // Save reference to the node in the node reference field, and the
   // "publish" state (i.e. if the node is published or unpublished).
   $wrapper = entity_metadata_wrapper('message', $message);

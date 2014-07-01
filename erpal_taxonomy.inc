@@ -104,6 +104,106 @@ function _erpal_taxonomy_get_activity_origin_vocabulary(){
   );
   return array($activity_origin_vocabulary, $activity_origin_terms);
 }
+
+/**
+* Create some default terms for the target audience vocabulary
+*/
+function _erpal_taxonomy_get_target_audience_vocabulary() {
+  $target_audience_vocabulary = new stdClass();
+  $target_audience_vocabulary->name = 'Target audience terms';
+  $target_audience_vocabulary->machine_name = 'target_audience_terms';
+  $target_audience_terms = array(
+    'Manufactoring company' => array(
+      'name' => 'Manufactoring company',
+    ),
+    'Service provider' => array(
+      'name' => 'Personal contacted',
+    ),
+    'Drupal shop' => array(
+      'name' => 'Drupal shop',
+    ),
+    'Government' => array(
+      'name' => 'Government',
+    ),
+  );
+  return array($target_audience_vocabulary, $target_audience_terms);
+}
+
+/**
+* Create some default terms for the activity lost reasons
+*/
+function _erpal_taxonomy_get_activity_lost_reasons_vocabulary() {
+  $activity_lost_reasons_vocabulary = new stdClass();
+  $activity_lost_reasons_vocabulary->name = 'Activity lost reasons';
+  $activity_lost_reasons_vocabulary->machine_name = 'activity_lost_reasons';
+  $activity_lost_reasons_terms = array(
+    'Price to high' => array(
+      'name' => 'Price to high',
+    ),
+    'Not enough experience' => array(
+      'name' => 'Not enough experience',
+    ),
+    'Not enough references' => array(
+      'name' => 'Not enough references',
+    ),
+    'No resources' => array(
+      'name' => 'No resources',
+    ),
+  );
+  return array($activity_lost_reasons_vocabulary, $activity_lost_reasons_terms);
+}
+
+/**
+* Create some default salutation terms
+*/
+function _erpal_taxonomy_get_salutation_terms_vocabulary() {
+  $target_audience_vocabulary = new stdClass();
+  $target_audience_vocabulary->name = 'Salutation terms';
+  $target_audience_vocabulary->machine_name = 'salutation_terms';
+  $target_audience_terms = array(
+    'Mr.' => array(
+      'name' => 'Mr.',
+    ),
+    'Ms.' => array(
+      'name' => 'Ms.',
+    ),
+    'Mrs.' => array(
+      'name' => 'Mrs.',
+    ),
+    'Dr.' => array(
+      'name' => 'Dr.',
+    ),
+    'Prof.' => array(
+      'name' => 'Prof.',
+    ),
+  );
+  return array($target_audience_vocabulary, $target_audience_terms);
+}
+
+
+/**
+* Create some default salutation terms
+*/
+function _erpal_taxonomy_get_project_role_tags_vocabulary() {
+  $project_role_tags_vocabulary = new stdClass();
+  $project_role_tags_vocabulary->name = 'Project role tags';
+  $project_role_tags_vocabulary->machine_name = 'project_role_tags';
+  $project_role_terms = array(
+    'project manager' => array(
+      'name' => 'project manager',
+    ),
+    'team lead' => array(
+      'name' => 'team lead',
+    ),
+    'customer' => array(
+      'name' => 'customer',
+    ),
+    'project controler' => array(
+      'name' => 'project controler',
+    ),    
+  );
+  return array($project_role_tags_vocabulary, $project_role_terms);
+}
  
 function _erpal_taxonomy_get_task_type_vocabulary(){ 
   //  Create taxonomy 

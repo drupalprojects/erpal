@@ -204,10 +204,10 @@ projects[editablefields][download][type] = "git"
 projects[editablefields][download][url] = "http://git.drupal.org/project/editablefields.git"
 projects[editablefields][download][revision] = "bcfa4d111add31985eda8fbc0382cc7f81bec0bc"
 
-projects[entity][version] = "1.3"
+projects[entity][version] = "1.5"
 projects[entity][subdir] = "contrib"
 
-projects[entitycache][version] = "1.1"
+projects[entitycache][version] = "1.2"
 projects[entitycache][subdir] = "contrib"
 
 projects[entityreference][version] = "1.1"
@@ -293,11 +293,14 @@ projects[references_dialog][version] = "1.0-alpha4"
 projects[references_dialog][subdir] = "contrib"
 projects[references_dialog][patch][] = "http://drupal.org/files/references_dialog-1856978-4.patch"
 
-projects[relation][version] = "1.0-rc4"
+projects[relation][version] = "1.0-rc5"
 projects[relation][subdir] = "contrib"
 
 projects[relation_add][version] = "1.2"
 projects[relation_add][subdir] = "contrib"
+
+projects[relation_view_formatter][version] = "1.0-alpha1"
+projects[relation_view_formatter][subdir] = "contrib"
 
 projects[r4032login][version] = "1.5"
 projects[r4032login][subdir] = "contrib"
@@ -315,7 +318,7 @@ projects[services][version] = "3.7"
 projects[services][subdir] = "contrib"
 projects[services][patch][] = "https://drupal.org/files/issues/services_1355952-53.patch"
 
-projects[views][version] = "3.7"
+projects[views][version] = "3.8"
 projects[views][subdir] = "contrib"
 
 projects[views_calc][version] = "1.0"
@@ -327,11 +330,15 @@ projects[views_calc][patch][] = "http://drupal.org/files/views_calc_1548552.patc
 projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-field_collection_work-1426164-7.patch"
 projects[views_calc][patch][] = "http://drupal.org/files/issues/views_calc-2210327-drop-unnecessary-validation-1.patch"
 
+projects[views_calc_distinct][subdir] = "contrib"
+projects[views_calc_distinct][version] = "1.0-beta1"
+
 projects[views_php][subdir] = "contrib"
 projects[views_php][version] = "1.x-dev"
 projects[views_php][download][type] = "git"
 projects[views_php][download][url] = "http://git.drupal.org/project/views_php.git"
 projects[views_php][download][revision] = "2b5ed52228394ee3c8e8c86be283da957cdfa6f6"
+projects[views_php][patch][] = "http://drupal.org/files/issues/views_php-pager_missing-2276165-2.patch"
 
 projects[views_savedsearches][version] = "1.0-beta2"
 projects[views_savedsearches][subdir] = "contrib"

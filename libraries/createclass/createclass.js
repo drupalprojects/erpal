@@ -46,7 +46,7 @@
 		
 	}
 	
-	var tools	= "jQuery" in root ? root.jQuery : {
+	var tools	= "jQuery" in root ? {inArray:root.jQuery.inArray,isArray:root.jQuery.isArray} : {
 		/**
 		 *	Check whether or not the given element exists in the given array
 		 *	
@@ -96,7 +96,10 @@
 	 *	@param mElement The element to be removed
 	 *	@return The index of the removed element or -1 if none was found
 	 */
-	Array.prototype.findAndRemove	= function( mElement ) {
+	tools.findAndRemove	= function( aArray, mElement ) {
+    __findAndRemove.apply( aArray, [mElement] );
+  };
+  function __findAndRemove( mElement ) {
 		var iIndex	= tools.inArray( mElement, this );
 		if( iIndex>=0 )
 			this.splice( iIndex, 1 );
@@ -110,13 +113,16 @@
 	 *	@param iChildrenCloneDepth The max depth to clone children to
 	 *	@return The new array
 	 */
-	Array.prototype.clone			= function( iChildrenCloneDepth ) {
+	tools.clone			= function( mObject, iChildrenCloneDepth ) {
+    return __clone.apply( mObject, [iChildrenCloneDepth] );
+  };
+  function __clone( iChildrenCloneDepth ) {
 		var aClone	= [];
 		
 		if( iChildrenCloneDepth ) {
 			for( var i=0; i<this.length; i++ )
 				if( typeof this[i].clone=='function' )
-					aClone[i]	= this[i].clone( iChildrenCloneDepth-1 );
+					aClone[i]	= tools.clone( this[i], iChildrenCloneDepth-1 );
 				else
 					aClone[i]	= this[i];
 		}
@@ -357,7 +363,7 @@
 		
 		if( bLazy ) {
 			var pClass	= createClass.createAbstract( sFullName );
-			var aCopy	= mFeatures.clone();
+			var aCopy	= tools.clone( mFeatures );
 			//console.log( aCopy, mFeatures, aCopy==mFeatures );
 			aCopy.push( pClass );
 			createClass.aLazyLoader.push( [ pBase.aMissing, [ sFullName, mBase, false, aCopy ] ] );
@@ -1114,7 +1120,7 @@
 		if( !(sEvent in this._pListeners) )
 			return [];
 		
-		return this._pListeners[ sEvent ].clone();
+		return tools.clone( this._pListeners[ sEvent ] );
 	};
 	/**
 	 *	Emit the given event asynchronously. That means that each listener will receive the

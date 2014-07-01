@@ -21,10 +21,11 @@ function erpal_form_install_configure_form_alter(&$form, $form_state) {
       '#title' => st('Filesystem settings'),
       '#type' => 'fieldset',
     );
+   
     $form['filesystem_settings']['file_private_path'] = array(
       '#type' => 'textfield', 
       '#title' => st('Private file system path'), 
-      '#default_value' => variable_get('file_private_path', 'sites/default/files/private'), 
+      '#default_value' => variable_get('file_private_path', conf_path().'/files/private'), 
       '#maxlength' => 255,
       '#required' => TRUE, 
     );
@@ -366,6 +367,12 @@ function erpal_create_vocabularies_and_taxonomies(){
   
   _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_date_item_vocabulary());
 
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_target_audience_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_salutation_terms_vocabulary());
+  
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_role_tags_vocabulary());
+  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_lost_reasons_vocabulary());
+  
   $batch = array(
     'title' => st('Creating taxonomies'),
     'operations' => $operations,
@@ -484,18 +491,26 @@ function erpal_contact_information_form($form, &$form_state){
     '#title' => st('Default currency'),
     '#type' => 'textfield',
     '#description' => st('Enter the default currency shortcode like USD or EUR.'),
-    '#maxlength' => 255,
+    '#maxlength' => 5,
     '#required' => TRUE,
   );  
   
   $form['company_address']['vat_rate'] = array(
-    '#title' => st('Default VAT rate'),
+    '#title' => st('Default tax rate'),
     '#type' => 'textfield',
-    '#description' => st('Enter the default VAT rate in percent for your country.'),
-    '#maxlength' => 255,
+    '#description' => st('Enter the default tax rate in percent for your country.'),
+    '#maxlength' => 5,
     '#required' => TRUE,
   );    
-    
+  
+  $form['company_address']['vat_label'] = array(
+    '#title' => st('Default tax name'),
+    '#type' => 'textfield',
+    '#description' => st('Enter the name of your default tax in your country.'),
+    '#maxlength' => 25,
+    '#required' => TRUE,
+  );   
+  
   $form['contact_information'] = array(
     '#type' => 'fieldset',
     '#title' => st('Contact information'),
@@ -529,7 +544,7 @@ function erpal_contact_information_form_validate($form, $form_state){
     form_set_error('email_address', st('The Email-address is not valid!'));
   
   if(!is_numeric($values['vat_rate']))
-    form_set_error('vat_rate', st('The VAT rate has to be a numeric value!'));
+    form_set_error('vat_rate', st('The tax rate has to be a numeric value!'));
   
 }
 
@@ -660,7 +675,8 @@ function erpal_contact_information_form_submit($form, $form_state){
   variable_set('crm_tasks_task', $task_node->nid);
   
   //set vat rate
-  $vat_string = $values['vat_rate'] . '#' . $values['vat_rate'] . '%';
+  $vat_label = !empty($values['vat_label']) ? $values['vat_label'] : 'Tax';
+  $vat_string = $values['vat_rate'] . '#' . $values['vat_rate'] . '% '.$vat_label;
   variable_set('erpal_invoice_vat_rates_string', $vat_string);
   $vat_rate = number_format((float)$values['vat_rate'], 3);
   variable_set('erpal_invoice_default_vat_rate', $vat_rate);
