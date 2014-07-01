@@ -4,6 +4,7 @@ class Odf_Style_Table extends Odf_Style {
 
   private $width;
   private $align;
+  private $marginLeft;
 
   public function __construct() {
     parent::__construct('Table');
@@ -16,6 +17,10 @@ class Odf_Style_Table extends Odf_Style {
 
   public function setAlign($align) {
     $this->align = $align;
+  }
+
+  public function setMarginLeft($margin) {
+    $this->marginLeft = $margin;
   }
 
   public function render(Odf_File $document, DOMElement $element) {
@@ -43,6 +48,10 @@ class Odf_Style_Table extends Odf_Style {
 
     if (!empty($this->align)) {
       $properties->setAttribute('table:align', $this->align);
+    }
+
+    if (!empty($this->marginLeft)) {
+      $properties->setAttribute('fo:margin-left', $this->marginLeft);
     }
 
     $style->appendChild($properties);
