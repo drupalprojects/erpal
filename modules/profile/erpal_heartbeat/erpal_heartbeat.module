@@ -87,3 +87,20 @@ function _erpal_heartbeat_handle_comment_beat($comment, $op) {
   $wrapper->field_erpal_hb_published->set($published);
   $wrapper->save();
 }
+
+/**
+* Implements hook_entity_presave
+*/
+function erpal_heartbeat_entity_view($entity, $entity_type) {
+  
+  if ($entity_type == 'message') {
+    //correct the markup of the message entity for "update"+ed = updateed.
+    foreach ($entity->content as $key=>&$value) {
+      if (strpos($key, 'message_text') !== false) {
+        if (!empty($value['#markup'])) {
+          $value['#markup'] = strtr($value['#markup'], array('Updateed' => 'Updated'));
+        }
+      }
+    }
+  }
+}
