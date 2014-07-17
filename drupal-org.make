@@ -308,6 +308,12 @@ projects[r4032login][subdir] = "contrib"
 projects[strongarm][version] = "2.0"
 projects[strongarm][subdir] = "contrib"
 
+projects[module_filter][version] = "2.0-alpha2"
+projects[module_filter][subdir] = "contrib"
+
+projects[fpa][version] = "2.5"
+projects[fpa][subdir] = "contrib"
+
 projects[token][version] = "1.5"
 projects[token][subdir] = "contrib"
 
