@@ -213,6 +213,7 @@ projects[entitycache][subdir] = "contrib"
 projects[entityreference][version] = "1.1"
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][patch][] = "http://drupal.org/files/entityreference-1459540-47-workaround-fatal-error.patch"
+projects[entityreference][patch][] = "http://www.drupal.org/files/view-argument-as-token-1699378-63.patch"
 
 projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
