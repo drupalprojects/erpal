@@ -131,6 +131,23 @@ projects[erpal_project_release][download][url] = "http://git.drupal.org/project/
 projects[erpal_project_release][download][branch] = "7.x-stable"
 ;projects[erpal_project_release][download][tag] = TAG_PLACEHOLDER
 
+projects[erpal_reports][subdir] = "erpal"
+projects[erpal_reports][download][type] = "git"
+projects[erpal_reports][download][url] = "http://git.drupal.org/project/erpal_reports.git"
+projects[erpal_reports][download][branch] = "7.x-stable"
+;projects[erpal_reports][download][tag] = TAG_PLACEHOLDER
+
+projects[erpal_crm_reports][subdir] = "erpal"
+projects[erpal_crm_reports][download][type] = "git"
+projects[erpal_crm_reports][download][url] = "http://git.drupal.org/project/erpal_crm_reports.git"
+projects[erpal_crm_reports][download][branch] = "7.x-stable"
+;projects[erpal_crm_reports][download][tag] = TAG_PLACEHOLDER
+
+projects[erpal_project_reports][subdir] = "erpal"
+projects[erpal_project_reports][download][type] = "git"
+projects[erpal_project_reports][download][url] = "http://git.drupal.org/project/erpal_project_reports.git"
+projects[erpal_project_reports][download][branch] = "7.x-stable"
+;projects[erpal_project_reports][download][tag] = TAG_PLACEHOLDER
 
 ;;;;;;;;;;;;;;;;;;;;Erpal Contributed Themes
 projects[erpal_theme][type] = "theme"
@@ -213,6 +230,7 @@ projects[entitycache][subdir] = "contrib"
 projects[entityreference][version] = "1.1"
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][patch][] = "http://drupal.org/files/entityreference-1459540-47-workaround-fatal-error.patch"
+projects[entityreference][patch][] = "http://www.drupal.org/files/view-argument-as-token-1699378-63.patch"
 
 projects[entityreference_prepopulate][version] = "1.3"
 projects[entityreference_prepopulate][subdir] = "contrib"
@@ -346,6 +364,9 @@ projects[views_php][patch][] = "http://www.drupal.org/files/issues/views_php-pag
 projects[views_savedsearches][version] = "1.0-beta2"
 projects[views_savedsearches][subdir] = "contrib"
 projects[views_savedsearches][patch][] = "http://drupal.org/files/issues/views-savedsearches-undefined-varaible-query-2157163-1.patch"
+
+projects[visualization][subdir] = "contrib"
+projects[visualization][version] = "1.0-alpha1"
 
 projects[menu_attributes][subdir] = "contrib"
 projects[menu_attributes][version] = "1.x-dev"
