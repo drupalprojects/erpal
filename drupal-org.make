@@ -131,6 +131,23 @@ projects[erpal_project_release][download][url] = "http://git.drupal.org/project/
 projects[erpal_project_release][download][branch] = "7.x-stable"
 ;projects[erpal_project_release][download][tag] = TAG_PLACEHOLDER
 
+projects[erpal_reports][subdir] = "erpal"
+projects[erpal_reports][download][type] = "git"
+projects[erpal_reports][download][url] = "http://git.drupal.org/project/erpal_reports.git"
+projects[erpal_reports][download][branch] = "7.x-stable"
+;projects[erpal_reports][download][tag] = TAG_PLACEHOLDER
+
+projects[erpal_crm_reports][subdir] = "erpal"
+projects[erpal_crm_reports][download][type] = "git"
+projects[erpal_crm_reports][download][url] = "http://git.drupal.org/project/erpal_crm_reports.git"
+projects[erpal_crm_reports][download][branch] = "7.x-stable"
+;projects[erpal_crm_reports][download][tag] = TAG_PLACEHOLDER
+
+projects[erpal_project_reports][subdir] = "erpal"
+projects[erpal_project_reports][download][type] = "git"
+projects[erpal_project_reports][download][url] = "http://git.drupal.org/project/erpal_project_reports.git"
+projects[erpal_project_reports][download][branch] = "7.x-stable"
+;projects[erpal_project_reports][download][tag] = TAG_PLACEHOLDER
 
 ;;;;;;;;;;;;;;;;;;;;Erpal Contributed Themes
 projects[erpal_theme][type] = "theme"
