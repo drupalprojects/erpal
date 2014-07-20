@@ -365,6 +365,9 @@ projects[views_savedsearches][version] = "1.0-beta2"
 projects[views_savedsearches][subdir] = "contrib"
 projects[views_savedsearches][patch][] = "http://drupal.org/files/issues/views-savedsearches-undefined-varaible-query-2157163-1.patch"
 
+projects[visualization][subdir] = "contrib"
+projects[visualization][version] = "1.0-alpha1"
+
 projects[menu_attributes][subdir] = "contrib"
 projects[menu_attributes][version] = "1.x-dev"
 projects[menu_attributes][download][type] = "git"
