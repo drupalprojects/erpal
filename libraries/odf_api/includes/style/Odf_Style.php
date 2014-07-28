@@ -2,7 +2,7 @@
 
 abstract class Odf_Style {
 
-  protected $styleName;
+  public $styleName;
   protected $styleType;
   protected $rawStyleName;
 

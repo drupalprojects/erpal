@@ -11,6 +11,20 @@ class Odf_Element_Image_Box extends Odf_Element_Image {
   }
 
   public function _render(Odf_File $document) {
+    foreach ($this->styles as $style) {
+      if ($style instanceof Odf_Style_Image) {
+        if (!empty($this->description)) {
+          if (!empty($style->relWidth)) {
+            $style->boxrelWidth = $style->relWidth;
+            $style->relWidth = '100%';
+          }
+          if (!empty($style->relHeight)) {
+            $style->boxrelHeight = $style->relHeight;
+            $style->relHeight = 'scale';
+          }
+        }
+      }
+    }
 
     $image = parent::_render($document);
     $image->setAttribute('draw:z-index', 2);
@@ -52,6 +66,12 @@ class Odf_Element_Image_Box extends Odf_Element_Image {
       foreach ($this->styles as $style) {
         if ($style instanceof Odf_Style_Image) {
           $image_box_style = new Odf_Style_Image_Box($style);
+          if ($image_box_style->imageStyle->getheight()) {
+            $textbox->setAttribute('fo:min-height', $image_box_style->imageStyle->getheight());
+          }
+          if ($image_box_style->imageStyle->getwidth()) {
+            $textbox->setAttribute('fo:min-width', $image_box_style->imageStyle->getwidth());
+          }
           $image_box_style->render($document, $frame);
         }
       }

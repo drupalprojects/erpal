@@ -20,6 +20,7 @@ class Odf_Style_Text extends Odf_Style {
   private $tabStopType = 'right';
   private $tabStopLeaderStyle = 'dotted';
   private $tabStopLeaderText = '.';
+  private $textIndent;
 
   public function __construct($style_name, $style_type) {
     parent::__construct($style_name);
@@ -82,6 +83,10 @@ class Odf_Style_Text extends Odf_Style {
     $this->includeTabStops = TRUE;
   }
 
+  public function setTextIndent($text_indent) {
+    $this->textIndent = $text_indent;
+  }
+
   public function render(Odf_File $document, DOMElement $element) {
 
     // Add a style to the element.
@@ -124,6 +129,10 @@ class Odf_Style_Text extends Odf_Style {
 
     if (!empty($this->marginRight)) {
       $paragrapth_properties->setAttribute('fo:margin-right', $this->marginRight);
+    }
+     // Add text indent.
+    if (!empty($this->textIndent)) {
+      $paragrapth_properties->setAttribute('fo:text-indent', $this->textIndent);
     }
 
     if (!empty($this->includeTabStops)) {

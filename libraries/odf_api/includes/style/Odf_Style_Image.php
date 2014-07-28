@@ -7,8 +7,8 @@ class Odf_Style_Image extends Odf_Style {
   private $offsetX;
   private $offsetY;
   private $anchorType = 'paragraph';
-  private $relWidth;
-  private $relHeight;
+  public $relWidth;
+  public $relHeight;
 
   public function __construct() {
     parent::__construct('G_');
@@ -105,13 +105,20 @@ class Odf_Style_Image extends Odf_Style {
     $properties = $document->content->DOM->createElement('style:graphic-properties');
 
     // @todo: make this settings configurable if needed.
-    $properties->setAttribute('style:vertical-pos', 'from-top');
-    $properties->setAttribute('style:vertical-rel', 'paragraph');
+    $properties->setAttribute('style:vertical-pos', 'top');
+    $properties->setAttribute('style:vertical-rel', 'paragraph-content');
     $properties->setAttribute('style:horizontal-pos', 'center');
-    $properties->setAttribute('style:horizontal-rel', 'paragraph');
+    $properties->setAttribute('style:horizontal-rel', 'paragraph-content');
     $properties->setAttribute('style:mirror', 'none');
+    $properties->setAttribute('style:run-through', 'foreground');
+    $properties->setAttribute('style:wrap', 'none');
     $properties->setAttribute('fo:clip', 'rect(0cm, 0cm, 0cm, 0cm)');
     $properties->setAttribute('fo:border', 'none');
+    $properties->setAttribute('fo:padding', '0cm');
+    $properties->setAttribute('fo:margin-left', '0cm');
+    $properties->setAttribute('fo:margin-right', '0cm');
+    $properties->setAttribute('fo:margin-top', '0cm');
+    $properties->setAttribute('fo:margin-bottom', '0cm');
     $properties->setAttribute('draw:luminance', '0%');
     $properties->setAttribute('draw:contrast', '0%');
     $properties->setAttribute('draw:red', '0%');

@@ -2,7 +2,7 @@
 
 class Odf_Style_Image_Box extends Odf_Style {
 
-  private $imageStyle;
+  public $imageStyle;
 
   public function __construct(Odf_Style_Image $image_style) {
     parent::__construct('G_');
@@ -31,6 +31,14 @@ class Odf_Style_Image_Box extends Odf_Style {
       $element->setAttribute('text:anchor-type', $this->imageStyle->getAnchorType());
     }
 
+    if (!empty($this->imageStyle->boxrelWidth)) {
+      $element->setAttribute('style:rel-width', $this->imageStyle->boxrelWidth);
+    }
+
+    if (!empty($this->imageStyle->boxrelHeight)) {
+      $element->setAttribute('style:rel-height', $this->imageStyle->boxrelHeight);
+    }
+
     // Create new style.
     $style = $document->content->DOM->createElement('style:style');
     $style->setAttribute('style:name', $this->styleName);
@@ -44,7 +52,8 @@ class Odf_Style_Image_Box extends Odf_Style {
     $properties->setAttribute('fo:margin-right', '0cm');
     $properties->setAttribute('fo:margin-top', '0cm');
     $properties->setAttribute('fo:margin-bottom', '0cm');
-    $properties->setAttribute('style:wrap', 'dynamic');
+    $properties->setAttribute('style:wrap', 'none');
+    $properties->setAttribute('style:run-through', 'foreground');
     $properties->setAttribute('style:number-wrapped-paragraphs', 'no-limit');
     $properties->setAttribute('style:vertical-pos', 'top');
     $properties->setAttribute('style:vertical-rel', 'paragraph');
