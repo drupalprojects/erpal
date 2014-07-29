@@ -5,8 +5,8 @@ class Odf_Style_List extends Odf_Style {
   private $allowedTypes = array('number', 'bullet');
   private $type;
   private $bulletChar = '•';
-  private $numPrefix = ' ';
-  private $numSuffix = ' ';
+  private $numPrefix = '';
+  private $numSuffix = '';
   private $numFormat = 1;
   private $marginLeft = 0.1;
   private $marginStep = 0.33;
@@ -73,7 +73,7 @@ class Odf_Style_List extends Odf_Style {
 
       $margin_left = $this->marginLeft + $this->marginStep * $level;
       $aligment = $document->content->DOM->createElement('style:list-level-label-alignment');
-      $aligment->setAttribute('text:label-followed-by', 'space');
+      $aligment->setAttribute('text:label-followed-by', 'listtab');
       $aligment->setAttribute('fo:text-indent', -$this->marginStep . 'cm');
       $aligment->setAttribute('text:list-tab-stop-position', $margin_left . 'cm');
       $aligment->setAttribute('fo:margin-left', $margin_left . 'cm');
