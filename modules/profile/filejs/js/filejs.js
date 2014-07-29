@@ -183,6 +183,7 @@
         var sValue  = pBox.pNode.title + ' ('+pBox.pNode.nid+')';
         //console.log( sValue );
         $(e.target).val( sValue );
+        $(e.target).change();
       } ); 
     }
   };

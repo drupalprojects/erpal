@@ -964,7 +964,8 @@
 		if( pTarget && !pTarget.hasClass('boxjs-active-drop-target') )
 			pTarget.addClass('boxjs-active-drop-target');
 		
-		this.pBoxJS.insertBoxAt( this, iLeft, iTop );
+    if( this.pBoxJS.bSortable )
+      this.pBoxJS.insertBoxAt( this, iLeft, iTop );		
 	};
 	BoxJS.Box.prototype.handleDrop			= function( iLeft, iTop ) {
 		var pTarget	= this.getDropTarget( iLeft, iTop );

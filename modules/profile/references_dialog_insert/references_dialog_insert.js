@@ -54,7 +54,7 @@
         // call callback to bild "Send to textarea" widget
         if(type && entity_id){
           $.ajax({
-            url: '/references-dialog-insert/' + entity_id + '/' + type,
+            url: Drupal.settings.basePath + '/references-dialog-insert/' + entity_id + '/' + type,
             type: 'POST',
             dataType: 'json',
             async: false,
