@@ -163,6 +163,8 @@ dependencies[] = bs_uniquenode
 dependencies[] = shortcut_keys
 dependencies[] = erpal_file_drag_drop
 dependencies[] = filejs
+dependencies[] = feeds
+dependencies[] = feeds_tamper
 
 ; features 
 dependencies[] = erpal_basic
@@ -196,6 +198,7 @@ dependencies[] = erpal_wysiwyg
 dependencies[] = erpal_project_release
 dependencies[] = erpal_project_release_ui
 dependencies[] = erpal_heartbeat
+dependencies[] = erpal_contacts_importer
 
 
 dependencies[] = erpal_layout
