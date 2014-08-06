@@ -149,9 +149,11 @@ projects[erpal_project_reports][download][url] = "http://git.drupal.org/project/
 projects[erpal_project_reports][download][branch] = "7.x-stable"
 ;projects[erpal_project_reports][download][tag] = TAG_PLACEHOLDER
 
-;ERPAL Modules not added as submodules
-projects[erpal_contacts_importer][version] = "1.0-beta1"
-projects[erpal_contacts_importer][subdir] = "contrib"
+projects[erpal_contacts_importer][subdir] = "erpal"
+projects[erpal_contacts_importer][download][type] = "git"
+projects[erpal_contacts_importer][download][url] = "http://git.drupal.org/project/erpal_contacts_importer.git"
+projects[erpal_contacts_importer][download][branch] = "7.x-stable"
+;projects[erpal_contacts_importer][download][tag] = TAG_PLACEHOLDER
 
 ;;;;;;;;;;;;;;;;;;;;Erpal Contributed Themes
 projects[erpal_theme][type] = "theme"
@@ -241,6 +243,12 @@ projects[features][subdir] = "contrib"
 
 projects[features_override][version] = "2.0-rc1"
 projects[features_override][subdir] = "contrib"
+
+projects[feeds][version] = "2.0-alpha8"
+projects[feeds][subdir] = "contrib"
+
+projects[feeds_tamper][version] = "1.0-beta5"
+projects[feeds_tamper][subdir] = "contrib"
 
 projects[field_collection][version] = "1.0-beta5"
 projects[field_collection][subdir] = "contrib"
