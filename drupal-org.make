@@ -206,7 +206,7 @@ projects[field-conditional-state][patch][] = "http://drupal.org/files/issues/fie
 projects[content_access][version] = "1.2-beta2"
 projects[content_access][subdir] = "contrib"
 
-projects[date][version] = "2.7"
+projects[date][version] = "2.8"
 projects[date][subdir] = "contrib"
 
 projects[ds][version] = "1.9"
@@ -259,6 +259,7 @@ projects[front][subdir] = "contrib"
 projects[fullcalendar][version] = "2.0"
 projects[fullcalendar][subdir] = "contrib"
 projects[fullcalendar][patch][] = "http://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
+projects[fullcalendar][patch][] = "http://www.drupal.org/files/issues/ajax_date_format-2185449-11.patch"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
@@ -304,9 +305,8 @@ projects[quicktabs][version] = "3.6"
 projects[quicktabs][subdir] = "contrib"
 projects[quicktabs][patch][] = "http://drupal.org/files/1940332-set-override_url-to-view-pane-content-0.patch"
 
-projects[references_dialog][version] = "1.0-alpha4"
+projects[references_dialog][version] = "1.0-beta1"
 projects[references_dialog][subdir] = "contrib"
-projects[references_dialog][patch][] = "http://drupal.org/files/references_dialog-1856978-4.patch"
 
 projects[relation][version] = "1.0-rc5"
 projects[relation][subdir] = "contrib"
