@@ -8,7 +8,6 @@ dependencies[] = ajax_checklist
 dependencies[] = ckeditor
 dependencies[] = features
 dependencies[] = filter
-dependencies[] = freelinking
 features[ckeditor_profile][] = ERPAL
 features[features_api][] = api:2
 features[filter][] = filtered_html
