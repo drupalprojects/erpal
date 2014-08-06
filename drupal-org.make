@@ -259,6 +259,7 @@ projects[front][subdir] = "contrib"
 projects[fullcalendar][version] = "2.0"
 projects[fullcalendar][subdir] = "contrib"
 projects[fullcalendar][patch][] = "http://drupal.org/files/fullcalendar_views_dom_id_check-1803770.patch"
+projects[fullcalendar][patch][] = "http://www.drupal.org/files/issues/ajax_date_format-2185449-11.patch"
 
 projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
