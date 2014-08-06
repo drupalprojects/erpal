@@ -175,9 +175,6 @@ projects[comment_alter][subdir] = "contrib"
 projects[diff][version] = "3.2"
 projects[diff][subdir] = "contrib"
 
-projects[freelinking][version] = "3.2"
-projects[freelinking][subdir] = "contrib"
-
 projects[maxlength][version] = "3.0-beta1"
 projects[maxlength][subdir] = "contrib"
 
@@ -267,10 +264,10 @@ projects[homebox][version] = "2.0-beta6"
 projects[homebox][subdir] = "contrib"
 projects[homebox][patch][] = "http://drupal.org/files/homebox-undefined_propert_module_delta-1088242-3.patch"
 
-projects[jquery_ui_multiselect_widget][version] = "1.6"
+projects[jquery_ui_multiselect_widget][version] = "1.11"
 projects[jquery_ui_multiselect_widget][subdir] = "contrib"
 
-projects[jquery_update][version] = "2.3"
+projects[jquery_update][version] = "2.4"
 projects[jquery_update][subdir] = "contrib"
 
 projects[libraries][version] = "2.1"
@@ -401,10 +398,13 @@ libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 libraries[jstree][download][type] = "file"
 libraries[jstree][download][url] = "https://github.com/vakata/jstree/archive/v.pre1.0.zip"
 
+libraries[jquery-ui-multiselect-widget][download][type] = "file"
+libraries[jquery-ui-multiselect-widget][download][url] = "https://github.com/ehynds/jquery-ui-multiselect-widget/archive/master.zip"
+
 libraries[screenshot_paste][download][type] = "file"
 libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions/screenshot_paste/archive/master.zip"
 
-;commented this as it cannot be unzipped du to https://drupal.org/node/2205413
+;commented this as it cannot be unzipped due to https://drupal.org/node/2205413
 ;libraries[dhtmlxgantt][download][type] = "file"
 ;libraries[dhtmlxgantt][download][url] = "http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
 

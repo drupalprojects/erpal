@@ -118,7 +118,6 @@ dependencies[] = colors
 dependencies[] = maxlength
 dependencies[] = message
 dependencies[] = message_notify
-dependencies[] = freelinking
 
 ; custom
 dependencies[] = acl
