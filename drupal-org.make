@@ -149,6 +149,10 @@ projects[erpal_project_reports][download][url] = "http://git.drupal.org/project/
 projects[erpal_project_reports][download][branch] = "7.x-stable"
 ;projects[erpal_project_reports][download][tag] = TAG_PLACEHOLDER
 
+;ERPAL Modules not added as submodules
+projects[erpal_contacts_importer][version] = "1.0-beta1"
+projects[erpal_contacts_importer][subdir] = "contrib"
+
 ;;;;;;;;;;;;;;;;;;;;Erpal Contributed Themes
 projects[erpal_theme][type] = "theme"
 projects[erpal_theme][download][type] = "git"

@@ -196,6 +196,7 @@ dependencies[] = erpal_wysiwyg
 dependencies[] = erpal_project_release
 dependencies[] = erpal_project_release_ui
 dependencies[] = erpal_heartbeat
+dependencies[] = erpal_contacts_importer
 
 
 dependencies[] = erpal_layout
