@@ -165,6 +165,7 @@ dependencies[] = erpal_file_drag_drop
 dependencies[] = filejs
 dependencies[] = feeds
 dependencies[] = feeds_tamper
+dependencies[] = job_scheduler
 
 ; features 
 dependencies[] = erpal_basic
