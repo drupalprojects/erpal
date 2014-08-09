@@ -148,6 +148,9 @@ function references_dialog_insert_process_widget($element) {
 
   // Adding JS and CSS
   drupal_add_js(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.js');
+  $mod_url = drupal_get_path('module', 'references_dialog_insert');
+  $callback_url = url('references-dialog-insert', array('absolute' => TRUE));
+  drupal_add_js(array('references_dialog_insert' => array('file_callback_url' => $callback_url)), 'setting');
   drupal_add_css(drupal_get_path('module', 'references_dialog_insert') . '/references_dialog_insert.css');
 
   return $element;

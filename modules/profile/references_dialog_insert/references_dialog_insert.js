@@ -50,11 +50,12 @@
         var type = container.find('.references-dialog-target-type').val();
         var entity_id = entity_val.replace(/^.*\(/, '').replace(/\).*$/, ''); 
         var bundles = container.find('.references-dialog-target-bundles').val();
-      
+       
+        var url = Drupal.settings.references_dialog_insert.file_callback_url + '/' + entity_id + '/' + type;
         // call callback to bild "Send to textarea" widget
-        if(type && entity_id){
+        if(type && entity_id){          
           $.ajax({
-            url: Drupal.settings.basePath + '/references-dialog-insert/' + entity_id + '/' + type,
+            url: url,
             type: 'POST',
             dataType: 'json',
             async: false,
