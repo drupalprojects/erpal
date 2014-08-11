@@ -69,7 +69,6 @@ dependencies[] = field_collection
 dependencies[] = field_collection_table
 dependencies[] = field_group
 dependencies[] = field_extrawidgets
-dependencies[] = fileedit
 dependencies[] = flag
 dependencies[] = fpa
 dependencies[] = front_page

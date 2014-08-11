@@ -180,6 +180,7 @@ function _erpal_various_settings(&$context){
   variable_set('message_purge_days', 14);
   
   variable_set('jquery_update_jquery_version', '1.8');
+  variable_set('preprocess_css', TRUE);
 }
 
 /**

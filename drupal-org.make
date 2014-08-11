@@ -34,12 +34,6 @@ projects[timetracking][download][url] = "http://git.drupal.org/project/timetrack
 projects[timetracking][download][branch] = "7.x-stable"
 ;projects[timetracking][download][tag] = TAG_PLACEHOLDER
 
-projects[fileedit][subdir] = "contrib"
-projects[fileedit][download][type] = "git"
-projects[fileedit][download][url] = "http://git.drupal.org/project/fileedit.git"
-projects[fileedit][download][branch] = "7.x-stable"
-;projects[fileedit][download][tag] = TAG_PLACEHOLDER
-
 projects[screenshot_paste][subdir] = "contrib"
 projects[screenshot_paste][download][type] = "git"
 projects[screenshot_paste][download][url] = "http://git.drupal.org/project/screenshot_paste.git"
