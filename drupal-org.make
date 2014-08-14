@@ -244,6 +244,9 @@ projects[feeds][subdir] = "contrib"
 projects[feeds_tamper][version] = "1.0-beta5"
 projects[feeds_tamper][subdir] = "contrib"
 
+projects[elysia_cron][version] = "2.1"
+projects[elysia_cron][subdir] = "contrib"
+
 projects[job_scheduler][version] = "2.0-alpha3"
 projects[job_scheduler][subdir] = "contrib"
 
