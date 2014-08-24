@@ -4,6 +4,7 @@ projects[drupal][version] = 7.31
 
 ; Patches for Core
 projects[drupal][patch][] = "http://drupal.org/files/issues/1349080-195-d7-move-access-to-join-condition.patch"
+projects[drupal][patch][] = "http://drupal.org/files/issues/208611-70-ajax-render.patch"
 
 projects[drupal][patch][] = "http://drupal.org/files/drupal7-allow_change_system-requirements-1772316-18.patch"
 projects[drupal][patch][] = "http://drupal.org/files/issues/install-redirect-on-empty-database-728702-36.patch"

@@ -175,6 +175,9 @@ projects[comment_alter][subdir] = "contrib"
 projects[diff][version] = "3.2"
 projects[diff][subdir] = "contrib"
 
+projects[diff_views][version] = "1.0-beta1"
+projects[diff_views][subdir] = "contrib"
+
 projects[maxlength][version] = "3.0-beta1"
 projects[maxlength][subdir] = "contrib"
 
