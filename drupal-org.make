@@ -172,6 +172,9 @@ projects[colors][subdir] = "contrib"
 projects[comment_alter][version] = "1.0-rc4"
 projects[comment_alter][subdir] = "contrib"
 
+projects[date_ical][version] = "3.2"
+projects[date_ical][subdir] = "contrib"
+
 projects[diff][version] = "3.2"
 projects[diff][subdir] = "contrib"
 
@@ -346,6 +349,9 @@ projects[fpa][subdir] = "contrib"
 
 projects[token][version] = "1.5"
 projects[token][subdir] = "contrib"
+
+projects[tokenauth][version] = "1.0-alpha1"
+projects[tokenauth][subdir] = "contrib"
 
 projects[serial][version] = "1.2"
 projects[serial][subdir] = "contrib"
