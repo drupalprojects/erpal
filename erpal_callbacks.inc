@@ -182,6 +182,7 @@ function _erpal_various_settings(&$context){
   variable_set('jquery_update_jquery_version', '1.8');
   variable_set('preprocess_css', TRUE);
   variable_set('diff_admin_path_node', FALSE);
+  variable_set('clean_url', TRUE);
 }
 
 /**

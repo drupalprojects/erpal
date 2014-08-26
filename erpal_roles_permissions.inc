@@ -156,6 +156,7 @@ $export = array(
       'unflag bookmark_flag',
       'unflag project_subscriptions',
       'unflag task_subscriptions',
+      'use access tokens',
       'use text format filtered_html',
       'view own contract profile',
       'view own erpal_book content',
