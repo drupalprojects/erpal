@@ -112,10 +112,18 @@ function _erpal_heartbeat_message_correct_markup($entity, $entity_type, $view_mo
         if ($view_mode == 'full') {
           //add user picture
           $uid = $entity->uid;
-          $user = user_load($uid);
+          $user = user_load($uid);          
           $image_uri = !empty($user->picture->uri) ? $user->picture->uri : false;
+          
+          //try to get a default image
+          $image_url = false;
           if ($image_uri) {
             $image_url = image_style_url('thumbnail', $image_uri);
+          } else {
+            $image_url = base_path().variable_get('user_picture_default', FALSE);
+          }
+          
+          if ($image_url) {            
             $profile_url = drupal_get_path_alias('user/' . $uid);;
             $image_markup = '<div class="user-picture"><a href="'.$profile_url.'"><img src="'.$image_url.'" /></a></div>';
             $value['#markup'] = $image_markup.$value['#markup'];
