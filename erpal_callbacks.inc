@@ -184,6 +184,24 @@ function _erpal_various_settings(&$context){
   variable_set('diff_admin_path_node', FALSE);
   variable_set('clean_url', TRUE);
   variable_set('user_picture_default', 'profiles/erpal/files/graphics/erpal_default_avatar.png');
+  
+  //add contact default images
+  _erpal_contact_default_image();
+}
+
+/**
+* Add a default image to the contact image field
+*/
+function _erpal_contact_default_image() {
+  $instance = field_info_instance('node', 'field_contact_image', 'erpal_contact');
+  //save the default image first to get the file id
+  $handle = fopen('profiles/erpal/files/graphics/contact_default_image.png', 'r');
+  $file = file_save_data($handle, 'public://contact_default_image.png');  
+  fclose($handle);  
+  $instance['settings']['default_image'] = $file->fid;
+  field_update_instance($instance);
+  //add this fid to variables so we can resert it again if it is removed by a features revert
+  variable_set('erpal_contact_default_image_fid', $file->fid);
 }
 
 /**
