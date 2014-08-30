@@ -183,6 +183,7 @@ function _erpal_various_settings(&$context){
   variable_set('preprocess_css', TRUE);
   variable_set('diff_admin_path_node', FALSE);
   variable_set('clean_url', TRUE);
+  variable_set('user_picture_default', 'profiles/erpal/files/graphics/erpal_default_avatar.png');
 }
 
 /**
