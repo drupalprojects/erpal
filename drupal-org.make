@@ -198,6 +198,7 @@ projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.4"
 projects[ctools][subdir] = "contrib"
+projects[ctools][patch][] = "http://www.drupal.org/files/issues/ctools-combined_patch_from_n2195211-15_and_n2195471-29--n2195471-47.patch"
 
 projects[computed_field][version] = "1.0-beta1"
 projects[computed_field][subdir] = "contrib"
