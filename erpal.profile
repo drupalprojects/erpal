@@ -124,7 +124,6 @@ function _erpal_revert_features(&$context){
   $batch = array(
     'title' => st('Reverting feature'),
     'operations' => $operations,
-    //'file' => drupal_get_path('profile', 'erpal') . '/erpal_taxonomy.inc',
   );
   return $batch;  
 
@@ -409,7 +408,7 @@ function erpal_preconfigure_site(){
  */
 function _erpal_add_taxonomy_callbacks(&$operations, $data){
   $taxonomy = array_shift($data);
-  $terms = array_chunk(array_shift($data), 5, TRUE);
+  $terms = array_chunk(array_shift($data), 3, TRUE);
   
   $index = 1;
   $parts = count($terms);
