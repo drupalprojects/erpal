@@ -33,6 +33,7 @@ dependencies[] = number
 dependencies[] = taxonomy
 dependencies[] = color
 dependencies[] = block
+dependencies[] = locale
 
 ;contrib
 dependencies[] = entity
