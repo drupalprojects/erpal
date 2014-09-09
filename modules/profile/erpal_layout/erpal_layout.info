@@ -6,6 +6,7 @@ version = 7.x-1.2-dev
 project = erpal_layout
 dependencies[] = ctools
 dependencies[] = erpal_layout_helper
+dependencies[] = erpal_search_pane
 dependencies[] = jquery_ui_multiselect_widget
 dependencies[] = jquery_update
 dependencies[] = page_manager
