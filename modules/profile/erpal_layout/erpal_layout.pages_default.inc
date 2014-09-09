@@ -169,27 +169,30 @@ function erpal_layout_default_page_manager_handlers() {
     $display->content['new-5fff8bf8-f4f2-92d4-b905-f7e1feacf3aa'] = $pane;
     $display->panels['sidebar_content'][3] = 'new-5fff8bf8-f4f2-92d4-b905-f7e1feacf3aa';
     $pane = new stdClass();
-    $pane->pid = 'new-397aca53-2466-b0f4-f9d2-5d99d8a1ea4c';
+    $pane->pid = 'new-353850b8-3b63-49c4-b88c-cfadc0adc30a';
     $pane->panel = 'sidebar_left';
-    $pane->type = 'block';
-    $pane->subtype = 'search-form';
+    $pane->type = 'erpal_search_pane';
+    $pane->subtype = 'erpal_search_pane';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'override_title' => 1,
+      'override_title' => 0,
       'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array();
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'pane-search-form',
+    );
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '397aca53-2466-b0f4-f9d2-5d99d8a1ea4c';
-    $display->content['new-397aca53-2466-b0f4-f9d2-5d99d8a1ea4c'] = $pane;
-    $display->panels['sidebar_left'][0] = 'new-397aca53-2466-b0f4-f9d2-5d99d8a1ea4c';
+    $pane->uuid = '353850b8-3b63-49c4-b88c-cfadc0adc30a';
+    $display->content['new-353850b8-3b63-49c4-b88c-cfadc0adc30a'] = $pane;
+    $display->panels['sidebar_left'][0] = 'new-353850b8-3b63-49c4-b88c-cfadc0adc30a';
     $pane = new stdClass();
     $pane->pid = 'new-3966ecb3-7231-8404-b554-19b532b66fac';
     $pane->panel = 'sidebar_left';
