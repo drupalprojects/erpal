@@ -15,7 +15,7 @@ function erpal_help_menu_default_menu_links() {
     'menu_name' => 'user-menu',
     'link_path' => 'erpal/js/help/start',
     'router_path' => 'erpal/%/help',
-    'link_title' => 'HELP',
+    'link_title' => 'ERPAL online help',
     'options' => array(
       'attributes' => array(),
       'item_attributes' => array(
@@ -30,12 +30,12 @@ function erpal_help_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -43,
+    'weight' => 100,
     'customized' => 1,
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('HELP');
+  t('ERPAL online help');
 
 
   return $menu_links;
