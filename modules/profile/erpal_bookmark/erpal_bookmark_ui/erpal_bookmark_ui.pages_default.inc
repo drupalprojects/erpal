@@ -16,7 +16,19 @@ function erpal_bookmark_ui_default_page_manager_pages() {
   $page->admin_title = 'Bookmarks';
   $page->admin_description = '';
   $page->path = 'user/bookmarks';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'access bookmarks view',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array();
   $page->conf = array(
