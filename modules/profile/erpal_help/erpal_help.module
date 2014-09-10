@@ -1,0 +1,154 @@
+<?php
+
+/**
+* @file provides functions for ERPAL online help
+*/
+
+/**
+* Implements hook_menu
+*/
+function erpal_help_menu() {
+  $items = array();
+  
+  $items['erpal/%ctools_js/help'] = array(
+    'title' => 'Help',
+    'page callback' => 'erpal_help_help_page_ajax',
+    'page arguments' => array(1, 3),
+    'access callback' => 'erpal_help_help_page_access',  
+    'access arguments' => array(3),
+    'delivery callback' => 'ajax_deliver',
+    'theme callback' => 'ajax_base_page_theme',
+    'type' => MENU_CALLBACK,    
+  );
+  
+  return $items;
+}
+
+/**
+* Implements hook_permission
+*/
+function erpal_help_permission() {
+  return array(
+    'access erpal help' => array(
+      'title' =>t ('Access the ERPAL online help'),
+      'description' => t('Allows the user to access the ERPAL online help'),
+    ),
+  );
+}
+
+/**
+* This is the ajax callback for ctools
+*/
+function erpal_help_help_page_ajax($ajax, $context) {
+  ctools_include('ajax');
+  ctools_include('modal');
+
+  $html = erpal_help_get_help_content($context);
+  
+  $commands = array();
+  // If the form has not yet been rendered, render it.
+  $commands[] = ctools_modal_command_display(t('ERPAL online help'), $html);
+  return array('#type' => 'ajax', '#commands' => $commands);
+  
+  //@TODO provide no js callback
+}
+
+/**
+* Returns the content of a file for the given context
+*/
+function erpal_help_get_help_content($context) {
+  $filename = _erpal_help_get_help_file($context);
+  
+  $html = FALSE;
+  if (!$filename) {
+    $html = t('Sorry, there is no help content available for this page.');
+  } else {
+    $html = file_get_contents($filename);
+  }
+  
+  return $html;
+}
+
+/**
+* Generates cttols link
+*/
+function _erpal_help_get_ctools_link($path) {
+  return '<div id="magical-modal-link">' . l(t('Help'), 'erpal/nojs/help/'.$path, array('attributes' => array('class' => 'ctools-use-modal'))) . '</div>';
+}
+
+/**
+* Access callback for the help page
+*/
+function erpal_help_help_page_access($context=false) {
+  global $user;
+  
+  if (!user_access('access erpal help'))
+    return FALSE;
+  
+  if (!$context || $context == 'start') {
+    $path = current_path();
+    $path = str_replace('/', '_', $path);    
+  } else {
+    $path = $context;
+  }
+  
+  if (strpos($path, 'admin_structure_menu_manage') === 0) {
+    //we are on an admin page to manage the video.
+    return true;
+  }
+
+  $file_path = _erpal_help_get_help_file($path);
+
+  if ($file_path) {    
+    return TRUE;
+  }
+  
+  return FALSE;
+}
+
+/**
+* Returns the help file according to the given path
+*/
+function _erpal_help_get_help_file($path) {
+  
+  $mod_path = drupal_get_path('module', 'erpal_help');
+  $file_path = $_SERVER['DOCUMENT_ROOT'].base_path().$mod_path.'/help/'.$path.'.help';
+
+  //check if file exists.
+  if (file_exists($file_path)) {    
+    return $file_path;
+  }
+  
+  return FALSE; //file does not exist
+}
+
+/**
+* Implements hook_preprocess_menu_link
+*/
+function erpal_help_preprocess_menu_link(&$variables) {
+
+  $current_path = $_GET['q'];
+  $current_path = str_replace('/', '_', $current_path);
+  //find the help link
+  //add 'class' => 'ctools-use-modal'
+  if (!empty($variables['element']['#original_link'])) {    
+    if ($variables['element']['#original_link']['router_path'] == 'erpal/%/help') {
+      ctools_include('modal');
+      ctools_include('ajax');
+      ctools_modal_add_js();
+      
+      drupal_add_js(array(
+       'erpal-modal-style' => array(
+          'modalSize' => array('type' => 'fixed', 'width' => 800, 'height' => 600),
+        ),
+      ), 'setting');
+      
+      
+      $variables['element']['#href'] = 'erpal/nojs/help/'.$current_path;
+      $variables['element']['#localized_options']['attributes']['class'][] = 'ctools-use-modal'; 
+      $variables['element']['#localized_options']['attributes']['class'][] = 'ctools-modal-erpal-modal-style'; 
+      
+      $file_name = _erpal_help_get_help_file($current_path);      
+    }
+  }
+}

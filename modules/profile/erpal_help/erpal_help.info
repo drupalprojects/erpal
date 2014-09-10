@@ -1,0 +1,6 @@
+name = ERPAL Help module
+description = "Provides online help for ERPAL" 
+core = 7.x
+package = ERPAL
+features[features_api][] = api:2
+features[menu_links][] = user-menu_help:erpal/js/help/start
