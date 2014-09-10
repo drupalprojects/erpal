@@ -203,6 +203,8 @@ dependencies[] = erpal_project_release
 dependencies[] = erpal_project_release_ui
 dependencies[] = erpal_heartbeat
 dependencies[] = erpal_contacts_importer
+dependencies[] = erpal_help
+dependencies[] = erpal_search_pane
 
 
 dependencies[] = erpal_layout

@@ -341,6 +341,28 @@ return _erpal_basic_helper_render_title($row->nid, $row->type, $view, $data);
   $handler->display->display_options['fields']['type']['label'] = '';
   $handler->display->display_options['fields']['type']['exclude'] = TRUE;
   $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
+  /* Field: Field: Period */
+  $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
+  $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
+  $handler->display->display_options['fields']['field_date']['label'] = 'Deadline';
+  $handler->display->display_options['fields']['field_date']['settings'] = array(
+    'format_type' => 'erpal_date',
+    'fromto' => 'value2',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Content: Assigned To Users */
+  $handler->display->display_options['fields']['field_task_assigned_users']['id'] = 'field_task_assigned_users';
+  $handler->display->display_options['fields']['field_task_assigned_users']['table'] = 'field_data_field_task_assigned_users';
+  $handler->display->display_options['fields']['field_task_assigned_users']['field'] = 'field_task_assigned_users';
+  $handler->display->display_options['fields']['field_task_assigned_users']['label'] = 'Assigned to';
+  $handler->display->display_options['fields']['field_task_assigned_users']['settings'] = array(
+    'link' => 1,
+  );
+  $handler->display->display_options['fields']['field_task_assigned_users']['delta_offset'] = '0';
   /* Field: Content: Timetracking button */
   $handler->display->display_options['fields']['field_timetracking_button']['id'] = 'field_timetracking_button';
   $handler->display->display_options['fields']['field_timetracking_button']['table'] = 'field_data_field_timetracking_button';
@@ -380,17 +402,15 @@ return _erpal_basic_helper_render_title($row->nid, $row->type, $view, $data);
     'link' => 1,
   );
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Draggableviews: Weight */
-  $handler->display->display_options['sorts']['weight']['id'] = 'weight';
-  $handler->display->display_options['sorts']['weight']['table'] = 'draggableviews_structure';
-  $handler->display->display_options['sorts']['weight']['field'] = 'weight';
-  $handler->display->display_options['sorts']['weight']['draggableviews_setting_view'] = 'self';
-  $handler->display->display_options['sorts']['weight']['draggableviews_setting_new_items_bottom_list'] = 1;
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title_1']['id'] = 'title_1';
   $handler->display->display_options['sorts']['title_1']['table'] = 'node';
   $handler->display->display_options['sorts']['title_1']['field'] = 'title';
   $handler->display->display_options['sorts']['title_1']['relationship'] = 'field_project_ref_target_id';
+  /* Sort criterion: Field: Period -  start date (field_date) */
+  $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
+  $handler->display->display_options['sorts']['field_date_value']['table'] = 'field_data_field_date';
+  $handler->display->display_options['sorts']['field_date_value']['field'] = 'field_date_value';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -490,6 +510,8 @@ return _erpal_basic_helper_render_title($row->nid, $row->type, $view, $data);
     t('Tasks bookmarks pane'),
     t('My bookmarked tasks'),
     t('Content entity referenced from field_project_ref'),
+    t('Deadline'),
+    t('Assigned to'),
     t('Task title'),
     t('Project title'),
   );

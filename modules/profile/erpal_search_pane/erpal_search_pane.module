@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_search_pane_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/' . $plugin_type;
+  }
+}
+
+/**
+  * Implements hook_form()
+  */
+
+function erpal_search_pane_form(array $form, array &$form_state, $keys = NULL) {
+  $form['search_field'] = array(
+    '#type' => 'textfield',
+    '#defaul_value' => '',
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('submit'),
+  );
+  
+  $form['submit']['#attributes']['class'][] = 'element-invisible';
+  
+  return $form;
+}
+
+/**
+  * Implements hook_form_submit()
+  */
+
+function erpal_search_pane_form_submit(&$form, $form_state) {
+  $_SESSION['erpal_search_pane']['search_value'] = $form_state['values']['search_field'];
+  $_GET['destination'] = 'erpal-search';
+}
+
+/**
+  * Implements hook_form_alter
+  * Get the search_string from the sidebar form and insert it to a hidden field
+  */
+
+function erpal_search_pane_form_alter(&$form, $form_state) {
+  // dpm($form);
+  if($form['#id'] == 'views-exposed-form-erpal-search-block-1') { 
+    if(isset($_SESSION['erpal_search_pane']['search_value'])) {
+      $search_value = $_SESSION['erpal_search_pane']['search_value'];
+    } else {
+      $search_value = '';
+    }
+    unset($_SESSION['erpal_search_pane']['search_value']);
+    $form['hidden_value'] = array (
+      '#type' => 'hidden',
+      '#default_value' => $search_value,
+      '#attributes' => array(
+        'class' => 'hidden-search-string'
+      ),
+    );
+  }
+}
