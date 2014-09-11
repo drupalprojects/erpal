@@ -289,6 +289,7 @@ projects[jquery_ui_multiselect_widget][subdir] = "contrib"
 
 projects[jquery_update][version] = "2.4"
 projects[jquery_update][subdir] = "contrib"
+projects[jquery_update][patch][] = "http://www.drupal.org/files/issues/jquery_effects_missing-2123973-14.patch"
 
 projects[libraries][version] = "2.1"
 projects[libraries][subdir] = "contrib"
