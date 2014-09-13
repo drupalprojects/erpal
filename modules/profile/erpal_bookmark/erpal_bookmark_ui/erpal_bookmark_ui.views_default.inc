@@ -206,20 +206,14 @@ return _erpal_basic_helper_render_title($row->nid, $row->type, $view, $data);
   $handler->display->display_options['fields']['field_task_type_term']['table'] = 'field_data_field_task_type_term';
   $handler->display->display_options['fields']['field_task_type_term']['field'] = 'field_task_type_term';
   $handler->display->display_options['fields']['field_task_type_term']['exclude'] = TRUE;
-  /* Field: Draggableviews: Content */
-  $handler->display->display_options['fields']['draggableviews']['id'] = 'draggableviews';
-  $handler->display->display_options['fields']['draggableviews']['table'] = 'node';
-  $handler->display->display_options['fields']['draggableviews']['field'] = 'draggableviews';
-  $handler->display->display_options['fields']['draggableviews']['label'] = '';
-  $handler->display->display_options['fields']['draggableviews']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['draggableviews']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['draggableviews']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['draggableviews']['draggableviews']['ajax'] = 1;
   /* Sort criterion: Draggableviews: Weight */
   $handler->display->display_options['sorts']['weight']['id'] = 'weight';
   $handler->display->display_options['sorts']['weight']['table'] = 'draggableviews_structure';
   $handler->display->display_options['sorts']['weight']['field'] = 'weight';
-  $handler->display->display_options['sorts']['weight']['draggableviews_setting_view'] = 'self';
+  $handler->display->display_options['sorts']['weight']['draggableviews_setting_view'] = 'bookmarks:panel_pane_1';
+  $handler->display->display_options['sorts']['weight']['draggableviews_setting_arguments'] = 'php';
+  $handler->display->display_options['sorts']['weight']['draggableviews_setting_arguments_php'] = 'global $user;
+return array(0 => $user->uid);';
   $handler->display->display_options['sorts']['weight']['draggableviews_setting_new_items_bottom_list'] = 1;
   /* Sort criterion: Taxonomy term: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
@@ -259,6 +253,74 @@ return _erpal_basic_helper_render_title($row->nid, $row->type, $view, $data);
 
   /* Display: All bookmarks pane */
   $handler = $view->new_display('panel_pane', 'All bookmarks pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Title';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+return _erpal_basic_helper_render_title($row->nid, $row->type, $view, $data);
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['label'] = '';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
+  /* Field: Content: Timetracking button */
+  $handler->display->display_options['fields']['field_timetracking_button']['id'] = 'field_timetracking_button';
+  $handler->display->display_options['fields']['field_timetracking_button']['table'] = 'field_data_field_timetracking_button';
+  $handler->display->display_options['fields']['field_timetracking_button']['field'] = 'field_timetracking_button';
+  $handler->display->display_options['fields']['field_timetracking_button']['label'] = 'Timetracking';
+  $handler->display->display_options['fields']['field_timetracking_button']['type'] = 'computed_field_unsanitized';
+  /* Field: Flags: Flag link */
+  $handler->display->display_options['fields']['ops']['id'] = 'ops';
+  $handler->display->display_options['fields']['ops']['table'] = 'flagging';
+  $handler->display->display_options['fields']['ops']['field'] = 'ops';
+  $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['ops']['label'] = '';
+  $handler->display->display_options['fields']['ops']['element_label_colon'] = FALSE;
+  /* Field: Content: Status */
+  $handler->display->display_options['fields']['field_task_status_term']['id'] = 'field_task_status_term';
+  $handler->display->display_options['fields']['field_task_status_term']['table'] = 'field_data_field_task_status_term';
+  $handler->display->display_options['fields']['field_task_status_term']['field'] = 'field_task_status_term';
+  $handler->display->display_options['fields']['field_task_status_term']['exclude'] = TRUE;
+  /* Field: Content: Priority */
+  $handler->display->display_options['fields']['field_priority_term']['id'] = 'field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['table'] = 'field_data_field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['field'] = 'field_priority_term';
+  $handler->display->display_options['fields']['field_priority_term']['exclude'] = TRUE;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['field_task_type_term']['id'] = 'field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['table'] = 'field_data_field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['field'] = 'field_task_type_term';
+  $handler->display->display_options['fields']['field_task_type_term']['exclude'] = TRUE;
+  /* Field: Draggableviews: Content */
+  $handler->display->display_options['fields']['draggableviews']['id'] = 'draggableviews';
+  $handler->display->display_options['fields']['draggableviews']['table'] = 'node';
+  $handler->display->display_options['fields']['draggableviews']['field'] = 'draggableviews';
+  $handler->display->display_options['fields']['draggableviews']['label'] = '';
+  $handler->display->display_options['fields']['draggableviews']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['draggableviews']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['draggableviews']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['draggableviews']['draggableviews']['ajax'] = 1;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */

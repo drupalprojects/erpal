@@ -43,3 +43,14 @@ function _erpal_bookmark_helper_get_bookmark_flag_link_element($node) {
   
   return $element;
 }
+
+/**
+* Implements hook_draggableviews_handler_native_arguments_alter
+*/
+function erpal_bookmark_helper_draggableviews_handler_native_arguments_alter(&$arguments, $view, &$form_values) {
+  global $user;
+  if ($view->name == 'bookmarks') {
+    //alter the arguments so the dashboard view and the big view have the same order
+    $arguments = array($user->uid);
+  }
+}
