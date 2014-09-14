@@ -410,7 +410,7 @@ projects[profile2][subdir] = "contrib"
 
 ; Libraries
 libraries[fullcalendar][download][type] = "file"
-libraries[fullcalendar][download][url] = "http://arshaw.com/fullcalendar/downloads/fullcalendar-1.5.4.zip"
+libraries[fullcalendar][download][url] = "http://github.com/arshaw/fullcalendar/releases/download/v1.5.4/fullcalendar-1.5.4.zip"
 libraries[fullcalendar][directory_name] = "libraries"
 libraries[fullcalendar][destination] = ""
 
