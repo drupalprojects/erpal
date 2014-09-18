@@ -1,0 +1,21 @@
+<h1>Working with documents</h1>
+<h2>Create, manage and export documents</h2>
+<p>
+Documents are structured like books. They consist of pages and subpages. The overview will allow you to search through the documents. 
+Clicking on "Templates" will lead you to the overview of all templates you created. A template is a single page or a whole document. You can add single pages of these templates into new documents or even clone a whole document.
+Clicking on the title of a document will lead you to the document view. If the document has some subpages you will see a tree view of those pages in the right sidebar. You can drag and drop the pages there to reorder them or to change the structure of the document.
+</p>
+<p>
+Hovering over the "Actions" button will give you some options to work with the document: 
+<ul>
+<li>Add a page: This will add a subpage to the current page you are looking at.</li>
+<li>Export: You can export the whole document or a single page as an .odt-File for Libre office.</li>
+<li>Add pages cloned: You can add pages from your templates with this action.</li>
+<li>Clone to new book: This will create a duplicate of this page/document, with which you can work on.</li>
+</ul>
+</p>
+<p>
+<h2>Screencasts about documents</h2>
+To learn more about creating a document, adding tasks to a document for agile projects and backlogs and about exporting them as open/libre office documents we advise you to take a look at our screencast where you can see an <a href="http://youtu.be/ro_bYgFsicM?t=8m28s">overview of the document's features</a> or see in detail <a href="http://www.youtube.com/watch?v=yFeoA7NPU_0&feature=youtu.be&t=18m38s">how to work with documents in your projects</a>.
+</p>
+

@@ -1,0 +1,34 @@
+<h1>Working with project</h1>
+<h2>Learn how to manage and control your projects</h2>
+<p>
+This section of ERPAL will help you to manage your projects in a well structured way and automate lots of your administration. 
+You will see the project list first. In the project list you will have three tabs: 
+<ul>
+<li>In progress: Those are projects, which are in progress.</li>
+<li>Closed: Clicking this tab will display all closed projects.</li>
+<li>All: This will show you all projects. </li>
+</ul>
+You can search by different fields the list of projects or filter them. 
+</p>
+<p>
+You can also click on "Active time trackings" to see all your time trackings, which are not finalized yet. These time trackings are create by pushing the time tracking button on the right side below the "action" button of each task.
+The "Time trackings" tab will lead you to the list of time trackings in the system. You can filter them by a user or by project. 
+The "Fixed price items" tab will provide you an overview of fixed price projects and tasks which are not completed yet.
+The "Time-Budgets" tab will show you an overview of all budgets you have set up in the projects and/or tasks.
+Clicking on a project title will lead you to the details page of a project. From this page you can access the tasks, tickets, files, calendar and time trackings. 
+</p>
+<p>
+To learn more about creating tasks, time trackings, using the Gantt chart, managing tickets with your customer, setting up a project team and working with price modes you can take a look at our following screencasts: 
+</p>
+<p>
+<h2>Working together in projects</h2>
+<iframe width="480" height="360" src="//www.youtube.com/embed/yFeoA7NPU_0" frameborder="0" allowfullscreen></iframe>
+</p>
+<p>
+To learn more about controlling and monitoring your projects you should take a look at the following screencast.
+<h2>Controlling of revenue and expenses</h2>
+This screencast will show you how to monitor and control your time, revenue, expenses and how the alert system is working.
+<div class="help_video"> 
+<iframe width="480" height="360" src="//www.youtube.com/embed/5LhUvcnhQ3M" frameborder="0" allowfullscreen></iframe>
+</div>
+</p>

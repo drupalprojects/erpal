@@ -1,0 +1,31 @@
+<h1>Reporting and controlling</h1>
+<h2>Monitor and control your business</h2>
+<p>
+This area of ERPAL is the main hub to show you all relevant business data of your company. You can access reports for your CRM and for your projects. 
+Clicking on the CRM will allow you to choose between reports for sales, expenses, leads, customers, sales forecast, sales plan and expenses plan. 
+<ul>
+<li>Sales: This report will show you your sales volume.</li>  
+<li>Expenses: This report is for your expenses.</li>
+<li>Leads: This area is for the reports our your customer activities.</li> 
+<li>Sales Forecast: This will display a report about the sales forecast you can add at every activity.
+<li>Customer: You can create customer specific reports here.</li>
+<li>Sales plan: This is a report like the forecast of the activities. But here you can add a forecast to a customer and a service category. You will also see which sales volume you have with each customer from you plan.</li>
+<li>Expenses Plan: With this report you can manage your expenses for the whole year.</li>
+</ul>
+</p>
+<p>
+The projects reports are specific for the projects you realized with the help of ERPAL. There you have reports for active projects, management reports, profit margin, time tracking.
+<ul>
+<li>Active Projects: This report will count the active projects</li>
+<li>Management report: This report will show you how many open tasks, overdue tasks, not assigned tasks and tasks without time estimation are in all of your projects or in a specific project.</li>
+<li>Profit margin: This report will show you the real revenue, the real expenses and the real profit of your projects.</li>
+<li>Time tracking: Will give you a detailed report about your estimated time for tasks/projects and the real tracked time.</li>
+</ul>
+If you want to get more details about the reporting and business analytics features of ERPAL, you can take a look at this screencast. It will also show you, how you can add specific reports to your personal and global reporting dashboard.
+</p>
+<p>
+<h2>Screencast about reporting and controlling</h2>
+<div class="help_video">
+<iframe width="480" height="360" src="//www.youtube.com/embed/0xrPAtPFZ7Q" frameborder="0" allowfullscreen></iframe>
+</div>
+</p>

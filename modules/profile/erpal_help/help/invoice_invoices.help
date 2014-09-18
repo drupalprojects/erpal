@@ -1,0 +1,25 @@
+<h1>Working with invoices</h1>
+<h2>Automate billing and reduce administration</h2>
+<p>
+This area provides access to all invoices in ERPAL. You can create new invoices manually here or use  the billables list as central list of your revenue. Billables will be created by delivered fixed price projects or tasks, by recurring contracts and timetrackings on time and material (price per hour) projects.
+The invoices list is separated into the following tabs: 
+<ul>
+<li>Not paid: This will display all invoices where the paid status is set to not paid. Invoices that are overdue are highlighted red.</li>
+<li>Paid: This will show all invoices where the status is set to paid.</li>
+<li>Cancelled: This will display all invoices where the status has been set to "cancelled".</li>
+<li>All: This will display all invoices. </li>
+</ul>
+</p>
+<p>
+You can filter the list of invoices and search directly for an invoice. With a click to the title of an invoice, you can view the details page. With access to the "Actions" button you can edit the invoice or add payments. The payment history of an invoice will help you to keep track of not paid invoices and let you monitor the payment behaviour of your customers. 
+Clicking the button "Create a new invoices" will lead you to the form to create a new invoice manually without the billable workflow. 
+Click on the "Billables" tab and you will see a list of all billables for generating invoices. 
+You can filter the list of billables and then select all billables you want to summarize into one invoice. Simple choose the operation "Create Invoice" and click execute. Other operations are deleting the selected billables, setting them billed or unbilled. 
+Please take a look at the following screencast to learn more about working with invoices with ERPAL
+</p>
+<p>
+<h2>Screencast about working with invoices</h2>
+<div class="help_video">
+<iframe width="480" height="360" src="//www.youtube.com/embed/bm5o9AnxeMM" frameborder="0" allowfullscreen></iframe>
+</div>
+</p>

@@ -467,6 +467,70 @@ function _erpal_taxonomy_get_activity_status_vocabulary(){
   return array($activity_vocabulary, $activity_terms);
 }
 
+/**
+* Only copy the images for all terms
+*/
+function _erpal_taxonomy_copy_images() {
+  //copy default term images to public://term_images/
+  $src = 'profiles/erpal/files/erpal_task_icons';
+  $dir = opendir($src); 
+  
+  $dst = drupal_realpath('public://term_images');  
+  @mkdir($dst, 0774, true); //create recursive directory if needed
+  while(false !== ( $file = readdir($dir)) ) { 
+    if (( $file != '.' ) && ( $file != '..' )) { 
+      copy($src . '/' . $file,$dst . '/' . $file);    
+    } 
+  } 
+  closedir($dir); 
+  
+  //copy default images for contacts to public://contact_default_image.png    
+  $src = 'profiles/erpal/files/graphics';
+  $file = 'contact_default_image.png';
+  $dst = drupal_realpath('public://');  
+  copy($src . '/' . $file,$dst . '/' . $file);
+}
+
+/**
+* Only copy the images for all terms
+*/
+function _erpal_copy_demo_files() {
+  //first copy private files
+  $src = 'profiles/erpal/files/demo_files/private';  
+  $dst = drupal_realpath('private://');
+  if (!$dst)  {
+    $dst = drupal_realpath('public://private');  
+  }
+  @mkdir($dst, 0774, true); //create recursive directory if needed
+  
+  _erpal_recurse_copy($src, $dst);  
+    
+  //now copy public files
+  $src = 'profiles/erpal/files/demo_files/public';  
+  
+  $dst = drupal_realpath('public://');  
+  @mkdir($dst, 0774, true); //create recursive directory if needed
+  _erpal_recurse_copy($src, $dst);
+}
+
+/**
+* Copy folders recursive
+*/
+function _erpal_recurse_copy($src,$dst) { 
+  $dir = opendir($src); 
+  @mkdir($dst, 0774, true); 
+  while(false !== ( $file = readdir($dir)) ) { 
+    if (( $file != '.' ) && ( $file != '..' )) { 
+      if ( is_dir($src . '/' . $file) ) { 
+        _erpal_recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+      } 
+      else { 
+        copy($src . '/' . $file,$dst . '/' . $file);            
+      } 
+    } 
+  } 
+  closedir($dir); 
+} 
 
 
 /**
@@ -503,15 +567,6 @@ function erpal_taxonomy_add($vocabulary, $names, $parts, $index, &$context){
   $term_image = array_key_exists('term_image', reset($names));
   $country_code = array_key_exists('field_country_code', reset($names));
   
-  // // Delete all existing terms with the same id
-  // if($existing_terms = taxonomy_get_tree($vocabulary->vid)){
-  	// foreach ($existing_terms as $existing_term) {
-  	  // if(array_key_exists($existing_term->name, $names)){
-  	  	// taxonomy_term_delete($existing_term->tid);
-  	  // }
-	  // }
-  // }
-    
   foreach($names as $name => $fields){
   	
 	  $term = new stdClass();
