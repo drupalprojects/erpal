@@ -264,7 +264,6 @@ function _install_from_db_cc_all() {
   }
 
   drupal_static_reset();
-  //drupal_flush_all_caches();
 }
 
 /**
@@ -469,7 +468,7 @@ function install_from_db_install_finished(&$install_state) {
     ->execute();
 
   // Cache a fully-built schema.
-  drupal_get_schema(NULL, TRUE);
+  //drupal_get_schema(NULL, TRUE);
 
   // Run cron to populate update status tables (if available) so that users
   // will be warned if they've installed an out of date Drupal version.
