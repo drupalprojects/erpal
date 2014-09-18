@@ -469,8 +469,12 @@ function erpal_last_config_steps(){
   }
   
   $operations[] = array('_erpal_config_finish', array());
+  
+  if ($quick_install == 'demo') {
+    $operations[] = array('_install_from_db_reimport_demo_users');
+  }
+  
   $operations[] = array('_erpal_install_cleanup', array());
-  $operations[] = array('_install_from_db_reimport_demo_users');
     
   $batch = array(
     'title' => st('Performing last installation tasks'),

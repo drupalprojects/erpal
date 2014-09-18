@@ -24,7 +24,11 @@ function _erpal_config_finish(&$context){
   $context['message'] = st('Erpal installation completed');
   variable_set('erpal_basic_helper_display_warnings', TRUE);
   
-  _erpal_copy_demo_files();
+  $quick_install = _erpal_is_quickinstall();    
+  
+  if ($quick_install == 'demo') {
+    _erpal_copy_demo_files();
+  }
 }
 
 
@@ -137,6 +141,8 @@ function _erpal_install_cleanup(&$context) {
   if ($is_quick_install != 'demo') {
     erpal_clear_messages();
   }
+  
+  _install_from_db_cc_all();
 }
 
 
