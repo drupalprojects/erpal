@@ -1,0 +1,22 @@
+<h1>Employee timekeeping</h1>
+<h2>Controll and report you employee's working time</h2>
+<p>
+Timekeeping will help you to keep track of your overtime, working hours, your ill days and your vacation. 
+In the overview of your timekeeping you can see three tabs: 
+<ul>
+<li>Day: Here you will see your daily working time.</li>
+<li>Month: This will provide you a monthly overview of your working time. You can filter for year or month.</li>
+<li>Year: This will provide you a yearly overview of your working time. You can filter the year.</li>
+</ul>
+</p>
+<p>
+The tab "all timekeeping" will allow you to filter the time keepings of other users in ERPAL, if you have access to this section. 
+Clicking the button "Create a new working time" will lead you to the form to add a new timekeeping. You can select the type of the working time and insert multiple breaks. 
+Please take a look at our screencast to get more information about controlling the working time, check your overtime, adding days off, vacation and ill-days:
+</p>
+<p>
+<h2>Screencast about employee timekeeping</h2>
+<div class="help_video">
+<iframe width="480" height="360" src="//www.youtube.com/embed/bnUn5tB_ZfQ" frameborder="0" allowfullscreen></iframe>
+</div>
+</p>

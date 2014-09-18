@@ -3,7 +3,7 @@
  * @file
  * Enables modules and site configuration for a erpal site installation.
  */
- 
+ include_once 'install_from_db/install_from_db.profile';
  define('MAX_ALLOWED_PACKET_SIZE_MIN', 20);  //minimum value of max allowed packet size in MB for installation process
  
 /**
@@ -56,7 +56,7 @@ function erpal_file_private_path_submit($form, $form_state){
 /** 
  * Add additional install tasks 
  */
-function erpal_install_tasks(){
+function erpal_install_tasks(&$install_state){
   
   $tasks = array();
   
@@ -109,6 +109,10 @@ function _erpal_revert_feature($feature_name, &$context) {
  * reverts all features
  */ 
 function _erpal_revert_features(&$context){
+  if (_erpal_is_quickinstall()) {
+    return array();  //nothing todo here.
+  }
+  
   module_load_include('inc', 'features', 'features.export');
   features_include();
   $context['message'] = st('Reverted all features');
@@ -131,9 +135,25 @@ function _erpal_revert_features(&$context){
 }
 
 /**
+* Checks if this is a quick install or a full install
+*/
+function _erpal_is_quickinstall() {
+  global $install_state;  
+  $quickstart_state = !empty($install_state['parameters']['quickstart']) ? $install_state['parameters']['quickstart'] : false;
+  $quickstart_get = !empty($_GET['quickstart']) ? $_GET['quickstart'] : false;
+  
+  if ($quickstart_state)
+    return $quickstart_state;
+    
+  return $quickstart_get;
+}
+
+/**
  * Implements hook_install_tasks_alter().
  */
 function erpal_install_tasks_alter(&$tasks, $install_state) {
+  
+   install_from_db_install_tasks_alter($tasks, $install_state);
   
   $tasks['install_select_profile']['display'] = FALSE;
   if (!drupal_is_cli()) {
@@ -341,47 +361,68 @@ function _erpal_set_theme($target_theme) {
 
 function erpal_create_vocabularies_and_taxonomies(){
   require_once(DRUPAL_ROOT . '/profiles/erpal/erpal_taxonomy.inc'); 
-    
-  $operations = array();
   
   // Prepare directories for term_images
   $operations[] = array('_erpal_taxonomy_prepare_directory', array());
   
-  // Create Taxonomies
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_service_category_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_priority_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_number_type_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_address_type_vocabulary());
+  $is_quick_install = _erpal_is_quickinstall();
   
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_task_status_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_task_type_vocabulary());  
-  
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_status_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_tags_vocabulary());
-  
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_countries_vocabulary());
-  
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_origin_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_status_vocabulary());
-  
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_date_item_vocabulary());
+  if ($is_quick_install) {    
+    //only copy the images as needed.
+    $operations[] = array('_erpal_taxonomy_copy_images', array());
+    $batch = array(
+      'title' => st('Copy taxonomy images'),
+      'operations' => $operations,
+      'file' => drupal_get_path('profile', 'erpal') . '/erpal_taxonomy.inc',
+    );
+  } else {
+    //add all the single terms
+    
+    $operations = array();
+    
+    // Create Taxonomies
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_service_category_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_priority_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_number_type_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_address_type_vocabulary());
+    
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_task_status_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_task_type_vocabulary());  
+    
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_status_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_tags_vocabulary());
+    
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_countries_vocabulary());
+    
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_origin_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_status_vocabulary());
+    
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_date_item_vocabulary());
 
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_target_audience_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_salutation_terms_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_target_audience_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_salutation_terms_vocabulary());
+    
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_role_tags_vocabulary());
+    _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_lost_reasons_vocabulary());
+    
+    $batch = array(
+      'title' => st('Creating taxonomies'),
+      'operations' => $operations,
+      'file' => drupal_get_path('profile', 'erpal') . '/erpal_taxonomy.inc',
+    );
+  }
   
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_project_role_tags_vocabulary());
-  _erpal_add_taxonomy_callbacks($operations, _erpal_taxonomy_get_activity_lost_reasons_vocabulary());
-  
-  $batch = array(
-    'title' => st('Creating taxonomies'),
-    'operations' => $operations,
-    'file' => drupal_get_path('profile', 'erpal') . '/erpal_taxonomy.inc',
-  );
   return $batch;  
 }
 
 function erpal_preconfigure_site(){
   $operations = array();
+      
+  $quick_install = _erpal_is_quickinstall();    
+  if ($quick_install) {
+    //nothing todo here
+    return $operations;
+  }  
       
   $operations[] = array('_erpal_create_roles_and_permissions', array());
   $operations[] = array('_erpal_create_relations', array());
@@ -420,11 +461,16 @@ function _erpal_add_taxonomy_callbacks(&$operations, $data){
 
 function erpal_last_config_steps(){
   
-  $operations = array(
-    array('_erpal_rebuild_content_access', array()),
-    array('_erpal_config_finish', array()),
-    array('_erpal_install_cleanup', array()),
-  );
+  $operations = array();
+  $quick_install = _erpal_is_quickinstall();    
+  
+  if (!$quick_install) {
+    $operations[] = array('_erpal_rebuild_content_access', array());
+  }
+  
+  $operations[] = array('_erpal_config_finish', array());
+  $operations[] = array('_erpal_install_cleanup', array());
+  $operations[] = array('_install_from_db_reimport_demo_users');
     
   $batch = array(
     'title' => st('Performing last installation tasks'),
@@ -442,101 +488,115 @@ function erpal_last_config_steps(){
 function erpal_contact_information_form($form, &$form_state){
   drupal_set_title(st('Contact information'));
   
+  $quick_install = _erpal_is_quickinstall();
   $form = array();  
-  $form['contact_name'] = array(
-    '#type' => 'fieldset',
-    '#title' => st('My Company'),
-  );
   
-  $form['contact_name']['company_name'] = array(
-    '#type' => 'textfield',    
-    '#title' => st('Company name:'),
-    '#maxlength' => 255,
-    '#required' => TRUE,
-  );
-  $form['company_address'] = array(
-    '#type' => 'fieldset',
-    '#title' => st('Main Address'),  
-  );
-  $form['company_address']['street'] = array(
-    '#title' => st('Street:'),
-    '#type' => 'textfield', 
-    '#maxlength' => 255,
-    '#required' => TRUE,     
-  );
-  $form['company_address']['zip_code'] = array(
-    '#title' => st('Postal Code:'),
-    '#type' => 'textfield',
-    '#maxlength' => 10,
-    '#required' => TRUE,
-  );
-  $form['company_address']['city'] = array(
-    '#title' => st('City:'),
-    '#type' => 'textfield',
-    '#maxlength' => 80,
-    '#required' => TRUE,
-  );
-  
-  $countries = _erpal_get_countries();
-  
-  $form['company_address']['country'] = array(
-    '#title' => st('Country'),
-    '#type' => 'select',
-    '#options' => $countries,
-    '#default_value' => array_search('Germany', $countries),
-  );
-  
-  $form['company_address']['currency'] = array(
-    '#title' => st('Default currency'),
-    '#type' => 'textfield',
-    '#description' => st('Enter the default currency shortcode like USD or EUR.'),
-    '#maxlength' => 5,
-    '#required' => TRUE,
-  );  
-  
-  $form['company_address']['vat_rate'] = array(
-    '#title' => st('Default tax rate'),
-    '#type' => 'textfield',
-    '#description' => st('Enter the default tax rate in percent for your country.'),
-    '#maxlength' => 5,
-    '#required' => TRUE,
-  );    
-  
-  $form['company_address']['vat_label'] = array(
-    '#title' => st('Default tax name'),
-    '#type' => 'textfield',
-    '#description' => st('Enter the name of your default tax in your country.'),
-    '#maxlength' => 25,
-    '#required' => TRUE,
-  );   
-  
-  $form['contact_information'] = array(
-    '#type' => 'fieldset',
-    '#title' => st('Contact information'),
-  );
-  $form['contact_information']['phone_number'] = array(
-    '#title' => st('Phone number:'),
-    '#type' => 'textfield',
-    '#maxlength' => 255,
-    '#required' => TRUE,
-  );
-  $form['contact_information']['email_address'] = array(
-    '#title' => st('Email:'),
-    '#type' => 'textfield',
-    '#maxlength' => 255,
-    '#required' => TRUE,
-  );
+  if ($quick_install == 'demo') {
+    //demo installation will take all data from the dump so nothing todo here
+    $form['hint'] = array(
+      '#type' => 'markup',    
+      '#markup' => 'The contact information will be taken from the demo content',
+    );
+  } else {
+    $form['contact_name'] = array(
+      '#type' => 'fieldset',
+      '#title' => st('My Company'),
+    );
+    
+    $form['contact_name']['company_name'] = array(
+      '#type' => 'textfield',    
+      '#title' => st('Company name:'),
+      '#maxlength' => 255,
+      '#required' => TRUE,
+    );
+    $form['company_address'] = array(
+      '#type' => 'fieldset',
+      '#title' => st('Main Address'),  
+    );
+    $form['company_address']['street'] = array(
+      '#title' => st('Street:'),
+      '#type' => 'textfield', 
+      '#maxlength' => 255,
+      '#required' => TRUE,     
+    );
+    $form['company_address']['zip_code'] = array(
+      '#title' => st('Postal Code:'),
+      '#type' => 'textfield',
+      '#maxlength' => 10,
+      '#required' => TRUE,
+    );
+    $form['company_address']['city'] = array(
+      '#title' => st('City:'),
+      '#type' => 'textfield',
+      '#maxlength' => 80,
+      '#required' => TRUE,
+    );
+    
+    $countries = _erpal_get_countries();
+    
+    $form['company_address']['country'] = array(
+      '#title' => st('Country'),
+      '#type' => 'select',
+      '#options' => $countries,
+      '#default_value' => array_search('Germany', $countries),
+    );
+    
+    $form['company_address']['currency'] = array(
+      '#title' => st('Default currency'),
+      '#type' => 'textfield',
+      '#description' => st('Enter the default currency shortcode like USD or EUR.'),
+      '#maxlength' => 5,
+      '#required' => TRUE,
+    );  
+    
+    $form['company_address']['vat_rate'] = array(
+      '#title' => st('Default tax rate'),
+      '#type' => 'textfield',
+      '#description' => st('Enter the default tax rate in percent for your country.'),
+      '#maxlength' => 5,
+      '#required' => TRUE,
+    );    
+    
+    $form['company_address']['vat_label'] = array(
+      '#title' => st('Default tax name'),
+      '#type' => 'textfield',
+      '#description' => st('Enter the name of your default tax in your country.'),
+      '#maxlength' => 25,
+      '#required' => TRUE,
+    );   
+    
+    $form['contact_information'] = array(
+      '#type' => 'fieldset',
+      '#title' => st('Contact information'),
+    );
+    $form['contact_information']['phone_number'] = array(
+      '#title' => st('Phone number:'),
+      '#type' => 'textfield',
+      '#maxlength' => 255,
+      '#required' => TRUE,
+    );
+    $form['contact_information']['email_address'] = array(
+      '#title' => st('Email:'),
+      '#type' => 'textfield',
+      '#maxlength' => 255,
+      '#required' => TRUE,
+    );        
+  }
   
   $form['submit'] = array(
     '#value' => st('Save and continue'),
     '#type' => 'submit',
   );
   
-  
   return $form;
 }
 
 function erpal_contact_information_form_validate($form, $form_state){
+  $quick_install = _erpal_is_quickinstall();
+  if ($quick_install == 'demo') {
+    return; //no validation needed here if demo content is installed
+  }
+  
   $values = $form_state['values'];
   
   if(!valid_email_address($values['email_address']))
@@ -547,11 +607,34 @@ function erpal_contact_information_form_validate($form, $form_state){
   
 }
 
-
+/**
+* Save contact information and some default content.
+*/
 function erpal_contact_information_form_submit($form, $form_state){
   
   module_load_include('inc', 'entity', 'includes/entity.controller');
   
+  $quick_install = _erpal_is_quickinstall();
+  
+  if ($quick_install == 'demo') {
+    //demo content installation, so nothing to do here.
+    return;
+  }
+  
+  if ($quick_install == 'quick') {
+    //delete all existing nodes, they will be recreated.
+    $result = db_select('node', 'n')
+    ->fields('n', array('nid'))   
+    ->execute();
+
+    $customers = array();
+    while($record = $result->fetchAssoc()) {
+      $nid = $record['nid'];      
+      node_delete($nid);      
+    }
+    
+  } 
+  //normal installation
   $values = $form_state['values'];
   $company_name = $values['company_name'];
   global $user;
@@ -654,20 +737,20 @@ function erpal_contact_information_form_submit($form, $form_state){
       ),
     ),
     'field_priority_term' => array(
-	  LANGUAGE_NONE => array(
-	  	0 => array('tid' => $priority_default_tid),
-	  ),
-	),
-	'field_task_status_term' => array(
-	  LANGUAGE_NONE => array(
-	  	0 => array('tid' => $task_status_default_tid),
-	  ),
-	),
-	'field_task_type_term' => array(
-	  LANGUAGE_NONE => array(
-	  	0 => array('tid' => $task_type_default_tid),
-	  ),
-	),
+    LANGUAGE_NONE => array(
+      0 => array('tid' => $priority_default_tid),
+    ),
+  ),
+  'field_task_status_term' => array(
+    LANGUAGE_NONE => array(
+      0 => array('tid' => $task_status_default_tid),
+    ),
+  ),
+  'field_task_type_term' => array(
+    LANGUAGE_NONE => array(
+      0 => array('tid' => $task_type_default_tid),
+    ),
+  ),
   );
   node_object_prepare($task_node); 
   node_save($task_node);
@@ -684,6 +767,7 @@ function erpal_contact_information_form_submit($form, $form_state){
   $currency_string = $values['currency'] . '#' . $values['currency'];
   variable_set('erpal_invoice_currencies_string', $currency_string);
   variable_set('erpal_invoice_default_currency', $values['currency']);
+
 }
 
 function _erpal_get_countries(){

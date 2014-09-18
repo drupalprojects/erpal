@@ -23,6 +23,8 @@ function _erpal_create_files(&$context){
 function _erpal_config_finish(&$context){
   $context['message'] = st('Erpal installation completed');
   variable_set('erpal_basic_helper_display_warnings', TRUE);
+  
+  _erpal_copy_demo_files();
 }
 
 
@@ -127,10 +129,16 @@ function _erpal_rebuild_content_access(&$context){
  * Some cleanup steps
  */
 function _erpal_install_cleanup(&$context) {
-  //remove all messages that have been created during installation
+  //remove all messages that have been created during installation  
   $context['message'] = st('Clean up process');
-  erpal_clear_messages();
+  
+  //leave the messages for demo
+  $is_quick_install = _erpal_is_quickinstall();
+  if ($is_quick_install != 'demo') {
+    erpal_clear_messages();
+  }
 }
+
 
 /**
  * BatchAPI callback
