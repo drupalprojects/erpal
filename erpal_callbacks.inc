@@ -160,7 +160,7 @@ function _erpal_create_relations(&$context){
  */
 function _erpal_various_settings(&$context){
   $context['message'] = st('Configured ERPAL');
-  die('sdfg#');
+
   module_load_include('install', 'erpal_basic_helper', 'erpal_basic_helper');
   
   //insert date and time format if they dont exist
