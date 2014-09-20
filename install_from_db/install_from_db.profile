@@ -135,6 +135,7 @@ function install_from_db_form_submit($form, &$form_state) {
   $install_state['parameters']['quickstart'] = $quickstart;
 }
 
+
 /**
 * re-import the users
 */
@@ -145,8 +146,7 @@ function _install_from_db_reimport_demo_users() {
   }
 
   if ($is_quick_install == 'demo') {
-    //no batch needed
-    $operations = array();
+    //no batch needed    
     $defer_operations = array();
     $system_sql = '';
     $filename = $db_filename;
@@ -154,15 +154,26 @@ function _install_from_db_reimport_demo_users() {
       $file = fopen($filename, 'rb');
       if ($file) {
         //save the current user 1 we need to restore it
-        $user = user_load(1);
+        $auser = user_load(1);        
+        $name = $auser->name;
+        $pass = $auser->pass;
         while (($line = _install_from_db_read_sql_batch($file, $table)) !== false) {
-          //install directly, its not a lot.
+          //install directly without a batch, its not a lot.
           if (!empty($line)) {
             $context = array();
             _install_from_db_install_db_import($line, $table, $context);
           }          
-        }
-        user_save($user); //save the user again
+        }        
+        
+        //reset the user that the user of this software entered during installation
+        //dont save the user as the batch will get lost
+        $num_updated = db_update('users')
+        ->fields(array(
+          'name' => $name,
+          'pass' => $pass,
+        ))
+        ->condition('uid', 1, '=')
+        ->execute();
       }
       fclose($file);      
     }
@@ -237,7 +248,7 @@ function _install_from_db_install_db_import_finished($success, $results, $operat
   // since we did not import any users
   $quick_install = _erpal_is_quickinstall();
   
-  if ($quick_install != 'quick') {
+  if ($quick_install == 'quick') {
     $fields_info = field_info_instances('user', 'user');
     foreach ($fields_info as $field_name => $info) {
       db_delete('field_data_' . $field_name)
@@ -291,6 +302,10 @@ function _install_from_db_install_db_import($line, $table, &$context) {
     foreach ($saved_vars as $var) {
       variable_set($var, $saved_values[$var]);
     }
+    
+    //remove the private path, it will be set later
+    variable_del('file_private_path');
+    variable_del('file_default_scheme');  
   }
   else if ($table === 'system') {
     // Flush all caches to complete the module installation process. Subsequent
@@ -310,7 +325,7 @@ function _install_from_db_read_sql_batch($file, &$table) {
   $line = '';
   $table = '';
   $skip = FALSE;
-  $skip_tables = array('batch', 'cache', 'sessions', 'queue', 'semaphore',
+  $skip_tables = array('batch', 'cache', 'sessions', 'queue', 'semaphore', 'users',
     'advagg_aggregates', 'advagg_aggregates_hashes',
     'advagg_aggregates_versions', 'advagg_files');    
   while (($newline = _install_from_db_read_sql_command_from_file($file)) !== false) {
