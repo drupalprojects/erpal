@@ -476,7 +476,7 @@ function _erpal_taxonomy_copy_images() {
   $dir = opendir($src); 
   
   $dst = drupal_realpath('public://term_images');  
-  @mkdir($dst, 0774, true); //create recursive directory if needed
+  @mkdir($dst, 0775, true); //create recursive directory if needed
   while(false !== ( $file = readdir($dir)) ) { 
     if (( $file != '.' ) && ( $file != '..' )) { 
       copy($src . '/' . $file,$dst . '/' . $file);    
@@ -487,7 +487,8 @@ function _erpal_taxonomy_copy_images() {
   //copy default images for contacts to public://contact_default_image.png    
   $src = 'profiles/erpal/files/graphics';
   $file = 'contact_default_image.png';
-  $dst = drupal_realpath('public://');  
+  $dst = drupal_realpath('public://');
+  @mkdir($dst, 0775, true);  
   copy($src . '/' . $file,$dst . '/' . $file);
 }
 
@@ -496,12 +497,14 @@ function _erpal_taxonomy_copy_images() {
 */
 function _erpal_copy_demo_files() {
   //first copy private files
+  
   $src = 'profiles/erpal/files/demo_files/private';  
   $dst = drupal_realpath('private://');
   if (!$dst)  {
     $dst = drupal_realpath('public://private');  
   }
-  @mkdir($dst, 0774, true); //create recursive directory if needed
+  
+  @mkdir($dst, 0775, true); //create recursive directory if needed
   
   _erpal_recurse_copy($src, $dst);  
     
@@ -509,8 +512,9 @@ function _erpal_copy_demo_files() {
   $src = 'profiles/erpal/files/demo_files/public';  
   
   $dst = drupal_realpath('public://');  
-  @mkdir($dst, 0774, true); //create recursive directory if needed
+  @mkdir($dst, 0775, true); //create recursive directory if needed
   _erpal_recurse_copy($src, $dst);
+  
 }
 
 /**
@@ -518,7 +522,7 @@ function _erpal_copy_demo_files() {
 */
 function _erpal_recurse_copy($src,$dst) { 
   $dir = opendir($src); 
-  @mkdir($dst, 0774, true); 
+  @mkdir($dst, 0775, true); 
   while(false !== ( $file = readdir($dir)) ) { 
     if (( $file != '.' ) && ( $file != '..' )) { 
       if ( is_dir($src . '/' . $file) ) { 

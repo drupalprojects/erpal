@@ -24,7 +24,11 @@ function _erpal_config_finish(&$context){
   $context['message'] = st('Erpal installation completed');
   variable_set('erpal_basic_helper_display_warnings', TRUE);
   
-  _erpal_copy_demo_files();
+  $quick_install = _erpal_is_quickinstall();    
+  
+  if ($quick_install == 'demo') {
+    _erpal_copy_demo_files();
+  }
 }
 
 
@@ -115,6 +119,61 @@ function _erpal_create_roles_and_permissions(&$context){
   erpal_save_roles_and_configure_permissions();
 }
 
+/**
+* Reset date items in a batch process, split into chunks
+*/
+function erpal_reset_demo_date_items_callback($ids, &$context) { 
+  $context['message'] = st('Update demo content');
+
+  $offset = strtotime('14.08.2014 12:00:00');  //this is the date when the data items in the dump have been created.
+  $time_to_add = time() - $offset;
+  
+  foreach ($ids as $id) {
+    $date_item = entity_load('date_item', array($id));
+    $date_item = $date_item[$id];
+
+    //get current date and add the offset, then save again
+    //ADD THIS TO A BATCH OPERATION
+    $old_date_item = clone $date_item;
+    
+    $date_item->field_date_item_date[LANGUAGE_NONE][0]['value'] += $time_to_add;
+    $date_item->field_date_item_date[LANGUAGE_NONE][0]['value2'] += $time_to_add;
+    $date_item->original = $old_date_item;    
+    $date_item->save();  
+  }
+  
+}
+
+/**
+* Create a demo date node for the dashboard calendar
+*/
+function _erpal_create_demo_date() {
+  $date = new stdClass();
+  $date->uid = 1;
+  $date->type = 'erpal_date';
+  $date->language = LANGUAGE_NONE;
+  $date->title = 'Start to improve your business with ERPAL';
+  $data->field_date_repeat[LANGUAGE_NONE][0]['value'] = time();
+  $date->body[LANGUAGE_NONE][0]['value'] = 'If you will start with ERPAL you will rethink your business processes in detail and discover ERPAL as a platform for your team, data and processes. So lets go!';
+
+  node_save($date);
+  
+  //save the date item. As cache is not yet cleared, we may not have access to all details of field instances
+  //add a new date_item            
+  $date_item = entity_create('date_item', array());  
+  $date_item->title = '';
+  $date_item->type = 'simple_date';
+  $date_item->uid = 1;
+  $date_item->date_from = time(); //this value is already unix time
+  $date_item->date_till = time() + 2 * 60 *60;//take 2 hours for ERPAL ;-)
+  $date_item->src_type = 'node';
+  $date_item->src_id = $date->nid;
+  $date_item->src_field_name = 'field_date_repeat';
+  $date_item->date_items_update = true;  //avoid recursion
+  $op = 'insert';
+  _date_item_save_date_item($date_item, $op, $date, 'node'); 
+  drupal_get_messages(NULL, TRUE);
+}
  
 /**
  * BatchAPI callback
@@ -137,6 +196,8 @@ function _erpal_install_cleanup(&$context) {
   if ($is_quick_install != 'demo') {
     erpal_clear_messages();
   }
+  
+  _install_from_db_cc_all();
 }
 
 
@@ -154,7 +215,7 @@ function _erpal_create_relations(&$context){
  */
 function _erpal_various_settings(&$context){
   $context['message'] = st('Configured ERPAL');
-  
+
   module_load_include('install', 'erpal_basic_helper', 'erpal_basic_helper');
   
   //insert date and time format if they dont exist
@@ -193,8 +254,6 @@ function _erpal_various_settings(&$context){
   variable_set('clean_url', TRUE);
   variable_set('user_picture_default', 'profiles/erpal/files/graphics/erpal_default_avatar.png');
   
-  //add contact default images
-  _erpal_contact_default_image();
 }
 
 /**
@@ -282,9 +341,6 @@ function _erpal_calendar_config(&$context){
   // Enable taxonomy in colors module
   variable_set('colors_taxonomy_term_enabled', TRUE);
   variable_set('colors_taxonomy_term_'.$voc->vid.'_enabled', TRUE);
-  
-  // recreate stylesheet
-  colors_css_clear();
 }
  
 

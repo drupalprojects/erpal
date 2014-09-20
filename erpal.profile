@@ -37,6 +37,7 @@ function erpal_form_install_configure_form_alter(&$form, $form_state) {
 
 function erpal_file_private_path_validate($form, $form_state){ 
   $dir = $form_state['values']['file_private_path'];
+
   if(!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)){
     if(is_dir($dir)){
       form_set_error('file_private_path', 'The private filesystem path is not writable. Drupal needs write permissions to ' . $dir);
@@ -50,7 +51,7 @@ function erpal_file_private_path_validate($form, $form_state){
 
 function erpal_file_private_path_submit($form, $form_state){
   variable_set('file_private_path', $form_state['values']['file_private_path']);
-  variable_set('file_default_scheme', 'private'); 
+  variable_set('file_default_scheme', 'private');    
 }
 
 /** 
@@ -88,7 +89,8 @@ function erpal_install_tasks(&$install_state){
   );
   
   $tasks['erpal_last_config_steps'] = array(
-    'display' => FALSE, 
+    'display_name' => st('Last steps'),
+    'display' => TRUE, 
     'type' => 'batch',
   );
   
@@ -129,9 +131,7 @@ function _erpal_revert_features(&$context){
     'title' => st('Reverting feature'),
     'operations' => $operations,
   );
-  return $batch;  
-
-  //features_revert();
+  return $batch;
 }
 
 /**
@@ -360,8 +360,8 @@ function _erpal_set_theme($target_theme) {
 }
 
 function erpal_create_vocabularies_and_taxonomies(){
-  require_once(DRUPAL_ROOT . '/profiles/erpal/erpal_taxonomy.inc'); 
   
+  require_once(DRUPAL_ROOT . '/profiles/erpal/erpal_taxonomy.inc');   
   // Prepare directories for term_images
   $operations[] = array('_erpal_taxonomy_prepare_directory', array());
   
@@ -419,7 +419,10 @@ function erpal_preconfigure_site(){
   $operations = array();
       
   $quick_install = _erpal_is_quickinstall();    
-  if ($quick_install) {
+  if ($quick_install == 'demo') {    
+    return $operations;
+  }
+  elseif ($quick_install == 'quick') {
     //nothing todo here
     return $operations;
   }  
@@ -457,6 +460,7 @@ function _erpal_add_taxonomy_callbacks(&$operations, $data){
     $operations[] = array('erpal_taxonomy_add', array($taxonomy, $terms_chunk, $parts, $index));
     $index++;
   } 
+   
 }
 
 function erpal_last_config_steps(){
@@ -466,11 +470,17 @@ function erpal_last_config_steps(){
   
   if (!$quick_install) {
     $operations[] = array('_erpal_rebuild_content_access', array());
+  }  
+  
+  if ($quick_install == 'demo') {
+    _erpal_reset_demo_date_items_batch($operations);
+    $operations[] = array('_erpal_create_demo_date', array());    
+    $operations[] = array('_install_from_db_reimport_demo_users', array());    
   }
   
-  $operations[] = array('_erpal_config_finish', array());
+  $operations[] = array('_erpal_config_finish', array());    
+  
   $operations[] = array('_erpal_install_cleanup', array());
-  $operations[] = array('_install_from_db_reimport_demo_users');
     
   $batch = array(
     'title' => st('Performing last installation tasks'),
@@ -479,6 +489,34 @@ function erpal_last_config_steps(){
   );
   return $batch;
 
+}
+
+
+/**
+* Reset date items in a batch process, split into chunks
+*/
+function _erpal_reset_demo_date_items_batch(&$operations) { 
+  //now get all date items
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'date_item');    
+  $result = $query->execute();
+
+  if (isset($result['date_item'])) {      
+    $params = array();
+    $junks = 3;
+    foreach ($result['date_item'] as $id => $obj) {  
+      $params[] = $obj->date_item_id;
+      if (count($params) == $junks) {
+        $operations[] = array('erpal_reset_demo_date_items_callback', array($params));
+        $params = array();
+      }
+    }
+    
+    if (!empty($params)) {
+      $operations[] = array('erpal_reset_demo_date_items_callback', array($params));
+    }
+  }
+ 
 }
 
 /**
