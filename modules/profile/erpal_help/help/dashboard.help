@@ -1,20 +1,20 @@
-<h1>Welcome to the Dashboard</h1>
-<h2>Here you will start working with ERPAL</h2>
+<h1>Welcome to the dashboard</h1>
+<h2>This is where you really start working with ERPAL</h2>
 <p>
-From the dashboard and the left menu you have access to all features in ERPAL that help you to organize your business processes.
-You can customize your dashboard as you want. Your dashboard will be saved individually to your account. You can drag and drop the blocks or delete them from your dashboard. You can add those blocks again by clicking on "Add a block". You can also collapse the block or maximize them to the full width.</p>
+From the dashboard and the left-hand menu you have access to all features in ERPAL to organize your business processes.
+You can customize your dashboard freely; it’s saved to your individual account. Drag and drop blocks to reposition, maximize or minimize them, or delete them entirely from your dashboard: they can always be restored simply by clicking on "Add a block". </p>
 </p>
 <p>
 <h3>The following blocks are available: </h3>
 <ul>
-<li>My appointments today: Will display you all appointments you have in your calendar.</li>
-<li>My assigned open tasks: Will display you all tasks, which are assigned to you.</li>
-<li>My bookmarks: Will display you all your bookmarked content. </li>
-<li>My unbooked time trackings: This block will display all time trackings, which are tracked but not yet finalized.</li>
-<li>My heartbeat: This is your activity stream. It will display you your recent activities in ERPAL.</li>
-<li>Global heartbeat: This block will display you all activities from all users in ERPAL.</li>
+<li>My appointments today: All appointments in your calendar</li>
+<li>My assigned open tasks: All tasks assigned to you</li>
+<li>My bookmarks: All your bookmarked content </li>
+<li>My unbooked time tracking: Times that are tracked but not yet finalized</li>
+<li>My heartbeat: This is your activity stream; it displays your recent activities in ERPAL</li>
+<li>Global heartbeat: Displays all activities from all users in ERPAL</li>
 </ul>
-You can take a look at our screencast to <a href="http://youtu.be/ro_bYgFsicM">learn more about the dashboard</a> in our complete ERPAL for Service Providers' overview.
+Take a look at our screencast to <a href="http://youtu.be/ro_bYgFsicM">learn more about the dashboard</a> in our complete ERPAL for Service Providers' overview.
 </p>
 <p>
 <h2>Screencast: ERPAL overview</h2>
@@ -22,7 +22,7 @@ You can take a look at our screencast to <a href="http://youtu.be/ro_bYgFsicM">l
 </p>
 <p>
 <h2>Configure ERPAL</h2>
-If you just started with ERPAL, you can learn how to customize and configure ERPAL according to your individual needs with the following screencast.
+If you’ve just started with ERPAL, you can learn how to customize and configure ERPAL according to your individual needs in the following screencast.
 <div class="help_video">
 <iframe width="480" height="360" src="//www.youtube.com/embed/9wBqIoVf6uU" frameborder="0" allowfullscreen></iframe>
 </div>

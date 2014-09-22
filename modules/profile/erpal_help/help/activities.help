@@ -1,17 +1,19 @@
 <h1>Working with activities</h1>
-<h2>Here you will manage your sales processes</h2>
+<h2>This is where you manage your sales processes</h2>
 <p>
-Activities help you to follow your leads with your customers and to generate new projects. 
+Activities help you to track your customer leads and to generate new projects. 
 The activities are sorted into three tabs: 
-Missed: Those are all activities, where the next contact date is in the past.
-Next: Here you find all activities, where the next date is the next seven days. 
-All: Here you will find all activities. 
-You can use the search or the filter options to find a specific activity. 
-Clicking the button "Create a new activity" will lead you to the activity form. 
-When you click on a title of an activity, you will see the detailed activity information. From here on you can change the state of the activity with the comments or you can use the "Actions" button to edit the activity or to create a new project from the activity. 
+<ul>
+<li>Missed: Activities for which the “Next contact” date is in the past, that is, the activity is overdue</li>
+<li>Next: Activities that are coming up within the next seven days</li>
+<li>All: An overview of all activities</li>
+</ul>
+Use the search or filter options to find a specific activity. 
+Clicking the button "Create a new activity" will lead you to a blank activity form. 
+When you click on the title of an activity, you see detailed activity information. From here you can change the status of the activity when you add a comment or you can use the "Actions" button to edit the activity or create a new project from the activity. 
 </p>
 <p>
-Please take a look at our screencast to get more information about <a href="http://youtu.be/4tWfwx1TtLk?t=5m48s">how to work with activities</a> in detail or watch the full screencast. for a complete overview of the CRM.
+Please take a look at the <a href="http://youtu.be/4tWfwx1TtLk?t=5m48s">how to work with activities</a> section of our screencast or watch the full video for a complete overview of the CRM.
 </p>
 <p>
 <h2>Working with the CRM</h2>
