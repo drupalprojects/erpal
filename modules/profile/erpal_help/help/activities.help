@@ -3,9 +3,11 @@
 <p>
 Activities help you to track your customer leads and to generate new projects. 
 The activities are sorted into three tabs: 
-Missed: Activities for which the “Next contact” date is in the past, that is, the activity is overdue
-Next: Activities that are coming up within the next seven days
-All: An overview of all activities
+<ul>
+<li>Missed: Activities for which the “Next contact” date is in the past, that is, the activity is overdue</li>
+<li>Next: Activities that are coming up within the next seven days</li>
+<li>All: An overview of all activities</li>
+</ul>
 Use the search or filter options to find a specific activity. 
 Clicking the button "Create a new activity" will lead you to a blank activity form. 
 When you click on the title of an activity, you see detailed activity information. From here you can change the status of the activity when you add a comment or you can use the "Actions" button to edit the activity or create a new project from the activity. 
