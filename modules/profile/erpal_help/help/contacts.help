@@ -1,14 +1,14 @@
 <h1>Working with contacts</h1>
-<h2>Your CRM work wil start here</h2>
+<h2>Your CRM work begins here</h2>
 <p>
-In this area you can access all contacts in ERPAL or add a new contacts. You can use the search or the filters of the list to find specific contacts. 
-To add a new contact, click on the button "Create a new contact"on the right side.
-To see the details of a contact, you can click on his name. In the contact details view you have multiple options to work with the contact. Clicking the tabs will lead you to more details. In the right sidebar you find all contact related information like invoices, projects, contracts and forecasts. 
-To edit the contact or to add some new content for the contact, you can hover your mouse over the button "Actions" and choose a single action there.<br> 
-For further information about working with contacts, creating relations between contacts and about importing existing contacts from a CSV file you can take a look at the following screencast
+This is where you can access all contacts already in ERPAL or add new ones. Use the search field or the filter options to find specific contacts. 
+To add a new contact, click on the "Create a new contact" button in the upper right-hand corner of the “Contacts” area.
+To see the details of any one contact, click on the name. In this view you have multiple options for working with the contact. Clicking the tabs provides further details. On the right-hand sidebar you can access other contact-related information such as invoices, projects, contracts and forecasts. 
+To edit the contact or to add new content, hover over the "Actions" button at the upper right corner and choose one. <br> 
+For further information on working with contacts, creating relations between contacts or importing existing contacts from a CSV file, please take a look at the following screencast:
 </p>
 <p>
-<h2>Working with the CRM</h2>
+<h2>Working with contacts in the CRM</h2>
 <div class="help_video">
 <iframe width="480" height="360" src="//www.youtube.com/embed/4tWfwx1TtLk" frameborder="0" allowfullscreen></iframe>
 </div>

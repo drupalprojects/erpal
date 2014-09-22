@@ -1,33 +1,33 @@
-<h1>Working with project</h1>
-<h2>Learn how to manage and control your projects</h2>
+<h1>Working with projects</h1>
+<h2>Manage and control your projects</h2>
 <p>
-This section of ERPAL will help you to manage your projects in a well structured way and automate lots of your administration. 
-You will see the project list first. In the project list you will have three tabs: 
+This section of ERPAL helps you manage your projects in a structured way and automates much of your administration. 
+On the “Project list” tab you have three choices:
 <ul>
-<li>In progress: Those are projects, which are in progress.</li>
-<li>Closed: Clicking this tab will display all closed projects.</li>
-<li>All: This will show you all projects. </li>
+<li>In progress: Ongoing projects still in progress</li>
+<li>Closed: All closed projects</li>
+<li>All: Overview of all projects </li>
 </ul>
-You can search by different fields the list of projects or filter them. 
+You can search flexibly through the projects or filter on different options. 
 </p>
 <p>
-You can also click on "Active time trackings" to see all your time trackings, which are not finalized yet. These time trackings are create by pushing the time tracking button on the right side below the "action" button of each task.
-The "Time trackings" tab will lead you to the list of time trackings in the system. You can filter them by a user or by project. 
-The "Fixed price items" tab will provide you an overview of fixed price projects and tasks which are not completed yet.
-The "Time-Budgets" tab will show you an overview of all budgets you have set up in the projects and/or tasks.
-Clicking on a project title will lead you to the details page of a project. From this page you can access the tasks, tickets, files, calendar and time trackings. 
+You can also click on "Active time tracking" to see all non-finalized timekeeping. These time trackings are created by clicking the time tracking button on the right hand side below the "action" button of each task.
+The "Time trackings" tab brings up a list of working time tracked in the system. You can filter them by user or project. 
+The "Fixed price items" tab provides an overview of fixed price projects and incomplete tasks.
+The "Time-Budgets" tab shows an overview of all budgets set up in projects and/or tasks.
+Clicking on a project title brings up the details for that project. From this page you can access the tasks, tickets, files, calendar and timekeeping. 
 </p>
 <p>
-To learn more about creating tasks, time trackings, using the Gantt chart, managing tickets with your customer, setting up a project team and working with price modes you can take a look at our following screencasts: 
+To learn more about creating tasks, time tracking, using the Gantt chart, managing tickets with your customer, setting up a project team and working with price modes, take a look at the following screencasts: 
 </p>
 <p>
 <h2>Working together in projects</h2>
 <iframe width="480" height="360" src="//www.youtube.com/embed/yFeoA7NPU_0" frameborder="0" allowfullscreen></iframe>
 </p>
 <p>
-To learn more about controlling and monitoring your projects you should take a look at the following screencast.
+To learn more about controlling and monitoring your projects, take a look at the following screencast:
 <h2>Controlling of revenue and expenses</h2>
-This screencast will show you how to monitor and control your time, revenue, expenses and how the alert system is working.
+This screencast will show you how to monitor and control your time, revenue, and expenses, as well as how the alert system works.
 <div class="help_video"> 
 <iframe width="480" height="360" src="//www.youtube.com/embed/5LhUvcnhQ3M" frameborder="0" allowfullscreen></iframe>
 </div>

@@ -1,21 +1,21 @@
 <h1>Employee timekeeping</h1>
-<h2>Controll and report you employee's working time</h2>
+<h2>Control and report your working time</h2>
 <p>
-Timekeeping will help you to keep track of your overtime, working hours, your ill days and your vacation. 
-In the overview of your timekeeping you can see three tabs: 
+Timekeeping will help you to keep track of your working hours, overtime, sick days and vacation. 
+The timekeeping overview shows three tabs: 
 <ul>
-<li>Day: Here you will see your daily working time.</li>
-<li>Month: This will provide you a monthly overview of your working time. You can filter for year or month.</li>
-<li>Year: This will provide you a yearly overview of your working time. You can filter the year.</li>
+<li>Day: The hours you spent working on any given day</li>
+<li>Month: An overview of your working time by month; filter for year/month</li>
+<li>Year: A yearly overview of your working time; filter by year</li>
 </ul>
 </p>
 <p>
-The tab "all timekeeping" will allow you to filter the time keepings of other users in ERPAL, if you have access to this section. 
-Clicking the button "Create a new working time" will lead you to the form to add a new timekeeping. You can select the type of the working time and insert multiple breaks. 
-Please take a look at our screencast to get more information about controlling the working time, check your overtime, adding days off, vacation and ill-days:
+If you have permission to access it, ERPAL’s "All Timekeeping" tab allows you to see other users’ working hours; filter by month, year or name. 
+Clicking the button "Create a new working time" brings up the form to add a new timekeeping. Select the type of working time and insert breaks as needed. 
+Please take a look at our screencast for more information about controlling working time, checking overtime, or adding days off, vacation and sick days:
 </p>
 <p>
-<h2>Screencast about employee timekeeping</h2>
+<h2>Screencast on employee timekeeping</h2>
 <div class="help_video">
 <iframe width="480" height="360" src="//www.youtube.com/embed/bnUn5tB_ZfQ" frameborder="0" allowfullscreen></iframe>
 </div>
