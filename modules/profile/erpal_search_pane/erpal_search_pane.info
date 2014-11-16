@@ -1,8 +1,7 @@
-name = ERPAL Search Pane
-description = "Provides a small search pane for ERPAL" 
+name = Erpal Search Pane
+description = "Provides small search pane for Erpal" 
 dependencies[] = entity
 core = 7.x
 package = Custom
 
-scripts[] = js/erpal_search_pane.js
 stylesheets[all][] = css/erpal_search_pane.css

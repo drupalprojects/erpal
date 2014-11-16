@@ -34,30 +34,6 @@ function erpal_search_pane_form(array $form, array &$form_state, $keys = NULL) {
   */
 
 function erpal_search_pane_form_submit(&$form, $form_state) {
-  $_SESSION['erpal_search_pane']['search_value'] = $form_state['values']['search_field'];
-  $_GET['destination'] = 'erpal-search';
-}
-
-/**
-  * Implements hook_form_alter
-  * Get the search_string from the sidebar form and insert it to a hidden field
-  */
-function erpal_search_pane_form_alter(&$form, $form_state) {
-
-  if($form['#id'] == 'erpal-search-pane-form') {
-    if(isset($_SESSION['erpal_search_pane']['search_value'])) {
-      $search_value = $_SESSION['erpal_search_pane']['search_value'];
-    } else {
-      $search_value = '';
-    }
-
-    unset($_SESSION['erpal_search_pane']['search_value']);
-    $form['hidden_value'] = array (
-      '#type' => 'hidden',
-      '#default_value' => $search_value,
-      '#attributes' => array(
-        'class' => 'hidden-search-string'
-      ),
-    );
-  }
+  $search_string = $form_state['values']['search_field'];
+  $_GET['destination'] = 'erpal-search?search_api_views_fulltext='.$search_string;
 }
