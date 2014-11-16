@@ -42,15 +42,15 @@ function erpal_search_pane_form_submit(&$form, $form_state) {
   * Implements hook_form_alter
   * Get the search_string from the sidebar form and insert it to a hidden field
   */
-
 function erpal_search_pane_form_alter(&$form, $form_state) {
-  // dpm($form);
-  if($form['#id'] == 'views-exposed-form-erpal-search-block-1') { 
+
+  if($form['#id'] == 'erpal-search-pane-form') {
     if(isset($_SESSION['erpal_search_pane']['search_value'])) {
       $search_value = $_SESSION['erpal_search_pane']['search_value'];
     } else {
       $search_value = '';
     }
+
     unset($_SESSION['erpal_search_pane']['search_value']);
     $form['hidden_value'] = array (
       '#type' => 'hidden',
