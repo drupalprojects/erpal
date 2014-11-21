@@ -1,0 +1,18 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the rate range links module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function date_range_links_install() {
+  // Increase the module weight, so hook_field_views_data_alter
+  // will be executed after date module's.
+  db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('type', 'module')
+    ->condition('name', 'date_range_links')
+    ->execute();
+}

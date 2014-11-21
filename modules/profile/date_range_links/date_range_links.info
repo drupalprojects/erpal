@@ -1,0 +1,7 @@
+name = Date range links
+description = Adds 'Today', 'This week' and 'This month' links to choose range of date combo field.
+core = 7.x
+package = Date/Time
+dependencies[] = date_api
+dependencies[] = date_popup
+files[] = views/date_range_links_handler_filter_date_simple.inc

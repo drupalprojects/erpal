@@ -1,0 +1,12 @@
+/**
+ * @file
+ * Basic styling for the Date range module.
+ */
+
+/**
+ * Styles for Date range links.
+ */
+.date-range-links a {
+  margin-right: 6px;
+  font-size: 0.8em;
+}

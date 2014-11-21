@@ -1,0 +1,213 @@
+<?php
+/**
+ * @file
+ * This module outputs some links to choose range of date combo field.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function date_range_links_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#date_range_links':
+      // Return a line-break version of the module README.txt
+      return check_markup(file_get_contents(dirname(__FILE__) . "/README.txt"));
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function date_range_links_theme() {
+  return array(
+    'date_range_links' => array(
+      'variables' => array('links' => NULL),
+      'path' => drupal_get_path('module', 'date_range_links') . '/theme',
+      'template' => 'date-range-links',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_views_data_alter().
+ *
+ * Override filter handler for date field in views exposed form.
+ */
+function date_range_links_field_views_data_alter(&$result, $field, $module) {
+  if ($module == 'date') {
+    foreach ($result as $table => $data) {
+      foreach ($data as $column => $value) {
+        // For filters, arguments, and sorts, determine if this column is for
+        // the start date ('value') or the end date ('value2').
+        $this_column = NULL;
+        foreach (array_keys($field['columns']) as $candidate_column) {
+          if ($column == $field['field_name'] . '_' . $candidate_column) {
+            $this_column = $candidate_column;
+            break;
+          }
+        }
+
+        // Only alter the date fields, not timezone, rrule, offset, etc.
+        if ($this_column != 'value' && $this_column != 'value2') {
+          continue;
+        }
+
+        // Replace date filter handler to add Show range links settings.
+        if (array_key_exists('filter', $value)) {
+          $result[$table][$column]['filter']['handler'] = 'date_range_links_handler_filter_date_simple';
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_date_combo_process_alter().
+ */
+function date_range_links_date_combo_process_alter(&$element, &$form_state, $context) {
+  $settings = $context['field']['settings'];
+
+  if (!empty($settings['enddate_date_range_links'])) {
+    // Get links.
+    $links = module_invoke_all('date_range_links', $element['value']['#date_format']);
+    drupal_alter('date_range_links', $links);
+
+    // Attach Range links to date field.
+    $element['date_range_links_wrapper'] = array(
+      '#type' => 'container',
+      '#weight' => 10,
+    );
+    $element['date_range_links_wrapper']['date_range_links'] = array(
+      '#markup' => theme('date_range_links', array('links' => $links)),
+      '#attached' => array(
+        'css' => array(drupal_get_path('module', 'date_range_links') . '/css/date_range_links.css'),
+        'js' => array(drupal_get_path('module', 'date_range_links') . '/js/date_range_links.js'),
+      ),
+    );
+
+    // Show date range links only if 'Show End Date' checked.
+    if ($settings['todate'] == 'optional') {
+      $parents = $element['#parents'];
+      $first_parent = array_shift($parents);
+      $show_id = $first_parent . '[' . implode('][', $parents) . '][show_todate]';
+
+      $element['date_range_links_wrapper']['#states'] = array(
+        'visible' => array(
+          'input[name="' . $show_id . '"]' => array('checked' => TRUE),
+        ));
+    }
+  }
+}
+
+/**
+ * Implements hook_date_popup_process_alter().
+ *
+ * Adds classes to detect input fields in js script.
+ */
+function date_range_links_date_popup_process_alter(&$element, $form_state, $context) {
+  if (!empty($element['date'])) {
+    $element['date']['#attributes']['class'][] = 'popup-date-input';
+  }
+  if (!empty($element['time'])) {
+    $element['time']['#attributes']['class'][] = 'popup-time-input';
+  }
+}
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function date_range_links_date_field_settings_form_alter(&$form, $context) {
+  $settings = $context['field']['settings'];
+
+  $form['enddate_date_range_links'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show range links'),
+    '#default_value' => !empty($settings['enddate_date_range_links']),
+    '#states' => array(
+      'invisible' => array(
+        'input[name="field[settings][enddate_get]"]' => array('checked' => FALSE),
+      ),
+    ),
+    '#attributes' => array(
+      'style' => 'margin-left: 1.3em;',
+    ),
+  );
+
+  // Set weight of Timezone to output 'Show range links' near 'Required' field.
+  $form['repeat']['#weight'] = 2;
+  $form['tz_handling']['#weight'] = 2;
+}
+
+/**
+ * Implements hook_date_range_links().
+ *
+ * Returns an array contains links to output.
+ */
+function date_range_links_date_range_links($format) {
+  module_load_include('inc', 'date_range_links', 'includes/links');
+
+  $today = REQUEST_TIME;
+
+  $links = array();
+  $links[] = _date_range_links_get_range_today($today, $format);
+  $links[] = _date_range_links_get_range_this_week($today, $format);
+  $links[] = _date_range_links_get_range_this_month($today, $format);
+
+  return $links;
+}
+
+/**
+ * Returns prepared to output date range link element.
+ *
+ * @param string $title
+ *   Link title.
+ * @param string $format
+ *   Format of date.
+ * @param int $start_date
+ *   Start date in timestamp.
+ * @param int $end_date
+ *   End date in timestamp.
+ * @param int $start_time
+ *   Start time in timestamp.
+ * @param int $end_time
+ *   End time in timestamp.
+ *
+ * @return array
+ *   Link element.
+ */
+function date_range_links_link_element($title, $format, $start_date, $end_date, $start_time = NULL, $end_time = NULL) {
+  $date_format = date_part_format('date', $format);
+  $time_format = date_part_format('time', $format);
+
+  if (!$start_time) {
+    $start_time = mktime(00, 00, 00);
+  }
+  if (!$end_time) {
+    $end_time = mktime(23, 59, 59);
+  }
+
+  return array(
+    '#type' => 'link',
+    '#title' => $title,
+    '#href' => NULL,
+    '#options' => array('external' => TRUE, 'fragment' => FALSE),
+    '#attributes' => array(
+      'class' => 'date-range-link',
+      'title' => $title,
+      'data-date' => format_date($start_date, 'custom', $date_format),
+      'data-date2' => format_date($end_date, 'custom', $date_format),
+      'data-time' => format_date($start_time, 'custom', $time_format),
+      'data-time2' => format_date($end_time, 'custom', $time_format),
+    ),
+  );
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function date_range_links_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'date_range_links') . '/views',
+  );
+}
