@@ -328,7 +328,7 @@ projects[quicktabs][patch][] = "http://drupal.org/files/1940332-set-override_url
 projects[references_dialog][version] = "1.0-beta1"
 projects[references_dialog][subdir] = "contrib"
 
-projects[relation][version] = "1.0-rc5"
+projects[relation][version] = "1.0-rc6"
 projects[relation][subdir] = "contrib"
 
 projects[relation_add][version] = "1.2"
