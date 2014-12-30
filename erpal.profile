@@ -590,7 +590,7 @@ function erpal_contact_information_form($form, &$form_state){
     $form['company_address']['vat_rate'] = array(
       '#title' => st('Default tax rate'),
       '#type' => 'textfield',
-      '#description' => st('Enter the default tax rate in percent for your country.'),
+      '#description' => st('Enter the default tax rate in percent for your country. Numeric value only. For example for 13% enter 13.'),
       '#maxlength' => 5,
       '#required' => TRUE,
     );    
