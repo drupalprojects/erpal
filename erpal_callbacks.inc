@@ -21,8 +21,7 @@ function _erpal_create_files(&$context){
  * enables the display of warnings in erpal_basic_helper
  */
 function _erpal_config_finish(&$context){
-  $context['message'] = st('Erpal installation completed');
-  variable_set('erpal_basic_helper_display_warnings', TRUE);
+  $context['message'] = st('Erpal installation completed');  
   
   $quick_install = _erpal_is_quickinstall();    
   
@@ -198,6 +197,8 @@ function _erpal_install_cleanup(&$context) {
   }
   
   _install_from_db_cc_all();
+  
+  variable_set('erpal_basic_helper_display_warnings', TRUE);
 }
 
 

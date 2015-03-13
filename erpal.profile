@@ -111,6 +111,7 @@ function _erpal_revert_feature($feature_name, &$context) {
  * reverts all features
  */ 
 function _erpal_revert_features(&$context){
+  variable_set('erpal_basic_helper_display_warnings', FALSE);
   if (_erpal_is_quickinstall()) {
     return array();  //nothing todo here.
   }
@@ -463,8 +464,7 @@ function _erpal_add_taxonomy_callbacks(&$operations, $data){
    
 }
 
-function erpal_last_config_steps(){
-  
+function erpal_last_config_steps(){  
   $operations = array();
   $quick_install = _erpal_is_quickinstall();    
   
