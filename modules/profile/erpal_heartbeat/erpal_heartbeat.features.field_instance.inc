@@ -10,7 +10,8 @@
 function erpal_heartbeat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'message-erpal_heartbeat_comment_message-field_erpal_hb_comment_ref'
+  // Exported field_instance:
+  // 'message-erpal_heartbeat_comment_message-field_erpal_hb_comment_ref'
   $field_instances['message-erpal_heartbeat_comment_message-field_erpal_hb_comment_ref'] = array(
     'bundle' => 'erpal_heartbeat_comment_message',
     'default_value' => NULL,
@@ -63,7 +64,8 @@ function erpal_heartbeat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-erpal_heartbeat_comment_message-field_erpal_hb_node_ref'
+  // Exported field_instance:
+  // 'message-erpal_heartbeat_comment_message-field_erpal_hb_node_ref'
   $field_instances['message-erpal_heartbeat_comment_message-field_erpal_hb_node_ref'] = array(
     'bundle' => 'erpal_heartbeat_comment_message',
     'default_value' => NULL,
@@ -119,7 +121,8 @@ function erpal_heartbeat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-erpal_heartbeat_comment_message-field_erpal_hb_operation'
+  // Exported field_instance:
+  // 'message-erpal_heartbeat_comment_message-field_erpal_hb_operation'
   $field_instances['message-erpal_heartbeat_comment_message-field_erpal_hb_operation'] = array(
     'bundle' => 'erpal_heartbeat_comment_message',
     'comment_enabled' => 0,
@@ -158,7 +161,8 @@ function erpal_heartbeat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-erpal_heartbeat_comment_message-field_erpal_hb_published'
+  // Exported field_instance:
+  // 'message-erpal_heartbeat_comment_message-field_erpal_hb_published'
   $field_instances['message-erpal_heartbeat_comment_message-field_erpal_hb_published'] = array(
     'bundle' => 'erpal_heartbeat_comment_message',
     'default_value' => array(
@@ -200,7 +204,8 @@ function erpal_heartbeat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-erpal_heartbeat_node_message-field_erpal_hb_node_ref'
+  // Exported field_instance:
+  // 'message-erpal_heartbeat_node_message-field_erpal_hb_node_ref'
   $field_instances['message-erpal_heartbeat_node_message-field_erpal_hb_node_ref'] = array(
     'bundle' => 'erpal_heartbeat_node_message',
     'default_value' => NULL,
@@ -256,7 +261,8 @@ function erpal_heartbeat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-erpal_heartbeat_node_message-field_erpal_hb_operation'
+  // Exported field_instance:
+  // 'message-erpal_heartbeat_node_message-field_erpal_hb_operation'
   $field_instances['message-erpal_heartbeat_node_message-field_erpal_hb_operation'] = array(
     'bundle' => 'erpal_heartbeat_node_message',
     'comment_enabled' => 0,
@@ -295,7 +301,8 @@ function erpal_heartbeat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-erpal_heartbeat_node_message-field_erpal_hb_published'
+  // Exported field_instance:
+  // 'message-erpal_heartbeat_node_message-field_erpal_hb_published'
   $field_instances['message-erpal_heartbeat_node_message-field_erpal_hb_published'] = array(
     'bundle' => 'erpal_heartbeat_node_message',
     'default_value' => array(
