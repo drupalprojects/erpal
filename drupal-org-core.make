@@ -1,6 +1,6 @@
 api = 2
 core = 7.x
-projects[drupal][version] = 7.34
+projects[drupal][version] = 7.37
 
 ; Patches for Core
 projects[drupal][patch][] = "http://drupal.org/files/issues/1349080-195-d7-move-access-to-join-condition.patch"
