@@ -17,14 +17,6 @@ function erpal_heartbeat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_erpal_hb_comment_ref',
-    'foreign keys' => array(
-      'comment' => array(
-        'columns' => array(
-          'target_id' => 'cid',
-        ),
-        'table' => 'comment',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -62,14 +54,6 @@ function erpal_heartbeat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_erpal_hb_node_ref',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -108,7 +92,6 @@ function erpal_heartbeat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_erpal_hb_operation',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -136,7 +119,6 @@ function erpal_heartbeat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_erpal_hb_published',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
