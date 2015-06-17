@@ -2,43 +2,6 @@
 core = 7.x
 api = 2
 
-;;;;;;;;;;;;;;;;;;;;;;; ERPAL Contributed modules
-projects[erpal_core][version] = "1.0-rc1"
-projects[erpal_core][subdir] = "erpal"
-
-projects[erpal_book][version] = "1.0-rc1"
-projects[erpal_book][subdir] = "erpal"
-
-projects[erpal_calendar][version] = "1.0-rc1"
-projects[erpal_calendar][subdir] = "erpal"
-
-projects[erpal_contract][version] = "1.0-rc1"
-projects[erpal_contract][subdir] = "erpal"
-
-projects[erpal_employee][version] = "1.0-rc1"
-projects[erpal_employee][subdir] = "erpal"
-
-projects[erpal_invoice][version] = "1.0-rc1"
-projects[erpal_invoice][subdir] = "erpal"
-
-projects[erpal_project][version] = "1.0-rc1"
-projects[erpal_project][subdir] = "erpal"
-
-projects[erpal_project_release][version] = "1.0-rc1"
-projects[erpal_project_release][subdir] = "erpal"
-
-projects[erpal_reports][version] = "1.0-rc1"
-projects[erpal_reports][subdir] = "erpal"
-
-projects[erpal_crm_reports][version] = "1.0-rc1"
-projects[erpal_crm_reports][subdir] = "erpal"
-
-projects[erpal_project_reports][version] = "1.0-rc1"
-projects[erpal_project_reports][subdir] = "erpal"
-
-projects[erpal_contacts_importer][version] = "1.0-rc1"
-projects[erpal_contacts_importer][subdir] = "erpal"
-
 ;;;;;;;;;;;;;;;;;;;;Erpal Contributed Themes
 projects[erpal_theme][type] = "theme"
 projects[erpal_theme][version] = "1.0-rc1"
@@ -93,7 +56,7 @@ projects[field_extrawidgets][subdir] = "contrib"
 projects[cat][version] = "1.0-rc1"
 projects[cat][subdir] = "contrib"
 
-projects[ckeditor][version] = "1.13"
+projects[ckeditor][version] = "1.16"
 projects[ckeditor][subdir] = "contrib"
 
 projects[ctools][version] = "1.7"
@@ -334,7 +297,7 @@ libraries[fullcalendar][directory_name] = "libraries"
 libraries[fullcalendar][destination] = ""
 
 libraries[ckeditor][download][type] = "file"
-libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.0.2/ckeditor_4.0.2_full.tar.gz"
+libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.4.7/ckeditor_4.4.7_full.zip"
 libraries[ckeditor][destination] = "modules/contrib/ckeditor"
 
 libraries[jstree][download][type] = "file"
