@@ -1,0 +1,49 @@
+<?php
+
+/**
+* @file installation file of module erpal_projects_helper
+*/
+
+/**
+* Implements hook_install
+*/ 
+function erpal_projects_helper_install() {
+  _erpal_projects_helper_elyisa_cron_defaults();
+}
+
+/**
+* Add some base configuration for freelinking module integration
+*/
+function erpal_projects_helper_update_7001(&$sandbox) {
+  variable_set('freelinking_default', 'nodetitle');
+  variable_set('freelinking_match_syntax', 'double_bracket');
+}
+
+/**
+* enable erpal_project_book feature to integrate books and projects
+*/
+function erpal_projects_helper_update_7002(&$sandbox) {
+  module_enable(array('erpal_project_book'));
+}
+
+/**
+* Disable removed module
+*/
+function erpal_projects_helper_update_7004(&$sandbox) {
+  module_disable(array('erpal_timetracking_helper'));
+}
+
+/**
+* Set elysia cron defaults
+*/
+function erpal_projects_helper_update_7005() {
+  _erpal_projects_helper_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_projects_helper_elyisa_cron_defaults() {
+  $values = array('rule' => '0 */6 * * *');
+  elysia_cron_set('erpal_projects_helper_cron', false, $values);
+}

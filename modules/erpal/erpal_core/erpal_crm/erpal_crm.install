@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * Implements hook_update_N().
+ * Adds default image to contact.
+ */
+function erpal_crm_update_7100(){
+  erpal_crm_contact_add_default_image();
+}
+
+//TODO: replace with hook_post_features_enable_feature
+///**
+// * Implements hook_install().
+// * Adds default image to contact.
+// */
+//function erpal_crm_install(){
+//  erpal_crm_update_7100();
+//}

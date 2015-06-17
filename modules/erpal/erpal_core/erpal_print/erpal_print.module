@@ -1,0 +1,379 @@
+<?php
+/**
+ * @file
+ * Module to provide helper functions and basic templates for creating pdf
+ */
+
+//marker is placed in html output to insert page breaks in pdf export
+define('PDF_PAGE_BREAK', '###break###');
+ 
+/**
+* Implements hook_theme
+*/ 
+function erpal_print_theme() {
+  return array(
+    'doc_header' => array(
+      'variables' => array(),
+      'template' => 'template/doc_header',
+    ),
+    'doc_footer' => array(
+      'variables' => array(),
+      'template' => 'template/doc_footer',
+    ),
+    'erpal_print_toc' => array(
+      'variables' => array('page' => 1, 'pdf_object' => NULL, 'title' => false),
+      'template' => 'template/toc',
+    ),
+    'erpal_print_prepare_pdf' => array(
+      'variables' => array('pdf_object' => NULL),
+      'template' => 'template/prepare_pdf',
+    ),
+  );
+}
+
+/**
+* Implements hook_form_alter to inject options into the basic settings form
+*/
+function erpal_print_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_basic_helper_config_form') {
+    _erpal_print_inject_basic_config_form($form);
+  }    
+}
+
+function _erpal_print_inject_basic_config_form(&$form) {
+  //ensure it is processed only once.
+  static $processed = false;
+  
+  if ($processed)
+    return false;
+    
+  $processed = true;  
+  
+  //company logo
+  $form['#attributes']['enctype'] = 'multipart/form-data';
+  $form['#submit'][] = '_erpal_print_inject_basic_config_form_submit';
+  
+  $allowed_extensions = _erpal_print_logo_valid_extensions();
+
+  $document_fid = variable_get('my_document_logo', false);
+  $file = false;
+  
+  if ($document_fid) {
+    $file = file_load($document_fid);
+  } 
+  
+  $form['document_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Document settings'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#weight' => -1,
+  );
+  
+  $form['document_settings']['company_logo_document'] = array(
+    '#type' => 'managed_file',
+    '#weight' => -10,  //at the top of the page
+    '#title' => t('Company logo for documents'),
+    '#description' => t('Upload your logo that will be used in documents. Allowed file extensions: !extensions', array('!extensions' => implode(',', $allowed_extensions))),
+    '#upload_validators' => array('file_validate_extensions' => array(implode(' ', $allowed_extensions))),
+    '#upload_location' => _erpal_print_logo_documents_upload_dir(),
+    '#default_value' => $file ? $file->fid : false,
+  ); 
+  
+  $form['document_settings']['document_footer'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Documents footer'),
+    '#description' => t('This HTML text will be the footer of your documents'),
+    '#default_value' => _erpal_print_get_document_footer(),
+  );
+  
+  $types = array('erpal_basic');
+  $tokens = theme('token_tree', array('global_types' => FALSE, 'token_types' => $types));
+  $form['document_settings']['document_footer']['#suffix'] = $tokens;
+ 
+}
+
+/**
+* Returns the document footer
+*/
+function _erpal_print_get_document_footer() {
+  return variable_get('erpal_print_document_footer', '');
+}
+
+/**
+* Submit handler for document logo file injection
+*/
+function _erpal_print_inject_basic_config_form_submit($form, $form_state)  {
+  $values = $form_state['values'];
+  $document_fid = $values['company_logo_document'];
+  variable_set('my_document_logo', $document_fid);  //save phone number
+  if ($document_fid){  
+    //finalise the file!
+    $file = file_load($document_fid);
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+    file_usage_add($file, 'erpal_print', 'config', $file->fid); 
+  }
+  
+  //save document footer  
+  $document_footer = $values['document_footer'];
+  variable_set('erpal_print_document_footer', $document_footer);
+}
+ 
+/**
+* Function to render the given html string as PDF
+* @param $html the html that should be rendered into pdf
+* @param $destination_uri if set, PDF will be saved to the given destination folder (ONLY FOLDER!), otherwise
+*   it will directly be given as download to the users
+* @param $download_filename the filename if the document is put as download
+* @param $params set author and title of the document
+* @param $pdf_object the tcpdf object that creates the pdf. If none is given, we create it
+* @param $print_toc if true the table of contents will be printed
+* @param $frontpages an array of html pages that are printed bevore the TOC each on a spearate page
+* @return a file object representing the temporaray file.
+*/ 
+function _erpal_print_html_as_pdf($html, $destination_uri=false, $basename=false, $params=false, $pdf_object=false, $print_toc=false, $frontpages=array()) {
+  global $user;
+  
+  if (!$pdf_object)    
+    $pdf_object = erpal_print_prepare_tcpdf($params);
+  
+  if (!$pdf_object)
+    return false;
+
+  //parse html file for private files. These must be replaced be strem ULR with token
+  $html = _erpal_print_replace_private_images($html);
+
+  $parts = _erpal_print_split_pages($html);
+  foreach ($parts as $part_html) {
+    $pdf_object->AddPage();
+    $pdf_object->writeHTML($part_html, true, false, false, false, '');
+  }
+  
+  if ($print_toc)
+    _erpal_print_create_toc($pdf_object);
+   
+  //if there are front pages add them and move them at first page (before table of contents)
+  //because we go this way we have to iterate trhough the array starting at the bottom
+  $skip_pdf_header_frontpage = isset($params['skip_pdf_header_frontpage']) ? $params['skip_pdf_header_frontpage'] : false;
+  if ($skip_pdf_header_frontpage)
+    $pdf_object->setPrintHeader(false);
+  for ($i = count($frontpages) -1; $i >= 0; $i--) {
+    $part_html = $frontpages[0];
+    $part_html = _erpal_print_replace_private_images($part_html);
+
+    $pdf_object->AddPage();
+    $pdf_object->writeHTML($part_html, true, false, false, false, '');
+    $inserted_page_no = $pdf_object->PageNo();
+    $pdf_object->movePage($inserted_page_no, 1);
+  }
+  $pdf_object->setPrintHeader(true);
+   
+  //now output the pdf
+  if ($destination_uri) {
+    $destination_path = drupal_realpath($destination_uri.$basename);
+
+    //perhaps file must be renamed
+    $destination_path = file_destination($destination_path, FILE_EXISTS_RENAME);
+    $new_basename = basename($destination_path);
+    $destination_uri = $destination_uri.$new_basename;
+    $pdf_object->Output($destination_path, "F");
+    
+    //sometimes, the URI starts with /// instead of // so we fix that here
+    $destination_uri = str_replace('///', '//', $destination_uri);
+    
+    // Begin building file object.
+    $file = new stdClass();
+    $file->uid      = $user->uid;
+    $file->status   = 1; //final!
+    $file->filename = $basename;
+    $file->uri      = $destination_uri;
+    $file->filemime = file_get_mimetype($destination_path);
+    $file->filesize = filesize($destination_path);
+    
+    file_save($file);
+
+    return $file;
+  } else {
+    $pdf_object->Output($basename, "D");
+    /**
+    * prevent from further drupal output 
+    */
+    die();
+  }
+}
+
+/**
+* Replaces the link to image file that are private with stream link
+*/
+function _erpal_print_replace_private_images($html) {
+  
+  $regexp = "<img[^>]+>";
+  $images = array();
+  if(preg_match_all("/$regexp/i", $html, $matches)) {
+    $images = $matches[0];
+  }
+  
+  foreach($images as $img_tag)
+  {
+    preg_match_all('/(src)=["\'](.*)["\']/i',$img_tag, $path_matches);
+    $urls = $path_matches[2];
+    foreach ($urls as $url) {
+      //now get the file ID of the given file if it is a private file.
+      $priv_path = '/system/files/';
+      $private_file_dir_pos = strpos($url, $priv_path);
+      if ($private_file_dir_pos !== false) {
+        $end_pos = strlen($url) - ($private_file_dir_pos + strlen($priv_path));
+        $file = substr($url, $private_file_dir_pos + strlen($priv_path), $end_pos); 
+
+        $uri = 'private://'.$file;
+
+        //now get the file to have the fid
+        $files = file_load_multiple(array(), array('uri' => $uri));
+        $file = reset($files);
+        
+        if ($file) {     
+          $private_key = drupal_get_private_key();
+          $stream_url = url('erpal/file/'.$file->fid.'/'.$private_key, array('absolute' => true));
+          $html = str_replace($url, $stream_url, $html);
+        }
+      }      
+    }    
+  }
+
+  return $html;
+}
+
+/**
+* returns the author of the invoice
+*/
+function _erpal_print_get_author($node) {
+  $a_user = user_load($node->uid);
+  return $a_user->name;
+}
+
+/**
+* Creates table of contents using a theme function
+*/
+function _erpal_print_create_toc($pdf_object) {    
+  //create table of contents
+  theme('erpal_print_toc', array('page' => 1, 'pdf_object' => $pdf_object, 'title' => t('Table of contents')));
+}
+
+/**
+* Prepares and returns a TCPDF Object
+*/
+function erpal_print_prepare_tcpdf($params=false) {
+  if (!_erpal_print_require_tcpdf())
+    return false;
+
+  require_once 'classes/ci_document.php';
+  
+    $pdf = new CI_document($params['print_ci']);
+  
+  theme('erpal_print_prepare_pdf', array('pdf_object' => $pdf));
+  
+  if (isset($params['author']) && $params['author'])
+    $pdf->SetAuthor($params['author']);
+  
+  if (isset($params['title']) && $params['title'])
+    $pdf->SetTitle($params['title']);
+  
+  return $pdf;
+}
+
+/**
+* Checks if we can print or not (if the tcpdf module is not available)
+*/
+function erpal_print_prepared() {
+  $tcpdf_path = libraries_get_path('tcpdf');
+
+  if (!file_exists($tcpdf_path)) {
+    $tcpdf_link = l('TCPDF library', 'http://sourceforge.net/projects/tcpdf/files/');
+    $tcpdf_path = libraries_get_path('tcpdf');
+    drupal_set_message(t('Please download !link and place the contents of the folder tcpdf of the zip file in !tcpdf_lib to create a PDF.', array('!link' => $tcpdf_link, '!tcpdf_lib' => $tcpdf_path)), 'warning');    
+    return false;
+  }
+    
+  return $tcpdf_path;
+}
+
+/**
+* Require all files needed for tcpdf
+*/
+function _erpal_print_require_tcpdf() {
+  //now make a pdf out of that HTML body!
+  //include the tcpdf with the library module
+  $tcpdf_path = erpal_print_prepared();
+
+  if (!$tcpdf_path) {    
+    return false;
+  }
+  
+  //now require TCPDF to render the invoice output as PDF
+  require_once $tcpdf_path."/tcpdf.php";
+  
+  return true;
+}
+
+/**
+* Function to split HTML at marker position to get a new page in PDF
+*/
+function _erpal_print_split_pages($html){
+  $parts = explode(PDF_PAGE_BREAK, $html);
+  
+  return $parts;
+}
+
+/**
+* Function returns the path to the logo for the invoice
+*/
+function erpal_print_logo_path($relative = false) {
+  $doc_root = $_SERVER['DOCUMENT_ROOT'];  
+
+  $logo_fid = variable_get('my_document_logo', false);
+  
+  if (!$logo_fid)
+    return ''; 
+
+  $file = file_load($logo_fid);
+  if (!isset($file->uri))
+    return '';
+   
+  if ($relative) {
+    //@TODO we need a relative path. Is there no other way to get it e.g. with a uri function or a stream wrapper?
+    $full_url = file_create_url($file->uri);
+    $base_url = $GLOBALS['base_url'];
+    
+    //now cut the prefix to get the path
+    $rel_path = substr($full_url, strlen($base_url), strlen($full_url));
+   
+    $base_path = base_path();
+   
+    if ($base_path != '/')
+      $rel_path = $base_path.'/'.$rel_path;
+  
+    return $rel_path;
+  }
+   
+  return file_create_url($file->uri);
+}
+
+/**
+* Returns the path relative to the files directory where the documents logo will be uploaded
+*/
+function _erpal_print_logo_documents_upload_dir() {
+  
+  $uri = "public://erpal_res";
+  
+  //prepare the folder
+  file_prepare_directory($uri,  FILE_CREATE_DIRECTORY);
+  return $uri;
+}
+
+/**
+* returns the valid file extensions to upload a logo
+*/
+function _erpal_print_logo_valid_extensions() {
+  return array('png', 'jpg', 'jpeg');
+}

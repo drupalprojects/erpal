@@ -1,0 +1,22 @@
+name = "ERPAL Contact Importer"
+description = "Adds Single Page to make all steps of ERPAL Contacts importing at once."
+
+dependencies[] = erpal_contacts_importer_feeds
+dependencies[] = erpal_contacts_importer_field_collection_helper
+dependencies[] = feeds
+dependencies[] = feeds_tamper
+
+project ="erpal_contacts_importer"
+package = "ERPAL CRM"
+
+core = "7.x"
+version = "7.x-1.0"
+
+php = "5.2.4"
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_contacts_importer"
+datestamp = "1433508507"
+

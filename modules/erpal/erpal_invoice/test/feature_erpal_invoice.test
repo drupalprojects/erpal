@@ -1,0 +1,324 @@
+<?php
+/**
+ * @file
+ * erpal_invoice tests.
+ */
+
+class FeatureInvoiceTestCase extends DrupalWebTestCase  {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Feature ERPAL invoice unit tests',
+      'description' => 'Unit test to ensure that the erpal invoice feature functions properly.',
+      'group' => 'Invoice',
+    );
+  }
+  
+  function setUp() {    
+
+    parent::setUp('erpal_project');
+
+
+    // Run a features rebuild to ensure our feature is fully installed.
+    features_rebuild();
+   
+    // Clear all caches so everything from the feature is recognized now that it is fully loaded.
+    cache_clear_all();
+  }
+  
+  
+  /**
+  * Test for caclulating values when a invoice is saved
+  */
+  function testInvoiceCalculateValues() { 
+    //create billables for the invoice
+    $group= 'feature erpal invoice';
+    module_load_include('helper', 'erpal_invoice', 'test/erpal_invoice.test');
+    $entity1 = entity_create('billable', array());
+    $entity1->quantity = 2;
+    $entity1->single_price = 15;
+    $entity1->vat_rate = 19;
+    $entity1->subject = 'test1';
+    $entity1->save();    
+    
+    $entity2 = entity_create('billable', array());
+    $entity2->quantity = 3;
+    $entity2->single_price = 25;
+    $entity2->vat_rate = 7;
+    $entity2->subject = 'test2';
+    $entity2->save();
+    
+    $entity3 = entity_create('billable', array());
+    $entity3->quantity = 1;
+    $entity3->single_price = 23;
+    $entity3->vat_rate = 7;
+    $entity3->subject = 'test2';
+    $entity3->save();
+    
+    //create a customer for the invoice
+    $contact = new stdClass();
+    $contact->field_contact_type['und'][0] = 'company';
+    $contact->language = LANGUAGE_NONE;
+    $contact->type = 'erpal_contact';
+    node_object_prepare($contact);
+    node_save($contact);
+
+    //create the invoice with the 3 billables      
+    $invoice = new stdClass();
+    $invoice->type = 'erpal_invoice';
+    node_object_prepare($invoice);
+    
+    $invoice->language = LANGUAGE_NONE;
+    //set some other invoice specific fields
+
+    //set date and credit information
+    $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'] = time();  //the current date
+    $invoice->field_credit_period[LANGUAGE_NONE][0]['value'] = 14;
+    
+    //add customer
+    $invoice->field_customer_ref[LANGUAGE_NONE][0]['target_id'] = $contact->nid;
+    
+    //add billables
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity1->billable_id;
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity2->billable_id;
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity3->billable_id;
+    node_save($invoice);
+    
+    //check that all billable entities are set billed
+    $id = $entity1->billable_id;
+    $entity1 = entity_load('billable', array($id));
+    $entity1 = $entity1[$id];
+    $id = $entity2->billable_id;
+    $entity2 = entity_load('billable', array($id));
+    $entity2 = $entity2[$id];
+    $id = $entity3->billable_id;
+    $entity3 = entity_load('billable', array($id));
+    $entity3 = $entity3[$id];
+    $allBilled = $entity1->billed && $entity2->billed && $entity3->billed;
+    $this->assertTrue($allBilled, 'All billable entites are billed.', $group);
+    
+    
+    //now ASSERT that all values are correct   
+    //check title
+    $this->assertNotEqual($invoice->title, '', 'invoice title has been set', $group);
+    
+    //Payment date ist correct?
+    $payment_date_must = $invoice->field_invoice_date[LANGUAGE_NONE][0]['value'] + ($invoice->field_credit_period[LANGUAGE_NONE][0]['value'] *24*60*60);
+    $payment_date_is = $invoice->field_payment_date[LANGUAGE_NONE][0]['value'];
+    $message = invoicefeature_format_message('Payment date calculated', $payment_date_must, $payment_date_is); 
+    $this->assertEqual($payment_date_is, $payment_date_must, $message, $group);
+    
+    //ensure that vat entites are created an references as field collection items
+    $vat_needed = array(
+      '7.000' => array(6.86),
+      '19.000' => array(5.70),
+    );
+    $total_vat_must = 12.56;
+    $vat_ok = invoicefeature_test_vat_entites($invoice, $vat_needed);
+    $this->assertTrue($vat_ok, 'All vat field collection entities calculated.', $group);
+    
+    //test total excl vat
+    $total_excl_vat_must = 128;
+    $total_excl_vat_is = $invoice->field_price_no_vat[LANGUAGE_NONE][0]['value'];
+    $message = invoicefeature_format_message('Total excl vat calulated', $total_excl_vat_must, $total_excl_vat_is); 
+    $this->assertEqual($total_excl_vat_must, $total_excl_vat_is, $message, $group);
+    
+    //test total incl vat
+    $total_incl_vat_must = $total_excl_vat_must + $total_vat_must;
+    $total_incl_vat_is = $invoice->field_invoice_total[LANGUAGE_NONE][0]['value'];
+    $message = invoicefeature_format_message('Total incl vat calulated', $total_incl_vat_must, $total_incl_vat_is); 
+    $this->assertEqual($total_incl_vat_must, $total_incl_vat_is, $message, $group);
+    
+    //and now test that if we have an invoice already existing, delete line items from it, vat entites must be adapted
+    unset( $invoice->field_billables_ref[LANGUAGE_NONE]);
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity1->billable_id;
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity2->billable_id;
+    node_save($invoice);
+    
+    //ensure that vat entites are created an references as field collection items
+    $vat_needed = array(
+      '7' => array(5.25),
+      '19' => array(5.70),
+    );
+    $vat_ok = invoicefeature_test_vat_entites($invoice, $vat_needed);
+    $this->assertTrue($vat_ok, 'All vat field collection entities calculated with reduced vat entity.', $group);
+    
+    //and now delete one line item so we have only one vat rate, the other vat collection entity must be deleted and unlinked.
+    unset( $invoice->field_billables_ref[LANGUAGE_NONE]);
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity1->billable_id;
+    node_save($invoice);
+    
+    //ensure that vat entites are created an references as field collection items
+    $vat_needed = array(
+      19 => array(5.70),
+    );
+    $vat_ok = invoicefeature_test_vat_entites($invoice, $vat_needed);
+    $this->assertTrue($vat_ok, 'All vat field collection entities calculated with deleted vat entity.', $group);
+    
+    //now check that the notes are added!
+    //check if the invoice has notes set automatically
+    //set up vat rate notes in adminsettings:    
+    variable_set('erpal_invoice_vat_rates_string', "7#7\r\n0#0#No vat because of law!\r\n19#19");
+
+    //checkt that individual auto notes are kept alive
+    $invoice->field_auto_note[LANGUAGE_NONE][]['value'] = 'hallo';
+    $auto_notes_required = array('hallo');
+    node_save($invoice);
+    
+    $notesOK = _erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+    $this->assertTrue($notesOK, 'All individual invoice note is kept on invoice save.', $group);
+    
+    //now check that if we add 0% vat the note is added
+    $entity4 = entity_create('billable', array());
+    $entity4->quantity = 1;
+    $entity4->single_price = 23;
+    $entity4->vat_rate = 0;
+    $entity4->subject = 'test2';
+    $entity4->save();
+    $invoice->field_billables_ref[LANGUAGE_NONE][1]['target_id'] = $entity4->billable_id;        
+    node_save($invoice);
+    $auto_notes_required = array('hallo', 'No vat because of law!');
+    $notesOK = _erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+    
+    $this->assertTrue($notesOK, 'Single auto invoice note is added on invoice save.', $group);
+    
+    //now delete the 0% vat rate entity from invoice, the corresponding auto note should be deleted
+    unset($invoice->field_billables_ref[LANGUAGE_NONE][1]);
+    node_save($invoice);
+    $auto_notes_required = array('hallo');
+    $notesOK = _erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+    
+    $this->assertTrue($notesOK, 'Auto note is removed if the entity with vat rate 0% is removed', $group);
+    
+    //now we add two, one with 19% and one with 0% vat.
+    $entity4 = entity_create('billable', array());
+    $entity4->quantity = 1;
+    $entity4->single_price = 23;
+    $entity4->vat_rate = 0;  //0% var rate
+    $entity4->subject = 'test2';
+    $entity4->save();    
+    $entity5 = entity_create('billable', array());
+    $entity5->quantity = 1;
+    $entity5->single_price = 23;
+    $entity5->vat_rate = 19;  //19% vat rate
+    $entity5->subject = 'test2';
+    $entity5->save();
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity4->billable_id;    // add 4 again     
+    $invoice->field_billables_ref[LANGUAGE_NONE][]['target_id'] = $entity5->billable_id;
+    node_save($invoice);
+    $auto_notes_required = array('hallo', 'No vat because of law!');
+    $notesOK = _erpal_invoice_test_ensure_auto_notes($invoice, $auto_notes_required);
+
+    $this->assertTrue($notesOK, 'Auto Note is added if we have on 0% and one 19% vat billable', $group);
+  
+  }
+  
+  /**
+  * Check creating an invoice from billable ids
+  */
+  function testCreateInvoiceFromBillables() {
+    $group = 'feature erpal invoice';
+    //create some test billables
+    module_load_include('helper', 'erpal_invoice', 'test/erpal_invoice.test');
+    $billable_ids = _erpal_invoice_test_create_billables(true);  //true means only homegenous cutomers, we dont preset the customer
+      //to the invoice in this step but in the next one.
+    $reduced = true;  //we want the billables to be reduces, so we have only a view reduced billables referenced in our invoice
+    $params = array();
+    module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+    $params['address_id'] = 4; //we have to privide one because the user has to select on. Otherwise test will fail!
+    $result = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced, $params);
+    $invoice = $result['invoice'];
+    $status = $result['status'];
+    
+    $invoiceOK = _erpal_invoice_test_check_invoice($invoice, $params) && $status;
+    $this->assertTrue($invoiceOK, 'Invoice created from billables without external params', $group);
+    
+    //create some test billables with GIVEN CUSTOMER
+    module_load_include('helper', 'erpal_invoice', 'test/erpal_invoice.test');
+    $billable_ids = _erpal_invoice_test_create_billables();  //true means only homegenous cutomers, we dont preset the customer
+      //to the invoice in this step but in the next one.
+    $reduced = true;  //we want the billables to be reduces, so we have only a view reduced billables referenced in our invoice
+    
+    //create a new customer for this run!
+    $customer = _billable_test_create_contact();
+    $params = array('customer_nid' => $customer->nid);
+    module_load_include('inc', 'erpal_invoice_helper', 'inc/invoice.calc');
+    //set skonto information and set them
+    $params['skonto']['credit_period'] = 10;
+    $params['skonto']['discount_percent'] = 5;
+    $params['currency'] = 'JPN';
+    $params['credit_period'] = 14;
+    $params['address_id'] = 4; //provide an invoice address_id because the user has to select one
+    $params['invoice_date'] = strtotime('2012-12-12 00:00:00');
+    $result = _erpal_invoice_helper_invoice_from_billables($billable_ids, $reduced, $params);
+    $invoice = $result['invoice'];
+    $status = $result['status'];
+    
+    //check the invoice has been created
+    $invoiceOK = _erpal_invoice_test_check_invoice($invoice, $params) && $status;
+    $this->assertTrue($invoiceOK, 'Invoice created from billables WITH external params', $group);
+    
+    //@TODO no invoice is create if there are no billables
+    
+    
+    //check if there is an error if there is no customer given and billables have different customers set.
+    
+    
+    //@TODO check that an error is thrown if there are inconsistent customers within all billables so the customer could not be
+    //determined
+    
+  }
+ 
+  /**
+  * Check the validation of invoice creation
+  */
+  function testInvoiceValidate() {
+    //using node_validate
+    
+  }
+}
+
+
+//########## HELPER FUNCTIONS FOR TESTS ################
+
+/**
+* Ensures that all vat entities are there an no more than needed
+* @param invoice the invoice node which is tested
+* @param array with var_rate as key and value is vat_value
+*/ 
+function invoicefeature_test_vat_entites($invoice, $needed) {
+  
+  $vat_entities = $invoice->field_invoice_vat[LANGUAGE_NONE];
+
+  //we need axact as many invoice items as elements in $needed
+  if (count($needed) != count($vat_entities))
+    return false;
+  
+  //element count is correct but are there all the vat rates and values needed?
+  foreach ($needed as $vat_rate=>$vat_value) {
+    $found_needed = false;
+
+    foreach ($vat_entities as $delta=>$vat_item) {
+      
+      $vat_line_id = $vat_item['value'];
+      $vat_entity = entity_load('field_collection_item', array($vat_line_id));
+      $vat_entity = $vat_entity[$vat_line_id];
+
+      if (($vat_entity->field_vat_rate[LANGUAGE_NONE][0]['value']) == ($vat_rate) && floatval($vat_entity->field_vat_total[LANGUAGE_NONE][0]['value']) == floatval($vat_value[0])) {
+        $found_needed = true;
+      }
+    }
+    
+    if (!$found_needed)
+      return false;
+  }
+  
+  return true; //if there was an error we would have returned
+}
+
+/**
+* Formats a message with values that should be calculated (must) and that are really calculated (is)
+*/
+function invoicefeature_format_message($message, $must, $is) {
+  return $message.' - is '.$is.' should be '.$must;
+}

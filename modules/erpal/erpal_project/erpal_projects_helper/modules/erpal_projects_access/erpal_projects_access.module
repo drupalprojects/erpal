@@ -1,0 +1,369 @@
+<?php
+
+/**
+ * @file
+ * This module allows fine-grained access restrictions for erpal projects.
+ * 
+ * For this, it defines some access realms. All tasks and tickets of a project are assigned
+ * to those access realms. 
+ * 
+ */
+
+define('PROJECTS_ACL_PRIO', 0);
+
+// Permissions that can be set per user in the project node
+define('PERM_VIEW_TICKETS_LIST', 'view_tickets_list');
+define('PERM_VIEW_ALL_TICKETS', 'view_all_tickets');
+define('PERM_EDIT_ALL_TICKETS', 'edit_all_tickets');
+define('PERM_VIEW_TASKS_LIST', 'view_tasks_list');
+define('PERM_VIEW_ALL_TASKS', 'view_all_tasks');
+define('PERM_EDIT_ALL_TASKS', 'edit_all_tasks');
+
+
+/**
+ * Implements hook_node_access_records
+ * 
+ * Returns the realms that exist for each node
+ * 
+ * @param type $node
+ * @return type
+ */
+function erpal_projects_access_node_access_records($node) {
+
+  $type = node_type_get_type($node);
+  $type = $type->type;
+
+  $grants = array();
+  switch ($type) {
+
+    case 'erpal_project':
+      $grants[] = array(
+          'realm' => 'erpal_project_view',
+          'gid' => $node->nid, // This will be the grant id
+          'grant_view' => 1,
+          'grant_update' => 0,
+          'grant_delete' => 0,
+          'priority' => 0,
+      );
+      $grants[] = array(
+          'realm' => 'erpal_project_edit',
+          'gid' => $node->nid, // This will be the grant id
+          'grant_view' => 0,
+          'grant_update' => 1,
+          'grant_delete' => 0,
+          'priority' => 0,
+      );
+      $grants[] = array(
+          'realm' => 'erpal_project_delete',
+          'gid' => $node->nid, // This will be the grant id
+          'grant_view' => 0,
+          'grant_update' => 1,
+          'grant_delete' => 1,
+          'priority' => 0,
+      );
+      // adds all assigned users a realm "erpal_access" with their user id as grant id
+      $assignee_grants = _erpal_projects_access_project_assignee_grants($node);
+
+      $grants = array_merge($grants, $assignee_grants);
+
+      break;
+
+    case 'erpal_task':
+
+      $tasktype = 'task';
+
+      $project = field_get_items('node', $node, 'field_project_ref');
+
+      // Check if its a ticket
+      if (_erpal_projects_helper_is_ticket($node)) {
+        $tasktype = 'ticket';
+      }
+
+      // Get project
+      $project_nid = $project[0]['target_id'];
+
+      if ($project_nid) {
+        $grants[] = array(
+            'realm' => 'erpal_' . $tasktype . '_view',
+            'gid' => $project_nid, // This will be the grant id
+            'grant_view' => 1,
+            'grant_update' => 0,
+            'grant_delete' => 0,
+            'priority' => 0,
+        );
+        $grants[] = array(
+            'realm' => 'erpal_' . $tasktype . '_edit',
+            'gid' => $project_nid, // This will be the grant id
+            'grant_view' => 0,
+            'grant_update' => 1,
+            'grant_delete' => 0,
+            'priority' => 0,
+        );
+        $grants[] = array(
+            'realm' => 'erpal_' . $tasktype . '_delete',
+            'gid' => $project_nid, // This will be the grant id
+            'grant_view' => 0,
+            'grant_update' => 1,
+            'grant_delete' => 1,
+            'priority' => 0,
+        );
+      }
+
+      $assignee_grants = _erpal_projects_access_task_assignee_grants($node);
+      $grants = array_merge($grants, $assignee_grants);
+
+      break;
+  }
+
+  return $grants;
+}
+
+/**
+ * Return all grants for project access
+ * @staticvar array $usergrants
+ * @param type $account
+ * @param type $op
+ * @return type
+ */
+function erpal_projects_access_node_grants($account, $op) {
+
+  static $usergrants = array();
+
+  if (!isset($usergrants[$op][$account->uid])) {
+
+    $grants = array();
+
+    switch ($op) {
+
+      case 'view':
+        $grants = _erpal_projects_access_get_projects_view_access($account->uid);
+        break;
+
+      case 'update':
+        $grants = _erpal_projects_access_get_projects_edit_access($account->uid);
+        break;
+
+      case 'delete':
+        break;
+    }
+
+    $usergrants[$op][$account->uid] = $grants;
+  }
+  return $usergrants[$op][$account->uid];
+}
+
+/**
+ * Gathers all grants that have something to do with project VIEW access
+ * 
+ * @param type $uid
+ * @return type
+ */
+function _erpal_projects_access_get_projects_view_access($uid) {
+
+  $grants = array();
+
+  $grants = array_merge(_erpal_projects_access_get_taskstickets_access($uid, PERM_VIEW_ALL_TASKS, 'erpal_task_view'), $grants);
+  $grants = array_merge(_erpal_projects_access_get_taskstickets_access($uid, PERM_VIEW_ALL_TICKETS, 'erpal_ticket_view'), $grants);
+  $grants['erpal_assigned'][] = $uid;
+  return $grants;
+}
+
+/**
+ * Gathers all grants that have something to do with project UPDATE access
+ * 
+ * @param type $uid
+ * @return type
+ */
+function _erpal_projects_access_get_projects_edit_access($uid) {
+
+  $grants = array();
+
+  $grants = array_merge(_erpal_projects_access_get_taskstickets_access($uid, PERM_EDIT_ALL_TASKS, 'erpal_task_edit'), $grants);
+  $grants = array_merge(_erpal_projects_access_get_taskstickets_access($uid, PERM_EDIT_ALL_TICKETS, 'erpal_ticket_edit'), $grants);
+  $grants['erpal_assigned'][] = $uid;
+  return $grants;
+}
+
+/**
+ * Selects all tasks and tickets for a given user for all projects he has the specified permission in
+ * and returns a grant with the specified realm.
+ * 
+ * @param int $uid the user you want to get the grants for
+ * @param string $permission the permission you filter for (permission on the project)
+ * @param string $realm the realm you want to returned grants to be in
+ * @return array Grants in an array
+ */
+function _erpal_projects_access_get_taskstickets_access($uid, $permission = 0, $realm) {
+  $grants = array();
+
+// Get All Entities that grant $permission
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'field_collection_item');
+  $query->addMetaData('account', user_load(1));
+  $query->entityCondition('bundle', 'field_project_team');
+  $query->fieldCondition('field_user', 'target_id', $uid);
+  
+  if ($permission !== 0) {  // muss be strict equality because php sucks.
+    $query->fieldCondition('field_project_permissions', 'value', $permission);
+  }
+  $result = $query->execute();
+
+  $entities = array();
+  if (isset($result['field_collection_item'])) {
+    $entities = array_keys($result['field_collection_item']);
+  }
+
+  $nodeids = array();
+  if (count($entities)) {
+
+    $nodequery = new EntityFieldQuery();
+    $nodequery->entityCondition('entity_type', 'node');
+    $nodequery->addMetaData('account', user_load(1));
+    $nodequery->entityCondition('bundle', 'erpal_project');
+    $nodequery->fieldCondition('field_project_team', 'value', $entities, 'IN');
+    $projects = $nodequery->execute();
+
+
+    if (isset($projects['node'])) {
+      $nodeids = array_keys($projects['node']);
+    }
+  }
+
+  if (count($nodeids)) {
+    $grants[$realm] = $nodeids;
+  }
+
+  return $grants;
+}
+
+/**
+ * Returns a realm for each user that is assigned to a task.
+ * 
+ * @param type $node
+ * @return int
+ */
+function _erpal_projects_access_task_assignee_grants($node) {
+
+  $grants = array();
+  $assignees = field_get_items('node', $node, 'field_task_assigned_users');
+  $team = array();
+  if (is_array($assignees))
+    foreach ($assignees as $member) {
+      $team[] = $member['target_id'];
+    }
+
+  if (count($team))
+    foreach ($team as $member) {
+      $grants[$member] = array(
+          'realm' => 'erpal_assigned',
+          'gid' => $member,
+          'grant_view' => 1,
+          'grant_update' => 1,
+          'grant_delete' => 0,
+          'priority' => 0,
+      );
+    }
+
+  return $grants;
+}
+
+/**
+ * Selects all users that are assigned to a project team and creates a grant realm for them that grants
+ * view and update
+ * @param type $node
+ * @return string
+ */
+function _erpal_projects_access_project_assignee_grants($node) {
+
+  $grants = array();
+
+  $teamfield = field_get_items('node', $node, 'field_project_team');
+  $team = array();
+  if (is_array($teamfield)) {
+    foreach ($teamfield as $member) {
+      $team[] = $member['value'];
+    }
+  }
+  if (count($team)) {
+    $team = entity_load('field_collection_item', $team);
+
+    if (count($team)) {
+      foreach ($team as $member) {
+
+        $uid = field_get_items('field_collection_item', $member, 'field_user');
+        if (isset($uid[0]['target_id'])) {
+          $grants[$uid[0]['target_id']] = array(
+              'realm' => 'erpal_assigned',
+              'gid' => $uid[0]['target_id'],
+              'grant_view' => 1,
+              'grant_update' => 0,
+              'grant_delete' => 0,
+              'priority' => 0,
+          );
+        }
+      }
+    }
+  }
+
+  return $grants;
+}
+
+/**
+ * just debuggin purpose.
+  */
+function erpal_projects_access_node_grants_alter(&$grants, $account, $op) {
+
+//  static $altered_grants = array();
+//  if (!$altered_grants[$op]) {
+//    dpm($grants);
+//    $altered_grants[$op] = true;
+//  }
+}
+
+/**
+ * Implements hook_erpal_docs_access_users().
+ */
+function erpal_projects_access_erpal_docs_access_users(&$users, $entity, $entity_type, $bundle, $action) {
+  
+  // Check if entity is erpal_task node.
+  if($entity_type == 'node' && $bundle == 'erpal_task') {
+    
+    // Get assigned users.
+    $field_users = field_get_items($entity_type, $entity, 'field_task_assigned_users');
+    
+    // Check if empty.
+    if(!empty($field_users)) {
+    
+      // Add assigned users to array.
+      foreach ($field_users as $user) {
+        $users[$user['target_id']] = array(
+          'uid' => $user['target_id'],
+          'action' => 'updated',
+        );
+      }
+    }
+    
+    // Get assigned users.
+    if(empty($entity->original)) {
+      return;
+    }
+    
+    // Get users of entity before change.
+    $field_oldusers = field_get_items($entity_type, $entity->original, 'field_task_assigned_users');
+    
+    // Check if empty.
+    if(!empty($field_oldusers)) {
+    
+      // Add assigned users to array.
+      foreach ($field_oldusers as $user) {
+        if (!array_key_exists($user['target_id'], $users)) {
+          $users[$user['target_id']] = array(
+            'uid' => $user['target_id'],
+            'action' => 'removed',
+            'parent' => $entity->nid,
+          );
+        }
+      }
+    }
+  }
+}

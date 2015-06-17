@@ -1,0 +1,423 @@
+<?php
+
+/**
+ * @file
+ * Module for the Budget Entity - developed within ERPAL
+ */   
+ 
+/**
+ * Include file with hook_property_info().
+ */
+module_load_include('inc', 'budget', 'budget.info'); 
+module_load_include('inc', 'budget', 'budget.entity'); 
+ 
+/**
+ * Implements hook_views_api().
+ */
+function budget_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'budget') . '/views',
+  );
+} 
+ 
+/**
+ * Implement hook_entity_info().
+ *
+ * We define our entities here - the actual entity that will hold our domain
+ * specific information 
+ */
+function budget_entity_info() {
+  $return['budget'] = array(
+    'label' => t('budget'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'budget',
+    'controller class' => 'budgetController',
+    'base table' => 'budget',
+    'file' => 'budget.entity.inc',
+    'fieldable' => TRUE,
+    'bundle keys' => array(
+      'bundle' => 'type',
+    ),
+    'load hook' => 'budget_load',
+    'entity keys' => array(
+      'id' => 'budget_id',
+      'bundle' => 'type',
+    ),   
+    'bundles' => array(),
+    'inline entity form' => array('controller' => 'EntityInlineEntityFormController'),
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => 'budget_create',
+    'access callback' => 'budget_access',
+    'module' => 'budget',
+    // The information below is used by the BudgetlUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/budgets',
+      'file' => 'budget.admin.inc',
+      'controller class' => 'BudgetUIController',
+      'menu wildcard' => '%budget',
+    ),
+  );
+
+  $return['budget_type'] = array(
+    'label' => t('Budget Type'),
+    'entity class' => 'BudgetType',
+    'controller class' => 'BudgetTypeController',
+    'base table' => 'budget_type',
+    'fieldable' => FALSE,
+    'bundle of' => 'budget',
+    'exportable' => TRUE,
+    'load hook' => 'budget_type_load',
+    'entity keys' => array(
+      'id' => 'id',
+      'name' => 'type',
+      'label' => 'label',
+    ),
+    'module' => 'budget',
+    // Enable the entity API's admin UI.
+    'admin ui' => array(    
+      'path' => 'admin/structure/budget',
+      'file' => 'budget.admin.inc',
+      'menu wildcard' => '%budget_type',
+    ),
+    'access callback' => 'budget_type_access',
+  );
+  
+  try {
+    //add bundles, @TODO it is strange but we cannot use the budget_get_types function here, it will result in a white screen when clearing the cache
+    // Add bundle info but bypass entity_load() as we cannot use it here.
+    $types = db_select('budget_type', 'bt')
+      ->fields('bt')
+      ->execute()
+      ->fetchAllAssoc('type');
+    
+    $return['budget']['bundles']  = array();
+    foreach ($types as $name => $type) {
+      $return['budget']['bundles'][$name] = array(
+        'label' => $name,
+        'admin' => array(
+          'path' => 'admin/structure/budget/manage/%budget_type',
+          'real path' => 'admin/structure/budget/manage/' . $type->type,
+          'bundle argument' => 4,
+          'access arguments' => array('administer budget types'),
+        ),
+      );
+    }  
+  } catch (Exception $e) {
+  
+  }
+  
+  return $return;
+}
+
+/**
+ * budget type access callback.
+ */
+function budget_type_access() {
+  return user_access('administer budget types');
+}
+ 
+ 
+/**
+ * Implements hook_permission().
+ */
+function budget_permission() {
+  // We set up permisssions to manage entity types, manage all entities and the
+  // permissions for each individual entity
+  $permissions = array(
+    'create budget' => array(
+      'title' => t('Create budget'),
+    ),
+    'administer budgets' => array(
+      'title' => t('Administer all budgets'),
+    ),
+    'administer budget types' => array(
+      'title' => t('Administer budget types'),
+    ),
+    'edit any budget' => array(
+      'title' => t('Edit any budget'),
+    ),
+    'view any budget' => array(
+      'title' => t('View any budget'),
+    ),    
+  );
+  
+  return $permissions;  
+}
+
+
+/**
+ * Determines whether the given user has access to a budget.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $budget
+ *   Optionally a budget or a budget type to check access for. If nothing is
+ *   given, access for all budgets is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function budget_access($op, $budget = NULL, $account = NULL) {
+
+  if (user_access('administer budgets', $account)) {
+    return TRUE;
+  }
+
+  if (isset($budget) && is_object($budget)) {
+    $op = ($op == 'view') ? 'view' : 'edit';
+
+    if (user_access("$op any budget", $account)) {
+      return TRUE;
+    }
+  }
+
+  if ($op == 'create') {
+    
+    $create_access = user_access('create budget', $account);
+    if ($create_access)
+      return true;
+  }
+  
+  return FALSE;
+}
+
+/**
+ * Implement hook_theme().
+ */
+function budget_theme() {
+  //themes for our budget entity
+  module_load_include('inc', 'budget', 'budget.entity'); 
+  $themes = _budget_entity_theme();
+  return $themes;
+}  
+
+
+/**
+* So we can make the user change the date format by changing this variable 
+*/
+function _budget_get_date_format($time = true){
+  if (module_exists('erpal_basic_helper')) { 
+    if (!$time)
+      return _erpal_basic_helper_date_format_date_only();
+    else
+      return _erpal_basic_helper_date_format_date_time();
+  } else {  
+    if (!$time)
+      return variable_get('date_format_short_date_only', 'Y/m/d');
+    else
+      return variable_get('date_format_short_date_time', 'Y/m/d H:i');
+  }
+}
+
+/**
+ * Implements hook_references_dialog_entity_admin_paths().
+ * Needed to provide a link path to create a new budget at an entity reference field in reference dialog widget
+ */
+function budget_references_dialog_entity_admin_paths() {
+  // We define the add and edit page callbacks for core entities here.
+  $admin_paths = array(
+    'budget' => array(
+      'add' => 'budget/add/[bundle-sanitized]',
+      'edit' => 'budget/[entity_id]/edit',
+    ),
+  );
+  
+  return $admin_paths;
+}
+
+/**
+* Function to quick create a new budget entity
+*/
+function budget_create_new($total_hours, $date_from, $date_till) {
+  $budget_controler = entity_get_controller('budget');
+  $values = array();
+  $budget_entity = $budget_controler->create($values);
+  $budget_entity->total_hours = $total_hours;
+  $budget_entity->available_hours = $total_hours;
+  $budget_entity->date_from = $date_from;
+  $budget_entity->date_till = $date_till;
+  
+  $budget_entity->save();
+  return $budget_entity;
+}
+
+
+/**
+ * List of budget Types.
+ */
+function budget_get_types($type_name = NULL) {
+  $types = entity_load_multiple_by_name('budget_type', isset($type_name) ? array($type_name) : FALSE);
+  return isset($type_name) ? reset($types) : $types;
+}
+
+
+/**
+ * Fetch a budget object. Make sure that the wildcard you choose 
+ * in the budget entity definition fits the function name here.
+ *
+ * @param $budget_id
+ *   Integer specifying the budget id.
+ * @param $reset
+ *   A boolean indicating that the internal cache should be reset.
+ * @return
+ *   A fully-loaded $budget object or FALSE if it cannot be loaded.
+ *
+ * @see budget_load_multiple()
+ */
+function budget_load($budget_id, $reset = FALSE) {
+  $budgets = budget_load_multiple(array($budget_id), array(), $reset);
+  return reset($budgets);
+}
+
+/**
+ * Budget type loader.
+ *
+ * @param $type
+ *   (optional) The name for this budget type. If no type is given all
+ *   existing types are returned.
+ *
+ * @return Entity
+ *   Returns a fully-loaded budget type definition if a type name is
+ *   passed. Else an array containing all types is returned.
+ */
+function budget_type_load($type = NULL) {
+  // Replace dashes with underscores so this can be used as menu argument
+  // loader too.
+  $types = entity_load_multiple_by_name('budget_type', isset($type) ? array(strtr($type, array('-' => '_'))) : FALSE);
+  if (isset($type)) {
+    return isset($types[$type]) ? $types[$type] : FALSE;
+  }
+  return $types;
+}
+
+/**
+ * Load multiple budgets based on certain conditions.
+ *
+ * @param $budget_ids
+ *   An array of budget IDs.
+ * @param $conditions
+ *   An array of conditions to match against the {budget} table.
+ * @param $reset
+ *   A boolean indicating that the internal cache should be reset.
+ * @return
+ *   An array of budget objects, indexed by budget_id.
+ *
+ * @see entity_load()
+ * @see budget_load()
+ */
+function budget_load_multiple($budget_ids = array(), $conditions = array(), $reset = FALSE) {
+  $budgets = entity_load('budget', $budget_ids, $conditions, $reset);
+  return $budgets;
+}
+
+
+/**
+ * Deletes a budget.
+ */
+function budget_delete(budget $budget) {  
+  $result = $budget->delete();
+  return $result;
+}
+
+
+/**
+ * Delete multiple budgets.
+ *
+ * @param $budget_ids
+ *   An array of budget IDs.
+ */
+function budget_delete_multiple(array $budget_ids) {
+  entity_get_controller('budget')->delete($budget_ids);
+}
+
+
+/**
+ * Create a budget object.
+ */
+function budget_create($values = array()) {
+  return entity_get_controller('budget')->create($values);
+}
+
+
+/**
+ * Saves a budget to the database.
+ *
+ * @param $budget
+ *   The budget object.
+ */
+function budget_save(budget $budget) {
+  return $budget->save();
+}
+
+
+/**
+ * Saves a budget type to the db.
+ */
+function budget_type_save(budgetType $type) {
+  $type->save();
+}
+
+
+/**
+ * Deletes a budget type from the db.
+ */
+function budget_type_delete(budgetType $type) {
+  $type->delete();
+}
+
+
+/**
+ * URI callback for budgets
+ */
+function budget_uri(budget $budget){
+  return array(
+    'path' => 'budget/' . $budget->budget_id,
+  );
+}
+
+
+/**
+ * Menu title callback for showing individual entities
+ */
+function budget_page_title(budget $budget){
+  return $budget->defaultLabel();
+}
+
+
+/**
+ * Sets up content to show an individual budget
+ * @todo - get rid of drupal_set_title();
+ */
+function budget_page_view($budget, $view_mode = 'full') {    
+  $controller = entity_get_controller('budget');  
+  $content = $controller->view(array($budget->budget_id => $budget));
+  drupal_set_title($budget->defaultLabel());
+  return $content;
+}
+
+
+/**
+* @return
+*   Themes of our budget entity
+*/
+function _budget_entity_theme() {
+  
+  return array(    
+    'budget_view' => array(
+      'variables' => array('budget' => false),
+      'template' => 'budget_view',
+    ),
+    'budget_add_list' => array(
+      'variables' => array('content' => array()),
+      'file' => 'budget.admin.inc',
+    ),
+  );
+}
+
+
+

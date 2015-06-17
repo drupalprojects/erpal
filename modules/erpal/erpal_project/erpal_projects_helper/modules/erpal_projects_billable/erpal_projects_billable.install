@@ -1,0 +1,73 @@
+<?php
+/**
+* @file handles install and update routines for billable integration of projects
+*/
+
+/**
+* For easier expense tracking, create unbillable billables for all timetracking nodes. Even if the user is an full
+* employee we create unbillable billables as expense.
+* ATTENTION: Unbillable billables will only be created if the user that created the timetracking node has at least one valid contract in his profile contract data (see /user/%uid/edit/contract
+*/
+function erpal_projects_billable_update_7001(&$sandbox) {
+  //get all timetracking nodes
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_timetracking')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $steps = 10;
+  $sandbox['#finished'] = 0;
+  // Multi-part update.
+  if (!isset($sandbox['node_from'])) {
+    $sandbox['node_from'] = 0;
+    $sandbox['node_count'] = $query->count()->execute();
+  }
+  else {
+    $sandbox['#finished'] = $sandbox['node_from']/$sandbox['node_count'];
+
+    //update;
+    $query->range($sandbox['node_from'], $steps);
+    $result = $query->execute();
+    
+    $sandbox['node_from'] += $steps;
+    _erpal_projects_billable_install_update_timetrackings($result);
+    
+    if ($sandbox['node_from'] >= $sandbox['node_count']) {
+      $sandbox['#finished'] = 1; 
+      return t('All timetracking expenses have been updated.');
+    }
+  }
+}
+
+/**
+* Handle update of some timetrackings
+*/
+function _erpal_projects_billable_install_update_timetrackings($result) {
+  if (isset($result['node'])) {
+    $tt_nids = array_keys($result['node']);
+    
+    foreach ($tt_nids as $nid) {
+      $tt_node = node_load($nid);
+      
+      //re-run the billable calculation method but only for unbillable bundles
+      try {
+        _erpal_billable_update_billable($tt_node, 'update', array('unbillable'), true); //4th parameter means no budgets will be updated.
+      } catch (Exception $e) {
+
+      }
+      
+    }    
+  }
+}
+
+/**
+* Manage update dependencies
+*/
+function erpal_projects_billable_update_dependencies() {
+  $dependencies['erpal_projects_billable'][7001] = array(
+    'billable' => 7005, 
+    'budget' => 7003, 
+  );
+
+  return $dependencies;
+}

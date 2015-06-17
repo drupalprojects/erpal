@@ -1,0 +1,17 @@
+core = "7.x"
+description = "ERPAL Print to export documents printable"
+name = "erpal_print"
+package = "ERPAL Print"
+php = "5.2.4"
+project = "erpal_print"
+version = "7.x-1.0-dev"
+
+dependencies[] = libraries
+files[] = erpal_print.module
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_core"
+datestamp = "1433507327"
+

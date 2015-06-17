@@ -1,0 +1,643 @@
+<?php
+/**
+ * @file
+ * Code for the Erpal CRM Reports feature.
+ */
+
+include_once 'erpal_crm_reports.features.inc';
+
+module_load_include('inc', 'erpal_crm_reports', 'includes/erpal_crm_reports.blocks');
+module_load_include('inc', 'erpal_crm_reports', 'includes/erpal_crm_reports.pages');
+
+/**
+ * Implements hook_menu().
+ */
+function erpal_crm_reports_menu() {
+  $items = array();
+
+  $items['reports/crm/sales'] = array(
+    'title' => 'CRM Sales Report',
+    'page callback' => 'erpal_crm_reports_sales_report_view',
+    'access arguments' => array('view crm sales report'),
+    'file' => 'includes/erpal_crm_reports.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['reports/crm/expense'] = array(
+    'title' => 'CRM Expense Report',
+    'page callback' => 'erpal_crm_reports_expense_report_view',
+    'access arguments' => array('view crm expense report'),
+    'file' => 'includes/erpal_crm_reports.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['reports/crm/salesforecast'] = array(
+      'title' => 'CRM Sales Forecast Report',
+      'page callback' => 'erpal_crm_reports_sales_forecast_report_view',
+      'access arguments' => array('view crm sales forecast report'),
+      'file' => 'includes/erpal_crm_reports.pages.inc',
+      'type' => MENU_CALLBACK,
+  );
+  
+  $items['reports/crm/lead'] = array(
+    'title' => 'CRM Lead Report',
+    'page callback' => 'erpal_crm_reports_lead_report_view',
+    'access arguments' => array('view crm lead report'),
+    'file' => 'includes/erpal_crm_reports.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['reports/crm/customer'] = array(
+    'title' => 'CRM Active Customer Report',
+    'page callback' => 'erpal_crm_reports_customer_report_view',
+    'access arguments' => array('view crm customers report'),
+    'file' => 'includes/erpal_crm_reports.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+  
+  //#### DEBUG ###
+  
+  $items['reports/crm/test'] = array(
+    'page callback' => 'erpal_crm_reports_test',
+    'access arguments' => array('NOT AVAILABLE PERMISSION'),
+    'file' => 'includes/erpal_crm_reports.pages.inc',
+  );
+  //#### END DEBUG ###
+  
+  return $items;
+}
+
+//TEST AND DEBUG FUNCTION
+function erpal_crm_reports_test() {
+  _erpal_crm_reports_calculate_expense_plan();
+  return 'done';
+}
+
+/**
+* alter the CRM admin settings for to inject a selection for the unplanned sales volume contact
+*/
+function erpal_crm_reports_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_crm_helper_config_form') {
+    $current_contact = _erpal_crm_reports_get_unplanned_contact_node();
+    $form['unplanned_contact_node'] = array( 
+      '#type' => 'textfield',
+      '#title' => t('Unplanned sales volume contact'),
+      '#description' => t('This contact node will be used to book all un-forecasted sales volume to. Therefore a sales forecast must be added.'),
+      '#autocomplete_path' => 'crm/contacts/autocomplete',
+      '#default_value' => !empty($current_contact) ? _erpal_basic_helper_autocomplete_string_from_nid($current_contact->nid) : FALSE,
+    );
+    
+    //add submit handler
+    $form['#submit'][] = '_erpal_crm_reports_config_form_submit';
+  }
+}
+
+/**
+* Submit handler to save additional admin settings
+*/
+function _erpal_crm_reports_config_form_submit(&$form, &$form_state) {
+
+  $values = $form_state['values'];
+  $unplanned_contact_str = $values['unplanned_contact_node'];
+  $unplanned_contact_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($unplanned_contact_str);
+  
+  variable_set('erpal_crm_reports_unplanned_sales_contact_nid', $unplanned_contact_nid);
+} 
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_crm_reports_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+* Implements hook_cron
+*/ 
+function erpal_crm_reports_cron() {
+  //@TODO: this may overdue the execution time.
+  _erpal_crm_reports_calculate_forecast_plan();
+  _erpal_crm_reports_calculate_expense_plan();
+}
+ 
+/**
+* Calculate the forcasting plan
+*/
+function _erpal_crm_reports_calculate_forecast_plan() {
+  module_load_include('inc', 'erpal_crm_reports', 'includes/ErpalCrmReportsForcastPlan.class');
+  
+  ErpalCrmReportsForcastPlan::create();
+}
+
+/**
+* Calculate the forcasting expense plan
+*/
+function _erpal_crm_reports_calculate_expense_plan() {
+  module_load_include('inc', 'erpal_crm_reports', 'includes/ErpalCrmReportsExpensePlan.class');
+  
+  ErpalCrmReportsExpensePlan::create();
+}
+
+/**
+* Returns all nodes for the customer forecast
+*/
+function _erpal_crm_reports_get_customer_forecasts($customer_nid=FALSE) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_customer_forecast')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+
+  if ($customer_nid) {
+    $query->fieldCondition('field_contact_ref', 'target_id', $customer_nid);
+  }
+  
+  $result = $query->execute();
+  
+  $forecast_nids = array();
+  if (!empty($result['node'])) {
+    $forecast_nids = array_keys($result['node']);
+  }
+  
+  return $forecast_nids;
+}
+
+/**
+* Returns all nodes for the expense forecast
+*/
+function _erpal_crm_reports_get_expense_forecasts() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_expense_forecast')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+
+  $result = $query->execute();
+  
+  $forecast_nids = array();
+  if (!empty($result['node'])) {
+    $forecast_nids = array_keys($result['node']);
+  }
+  
+  return $forecast_nids;
+}
+
+/**
+* Implements hook_node_update
+* Everytime a field collection of bundle that are fields of a forecast node presaves, we calculate the values that are read only and are calculated of other values
+*/
+function erpal_crm_reports_node_update($node) {
+  if ($node->type == 'erpal_customer_forecast') {    
+   _erpal_crm_reports_calculate_forecast_volumes($node);
+  }
+  
+  if ($node->type == 'erpal_expense_forecast') {    
+   _erpal_crm_reports_update_expense_forecast($node);
+  }
+}
+
+/**
+* Implements hook_node_insert
+* Everytime a field collection of bundle that are fields of a forecast node presaves, we calculate the values that are read only and are calculated of other values
+*/
+function erpal_crm_reports_node_insert($node) {
+  if ($node->type == 'erpal_customer_forecast') {    
+   _erpal_crm_reports_calculate_forecast_volumes($node);
+  }
+  
+  if ($node->type == 'erpal_expense_forecast') {    
+   _erpal_crm_reports_update_expense_forecast($node);
+  }
+}
+
+/**
+* Set the dynamic forecast to the value of the expected forecast if no value is set.
+*/
+function _erpal_crm_reports_update_expense_forecast($forcast_node) {
+  $elements = $forcast_node->field_expense_elements[LANGUAGE_NONE];
+  foreach ($elements as $element) {
+    $element_id = $element['value'];
+    $element_collection = entity_load('field_collection_item', array($element_id));
+    $element_collection = $element_collection[$element_id];
+    
+    $expected_volume = !empty($element_collection->field_forecast_estimated[LANGUAGE_NONE][0]['value']) ? $element_collection->field_forecast_estimated[LANGUAGE_NONE][0]['value'] : 0;
+
+    //we use is set as we want to separate between "no value set" or "set to 0"
+    $dynamic_volume = isset($element_collection->field_forecast_dynamic[LANGUAGE_NONE][0]['value']) ? $element_collection->field_forecast_dynamic[LANGUAGE_NONE][0]['value'] : false;
+    
+    //if dynamic forecast is not set, set the value to the expected volume
+    if ($dynamic_volume === FALSE) {
+      $element_collection->field_forecast_dynamic[LANGUAGE_NONE][0]['value'] = $expected_volume;
+      //save it again but without host.
+      $element_collection->save(TRUE);
+    }
+  }
+}
+
+/**
+* Calculated the auto-calculated fields of the forecast elements field collection which show the summed forecast value and the summed dynamic forecast value.
+*/
+function _erpal_crm_reports_calculate_forecast_volumes($forcast_node) {
+  
+  $elements = $forcast_node->field_forecast_elements[LANGUAGE_NONE];
+  foreach ($elements as $element) {
+    $element_id = $element['value'];
+    $element_collection = entity_load('field_collection_item', array($element_id));
+    $element_collection = $element_collection[$element_id];
+
+    //get all fields from the elements field collection and sum all volumes together to update the elements field collections fields
+    $volumes_ids = !empty($element_collection->field_forecast_volumes[LANGUAGE_NONE]) ? $element_collection->field_forecast_volumes[LANGUAGE_NONE] : array();
+    $total_expected = 0;
+    $total_dynamic = 0;
+    foreach ($volumes_ids as $volume_id) {
+      $volume_id = $volume_id['value'];
+   
+      //here we have to load it
+      $volume = entity_load('field_collection_item', array($volume_id));
+      $volume = $volume[$volume_id];
+      
+      $expected_volume = !empty($volume->field_forecast_estimated[LANGUAGE_NONE][0]['value']) ? $volume->field_forecast_estimated[LANGUAGE_NONE][0]['value'] : 0;
+      
+      //we use is set as we want to separate between "no value set" or "set to 0"
+      $dynamic_volume = isset($volume->field_forecast_dynamic[LANGUAGE_NONE][0]['value']) ? $volume->field_forecast_dynamic[LANGUAGE_NONE][0]['value'] : false;
+      
+      //if dynamic forecast is not set, set the value to the expected volume
+      if ($dynamic_volume === FALSE) {
+        $volume->field_forecast_dynamic[LANGUAGE_NONE][0]['value'] = $expected_volume;
+        //save it again but without host.
+        $volume->save(TRUE);
+      }
+      
+      $total_expected += $expected_volume;
+      $total_dynamic += $dynamic_volume;
+    }
+    
+    //update the value on the host entity
+    $element_collection->field_expected_volume[LANGUAGE_NONE][0]['value'] = $total_expected;
+    $element_collection->field_dynamic_volume[LANGUAGE_NONE][0]['value'] = $total_dynamic;
+
+    $element_collection->save(true); //don't save host entity
+  }
+ 
+}
+
+/**
+ * Implements hook_permission().
+ */
+function erpal_crm_reports_permission() {
+  return array(
+    'view crm sales report' => array(
+      'title' => t('View CRM sales report'),
+    ),
+    'view crm expense report' => array(
+      'title' => t('View CRM expense report'),
+    ),
+    'view crm lead report' => array(
+      'title' => t('View CRM lead report'),
+    ),
+    'view crm customers report' => array(
+      'title' => t('View CRM customer report'),
+    ),
+    'view crm sales forecast report' => array(
+      'title' => t('View CRM sales forecast report'),
+    ),
+    'view crm sales forecast plan' => array(
+      'title' => t('View CRM sales forecast plan'),
+    ),
+    'view crm expense forecast plan' => array(
+      'title' => t('View CRM expense forecast plan'),
+    ),   
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ *
+ * Defines the custom blocks defined by erpal_crm_reports.
+ */
+function erpal_crm_reports_block_info() {
+  return array(
+    'erpal_crm_reports_sales_report' => array(
+      'info' => t('Erpal CRM Reports: Sales Report'),
+    ),
+    'erpal_crm_reports_lead_report' => array(
+      'info' => t('Erpal CRM Reports: Lead Report'),
+    ),
+    'erpal_crm_reports_cust_report' => array(
+      'info' => t('Erpal CRM Reports: Customer Report'),
+    )
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * Implementation of the custom blocks defined by erpal_crm_reports.
+ */
+function erpal_crm_reports_block_view($delta = '') {
+  module_load_include('inc', 'erpal_crm_reports', 'includes/erpal_crm_reports.blocks');
+
+  $block = array();
+
+  switch ($delta) {
+    case 'erpal_crm_reports_sales_report':
+      $block['subject'] = t('CRM Sales Report');
+      $block['content'] = erpal_crm_reports_sales_report_block();
+      break;
+    case 'erpal_crm_reports_lead_report':
+      $block['subject'] = t('CRM Lead Report');
+      $block['content'] = erpal_crm_reports_lead_report_block();
+      break;
+    case 'erpal_crm_reports_cust_report':
+      $block['subject'] = t('CRM Customer Report');
+      $block['content'] = erpal_crm_reports_customer_report_block();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_query_TAG_alter
+ *
+ * adds 'or' query condition for date_from and date_to on nodes, used only by
+ * ErpalCrmReportsLead::create
+ *
+ * @param QueryAlterableInterface $query
+ */
+function erpal_crm_reports_query_dateregion_alter(QueryAlterableInterface $query) {
+  $date_from = $query->getMetaData('date_from');
+
+  if ($date_from !== null) {
+    $or = db_or()
+      ->condition('node.created', $date_from, '>=')
+      ->condition('node.changed', $date_from, '>=');
+    $query->condition($or);
+  }
+
+  $date_to = $query->getMetaData('date_to');
+
+  if ($date_to !== null) {
+    $or = db_or()
+    ->condition('node.created', $date_to, '<=')
+    ->condition('node.changed', $date_to, '<=');
+    $query->condition($or);
+  }
+}
+
+/**
+* Returns the contact for unplanned sales volume
+*/
+function _erpal_crm_reports_get_unplanned_contact_node() {
+  static $node = FALSE;
+  
+  if ($node)
+    return $node;
+    
+  $nid = variable_get('erpal_crm_reports_unplanned_sales_contact_nid', FALSE);
+  if ($nid) {
+    $node = node_load($nid);
+    return $node;
+  }
+  
+  return false;
+}
+
+/**
+* Get all sales volume splitted by customer and of the last $years_back years
+* @param int years_back how may years back we want to make the calculation
+* @param array plannes_sales array like array(2014 => array(contact_nids)) describing all contact nids that have a forecast in the given year
+*/
+function _erpal_crm_reports_get_sales_volume($years_back, $planned_sales = array()) {
+
+  static $cache = false;
+  
+  if (!empty($cache))
+    return $cache;
+
+  //we use the sales report component to calculate the volume by customer each service category
+  $date_to = strtotime(date('Y').'-12-31 23:59:59');
+  $date_from = strtotime(date('Y') - $years_back.'-12-31 23:59:59');
+  
+  $options['date_from'] = $date_from;
+  $options['date_to'] = $date_to;
+  $options['dim_servicecategory'] = true;
+  $options['dim_customer'] = true;
+  $options['no_cache'] = true;
+  $options['scaling'] = ERPAL_REPORT_DATE_SCALING_YEAR;
+  
+  $data_arr = ErpalCrmReportsSales::create($options, $planned_sales);
+
+  $data = $data_arr['data'];
+  $service_categories = $data_arr['extended']['service_categories'];
+  $customer_nids = $data_arr['extended']['customer_nids'];
+  
+  //prepare the result to have total sales volume total each customer (all years summed) and splitted by service category by year
+  $total_volume = 0;
+  $result = array(); //first dimension is customer, then year, then service category 
+  $years_volumes = array();
+  if (is_array($data)) {
+    foreach ($data as $cat_string => $volumes) {
+      //get the service category fists
+      foreach ($volumes as $year => $volume) {
+        $service_category = $service_categories[$cat_string][$year];
+        $customer_nid = $customer_nids[$cat_string][$year];
+        
+        if (empty($result['customers'][$customer_nid]['total']))
+          $result['customers'][$customer_nid]['total'] = 0;
+        
+        $result['customers'][$customer_nid]['details'][$year][$service_category['id']] = $volume;
+        $result['customers'][$customer_nid]['total'] += $volume;
+        $total_volume += $volume;
+        
+        if (empty($years_volumes[$year]))
+          $years_volumes[$year] = 0;
+          
+        $years_volumes[$year] += $volume;
+      }
+    }
+  }
+  
+  $result['years_volumes'] = $years_volumes;
+  $result['total'] = $total_volume;
+  $result['details'] = $data_arr['details'];
+  $result['service_categories'] = $service_categories;
+  //cache it or other methods that call this cache
+  $cache = $result;
+  
+  return $result;
+}
+
+
+/**
+* Get all expenses (billables) splitted by contractor and of the last $years_back years
+*/
+function _erpal_crm_reports_get_expenses($years_back) {
+
+  static $cache = false;
+  
+  if (!empty($cache))
+    return $cache;
+
+  //we use the sales report component to calculate the volume by customer each service category
+  $date_to = strtotime(date('Y').'-12-31 23:59:59');
+  $date_from = strtotime(date('Y') - $years_back.'-12-31 23:59:59');
+  
+  $options['date_from'] = $date_from;
+  $options['date_to'] = $date_to;
+  $options['dim_expensecategory'] = true;
+  $options['no_cache'] = true;
+  $options['scaling'] = ERPAL_REPORT_DATE_SCALING_YEAR;
+  
+  $data_arr = ErpalCrmReportsExpense::create($options);
+
+  $data = $data_arr['data'];
+  $detail_data = $data_arr['details'];
+  $expense_categories = $data_arr['extended']['expense_categories'];
+  
+  //prepare the result to have total expense volume for each expense category.
+  $total_volume = 0;
+  $result = array(); //first dimension year, then expense category 
+  $details = array();
+  if (is_array($data)) {
+    foreach ($data as $cat_string => $volumes) {
+      //get the service category fists
+      foreach ($volumes as $year => $volume) {
+        $expense_category = $expense_categories[$cat_string][$year];        
+        
+        $expense_id = $expense_category['id'];
+        if (empty($result['expense_categories'][$expense_id]['total']))
+          $result['expense_categories'][$expense_id]['total'] = 0;
+        $result['expense_categories'][$expense_id]['total'] += $volume;        
+        
+        if (empty($result['expense_categories'][$expense_id]['details'][$year]))
+          $result['expense_categories'][$expense_id]['details'][$year] = 0;        
+        $result['expense_categories'][$expense_id]['details'][$year] += $volume;               
+        
+        $total_volume += $volume;
+        
+        $details[$cat_string][$year][] = $detail_data[$cat_string][$year];
+      }
+      
+      //add details
+      $result['expense_categories'][$expense_id]['cat_string'] = $cat_string;          
+    }
+  }
+  
+  $result['total'] = $total_volume;
+  $result['details'] = $details;
+  
+  //cache it or other methods that call this cache
+  $cache = $result;
+ 
+  return $result;
+}
+
+/**
+* Returns forecast data for a user
+*/
+function _erpal_crm_reports_get_sales_forecast($years_foreward = false) {
+  static $cache = false;
+  
+  if (!empty($cache))
+    return $cache;
+
+  //we use the sales report component to calculate the volume by customer each service category
+  $date_to = strtotime(date('Y') + $years_foreward.'-12-31 23:59:59');
+  
+  $options['date_to'] = $date_to;
+  $options['dim_servicecategory'] = true;
+  $options['calculate_safe_sales'] = true;
+  $options['calculate_sales_to_bill'] = true;
+  $options['calculate_probable_sales'] = true;
+  $options['dim_customer'] = true;
+  $options['no_cache'] = true;
+  $options['scaling'] = ERPAL_REPORT_DATE_SCALING_YEAR;
+  
+  $data_arr = ErpalCrmReportsSalesForecast::create($options, true);
+  
+  $data = $data_arr['data'];
+  $service_categories = $data_arr['extended']['service_categories'];
+
+  $customer_nids = $data_arr['extended']['customer_nids'];
+  $sales_by_service_category = $data_arr['extended']['sales_by_service_category'];
+
+  //prepare the result to have total sales volume total each customer (all years summed) and splitted by service category by year
+  $total_volume = 0;
+  $result = array(); //first dimension is customer, then year, then service category 
+  if (is_array($data)) {
+    foreach ($data as $cat_string => $volumes) {
+      foreach ($volumes as $year => $volume) {        
+        $customer_nid = !empty($customer_nids[$cat_string][$year]) ? $customer_nids[$cat_string][$year] : false;
+        
+        if (!$customer_nid)
+          continue; // if we dont have data for this customer for the current year, we proceed with others.
+        
+        $service_category_volumes = $sales_by_service_category[$cat_string][$year];
+       
+        //we need to add the volume by category so we use the array where this was splitted into service categories
+        foreach ($service_category_volumes as $service_category_id => $service_category_volume) {
+          if (empty($result['customers'][$customer_nid]['total']))
+            $result['customers'][$customer_nid]['total'] = 0;
+
+          $result['customers'][$customer_nid]['details'][$year][$service_category_id] = $service_category_volume;
+          $result['customers'][$customer_nid]['total'] += $service_category_volume;
+          $total_volume += $service_category_volume;
+        }
+      }
+    }
+  }
+
+  $result['total'] = $total_volume;
+  $result['details'] = $data_arr['details'];
+  $result['categories'] = $data_arr['extended']['service_categories'];
+  //cache it or other methods that call this cache
+  $cache = $result;
+
+  return $result;
+}
+
+/**
+* Returns all planned sales forecast contact nids by year like array(2014 => array(contact_nids))
+* @param array $years all years to return forecasts for
+*/
+function _erpal_crm_reports_get_planned_sales_contacts_by_year($years) {  
+  $forecast_nids = _erpal_crm_reports_get_customer_forecasts();
+  
+  $ret = array();
+  foreach ($forecast_nids as $nid) {
+    $forecast_node = node_load($nid);
+    $customer_nid = $forecast_node->field_contact_ref[LANGUAGE_NONE][0]['target_id'];
+    $forcast_elements = !empty($forecast_node->field_forecast_elements[LANGUAGE_NONE]) ? $forecast_node->field_forecast_elements[LANGUAGE_NONE] : array();
+    
+    foreach ($forcast_elements as $delta => $forecast_element) {
+      $element_collection = entity_load('field_collection_item', array($forecast_element['value']));
+      $element_collection = $element_collection[$forecast_element['value']];
+      $element_collection_w = entity_metadata_wrapper('field_collection_item', $element_collection); 
+      $forecast_year = date('Y', $element_collection->field_forecast_date[LANGUAGE_NONE][0]['value']); 
+      
+      if (in_array($forecast_year, $years)) {
+        $ret[$forecast_year][] = $customer_nid;
+      }
+    }
+  }
+  
+  return $ret;
+}
+
+/**
+* Return all status terms for activities
+*/
+function _erpal_crm_reports_get_activity_status_terms() {
+  $form = array();
+  //get all activity status terms
+  $taxonomy_name = 'activity_status_terms';
+  $taxonomy = taxonomy_vocabulary_machine_name_load($taxonomy_name);
+  $tree = taxonomy_get_tree($taxonomy->vid);
+  $activity_status_terms = array();
+  foreach ($tree as $term) {
+    $activity_status_terms[$term->tid] = $term->name;
+  }
+  
+  return $activity_status_terms;
+}

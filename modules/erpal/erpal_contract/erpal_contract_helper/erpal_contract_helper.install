@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file all functions needed for updates of the module
+ */
+
+/**
+* Implements hook_install
+*/ 
+function erpal_contract_helper_install() {
+  _erpal_contract_helper_elyisa_cron_defaults();
+}
+ 
+/**
+* Enable the new erpal_contract_crm module to integrate contracts with CRM and projects
+*/
+function erpal_contract_helper_update_7001() {
+  module_enable(array('erpal_contract_crm'));
+  module_enable(array('erpal_contract_projects'));
+}
+
+/**
+* Set elysia cron defaults
+*/
+function erpal_contract_helper_update_7002() {
+  _erpal_contract_helper_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_contract_helper_elyisa_cron_defaults() {
+  $values = array('rule' => '0 */6 * * *');
+  elysia_cron_set('erpal_contract_helper_cron', false, $values);
+}

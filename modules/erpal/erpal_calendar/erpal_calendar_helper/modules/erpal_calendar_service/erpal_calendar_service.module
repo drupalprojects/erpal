@@ -1,0 +1,206 @@
+<?php
+
+/**
+ * ERPAL calendar service adds services integration and provides date_item's
+ * 
+ * @file erpal_calendar_service.module
+ * @author Lavong Soysavanh <ls@brightsolutions.de>
+ */
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_calendar_service_services_resources() {
+  return array(
+    'date_item' => array(
+      'retrieve' => array(
+        'help' => 'retrieves a date item',
+        'file' => array('type' => 'inc', 'module' => 'erpal_calendar_service', 'name' => 'inc/date_item'),
+        'callback' => '_erpal_calendar_service_date_item_retrieve',
+        'access callback' => '_erpal_calendar_service_date_item_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_calendar_service', 'name' => 'inc/date_item'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the date item to get',
+            'source' => array('path' => 0), //counted from the end, so param = 0 is the last arg in the url!
+            'optional' => TRUE,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'includes details with the date item, defaults to true.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes children to requested date item, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+          array(
+            'name' => 'entity_type',
+            'type' => 'string',
+            'description' => 'specifies the date_items entity_type to return. if not provided, all entity_types are considered.',
+            'optional' => TRUE,
+            'source' => array('param' => 'entity_type'),
+            'default value' => 'date_item',
+          ),
+          array(
+            'name' => 'bundle',
+            'type' => 'string',
+            'description' => 'specifies the bundle to return. if not provided, all bundles are considered.',
+            'optional' => TRUE,
+            'source' => array('param' => 'bundle'),
+            'default value' => 'date_item',
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'Retrieves a listing of date items',
+        'file' => array('type' => 'inc', 'module' => 'erpal_calendar_service', 'name' => 'inc/date_item'),
+        'callback' => '_erpal_calendar_service_date_item_index',
+        'access callback' => '_erpal_calendar_service_date_item_access',
+        'access arguments' => array('view'),
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_calendar_service', 'name' => 'inc/date_item'),
+        'access arguments append' => FALSE,
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'Deliver data from nth element, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'Deliver the date item with detailed information, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => FALSE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes children to requested date item, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+          array(
+            'name' => 'entity_type',
+            'type' => 'string',
+            'description' => 'specifies the date_items entity_type to return. if not provided, all entity_types are considered.',
+            'optional' => TRUE,
+            'source' => array('param' => 'entity_type'),
+            'default value' => 'date_item',
+          ),
+          array(
+            'name' => 'bundle',
+            'type' => 'string',
+            'description' => 'specifies the bundle to return. if not provided, all bundles are considered.',
+            'optional' => TRUE,
+            'source' => array('param' => 'bundle'),
+            'default value' => 'date_item',
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_calendar_service_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+    );
+  }
+}
+
+/**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_calendar_service_default_services_endpoint() {
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE;
+  $endpoint->api_version = 3;
+  $endpoint->name = 'erpal_calendar_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/calendar';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'rest_server' => array(
+      'formatters' => array(
+        'bencode' => TRUE,
+        'json' => TRUE,
+        'php' => TRUE,
+        'rss' => TRUE,
+        'xml' => TRUE,
+        'yaml' => TRUE,
+        'jsonp' => FALSE,
+      ),
+      'parsers' => array(
+        'application/json' => TRUE,
+        'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
+        'application/x-yaml' => TRUE,
+        'multipart/form-data' => TRUE,
+      ),
+    ),
+  );
+  $endpoint->resources = array(
+    'date_item' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+  $endpoints[$endpoint->name] = $endpoint;
+  return $endpoints;
+}

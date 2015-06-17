@@ -1,0 +1,4 @@
+Contact Type,Gender,Company name,Firstname,Lastname,Birthday,Street,ZIP Code,City,Country,Phone  (home),Phone (work),Fax,Email,Website,XING,Facebook,Twitter,Google+,VAT Number,Other legal information,Bank name,Bank number,Account number,IBAN,SWIFT,Contact Tags,Works at,Relation Tags
+person,male,,Jean,Dupont,03.03.1960,Musterstr. 42,12345,Mustercity,USA,49061239494,123123123,,,,www.xing.com,,,www.google.com,,,,,,,,Some tags,Testing Co.,Full time
+company,,Testing Co.,,,,Teststr. 23,54321,Musterstadt,Germany,,94939393933,30303939393,,www.drupal.org,,,www.twitter.com,,DE123456789,,Deutsche Bank,4049494,9494949494949,9494949494,DE94942AR4,,,Seasonal
+person,female,,Erika,Mustermann,01.04.1997,Irgeneine str. 34,112233,Möglich,Deutschland,123123123123,,,erika.mustermann@mustermail.de,,,www.facebook.com,,,,Some notes,,,,,,,Testing Co.,Full time

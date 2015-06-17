@@ -1,0 +1,175 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for our entity and a table to store information about
+ * the entity types.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function erpal_employee_helper_schema() {
+  $schema = array();
+
+  $schema['working_times'] = array(
+    'description' => 'The base table for working_times entities.',
+    'fields' => array(            
+      'id' => array(
+        'description' => 'The id of the working_times entity',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The uid for whom the working times is for',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'type' => array(
+        'description' => 'Wether this data is aggregated for a month or a year',
+        'type' => 'varchar',
+        'length' => 25,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'dirty' => array(
+        'description' => 'If this is set, the dataset should be recalculated',
+        'type' => 'int',       
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'month' => array(
+        'description' => 'The month for the booked working_times',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'year' => array(
+        'description' => 'The year for the booked working_times',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'overtime' => array(
+        'description' => 'Long hours for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'ill_days' => array(
+        'description' => 'Ill days for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'holidays_used' => array(
+        'description' => 'Used holidays for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'holidays_used_from_before' => array(
+        'description' => 'Used holidays from the year before for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'holidays_available' => array(
+        'description' => 'Available holidays for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'holidays_available_till' => array(
+        'description' => 'The date when hilidays expire',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'total_hours' => array(
+        'description' => 'Total working hours for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'booked_working_hours' => array(
+        'description' => 'Worked hours according to contract agreements including hlidays and ill days',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'project_time' => array(
+        'description' => 'Sum of timetrackings on project for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'overtime_reduce' => array(
+        'description' => 'Reduced overtime for a user in the booking period',
+        'type' => 'numeric',
+        'precicion' => 2,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The date when the entity was created',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The date when the entity was changed',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),      
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'type' => array('type'),
+      'uid' => array('uid'),
+      'ui_month_year' => array('uid', 'month', 'year'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+* Add property contract booked hours
+*/
+function erpal_employee_helper_update_7001(&$sandbox) {
+  db_add_field('working_times', 'booked_working_hours', array('type' => 'numeric', 'precicion' => 2, 'default' => 0, 'not null' => TRUE, 'description' => 'Worked hours according to contract agreements including hlidays and ill days.'));
+}
+
+/**
+* Implements hook_install.
+*/
+function erpal_employee_helper_install() {
+  _erpal_employee_helper_elyisa_cron_defaults();
+}
+
+
+/**
+* Set elysia cron defaults
+*/
+function erpal_employee_helper_update_7002() {
+  _erpal_employee_helper_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_employee_helper_elyisa_cron_defaults() {
+  $values = array('rule' => '0 */6 * * *');
+  elysia_cron_set('erpal_employee_helper_cron', false, $values);
+}

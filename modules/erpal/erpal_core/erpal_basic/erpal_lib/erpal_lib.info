@@ -1,0 +1,18 @@
+core = "7.x"
+description = "ERPAL lib providing some helper functions"
+name = "ERPAL lib"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_lib"
+version = "7.x-1.0-dev"
+
+files[] = erpal_lib.module
+files[] = inc/date_time.inc
+files[] = inc/node.inc
+files[] = inc/entiy.inc
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_core"
+datestamp = "1433507327"
+

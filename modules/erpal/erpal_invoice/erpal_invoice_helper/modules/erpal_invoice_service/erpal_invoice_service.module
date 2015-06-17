@@ -1,0 +1,165 @@
+<?php
+/**
+* @file
+* Code for the erpal_invoice_service module.
+* ERPAL invoice service adds services integration to allow data transfer for external apps
+*/
+module_load_include('inc', 'erpal_invoice_service', 'inc/test');
+
+/**
+ * Implements hook_node_presave
+ * @see erpal_invoice_service_date_popup_pre_validate_alter
+ */
+function erpal_invoice_service_node_presave($node) {
+  if (isset($node->field_invoice_date)) {
+    $cached_date = _erpal_invoice_helper_cache('field_invoice_date', false);
+    if ($cached_date) {
+      $node->field_invoice_date[LANGUAGE_NONE][0]['value'] = $cached_date;  //@TOTO: maybe respect timezones
+    }
+  }
+}
+
+/**
+ * In case that there is only a unix timestamp submitted, date popup needs 'date' key, we set it here
+ */
+function erpal_invoice_service_date_popup_pre_validate_alter(&$element, &$form_state, &$input) {
+  
+  $field_name = isset($element['#field']['field_name']) ? $element['#field']['field_name'] : false;
+  if ($field_name == 'field_invoice_date') {
+    //print_r($element);
+    //die(print_r($form_state['values']));
+  }
+  if (!is_array($input)) {
+    $field_name = $element['#field']['field_name'];
+    if ($field_name == 'field_invoice_date') {
+      $date_format = _erpal_basic_helper_date_format_date_only();      
+      $initial_date = $input;
+
+      $form_state['values'][$field_name] = array(LANGUAGE_NONE => array(0 => array('value' => array('date' => date($date_format, $input)))));
+      $input = array('date' => date($date_format, $input));
+      
+      //@TODO: this needs to be done otherwise there is a validation error in date popup module
+      //but nevertheless the date value is not saved....! I spend 8 hours and stuck. 
+      //Working with date_popup programatically is hard work...Now we
+      //cache the field_invoice_date value to be set and set it in @see erpal_invoice_service_node_presave
+      _erpal_invoice_helper_cache('field_invoice_date', $initial_date);
+        
+    }
+  }
+}
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_invoice_service_services_resources() {
+  return array(
+    'invoice' => array(
+      'operations' => array(
+        'create' => array(
+          'help' => 'Creates an invoice',
+          'file' => array('type' => 'inc', 'module' => 'erpal_invoice_service', 'name' => 'inc/invoice'),
+          'callback' => '_erpal_invoice_service_invoice_create',
+          'access callback' => '_erpal_invoice_service_invoice_create_access',
+          'access callback file' => array('type' => 'inc', 'module' => 'erpal_invoice_service', 'name' => 'inc/invoice'),
+          'access arguments' => array('create'),
+          'access arguments append' => TRUE,
+          'args' => array(
+            array(
+              'name' => 'invoice',
+              'optional' => FALSE,
+              'source' => 'data',
+              'description' => 'The invoice node data to create',
+              'type' => 'array',
+            ),         
+          ),
+        ),
+      ),
+    ),  
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_invoice_service_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+    );
+  }
+}
+
+ /**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_invoice_service_default_services_endpoint() {
+  
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'erpal_invoice_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/invoice';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'rest_server' => array(
+      'formatters' => array(
+        'bencode' => TRUE,
+        'json' => TRUE,
+        'php' => TRUE,
+        'rss' => TRUE,
+        'xml' => TRUE,
+        'yaml' => TRUE,
+        'jsonp' => FALSE,
+      ),
+      'parsers' => array(
+        'application/json' => TRUE,
+        'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
+        'application/x-yaml' => TRUE,
+        'multipart/form-data' => TRUE,
+      ),
+    ),
+  );
+  $endpoint->resources = array(
+    'invoice' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ),        
+      ),
+    ),
+    'contact' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ),        
+      ),
+    ),
+    'erpal_file' => array(
+      'actions' => array(
+        'download' => array(
+          'enabled' => 1,
+        ),        
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+
+  $endpoints[$endpoint->name] = $endpoint;
+
+  return $endpoints;
+}

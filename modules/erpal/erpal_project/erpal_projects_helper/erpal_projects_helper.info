@@ -1,0 +1,32 @@
+core = "7.x"
+description = "ERPAL Projects Helper"
+name = "erpal_projects_helper"
+package = "ERPAL Projects"
+php = "5.2.4"
+project = "erpal_projects_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_projects_helper.module
+files[] = erpal_projects_helper.install
+files[] = inc/config.inc
+files[] = inc/book.inc
+files[] = inc/budget.inc
+files[] = inc/field_access.inc
+files[] = inc/projects.inc
+files[] = inc/rules.inc
+files[] = inc/tasks.inc
+files[] = inc/timetracking.inc
+files[] = inc/notifications.inc
+files[] = inc/token.inc
+files[] = views/erpal_projects_helper.views.inc
+files[] = views/erpal_projects_helper_handler_filter_erpal_projects.inc
+files[] = views/erpal_project_helper_handler_project_quicklinkgs_field.inc
+
+dependencies[] = timetracking
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_project"
+datestamp = "1433508204"
+

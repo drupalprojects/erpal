@@ -1,0 +1,17 @@
+core = "7.x"
+description = "Provides automated rating for customer categories A,B,C"
+
+name = "Erpal customer rating"
+package = "ERPAL CRM"
+project = "erpal_customer_rating"
+version = "7.x-1.0-dev"
+
+dependencies[] = erpal_basic
+dependencies[] = erpal_invoice
+dependencies[] = erpal_crm_reports
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_crm_reports"
+datestamp = "1433508490"
+

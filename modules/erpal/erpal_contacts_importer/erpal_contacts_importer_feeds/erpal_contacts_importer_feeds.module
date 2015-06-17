@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the ERPAL Contacts Importer Feeds feature.
+ */
+
+include_once 'erpal_contacts_importer_feeds.features.inc';

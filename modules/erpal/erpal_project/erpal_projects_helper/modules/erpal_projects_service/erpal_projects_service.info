@@ -1,0 +1,31 @@
+core = "7.x"
+description = "ERPAL projects service integrates projects functionallity with services for apps"
+
+name = "erpal_projects_service"
+package = "ERPAL Services"
+php = "5.2.4"
+project = "erpal_projects_service"
+version = "7.x-1.0-dev"
+
+files[] = erpal_projects_service.module
+files[] = inc/project.inc
+files[] = inc/task.inc
+files[] = inc/timetracking.inc
+files[] = inc/taxonomy.inc
+
+dependencies[] = rest_server
+dependencies[] = erpal_project
+
+
+; Information added by drush on 2013-11-15
+version = "erpal_7.x-2.0-alpha6"
+project = "erpal_project"
+datestamp = "1384533569"
+
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_project"
+datestamp = "1433508204"
+

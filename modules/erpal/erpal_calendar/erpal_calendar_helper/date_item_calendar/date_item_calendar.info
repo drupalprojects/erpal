@@ -1,0 +1,16 @@
+name = Date Item Calendar
+description = Creates date field for date item entities
+package = Date Item
+core = 7.x
+
+dependencies[] = entity
+dependencies[] = date
+dependencies[] = date_item
+dependencies[] = fullcalendar
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_calendar"
+datestamp = "1433507610"
+

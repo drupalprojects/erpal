@@ -1,0 +1,587 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_calendar_helper module. 
+ */
+
+ module_load_include('inc', 'erpal_calendar_helper', 'inc/config');
+ module_load_include('inc', 'erpal_calendar_helper', 'inc/access');  
+ module_load_include('inc', 'erpal_calendar_helper', 'inc/notifications');
+ 
+/**
+* Implements hook_init
+*/
+function erpal_calendar_helper_init() {
+  _erpal_calendar_helper_warn_libraries();
+  _erpal_calendar_helper_redirect_single_date_items();
+}
+
+/**
+* redirect to the subject node if a single date item is going to be viewed
+*/
+function _erpal_calendar_helper_redirect_single_date_items() {
+  if (arg(0) != 'date_item')
+    return;
+    
+  //if there is a get parameter preventing from redirect, skip this function
+  if (!empty($_GET['no_redirect']))
+    return;
+    
+  $date_item_id = arg(1);
+  
+  //if there is only this date item entity for the field of this subject, redirect to the subject
+  $date_item = entity_load('date_item', array($date_item_id));
+  $date_item = $date_item[$date_item_id];
+  $date_item_ids = _erpal_calendar_helper_get_date_item_subjects($date_item);
+  
+  if (count($date_item_ids) == 1) {    
+    drupal_goto($date_item->src_type.'/'.$date_item->src_id);
+  }
+}
+
+/**
+* Return all date_item_ids of the subject and the date item given as parameter
+*/
+function _erpal_calendar_helper_get_date_item_subjects($date_item) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'date_item')
+    ->entityCondition('bundle', $date_item->type)    
+    ->propertyCondition('src_id', $date_item->src_id)
+    ->propertyCondition('src_type', $date_item->src_type)
+    ->propertyCondition('src_field_name', $date_item->src_field_name)
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+  $result = $query->execute();
+
+  $date_item_ids = array();
+  if (isset($result['date_item'])) {
+    $date_item_ids = array_keys($result['date_item']);    
+  }
+  
+  return $date_item_ids;
+}
+
+/**
+* Warns if the fullcalendar js is not available
+*/
+function _erpal_calendar_helper_warn_libraries() {
+  //warn only on calendar view, not everywhere
+  if (arg(0) != 'calendar')
+    return;
+  
+  $fullcalendar_path = libraries_get_path('fullcalendar');
+
+  if (!file_exists($fullcalendar_path)) {
+    //unset all other messages
+    $tcpdf_link = l('Full calendar library', 'http://arshaw.com/fullcalendar/download/');
+    $tcpdf_path = libraries_get_path('tcpdf');
+    drupal_set_message(t('Please download !link and place the contents of the folder fullcalendar of the zip file in !fullcalendar_lib to create a PDF.', array('!link' => $tcpdf_link, '!fullcalendar_lib' => $fullcalendar_path)), 'warning');    
+    return false;
+  }
+}
+
+/**
+* Implements hook_entity_insert
+*/
+function erpal_calendar_helper_entity_insert($entity, $type) {
+  if ($type == 'node') {    
+    if ($entity->type == 'erpal_date') {
+      _erpal_calendar_helper_manage_date_aul($entity, 'insert');      
+    }    
+  }
+  
+  if ($type == 'comment' && !empty($entity->node_type)) {
+    if ($entity->node_type == 'comment_node_erpal_date') {
+      _erpal_calendar_helper_notify_assigned_users_for_comment($entity, 'insert');
+    }
+  }
+}
+
+/**
+* Implements hook_entity_update
+*/
+function erpal_calendar_helper_entity_update($entity, $type) {
+  if ($type == 'node') {    
+    if ($entity->type == 'erpal_date') {
+      _erpal_calendar_helper_manage_date_aul($entity, 'insert');      
+    }    
+  }   
+
+  if ($type == 'comment' && !empty($entity->node_type)) {
+    if ($entity->node_type == 'comment_node_erpal_date') {
+      _erpal_calendar_helper_notify_assigned_users_for_comment($entity, 'update');
+    }
+  }
+}
+
+/**
+* Implements hook_node_inser
+*/
+function erpal_calendar_helper_node_insert($node){
+  if ($node->type == 'erpal_date') {    
+    _erpal_calendar_helper_subscribe_date_assigned_users($node);       
+  }
+}
+/**
+* Implements hook_node_presave
+*/
+function erpal_calendar_helper_node_presave($node) {
+  if ($node->type == 'erpal_date') {  
+    if (!empty($node->original)) {
+      _erpal_calendar_helper_subscribe_date_assigned_users($node);    
+    }
+  }
+}
+
+
+
+
+/**
+* Implements hook_entity_delete
+*/
+function erpal_calendar_helper_entity_delete($entity, $type) {
+  if ($type == 'node') {    
+    if ($entity->type == 'erpal_date') {
+      _erpal_calendar_helper_manage_date_aul($entity, 'insert');
+    }    
+  }    
+}
+
+/**
+ * Implements hook_menu
+ */ 
+function erpal_calendar_helper_menu(){
+
+	$items = array();
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_calendar_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+
+/**
+ * Implements hook_permission
+ */
+function erpal_calendar_helper_permission(){
+  return array(
+    'config erpal calendar' => array(
+      'title' => t('Administer ERPAL calendar'), 
+      'description' => t('Perform administration tasks for ERPAL calendar module.'),
+    ),
+    'access calendar view' => array(
+      'title' => t('Access calendar view'), 
+      'description' => t('Grant the user access to the calendar view.'),
+    ),
+    'add holidays to calendar' => array(
+      'title' => t('Add holidays to calendar'), 
+      'description' => t('Allows the user to create a new date node of type holiday.'),
+    ),
+    'access holidays calendar view' => array(
+      'title' => t('Access holidays calendar view'), 
+      'description' => t('Grant the user access to the holidays calendar view.'),
+    ),
+  );
+	
+}
+
+/**
+* Implements date_item_presave provided by date item module, if a date item is about to be saved
+*/
+function erpal_calendar_helper_date_item_presave($date_item) {
+  _erpal_calendar_helper_set_tag($date_item);
+}
+
+/**
+* Implements hook_views_pre_execute
+*/
+function erpal_calendar_helper_views_pre_build(&$view) {
+  if ($view->name == 'full_calendar' && isset($view->filter['combine']) && $view->current_display != 'panel_pane_1') {    
+    _erpal_calendar_helper_preset_own_calendar_filter($view);  
+  }
+
+  if ($view->display_handler->get_option('style_plugin') == 'fullcalendar') {
+    $default_style_view = !empty($view->display_handler->display->display_options['style_options']['defaultView']) ? $view->display_handler->display->display_options['style_options']['defaultView'] : '';
+    
+    if ($default_style_view != 'agendaDay' && $default_style_view != 'basicDay')
+      return;
+
+    if (!empty($view->filter['field_date_item_date_value']->options['default_date'])) {
+      $view->filter['field_date_item_date_value']->options['default_date'] = date('Y-m-d', strtotime(' -1 day'));
+      $view->filter['field_date_item_date_value']->options['default_to_date'] = date('Y-m-d', strtotime(' +1 day'));
+    }
+  }
+}
+
+
+/**
+* Presets the full calendar view combine filter with username to only show own dates
+*/
+function _erpal_calendar_helper_preset_own_calendar_filter(&$view) {
+  if (_erpal_calendar_helper_preset_global_cal_with_username()) {
+    global $user;
+    $view->filter['combine']->value = $user->name;
+  }
+}
+
+/**
+* set a tag to the entity if one should be set
+*/
+function _erpal_calendar_helper_set_tag($date_item) {
+  $current_tags = isset($date_item->field_date_item_tags[LANGUAGE_NONE]) ? $date_item->field_date_item_tags[LANGUAGE_NONE] : array();
+
+  $src_type = $date_item->src_type;
+  $src_entity = $date_item->src_entity();
+  $src_bundle = _date_entity_entity_bundle($src_entity, $src_type);
+  $src_field_name = $date_item->src_field_name;
+  $term_to_set = _erpal_calendar_helper_field_tag($src_type, $src_bundle, $src_field_name);
+
+  //allow other modules to alter the set term. In case of a erpal_date node, we want another term if the date node is not e real date but a holiday
+  $context = array('src' => array('type' => $src_type, 'bundle' => $src_bundle, 'entity' => $src_entity));
+  drupal_alter('date_term', $term_to_set, $context);
+
+  if (!$term_to_set)
+    return;  //no term to set!
+  
+  $tag_is_set = false;
+  foreach ($current_tags as $delta => $term_arr) {
+    if (isset($term_arr['name']) && $term_arr['name'] == $term_to_set) {
+      $tag_is_set = true;
+    }    
+  }
+
+  if (!$tag_is_set) {
+ 
+    //get field instance to get vocabulary of term refernce field
+    $instance = field_info_field('field_date_item_tags');
+
+    $vocab_machine_name = $instance['settings']['allowed_values'][0]['vocabulary'];
+    //now get the vocabulary id from the vocabulary machine name
+    $vocabs = taxonomy_get_vocabularies();
+    $vid = false;
+    foreach ($vocabs as $vocab) {
+      if ($vocab->machine_name == $vocab_machine_name) {
+        $vid = $vocab->vid;
+        break;
+      }
+    }
+    
+    if (!$vid)
+      return;  //bad! no vid found?!
+
+    //get the tid of the term
+    $term = taxonomy_get_term_by_name($term_to_set, $vocab_machine_name);
+    if (!count($term)) {
+      $term = false; 
+    } else {
+      $tid = array_keys($term);
+      $tid = $tid[0];
+      $term = $term[$tid];
+    }
+
+    //if term not exists, add it
+    if (!$term && $term_to_set) {
+      //@TODO
+      $term = new stdClass();
+      $term->name = $term_to_set;
+      $term->vid = $vid;
+      
+      taxonomy_term_save($term);      
+    }    
+
+    $date_item->field_date_item_tags[LANGUAGE_NONE][0]['tid'] = $term->tid;
+  }
+  
+}
+
+/**
+* Returns all date_item entities with a subject of type = holiday in field_date_type, which means that this date item entity is tagged with the tag used in settings of this module for holidays
+* @param $date_only if set the result array contains only the dates, otherwise the complete date_item entity is returned
+*/
+function erpal_calendar_get_holidays($year, $month, $holiday_tid) {
+  
+  if(!$holiday_tid)
+    return false;  //return because the term for holidays set on a date node is unknown!
+    
+  //get all erpal_date nodes that have field_date_type set to "holiday" in the given range above
+  //we get all date items that have starting date in our date range. After that we call a function to get all the single dates from these ranges, so if a date_item goes over the given month (see function argument), only the days in the given month count.
+  $date_items = _erpal_calendar_helper_get_date_items_in_month($year, $month, $holiday_tid, 'node', 'erpal_date');
+
+  $days = _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, 'date_from', 'date_till');
+
+	return $days;
+}
+
+/**
+* Returns all dat_item entities with a given tag in the given month of the given year
+*/
+function _erpal_calendar_helper_get_date_items_in_month($year, $month, $tid, $subject_entity_type, $subject_entity_bundle) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_lib_date_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+  $date_from_unix = strtotime($range_from);
+  $date_till_unix = strtotime($range_till);
+  
+  $date_items = array(); //initialise result array
+  $date_item_ids = array();
+  //get the dates where date_from is in range
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'date_item')
+  ->entityCondition('bundle', 'simple_date')
+  ->fieldCondition('field_date_item_tags', 'tid', $tid)
+  ->propertyCondition('date_from', $date_from_unix, '>=')
+  ->propertyCondition('date_from', $date_till_unix, '<=')
+  ->addMetaData('account', user_load(1))  // run the query as user 1
+  ->execute(); 
+  
+  if (isset($result['date_item'])) {
+    $date_item_ids = array_merge($date_item_ids, array_keys($result['date_item']));   
+  }
+ 
+  //now get the dates where date_till is in range
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'date_item')
+  ->entityCondition('bundle', 'simple_date')
+  ->fieldCondition('field_date_item_tags', 'tid', $tid)
+  ->propertyCondition('date_till', $date_from_unix, '>=')
+  ->propertyCondition('date_till', $date_till_unix, '<=')
+  ->addMetaData('account', user_load(1))  // run the query as user 1
+  ->execute(); 
+   
+  if (isset($result['date_item'])) {
+    $date_item_ids = array_merge($date_item_ids, array_keys($result['date_item']));   
+  }
+  
+  //now get the dates where date_from is before date_from_unix and date_till is after date_till_unix
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'date_item')
+  ->entityCondition('bundle', 'simple_date')
+  ->fieldCondition('field_date_item_tags', 'tid', $tid)
+  ->propertyCondition('date_from', $date_from_unix, '<=')
+  ->propertyCondition('date_till', $date_till_unix, '>=')
+  ->addMetaData('account', user_load(1))  // run the query as user 1
+  ->execute(); 
+   
+  if (isset($result['date_item'])) {
+    $date_item_ids = array_merge($date_item_ids, array_keys($result['date_item']));    
+  }
+  $date_items = entity_load('date_item', array_unique($date_item_ids));
+  
+  //now loop through them and check that they have the given entity types and bundle
+  $final_date_items = array();
+  foreach ($date_items as $delta => $date_item) {
+    $entity_type = $date_item->src_type;
+    
+    if ($entity_type != $subject_entity_type)
+      continue;
+    
+    $entity_id = $date_item->src_id;
+    $entity_info = entity_get_info($entity_type);
+    
+    //no get the bundle info
+    $bundle_key = $entity_info['entity keys']['bundle'];
+    $id_key = $entity_info['entity keys']['id'];
+    $base_table = $entity_info['base table'];
+    $query = db_select($base_table, 'base');
+    $query
+      ->fields('base', array($bundle_key))
+      ->condition('base.'.$id_key, $entity_id);
+    
+    $result = $query->execute();
+    
+    foreach ($result as $record) {
+      // Do something with each $record
+      $bundle = $record->{$bundle_key};
+      if ($bundle == $subject_entity_bundle) {
+        $final_date_items[] = $date_item;
+      } 
+        
+    }
+  }
+
+  return $final_date_items;
+}
+
+/**
+* Return all dates as unix timestamp from $date_items that are in the month and year. If date_items have date ranges (from, till) then we return only these date strings that match the given month and year
+*  @param $value_key if set, we use this array keys to get the nested value of date_items
+*/
+function _erpal_calendar_helper_get_dates_in_range($year, $month, $date_items, $field_name_from, $field_name_till, $value_key_from=array(), $value_key_till=array()) {
+  $monthNull = str_pad($month, 2 ,'0', STR_PAD_LEFT);
+	$ldom = erpal_lib_date_ldom($month, $year);  //last day of month
+	$range_from = "$year-$monthNull-01 00:00:00";
+	$range_till = "$ldom 23:59:59";
+  $date_till_unix = strtotime($range_till);
+
+  if (!$year || !$month)
+    return array(); //then its not possible
+
+  $day_count = 0;
+  $date_current = strtotime($range_from.' +'.$day_count.' days'); //initalised get day
+  $days = array();
+  while ($date_current <= $date_till_unix) {    
+    
+    //get all date items that match the day, if we found on, we add the date to the result array!
+    if ($date_items && is_array($date_items)) {
+      foreach ($date_items as $date_item) {
+      
+        $from_value = $date_item->{$field_name_from};
+        if ($value_key_from)
+          $from_value = drupal_array_get_nested_value($from_value, $value_key_from);
+          
+        $till_value = $date_item->{$field_name_till};
+        if ($value_key_till)
+          $till_value = drupal_array_get_nested_value($till_value, $value_key_till);  
+          
+        $date_item_from_start = strtotime(date('Y-m-d 00:00:00', $from_value)); //get the start of the day, ignore the time
+
+        $date_item_till_start = strtotime(date('Y-m-d 00:00:00', $till_value)); //get the start of the day, ignore the time
+        if ($date_item_from_start <= $date_current && $date_current <= $date_item_till_start) {
+          //add this day!
+          $days[] = $date_current;        
+        }       
+      }
+    } 
+    
+    //go to the next day
+    $day_count++;
+    //get the day
+    $date_current = strtotime($range_from.' +'.$day_count.' days');
+  }
+  
+  return array_unique($days);
+}
+
+/**
+* Implements hook_date_term_alter to alter a term set on an date_item entity. This hook is provided by the erpal_calendar_helper module.
+* @param $term_string the string that should be set as tag to the entity given in $context
+*/
+function erpal_calendar_helper_date_term_alter(&$term_string, $context) {
+  $entity_type = $context['src']['type'];
+  $bundle = $context['src']['bundle'];
+  $entity = $context['src']['entity'];
+  
+  if ($entity_type == 'node' && $bundle == 'erpal_date') {
+    $date_type = $entity->field_date_type[LANGUAGE_NONE][0]['value'];
+
+    if ($date_type == 'holiday')
+      $term_string = _erpal_calendar_helper_field_tag_holiday_date();
+  }
+}
+
+/**
+* Returns the term_string that should be set for user holidays
+*/
+function _erpal_calendar_helper_field_tag_holiday_date() {
+  return variable_get('erpal_calendar_user_holiday_tag_string', 'holiday');
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function erpal_calendar_helper_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  // If a user adds a new erpal_date node, the current user that adds the node 
+  // should automatically be added to the participant field. 
+  if ($form_id == 'erpal_date_node_form') {
+    
+    // check if the form not 'edit from'
+    if (empty($form['nid']['#value']) && $user->uid != 1) {
+      // get current user
+      global $user;
+      
+      // prepare target id in entityreference format
+      $target_id = "{$user->name} ({$user->uid})";
+      // set default value to participants field
+      $form['field_users'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $target_id;
+    }
+    
+    // Get date from $_GET parameter.
+    if (isset($_GET['erpal_date'])) {
+      $date = $_GET['erpal_date'];
+
+      // Check is timestamp is in unix format.
+      if (isset($form['field_date_repeat'])) {
+
+        // Get field info to get field date format type
+        $field = field_info_field('field_date_repeat');
+        if ($field) {
+          // Convert date in field format type
+          $date = strtotime($date);
+          $formatted_date = _date_item_date_from_unix($date, $field['type']);
+          if ($formatted_date) {
+            
+            // Set default date from $_GET parameter.
+            $form['field_date_repeat'][LANGUAGE_NONE][0]['#default_value']['value'] = $formatted_date;
+            $form['field_date_repeat'][LANGUAGE_NONE][0]['#default_value']['value2'] = $formatted_date;
+          }
+        }
+      }
+    }
+    
+    if (!empty($form['field_date_type'])) {
+      //if the user has no access to create a "holiday" type date, remove this option from the form element. 
+      if (!user_access('add holidays to calendar')) {
+        unset($form['field_date_type'][LANGUAGE_NONE]['#options']['holiday']);
+      }
+    }
+  }
+  
+  if ($form_id == 'node_delete_confirm') {    
+    _erpal_calendar_helper_alter_date_delete_form($form, $form_state);
+  }
+}
+
+/**
+* Alter the node delete form of a date node with a new submit handler to redirect back to the calendar
+*/
+function _erpal_calendar_helper_alter_date_delete_form(&$form, &$form_state) {
+  $node = $form['#node'];
+  if ($node->type != 'erpal_date') 
+    return;
+  
+  $form['#submit'][] = '_erpal_calendar_date_node_delete_form_submit';
+}
+
+/**
+* submit handler of the date node delete form
+*/
+function _erpal_calendar_date_node_delete_form_submit($form, &$form_state) {
+  $node = $form['#node'];
+  if ($node->type != 'erpal_date') 
+    return;
+ 
+  $destination = drupal_get_destination();
+  $destination = !empty($destination['destination']) ? $destination['destination'] : false;
+  if ($destination != $_GET['q'])
+    return; //we don't want to override a custom destination, but if it is the node that is going to be deleted, we need to redirect, as the node will not exist anymore after form submit.
+  
+  $form_state['redirect'] = 'calendar/own';
+}
+
+/**
+ * Implements hook_fullcalendar_options_info().
+ */
+function erpal_calendar_helper_fullcalendar_options_info() {
+  return array(
+    'erpal_fullcalendar' => array(
+      'name' => t('ERPAL fullcalendar'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_views_post_execute().
+ */
+function erpal_calendar_helper_views_post_execute($view) {
+  if ($view->plugin_name == 'fullcalendar') {
+    //only show this if we are in the calendar context
+    if (arg(0) != 'calendar')
+      return;
+      
+    $path = drupal_get_path('module', 'erpal_calendar_helper');
+    drupal_add_js("$path/js/erpal_calendar_helper.fullcalendar.js");
+    drupal_add_css("$path/css/erpal_calendar_helper.fullcalendar.css");
+  }
+}

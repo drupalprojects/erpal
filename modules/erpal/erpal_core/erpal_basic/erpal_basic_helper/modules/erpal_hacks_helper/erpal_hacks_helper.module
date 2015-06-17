@@ -1,0 +1,355 @@
+<?php
+/**
+* @file
+* Code for the erpal_hacks_helper module.
+*/
+
+/**
+* Implements hook_node_form_alter
+*/
+function erpal_hacks_helper_form_alter(&$form, &$form_state, $form_id) {
+  
+  _erpal_hacks_fix_editablefields_problem($form);
+  _erpal_hacks_fix_quick_tabs_exposed_filter_form_action($form, $form_state);
+  _erpal_hack_hide_entity_reference_widget_with_not_accessible_entity($form);
+  
+  /**
+   * bugfix: display suite has a bug rendering any form in a ds context with the ds forms template. 
+   * Regardless which form will be displayed but ds should only use the ds forms template on node edit forms. 
+   */
+  if (function_exists('ds_build_load')) {
+    if ($ds_form = ds_build_load($form, $form_id)) {
+      if (preg_match('/^editablefields_form_/', $form_id)) {
+      $form['#theme'] = array($form['#form_id'] , 'editablefields_form');
+      }
+    } 
+  }
+}
+
+/**
+* Limit token tree recrsion to avaoid timeout because of memory limit on content type edit form
+*/
+function erpal_hacks_helper_preprocess_token_tree(&$variables) {
+  $max_recursion_limit = 2;
+  $variables['recursion_limit'] = min($max_recursion_limit, $variables['recursion_limit']);
+}
+
+
+/**
+* Editable fields seams not to work, when the submit button with ajax processing inserted by editbale fields module is in subarray [actions] it will not be rendered (after that it will be removed by editable fields ajax, but submithandler will stay), so we just move it to another subarray
+*/
+function _erpal_hacks_fix_editablefields_problem(&$form) {
+  if (isset($form['#form_id']) && $form['#form_id'] && strpos($form['#form_id'], 'editablefields_form') !== false) {
+    //this is a editbale fields form
+    $form['actions_hack_editable'] = $form['actions'];
+    unset($form['actions']);
+  }
+}
+
+/**
+* If we have views (pane or block) with exposed filter embedded in quicktabs and these quicktabs in a panel, the action of the filter form is not set which redirects to the frontpage after submitting a views exposed filter form. So we set the action to the current page here
+*/
+function _erpal_hacks_fix_quick_tabs_exposed_filter_form_action(&$form, &$form_state) {
+  global $base_url;
+  static $processed = array(); //stores information if we have already processed a certain form, if we dont do that we get an endless redirect for example after form reet button.
+  if (isset($form['#form_id']) && $form['#form_id'] == 'views_exposed_form') {
+      //if we don't do this, the form loops on reset till timeout....
+      $url = $_GET['q'];
+      $form['reset']['#submit'] = array('_erpal_hacks_exposed_form_reset_submit');
+      if (!isset($processed[$form['#form_id']])) {                
+        $base_path = base_path();
+        $action_path = $url;
+
+        $form['#action'] = $base_url."/".$action_path;
+
+        $processed[$form['#form_id']] = true;       
+        _erpal_hacks_helper_add_qt_parameters_to_exposed_form($form);
+      }
+  }
+}
+
+/**
+* Redirect for reset button on exposed filter forms. If we miss that, we get endless redirect loops...don't know exactly why
+*/
+function _erpal_hacks_exposed_form_reset_submit($form, &$form_state) {
+  $query = array();
+  foreach ($_GET as $name => $value) {
+    $pos = strpos($name, 'qt-');
+    if ($pos === 0) {
+      //redirect to q and add all the qtab state parameters to have the correct quickt tab active after reset
+      $query[$name] = $value;      
+    }
+  }
+
+  //unset the exposed filter values in the session, otherwise they will still appear as defaults in the exposed filter form
+  $view_name = isset($form_state['view']->name) ? $form_state['view']->name : false;
+  $display_name = isset($form_state['view']->current_display) ? $form_state['view']->current_display : false;
+
+  if (isset($_SESSION['views'][$view_name][$display_name])) {
+    unset($_SESSION['views'][$view_name][$display_name]);
+  }
+  if (isset($_SESSION['views'][$view_name]['default'])) {
+    unset($_SESSION['views'][$view_name]['default']);
+  }
+  drupal_goto($_GET['q'], array('query' => $query));
+}
+
+
+/**
+* Adds the quicktabs current tab values to the filter, so they are kept persistent in the url during exposed filter submit
+*/
+function _erpal_hacks_helper_add_qt_parameters_to_exposed_form(&$form) {
+  
+  foreach ($_GET as $name => $value) {
+    $pos = strpos($name, 'qt-');
+    if ($pos === 0) {
+      //this is a qucick tab current-tab parameter
+      $form[$name] = array(
+        '#type' => 'hidden',
+        '#default_value' => $value,
+      );
+    }
+  }
+}
+
+
+/**
+* Implements hook_field_widget_form_alter
+*/
+function erpal_hacks_helper_field_widget_form_alter(&$element, &$form_state, $context) {
+  $field_name = !empty($element['#field_name']) ? $element['#field_name'] : false;
+  if (!$field_name)
+    return;
+    
+  //for all comment alter date fields add an extra validation handler to alter the submit value
+  if (!empty($context['form']['#entity']->type)) {
+    $alterable_fields = comment_alter_get_alterable_fields($context['form']['#entity']->type);
+    if (in_array($field_name, $alterable_fields)) {
+      if ($element['#type'] == 'date_combo') {
+        $element['#element_validate'][] = '_erpal_hacks_helper_field_expected_date_validate';    
+      }
+    }
+    
+  }
+ 
+}
+
+/**
+* Submit handler for the field expected date field
+*/
+function _erpal_hacks_helper_field_expected_date_validate($element, &$form_state) {
+  _erpal_hacks_helper_correct_date_format($element, $form_state);
+}
+
+/**
+* there seams to be a bug with the date popup in combination with fieldgroup or hidden field
+*in this case the date , see https://drupal.org/node/1547236
+*/
+function _erpal_hacks_helper_correct_date_format($element, &$form_state) {
+  $values = $form_state['values'];
+  $field_name = $element['#field_name'];
+  $current_date = !empty($values['comment_alter_'.$field_name][LANGUAGE_NONE][0]['value']) ? $values['comment_alter_'.$field_name][LANGUAGE_NONE][0]['value'] : false;
+ 
+  if ($current_date) {
+    $field_info = field_info_field($field_name);
+
+    if ($field_info['type'] == 'datestamp') {  //only for unix timestamp it mus be an integer
+      if (!is_integer($current_date)) {
+        $unix_date = strtotime($current_date);
+        $form_state['values']['comment_alter_'.$field_name][LANGUAGE_NONE][0]['value'] = $unix_date;
+      }
+    }
+    
+    //independend of the date format, if the field has no timestamp, set it
+    if (empty($form_state['values']['comment_alter_'.$field_name][LANGUAGE_NONE][0]['timezone'])) {
+      $form_state['values']['comment_alter_'.$field_name][LANGUAGE_NONE][0]['timezone'] = date_default_timezone($field_info['settings']['tz_handling']);
+    }
+  }
+}
+
+
+/**
+* Implements hook_field_download_post
+*/ 
+function erpal_hacks_helper_file_download_post($uri) {  
+  return _erpal_hacks_helper_file_download_correct($uri);
+}
+
+ 
+/**
+* Correct Drupal core bug where the revisions of a file are not accessible https://www.drupal.org/node/1452100
+* So file_file_download almost copied with path applied https://www.drupal.org/files/1452100-14-private-access-denied.patch
+*/ 
+function _erpal_hacks_helper_file_download_correct($uri) {
+  global $user;
+  
+  $field_type = 'file';
+  // Get the file record based on the URI. If not in the database just return.
+  $files = file_load_multiple(array(), array('uri' => $uri));
+  if (count($files)) {
+    foreach ($files as $item) {
+      // Since some database servers sometimes use a case-insensitive comparison
+      // by default, double check that the filename is an exact match.
+      if ($item->uri === $uri) {
+        $file = $item;
+        break;
+      }
+    }
+  }
+  if (!isset($file)) {
+    return;
+  }
+
+  // Find out which (if any) fields of this type contain the file.
+  $references = file_get_file_references($file, NULL, FIELD_LOAD_REVISION, $field_type);
+  if (empty($references) && ($file->status == FILE_STATUS_PERMANENT || $file->uid != $user->uid)) {
+    return;
+  }
+
+  // Default to allow access.
+  $denied = FALSE;
+  
+  foreach ($references as $field_name => $field_references) {
+    foreach ($field_references as $entity_type => $type_references) {
+      foreach ($type_references as $id => $reference) {
+        // Try to load $entity and $field. $entity_info is used to load entities
+        // that have revisions, such as node types.
+        $entity_info = entity_get_info($entity_type);
+        if (empty($entity_info['entity keys']['revision'])) {
+          $entity = call_user_func($entity_info['load hook'], $reference->{$entity_info['entity keys']['id']});
+        }
+        else {
+          $entity = call_user_func($entity_info['load hook'], $reference->{$entity_info['entity keys']['id']}, $reference->{$entity_info['entity keys']['revision']});
+        }
+        $field = field_info_field($field_name);
+
+        // Load the field item that references the file.
+        $field_item = NULL;
+        if ($entity) {
+          // Load all field items for that entity.
+          $field_items = field_get_items($entity_type, $entity, $field_name);
+
+          // Find the field item with the matching URI.
+          foreach ($field_items as $item) {
+            if ($item['uri'] == $uri) {
+              $field_item = $item;
+              break;
+            }
+          }
+        }
+
+        // Check that $entity, $field and $field_item were loaded successfully
+        // and check if access to that field is not disallowed. If any of these
+        // checks fail, stop checking access for this reference.
+        if (empty($entity) || empty($field) || empty($field_item) || !field_access('view', $field, $entity_type, $entity)) {
+          $denied = TRUE;          
+          break;
+        }
+
+        // Invoke hook and collect grants/denies for download access.
+        // Default to FALSE and let entities overrule this ruling.
+        $grants = array('system' => FALSE);
+        foreach (module_implements('file_download_access') as $module) {
+          $grants = array_merge($grants, array($module => module_invoke($module, 'file_download_access', $field_item, $entity_type, $entity)));
+        }
+        // Allow other modules to alter the returned grants/denies.
+        drupal_alter('file_download_access', $grants, $field_item, $entity_type, $entity);
+
+        if (in_array(TRUE, $grants)) {
+          // If TRUE is returned, access is granted and no further checks are
+          // necessary.
+          $denied = FALSE;
+          break 3;
+        }
+
+        if (in_array(FALSE, $grants)) {
+          // If an implementation returns FALSE, access to this entity is denied
+          // but the file could belong to another entity to which the user might
+          // have access. Continue with these.
+          $denied = TRUE;
+        }
+      }
+    }
+  }
+
+  // Access specifically denied.
+  if ($denied) {
+    return -1;
+  }
+
+  // Access is granted.
+  $headers = file_get_content_headers($file);
+
+  return $headers;
+}
+
+/**
+* Implements hook_theme_registry_alter
+*/
+function erpal_hacks_helper_theme_registry_alter(&$registry) {
+  $registry['views_savedsearches_container']['function'] = 'erpal_hacks_helper_views_savedsearches_container';
+}
+
+/**
+* Theme views_savedsearches_container preprocess handler
+* rewrite of theme_views_savedsearches_container to fix https://www.drupal.org/node/2326923
+*/
+function erpal_hacks_helper_views_savedsearches_container(&$variables) {
+  $view = $variables['view'];
+  $current_display_name = $view->current_display;
+  $display = $view->display[$current_display_name];
+  
+  //only render the views saved searches if the view has exposed filters.
+  $display_options = !empty($display->display_options['filters']) ? $display->display_options['filters'] : array();
+  $has_filter = FALSE;
+
+  if (empty($display_options)) {
+    return; 
+  }
+    
+  foreach ($display_options as $filter) {    
+    if (!empty($filter['exposed']) && $filter['exposed']) {
+      $has_filter = TRUE;
+      break;
+    }
+  }
+  
+  if (!$has_filter) {
+    return false;
+  }
+
+  return theme_views_savedsearches_container($variables);
+}
+
+/**
+* This function will set all widgets of entity references to '#access' = FALSE if the referenced entity is not accessible for the user
+*/
+function _erpal_hack_hide_entity_reference_widget_with_not_accessible_entity(&$form) {
+  foreach ($form as $element_name => $form_item) {
+    if (strpos($element_name, 'field_') === 0) {
+      if (!empty($form_item[LANGUAGE_NONE])) {
+        foreach ($form_item[LANGUAGE_NONE] as $delta=>$form_element) {
+          if (!is_array($form_element)) {
+            continue;
+          }
+          
+          if (!empty($form_element['target_id']['#default_value'])) {            
+            $entity_type = $form_element['target_id']['#entity_type'];
+            $field_name = $form_element['target_id']['#field_name'];            
+            $field = field_info_field($field_name);
+            $entity_type = $field['settings']['target_type'];
+            $entity_id = _erpal_basic_helper_get_nid_from_autocomplete_string($form_element['target_id']['#default_value']);            
+            if (!empty($entity_id)) {
+              $entity = entity_load($entity_type, array($entity_id));
+              $entity = !empty($entity[$entity_id]) ? $entity[$entity_id] : FALSE;
+              
+              if ($entity && !entity_access('view', $entity_type, $entity)) {              
+                $form[$element_name]['#access'] = FALSE;
+              }            
+            }
+          }
+        }
+      }
+    }
+  }
+}

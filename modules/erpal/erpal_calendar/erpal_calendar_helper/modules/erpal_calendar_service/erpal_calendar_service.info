@@ -1,0 +1,23 @@
+core = "7.x"
+description = "ERPAL calendar service provides date_item's"
+
+name = "ERPAL calendar service"
+package = "ERPAL Services"
+php = "5.2.4"
+project = "erpal_calendar_service"
+version = "7.x-1.0-dev"
+
+files[] = erpal_calendar_service.module
+files[] = inc/date_item.inc
+
+dependencies[] = date_item
+dependencies[] = services
+dependencies[] = rest_server
+dependencies[] = erpal_calendar
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_calendar"
+datestamp = "1433507610"
+

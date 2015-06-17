@@ -1,0 +1,42 @@
+/* Admin display of the site template, we have to load the whole layout so it works in non-AT admin themes */
+#panels-dnd-main #content-column .content-inner {
+  margin: 0 25%;
+}
+#panels-dnd-main  .region-sidebar-first {
+  margin-left: -100%;
+  width: 24.5%;
+}
+#panels-dnd-main  .region-sidebar-second {
+  clear: none;
+  margin-left: -24.5%;
+  width: 24.5%;
+}
+#panels-dnd-main .panel-region {
+  margin-bottom: 5px;
+}
+#panels-dnd-main #content {
+  padding: 0;
+}
+#panels-dnd-main  #content-column,
+#panels-dnd-main .region-sidebar-left,
+#panels-dnd-main .region-sidebar-right {
+  float: left;
+}
+#panels-dnd-main  #content-column {
+  width: 100%;
+}
+#panels-dnd-main  #columns,
+#panels-dnd-main #content-column .content-inner  {
+  clear: both;
+}
+#panels-dnd-main .region-sidebar-left{
+	margin-right: 30px;
+	width: 24.5%;
+}
+#panels-dnd-main .region-sidebar-right{
+	width: 24.5%;
+}
+#panels-dnd-main #content-column .content-inner {
+    margin-bottom: 30px;
+    overflow: hidden;
+}

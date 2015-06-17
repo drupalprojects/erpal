@@ -1,0 +1,194 @@
+<?php
+
+/**
+* Creates a customer for testing
+*/
+function _billable_test_create_contact() {
+  //create a Customer
+  $contact = new stdClass();
+  $contact->field_contact_type['und'][0] = 'company';
+  $contact->language = LANGUAGE_NONE;
+  $contact->title = 'Kunden1';
+  $contact->type = 'erpal_contact';
+  node_object_prepare($contact);
+  node_save($contact);
+  
+  return $contact;
+}
+
+/**
+* Creates all data to start a reduce test
+*/
+function _billable_create_reduce_test_data($only_unique_customers=false) {
+  //test if entites are reduced correctly
+    $customer1 = _billable_test_create_contact();
+    $customer2 = _billable_test_create_contact();
+    $contractor = _billable_test_create_contact();
+    
+    $entity1 = entity_create('billable', array());
+    $entity1->quantity = 3;
+    $entity1->single_price = 12.56;
+    $entity1->vat_rate = '19.000';
+    $entity1->customer_nid = $customer2->nid;
+    $entity1->save(); //this will not be reduced because it is the only one in a group
+    
+    $entity2 = entity_create('billable', array());
+    $entity2->quantity = 2;
+    $entity2->single_price = 4.4;
+    $entity2->vat_rate = 7;
+    $entity2->customer_nid = $customer2->nid;
+    $entity2->contractor_nid = $contractor->nid;
+    $entity2->save();
+    
+    $entity3 = entity_create('billable', array());
+    $entity3->quantity = 1;
+    $entity3->single_price = 3.23;
+    $entity3->vat_rate = 7;
+    $entity3->customer_nid = $customer2->nid;
+    $entity3->contractor_nid = $contractor->nid;
+    $entity3->save();
+    
+    $entity4 = entity_create('billable', array());
+    $entity4->quantity = 1;
+    $entity4->single_price = 20;
+    $entity4->vat_rate = 7;
+    $entity4->customer_nid = $customer1->nid;
+    $entity4->contractor_nid = $contractor->nid;
+    $entity4->save();
+    
+    $entity5 = entity_create('billable', array());
+    $entity5->quantity = 2;
+    $entity5->single_price = 20;
+    $entity5->vat_rate = 7;
+    $entity5->customer_nid = $customer1->nid;
+    $entity5->contractor_nid = $contractor->nid;
+    $entity5->save();
+    
+    $entity6 = entity_create('billable', array());
+    $entity6->quantity = 2;
+    $entity6->single_price = 21;
+    $entity6->vat_rate = '19.000';  
+    $entity6->customer_nid = $customer1->nid;
+    $entity6->contractor_nid = $contractor->nid;
+    $entity6->save();  //this will not be reduced because it is the only one in a group
+
+  if ($only_unique_customers) {
+    //all customers must be equal for this test condition
+    $entity4->customer_nid = $customer2->nid;
+    $entity4->save();
+    $entity5->customer_nid = $customer2->nid;
+    $entity5->save();
+    $entity6->customer_nid = $customer2->nid;
+    $entity6->save();
+  }
+  
+  return array(
+    'b1' => $entity1,
+    'b2' => $entity2,
+    'b3' => $entity3,
+    'b4' => $entity4,
+    'b5' => $entity5,
+    'b6' => $entity6,
+    'c1' => $customer1,
+    'c2' => $customer2,
+  );
+}
+
+/**
+* Return the expected values according to the test data definied in _billable_create_reduce_test_data
+* @param $reduce_by_single_price we have other expectations of we group by single price
+* @param the test data created for the test
+*/
+function _billable_create_reduce_test_data_needed($test_data, $reduce_by_single_price=false) {
+  
+  $needed_billables = array();
+ 
+  if ($reduce_by_single_price) {
+    //because we group by single_price, we have onlye 4 and 5 that have all needed properties equal an will be reduced! All others
+    //are groups with only one item and will not be reduced
+
+    $needed_billables[] = array(
+      'customer' => $test_data['c1']->nid, 
+      'vat_rate' => $test_data['b4']->vat_rate,
+      'quantity' => $test_data['b4']->quantity + $test_data['b5']->quantity,
+      'single_price' => $test_data['b4']->single_price,
+      'currency' => $test_data['b4']->currency,      
+    );
+  } else {
+    $needed_billables[] = array(
+      'customer' => $test_data['c2']->nid, 
+      'vat_rate' => $test_data['b2']->vat_rate,
+      'quantity' => 1,
+      'single_price' => $test_data['b2']->total_price_no_vat + $test_data['b3']->total_price_no_vat,
+      'currency' => $test_data['b2']->currency,      
+    );
+    
+    $needed_billables[] = array(
+      'customer' => $test_data['c1']->nid, 
+      'vat_rate' => $test_data['b4']->vat_rate,
+      'quantity' => 1,
+      'single_price' => $test_data['b4']->total_price_no_vat + $test_data['b5']->total_price_no_vat,
+      'currency' => $test_data['b4']->currency,      
+    );
+   
+  }
+  
+  return $needed_billables;
+}
+
+/**
+* Test if the needed data is found after reduce procedure
+*/
+function _billable_reduce_test_check_after($billable_ids, $new_billables, $needed_billables, $group_by) {
+  $billablesOK = true;
+
+  if (count($needed_billables) == count($new_billables)) {
+    //all reduced billables  in groups with more than one element need to have a parent_billable set!
+    //get the groups
+    $groups = _billable_group_for_reduce($billable_ids, $group_by, true);
+
+    foreach ($groups as $group_key=>$group_data) {
+      //reduced only if there a more than 1 billables per group, others wont have a parent_billable
+      if (count($group_data['billables']) < 2)
+        continue;
+        
+      foreach ($group_data['billables'] as $a_billable) {
+        $billable_id = $a_billable->billable_id;
+        $a_billable = entity_load('billable', array($billable_id));
+        $a_billable = $a_billable[$billable_id];
+        if (!$a_billable->parent_billable) {
+          $billablesOK = false;
+        }
+      }
+      
+    }
+    
+    foreach ($needed_billables as $key=>$needed_billable) {        
+      //if we found a needed billable, we unset it, so after iteration through all needed billables, the array should be empty
+      foreach ($new_billables as $new_billable) {
+        $all_fields_ok = true;
+        //load the new billable so we haveall fields attached and loaded
+        $new_billable_id = $new_billable->billable_id;
+        $new_billable = entity_load('billable', array($new_billable_id));        
+        $new_billable = $new_billable[$new_billable_id];
+
+        foreach ($needed_billable as $field_name_needed => $value_needed) {
+          if ($new_billable->field_by_name($field_name_needed)."" != $value_needed."") {            
+            $all_fields_ok = false;
+          }
+        }
+        
+        if ($all_fields_ok) {
+          unset($needed_billables[$key]);
+        }
+      }
+    }
+               
+    //needed billables array must be empty then averything is ok
+    if (count($needed_billables) > 0)
+      $billablesOK = false;
+  } else
+    $billablesOK = false;
+    
+  return $billablesOK;
+}

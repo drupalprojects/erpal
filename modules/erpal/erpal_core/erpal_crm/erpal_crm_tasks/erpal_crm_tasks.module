@@ -1,0 +1,144 @@
+<?php
+/**
+ * @file
+ * Code for the ERPAL CRM Tasks feature.
+ */
+
+include_once 'erpal_crm_tasks.features.inc';
+ 
+module_load_include('inc', 'erpal_crm_tasks', 'inc/config');
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_crm_tasks_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_crm_helper_config_form') {
+    _erpal_crm_tasks_crm_config_form_alter($form, $form_state);
+  }
+  
+}
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_crm_tasks_node_presave($node) {
+  if ($node->type == 'erpal_crm_activity') {
+    _erpal_crm_tasks_crm_activity_presave($node);
+  }
+}
+
+/**
+* Perform actions of a crm activity node is presaved
+*/
+function _erpal_crm_tasks_crm_activity_presave($node) {
+  $add_on_insert = _erpal_crm_tasks_create_on_insert();
+  $add_on_update = _erpal_crm_tasks_create_on_update();
+  $current_task_nid = isset($node->field_task_ref[LANGUAGE_NONE][0]['target_id']) ? $node->field_task_ref[LANGUAGE_NONE][0]['target_id'] : false;
+  
+  if ($current_task_nid)
+    return; //if there is already a task, don't add a new one
+  
+  if ($node->nid && !$add_on_update)
+    return; //don't add a task if node is updated
+
+  if (!$node->nid && !$add_on_insert)
+    return; //don't add a task if node is updated
+    
+  _erpal_crm_tasks_activity_add_task($node);
+  
+}
+
+/**
+* Implements hook_node_insert
+*/
+function erpal_crm_tasks_node_insert($node) {
+  if ($node->type == 'erpal_crm_activity') {
+    _erpal_crm_tasks_update_task_status($node);
+  }
+}
+
+/**
+* Implements hook_node_update
+*/
+function erpal_crm_tasks_node_update($node) {
+  if ($node->type == 'erpal_crm_activity') {
+    _erpal_crm_tasks_update_task_status($node);
+  }
+}
+
+/**
+* Execute the status change of a task related to 
+*/ 
+function _erpal_crm_tasks_update_task_status($node) {
+  //dont do this if it was disables
+  if (!variable_get('erpal_crm_tasks_enable_task_activity_mapping', TRUE)) {
+    return;
+  }
+  
+  $node_w = entity_metadata_wrapper('node', $node);
+  
+  //get the task if one is referenced
+  $task_node = $node_w->field_task_ref->value();
+  if (empty($task_node))
+    return;
+    
+  $activity_status = $node_w->field_activity_status_term->value();
+  $task_status_tid = _erpal_crm_tasks_get_task_status_for_activity_status($activity_status->tid);
+  
+  if ($task_status_tid) {        
+    $term = taxonomy_term_load($task_status_tid);    
+    
+    $task_node_w = entity_metadata_wrapper('node', $task_node);
+    $task_node_w->field_task_status_term->set($term);
+    node_save($task_node);
+  }
+}
+
+/**
+* adds a task to a crm activity.
+*/
+function _erpal_crm_tasks_activity_add_task($node) {
+  global $user;
+  
+  //if there is no project, we don't create a task
+  $project_nid = variable_get('crm_tasks_project', false);
+  
+  if (!$project_nid)
+    return;
+
+  $task_nid = variable_get('crm_tasks_task', false);
+  
+  $form_id = 'erpal_task_node_form';
+  
+  $task_node = array('type' => 'erpal_task');
+  module_load_include('inc', 'node', 'node.pages'); 
+  $form_values = array(
+    'title' => $node->title,
+    'body' => array(LANGUAGE_NONE => array('value' => '')),
+    'language' => LANGUAGE_NONE,
+    'name' => $user->name,
+    'status' => 1,
+    'type' => 'erpal_task',
+    'promote' => 0,
+    'sticky' => 0,
+    'field_project_ref' => array(LANGUAGE_NONE => array(0 => array('target_id' => _erpal_basic_helper_autocomplete_string_from_nid($project_nid)))),
+  );
+  
+  if ($task_nid)
+    $form_values['field_parent'][LANGUAGE_NONE][0]['target_id'] = _erpal_basic_helper_autocomplete_string_from_nid($task_nid);
+ 
+  $form_values['op'] = t('Save');  // this seems to be a required value
+  $form_state['values'] = $form_values;
+  
+  $old_user = $user;
+  $tmp_user = user_load(1);
+  $user = $tmp_user;
+  //switch user to admin, otherwise we cannot ensure that the current logged in user can add tasks to a project.
+  drupal_form_submit($form_id, $form_state, (object)$task_node);
+  $user = $old_user;  //@TODO: CAUTION! will there be security problems if there is an exception in drupal_form_submit? Maybe set a flag in the session to restore old user in next page reload in hook_init...maybe a function _save_switch_user in erpal_helper module and implement hook_init there to unset user to previous user if there is a flag in the session.
+  $task_node = $form_state['node'];
+  
+  $node->field_task_ref[LANGUAGE_NONE][0]['target_id'] = $task_node->nid;
+
+  return $task_node;
+}

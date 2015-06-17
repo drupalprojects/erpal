@@ -1,0 +1,15 @@
+name = Erpal Projects Relations
+description = Extends access control in project teams
+package = ERPAL
+core = 7.x
+files[] = erpal_projects_relations.module
+files[] = erpal_projects_relations.views.inc
+files[] = erpal_projects_relations_handler_erpal_projects_relations_filter.inc
+
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_project"
+datestamp = "1433508204"
+

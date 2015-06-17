@@ -1,0 +1,74 @@
+<?php
+
+/**
+* @file contains all installation and updating methods
+*/
+
+function erpal_crm_reports_install() {
+  _erpal_crm_reports_elyisa_cron_defaults();
+}
+
+/**
+* Set elysia cron defaults
+*/
+function erpal_crm_reports_update_7001() {
+  _erpal_crm_reports_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_crm_reports_elyisa_cron_defaults() {
+  $values = array('rule' => '4 0 * * *');
+  elysia_cron_set('erpal_crm_reports_cron', false, $values);
+}
+
+/**
+* Remove all fields of crm reports as they are now just handled with hashes. We dont really need them
+*/
+function erpal_crm_reports_update_7002() {
+  //first delete only some instances
+  $instance = field_info_instance('erpal_reports', 'field_customer_category', 'erpal_crm_lead_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_customer_category', 'erpal_crm_sales_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_customer_category', 'erpal_crm_sales_forecast_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_customer_category', 'erpal_crm_customer_reports');  
+  field_delete_instance($instance);  
+    
+  $instance = field_info_instance('erpal_reports', 'field_customer_ref', 'erpal_crm_sales_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_customer_ref', 'erpal_crm_sales_forecast_reports');  
+  field_delete_instance($instance);
+  
+  $instance = field_info_instance('erpal_reports', 'field_service_category_term', 'erpal_crm_sales_reports');  
+  field_delete_instance($instance);
+  
+  $instance = field_info_instance('erpal_reports', 'field_contractor_ref', 'erpal_crm_expense_reports');  
+  field_delete_instance($instance);
+  
+  $instance = field_info_instance('erpal_reports', 'field_expense_category', 'erpal_crm_expense_reports');  
+  field_delete_instance($instance);
+  
+  //now delete complete fields
+  field_delete_field('field_erpal_reports_date_from');
+  field_delete_field('field_erpal_reports_date_to');
+  field_delete_field('field_erpal_reports_date_scaling');
+  field_delete_field('field_erp_crm_lea_rep_dim_cuscat');  
+  field_delete_field('field_erp_crm_sal_rep_dim_cust');
+  field_delete_field('field_erp_crm_slfc_rep_calc_safe');
+  field_delete_field('field_erp_crm_slfc_rep_calc_prob');
+  field_delete_field('field_erp_crm_slfc_rep_min_prob');
+  field_delete_field('field_erp_crm_slfc_rep_dim_cust');
+  field_delete_field('field_erp_crm_slfc_rep_dim_cusca');  
+  field_delete_field('field_erp_crm_sal_rep_dim_sercat');
+  field_delete_field('field_erp_crm_exp_rep_dim_cont');
+  field_delete_field('field_erp_crm_exp_rep_dim_expcat');
+  field_delete_field('field_erp_crm_sal_rep_dim_cuscat');  
+  field_delete_field('field_erp_crm_cs_rep_min_orders');
+  field_delete_field('field_erp_crm_cs_rep_min_sales');
+  field_delete_field('field_erp_crm_cs_rep_dim_cuscat'); 
+  
+  field_purge_batch();  //really delete them.
+}

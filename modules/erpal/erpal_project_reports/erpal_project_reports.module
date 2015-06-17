@@ -1,0 +1,299 @@
+<?php
+/**
+ * @file
+ * Code for the Erpal Project Reports feature.
+ */
+
+include_once 'erpal_project_reports.features.inc';
+
+module_load_include('inc', 'erpal_project_reports', 'includes/erpal_project_reports.blocks');
+module_load_include('inc', 'erpal_project_reports', 'includes/erpal_project_reports.pages');
+module_load_include('inc', 'erpal_project_reports', 'includes/rules');
+
+/**
+ * Implements hook_menu().
+ */
+function erpal_project_reports_menu() {
+  $items = array();
+
+  $items['reports/project/activeprojects'] = array(
+      'title' => 'Project Active Projects Reports',
+      'page callback' => 'erpal_project_reports_active_projects_report_view',
+      'access arguments' => array('view active projects report'),
+      'file' => 'includes/erpal_project_reports.pages.inc',
+      'type' => MENU_CALLBACK,
+  );
+
+  $items['reports/project/managementreport'] = array(
+      'title' => 'Project Management Reports Reports',
+      'page callback' => 'erpal_project_reports_management_report_view',
+      'access arguments' => array('view project management report'),
+      'file' => 'includes/erpal_project_reports.pages.inc',
+      'type' => MENU_CALLBACK,
+  );
+
+  $items['reports/project/profitmargin'] = array(
+      'title' => 'Project Profit Margin Reports',
+      'page callback' => 'erpal_project_reports_profit_margin_report_view',
+      'access arguments' => array('view project profit report'),
+      'file' => 'includes/erpal_project_reports.pages.inc',
+      'type' => MENU_CALLBACK,
+  );
+
+  $items['reports/project/timetracking'] = array(
+      'title' => 'Project Timetracking Reports',
+      'page callback' => 'erpal_project_reports_time_tracking_report_view',
+      'access arguments' => array('view project timetracking report'),
+      'file' => 'includes/erpal_project_reports.pages.inc',
+      'type' => MENU_CALLBACK,
+  );
+  
+  $items['reports/project/profit/calculate-all'] = array(
+      'title' => 'Project Timetracking Reports',
+      'page callback' => '_erpal_project_reports_re_run_all_project_profit_calculation',
+      'access arguments' => array('view project profit report'),     
+      'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function erpal_project_reports_permission() {
+  return array(
+    'view active projects report' => array(
+      'title' => t('View active projects report'),
+    ),
+    'view project management report' => array(
+      'title' => t('View project management report'),
+    ),
+    'view project profit report' => array(
+      'title' => t('View project profit report'),
+    ),
+    'view project timetracking report' => array(
+      'title' => t('View project timetracking report'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_block_info().
+ *
+ * Defines the custom blocks defined by erpal_project_reports.
+ */
+function erpal_project_reports_block_info() {
+  return array(
+      'erpal_prj_reports_act_report' => array(
+          'info' => t('Erpal Project Reports: Active Projects Report'),
+      ),
+      'erpal_prj_reports_mgmt_report' => array(
+          'info' => t('Erpal Project Reports: Management Report'),
+      ),
+      'erpal_prj_reports_prma_report' => array(
+          'info' => t('Erpal Project Reports: Profit Margin Report'),
+      ),
+      'erpal_prj_reports_time_report' => array(
+          'info' => t('Erpal Project Reports: Time Tracking Report'),
+      )
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * Implementation of the custom blocks defined by erpal_crm_reports.
+ */
+function erpal_project_reports_block_view($delta = '') {
+  module_load_include('inc', 'erpal_project_reports', 'includes/erpal_project_reports.blocks');
+
+  $block = array();
+
+  switch ($delta) {
+    case 'erpal_prj_reports_act_report':
+      $block['subject'] = t('Active Projects Report');
+      $block['content'] = erpal_project_reports_active_projects_report_block();
+      break;
+    case 'erpal_prj_reports_mgmt_report':
+      $block['subject'] = t('Project Management Report');
+      $block['content'] = erpal_project_reports_management_report_block();
+      break;
+    case 'erpal_prj_reports_prma_report':
+      $block['subject'] = t('Project Profit Margin Report');
+      $block['content'] = erpal_project_reports_profit_margin_report_block();
+      break;
+    case 'erpal_prj_reports_time_report':
+      $block['subject'] = t('Project Time Tracking Report');
+      $block['content'] = erpal_project_reports_time_tracking_report_block();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_query_TAG_alter
+ *
+ * adds filter for tasks for specific projects, used only by
+ * ErpalProjectReportsManagementReport:create
+ *
+ * @param QueryAlterableInterface $query
+ */
+function erpal_project_reports_query_filter_projects_alter(QueryAlterableInterface $query) {
+  $query->leftJoin('field_data_field_project_ref', 'p', 'node.nid = p.entity_id');
+  $query->where('p.field_project_ref_target_id IN (:projectids)', array(':projectids' => $query->getMetaData('projects')));
+}
+
+/**
+ * Implements hook_query_TAG_alter
+ *
+ * adds filter for tasks with no assigned users, used only by
+ * ErpalProjectReportsManagementReport:create
+ *
+ * @param QueryAlterableInterface $query
+ */
+function erpal_project_reports_query_filter_task_no_assigned_users_alter(QueryAlterableInterface $query) {
+  $query->leftJoin('field_data_field_task_assigned_users', 'asu', 'node.nid = asu.entity_id');
+  $query->isNull('asu.field_task_assigned_users_target_id');
+}
+
+/**
+ * Implements hook_query_TAG_alter
+ *
+ * adds filter for tasks with not time estimateion, used only by
+ * ErpalProjectReportsManagementReport:create
+ *
+ * @param QueryAlterableInterface $query
+ */
+function erpal_project_reports_query_filter_task_no_estimated_time_alter(QueryAlterableInterface $query) {
+  $query->leftJoin('field_data_field_estimated_time', 'est', 'node.nid = est.entity_id');
+  $query->isNull('est.field_estimated_time_value');
+}
+
+function _erpal_project_reports_form_field_for_project_status() {
+  $form = array();
+  //get all project terms
+  $taxonomy_name = 'project_status_terms';
+  $taxonomy = taxonomy_vocabulary_machine_name_load($taxonomy_name);
+  $tree = taxonomy_get_tree($taxonomy->vid);
+  $project_status_terms = array();
+  foreach ($tree as $term) {
+    $project_status_terms[$term->tid] = $term->name;
+  }
+  
+  $form['status'] = array(
+    '#title' => t('Project status'),
+    '#type' => 'select',
+    '#options' => $project_status_terms,
+    '#multiple' => true,
+  );
+  
+  return $form;
+}
+
+/**
+* Implements hook_cron
+*/
+function erpal_project_reports_cron() {
+  _erpal_project_reports_get_profit_report_of_active_projects(90);
+}
+
+/**
+* Recalculates all profit margin reports for all projects where we added a timetracking or changed a task yesterday.
+*/
+function _erpal_project_reports_get_profit_report_of_active_projects($day_range = 30, $force_re_run = false) {
+  //do this only ONCE a day but ensure all projects are processed
+  $do_run = _erpal_project_reports_margin_report_needs_rerun();
+  $last_queue = variable_get('erpal_project_reports_last_proft_run', array());
+  $last_run = !empty($last_queue['date']) ? $last_queue['date'] : false;
+  $last_nids = !empty($last_queue['nids']) ? $last_queue['nids'] : false;
+
+  if (!$do_run && !$force_re_run)
+    return false;
+
+  if (empty($last_nids)) {
+    //get the tasks, projects and timetrackings that have changed in the last x days.
+    $date_start = date('Y-m-d', strtotime('now -'.$day_range.' day'));
+    $date_end = date('Y-m-d');
+    
+    $types = array('erpal_task', 'erpal_project', 'erpal_timetracking');
+    $date_from = strtotime($date_start.' 00:00:00');
+    $date_till = strtotime($date_end.' 23:59:59');
+    $date_range = array('start' => $date_from, 'end' => $date_till);
+
+    $query = db_select('node');
+    $query
+      ->fields('node')
+      ->condition('type', $types)
+      ->condition('changed', $date_range, 'BETWEEN');
+
+    $query_result = $query->execute();
+    
+    $changed_projects = array();
+
+    while ($row = $query_result->fetchAssoc()) {
+      //now get the projects of these nodes.
+      $project_nid = _erpal_projects_helper_has_project($row['nid']);
+      if (!in_array($project_nid, $changed_projects)) {
+        $changed_projects[] = $project_nid;
+      }
+    }
+
+  } else {
+    $changed_projects = $last_nids; //there are some project nids left from the last run...first process them
+  }
+  
+  //for the changed projects now calculate the profit margin
+  //process each project and save the queue to process left projects after timeout
+  $nids_left = $changed_projects;
+  
+  foreach ($changed_projects as $delta=>$project_nid) {    
+    if (!empty($project_nid)) {    
+      $report_options = array('projects' => array($project_nid), 'no_cache' => TRUE);
+      $report_data = ErpalProjectReportsProfitMargin::load($report_options);           
+    }
+    
+    //save this project as processed today.
+    $last_queue['date'] = time();
+    //unset the last processed project
+    unset($nids_left[$delta]);
+    if (empty($nids_left)) {
+      $nids_left = false;
+    }
+    
+    $last_queue['nids'] = $nids_left;    
+    variable_set('erpal_project_reports_last_proft_run', $last_queue);
+  }
+}
+
+/**
+* Checks if the margin report is not completely calculated or to old and needs to re-run
+*/
+function _erpal_project_reports_margin_report_needs_rerun() {
+  $last_queue = variable_get('erpal_project_reports_last_proft_run', array());
+  $last_run = !empty($last_queue['date']) ? $last_queue['date'] : false;
+  $last_nids = !empty($last_queue['nids']) ? $last_queue['nids'] : false;
+  
+  $do_run = false;
+  if ($last_run) {
+    //did it run today?
+    $last_run = date('Y-m-d', $last_run);
+    $do_run = $last_run != date('Y-m-d') || !empty($last_nids);  //either the last run was not today or there are some projects left in the queue.
+    
+  } else {
+    $do_run = true; //has never run, so lets go!
+  }
+  
+  return $do_run;
+}
+
+function _erpal_project_reports_re_run_all_project_profit_calculation() {
+  _erpal_project_reports_get_profit_report_of_active_projects(30, true);
+  drupal_set_message(t('Project profit re-calculation done.'));
+  
+  //redirect back to destination or to profit margin page
+  $dest = !empty($_GET['destination']) ? $_GET['destination'] : url('reports/project', array('query' => array('qt-project_report_tabs' => 2)));
+  drupal_goto($dest);
+}

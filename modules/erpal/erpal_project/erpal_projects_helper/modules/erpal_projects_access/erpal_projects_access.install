@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file all functions needed for enabling / disabling module
+ */
+/* Implementation of hook_enable() */
+function erpal_projects_access_enable() {
+  node_access_rebuild();
+}
+
+/**
+ * Updates the Version to 7.1
+ */
+function erpal_projects_access_update_7100() {
+
+  // Get existing ACLs from version 1.0
+  $acls = db_select('acl', 'acl')
+          ->fields('acl', array('acl_id'))
+          ->condition('module', 'erpal_projects_access')
+          ->execute()->fetchAll();
+  
+  if(is_array($acls)) {
+    
+    foreach ($acls as $acl) {
+      
+      acl_delete_acl($acl->acl_id);
+    }
+  }
+  
+  node_access_rebuild();
+}

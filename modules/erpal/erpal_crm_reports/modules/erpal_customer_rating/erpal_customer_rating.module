@@ -1,0 +1,305 @@
+<?php
+
+/**
+ * @file
+ * Code for the erpal automated customer rating.
+ */
+
+/**
+* Implements hook_menu
+*/ 
+function erpal_customer_rating_menu(){
+
+  $items = array();
+  
+  $items['admin/erpal/customer_rating'] = array(
+    'title' => 'ERPAL Customer Rating',
+    'access callback' => 'erpal_customer_rating_admin_access',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('erpal_customer_rating_admin_form'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+} 
+
+/**
+* Access callback for admin form
+*/
+function erpal_customer_rating_admin_access() {
+  return user_access('config erpal customer rating');
+}
+
+/**
+* Customer Rating admin form
+*/
+function erpal_customer_rating_admin_form() {
+  $form = array();
+  
+  $form['erpal_customer_rating_years_to_check'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Years to check'),
+    '#description' => t('How many years in the past should be used to calculate customer rating'),
+    '#default_value' => variable_get('erpal_customer_rating_years_to_check', 3),
+    '#element_validate' => array('element_validate_integer'),
+  );
+  
+  $form['erpal_customer_rating_a_treshold'] = array(
+    '#type' => 'textfield',
+    '#title' => t('A rating treshold'),
+    '#description' => t('From this percent treshold starting the customer will be rated as A.'),
+    '#default_value' => variable_get('erpal_customer_rating_a_treshold', 10),
+    '#element_validate' => array('element_validate_integer'),
+  );
+  
+  $form['erpal_customer_rating_b_treshold'] = array(
+    '#type' => 'textfield',
+    '#title' => t('B rating treshold'),
+    '#description' => t('From this percent treshold starting the customer will be rated as B.'),
+    '#default_value' => variable_get('erpal_customer_rating_b_treshold', 5),
+    '#element_validate' => array('element_validate_integer'),
+  );
+  
+  $form['erpal_customer_rating_c_treshold'] = array(
+    '#type' => 'textfield',
+    '#title' => t('C rating treshold'),
+    '#description' => t('From this percent treshold starting the customer will be rated as B.'),
+    '#default_value' => variable_get('erpal_customer_rating_c_treshold', 0),
+    '#element_validate' => array('element_validate_integer'),
+  );
+ 
+  $form['erpal_customer_rating_sales_weight'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Sales weight'),
+    '#description' => t('This is the weight that will used to add the sales rating component to the total rating.'),
+    '#default_value' => variable_get('erpal_customer_rating_sales_weight', 8),
+    '#element_validate' => array('element_validate_integer'),
+  );
+  
+  $form['erpal_customer_rating_contracts_weight'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Contract weight'),
+    '#description' => t('This is the weight that will used to add the contract rating component to the total rating.'),
+    '#default_value' => variable_get('erpal_customer_rating_contracts_weight', 1),
+    '#element_validate' => array('element_validate_integer'),
+  );
+  
+  $form['erpal_customer_rating_force_recalculate'] = array(
+    '#type' => 'submit',
+    '#submit' => array('_erpal_customer_rating_force_recalculate'),
+    '#value' => t('Recalculate ratings NOW'),
+  );
+ 
+  
+  return system_settings_form($form);
+}
+
+/**
+* Admin form submit to recalculate the ratings
+*/
+function _erpal_customer_rating_force_recalculate($form, $form_state) {
+  _erpal_customer_rating_update_ratings();
+}
+
+/**
+* Implements hook_permission
+*/
+function erpal_customer_rating_permission(){
+  return array(
+    'config erpal customer rating' => array(
+      'title' => t('Administer ERPAL customer rating'), 
+    ),  
+  );
+}
+
+/**
+*  Implements hook_cron
+*/
+function erpal_customer_rating_cron() {
+  global $user;
+  
+  //run this only once a day
+  $last_run = variable_get('erpal_customer_rating_last_cron_run', false);
+  $current_day = date('Ymd');
+
+  if ($current_day == $last_run)
+    return;  //it was already processed today
+  
+  //otherwise run the recalculation
+  _erpal_customer_rating_update_ratings();
+
+  //set last run
+  variable_set('erpal_customer_rating_last_cron_run', $current_day);
+}
+ 
+/**
+* Update customers with new categories
+*/ 
+function _erpal_customer_rating_update_ratings() {
+
+  $ratings = erpal_customer_rating_calculate_ratings();
+
+  if (!is_array($ratings))
+    return;
+  //iterate through all customers and set ratings according to the ratings array or, if customer is not included, he is 
+  //set to "NO".
+  
+  $processed_customer_nids = array();
+  foreach ($ratings as $customer_nid => $rating) {
+    $node = node_load($customer_nid);
+    $node->field_customer_category[LANGUAGE_NONE][0]['value'] = $rating;
+    field_attach_update('node', $node);
+    entity_get_controller('node')->resetCache(array($node->nid));  //clear cache
+    
+    $processed_customer_nids[] = $customer_nid;
+  }
+
+  //now set the customer category fields of all contacts to "NO" if they are not included in the processed array
+  $contact_nids = array_keys(erpal_basic_helper_get_contacts());
+  foreach ($contact_nids as $contact_nid) {
+    if (in_array($contact_nid, $processed_customer_nids))
+      continue;
+      
+    //this one will be set to "NO"
+    $node = node_load($contact_nid);
+    $node->field_customer_category[LANGUAGE_NONE][0]['value'] = 'NO';
+    field_attach_update('node', $node);
+    entity_get_controller('node')->resetCache(array($node->nid));  //clear cache
+  }
+  
+}
+
+
+/**
+* returns a value to calculate that mapps the category to a value
+*/
+function _erpal_customer_rating_rating_category_as_integer($category) {
+  //the higher the better
+  switch ($category) {
+    case 'A': return 3;
+    case 'B': return 2;
+    case 'C': return 1;
+    case 'NO': return 0;
+  }
+}
+
+/**
+* returns a value to calculate that mapps the category to a value
+*/
+function _erpal_customer_rating_rating_integer_as_category($rating_integer) {
+  //the higher the better
+  switch ($rating_integer) {
+    case 3: return 'A';
+    case 2: return 'B';
+    case 1: return 'C';
+    case 0: return 'NO';
+  }
+}
+
+/**
+* calculate the customer ratings for each category such as contract and sales volume
+*/
+function erpal_customer_rating_calculate_ratings() {
+
+  $years_to_check = variable_get('erpal_customer_rating_years_to_check', 3);
+  $ratings = array();
+  $rating_count = 0;
+  if (module_exists('erpal_crm_reports')) {  //we need its report classes to calculate
+
+    $sales_volumes = _erpal_crm_reports_get_sales_volume($years_to_check);
+    //now relate the sales volume of each customer to the toal sales volume
+    $ratings['sales']['ratings'] = _erpal_customer_rating_calculate_sales_rating($sales_volumes); 
+    $ratings['sales']['factor'] = variable_get('erpal_customer_rating_sales_weight', 8); //sales volume is the most important thing so weight it by X
+    $rating_count++;
+  }
+
+  if (module_exists('erpal_contract')) {
+    //get total active contract volume for each customer and rate the customer according to this criteria
+    $contract_volumes = _erpal_contract_helper_get_contract_reports();
+    $ratings['contract']['ratings'] = _erpal_customer_rating_calculate_contract_rating($contract_volumes);
+    $ratings['contract']['factor'] = variable_get('erpal_customer_rating_contracts_weight', 1);
+    $rating_count++;
+  }
+  
+  //now calculate all average ratings to get a total rating for each customer
+  $total_ratings = array();
+  foreach ($ratings as $type => $rating_arr) {
+    $factor = $rating_arr['factor'];
+    $ratings = $rating_arr['ratings'];
+    
+    foreach ($ratings as $customer_nid => $rating) {
+      $rating_value = _erpal_customer_rating_rating_category_as_integer($rating);
+      
+      if (empty($total_ratings[$customer_nid]['rating']))
+        $total_ratings[$customer_nid]['rating'] = 0;
+      
+      if (empty($total_ratings[$customer_nid]['factor']))
+        $total_ratings[$customer_nid]['factor'] = 0;
+      
+      $total_ratings[$customer_nid]['factor'] += $factor;
+      $total_ratings[$customer_nid]['rating'] += $rating_value * $factor;
+      
+    }
+  }
+  
+  //now calculate the average rating
+  $average_ratings = array();
+  foreach ($total_ratings as $customer_nid => $rating_arr) {
+    $average_ratings[$customer_nid] = _erpal_customer_rating_rating_integer_as_category(ceil($rating_arr['rating'] / $rating_arr['factor']));  //we ceil that value as if a customer has at least some sales volume, he will be at least C customer but if we don't ceil he will be no customer with a average value < 0.5
+  }
+ 
+  return $average_ratings;
+  
+}
+
+/**
+* Calculate the customer rating related to contracts
+*/
+function _erpal_customer_rating_calculate_contract_rating($contract_volumes) {
+  $total = $contract_volumes['total'];
+
+  $customers = $contract_volumes['customers'];
+  $rating = array();
+  foreach ($customers as $customer_nid => $customer_arr) {
+    $customer_total = $customer_arr['total'];
+
+    $customer_percent = round($customer_total / $total, 2) * 100;
+    $rating[$customer_nid] = _erpal_customer_rating_get_rating_by_percent($customer_percent, 'contract');
+  }
+  return $rating;
+}
+
+/**
+* Calculate the customer category related to the total sales volume
+*/
+function _erpal_customer_rating_calculate_sales_rating($sales_volumes) {
+  $total = $sales_volumes['total'];  //total sales volume all summed
+  
+  $customers = !empty($sales_volumes['customers']) ? $sales_volumes['customers'] : array();
+  $rating = array();
+  foreach ($customers as $customer_nid => $customer_arr) {
+    $customer_total = $customer_arr['total'];
+    $customer_percent = round($customer_total / $total, 10) * 100;
+       
+    $rating[$customer_nid] = _erpal_customer_rating_get_rating_by_percent($customer_percent, 'sales');
+    
+  }
+  return $rating;
+}
+
+/**
+* Return the category (a,b,c according to the percentual sales volume) 
+* @param string $type we may select the category also related to the type such as sales and contract
+*/
+function _erpal_customer_rating_get_rating_by_percent($percent, $type) {
+  //@TODO: make this configurable in adminsettings and relate it to the allowed field values
+  if ($percent > variable_get('erpal_customer_rating_a_treshold', 10))
+    return 'A';
+  if ($percent > variable_get('erpal_customer_rating_b_treshold', 5))
+    return 'B';
+  if ($percent > variable_get('erpal_customer_rating_c_treshold', 0))
+    return 'C';
+    
+  return 'NO';
+}
+

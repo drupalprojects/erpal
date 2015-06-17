@@ -1,0 +1,244 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for our entity and a table to store information about
+ * the entity types.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function billable_schema() {
+  $schema = array();
+
+  $schema['billable'] = array(
+    'description' => 'The base table for billable entities.',
+    'fields' => array(
+      'billable_id' => array(
+        'description' => 'Primary Key: Identifier for a billable entity.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The {billable_type}.type of this billable entity.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'subject' => array(
+        'description' => 'The title of the billable - a human-readable identifier.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'currency' => array(
+        'description' => 'The currency',
+        'type' => 'varchar',
+        'length' => 5,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'billed' => array(
+        'description' => 'Flag if the entity is already billed',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'weight' => array(
+        'description' => 'The weight of the billable entity e.g in a bill',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'parent_billable' => array(
+        'description' => 'The parent billable entiy in case some entities have been reduced to one entity',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'subject_nid' => array(
+        'description' => 'The id of an subject node, the billable entity belongs to',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),      
+      'quantity' => array(
+        'description' => 'The quantity of the billable entity',
+        'type' => 'float',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'single_price' => array(
+        'description' => 'The single price of the billable entity',
+        'type' => 'float',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'vat_rate' => array(
+        'description' => 'The vat percent rate',
+        'type' => 'numeric',
+        'precision' => 6,
+        'scale' => 3,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'total_price_no_vat' => array(
+        'description' => 'The total price excluding VAT',
+        'type' => 'float',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'total_price' => array(
+        'description' => 'The total price including VAT',
+        'type' => 'float',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'total_vat' => array(
+        'description' => 'The total VAT value',
+        'type' => 'float',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date_delivery' => array(
+        'description' => 'The delivery date',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the billable was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the billable was most recently saved.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'customer_nid' => array(
+        'description' => 'Reference to an entity for the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'contractor_nid' => array(
+        'description' => 'Reference to an entity for the contractor.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'data' => array(
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big',
+        'serialize' => TRUE,
+        'description' => 'A serialized array of additional data.',
+      ),
+    ),
+    'primary key' => array('billable_id'),
+    'indexes' => array(
+      'type' => array('type'),
+      'delivery' => array('date_delivery'),
+      'customer' => array('customer_nid'),
+    ),
+    $schema['billable_type'] = array(
+      'description' => 'Stores information about all defined billable types.',
+      'fields' => array(
+        'id' => array(
+          'type' => 'serial',
+          'not null' => TRUE,
+          'description' => 'Primary Key: Unique billable type ID.',
+        ),
+        'type' => array(
+          'description' => 'The machine-readable name of this billable type.',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => TRUE,
+        ),
+        'label' => array(
+          'description' => 'The human-readable name of this billable type.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'description' => array(
+          'description' => 'The description of this billable type.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+       
+      ) + entity_exportable_schema_fields(),
+      'primary key' => array('id'),
+      'unique keys' => array(
+        'type' => array('type'),
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+* Implements hook_update to add customer field to billable table
+*/
+function billable_update_7001(&$sandbox) {
+  //db_add_field('billable', 'customer_nid', array('type' => 'int', 'not null' => TRUE, 'description' => 'Reference to an entity for the customer.'));
+}
+
+/**
+* Implements hook_update to add contractor field to billable table
+*/
+function billable_update_7002(&$sandbox) {
+  db_add_field('billable', 'contractor_nid', array('type' => 'int', 'not null' => TRUE, 'description' => 'Reference to an entity for the contractor.'));
+}
+
+/**
+* Change all flowt fields to double (float:big) fields, otherwise, we cannot save exact decimal values > 10000
+*/
+function billable_update_7003(&$sandbox) {
+  $schema = billable_schema();
+  $fields = $schema['billable']['fields'];
+
+  db_change_field('billable', 'quantity', 'quantity', $fields['quantity']);
+  db_change_field('billable', 'single_price', 'single_price', $fields['single_price']);
+  db_change_field('billable', 'total_price', 'total_price', $fields['total_price']);
+  db_change_field('billable', 'total_vat', 'total_vat', $fields['total_vat']);
+  db_change_field('billable', 'total_price_no_vat', 'total_price_no_vat', $fields['total_price_no_vat']);
+  
+}
+
+/**
+* Change vat_rate field to decimal(numeric) 6,3, otherwise, we cannot save exact tax rates, e.g. french 19.6%
+*/
+function billable_update_7004(&$sandbox) {
+  $schema = billable_schema();
+  $fields = $schema['billable']['fields'];
+
+  db_change_field('billable', 'vat_rate', 'vat_rate', $fields['vat_rate']);
+  
+}
+
+/**
+* Implements hook_update_n to add as new table to support bundles
+*/
+function billable_update_7005(&$sandbox) {
+  drupal_get_schema('billable_type', TRUE); //Rebuild Schema
+  $schema = billable_schema();
+  $table = $schema['billable_type']; 
+  db_create_table('billable_type', $table);
+}

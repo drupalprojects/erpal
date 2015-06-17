@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Code for the ERPAL contract CRM feature.
+ */
+
+/**
+* Implements hook_quicktabs_alter()
+* We do this as quicktabs don't seam to work very well with features override components
+*/
+function erpal_contract_crm_quicktabs_alter(&$quicktabs) {
+  if ($quicktabs->machine_name == 'contact_content_tabs') {    
+    $quicktabs->tabs[] = array(
+      'vid' => 'contracts',
+      'display' => 'panel_pane_2',
+      'args' => '%1',
+      'title' => 'Contracts',
+      'weight' => -96,
+      'type' => 'view',
+    );
+  }
+}

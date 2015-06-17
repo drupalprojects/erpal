@@ -1,0 +1,445 @@
+<?php
+/**
+* @file
+* Code for the erpal_project services module.
+* ERPAL projects service adds services integration to allow data transfer for apps
+*/
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_projects_service_services_resources() {
+  return array(
+    'project' => array(
+      'retrieve' => array(
+        'help' => 'Retrieves a project',
+        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/project'),
+        'callback' => '_erpal_projects_service_project_retrieve',
+        'access callback' => '_erpal_projects_service_project_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/project'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the project to get',
+            'source' => array('path' => 0),  //counted from the end, so param = 0 is the last arg in the url!
+            'optional' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'Deliver the Projects with an array of children, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'Retrieves a listing of projects filterable',
+        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/project'),
+        'callback' => '_erpal_projects_service_project_index',
+        'access callback' => 'user_access', //@todo provide a permission to access list of projects in erpal_projects_helper module
+        'access arguments' => array('access content'),  //@todo see above todo
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/project'),
+        'access arguments append' => FALSE,  //@todo what does this mean?
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'Deliver data from nth element, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'Deliver the Projects with detailed information, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+    ),
+
+    'task' => array(
+      'retrieve' => array(
+        'help' => 'Retrieves a task',
+        'file' => array('file' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+        'callback' => '_erpal_projects_service_task_retrieve',
+        'access callback' => '_erpal_projects_service_task_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the project to get',
+            'source' => array('path' => 0),  //counted from the end, so param = 0 is the last arg in the url!
+            'optional' => TRUE,
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'Retrieves a listing of tasks filterable',
+        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+        'callback' => '_erpal_projects_service_task_index',
+        'access callback' => 'user_access', //@todo provide a permission to access list of projects in erpal_projects_helper module
+        'access arguments' => array('access content'),  //@todo see above todo
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+        'access arguments append' => FALSE,  //@todo what does this mean?
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'Deliver data from nth element, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'Deliver the tasks with detailed information, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => FALSE,
+          ),
+          array(
+            'name' => 'project',
+            'type' => 'int',
+            'description' => 'Deliver the tasks for project x, defaults to -1.',
+            'optional' => TRUE,
+            'source' => array('param' => 'project'),
+            'default value' => -1,
+          ),
+          array(
+            'name' => 'user',
+            'type' => 'int',
+            'description' => 'Deliver the tasks for user x, defaults to -1.',
+            'optional' => TRUE,
+            'source' => array('param' => 'user'),
+            'default value' => -1,
+          ),
+          array(
+            'name' => 'parent',
+            'type' => 'int',
+            'description' => 'Deliver the subtasks for task x, defaults to -1.',
+            'optional' => TRUE,
+            'source' => array('param' => 'parent'),
+            'default value' => -1,
+          ),
+        ),
+      ),
+      'create' => array(
+        'help' => 'Create a new task',
+        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+        'callback' => '_erpal_projects_service_task_create',
+        'access callback' => '_erpal_projects_service_task_create_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'task',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The task node data to create',
+            'type' => 'array',
+          ),
+        ),
+      ),
+//      'update' => array(
+//        'help' => 'Updates a task',
+//        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+//        'callback' => '_erpal_projects_service_task_update',
+//        'access callback' => '_erpal_projects_service_task_access', //@todo provide a permission to access list of projects in erpal_projects_helper module
+//        'access arguments' => array('update'),  //@todo see above todo
+//        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/task'),
+//        'access arguments append' => TRUE,  //@todo what does this mean?
+//        'args' => array(
+//          array(
+//            'name' => 'nid',
+//            'optional' => FALSE,
+//            'source' => array('path' => 0),
+//            'type' => 'int',
+//            'description' => 'The nid of the task to update',
+//          ),
+//          array(
+//            'name' => 'task',
+//            'optional' => FALSE,
+//            'source' => 'data',
+//            'description' => 'The task data object to update',
+//            'type' => 'array',
+//          ),
+//        ),
+//      ),
+    ),
+
+    'timetracking' => array(
+      'retrieve' => array(
+        'help' => 'Retrieves a timetracking',
+        'file' => array('file' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+        'callback' => '_erpal_projects_service_timetracking_retrieve',
+        'access callback' => 'user_access', //@todo provide a permission to access list of projects in erpal_projects_helper module
+        'access arguments' => array('access content'),  //@todo see above todo
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+        'access arguments append' => FALSE,  //@todo what does this mean?
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the timetracking to get',
+            'source' => array('path' => 0),  //counted from the end, so param = 0 is the last arg in the url!
+            'optional' => TRUE,
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'Retrieves a listing of timetrackings filterable',
+        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+        'callback' => '_erpal_projects_service_timetracking_index',
+        'access callback' => 'user_access', //@todo provide a permission to access list of projects in erpal_projects_helper module
+        'access arguments' => array('access content'),  //@todo see above todo
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetrackings'),
+        'access arguments append' => FALSE,  //@todo what does this mean?
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'Deliver data from nth element, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'Deliver the timetrackings with detailed information, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => FALSE,
+          ),
+         ),
+      ),
+      'create' => array(
+        'help' => 'Create a new timetracking',
+        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+        'callback' => '_erpal_projects_service_timetracking_create',
+        'access callback' => '_erpal_projects_service_timetrackings_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'timetracking',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The timetracking node data to create',
+            'type' => 'array',
+          ),
+        ),
+      ),
+      'actions' => array(
+        'statistics' => array(
+          'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/timetracking'),
+          'callback' => '_erpal_projects_service_timetracking_statistics',
+          'access callback' => 'user_access',
+          'access arguments' => array('access content'),
+          'help' => t('Returns timetracking statistic.'),
+        ),
+      ),
+    ),
+
+    'erpal_taxonomy' => array(
+      'index' => array(
+        'help' => 'Retrieves a listing of erpal specific taxonomy',
+        'file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/taxonomy'),
+        'callback' => '_erpal_projects_service_taxonomy_index',
+        'access callback' => 'user_access', //@todo provide a permission to access list of projects in erpal_projects_helper module
+        'access arguments' => array('access content'),  //@todo see above todo
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_projects_service', 'name' => 'inc/project_tags'),
+        'access arguments append' => FALSE,  //@todo what does this mean?
+        'args' => array(
+          array(
+            'name' => 'vocabname',
+            'type' => 'string',
+            'description' => 'Vocabulary name of vocab to get terms from',
+            'optional' => FALSE,
+            'source' => array('param' => 'vocabname'),
+            'default value' => 'FALSE',
+          ),
+       ),
+      ),
+    ),
+
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_projects_service_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+      //'file' => 'notresourcejs.services.inc', // Optional parameter to indicate the file name to load.
+      //'path' => drupal_get_path('module', 'noteresourcejs') . '/includes', // If specifying the file key, path is required.
+    );
+  }
+}
+
+ /**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_projects_service_default_services_endpoint() {
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'projects_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/projects';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'rest_server' => array(
+      'formatters' => array(
+        'bencode' => TRUE,
+        'json' => TRUE,
+        'php' => TRUE,
+        'rss' => TRUE,
+        'xml' => TRUE,
+        'yaml' => TRUE,
+        'jsonp' => FALSE,
+      ),
+      'parsers' => array(
+        'application/json' => TRUE,
+        'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
+        'application/x-yaml' => TRUE,
+        'multipart/form-data' => TRUE,
+      ),
+    ),
+  );
+  $endpoint->resources = array(
+    'project' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+        'statistics' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'timetracking' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+        'create' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'task' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+        'update' => array(
+          'enabled' => 1,
+        ),
+        'create' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'erpal_taxonomy' => array(
+      'operations' => array(
+        'index' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+
+  $endpoints[$endpoint->name] = $endpoint;
+
+  return $endpoints;
+}

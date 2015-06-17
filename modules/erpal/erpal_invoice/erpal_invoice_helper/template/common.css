@@ -1,0 +1,51 @@
+/* 
+    Document   : common.css
+    Created on : 04.05.2012, 16:12:36
+    Author     : serkan
+    Description:
+        Purpose of the stylesheet follows.
+*/
+  * {
+    font-size:10pt;
+  }
+  table#head_table {
+    width:100%;
+  }
+  div#absender {
+    font-size:0.8em;
+  }
+
+  div#rechnungsdaten_top {
+    height:5cm;
+  }
+  table#rechnungsdaten {
+    width:100%;
+  }
+  div#rechnungstabelle_top {
+    height:5cm;
+  }
+  table.rechnungstabelle th {
+    background-color:#eee;
+  }
+
+  div.invoice_notes {
+    margin-top: 4cm;
+  }
+  
+  .subject {
+    width: 4cm;
+  }
+  .quantity {
+    width: 2cm;
+  }
+
+  .bordertop td {
+    border-top:0.5pt solid #000;
+  }
+  
+  .left {
+    text-align:left;
+  }
+  .right {
+    text-align:right;
+  }

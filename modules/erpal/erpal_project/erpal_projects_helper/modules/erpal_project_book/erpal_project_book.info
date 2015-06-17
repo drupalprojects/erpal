@@ -1,0 +1,36 @@
+name = erpal_project_book
+description = Integrates book and projects module
+core = 7.x
+package = ERPAL
+version = 7.x-1.0-dev
+project = erpal_project_book
+dependencies[] = ctools
+dependencies[] = erpal_book_ui
+dependencies[] = erpal_project_ui
+dependencies[] = field_extrawidgets
+dependencies[] = number
+dependencies[] = panels_mini
+features[ctools][] = panels_mini:panels_default:1
+features[features_api][] = api:2
+features[features_override_items][] = page_manager_handlers.node_view_panel_context
+features[features_override_items][] = panels_mini.book_general_fields
+features[features_overrides][] = page_manager_handlers.node_view_panel_context.conf|display|panels|sidebar_second_right|5
+features[features_overrides][] = panels_mini.book_general_fields.display|content|new-9388788c-d8a6-bc84-617e-b1ca65c31ec5
+features[features_overrides][] = panels_mini.book_general_fields.display|panels|middle|6
+features[field_instance][] = node-erpal_project-field_books_ref
+features[field_instance][] = node-erpal_task-field_book_parent
+features[field_instance][] = node-erpal_task-field_book_weight
+features[panels_mini][] = task_concept_panel
+features_exclude[dependencies][entityreference] = entityreference
+features_exclude[dependencies][erpal_basic_helper] = erpal_basic_helper
+features_exclude[dependencies][erpal_book] = erpal_book
+features_exclude[dependencies][features] = features
+features_exclude[features_overrides][page_manager_handlers.node_view_panel_context.conf|display|content|new-ad47d6b4-2c11-a064-0d7d-335344ef2003] = page_manager_handlers.node_view_panel_context.conf|display|content|new-ad47d6b4-2c11-a064-0d7d-335344ef2003
+features_exclude[features_overrides][page_manager_handlers.node_view_panel_context.conf|display|panels|sidebar_second_right|4] = page_manager_handlers.node_view_panel_context.conf|display|panels|sidebar_second_right|4
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_project"
+datestamp = "1433508204"
+

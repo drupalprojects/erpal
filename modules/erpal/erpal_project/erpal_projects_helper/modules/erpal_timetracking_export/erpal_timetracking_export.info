@@ -1,0 +1,16 @@
+core = "7.x"
+description = "ERPAL timetracking bulk export.
+name = "Erpal timetracking export"
+package = "ERPAL Export"
+project = "erpal_timetracking_export"
+version = "7.x-1.0-dev"
+
+files[] = erpal_timetracking_export.module
+files[] = erpal_timetracking_export_action.inc
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_project"
+datestamp = "1433508204"
+

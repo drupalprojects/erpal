@@ -1,0 +1,123 @@
+<?php
+/**
+ * @file
+ * File to handle access for books
+ */
+
+/**
+* Implements hook_node_insert
+*/
+function erpal_book_access_node_insert($node) {
+  if ($node->type != 'erpal_book_page')
+    return;
+    
+  _erpal_book_access_inherit_single_grants_from_book($node);
+}
+
+/**
+* Adds all grants of the current book to the given book page
+*/
+function _erpal_book_access_inherit_single_grants_from_book($book_page_node) {
+  $book_nid = $book_page_node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+  
+  //get all auls where this nid is in
+  $aul_ids = aul_get_all_aul_of_node($book_nid);
+  foreach ($aul_ids as $aul_id) {
+    aul_add_node($aul_id, $book_page_node->nid);
+  }
+  
+  //aquire grants now
+  node_access_acquire_grants($book_page_node);
+}
+ 
+/**
+* Implements hook_aul_add_node
+*/
+function erpal_book_access_aul_add_node($nid, $aul_id) {
+  $node = node_load($nid);
+  if ($node->type != 'erpal_book')
+    return;
+  _erpal_book_access_inherit_book_grants('add', $nid, $aul_id);
+}
+
+/**
+* Implements hook_aul_remove_node
+*/
+function erpal_book_access_aul_remove_node($nid, $aul_id) {
+  $node = node_load($nid);
+  if ($node->type != 'erpal_book')
+    return;
+  _erpal_book_access_inherit_book_grants('delete', $nid, $aul_id);
+}
+
+/**
+* Inherit grants to all sub pages of the book
+* @param $op dd or delete of grants
+* @param $book_nid the book nid that gets these grants
+* @param $aul_id if set, the aul id where grants are added to
+* The grants that will be given are determined by the aul_id
+*/
+function _erpal_book_access_inherit_book_grants($op, $book_nid, $aul_id) {
+  
+  //@TODO: to grant access for all book pages may result in heavy load on big documents. Improve performance here.
+  //get all pages
+  $book_nids = _erpal_book_helper_get_book_pages($book_nid);
+  if (empty($book_nids))
+    return;
+    
+  //now add every book page referenced to the book
+  foreach ($book_nids as $book_page_nid) {
+    
+    if ($op == 'add') {
+      aul_add_node($aul_id, $book_page_nid);
+    }
+    
+    if ($op == 'delete') {
+      aul_remove_node($aul_id, $book_page_nid);
+    }
+    
+    //aquire the grants
+    $book_page_node = node_load($book_page_nid);
+    node_access_acquire_grants($book_page_node);  
+  } 
+  
+}
+
+/**
+ * @defgroup aul_helpers AUL: helpers
+ * @ingroup helpers
+ * @{
+ * These functions are needed to make the AUL module work
+ */
+ 
+/**
+ * Implements hook_aul_enabled().
+ * Used by the AUL module
+ */
+function erpal_book_access_aul_enabled() {
+  return !erpal_book_access_disabling();
+}
+
+/**
+ * Implements hook_disable().
+ */
+function erpal_book_access_disable() {
+  erpal_book_access_disabling(TRUE);
+  node_access_rebuild();
+}
+
+/**
+ * Remembers if we have disabled access.
+ */
+function erpal_book_access_disabling($set = NULL) {
+  static $disabling = FALSE;
+
+  if (isset($set)) {
+    $disabling = $set;
+  }
+  return $disabling;
+}
+
+/**
+ * @} End of "defgroup aul_helpers".
+ */

@@ -1,0 +1,19 @@
+name = ERPAL CRM Tasks UI
+description = ERPAL CRM Tasks UI Module
+core = 7.x
+package = ERPAL UI
+version = 7.x-1.0-dev
+project = erpal_crm_tasks_ui
+dependencies[] = ctools
+dependencies[] = ds
+dependencies[] = erpal_crm_tasks
+features[ctools][] = ds:ds:1
+features[ds_view_modes][] = in_activity
+features[features_api][] = api:2
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_core"
+datestamp = "1433507327"
+

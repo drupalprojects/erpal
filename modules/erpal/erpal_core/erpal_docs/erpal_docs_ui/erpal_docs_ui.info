@@ -1,0 +1,46 @@
+name = ERPAL Docs UI
+description = ERPAL Documents UI Module
+core = 7.x
+package = ERPAL UI
+version = 7.x-1.5-dev
+project = erpal_docs_ui
+dependencies[] = cat
+dependencies[] = ctools
+dependencies[] = ds
+dependencies[] = erpal_basic
+dependencies[] = erpal_basic_ui
+dependencies[] = erpal_docs
+dependencies[] = features
+dependencies[] = file
+dependencies[] = menu
+dependencies[] = page_manager
+dependencies[] = path_breadcrumbs
+dependencies[] = references_dialog
+dependencies[] = views
+dependencies[] = views_content
+features[cat_items][] = erpal_files
+features[cat_items][] = erpal_files_aul_file
+features[cat_items][] = erpal_files_create_file
+features[cat_items][] = erpal_files_edit_file
+features[cat_items][] = erpal_files_view_file
+features[ctools][] = cat:cat:1
+features[ctools][] = ds:ds:1
+features[ctools][] = page_manager:pages_default:1
+features[ctools][] = path_breadcrumbs:path_breadcrumbs:1
+features[ctools][] = strongarm:strongarm:1
+features[ctools][] = views:views_default:3.0
+features[ds_fields][] = files_count
+features[features_api][] = api:2
+features[menu_links][] = menu-erpal-menu_files:files
+features[page_manager_handlers][] = node_view_panel_context_7
+features[page_manager_pages][] = documents_panel
+features[path_breadcrumbs][] = file_node_breadcrumb
+features[path_breadcrumbs][] = files_view_breadcrumb
+features[views_view][] = documents
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_core"
+datestamp = "1433507327"
+

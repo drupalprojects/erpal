@@ -1,0 +1,264 @@
+<?php
+
+/**
+ * @file
+ * Code for the erpal_docs_service module.
+ * ERPAL docs service adds services integration to allow data transfer for external apps
+ */
+module_load_include('inc', 'erpal_docs_service', 'inc/test');
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_docs_service_services_resources() {
+  return array(
+    'erpal_file' => array(
+      'actions' => array(
+        'download' => array(
+          'help' => 'Returns the path of the current version of a file',
+          'file' => array('type' => 'inc', 'module' => 'erpal_docs_service', 'name' => 'inc/files'),
+          'callback' => '_erpal_docs_service_file_download',
+          'access callback' => '_erpal_docs_service_file_download_access',
+          'access callback file' => array('type' => 'inc', 'module' => 'erpal_docs_service', 'name' => 'inc/files'),
+          'access arguments' => array('view'),
+          'access arguments append' => TRUE,
+          'args' => array(//@TODO works only as post at the moment, should work as get!
+            array(
+              'name'        => 'nid',
+              'type'        => 'int',
+              'description' => 'The nid of the erpal file to get',
+              'source'      => array('path' => 1),
+              'optional'    => FALSE,
+            ),
+          ),
+        ),
+      ),
+      'operations' => array(
+        'create' => array(
+          'help'                  => 'Creates a file document',
+          'file'                  => array(
+            'type'    => 'inc', 
+            'module'  => 'erpal_docs_service', 
+            'name'    => 'inc/files'
+          ),
+          'callback'              => '_erpal_docs_service_file_create',
+          'access callback'       => 'user_access',
+          'access arguments'      => array('create erpal_file content'),
+          'access callback file'  => array(
+            'type'    => 'module',
+            'module'  => 'user',
+            'name'    => 'user',
+          ), 
+          'access arguments append' => FALSE,
+          'args'                    => array(
+            array(
+              'name'          => 'data',
+              'optional'      => FALSE,
+              'source'        => 'data',
+              'description'   => 'The file data.',
+              'type'          => 'array',
+            ),
+          ),
+        ),
+        'update' => array(
+          'help'                => 'Updates a file document',
+          'file'                => array(
+            'type'    => 'inc', 
+            'module'  => 'erpal_docs_service', 
+            'name'    => 'inc/files'
+          ),
+          'callback'            => '_erpal_docs_service_file_update',
+          'access callback'     => 'user_access',
+          'access arguments'    => array('edit erpal_file content'),
+          'access callback file' => array(
+            'type'    => 'module',
+            'module'  => 'user',
+            'name'    => 'user',
+          ), 
+          'access arguments append' => FALSE,
+          'args'                    => array(
+            array(
+              'name'        => 'nid',
+              'type'        => 'int',
+              'description' => 'The database ID of a file document to get.',
+              'source'      => array('path' => 0),
+              'optional'    => TRUE,
+            ),
+            array(
+              'name'          => 'data',
+              'optional'      => FALSE,
+              'source'        => 'data',
+              'description'   => 'The file data.',
+              'type'          => 'array',
+            ),
+          ),
+        ),
+        'retrieve' => array(
+          'help' => 'retrieves an file description',
+          'file' => array('type' => 'inc', 'module' => 'erpal_docs_service', 'name' => 'inc/files'),
+          'callback' => '_erpal_docs_service_file_retrieve',
+          'access callback' => '_erpal_docs_service_file_access',
+          'access callback file' => array('type' => 'inc', 'module' => 'erpal_docs_service', 'name' => 'inc/files'),
+          'access arguments' => array('view'),
+          'access arguments append' => TRUE,
+          'args' => array(
+            array(
+              'name' => 'id',
+              'type' => 'int',
+              'description' => 'The id of the activity to get',
+              'source' => array('path' => 0), //counted from the end, so param = 0 is the last arg in the url!
+              'optional' => TRUE,
+            ),
+            array(
+              'name' => 'details',
+              'type' => 'boolean',
+              'description' => 'includes details with the file, defaults to true.',
+              'optional' => TRUE,
+              'source' => array('param' => 'details'),
+              'default value' => TRUE,
+            ),
+            array(
+              'name' => 'include_children',
+              'type' => 'boolean',
+              'description' => 'includes child nodes with the files, defaults to false.',
+              'optional' => TRUE,
+              'source' => array('param' => 'include_children'),
+              'default value' => FALSE,
+            ),
+          ),
+        ),
+        'index' => array(
+          'help' => 'Retrieves a listing of activities filterable',
+          'file' => array('type' => 'inc', 'module' => 'erpal_docs_service', 'name' => 'inc/files'),
+          'callback' => '_erpal_docs_service_file_index',
+          'access callback' => '_erpal_docs_service_file_access',
+          'access arguments' => array('view'),
+          'access callback file' => array('type' => 'inc', 'module' => 'erpal_docs_service', 'name' => 'inc/files'),
+          'access arguments append' => TRUE,
+          'args' => array(
+            array(
+              'name' => 'start',
+              'type' => 'int',
+              'description' => 'Deliver data from nth element, defaults to 0.',
+              'optional' => TRUE,
+              'source' => array('param' => 'start'),
+              'default value' => 0,
+            ),
+            array(
+              'name' => 'count',
+              'type' => 'int',
+              'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+              'optional' => TRUE,
+              'source' => array('param' => 'count'),
+              'default value' => PHP_INT_MAX,
+            ),
+            array(
+              'name' => 'changed_since',
+              'type' => 'int',
+              'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+              'optional' => TRUE,
+              'source' => array('param' => 'changed_since'),
+              'default value' => 0,
+            ),
+            array(
+              'name' => 'details',
+              'type' => 'boolean',
+              'description' => 'includes details with the file, defaults to false.',
+              'optional' => TRUE,
+              'source' => array('param' => 'details'),
+              'default value' => FALSE,
+            ),
+            array(
+              'name' => 'include_children',
+              'type' => 'boolean',
+              'description' => 'includes child nodes with the file, defaults to false.',
+              'optional' => TRUE,
+              'source' => array('param' => 'include_children'),
+              'default value' => FALSE,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_docs_service_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+    );
+  }
+}
+
+/**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_docs_service_default_services_endpoint() {
+
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'erpal_docs_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/erpal_files';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'rest_server' => array(
+      'formatters' => array(
+        'bencode' => TRUE,
+        'json' => TRUE,
+        'php' => TRUE,
+        'rss' => TRUE,
+        'xml' => TRUE,
+        'yaml' => TRUE,
+        'jsonp' => FALSE,
+      ),
+      'parsers' => array(
+        'application/json' => TRUE,
+        'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
+        'application/x-yaml' => TRUE,
+        'multipart/form-data' => TRUE,
+      ),
+    ),
+  );
+  $endpoint->resources = array(
+    'erpal_file' => array(
+      'actions' => array(
+        'download' => array(
+          'enabled' => 1,
+        ),
+      ),
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+
+  $endpoints[$endpoint->name] = $endpoint;
+
+  return $endpoints;
+}

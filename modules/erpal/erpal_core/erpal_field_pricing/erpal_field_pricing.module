@@ -1,0 +1,119 @@
+<?php
+/**
+ * @file
+ * Code for the ERPAL field_pricing feature.
+ */
+
+include_once 'erpal_field_pricing.features.inc';
+/**
+ * @file
+ * ERPAL pricing field module
+ */
+
+  
+/**
+* Callback function for returning all available currencies
+*/
+function erpal_field_pricing_field_currency_allowed_values() {
+  return _billable_get_currencies();
+}
+
+/**
+* Implements hook_field_attach_load()
+*/
+function erpal_field_pricing_field_attach_load($entity_type, $entities, $age, $options) {
+  if ($entity_type == 'field_collection_item') {
+    foreach ($entities as $id => $entity) {
+      if ($entity->field_name == 'field_pricing') {
+        $current_vat_rate = !empty($entity->field_vat_rate[LANGUAGE_NONE][0]['value']) ? $entity->field_vat_rate[LANGUAGE_NONE][0]['value'] : false;
+        if ($current_vat_rate) {
+          //we have vat rate as float with 3 decimals, so convert the vat rate
+          $current_vat_rate = number_format($current_vat_rate, 3);
+          $entity->field_vat_rate[LANGUAGE_NONE][0]['value'] = $current_vat_rate;
+        }
+        
+        //purchase VAT rate
+        $current_vat_rate = !empty($entity->field_buy_vat_rate[LANGUAGE_NONE][0]['value']) ? $entity->field_buy_vat_rate[LANGUAGE_NONE][0]['value'] : false;        
+        if ($current_vat_rate) {
+          //we have vat rate as float with 3 decimals, so convert the vat rate
+          $current_vat_rate = number_format($current_vat_rate, 3);
+          $entity->field_buy_vat_rate[LANGUAGE_NONE][0]['value'] = $current_vat_rate;
+        }
+      }
+    }
+  }
+  
+}
+
+/**
+* Callback function for returning all available VAT
+*/
+function erpal_field_pricing_field_vat_rate_allowed_values() {
+  return _billable_vat_rates();
+}
+
+/**
+* Callback function for returning all available VAT
+*/
+function erpal_field_pricing_field_buy_vat_rate_allowed_values() {
+  return _billable_vat_rates();
+}
+
+/**
+* Callback function for returning all available currencies
+*/
+function erpal_billable_field_buy_currency_allowed_values() {
+  return _billable_get_currencies();
+}
+
+/**
+* Creates a new billable entity
+* @param boolean $billable if set, this billable will be updated, otherwise a new billable will be created
+* @TODO: move this function to the billable module or better do it with billable_create from the billable.entity.inc
+*/
+function _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, $billable=false, $contractor_nid=false, $service_category=false, $expense_category=false, $type=false) {
+
+  //@todo sollte das besser mit billable_create aus dem modul billable in billable.entity.inc getan werden?
+  if (!$billable)
+    $billable = new Billable;
+  else
+    if ($billable->billed)
+      return false; //this is already billed so it could not be changed!
+   
+  if (!$contractor_nid) {
+    //contractor is the own company
+    $contractor_nid = _erpal_basic_helper_get_own_company_nid(false);
+  }
+   
+  $billable->subject = $subject_title;
+  if ($type)
+    $billable->type = $type;
+  $billable->currency = $currency;
+  $billable->billed = false;
+  $billable->subject_nid = $subject_nid;
+  $billable->quantity = $quantity;
+  $billable->single_price = $single_price;
+  $billable->vat_rate = $vat_rate;
+  $billable->date_delivery = $date_delivery;
+  $billable->created = time();
+  $billable->changed = time();
+  $billable->customer_nid = $customer_nid;
+  $billable->contractor_nid = $contractor_nid;
+  entity_save('billable', $billable);
+  
+  //now save attached service category field if value is set
+  if ($service_category) {
+    $billable->field_service_category_term[LANGUAGE_NONE][0]['tid'] = $service_category;
+  }
+  
+  //now save attached expense category field if value is set
+  if ($expense_category) {
+    $billable->field_expense_category[LANGUAGE_NONE][0]['tid'] = $expense_category;
+  }
+  
+  if ($expense_category || $service_category) {
+    field_attach_update('billable', $billable);
+  }
+  
+  return true;
+}

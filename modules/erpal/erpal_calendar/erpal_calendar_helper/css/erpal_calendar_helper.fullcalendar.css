@@ -1,0 +1,12 @@
+.fc-day-number {
+  position: relative;
+}
+
+.fc-content .fc-day-number .erpal-fc-add-date { 
+  position: absolute;
+  left: -10px;
+  top: 0;
+  color: #888;
+  font-weight: bold;
+}
+

@@ -1,0 +1,125 @@
+<?php
+/**
+ * @file
+ * billable tests.
+ */
+
+require_once 'billable.test.helper';
+ 
+class BillableTestCase extends DrupalFixtureTestCase  {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Billable unit tests',
+      'description' => 'Unit test to ensure that the billable module functions properly.',
+      'group' => 'Invoice',
+    );
+  }
+  
+  function setUp() {    
+    //parent::setUp('billable');
+    parent::setUp();
+    
+    // Run a features rebuild to ensure our feature is fully installed.
+    //features_rebuild();
+    
+    // Clear all caches so everything from the feature is recognized now that it is fully loaded.
+    //cache_clear_all();
+  }
+  
+  
+  /**
+  * Test for caclulating values when a billable is saved
+  */
+  function testBillableCalculateValues() {
+    $group= 'billable vat';
+  
+    $entity = entity_create('billable', array());
+    $entity->quantity = 3;
+    $entity->single_price = 12.56;
+    $entity->vat_rate = '19.000';
+    $entity->save();
+    
+    //check if total price without vat is calculated nust be 37,86
+    $total_excl_vat_must = 37.68;
+    $message = billabletest_format_message('Total excl vat caclulated', $total_excl_vat_must, $entity->total_price_no_vat); 
+    $this->assertEqual($entity->total_price_no_vat, $total_excl_vat_must, $message, $group);
+    
+    //check if the vat etc is calculated
+    $total_vat_must = 7.16;
+    $message = billabletest_format_message('Total vat caclulated', $total_vat_must, $entity->total_vat); 
+    $this->assertEqual($entity->total_vat, $total_vat_must, $message, $group);
+    
+    //check if the total price including is caclulated without errors    
+    $total_incl_vat_must = $total_excl_vat_must + $total_vat_must;
+    $message = billabletest_format_message('Total incl. vat calculation', $total_incl_vat_must, $entity->total_price); 
+    $this->assertEqual($entity->total_price, $total_incl_vat_must, $message, $group);
+   
+  }
+  
+  function testEntityReduce() {
+    $group= 'billable reduce';
+    $test_data = _billable_create_reduce_test_data();
+    
+    module_load_include('inc', 'billable', 'billable.reduce');
+    $billable_ids = array(
+      $test_data['b1']->billable_id, 
+      $test_data['b2']->billable_id, 
+      $test_data['b3']->billable_id, 
+      $test_data['b4']->billable_id,
+      $test_data['b5']->billable_id,
+      $test_data['b6']->billable_id,
+    );
+    $group_by = array(); //no group by privce, this will be checked in the next step
+    $new_billables = _billable_reduce($billable_ids);
+    
+    //if they dont have the same customer, currency, vat_rate no reduce possible
+    //ensure that we have 2 new billables, with the given vat and the customers
+    //########################################
+    //CHECK NOT GROUPED BY SINGLE PRICE
+    //########################################
+    $needed_billables = _billable_create_reduce_test_data_needed($test_data, false);
+    
+    $billablesOK = _billable_reduce_test_check_after($billable_ids, $new_billables, $needed_billables, $group_by);
+    
+    $this->assertTrue($billablesOK, 'Reduce billables without grouping by single price', $group);
+    
+      
+    //########################################
+    //CHECK NOT GROUPED BY SINGLE PRICE
+    //########################################
+    $test_data = _billable_create_reduce_test_data();
+    $needed_billables = _billable_create_reduce_test_data_needed($test_data, true);
+
+    $billable_ids = array(
+      $test_data['b1']->billable_id, 
+      $test_data['b2']->billable_id, 
+      $test_data['b3']->billable_id, 
+      $test_data['b4']->billable_id,
+      $test_data['b5']->billable_id,
+      $test_data['b6']->billable_id,
+    );
+    
+    $group_by = array(); //no group by privce, this will be checked in the next step        
+    $group_by[] = 'single_price';
+    $new_billables = _billable_reduce($billable_ids, $group_by);
+    $billablesOK = _billable_reduce_test_check_after($billable_ids, $new_billables, $needed_billables, $group_by);
+    
+    $this->assertTrue($billablesOK, 'Reduce billables with grouping by single price', $group);
+
+    //check that already billed billable entites cannot be reduced
+    //@TODO
+ 
+  }
+}
+
+
+
+//########## HELPER FUNCTIONS FOR TESTS ################
+
+/**
+* Formats a message with values that should be calculated (must) and that are really calculated (is)
+*/
+function billabletest_format_message($message, $must, $is) {
+  return $message.' - is '.$is.' should be '.$must;
+}

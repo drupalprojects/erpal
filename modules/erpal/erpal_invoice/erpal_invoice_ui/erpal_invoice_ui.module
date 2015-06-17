@@ -1,0 +1,24 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_invoice_ui feature.
+ */
+
+include_once('erpal_invoice_ui.features.inc');
+
+/**
+* Implements hook_quicktabs_alter()
+* We do this as quicktabs don't seam to work very well with features override components
+*/
+function erpal_invoice_ui_quicktabs_alter(&$quicktabs) {
+  if ($quicktabs->machine_name == 'contact_content_tabs') {    
+    $quicktabs->tabs[] = array(
+      'vid' => 'invoices',
+      'display' => 'panel_pane_1',
+      'args' => '%1',
+      'title' => 'Invoices',
+      'weight' => -98,
+      'type' => 'view',
+    );
+  }
+}

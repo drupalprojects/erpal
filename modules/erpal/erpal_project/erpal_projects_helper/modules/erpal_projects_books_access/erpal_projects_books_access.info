@@ -1,0 +1,23 @@
+name = ERPAL projects books access
+description = The module enables project related access for books
+core = 7.x
+package = ERPAL
+version = 7.x-1.0-dev
+project = erpal_projects_books_access
+dependencies[] = aul
+dependencies[] = erpal_book
+dependencies[] = erpal_book_access
+dependencies[] = erpal_project
+dependencies[] = features
+dependencies[] = list
+dependencies[] = options
+features[features_api][] = api:2
+features[field_base][] = field_book_permissions
+features[field_instance][] = field_collection_item-field_project_team-field_book_permissions
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_project"
+datestamp = "1433508204"
+

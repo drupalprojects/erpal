@@ -1,0 +1,87 @@
+<?php
+
+/**
+* Update functions for the erpal_book module
+*/
+
+/**
+* Migrate the books parent structures to the new field_book_parent and field_book_weight fields
+* after migration delete the erpal_book_page instance of the field_parent.
+*/
+function erpal_book_helper_update_7001(&$sandbox) {
+      
+  //get all tasks and book pages that reference a book page with the field_parent
+  $query = db_select('field_data_field_parent', 'parent');
+  $query->leftJoin('node', 'n', 'parent.field_parent_target_id = n.nid');
+  $query->fields('parent', array('entity_id'))
+    ->condition('n.type', array('erpal_book_page', 'erpal_book'));
+  
+  $steps = 10;
+  $sandbox['#finished'] = 0;
+  // Multi-part update.
+  if (!isset($sandbox['node_from'])) {
+    $sandbox['node_from'] = 0;
+    $result = $query->execute();
+    $total = $result->rowCount();
+    $sandbox['node_count'] = $total;
+
+    //first of all revert the erpal_book feature so we have all fields we need to migrate!
+    module_load_include('inc', 'features', 'features.export');
+    features_include();
+    $modules = array('erpal_book');
+    foreach ($modules as $module) {
+      if (($feature = feature_load($module, TRUE)) && module_exists($module)) {
+        $components = array();
+        // Forcefully revert all components of a feature.
+        foreach (array_keys($feature->info['features']) as $component) {
+          if (features_hook($component, 'features_revert')) {
+            $components[] = $component;
+          }
+        }
+      }
+      foreach ($components as $component) {
+        features_revert(array($module => array($component)));
+      }
+    }    
+  }
+  else {
+    $sandbox['#finished'] = $sandbox['node_from'] / $sandbox['node_count'];
+    
+    //update;
+    $query->range($sandbox['node_from'], $steps);
+    $result = $query->execute();
+
+    $sandbox['node_from'] += $steps;
+    
+    //DO THE OPERATON HERE!
+    while($record = $result->fetchAssoc()) {
+      $nid = $record['entity_id'];
+      $node = node_load($nid);
+            
+      //save the values
+      module_load_include('inc', 'erpal_lib', 'inc/node');
+
+      //copy the field_parent to the field_book_parent
+      _erpal_lib_helper_save_new_single_field_value($nid, 'field_book_parent', $node->field_parent[LANGUAGE_NONE][0]['target_id'], 'target_id');
+      //copy the field_weight to field_book_weight
+      _erpal_lib_helper_save_new_single_field_value($nid, 'field_book_weight', $node->field_weight[LANGUAGE_NONE][0]['value'], 'value');
+    }      
+
+    if ($sandbox['node_from'] >= $sandbox['node_count']) {
+      $sandbox['#finished'] = 1;
+      
+      //remove the old fields from the book
+      $instance = field_info_instance('node', 'field_parent', 'erpal_book_page');  
+      field_delete_instance($instance);
+      
+      $instance = field_info_instance('node', 'field_weight', 'erpal_book_page');  
+      field_delete_instance($instance);
+      
+      field_purge_batch();  //really delete them.
+      
+      return t('Book parent data structure migrated.');
+    }
+  }
+  
+  
+}

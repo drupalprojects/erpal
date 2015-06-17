@@ -1,0 +1,797 @@
+<?php
+/**
+ * @file
+ * Module to provide helper functions for book feature
+ */
+ module_load_include('inc', 'erpal_basic_helper', 'inc/config');
+ module_load_include('inc', 'erpal_book_helper', 'inc/book.token');
+ module_load_include('inc', 'erpal_book_helper', 'inc/jstree');
+ 
+/**
+ * Implements hook_action_info().
+ */
+function erpal_book_helper_action_info() {
+  return array(
+    'erpal_book_helper_clone_to_book_action' => array(
+      'type' => 'node',
+      'label' => t('Clone book template'),
+      'description' => t('Clones a book to a book given as argument'),
+      'configurable' => TRUE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+  ); 
+} 
+ 
+ /**
+ * Implements hook_node_presave
+ */
+function erpal_book_helper_node_presave($node) {
+  if ($node->type == 'erpal_book_page') {
+    _erpal_book_helper_connect_page_to_book($node);
+    
+    //if the node is new and has no value in field_book_weight set, we preset it with the current timestamp of the node
+    $weight = !empty($node->field_book_weight[LANGUAGE_NONE][0]['value']) ? $node->field_book_weight[LANGUAGE_NONE][0]['value'] : 0;
+    if ($node->is_new || strlen($weight) > 10) {
+      $time = time();
+      $node->field_book_weight[LANGUAGE_NONE][0]['value'] = -1 * substr($time."", 0, strlen($time) -1);  //if we don't cut the first digit (from left) of the time, it gets to bug when multiplied with 1
+    }
+  }
+}
+
+/**
+* Implements hook_views_pre_execute(&$view)
+*/
+function erpal_book_helper_views_pre_execute(&$view) {
+  if ($view->name == 'book_children') {
+    //remove the arguments
+    unset($_SESSION['view_jstree'][$view->name][$view->current_display]);
+  }
+}
+
+/**
+* Implements hook_menu
+*/ 
+function erpal_book_helper_menu(){
+
+  $items = array();
+  
+  $items['books/%node/export'] = array(
+    'title' => 'Export document',
+    'page callback' => '_erpal_book_helper_book_export_menu_callback',    
+    'page arguments' => array(1),
+    'access callback' => '_erpal_book_helper_book_pdf_menu_access',
+    'access arguments' => array(1),
+    'file' => 'inc/book.export.inc',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['books/%node/clone'] = array(
+    'title' => 'Clone book',
+    'page callback' => '_erpal_books_helper_book_clone_callback',    
+    'page arguments' => array(1),
+    'access callback' => '_erpal_book_helper_book_clone_menu_access',
+    'access arguments' => array(1),
+    'file' => 'inc/book.pdf.inc',
+    'type' => MENU_CALLBACK,
+  );
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_book_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+
+  return $items;
+} 
+
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_book_helper_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'erpal_book_helper') . '/views',
+  );
+}
+
+/**
+* implements hook_init
+*/
+function erpal_book_helper_init() {
+  module_load_include('inc', 'erpal_book_helper', 'inc/book.clone'); 
+  module_load_include('inc', 'erpal_book_helper', 'inc/book.action');
+  
+  
+  //@TODO that is really bad, but we have no other chance right now. The problem is:
+  //if the customer changes in an book, we change the allowed values using #ajax at the contact
+  //form element. This ajax function sumbits the whole form. While rebuilding the form again, the function
+  //to get the allowed values of the field is called bevore hook_form_alter. But we need the value of the selected contact
+  //to decide which are the allowed values. So we need a oportunity to get the value of the contact field BEVORE 
+  //the function for allowed values is called. This is what we do here.
+  //@see same dirty thing in erpal_invoice_helper.module with customer selection of an invoice.
+  
+  if (isset($_POST['field_contact_ref']))
+    if (isset($_POST['field_contact_ref'][LANGUAGE_NONE]))
+      if (isset($_POST['field_contact_ref'][LANGUAGE_NONE][0]))
+        if (isset($_POST['field_contact_ref'][LANGUAGE_NONE][0]['target_id'])) {
+          $contact_nid = $_POST['field_contact_ref'][LANGUAGE_NONE][0]['target_id'];
+          $contact_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($contact_nid);
+          _erpal_book_helper_cache('erpal_ajax_adresses', $contact_nid);
+        }
+}
+
+
+
+/**
+* Implements hook_permission
+*/
+function erpal_book_helper_permission() {
+  $permissions = array(
+    'clone complete books' => array(
+      'title' => t('Clone complete books'),
+      'description' => t('Allows a user to clone complete books'),
+    ),
+    'access books view' => array(
+      'title' => t('Access books view'), 
+      'description' => t('Allows the user to access the books view'),
+    ),
+  );
+  
+  return $permissions;
+  
+}
+
+/**
+* Access callback for clone books url
+*/
+function _erpal_book_helper_book_clone_menu_access($node) {
+  if ($node->type != 'erpal_book') {
+    return false;
+  }
+  
+  return user_access('clone complete books');
+}
+
+/**
+* Access Callback for url to create a pdf from a book
+*/
+function _erpal_book_helper_book_pdf_menu_access($node) {
+  
+  if ($node->type == 'erpal_book')
+    if (!user_access('create erpal_book content'))
+      return false;
+    
+  if ($node->type == 'erpal_book_page')
+    if (!user_access('create erpal_book_page content'))
+      return false;
+ 
+  //validate that given node is of type book or book_page
+  $type_ok = $node->type == 'erpal_book' || $node->type == 'erpal_book_page';
+  
+  return $type_ok;
+   
+  return true;
+}
+
+/**
+* Implements hook_field_attach_view_alter
+*/
+function erpal_book_helper_field_attach_view_alter (&$output, $context) {
+  
+  if ($context['entity_type'] == 'node') {
+    if ($context['entity']->type == 'erpal_book' || $context['entity']->type == 'erpal_book_page') {
+      if (isset($output['body'])) {                
+        
+        //get the contact and the address enttiy 
+        $data = array();
+        $book_node = $context['entity'];
+        
+        $contact = _erpal_book_helper_get_contact($book_node);
+        $contact_node = isset($contact['contact_node']) ? $contact['contact_node'] : false;
+        $address_entity = isset($contact['address_entity']) ? $contact['address_entity'] : false;
+        
+        $data['contact_node'] = $contact_node;
+        $data['address_entity'] = $address_entity;
+        $data['book_node'] = $book_node;
+        $output['body'][0]['#markup'] = token_replace($output['body'][0]['#markup'], $data);        
+      }
+    }
+  }
+}
+
+/**
+* returns the address entity and the contact node to a book node or a book_page node
+* @param $node a book node or a bok_page node
+*/
+function _erpal_book_helper_get_contact($node) {
+  if ($node->type == 'erpal_book_page') {
+    //get the parent book at top most level because contact information are stored there
+    $book_nid = isset($node->field_book_ref[LANGUAGE_NONE][0]['target_id']) ? $node->field_book_ref[LANGUAGE_NONE][0]['target_id'] : false;
+    
+    if (!$book_nid)
+      return array();
+    
+    $node = node_load($book_nid);
+  }
+  
+  //get the contact and the selected address of the contact
+  if (!isset($node->field_contact_ref[LANGUAGE_NONE][0]['target_id']))
+    return array();
+    
+  $contact_nid = $node->field_contact_ref[LANGUAGE_NONE][0]['target_id'];
+  $contact_node = node_load($contact_nid);
+  
+  $address_id = false;
+  $address_entity = false;
+  if (isset($node->field_address_id[LANGUAGE_NONE][0]['value'])) {
+    $address_id = $node->field_address_id[LANGUAGE_NONE][0]['value'];
+    $address_entity = entity_load('field_collection_item', array($address_id));
+    $address_entity = $address_entity[$address_id];
+  }
+  
+  return array(
+    'contact_node' => $contact_node,
+    'address_entity' => $address_entity,
+  );
+}
+
+
+ 
+/**
+* Value callback for address id field if book node
+*/
+function erpal_book_helper_field_address_id_allowed_values($field) {
+  if ($field['field_name'] != 'field_address_id') {    
+    return array();
+  } else {
+    //@TODO getting the current node from url args is kind of dirty, but I actually
+    //dont know how to do it better and we need the current node to get information
+    //if it is edit and we have already a customer set to get its available addresses        
+    $book_nid = arg(1);
+  }
+
+  $cached_contact_nid = _erpal_book_helper_cache('erpal_ajax_adresses', false);  //get cached customer and clear cache
+  if ($cached_contact_nid) {
+    $contact_node = node_load($cached_contact_nid);
+  }
+  elseif ($book_nid && intval($book_nid)."" == $book_nid.""){ //ensure it is an integer and not "add"
+    $book_node = node_load($book_nid);  
+ 
+    if (!isset($book_node->field_contact_ref[LANGUAGE_NONE][0]['target_id']))
+      return array();
+      
+    $contact_nid = $book_node->field_contact_ref[LANGUAGE_NONE][0]['target_id'];
+    $contact_node = node_load($contact_nid);    
+  } else
+    return array();
+
+  $allowed_values = _erpal_basic_helper_get_contact_adresses($contact_node, true);
+
+  return $allowed_values;
+}
+
+/**
+* Ensures that the book page references the top most parent book it belongs to!
+*/
+function _erpal_book_helper_connect_page_to_book($node) {
+  $parent_nid = 0;
+  if (isset($node->field_book_parent[LANGUAGE_NONE][0]['target_id']))
+    $parent_nid = $node->field_book_parent[LANGUAGE_NONE][0]['target_id'];
+  
+  if (!$parent_nid)
+    return;
+  
+  $parent_node = node_load($parent_nid);
+  
+  //get the book of the parent if there is a parent, otherwise the book
+  //should be already pre-populated.
+  $book_nid = 0;
+  if ($parent_node->type == 'erpal_book') {
+    $book_nid = $parent_node->nid;
+  }
+  elseif (isset($parent_node->field_book_ref[LANGUAGE_NONE][0]['target_id'])) {
+    $book_nid = $parent_node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+  }
+    
+  if ($book_nid)
+    $node->field_book_ref[LANGUAGE_NONE][0]['target_id'] = $book_nid;
+    
+  //IF NODE IS NEW: now get all children of the parent and set the weight of the new page the last childnode->weight +10
+  if (!$node->nid) {
+    $types = array('erpal_task', 'erpal_book_page');
+    $child_nids = _erpal_basic_helper_get_direct_children($parent_node->nid, $types, false, 'field_book_parent');
+    $biggest_weight = 0;
+    foreach ($child_nids as $nid) {
+      $child_node = node_load($nid);
+      $weight = $child_node->field_book_weight[LANGUAGE_NONE][0]['value'];
+      if ($weight > $biggest_weight)
+        $biggest_weight = $weight;
+    }
+    
+    $node->field_book_weight[LANGUAGE_NONE][0]['value'] = $biggest_weight +10;    
+  }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_book_helper_form_alter(&$form, &$form_state, $form_id) {
+
+ if ($form_id == 'erpal_book_page_node_form') {
+    _erpal_book_helper_form_redirect_orphan_book_page($form);
+    _erpal_book_helper_show_tokens_at_body($form, $form_state);
+  }
+  
+  if ($form_id == 'erpal_book_node_form') {
+    _erpal_book_helper_show_tokens_at_body($form, $form_state);
+    _erpal_book_helper_prepare_address_ajax_reload($form, $form_state);
+    _erpal_book_helper_preselect_form($form, $form_state);
+  }
+  
+  if ($form_id == 'node_delete_confirm') {
+    _erpal_book_helper_node_delete_confirm_alter($form, $form_state);
+  }
+}
+
+/**
+* Preselect some form elements from URL
+*/
+function _erpal_book_helper_preselect_form(&$form, $form_state) {
+  $nid = $form['nid']['#value'];
+  if ($nid)
+    return; //only for new nodes we preselect the fields
+  
+  $is_template = isset($_GET['field_is_template']) ? $_GET['field_is_template'] : false;
+  
+  $form['field_is_template'][LANGUAGE_NONE]['#default_value'] = $is_template;
+
+}
+
+/**
+* Alter node delete form to add options on how to process children on delete operation
+*/
+function _erpal_book_helper_node_delete_confirm_alter(&$form, $form_state) {
+  $delete_nid = $form['nid']['#value'];
+  $delete_node = node_load($delete_nid);
+
+  if ($delete_node->type == 'erpal_book') {
+    //only show warning that all children will be delete
+    $form['delete_children_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Book page delete options'),
+    );
+    
+    $node_link = l($delete_node->title, "node/".$delete_node->nid);
+    $form['delete_children_fieldset']['delete_children'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('I confirm that all child pages of !node_link will be deleted.', array('!node_link' => $node_link)),
+      '#default_value' => false,
+    ); 
+    
+    $form['#validate'][] = '_erpal_book_helper_book_delete_confirm_validate';
+    $form['#submit'][] = '_erpal_book_helper_book_delete_confirm_submit';
+    
+  } elseif ($delete_node->type == 'erpal_book_page') {
+  
+    $form['delete_children_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Book page delete options'),
+    );
+    
+    $node_link = l($delete_node->title, "node/".$delete_node->nid);
+    $form['delete_children_fieldset']['delete_children'] = array(
+      '#type' => 'radios',
+      '#title' => t('Handle children options'),
+      '#options' => array(
+        'delete' => t('Delete child pages'),
+        'parent' => t('Add to upper level parent page'),
+      ),
+      '#default_value' => 'parent',
+    ); 
+    
+    //add book_nid and parent_nid as hidden values bevor node will be deleted
+    $book_nid = $delete_node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+    $parent_nid = $delete_node->field_book_parent[LANGUAGE_NONE][0]['target_id'];
+    
+    $form['delete_node'] = array(
+      '#type' => 'value',
+      '#value' => $delete_node,
+    );
+    
+    $form['book_node'] = array(
+      '#type' => 'value',
+      '#value' => node_load($book_nid),
+    );
+    
+    $form['parent_node'] = array(
+      '#type' => 'value',
+      '#value' => node_load($parent_nid),
+    );
+    
+    $form['#submit'][] = '_erpal_book_helper_book_page_delete_confirm_submit';
+  }
+}
+
+/**
+* Submit handler of book page delete form
+*/
+function _erpal_book_helper_book_page_delete_confirm_submit($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_node = $values['delete_node']; //node that will be deleted  
+  $book_node = $values['book_node'];
+  $parent_node = $values['parent_node'];
+  $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
+
+  if ($delete_children == 'parent') {
+    //add all nodes to parent node
+    $options = array();
+    $options['export_tasks'] = true;
+    //get all nodes that reference the delete node using the field_book_parent
+    $child_nids = _erpal_book_helper_get_children($book_node, $delete_node, $options, true);
+    $callback_function = '_erpal_book_helper_bulk_update_callback';
+    $args['parent_nid'] = $parent_node->nid;
+    
+    $redirect = 'node/'.$book_node->nid;
+    _erpal_basic_helper_bulk_update($child_nids, $callback_function, $args, 'node/'.$book_node->nid, $redirect);
+   
+  } elseif ($delete_children == 'delete') {
+    //delete all book children including subchildren etc. other child nodes like tasks are not deleted.
+    $types = array('erpal_book_page');
+    $child_nids = _erpal_basic_helper_get_all_child_nids_deep_search($delete_node->nid, $types);
+    
+    $child_nids = array('node' => $child_nids);
+    
+    $redirect = 'node/'.$book_node->nid;
+    _erpal_basic_helper_bulk_delete($child_nids, $redirect);
+  }
+}
+
+/**
+* Callback for bulk updating nodes. Here we set the values given in args.
+*/
+function _erpal_book_helper_bulk_update_callback($node, $args) {
+  $parent_nid = $args['parent_nid'];
+  
+  $node->field_book_parent[LANGUAGE_NONE][0]['target_id'] = $parent_nid;
+}
+
+/**
+* Submit handler of book delete confirm form
+*/
+function _erpal_book_helper_book_delete_confirm_submit($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+
+  //get all book_pages of given book and give them to bulk delete operation.
+  $options = array();
+  $child_nids = _erpal_book_helper_get_book_pages($delete_nid);
+
+  $child_nids = array('node' => $child_nids);
+  _erpal_basic_helper_bulk_delete($child_nids, 'books/books');
+}
+
+/**
+* Validateion handler of book node delete confirm form
+*/
+function _erpal_book_helper_book_delete_confirm_validate($form, $form_state) {
+  $values = $form_state['values'];  
+  $delete_nid = $values['nid'];
+  $delete_node = node_load($delete_nid);
+    
+  $delete_children = isset($values['delete_children']) ? $values['delete_children'] : false;
+  
+  //if book will be delete checkbox must be set!
+  if ($delete_node->type == 'erpal_book') {
+    if (!$delete_children)
+      form_set_error('delete_children', t('Please submit checkbox to delete all child pages'));
+  }
+}
+
+/**
+* Prepare book node form to reload address field using AJAX, according to slected contact
+*/
+function _erpal_book_helper_prepare_address_ajax_reload(&$form, $form_state) {
+  $form['field_address_id'][LANGUAGE_NONE]['#prefix'] = '<div id="address_wrapper">';
+  $form['field_address_id'][LANGUAGE_NONE]['#suffix'] = '</div>';
+
+  $form['field_contact_ref'] = _erpal_book_helper_field_contact_ref_alter($form['field_contact_ref']);
+  
+  //if address has only one option, make this option the default value
+  $options = $form['field_address_id'][LANGUAGE_NONE]['#options'];
+
+  $default_id = false;
+  if (count($options) == 2) {
+    //get the one that is not "_none" and delete it!    
+    foreach ($options as $id=>$value) {
+      if (!is_numeric($id))
+        unset($form['field_address_id'][LANGUAGE_NONE]['#options'][$id]);
+    }
+  }
+  if ($default_id) {
+    $form['field_address_id'][LANGUAGE_NONE]['#default_value'] = $default_id;
+  }
+}
+
+/**
+* Alters the field contact ref to have an ajax callback to change the addresses after changing the contact of a book
+*/
+function _erpal_book_helper_field_contact_ref_alter($field) {
+
+  $field[LANGUAGE_NONE][0]['target_id']['#ajax'] = array(
+    'callback' => '_erpal_book_helper_ajax_book_preselect_addresses',
+    'wrapper' => 'address_wrapper',
+    'method' => 'replace',
+    'effect' => 'fade',
+  );
+  
+  return $field;
+}
+
+/**
+* Callback after contact_ref field on book form has changed with ajax callback
+*/
+function _erpal_book_helper_ajax_book_preselect_addresses($form, $form_state) {  
+    
+  return $form['field_address_id'][LANGUAGE_NONE];  //form has already been processed, so just return the elements
+}
+
+
+/**
+* Show patterns for contact and address at book page or book nodes
+*/
+function _erpal_book_helper_show_tokens_at_body(&$form, $form_state) {
+  //contact tokens and estimation tokens
+  $types = array('erpal_contact', 'erpal_book_export', 'erpal_basic');
+  $tokens = theme('token_tree', array('global_types' => FALSE, 'token_types' => $types));
+  
+  if (empty($form['body']['#suffix']))
+    $form['body']['#suffix'] = '';
+    
+  $form['body']['#suffix'] .= $tokens;
+}
+
+  
+/**
+* Redirects from a form to books view if the user doesn't add a book-page over a book but using node/add/book_page
+*/
+function _erpal_book_helper_form_redirect_orphan_book_page($form) {
+  //check book page must have a book reference or a parent reference, otherwise redirect
+  //to destination or if not set to books view
+  $parent_nid = $form['field_book_parent'][LANGUAGE_NONE][0]['target_id']['#default_value'];
+  
+  if (!$parent_nid) {
+    //redirect
+    $destination = drupal_get_destination();
+    $destination = $destination['destination'];
+    
+    if (!$destination || $destination == $_GET['q'])
+      $destination = 'books/books';
+
+    drupal_goto($destination);
+  }
+}
+
+
+/**
+* Returns the book the page is refernced to, if given node is a book return this book
+*/
+function _erpal_book_helper_get_book($node) {
+  if ($node->type == 'erpal_book')
+    return $node;
+  elseif ($node->type = 'erpal_book_page') {
+    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+    $book_node = node_load($book_nid);
+    return $book_node;
+  }
+  
+  return false;
+}
+
+
+function _erpal_book_helper_get_referencing_project($book_nid){
+  if(module_exists('erpal_projects_helper'))
+    return _erpal_project_helper_get_referencing_projects_by_book($book_nid);
+}
+
+/**
+* Definie which node types are allowed as children of a parent in jstree
+* structure is 'parent_type' => array with possible child types
+* @see views_jstree.module function theme_views_jstree
+*/
+function erpal_book_helper_jstree_allowed_child_types() {
+  return array(
+    'erpal_book' => array('erpal_task'),
+    'erpal_book_page' => array('erpal_book_page', 'erpal_task'),
+  );
+}
+
+/**
+* Implements hook_jstree_context_menu to provide custom menu for book js tree, dependent on the node type
+*/
+function erpal_book_helper_jstree_context_menu($entity_type, $type, $id, $root_id) {
+  
+  $current_viewed_url = $_SESSION['view_jstree']['current_tree_url']; //@TODO dirty but works, if we delete a node in the tree we want to be redirected to the curent tree view againt und this is where we are actually.
+  $query_back = array('destination' => $current_viewed_url);
+  $query_add = $query_back;
+  $query_add['field_book_parent'] = $id;
+
+  if ($type == 'erpal_book_page') {        
+
+    $menu = array(
+      array('title' => t('View'), 'url' => 'node/'.$id),
+      array('title' => t('View in new tab'), 'url' => 'node/'.$id, 'attributes' => array('target' => '_blank')),
+      array('title' => t('Edit'), 'url' => 'node/'.$id.'/edit', 'attributes' => array('query' => $query_back)),
+      array('title' => t('Delete'), 'url' => 'node/'.$id.'/delete', 'attributes' => array('query' => $query_back)),
+      array('title' => t('Add sub page'), 'url' => 'node/add/erpal-book-page', 'attributes' => array('query' => $query_add)),
+      array('title' => t('Add page(s) cloned'), 'url' => 'books/clonetemplates/'.$id, 'attributes' => array('query' => $query_back)),
+    );
+
+    return $menu;
+  }
+}
+
+
+/**
+* Returns all direct children of a given book node
+* we are keeping the correct order sorting by weight
+* @param $nids_only if true only nids are returned otherwise node objects are fully loaded
+*/
+function _erpal_book_helper_get_children($book_node, $parent_node, $options, $nids_only=false) {
+
+  //first get all book pages
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_book_page')
+  ->propertyCondition('status', 1)
+  ->fieldCondition('field_book_parent', 'target_id', $parent_node->nid, '=')  
+  ->fieldOrderBy('field_book_weight', 'value', 'ASC')
+  ->fieldCondition('field_book_ref', 'target_id', $book_node->nid, '=');
+    
+  if (empty($options['options']['ignore_exclude'])) {
+    //exclude some node from export
+    $exclude = array('export');
+    
+    //normally we would do it like
+    //$query->fieldCondition('field_page_exclude_from', 'value', 'pdf', '!=');
+    //but that doenst work if field has no value, not even NULL at all. So we get all excluded nids and
+    //exclude them in the query.
+    $field['field'] = 'field_page_exclude_from';
+    $field['column'] = 'value';
+    $excluded = _erpal_book_helper_get_excluded_nodes_by_parent($parent_node, 'pdf', $field);
+    
+    if (count($excluded) > 0)
+      $query->propertyCondition('nid', $excluded, 'NOT IN');
+  }
+  
+  $result = $query->execute();
+  $child_book_page_nodes = array();
+  if (isset($result['node'])) {
+    $child_nids = array_keys($result['node']);
+    
+    if (!$nids_only)
+      $child_book_page_nodes = entity_load('node', $child_nids);
+    else
+      $child_book_page_nodes = $child_nids;
+  }
+  
+  //ask other modules for children  
+  $other_child_nodes = module_invoke_all('book_child_nodes', $parent_node, $book_node, $options, $nids_only, 'book');
+
+  $children = array_merge($child_book_page_nodes, $other_child_nodes);
+
+  return $children;
+}
+
+/**
+* Returns all book pages of a book
+* @param $book_nid the book nid to get all pages from
+*/
+function _erpal_book_helper_get_book_pages($book_nid) {
+  //first get all book pages
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_book_page')
+  ->fieldCondition('field_book_ref', 'target_id', $book_nid, '=');
+  
+  $result = $query->execute();
+  $child_book_page_nids = array();
+  if (isset($result['node'])) {
+    $child_book_page_nids = array_keys($result['node']);
+  }
+  
+  return $child_book_page_nids;
+}
+
+/**
+* Returns all excluded nids of type erpal_book linked to a given book
+*/ 
+function _erpal_book_helper_get_excluded_nodes_by_parent($parent_node, $exclude, $excluded_field) {
+ 
+  if (!$exclude)
+    return array();
+    
+  if ($exclude && !is_array($exclude))
+    $exclude = array($exclude);
+
+  //first get all book pages
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->propertyCondition('status', 1)
+  ->fieldCondition('field_book_parent', 'target_id', $parent_node->nid, '=');
+
+  $query->fieldCondition($excluded_field['field'], $excluded_field['column'], $exclude, 'IN');
+  
+  $result = $query->execute();
+  $excluded_nids = array();
+  if (isset($result['node'])) {
+    $excluded_nids = array_keys($result['node']);
+  }
+  
+  return $excluded_nids;
+}
+
+/**
+* Runtime cache for saving values during script processing
+*/
+function _erpal_book_helper_cache($key, $value=false) {
+  static $cache = array();
+
+  $ret = false;
+  if (isset($cache[$key]))
+    $ret = $cache[$key];
+    
+  if ($value)
+    $cache[$key] = $value;
+    
+  return $ret;
+}
+
+/**
+* Replace all book tokens!
+* @param $node a book node or a book_page node
+*/
+function _erpal_book_helper_replace_tokens(&$node) {
+  //replace contact tokens if a contact is referenced to a book
+  $contact = _erpal_book_helper_get_contact($node);
+  
+  $contact_node = isset($contact['contact_node']) ? $contact['contact_node'] : false;
+  if (!$contact_node)
+    return;
+  
+  $address_entity = $contact['address_entity'];
+  $data = array(
+    'contact_node' => $contact_node,
+    'address_entity' => $address_entity,
+    'book_node' => $node,
+  );
+  
+  if (isset($node->body[LANGUAGE_NONE][0])) {
+    $body = $node->body[LANGUAGE_NONE][0]['value'];
+    $body = token_replace($body, $data);
+    $node->body[LANGUAGE_NONE][0]['value'] = $body;
+   // $node->body[LANGUAGE_NONE][0]['safe_value'] = $body;
+  }
+}
+
+/**
+* Function returning the book id (the nid of the book) of a given book or book_page
+*/
+function _erpal_book_helper_get_book_ident($node) {
+  //get book
+  if ($node->type == 'erpal_book')
+    $book_node = $node;
+    
+  if ($node->type == 'erpal_book_page') {
+    $book_nid = $node->field_book_ref[LANGUAGE_NONE][0]['target_id'];
+    $book_node = node_load($book_nid);    
+  } 
+  
+  $version = isset($book_node->field_book_version[LANGUAGE_NONE][0]['value']) ? $book_node->field_book_version[LANGUAGE_NONE][0]['value'] : 1;
+  
+  return $book_node->nid."/".$version;
+}
+
+
+
+
+

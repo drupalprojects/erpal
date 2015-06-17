@@ -1,0 +1,49 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_lib module.
+ */
+
+module_load_include('inc', 'erpal_lib', 'inc/date_time');
+module_load_include('inc', 'erpal_lib', 'inc/node');
+module_load_include('inc', 'erpal_lib', 'inc/entity');
+module_load_include('inc', 'erpal_lib', 'inc/user');
+
+/**
+ * converts an array as a flat array
+ * @param $result this is the array where the flat result is put
+ */
+function erpal_lib_helper_flatten_array($arr, &$result) {
+  foreach ($arr as $key=>$value) {
+    $result[] = $key;
+    if (is_array($value))
+      erpal_lib_helper_flatten_array($value, $result);  
+  }
+}
+
+/**
+* Return the field values for a entity reference field of one field of a node without loading the complete entity
+* @TODO: extend this to also fetch values of entities, and may be other fields
+*/
+function erpal_lib_get_entity_reference_field_value($field_name, $nid) {
+  //get the project of the task, because a task always has a project assigned
+  $field_info = field_info_field($field_name);
+  $table_info = $field_info['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
+  $tables = array_keys($table_info);
+  $table = reset($tables);
+  $db_field_name = $table_info[$table]['target_id'];
+
+  //get the current project nid of the task
+  $query = db_select($table);
+  $query_result = $query
+  ->fields($table, array($db_field_name, 'delta'))
+  ->condition('entity_id', $nid)
+  ->execute();
+  
+  $result = array();
+  while ($row = $query_result->fetchAssoc()) {
+    $result[$row['delta']] = $row[$db_field_name];
+  }
+
+  return $result;
+}

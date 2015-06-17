@@ -1,0 +1,65 @@
+<?php
+/**
+* @file all functions needed for enabling / disabling module
+*/
+
+
+/**
+ * Implements of hook_enable()
+ */
+function erpal_docs_access_enable() {
+  node_access_rebuild();
+}
+
+/**
+ * Implements of hook_install()
+ */
+function erpal_docs_access_install(){
+  variable_set('erpal_docs_access_fields', array());
+  variable_set('erpal_docs_access_users_count', 30);
+  variable_set('erpal_docs_access_cron', FALSE);
+  _erpal_docs_access_elyisa_cron_defaults();
+}
+
+/**
+ * Implements of hook_uninstall()
+ */
+function erpal_docs_access_uninstall(){
+  variable_del('erpal_docs_access_fields');
+  variable_del('erpal_docs_access_users_count');
+  variable_del('erpal_docs_access_cron');
+}
+
+/**
+ * Updates the Version to 7.1. Switch to AUL
+ */
+function erpal_docs_access_update_7100() {
+
+  // Remowe all ACL of module because we switch to AUL
+  $acls = db_select('acl', 'acl')
+      ->fields('acl', array('acl_id'))
+      ->condition('module', 'erpal_docs_access')
+      ->execute()->fetchAll();
+  // Delete existing ACLs
+  if (is_array($acls))
+    foreach ($acls as $acl)
+      acl_delete_acl($acl->acl_id);
+
+  node_access_rebuild();
+}
+
+
+/**
+* Enable the new erpal_contract_crm module to integrate contracts with CRM and projects
+*/
+function erpal_docs_access_update_7102() {
+  _erpal_docs_access_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_docs_access_elyisa_cron_defaults() {
+  $values = array('rule' => '*/5 * * * *');
+  elysia_cron_set('erpal_docs_access_cron', false, $values);
+}

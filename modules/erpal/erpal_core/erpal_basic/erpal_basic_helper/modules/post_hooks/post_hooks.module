@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * @file provides hook functions to let other modules alter some hook result 
+ * even if their weight will let them process the hook bevore other modules 
+ * that provide the hook.
+ */
+function post_hooks_node_view($node) {
+  if (is_object($node))
+    module_invoke_all('node_view_post', $node);
+}
+
+/**
+ * Implements hook_entity_insert
+ */
+function post_hooks_entity_insert($entity, $entity_type) {
+  if (is_object($entity) && isset($entity_type))
+    module_invoke_all('entity_insert_post', $entity, $entity_type);
+}
+
+/**
+ * Implements hook_entity_update
+ */
+function post_hooks_entity_update($entity, $entity_type) {
+  if (is_object($entity) && isset($entity_type))
+    module_invoke_all('entity_update_post', $entity, $entity_type);
+}
+
+/**
+ * Implements hook_entity_delete
+ */
+function post_hooks_entity_delete($entity, $entity_type) {
+  if (is_object($entity) && isset($entity_type))
+    module_invoke_all('entity_delete_post', $entity, $entity_type);
+}
+
+/**
+ * Implements hook_entity_update
+ */
+function post_hooks_node_update($node) {
+
+  if (empty($node->post_resaving)) {
+    module_invoke_all('node_update_post', $node);
+  }
+  
+  if (!empty($node->post_resave)) {    
+    $node->post_resaving = TRUE;
+    $node->post_resave = FALSE;
+    node_save($node);   
+    $node->post_resaving = FALSE;    
+  }
+}
+
+/**
+ * Implements hook_entity_delete
+ */
+function post_hooks_node_insert($node) {
+  if (empty($node->post_resaving)) {
+    module_invoke_all('node_insert_post', $node);
+  }
+  
+  if (!empty($node->post_resave)) {    
+    $node->post_resaving = TRUE;
+    $node->post_resave = FALSE;
+    $node->is_new = FALSE;
+    node_save($node);   
+    $node->post_resaving = FALSE;    
+  }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function post_hooks_form_alter(&$form, &$form_state, $form_id) {  
+  drupal_alter('form_post', $form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_file_download
+ */
+function post_hooks_file_download($uri) {  
+  $headers = module_invoke_all('file_download_post', $uri);  
+  return $headers;
+}

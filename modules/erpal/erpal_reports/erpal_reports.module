@@ -1,0 +1,1404 @@
+<?php
+/**
+ * @file
+ * Code for the Erpal Reports feature.
+ */
+
+include_once 'erpal_reports.features.inc';
+module_load_include('inc', 'erpal_reports', 'includes/erpal_reports.batch');
+module_load_include('inc', 'erpal_reports', 'includes/erpal_reports.entity');
+module_load_include('inc', 'erpal_reports', 'includes/erpal_reports.admin');
+/**
+ * erpal_reports custom entity module.
+ * @file
+ */
+
+define('ERPAL_REPORT_DATE_SCALING_DAY', 0);
+define('ERPAL_REPORT_DATE_SCALING_MONTH', 1);
+define('ERPAL_REPORT_DATE_SCALING_YEAR', 2);
+define('ERPAL_CONTEXT_REPORTS', 'erpal_reports');
+
+/**
+ * Implements hook_menu().
+ */
+function erpal_reports_menu() {
+  $items = array();
+
+  $uri_add_position = count(explode('/', 'erpal/reports/add'));
+  $items['erpal/reports/add/%'] = array(
+    'title' => 'Add',
+    'page callback' => 'erpal_reports_add',
+    'page arguments' => array($uri_add_position),
+    'access callback' => 'erpal_reports_access',
+    'access arguments' => array('edit', $uri_add_position),
+    'file' => 'includes/erpal_reports.pages.inc',
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  $erpal_reports_uri = 'erpal/reports/%erpal_reports';
+  $uri_position = count(explode('/', 'erpal/reports'));
+
+  $items[$erpal_reports_uri] = array(
+    'title callback' => 'entity_label',
+    'title arguments' => array('erpal_reports', $uri_position),
+    'page callback' => 'erpal_reports_view',
+    'page arguments' => array($uri_position),
+    'access callback' => 'erpal_reports_access',
+    'access arguments' => array('view', $uri_position),
+    'file' => 'includes/erpal_reports.pages.inc',
+  );
+
+  $items[$erpal_reports_uri . '/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items[$erpal_reports_uri . '/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('erpal_reports_form', $uri_position),
+    'access callback' => 'erpal_reports_access',
+    'access arguments' => array('edit', $uri_position),
+    'file' => 'includes/erpal_reports.pages.inc',
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  $items[$erpal_reports_uri . '/delete'] = array(
+    'title' => 'Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('erpal_reports_delete_form', $uri_position),
+    'access callback' => 'erpal_reports_access',
+    'access arguments' => array('edit', $uri_position),
+    'file' => 'includes/erpal_reports.pages.inc',
+  );
+
+  $items['admin/config/erpal/reports'] = array(
+    'title' => 'Erpal Reports',
+    'description' => 'Configure Erpal Reports.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('erpal_reports_config'),
+    'access arguments' => array('administer erpal_reports'),
+    'file' => 'includes/erpal_reports.pages.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['erpal/reports/dashboard/%erpal_reports/remove'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('erpal_reports_delete_report_from_dashboard_form', 3),    
+    'access arguments' => array('remove reports from dashboard'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+* Dialog to confirm that the report should be really deleted
+*/
+function erpal_reports_delete_report_from_dashboard_form($form, &$form_state, $report) {
+  $message = t('This action cannot be undone.');
+  
+  $form['#report'] = $report;
+  $form['report_entity'] = array('#type' => 'value', '#value' => $report);
+  $form['#submit'] = array('erpal_reports_delete_report_from_dashboard');
+  
+  return confirm_form($form,
+    t('Are you sure you want to delete the report "%title?"', array('%title' => $report->title)),
+    'reports/dashboard',
+    $message,
+    t('Delete'),
+    t('Cancel')
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_reports_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+} 
+
+
+/**
+ * Implements hook_entity_info().
+ */
+function erpal_reports_entity_info() {
+  $info['erpal_reports'] = array(
+    'label' => t('ERPAL Reports'),
+    'module' => 'erpal_reports',
+    'entity class' => 'ErpalReports',
+    'controller class' => 'ErpalReportsController',
+    'metadata controller class' => 'ErpalReportsMetadataController',
+    'views controller class' => 'EntityDefaultViewsController',
+    'base table' => 'erpal_reports',
+    'revision table' => 'erpal_reports_revision',
+    'access callback' => 'erpal_reports_access',
+    // Make use the class' label() and uri() implementation by default.
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'load hook' => 'erpal_reports_load',
+    'entity keys' => array(
+      'id' => 'id',
+      'revision' => 'rid',
+      'bundle' => 'type',
+    ),
+    'bundles' => array(),
+    'bundle keys' => array(
+      'bundle' => 'type',
+    ),
+    'fieldable' => TRUE,
+    'view modes' => array(
+      'full' => array(
+        'label' => t('Full'),
+        'custom settings' => TRUE,
+      ),
+    )
+  );
+
+  $info['erpal_reports_type'] = array(
+    'label' => t('ERPAL Reports type'),
+    'module' => 'erpal_reports',
+    'base table' => 'erpal_reports_type',
+    'entity class' => 'Entity',
+    'controller class' => 'EntityAPIControllerExportable',
+    'bundle of' => 'erpal_reports',
+    'access callback' => 'erpal_reports_access',
+    'fieldable' => FALSE,
+    'exportable' => TRUE,
+    'entity keys' => array(
+      'id' => 'id',
+      'name' => 'type',
+      'label' => 'name',
+    ),
+    'admin ui' => array(
+      'path' => 'admin/structure/erpal/report-types',
+      'file' => 'includes/erpal_reports.admin.inc',
+      'controller class' => 'EntityDefaultUIController',
+    ),
+  );
+
+  // Support entity cache module.
+  if (module_exists('entitycache')) {
+    $info['erpal_reports']['field cache'] = FALSE;
+    $info['erpal_reports']['entity cache'] = FALSE;
+  }
+
+  return $info;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function erpal_reports_entity_info_alter(&$entity_info) {
+  if (db_table_exists('erpal_reports_type')) {
+    foreach (erpal_reports_types() as $type => $info) {
+      $entity_info['erpal_reports']['bundles'][$type] = array(
+        'label' => $info->name,
+        'admin' => array(
+          'path' => 'admin/structure/erpal/report-types/manage/%erpal_reports_type',
+          'real path' => 'admin/structure/erpal/report-types/manage/' . $type,
+          'bundle argument' => 5,
+        ),
+      );
+    }
+  }
+}
+
+/**
+ * Load reports type.
+ */
+function erpal_reports_type_load($budget_type) {
+  return erpal_reports_types($budget_type);
+}
+
+/**
+ * List of reports types.
+ */
+function erpal_reports_types($type_name = NULL) {
+  $types = entity_load_multiple_by_name('erpal_reports_type', isset($type_name) ? array($type_name) : FALSE);
+  return isset($type_name) ? reset($types) : $types;
+}
+
+/**
+ * Implements hook_metadata_hook_entity_info().
+ */
+function erpal_reports_metadata_hook_entity_info() {
+  return array(
+    'erpal_reports' => array(
+      'plural label' => t('Erpal Reportss'),
+      'description' => t('Erpal Reports custom entity.'),
+      'creation callback' => 'erpal_reports_create',
+      'save callback' => 'erpal_reports_save',
+      'deletion callback' => 'erpal_reports_delete',
+      //'view callback' => 'erpal_reports_view',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function erpal_reports_field_extra_fields() {
+  $extra = array();
+
+  $types = erpal_reports_get_types();
+  foreach ($types as $name => $type) {
+    $extra['erpal_reports'][$name] = array(
+      'form' => array(
+        'title' => array(
+          'label' => t('Title'),
+          'description' => t('Erpal Reports title.'),
+          'weight' => 0,
+        ),
+      ),
+      'display' => array(
+        'title' => array(
+          'label' => t('Title'),
+          'description' => t('Erpal Reports title.'),
+          'weight' => 0,
+        ),
+      ),
+    );
+  }
+
+  return $extra;
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_reports_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_reports_form') {
+    //hide the global reports field if user has no access to change it.
+    if (!user_access('add global dashboard reports')) {
+      $form['field_erpal_reports_global']['#access'] = FALSE;      
+    }
+    
+    //hide the personal reports field if user has no access to change it.
+    if (!user_access('add personal dashboard reports')) {
+      $form['field_erpal_reports_owners']['#access'] = FALSE;      
+    }
+  }
+}
+  
+/**
+ * Implements hook_permission().
+ */
+function erpal_reports_permission() {
+  return array(
+    'administer erpal_reports' => array(
+      'title' => t('Administer Erpal Reports'),
+      'description' => t('Administer Erpal Reports.'),
+    ),
+    'use erpal_reports' => array(
+      'title' => t('Use Erpal Reports'),
+      'description' => t('Use Erpal Reports.'),
+    ),
+    'remove reports from dashboard' => array(
+      'title' => t('Remove reports from dashboard'),      
+    ),
+    'add global dashboard reports' => array(
+      'title' => t('Add global dashboard reports'),      
+    ),
+    'add personal dashboard reports' => array(
+      'title' => t('Add personal dashboard reports'),      
+    ),
+    'view reports dashboard' => array(
+      'title' => t('View the reports dashboard'),      
+    ),
+  );
+}
+
+/* API */
+
+/**
+ * Gets an array of all Erpal Reports bundle types, keyed by the name.
+ *
+ * @param $type
+ *   If set, the type with the given name is returned.
+ */
+function erpal_reports_get_types($type = NULL) {
+  $types = entity_load_multiple_by_name('erpal_reports_type', isset($type) ? array($type) : FALSE);
+  return isset($type) ? reset($types) : $types;
+}
+
+
+/**
+ * Access callback for Erpal Reports entity.
+ *
+ * @see entity_access().
+ */
+function erpal_reports_access($op, $erpal_reports = NULL, $account = NULL, $entity_type = NULL) {
+  if (user_access('administer erpal_reports') || user_access('use erpal_reports')) {
+    return TRUE;
+  }
+}
+
+/**
+ * Callback to create a new Erpal Reports entity.
+ */
+function erpal_reports_create($values = array()) {
+  $controller = entity_get_controller('erpal_reports');
+  return $controller->create($values);
+}
+
+/**
+ * Load Erpal Reports entity.
+ */
+function erpal_reports_load($id, $reset = FALSE) {
+  $erpal_reportss = erpal_reports_load_multiple(array($id), array(), $reset);
+  return reset($erpal_reportss);
+}
+
+/**
+ * Load multiple Erpal Reportss based on certain conditions.
+ */
+function erpal_reports_load_multiple($ids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('erpal_reports', $ids, $conditions, $reset);
+}
+
+/**
+ * Save Erpal Reports entity.
+ */
+function erpal_reports_save($erpal_reports) {
+  entity_save('erpal_reports', $erpal_reports);
+}
+
+/**
+ * Delete Erpal Reports entity.
+ */
+function erpal_reports_delete($erpal_reports) {
+  entity_delete('erpal_reports', entity_id('erpal_reports', $erpal_reports));
+  //also delete all detail data
+  db_delete('erpal_report_details')
+  ->condition('report_id', $erpal_reports->id)
+  ->execute();
+}
+
+/**
+ * Delete multiple Erpal Reportss entity.
+ */
+function erpal_reports_delete_multiple($ids) {
+  entity_delete_multiple('erpal_reports', $ids);
+}
+
+/**
+ * Fetches an array of exportables from files.
+ *
+ * This helper function allow you for example to separate views exported
+ * configurations into separate files.
+ *
+ * @param $module
+ *   The module invoking this request. (Can be called by other modules.)
+ * @param $directory
+ *   The subdirectory in the custom module.
+ * @param $extension
+ *   The file extension.
+ * @param $name
+ *   The name of the variable found in each file. Defaults to the same as
+ *   $extension.
+ *
+ * @return array
+ *   Array of $name objects.
+ *
+ * NOTE - you probably want just one implementation of this function in one of
+ * your core custom modules - you can then use this function definition from
+ * your core custom module.
+ */
+function erpal_reports_exports($module, $directory, $extension, $name = NULL) {
+  if (!$name) {
+    $name = $extension;
+  }
+  $return = array();
+  // Find all the files in the directory with the correct extension.
+  $files = file_scan_directory(drupal_get_path('module', $module) . "/$directory", "/\.{$extension}$/");
+  foreach ($files as $path => $file) {
+    require DRUPAL_ROOT . '/' . $path;
+    if (isset($name) && !empty($$name)) {
+      $return[$$name->name] = $$name;
+    }
+  }
+  return $return;
+}
+
+/**
+ * get form field for customer selection
+ * @param string $title
+ * @return array
+ */
+function _erpal_reports_form_field_for_customer($title) {
+  $query_contact = new EntityFieldQuery();
+  $query_contact->entityCondition('entity_type', 'node')->entityCondition('bundle', 'erpal_contact');
+
+  $result = $query_contact->execute();
+  $result = node_load_multiple(array_keys($result ['node']));
+
+  $contacts = array();
+
+  foreach($result as $contact) {
+    $contacts[$contact->nid] = $contact->title;
+  }
+
+  return array(
+      '#title' => $title,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $contacts
+  );
+}
+
+/**
+ * get form field for service category selection
+ * @param string $title
+ * @return array
+ */
+function _erpal_reports_form_field_for_service_category($title) {
+  $field_info_customer_category = field_info_field('field_service_category_term');
+  $vocabulary = null;
+  $vocabs = taxonomy_vocabulary_get_names(NULL);
+  foreach ($vocabs as $vocab_object) {
+    if ($vocab_object->machine_name == $field_info_customer_category["settings"]["allowed_values"][0]["vocabulary"]) {
+      $vocabulary = $vocab_object;
+      break;
+    }
+  }
+  $service_categories = array();
+
+  foreach(taxonomy_get_tree($vocabulary->vid) as $element) {
+    $service_categories[$element->tid] = $element->name;
+  }
+
+  return array(
+      '#title' => $title,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $service_categories
+  );
+}
+
+/**
+ * get form field for expense category selection
+ * @param string $title
+ * @return array
+ */
+function _erpal_reports_form_field_for_expense_category($title) {
+  $field_info_customer_category = field_info_field('field_expense_category');
+  $vocabulary = null;
+  $vocabs = taxonomy_vocabulary_get_names(NULL);
+  foreach ($vocabs as $vocab_object) {
+    if ($vocab_object->machine_name == $field_info_customer_category["settings"]["allowed_values"][0]["vocabulary"]) {
+      $vocabulary = $vocab_object;
+      break;
+    }
+  }
+  $expense_categories = array();
+
+  $tree = taxonomy_get_tree($vocabulary->vid);
+  foreach($tree as $element) {
+    $expense_categories[$element->tid] = $element->name;
+  }
+
+  return array(
+      '#title' => $title,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $expense_categories
+  );
+}
+
+function _erpal_reports_form_field_for_scaling($withDay = FALSE) {
+  $options = array();
+
+  if ($withDay === TRUE) {
+    $options[ERPAL_REPORT_DATE_SCALING_DAY] = t('Day');
+  }
+
+  $options[ERPAL_REPORT_DATE_SCALING_MONTH] = t('Month');
+  $options[ERPAL_REPORT_DATE_SCALING_YEAR] = t('Year');
+
+  return array(
+      '#title' => t('Scale'),
+      '#type' => 'select',
+      '#options' => $options,
+      '#default_value' => ERPAL_REPORT_DATE_SCALING_MONTH
+  );
+}
+
+/**
+ * get form field for customer category selection
+ * @param string $title
+ * @return array
+ */
+function _erpal_reports_form_field_for_customer_category($title) {
+  $field_info_customer_category = field_info_field('field_customer_category');
+  return array(
+      '#title' => $title,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $field_info_customer_category['settings']['allowed_values']
+  );
+}
+
+/**
+ * get form field for user selection
+ * @param string $title
+ * @return array
+ */
+function _erpal_reports_form_field_for_users($title) {
+  $user_entities = entity_load('user');
+
+  $users = array();
+
+  foreach ($user_entities as $user_id => $user) {
+    $users[$user_id] = $user->name;
+  }
+
+  return array(
+      '#title' => $title,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $users
+  );
+}
+
+/**
+ * get form field for task category
+ * @param string $title
+ * @return array
+ */
+function _erpal_reports_form_field_for_task_category($title) {
+  $field_info_customer_category = field_info_field('field_project_tags');
+  $vocabulary = null;
+  $vocabs = taxonomy_vocabulary_get_names(NULL);
+  foreach ($vocabs as $vocab_object) {
+    if ($vocab_object->machine_name == $field_info_customer_category["settings"]["allowed_values"][0]["vocabulary"]) {
+      $vocabulary = $vocab_object;
+      break;
+    }
+  }
+  $task_categories = array();
+
+  foreach(taxonomy_get_tree($vocabulary->vid) as $element) {
+    $task_categories[$element->tid] = $element->name;
+  }
+
+  return array(
+      '#title' => $title,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $task_categories
+  );
+}
+
+/**
+ * get form field for project selection
+ * @param string $title
+ * @return array
+ */
+function _erpal_reports_form_field_for_projects($title) {
+  $query_contact = new EntityFieldQuery();
+  $query_contact->entityCondition('entity_type', 'node')->entityCondition('bundle', 'erpal_project');
+
+  $result = $query_contact->execute();
+  
+  if(count($result))
+    $result = node_load_multiple(array_keys($result ['node']));
+
+  $projects = array();
+
+  foreach($result as $project) {
+    $projects[$project->nid] = $project->title;
+  }
+
+  return array(
+      '#title' => $title,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $projects
+  );
+}
+
+/**
+ * flattens report data for use with visualization api, returns titles and data
+ * @param array $data
+ * @param array $options
+ * @return array
+ */
+function _erpal_reports_flatten_and_sort_data_for_charts($data, $options = array()) {
+  if ($data == FALSE || count($data) == 0) {
+    return FALSE;
+  }
+
+  // @todo rewrite handling for flattening data array for charts
+  $newdata = array ();
+  $numindex = 0;
+  foreach ($data as $index => $value) {
+    $titles [$numindex] = $index;
+    foreach ($value as $index => $value) {
+      if (! isset($newdata [$index])) {
+        $newdata [$index] = array ();
+      }
+      $newdata [$index] ['values_' . $numindex] = $value;
+    }
+    $numindex ++;
+  }
+
+  $data = array ();
+  foreach ($newdata as $index => $values) {    
+    $data [$index] = array (
+        'date' => $index
+    );
+
+    for ($i = 0; $i < $numindex; $i ++) {
+      $data [$index] ['values_' . $i] = isset($values ['values_' . $i]) ? $values ['values_' . $i] : '';
+    }
+  }
+
+  _erpal_reports_sort_data_by_scaling($data, isset($options ['scaling']) ? $options ['scaling'] : ERPAL_REPORT_DATE_SCALING_MONTH);
+
+  $retval['titles'] = $titles;
+  $retval['data'] = $data;
+
+  return $retval;
+}
+
+/**
+ * sort report data depending on set scaling
+ *
+ * @param array $data
+ * @param string $scaling
+ * @return boolean
+ */
+function _erpal_reports_sort_data_by_scaling(&$data, $scaling) {
+  switch($scaling) {
+    case ERPAL_REPORT_DATE_SCALING_DAY:
+      return uasort($data, '_erpal_reports_data_cmp_day');
+
+    default:
+    case ERPAL_REPORT_DATE_SCALING_MONTH:
+      return uasort($data, '_erpal_reports_data_cmp_month');
+
+    case ERPAL_REPORT_DATE_SCALING_YEAR:
+      return uasort($data, '_erpal_reports_data_cmp_year');
+  }
+}
+
+/**
+ * uasort compare function for day scaling
+ *
+ * @param array $a
+ * @param array $b
+ * @return number
+ */
+function _erpal_reports_data_cmp_day($a, $b) {
+  if ($a['date'] == $b['date']) {
+    return 0;
+  }
+
+  $date_a = date_parse_from_format(_erpal_reports_date_format_day(), $a['date']);
+  $date_b = date_parse_from_format(_erpal_reports_date_format_day(), $b['date']);
+
+  $date_a = mktime(0, 0, 0, $date_a['month'], $date_a['day'], $date_a['year']);
+  $date_b = mktime(0, 0, 0, $date_b['month'], $date_a['day'], $date_b['year']);
+
+  return ($date_a < $date_b) ? -1 : 1;
+}
+
+/**
+ * uasort compare function for month scaling
+ *
+ * @param array $a
+ * @param array $b
+ * @return number
+ */
+function _erpal_reports_data_cmp_month($a, $b) {
+  if ($a['date'] == $b['date']) {
+    return 0;
+  }
+
+  $date_a = date_parse_from_format(_erpal_reports_date_format_month(), $a['date']);
+  $date_b = date_parse_from_format(_erpal_reports_date_format_month(), $b['date']);
+
+  $date_a = mktime(0, 0, 0, $date_a['month'], 1, $date_a['year']);
+  $date_b = mktime(0, 0, 0, $date_b['month'], 1, $date_b['year']);
+
+  return ($date_a < $date_b) ? -1 : 1;
+}
+
+/**
+ * uasort compare function for year scaling
+ *
+ * @param array $a
+ * @param array $b
+ * @return number
+ */
+function _erpal_reports_data_cmp_year($a, $b) {
+  if ($a['date'] == $b['date']) {
+    return 0;
+  }
+  return ($a['date'] < $b['date']) ? -1 : 1;
+}
+
+/**
+ * get date format for day scaling (default Y-m-d)
+ *
+ * @return string
+ */
+function _erpal_reports_date_format_day() {
+  return variable_get('date_format_erpal_reports_day', 'Y-m-d');
+}
+
+/**
+ * get date format for month scaling (default Y-m)
+ *
+ * @return string
+ */
+function _erpal_reports_date_format_month() {
+  return variable_get('date_format_erpal_reports_month', 'Y-m');
+}
+
+/**
+ * get date format for year scaling (default Y)
+ *
+ * @return string
+ */
+function _erpal_reports_date_format_year() {
+  return variable_get('date_format_erpal_reports_year', 'Y');
+}
+
+/**
+* Save the detail data if there are some. We need them for drill down
+* @param $data is an array of array where we store the 3 dimension where the first key is the x-axis, second key is the z-axis and the third is the y-axis with the value
+*/
+function _erpal_reports_save_details($report, &$data, $remove_details_key=false) {
+  
+  //first remove the old details for this report
+  db_delete('erpal_report_details')
+  ->condition('report_id', $report->id)
+  ->execute();
+
+  $values = array();
+  //now save the new detail data  
+  foreach ($data['details'] as $z_axis=>$data_arr) {
+    foreach ($data_arr as $x_axis => $values) {
+      if (!is_array($values))
+        continue;
+      
+      foreach ($values as $delta => $y_axis) {
+        if (is_array($y_axis))        
+          $y_axis['title'] = !empty($y_axis['title']) ? $y_axis['title'] : '';
+        else
+          $y_axis = array('title' => $y_axis);
+
+        //shorten the title if needed otherwise we get a mysql exception if the y_value is too long
+        $max_length = 60;
+        $y_axis['title'] = substr($y_axis['title'], 0, $max_length).'...';
+          
+        $y_axis['title'] = utf8_encode($y_axis['title']);
+        $y_axis_encoded = json_encode($y_axis);
+        db_insert('erpal_report_details')->fields(array('report_id' => $report->id, 'x_value' => $x_axis, 'y_value' => $y_axis_encoded, 'z_value' => $z_axis))->execute(); 
+      }
+    }
+  }
+  
+  if ($remove_details_key && !empty($data['details'])) {
+    unset($data['details']);
+  }
+}
+
+/**
+* Load all details by a given x and z-axis and a report
+*/
+function _erpal_reports_load_details($report_id, $x_axis, $z_axis) {
+  $query = db_select('erpal_report_details', 'erd')
+    ->fields('erd', array('y_value'))
+    ->condition('report_id', $report_id,'=')
+    ->condition('x_value', $x_axis)
+    ->condition('z_value', $z_axis);
+    
+  $result = $query->execute();
+
+  $details = array();
+  while ($record = $result->fetchAssoc()) {  
+    $record = json_decode($record['y_value']);    
+    $details[] = $record;
+  }
+  
+  return $details;
+}
+
+/**
+* Render all data in a data table grouped by titles
+*/
+function _erpal_reports_render_data_table($report_id, $data) {
+  $output = false;
+  $header = array(t('date'), t('value'), t('links'));
+  foreach ($data['titles'] as $delta => $title) {
+    $rows = array();
+    foreach ($data['data'] as $date => $values) {
+      $value = $values['values_'.$delta];
+      $detail_link = l(t('details'), 'erpal/reports/'.$report_id.'/'.$date.'/'.$title);
+      //we only add a row if it has a value, otherwise no details will be available anyway
+      if ($value) {
+        $value = round($value, 2);
+        $rows[] = array($date, $value, $detail_link);
+      }
+    }
+    
+    $subtable = theme('table', array('header' => $header, 'rows' => $rows));
+    
+    $output .= '<h3>'.$title.'</h3>'.$subtable;
+  }
+  
+  return $output;
+}
+
+/**
+* Render report details
+*/
+function _erpal_reports_render_details($details) {
+   //check which entities should be shown. The first one in the list will represent the complete dataset as the entries are of a unique type
+  $entity_types = array();
+  $ids = array();
+  $bundles = array();
+  
+  foreach ($details as $detail) {
+    //for the first dataset, also get the bundles, we may have multiple views embedded for different entities        
+    $entity = entity_load($detail->entity_type, array($detail->id));
+    $entity = $entity[$detail->id];
+    list(, , $bundle) = entity_extract_ids($detail->entity_type, $entity);
+    
+    if (empty($entity_types[$detail->entity_type]))
+      $entity_types[$detail->entity_type] = array();
+    if (empty($entity_types[$detail->entity_type][$bundle]))
+      $entity_types[$detail->entity_type][$bundle] = array();
+    
+    $entity_types[$detail->entity_type][$bundle][] = $detail->id;     
+  }
+  
+  if (empty($entity_types)) {
+    return false; //no entity type could be determined.
+  }
+
+  $html = '';
+  foreach ($entity_types as $entity_type => $bundles) {
+    foreach ($bundles as $bundle => $ids) {
+      //now add the IDs to the view as report_details_view_nodes if we got one
+      $view_name = 'report_details_view_'.$entity_type.'s';
+      $display_name = 'display_'.$bundle;
+
+      $id_string = implode('+', $ids);
+
+      $view_result = views_embed_view($view_name, $display_name, $id_string);
+      $html .= '<h3>Details for '.$bundle.'</h3><p>'.$view_result.'</p>';
+    }
+  }
+  
+  return $html;
+}
+
+/**
+* Returns an ID representation of a filter
+*/
+function erpal_reports_get_filter_id($options) {
+  $tmp_options = erpa_reports_sanitize_options($options);
+  return md5(serialize($tmp_options));
+}
+
+/**
+* Remove all array keys from the options that are not relevant for the md5 string
+*/
+function erpa_reports_sanitize_options($tmp_options) {
+  if (isset($tmp_options['config_options'])) {
+    unset($tmp_options['config_options']);
+  }
+  
+  if (isset($tmp_options['title'])) {
+    unset($tmp_options['title']);
+  }
+  
+  if (isset($tmp_options['use_batch'])) {
+    unset($tmp_options['use_batch']);
+  }
+  
+  //we dont take the no cache option for md5 representation as it does not count
+  unset($tmp_options['no_cache']);  
+  
+  return $tmp_options;
+}
+
+/**
+* Implements hook_cron_queue_info ()
+*/
+function erpal_reports_cron_queue_info() {
+  $queues = array();
+  $queues['erpal_dashboard_reports'] = array(
+    'worker callback' => '_erpal_reports_erpal_dashboard_reports_queue_run', // This is the callback function for each queue item.
+    'time' => 60, // This is the max run time per cron run in seconds.
+  );
+ 
+  return $queues;
+}
+
+/**
+* Implements hook_cron
+*/
+function erpal_reports_cron() {
+  //add the reports we need to recreate to the queue
+  //otherwise this may result in a server timeout
+  _erpal_reports_add_dashbaord_reports_to_queue();  
+}
+
+/**
+* Adds all current dashboard report entities to the queue to let them be rebuild
+*/
+function _erpal_reports_add_dashbaord_reports_to_queue() {
+  //get them all
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'erpal_reports')
+    ->propertyCondition('dashboard', 1)    
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+  $result = $query->execute();
+  $report_ids = array();
+  if (isset($result['erpal_reports'])) {
+    $report_ids = array_keys($result['erpal_reports']);    
+  }
+  
+  //add them to the queue
+  foreach ($report_ids as $report_id) {
+    //add message to queue if not already in queue
+    $queue = DrupalQueue::get('erpal_dashboard_reports');
+    
+    $data = array(
+      'report_id' => $report_id,        
+    );
+    
+    watchdog('ERPAL Reports', 'added dashboard report '.print_r($data, true));
+    $queue->createItem($data);
+  }
+}
+
+/**
+* Recreates all reports that are flagged to be shown on the dashboard. This is the worker callback of the queue
+*/
+function _erpal_reports_erpal_dashboard_reports_queue_run($data) {
+  
+  $report_id = $data['report_id'];
+
+  $report = erpal_reports_load($report_id);
+  //generate the report!    
+  $data = json_decode($report->data, TRUE);
+  $options = $data['options'];
+  $options['use_batch'] = FALSE;
+  $report_class_name = $data['class_name'];
+  $report_data = erpal_reports_create_report_data($report->type, $options, $report_class_name);    
+  erpal_reports_save_report_data_to_entity($report_data, $report);
+}
+
+/**
+* trys to load a report entity according to a given options filter
+*/
+function erpal_reports_report_load_by_filter($report_type, $options, $debug=false) {
+  
+  $filter_id = erpal_reports_get_filter_id($options);
+    
+  // try to load entity with given options from db, check if dirty and return cached data if not
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'erpal_reports')
+  ->entityCondition('bundle', $report_type)
+  ->fieldCondition('field_erpal_reports_filter_id', 'value', $filter_id);
+  
+  $result = $query->execute();
+
+  $entity = NULL;
+  if (count($result) > 0) {
+    $first_match = array_keys($result['erpal_reports']);
+    $first_match_id = reset($first_match);
+    
+    $entity = entity_load('erpal_reports', array($first_match_id));
+    $entity = $entity[$first_match_id];
+    return $entity;
+    
+  }
+  
+  return false;
+}
+
+/**
+* Builds the return object of the report to render in the frontend
+*/
+function erpal_reports_prepare_output($entity) {
+  $entity_wrapper = entity_metadata_wrapper('erpal_reports', $entity);
+  
+  $ret = (array)json_decode($entity_wrapper->data->value());        
+  $ret['report_id'] = $entity->id;      
+  
+  return $ret;
+}
+
+/**
+* Delete all old existing reports with the same filter
+*/
+function erpal_report_delete_equal_report_filters($report_type, $options) {
+  $filter_id = erpal_reports_get_filter_id($options);
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'erpal_reports')
+  ->entityCondition('bundle', $report_type)
+  ->fieldCondition('field_erpal_reports_filter_id', 'value', $filter_id);
+  
+  $result = $query->execute();
+
+  if (!empty($result['erpal_reports'])) {
+    $report_ids = array_keys($result['erpal_reports']);    
+    entity_delete_multiple('erpal_reports', $report_ids);        
+  }
+}
+
+/**
+* (Re-)generate the report and return it with a report entity
+*/
+function erpal_reports_generate_and_save_report($report_type, $options, $report_classe_name) {  
+  //generate the report data, this can implement a bulk operation in this case it will not return here.
+  $report_data = erpal_reports_create_report_data($report_type, $options, $report_class_name);    
+  if (!isset($report_data['report_id']))
+    $report_data['report_id'] = 0;
+}
+
+/**
+* Saves the report data to the entity
+*/
+function erpal_reports_save_report_data_to_entity($report_data, $entity) {  
+  _erpal_reports_save_details($entity, $report_data, TRUE); //save the details of the report and remove the date from the entity
+  $report_data['report_id'] = $entity->id;
+  $report_data['options'] = erpa_reports_sanitize_options($report_data['options']);
+  $entity->data = json_encode($report_data);
+  $entity->save();
+}
+
+/**
+* This function returns an entity if it does not exist, it will be created and returned. In any case the entity is already saved but may be contains no data yet.
+*/
+function erpal_reports_get_report_entity($report_type, $options, $report_classe_name, $debug=false) {
+  //try to load it  
+  $entity = erpal_reports_report_load_by_filter($report_type, $options, $debug);
+
+  if ($entity) {
+    return $entity;
+  }
+
+  $entity = erpal_reports_create_report_entity($report_type, $options, $report_classe_name);
+  $entity->save();
+
+  return $entity;
+}
+
+
+/**
+* Create the report data that will be added to the entity
+*/
+function erpal_reports_create_report_data($report_type, $options, $report_classe_name) {
+  //call the create function of the report class, this can execute a bulk operation  
+  $retval = forward_static_call_array(array($report_classe_name, 'create'), array($options));
+  //now get the entity that was saved and add the ID to the retval
+  $entity = erpal_reports_report_load_by_filter($report_type, $options);
+  
+  if (!empty($entity->id))
+    $retval['report_id'] = $entity->id;
+  return $retval;
+}
+
+/**
+* Finalize and save the report entity
+*/
+function erpal_reports_save_report_final($report_type, $class_name, $report_data, $options) {
+  //the entity should already exist. just save it again    
+  $entity = erpal_reports_get_report_entity($report_type, $options, $class_name, true);
+  //generate the report data, this can implement a bulk operation    
+  $report_data['options'] = $options;
+  $report_data['class_name'] = $class_name;
+  erpal_reports_save_report_data_to_entity($report_data, $entity);
+}
+
+/**
+* Decides with the current form state and the old form state if we should recreate a report or not
+*/
+function erpal_reports_skipp_recreate($form_state, $form_state_old) {
+  //means we return to the form after a bulk operation has been processed.
+  if (!empty($form_state_old['values'])) {
+    return TRUE;
+  }
+  
+  if (empty($form_state_old['values']) && !$form_state['submitted']) {
+    return TRUE;
+  }
+  
+  return FALSE;
+}
+
+
+/**
+* Creates a new report entity
+*/
+function erpal_reports_create_report_entity($report_type, $options, $report_classe_name) {
+  $filter_id = erpal_reports_get_filter_id($options);
+  
+   //does not exists, so create it.
+  $entity = entity_create('erpal_reports', array('type' => $report_type));
+  
+  // store data to entity, reset dirty flag  
+  $entity->dirty = 0;
+  $entity->field_erpal_reports_filter_id[LANGUAGE_NONE][0]['value'] = $filter_id;
+  $entity->dashboard = !empty($options['dashboard']) ? $options['dashboard'] : FALSE;  
+  $entity->title = !empty($options['title']) ? $options['title'] : FALSE;
+  
+  $users_dashboard = !empty($options['users_dashboard']) ? $options['users_dashboard'] : FALSE;
+  $global_dashboard = !empty($options['global_dashboard']) ? $options['global_dashboard'] : FALSE;
+  
+  if ($users_dashboard) {
+    $users_dashboard = array_values($users_dashboard);
+    foreach ($users_dashboard as $delta => $uid) {      
+      $entity->field_erpal_reports_owners[LANGUAGE_NONE][$delta]['target_id'] = $uid;
+    }
+  }
+  
+  if ($global_dashboard) {
+    $entity->field_erpal_reports_global[LANGUAGE_NONE][0]['value'] = $global_dashboard;
+  }
+  
+  return $entity;
+} 
+
+/**
+* Basic form element for every report generation form
+*/
+function _erpal_reports_add_report_basic_form(&$form) {  
+  
+  $form['dashboard_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Dashboard options'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  
+  $form['dashboard_fieldset']['dashboard'] = array(
+    '#title' => t('Show on dashboard'),
+    '#type' => 'checkbox',    
+  );
+  
+  $form['dashboard_fieldset']['title'] = array(
+    '#title' => t('Report description'),
+    '#type' => 'textfield',
+    '#size' => 60,
+    '#states' => array(
+      'visible' => array(   // action to take.
+        ':input[name=dashboard]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+  
+  if (user_access('add global dashboard reports')) {
+    $form['dashboard_fieldset']['global_dashboard'] = array(
+      '#title' => t('Global dashboard'),
+      '#type' => 'checkbox',      
+      '#states' => array(
+        'visible' => array(   // action to take.
+          ':input[name=dashboard]' => array('checked' => TRUE),
+        ),
+      ),
+      '#description' => t('Show this report on the global dashboard'),
+    );
+  }
+  
+  if (user_access('add personal dashboard reports')) {
+    $field = field_info_field('field_erpal_reports_owners');
+    $report_allowed_users = entityreference_get_selection_handler($field)->getReferencableEntities();
+    $options = array(0 => 'NONE');
+    $users = !empty($report_allowed_users['user']) ? $report_allowed_users['user'] : array();
+    foreach ($users as $uid => $html_name) {
+      $options[$uid] = strip_tags($html_name);
+    }
+
+    $form['dashboard_fieldset']['users_dashboard'] = array(
+      '#title' => t('Personal dashboard'),
+      '#type' => 'select',
+      '#options' => $options,
+      '#states' => array(
+        'visible' => array(   // action to take.
+          ':input[name=dashboard]' => array('checked' => TRUE),
+        ),
+      ),
+      '#description' => t("Show this report on the selected user's personal dashboard"),
+      '#multiple' => TRUE,
+    );
+  }
+  
+  $form['dashboard_fieldset']['global_dashboard'] = array(
+    '#title' => t('Global dashboard'),
+    '#type' => 'checkbox',
+    '#size' => 60,
+    '#states' => array(
+      'visible' => array(   // action to take.
+        ':input[name=dashboard]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+  
+  $form['no_cache'] = array(    
+    '#title' => t('Re-create data'),
+    '#type' => 'value',
+    '#value' => TRUE, //allways recreate
+  );
+  
+  $form['submit'] = array(
+    '#value' => t('Submit'),
+    '#type' => 'submit',
+    '#validate' => array('erpal_reports_create_report_form_validate'),
+  );
+}
+
+/**
+* Basic validation for report submit form
+*/
+function erpal_reports_create_report_form_validate($form, &$form_state) {
+  $values = $form_state['values'];
+  
+  //if the reports is flagged to appear on the dashboard, we need to set where it should appear
+  $dashboard = $values['dashboard'];
+  $users_dashboard = $values['users_dashboard'];
+  $global_dashboard = $values['global_dashboard'];
+  
+  if ($dashboard) {
+    if (!$global_dashboard && !$users_dashboard) {
+      form_set_error('dashboard', t('Please set where this report should appear on the dashboard.'));
+    }
+  }
+    
+}
+
+/**
+* Does some default submit operations on report form submit
+*/
+function _erpal_reports_add_report_basic_form_submit(&$report_options, $form_state) {    
+  $report_options['no_cache'] = $form_state['values']['no_cache'] ? TRUE : FALSE;
+  $report_options['dashboard'] = $form_state['values']['dashboard'] ? TRUE : FALSE;
+  $report_options['title'] = !empty($form_state['values']['title']) ? $form_state['values']['title'] : FALSE;
+  $report_options['users_dashboard'] = $form_state['values']['users_dashboard'];
+  $report_options['global_dashboard'] = $form_state['values']['global_dashboard'] ? TRUE : FALSE;
+}
+
+/**
+* Central function to visualize the report
+*/
+function _erpal_reports_visualize($report_id, $data, $class_name, $hide_details=FALSE) {
+  //call the class method and add some global data
+  $title = forward_static_call_array(array($class_name, 'report_title'), array());
+  $options_column = array (  
+    'title' => $title,
+    'fields' => array (
+      'date' => array (
+        'label' => t('Date')
+      )
+    ),
+    'xAxis' => array (
+      'labelField' => 'date'
+    ),
+    'data' => $data['data'],
+    'type' => 'column',
+    'height' => '400px'
+  );
+
+  for ($title_index = 0; $title_index < count($data['titles']); $title_index ++) {
+    $options_column ['fields'] ['values_' . $title_index] = array (
+      'enabled' => TRUE,
+      'label' => $data['titles'][$title_index]
+    );
+  }
+  $build ['column'] = array (
+    '#theme' => 'visualization',
+    '#options' => $options_column
+  );
+  
+  //show a table with data in a list and link it for drill down
+  if (!$hide_details) {
+    $build['table'] = array(
+      '#title' => t('Data-Table'),
+      '#type' => 'markup',
+      '#markup' => _erpal_reports_render_data_table($report_id, $data),
+    );
+  }
+  
+  return $build;
+}
+
+/**
+* Implements hook_entity_view
+*/
+function erpal_reports_entity_view($entity, $type, $view_mode, $langcode) {
+  if ($type == 'erpal_reports') {
+    //On details view dont show the chart
+    $x_axis = arg(3);
+    $z_axis = arg(4);
+    
+    if ($x_axis || $z_axis) {
+      return false;
+    }
+  
+    $data_arr = json_decode($entity->data, TRUE);    
+    $data = !empty($data_arr['data']) ? $data_arr['data'] : array();
+    if (!empty($data)) {
+      $options = $data_arr['options'];
+      
+      $data_flat = _erpal_reports_flatten_and_sort_data_for_charts($data, $options);      
+      $class_name = $data_arr['class_name'];
+      
+      $hide_details = TRUE;
+      //DONT hide the details page if we view the entity detail node
+      if ($view_mode == 'full') {
+        $hide_details = FALSE;
+      } 
+      
+      //@TODO: Better do this with the display suite
+      unset($entity->content['field_erpal_reports_filter_id']);
+      unset($entity->content['field_erpal_reports_global']);
+      unset($entity->content['field_erpal_reports_owners']);
+
+      $chart = _erpal_reports_visualize($entity->id, $data_flat, $class_name, $hide_details);
+      $entity->title = ''; //dont show the default title
+      $entity->content['chart'] = $chart;
+      
+      //add some links to show details or to remove.
+      $details_link = l(t('details'), 'erpal/reports/'.$entity->id);
+      $links = $details_link;
+      if (user_access('remove reports from dashboard')) {        
+        $remove_link = l(t('delete'), 'erpal/reports/dashboard/'.$entity->id.'/remove');
+        $links .= ' '.$remove_link;
+      }
+      $entity->content['chart']['#prefix'] = '<div class="report_dashboard_links">'.$links.'</a>';     
+    } else {
+      $entity->content['chart'] = t('No data available to render');
+    }
+  }
+  
+}
+
+/**
+* Deletes a report entity, we need this for the dashboard.
+*/
+function erpal_reports_delete_report_from_dashboard($form, &$form_state) {  
+  $report = $form_state['values']['report_entity'];
+  if (!empty($report->dashboard)) {
+    entity_delete('erpal_reports', $report->id);
+    drupal_set_message(t('The report was deleted successfully.'));
+  } else {
+    //do nothing as this report is not on the dashboard.
+    drupal_set_message(t('This report is not visible on the dashboard.'), 'warning');
+  }  
+  
+  $form_state['redirect'] = 'reports/dashboard';
+}

@@ -1,0 +1,272 @@
+<?php
+/**
+ * @file
+ * Code for the ERPAL project release feature.
+ */
+
+include_once 'erpal_project_release.features.inc';
+module_load_include('inc', 'erpal_project_release', 'inc/actions');
+
+/**
+ * Implements hook_action_info().
+ */
+function erpal_project_release_action_info() {
+  return array(
+    'erpal_project_release_add_tasks_to_release' => array(
+      'type' => 'entity',
+      'label' => t('Add tasks to release'),
+      'description' => t('Adds tasks to a release node'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+    'erpal_project_release_remove_tasks_from_release' => array(
+      'type' => 'entity',
+      'label' => t('Remove tasks from release'),
+      'description' => t('Removes tasks from a release node'),
+      'configurable' => FALSE,
+      'hooks' => array(),
+      'aggregate' => TRUE,
+    ),
+  ); 
+}
+
+/**
+* Implements hook_node_delete
+*/
+function erpal_project_release_node_delete($node) {
+  if ($node->type == 'erpal_project_release') {
+    _erpal_project_release_remove_release_references($node);
+  }
+}
+
+/**
+* Removes all release references on tasks
+*/
+function _erpal_project_release_remove_release_references($release_node) {
+  //load all tasks with reference to this release node
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_task')
+    ->fieldCondition('field_release_ref', 'target_id', $release_node->nid, '=')
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    //@TODO: to increase performance on releases with many nodes, we may implement this as a bulk operation after node deletion has been finished (may be use hook_exit with a flag)
+    $nids = array_keys($result['node']);
+    foreach ($nids as $nid) {
+      $task_node = node_load($nid);
+      unset($task_node->field_release_ref[LANGUAGE_NONE]);
+      field_attach_update('node', $task_node);
+    }
+   
+  }
+  
+}
+
+/**
+* Implements hook_theme
+*/
+function erpal_project_release_theme() {
+  
+  return array(
+    'erpal_release_docu_book_page' => array(
+      'variables' => array(),
+      'template' => 'template/release_docu_book_page',
+    ),
+    'erpal_release_docu_task' => array(
+      'variables' => array(),
+      'template' => 'template/release_docu_task',
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu
+ */
+function erpal_project_release_menu() {
+  $items = array();
+  
+  $items['project/release/%node/export'] = array(
+    'title' => 'Export release document',
+    'page callback' => '_erpal_project_release_release_export_menu_callback',    
+    'page arguments' => array(2),
+    'access callback' => '_erpal_project_release_release_export_menu_access',
+    'access arguments' => array(2),
+    'file' => 'inc/release.export.inc',
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+/**
+ * Access callback to export release documents
+ */
+function _erpal_project_release_release_export_menu_access($node) {
+  return node_access('update', $node);
+}
+
+/**
+ * Returns an array with nids of all tasks attached to a given release
+ */
+function _erpal_project_release_get_tasks($release_nid) {
+  
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_task')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_release_ref', 'target_id', $release_nid)
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+  $nids = array();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+  }
+  
+  return $nids;
+}
+
+/**
+ * Implememts hook_form_alter
+ */
+function erpal_project_release_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_projects_helper_config_form') {
+    _erpal_project_release_project_config_form_alter($form, $form_state, $form_id);
+  }
+  
+  // Redirect to releases page after release deleting.
+  if ($form_id == 'node_delete_confirm') {
+    if(!empty($form['#node'])) {
+      if($form['#node']->type == 'erpal_project_release') {
+        $form['#submit'][] = 'erpal_project_release_confirm_delete_form_submit';
+      }
+    }
+  }
+}
+
+/**
+* Implements hook_cne_form_alter
+* Used to handle access restrictions by node references that should not be validated if field is not updated in the comment
+*/
+function erpal_project_release_cne_form_alter(&$form, &$form_state) {
+  $form['field_release_ref']['#access'] = FALSE;
+  unset($form['#node']->field_release_ref);
+}
+
+/**
+ * Get project id. of release.
+ * 
+ * @param object $node
+ *   release node
+ * 
+ * @return int
+ *   project id if found.
+ */
+function erpal_project_release_get_project_id($node) {
+  if ($node->type == 'erpal_project_release' && !empty($node->field_project_ref)) {
+    $project_field = field_get_items('node', $node, 'field_project_ref');
+    if (!empty($project_field[0]['target_id'])) {
+      $progect_id = $project_field[0]['target_id'];
+      return $progect_id;
+    }
+  }
+}
+
+/**
+ * Submit callback handler. Redirect to releases page after release deleting.
+ */
+function erpal_project_release_confirm_delete_form_submit($form, &$form_state) {
+  // Get project id.
+  if ($progect_id = erpal_project_release_get_project_id($form['#node'])) {
+    // Add redirect link.
+    $form_state['redirect'] = 'node/' . $progect_id . '/releases';
+  }
+}
+
+/**
+ * Alters the project config form to inject settings for header and footer of release document exports
+ */
+function _erpal_project_release_project_config_form_alter(&$form, &$form_stage, $form_id) {
+  $form['project_release'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Release document settings'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+    '#weight' => -10, //at the very top
+  );
+  
+  $form['project_release']['overwrite'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Overwrite document logo and footer from ERPAL BASIC settings'),
+    '#default_value' => variable_get('erpal_project_release_overwrite_logo_and_footer', FALSE),
+  );
+  
+  $form['project_release']['header_footer'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Custom header and footer for release document export:'),
+    '#states' => array(
+      // Hide the settings when the cancel notify checkbox is disabled.
+      'invisible' => array(
+       ':input[name="overwrite"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
+  
+  
+  
+  $allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+  
+  $document_fid = variable_get('erpal_project_release_document_logo', false);  
+  $file = ($document_fid) ? file_load($document_fid) : FALSE;
+ 
+  $uri = "public://erpal_res";  
+  file_prepare_directory($uri,  FILE_CREATE_DIRECTORY); //prepare the folder
+  
+  $form['project_release']['header_footer']['company_logo_release_document'] = array(    
+    '#type' => 'managed_file',
+    '#title' => t('Company logo for release documents'),
+    '#description' => t('Upload your logo that will be used in release documents. Allowed file extensions: !extensions', array('!extensions' => implode(',', $allowed_extensions))),
+    '#upload_validators' => array('file_validate_extensions' => array(implode(' ', $allowed_extensions))),
+    '#upload_location' => $uri,
+    '#default_value' => $file ? $file->fid : false,
+  ); 
+  
+  $form['project_release']['header_footer']['document_release_footer'] = array(
+
+    '#type' => 'textarea',
+    '#title' => t('Release document footer'),
+    '#description' => t('This html will be displayed as a footer in your release documents'), 
+    '#default_value' => variable_get('erpal_project_release_document_footer', ' '),
+  );
+ 
+  $form['#submit'][] = '_erpal_project_release_project_config_form_sumbit';
+}
+
+/**
+ * Submit handler for config form
+ */
+function _erpal_project_release_project_config_form_sumbit($form, $form_state) {
+  //saveadditional values for logo
+  $values = $form_state['values'];
+  variable_set('erpal_project_release_overwrite_logo_and_footer', $values['overwrite']);
+  
+  $document_fid = $values['company_logo_release_document'];
+  variable_set('erpal_project_release_document_logo', $document_fid);
+  if ($document_fid){  
+    //finalise the file!
+    $file = file_load($document_fid);
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+    file_usage_add($file, 'erpal_project_release', 'config', $file->fid); 
+  }
+
+  //save document footer  
+  $document_footer = $values['document_release_footer'];
+  variable_set('erpal_project_release_document_footer', $document_footer);
+}

@@ -1,0 +1,426 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_profile_helper module.
+ */
+
+/**
+* Implementes hook_field_attach_validate() 
+*/
+function erpal_profile_helper_field_attach_validate($entity_type, $entity, &$errors) {
+
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_contract_data') {
+    $new_errors = _erpal_profile_helper_profile_contract_entity_validate($entity);
+    $errors = array_merge($errors, $new_errors);
+  }
+  
+  if ($entity_type == 'profile2') {
+    //validate that the referenced contact is not already referenced by another userd profile
+    $contact_nid = 0;
+    $new_errors = array();
+    if (isset($entity->field_contact_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $contact_nid = $entity->field_contact_ref[LANGUAGE_NONE][0]['target_id'];
+      $referencing_profiles = _erpal_profile_helper_profiles_by_contact($contact_nid);
+      
+      $current_uid = arg(2);  //@todo: this is not very good, there should be another way to get the uid the entity is attached to.
+      if (count($referencing_profiles) > 1) {
+        //this contact is referenced by another user, create an error
+        foreach ($referencing_profiles as $profile_id) {          
+              
+          $profile = entity_load('profile2', array($profile_id));
+          $profile = $profile[$profile_id];
+
+          if ($profile->uid != $current_uid) {
+            $a_user = user_load($profile->uid);
+            $contact_node = node_load($contact_nid);
+            $errors['field_contact_ref'][LANGUAGE_NONE][0][] = array(
+              'error' => 'nid',
+              'message' => t('The user !user_link is already linked to the contact !contact_link', array(
+                '!user_link' => l($a_user->name, 'user/'.$a_user->uid),
+                '!contact_link' => l($contact_node->title, 'node/'.$contact_node->nid)
+              )),
+            );
+          }
+          
+        }
+      }
+    }
+  }
+
+
+}
+ 
+/**
+* Returns all nids that reference a given contact nid
+*/
+function _erpal_profile_helper_profiles_by_contact($contact_nid) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'profile2')
+  ->entityCondition('bundle', 'main')
+  ->fieldCondition('field_contact_ref', 'target_id', $contact_nid, '=')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+
+  $result = $query->execute();
+  
+  $profiles = array();
+  if (isset($result['profile2'])) {
+    $profiles = array_keys($result['profile2']);
+  }
+
+  return $profiles;
+}
+ 
+/**
+* Validate the profile form
+* @result array with errors key is $array[fieldname][languag_code][delat] = array ('error' => 'module name', 'message' => the message);
+*/
+function _erpal_profile_helper_profile_contract_entity_validate($contract_entity) {
+  return _erpal_profile_helper_contract_validate_all_set($contract_entity);
+}
+
+/**
+* Validates if all necessary fields are filled
+*/
+function _erpal_profile_helper_contract_validate_all_set($contract_entity) {
+  $errors = array();
+  //now go through all fields and validate
+  $entity = $contract_entity; 
+  if (is_object($entity)) {
+    //if valid since is set, member type must be set, too
+    
+    //############ INIT VARIABLES ####################
+    $price_needed = false;
+    $member_type = false;
+    if (isset($entity->field_member_type[LANGUAGE_NONE][0])) {
+      $member_type = $entity->field_member_type[LANGUAGE_NONE][0]['value'];
+    }
+    
+    $valid_since = false;
+    if (isset($entity->field_valid_since[LANGUAGE_NONE][0])) {
+      $valid_since = $entity->field_valid_since[LANGUAGE_NONE][0]['value'];
+    }
+    
+    $price = false;
+    if (isset($entity->field_price[LANGUAGE_NONE][0])) {
+      $price = $entity->field_price[LANGUAGE_NONE][0]['value'];
+    }
+    
+    $hours_per_week = false;
+    if (isset($entity->field_hours[LANGUAGE_NONE][0])) {
+      $hours_per_week = $entity->field_hours[LANGUAGE_NONE][0]['value'];
+    }
+    
+    $holiday_per_year = false;
+    if (isset($entity->field_holiday_per_year[LANGUAGE_NONE][0])) {
+      $holiday_per_year = $entity->field_holiday_per_year[LANGUAGE_NONE][0]['value'];
+    }
+    
+    $vat_rate = false;
+    if (isset($entity->field_vat_rate[LANGUAGE_NONE][0])) {
+      $vat_rate = $entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
+    }
+    
+    $currency = false;
+    if (isset($entity->field_currency[LANGUAGE_NONE][0])) {
+      $currency = $entity->field_currency[LANGUAGE_NONE][0]['value'];
+    }    
+    
+    $billing_duration = false;
+    if (isset($entity->field_billing_duration[LANGUAGE_NONE][0])) {
+      $billing_duration = $entity->field_billing_duration[LANGUAGE_NONE][0]['value'];
+    }
+    
+    //############### LOGICAL IMPLEMENTATION ############
+    if ($valid_since) {            
+      if (!$member_type)
+        $errors['field_member_type'][LANGUAGE_NONE][0][] = array(
+          'error' => 'erpal_profile_helper',
+          'message' => t('Please enter member type field if field valid since has a value'),
+        );      
+    } 
+   
+    
+    //if member type is set, valid since be set, too
+    if ($member_type) {      
+      $price_needed = true;  //if member type is set, we need a price, too      
+      if (!$valid_since) {
+        $errors['field_valid_since'][LANGUAGE_NONE][0][] = array(
+          'error' => 'value',
+          'message' => t('Please enter valid since field if field member type has a value'),
+        );
+      }
+      
+    } 
+    
+    if ($price_needed) {            
+      if (!$price) {
+        $errors['field_price'][LANGUAGE_NONE][0][] = array(
+          'error' => 'erpal_profile_helper',
+          'message' => t('Please enter price field'),
+        );
+      }       
+    }
+    
+    //if we have a price set, we also need to set vat rate and currency
+    if ($price) {
+      if (!$vat_rate) {
+        $errors['field_vat_rate'][LANGUAGE_NONE][0][] = array(
+          'error' => 'erpal_profile_helper',
+          'message' => t('If you set a price, also please set the VAT rate.'),
+        );
+      }
+      
+      if (!$currency) {
+        $errors['field_currency'][LANGUAGE_NONE][0][] = array(
+          'error' => 'erpal_profile_helper',
+          'message' => t('If you set a price, also please set the currency.'),
+        );
+      }
+    }
+    
+    //if it is a freelancer, no holiday, no working time per week are allowed
+    if ($member_type == 'freelancer') {
+      if ($holiday_per_year) {
+        $errors['field_holiday_per_year'][LANGUAGE_NONE][0][] = array(
+          'error' => 'erpal_profile_helper',
+          'message' => t('A freelancer must not have holiday per year set'),
+        );
+      } 
+      
+      if ($hours_per_week) {
+        $errors['field_hours'][LANGUAGE_NONE][0][] = array(
+          'error' => 'erpal_profile_helper',
+          'message' => t('A freelancer must not have fixed working hours a week'),
+        );
+      } 
+      
+      //now validate the needed fields, vat_rate, billing_duration, currency
+    }
+    
+    //if it is an employee, no vat rate, billing duration and currency are allowed
+    if ($member_type == 'full_employee') {
+      if ($billing_duration) {
+        $errors['field_billing_duration'][LANGUAGE_NONE][0][] = array(
+          'error' => 'erpal_profile_helper',
+          'message' => t('An employee must not have billing duration set'),
+        );
+      } 
+    }    
+  }
+
+  return $errors;
+}
+
+/**
+* Returns contract data for a given user since or at a given date
+* @param $date_match if true, the date must be exact the given date, otherwise it the closes before that date
+* @param $only_current if true, we return only one contract, the currently newest active one
+* @param $date_since unix timestamp only contracts that are enabled after this date are returned. If you want any contrct, set -1
+* @uid the uid for whom we are querying the contract 
+* @param $project_tag_tids only if the project has tags that match the given tids in this param, return the contract. OR values, not AND!
+* @param $member_type only contracts of the given type
+* @return array contract data for a given user since or at a given data
+*/
+function _erpal_profile_helper_get_contract($uid, $date_since=false, $project_tag_tids=array(), $only_current=true, $date_match=false, $member_type = false) {
+  if (!$date_since)
+    $date_since = time();
+  elseif ($date_since < 0)
+    $date_since = PHP_INT_MAX;  //so every contract should be active beforw this unix timestamp!
+    
+  $a_user = user_load($uid);
+  $profile = profile2_load_by_user($a_user);
+
+  if (isset($profile['contract']))
+    $contract = $profile['contract'];
+  else
+    return array();
+  
+  //get the contractor
+  $contractor_nid = 0;
+  if (isset($profile['main'])) {
+    $main = $profile['main'];
+    $contractor_nid = isset($main->field_contact_ref[LANGUAGE_NONE]) ? $main->field_contact_ref[LANGUAGE_NONE][0]['target_id'] : 0;
+  }
+
+  $contract_datas = array();
+  $contract_datas_date = array();
+  if (isset($contract->field_contract_data[LANGUAGE_NONE]) && is_array($contract->field_contract_data[LANGUAGE_NONE])) {
+    foreach ($contract->field_contract_data[LANGUAGE_NONE] as $delta=>$contract_id) {
+      $contract_id = $contract_id['value'];
+      
+      if (!$contract_id)
+        continue;
+
+      //load the field collection entity
+      $contract_data_entity = entity_load('field_collection_item', array($contract_id));
+      $contract_data_entity = isset($contract_data_entity[$contract_id]) ?  $contract_data_entity[$contract_id] : false;
+      
+      if (!is_object($contract_data_entity))
+        continue;
+      
+      //get contract type
+      $contract_member_type = isset($contract_data_entity->field_member_type[LANGUAGE_NONE][0]) ? $contract_data_entity->field_member_type[LANGUAGE_NONE][0]['value'] : false;
+      
+      //check the date
+      $contract_date_since = $contract_data_entity->field_valid_since[LANGUAGE_NONE][0]['value'];
+
+      if ($member_type && $contract_member_type != $member_type)
+        continue;
+
+      if ($date_match && $date_since != $contract_date_since)
+        continue;  //do not add this entity
+ 
+      if ($date_since && $contract_date_since > $date_since)
+        continue;  //this contract is not active, because it is not before date_since!
+
+      //check project tags
+      $tag_ids = isset($contract_data_entity->field_project_tags[LANGUAGE_NONE]) ? $contract_data_entity->field_project_tags[LANGUAGE_NONE] : array();
+      $has_matching_term = false;
+      if (count($tag_ids) > 0) {        
+        
+        foreach ($tag_ids as $id) {
+          $tid = $id['tid'];
+
+          if (in_array($tid, $project_tag_tids))
+            $has_matching_term = true;        
+        }
+      }
+      
+      if ($contract_id) {
+        if ($has_matching_term){
+          $contract_datas_date['matching_terms'][] = $contract_id;
+        }
+        
+        $contract_datas_date['contracts'][$contract_date_since] = $contract_id;
+        
+        //add the contractor nid, it is always usefull with the contractor. Add the uid, too
+        $contract_data_entity->uid = $uid;
+        $contract_data_entity->contractor_nid = $contractor_nid;
+        $contract_datas[$contract_id] = $contract_data_entity;
+      }
+    }
+  }
+  
+  //now return only the current (nearest to the date offset) contract if param is set
+  if ($only_current) {    
+    
+    //prioritize first the term matching contracts, then all others
+    $term_matching_contracts = !empty($contract_datas_date['matching_terms']) ? $contract_datas_date['matching_terms'] : array();
+    $contracts = !empty($contract_datas_date['contracts']) ? $contract_datas_date['contracts'] : array();
+    
+    if ($term_matching_contracts) {
+      $contract_datas_date = $term_matching_contracts;
+    } else {
+      $contract_datas_date = $contracts;
+    }     
+    
+    krsort($contract_datas_date);  //the newest at the top
+    //get the top most element
+    $data_dates = array_values($contract_datas_date);
+    
+    $contract_id = array_shift($data_dates);
+    
+    $contract_data = !empty($contract_datas[$contract_id]) ? array($contract_datas[$contract_id]) : array();
+    return $contract_data;
+  }
+  
+  //otherwise return all contracts as an array
+  return array_values($contract_datas);
+}
+
+/**
+* Returns all contracts the given user has ever had of the give type
+*/
+function _erpal_profile_helper_user_contracts($uid, $member_type) {
+  return _erpal_profile_helper_get_current_contract($uid, array(), false, $member_type, false);
+}
+
+/**
+* Returns the current active contract (from the perspective of the date offset). If there are multiple, only the newest will be returned if the flag $only_current is set.
+*/
+function _erpal_profile_helper_get_current_contract($uid, $project_tag_tids=array(), $date_offset=false, $member_type = false, $only_current=true, $flat_array=true) {
+  
+  if (!$date_offset)
+    $date_offset = time();
+    
+  $contract_arr = _erpal_profile_helper_get_contract($uid, $date_offset, $project_tag_tids, $only_current, false, $member_type);
+
+  foreach ($contract_arr as $nid=>$contract) {
+    if ($flat_array) {
+      //return the contract as a flat array
+      $valid_since = isset($contract->field_valid_since[LANGUAGE_NONE]) ? $contract->field_valid_since[LANGUAGE_NONE][0]['value'] : '';
+      $member_type = isset($contract->field_member_type[LANGUAGE_NONE]) ? $contract->field_member_type[LANGUAGE_NONE][0]['value'] : '';
+      $hours = isset($contract->field_hours[LANGUAGE_NONE]) ? $contract->field_hours[LANGUAGE_NONE][0]['value'] : '';
+      $holiday_per_year = isset($contract->field_holiday_per_year[LANGUAGE_NONE]) ? $contract->field_holiday_per_year[LANGUAGE_NONE][0]['value'] : '';
+      $vat_rate = isset($contract->field_vat_rate[LANGUAGE_NONE]) ? $contract->field_vat_rate[LANGUAGE_NONE][0]['value'] : '';
+      $currency = isset($contract->field_currency[LANGUAGE_NONE]) ? $contract->field_currency[LANGUAGE_NONE][0]['value'] : '';
+      $billing_duration = isset($contract->field_billing_duration[LANGUAGE_NONE]) ? $contract->field_billing_duration[LANGUAGE_NONE][0]['value'] : '';
+      $price = isset($contract->field_price[LANGUAGE_NONE]) ? $contract->field_price[LANGUAGE_NONE][0]['value'] : '';
+      $project_tags = _erpal_profile_helper_project_tag_ids($contract);
+      $contractor_nid = !empty($contract->contractor_nid) ? $contract->contractor_nid : false;
+      $expense_category_tid = isset($contract->field_expense_category[LANGUAGE_NONE]) ? $contract->field_expense_category[LANGUAGE_NONE][0]['tid'] : '';
+      return array(
+        'valid_since' => $valid_since,
+        'member_type' => $member_type,
+        'hours' => $hours,
+        'holiday_per_year' => $holiday_per_year,
+        'vat_rate' => $vat_rate,
+        'currency' => $currency,
+        'billing_duration' => $billing_duration,
+        'price' => $price,
+        'project_tags' => $project_tags,
+        'contractor_nid' => $contractor_nid,
+        'expense_category' => $expense_category_tid,
+      );
+    }
+    return $contract;
+  }
+    
+  return false;
+}
+
+/**
+*  Returns the hours a user has to work a day according tu his contract at the given date. 
+* DOES NOT RESPECT GLOBAL HOLIDAYS but general working days as mo-fr.
+* if a contract is given as @param $contract_data_arr, we use this contract to calculate, only returns a value > 0 if the user is employee at the given time
+*/
+function _erpal_profile_helper_get_hours_to_work_a_day($uid, $date_unix, $contract_data_arr=false) {
+  
+  //get the working time a day, this is hours per week divided by the number of general working days
+  $general_working_days = _erpal_employee_helper_general_working_days();
+  
+  //if there is no contract data given, load a contract for the user at the given date_unix
+  if (!$contract_data_arr) {
+    $contract_data_arr = _erpal_profile_helper_get_current_contract($uid, array(), $date_unix);
+    if (!$contract_data_arr || !is_array($contract_data_arr) || $contract_data_arr['member_type'] != 'full_employee')
+      return 0; //no contract or no full employee, no "must working hours"
+    
+  }
+  
+  $working_time_week = $contract_data_arr['hours'];
+  $working_time_day = round($working_time_week / count($general_working_days), 2);
+  
+  return $working_time_day;
+}
+
+/**
+* Returns an array of project tags if field exists at the given entity
+*/
+function _erpal_profile_helper_project_tag_ids($entity) {
+  
+  $tags = array();
+  
+  if (!$entity)
+    return $tags;
+  
+  if (property_exists($entity, 'field_project_tags')) {
+    if (isset($entity->field_project_tags[LANGUAGE_NONE])) {
+      foreach ($entity->field_project_tags[LANGUAGE_NONE] as $delta=>$tid) {
+        $tid = $tid['tid'];
+        $tags[] = $tid;
+      }
+    }
+  }
+  
+  return $tags;
+}

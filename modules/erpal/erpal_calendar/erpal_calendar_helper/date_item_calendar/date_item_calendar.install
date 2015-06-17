@@ -1,0 +1,214 @@
+<?php
+
+/**
+ * @file
+ * installation hooks for date_item_calendar module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function date_item_calendar_install() {
+  try {
+    // create all the fields we are adding to our entity
+    foreach (_date_item_calendar_fields() as $field) {
+      field_create_field($field);
+    }
+
+    // create all the instances for our fields
+    foreach (_date_item_calendar_instances() as $instance) {
+      $instance['entity_type'] = 'date_item';
+      $instance['bundle'] = 'simple_date';
+      field_create_instance($instance);
+    }
+  } catch (Exception $e) {
+    //may be set some information here if this fails
+  }
+}
+
+/**
+ * Returns a structured array defining the fields created by this entity.
+ *
+ * @return
+ *  An associative array specifying the fields we wish to add to our entity.
+ */
+function _date_item_calendar_fields() {
+  return array(
+    'field_date_item_date' => array(
+      'translatable' => '0',
+      'entity_types' => array(),
+      'settings' => array(
+        'granularity' => array(
+          'month' => 'month',
+          'day' => 'day',
+          'hour' => 'hour',
+          'minute' => 'minute',
+          'year' => 'year',
+          'second' => 0,
+        ),
+        'tz_handling' => 'site',
+        'timezone_db' => 'UTC',
+        'cache_enabled' => 0,
+        'cache_count' => '4',
+        'repeat' => '0',
+        'todate' => 'optional',
+        'profile2_private' => FALSE,
+      ),
+      'storage' => array(
+        'type' => 'field_sql_storage',
+        'settings' => array(),
+        'module' => 'field_sql_storage',
+        'active' => '1',
+        'details' => array(
+          'sql' => array(
+            'FIELD_LOAD_CURRENT' => array(
+              'field_data_field_date_item_date' => array(
+                'value' => 'field_date_item_date_value',
+                'value2' => 'field_date_item_date_value2',
+              ),
+            ),
+            'FIELD_LOAD_REVISION' => array(
+              'field_revision_field_date_item_date' => array(
+                'value' => 'field_date_item_date_value',
+                'value2' => 'field_date_item_date_value2',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'field_name' => 'field_date_item_date',
+      'type' => 'datestamp',
+      'module' => 'date',
+      'active' => '1',
+      'locked' => '0',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'columns' => array(
+        'value' => array(
+          'type' => 'int',
+          'not null' => FALSE,
+          'sortable' => TRUE,
+          'views' => TRUE,
+        ),
+        'value2' => array(
+          'type' => 'int',
+          'not null' => FALSE,
+          'sortable' => TRUE,
+          'views' => FALSE,
+        ),
+      ),
+      'bundles' => array(
+        'date_item' => array(
+          'simple_date',
+        ),
+      ),
+    )
+  );
+}
+
+/**
+ * Returns a structured array defining the instances for this entity.
+ *
+ * @return
+ *  An associative array specifying the instances we wish to add to our entity.
+ */
+function _date_item_calendar_instances() {
+  $t = get_t();
+  return array(
+    'field_date_item_date' => array(
+      'label' => $t('Date'),
+      'widget' => array(
+        'weight' => '2',
+        'type' => 'date_popup',
+        'module' => 'date',
+        'active' => 1,
+        'settings' => array(
+          'input_format' => 'm/d/Y - H:i:s',
+          'input_format_custom' => '',
+          'year_range' => '-3:+3',
+          'increment' => '15',
+          'label_position' => 'above',
+          'text_parts' => array(),
+          'repeat_collapsed' => 0,
+        ),
+      ),
+      'settings' => array(
+        'default_value' => 'now',
+        'default_value_code' => '',
+        'default_value2' => 'same',
+        'default_value_code2' => '',
+        'user_register_form' => FALSE,
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'date_default',
+          'settings' => array(
+            'format_type' => 'long',
+            'multiple_number' => '',
+            'multiple_from' => '',
+            'multiple_to' => '',
+            'fromto' => 'both',
+            'show_repeat_rule' => 'show',
+          ),
+          'module' => 'date',
+          'weight' => 1,
+        ),
+      ),
+      'required' => 1,
+      'description' => '',
+      'comment_enabled' => 0,
+      'field_name' => 'field_date_item_date',
+      'entity_type' => 'date_item',
+      'bundle' => 'simple_date',
+      'deleted' => '0',
+    ),
+  );
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function date_item_calendar_uninstall() {
+  $field_name = 'field_date_item_date';
+  // find all fields and delete them
+  foreach (array_keys(_date_item_calendar_fields()) as $field) {
+    if ($field == $field_name)
+      field_delete_field($field);
+  }
+
+  // find all fields and delete instance
+  $instances = field_info_instances('date_item', 'simple_date');
+  foreach ($instances as $instance_name => $instance) {
+    if ($instance == $field_name)
+      field_delete_instance($instance);
+  }
+
+  // purge all field infromation
+  field_purge_batch(1000);
+}
+
+/**
+* Resave all date items so the new attached field will be saved
+*/
+function date_item_calendar_update_7001(&$context) {
+  //get all date items
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'date_item')
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  if (isset($result['date_item'])) {
+    $item_nids = array_keys($result['date_item']);
+    $items = entity_load('date_item', $item_nids);
+    foreach ($items as $item) {
+      $item->field_date_item_date[LANGUAGE_NONE][0]['value'] = $item->date_from;
+      $item->field_date_item_date[LANGUAGE_NONE][0]['value2'] = $item->date_till;
+      $item->save();
+    }
+  }
+}

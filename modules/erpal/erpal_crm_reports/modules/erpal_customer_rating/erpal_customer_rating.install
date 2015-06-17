@@ -1,0 +1,24 @@
+<?php
+
+/**
+* @file contains all installation and updating methods
+*/
+
+function erpal_customer_rating_install() {
+  _erpal_customer_rating_elyisa_cron_defaults();
+}
+
+/**
+* Set elysia cron defaults
+*/
+function erpal_customer_rating_update_7001() {
+  _erpal_customer_rating_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_customer_rating_elyisa_cron_defaults() {
+  $values = array('rule' => '4 0 * * 0');
+  elysia_cron_set('erpal_customer_rating_cron', false, $values);
+}

@@ -1,0 +1,736 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_contract_helper module.
+ */ 
+module_load_include('inc', 'erpal_contract_helper', 'inc/config');
+module_load_include('inc', 'erpal_contract_helper', 'inc/token');
+module_load_include('inc', 'erpal_contract_helper', 'inc/report');
+ 
+/**
+* Implements hook_menu
+*/ 
+function erpal_contract_helper_menu(){
+
+  $items = array();
+
+  require_once 'inc/config.inc';
+  $config_items = _erpal_contract_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+ 
+ 
+/**
+* Implements hook_permission
+*/
+function erpal_contract_helper_permission() {
+  return array(
+    'access contracts view' => array(
+      'title' => t('Access contracts view'), 
+      'description' => t('Allows the user to access the contracts view'),
+    ),
+  );
+}
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_contract_helper_node_presave($node) {
+  if ($node->type == 'erpal_contract')
+    _erpal_contract_helper_recalculate_contract($node);
+    
+  
+}
+
+/**
+* Implementes hook_field_attach_validate() 
+*/
+function erpal_contract_helper_field_attach_validate($entity_type, $entity, &$errors) {
+
+  if ($entity_type == 'field_collection_item' && $entity->field_name == 'field_budget_booking') {
+    $new_errors = _erpal_contract_helper_field_budget_booking_validate($entity);
+    $errors = array_merge($errors, $new_errors);
+  }
+  
+}
+
+/**
+* Validate the budget booking field collection item
+*/
+function  _erpal_contract_helper_field_budget_booking_validate($entity){
+
+  $errors = array();
+  $has_budget_destination = isset($entity->field_budget_destination[LANGUAGE_NONE][0]['target_id']) && $entity->field_budget_destination[LANGUAGE_NONE][0]['target_id'];
+  $budget_hours = isset($entity->field_budget_hours[LANGUAGE_NONE][0]['value']) && $entity->field_budget_hours[LANGUAGE_NONE][0]['value'];
+    
+  if ($has_budget_destination && !$budget_hours) {  
+    $errors['field_budget_hours'][LANGUAGE_NONE][0][] = array(
+      'error' => 'value',
+      'message' => t('If you select a budget destination, please enter the hours added to the budget'),
+    );
+  }
+  
+  if (!$has_budget_destination && $budget_hours) {  
+    $errors['field_budget_destination'][LANGUAGE_NONE][0][] = array(
+      'error' => 'target_id',
+      'message' => t('If you enter budget hour, please select a budget destination, too'),
+    );
+  }
+  
+  return $errors;
+}
+
+/**
+* Function calculates the next booking dates for budgets and payments 
+*/
+function _erpal_contract_helper_recalculate_contract($contract_node) {
+  
+  //set empty fields if possible
+  $field_cancelation_period_con = isset($contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_cancelation_period = isset($contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_contract_duration = isset($contract_node->field_contract_duration[LANGUAGE_NONE][0]['value']) ? $contract_node->field_contract_duration[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_repeating_duration = isset($contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value']) ? $contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value'] : false;
+  
+  if ($field_cancelation_period && !$field_cancelation_period_con)
+    $contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] = $field_cancelation_period;
+    
+  if ($field_contract_duration && !$field_repeating_duration)
+    $contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value'] = $field_contract_duration;
+  
+  //calculate payment dates
+  $payment_entity_id = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['value'];
+  $payment_fields = entity_load('field_collection_item', array($payment_entity_id));
+  $payment_fields = $payment_fields[$payment_entity_id];
+  $payment_type = $payment_fields->field_payment_type[LANGUAGE_NONE][0]['value'];
+  $contract_start_date = $contract_node->field_date[LANGUAGE_NONE][0]['value'];
+  $payment_period = $payment_fields->field_payment_period[LANGUAGE_NONE][0]['value'];
+  $last_booking = isset($payment_fields->field_last_booking_date[LANGUAGE_NONE][0]['value']) ? $payment_fields->field_last_booking_date[LANGUAGE_NONE][0]['value'] : false;
+  $next_booking = isset($payment_fields->field_next_booking_date[LANGUAGE_NONE][0]['value']) ? $payment_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] : false;
+  
+  if (empty($next_booking)) { 
+    if ($payment_type == 'pre') {
+      $next_booking = date('Y-m-d 00:00:00', strtotime($contract_start_date. '-1 day'));  //if we pay in advance and next booking date is not set, set this to contract start -1 day
+    } elseif ($payment_type == 'post') {
+      $next_booking = date("Y-m-d 00:00:00", strtotime($contract_start_date." +".$payment_period." month +1 day"));
+    }
+    
+    //update next booking field   
+    $payment_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] = strtotime($next_booking);
+    $payment_fields->save(true);  //skip saving of host entity    
+  }
+
+  //calculate budget dates
+  $budget_entity_id = isset($contract_node->field_budget_booking[LANGUAGE_NONE][0]['value']) ? $contract_node->field_budget_booking[LANGUAGE_NONE][0]['value'] : false;
+  if ($budget_entity_id) {
+    $budget_fields = entity_load('field_collection_item', array($budget_entity_id));
+    $budget_fields = $budget_fields[$budget_entity_id];
+    
+    $budget_period = $budget_fields->field_budget_period[LANGUAGE_NONE][0]['value'];
+    $last_booking = isset($budget_fields->field_last_booking_date[LANGUAGE_NONE][0]['value']) ? $budget_fields->field_last_booking_date[LANGUAGE_NONE][0]['value'] : false;
+    $next_booking = isset($budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value']) ? $budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] : false;
+    
+    if (!$next_booking) { 
+      $next_booking = date("Y-m-d 00:00:00", strtotime($contract_start_date));    
+      
+      //update next booking field    
+      $budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] = strtotime($next_booking);
+      $budget_fields->save(true);  //skip saving of host entity    
+    }
+  }
+}
+
+/**
+* Implements hook_node_validate
+*/
+function erpal_contract_helper_node_validate($node, $form, &$form_state) {
+  if ($node->type != 'erpal_contract')
+    return;
+ 
+  _erpal_contract_helper_contract_node_validate($node, $form, $form_state);
+}
+
+/**
+* Returns the activity referenced by the contract
+*/
+function _erpal_contract_helper_get_activity($contract_node) {
+  $activity_node = false;
+  if (isset($contract_node->field_activity_ref[LANGUAGE_NONE][0])) {
+    $activity_nid = $contract_node->field_activity_ref[LANGUAGE_NONE][0]['target_id'];
+    $activity_node = node_load($activity_nid);
+  }
+  
+  return $activity_node;
+  
+}
+
+/**
+* Validate a contract node
+*/
+function _erpal_contract_helper_contract_node_validate($node, $form, &$form_state) {
+  $field_cancelation_period_con = isset($node->field_cancelation_period_con[LANGUAGE_NONE][0]['value']) ? $node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_cancelation_period = isset($node->field_cancelation_period[LANGUAGE_NONE][0]['value']) ? $node->field_cancelation_period[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_contract_duration = isset($node->field_contract_duration[LANGUAGE_NONE][0]['value']) ? $node->field_contract_duration[LANGUAGE_NONE][0]['value'] : false;
+  
+  $field_repeating_duration = isset($node->field_repeating_duration[LANGUAGE_NONE][0]['value']) ? $node->field_repeating_duration[LANGUAGE_NONE][0]['value'] : false;
+
+  if ($field_cancelation_period_con && !$field_cancelation_period)
+    form_set_error('field_cancelation_period', t('If you set a cancelation period for the contractor please set cancelation period, too.'));
+    
+  if ($field_repeating_duration && !$field_cancelation_period)
+    form_set_error('field_cancelation_period', t('If you set a repeating duration please set cancelation period, too.'));
+    
+  if ($field_repeating_duration && !$field_contract_duration)
+    form_set_error('field_contract_duration', t('If you set a repeating duration please set the contract duration, too.'));
+    
+  if ($field_contract_duration && !$field_cancelation_period)
+    form_set_error('field_cancelation_period', t('If you set a duration please set cancelation period, too.'));
+    
+  if ($field_cancelation_period) {
+    if ($field_contract_duration && $field_cancelation_period > $field_contract_duration) {
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract duration'));
+    }    
+    
+    if ($field_repeating_duration && $field_cancelation_period > $field_repeating_duration) {
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period', t('Cancelation period must not be greater than contract repeating duration'));
+    } 
+  }
+  
+  if ($field_cancelation_period_con) {
+    if ($field_contract_duration && $field_cancelation_period_con > $field_contract_duration) {
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract duration'));
+    }
+    
+    if ($field_repeating_duration && $field_cancelation_period_con > $field_repeating_duration) {
+      //comment because this is not in every situation true!
+      //form_set_error('field_cancelation_period_con', t('Cancelation period for contractor must not be greater than contract repeating duration'));
+    } 
+  }
+}
+
+/**
+*Implements hook_cron
+*/
+function erpal_contract_helper_cron() {
+
+ _erpal_contract_helper_check_payments();
+ 
+  _erpal_contract_helper_check_budgets();
+  
+  //@TODO: better add to queue than only doing it in cron
+  _erpal_contract_helper_calculate_cancelation_dates();
+}
+
+/**
+* implements hook_form_alter
+*/
+function erpal_contract_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_contract_node_form') {        
+    _erpal_contract_helper_contract_node_form_alter($form, $form_state);    
+  } 
+  elseif ($form_id == 'erpal_calendar_helper_config_form') {
+    _erpal_contract_helper_alter_calendar_config_form($form, $form_state);
+  }
+  if ($form_id == 'erpal_invoice_helper_config_form') {
+    _erpal_contract_helper_invoice_helper_config_form_alter($form, $form_state);
+  }
+  
+}
+
+
+/**
+* Alters the project node form
+*/
+function _erpal_contract_helper_contract_node_form_alter(&$form, &$form_state) {
+  //if form is filled by entityreference prepopulate, the crm activity is already prefilled.
+  //with the activity we can preselect the customer, because it may be the same as in activity and contract
+  //in most cases. We also preselect the title.
+  _erpal_contract_helper_manage_form_elements($form, $form_state);    
+  
+  $nid = $form['nid']['#value'];
+  //if node already exists, do nothing here
+  if ($nid) {  
+    return;
+  }
+  
+  $activity_nid = isset($form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value']) ? $form['field_activity_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : '';
+  $activity_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($activity_nid);
+
+  if (!empty($activity_nid) && is_numeric($activity_nid)) {
+    $activity_node = node_load($activity_nid);
+    $customer_nid = false;
+
+    if (isset($activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $customer_nid = $activity_node->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
+    }
+
+    if ($customer_nid) {
+      $customer_node = node_load($customer_nid);
+      $form['field_contract_payment'][LANGUAGE_NONE][0]['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_node->title." (".$customer_nid.")";
+    }
+    
+    //prefill the contracts title from the activity
+    $form['title']['#default_value'] = t('Contract for').' '.$activity_node->title;    
+  }
+  
+  _erpal_contract_helper_set_default_pricing($form, $form_state);
+}
+
+
+/**
+* Manage form elements that we dont manage by display suite and renderable elements
+*/
+function _erpal_contract_helper_manage_form_elements(&$form, &$form_state) {
+  unset($form['field_budget_booking'][LANGUAGE_NONE][0]['field_budgets']);
+}
+
+/**
+* Set default contractor, vat rate and currency if not set or if customer has invoice defaults, use these if a customer is preselected
+*/
+function _erpal_contract_helper_set_default_pricing(&$form, &$form_state) {
+  //set only for new node
+  $nid = $form['nid']['#value'];
+  if (!$nid) {
+    $my_company_nid = _erpal_basic_helper_get_own_company_nid(false);
+    $form['field_contract_payment'][LANGUAGE_NONE][0]['field_contractor_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = _erpal_basic_helper_autocomplete_string_from_nid($my_company_nid);
+    
+    $contract_payment = $form['field_contract_payment'][LANGUAGE_NONE][0];
+
+    $customer_nid = isset($contract_payment['field_customer_ref'][LANGUAGE_NONE][0]) ? $contract_payment['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] : false;
+
+    $customer_defaults = false;
+    if ($customer_nid) {
+      $customer_nid = _erpal_basic_helper_get_nid_from_autocomplete_string($customer_nid);
+      $customer_node = node_load($customer_nid);
+      $customer_defaults = _erpal_invoice_helper_get_customer_defaults($customer_node, true);
+    }
+
+    $default_currency = isset($customer_defaults['currency']) ? $customer_defaults['currency'] : _erpal_invoice_helper_get_default_currency();
+
+    $default_vat_rate = isset($customer_defaults['vat_rate']) ? $customer_defaults['vat_rate'] : _erpal_invoice_helper_get_default_vat_rate();
+    $form['field_contract_payment'][LANGUAGE_NONE][0]['field_vat_rate'][LANGUAGE_NONE]['#default_value'] = $default_vat_rate;
+    $form['field_contract_payment'][LANGUAGE_NONE][0]['field_currency'][LANGUAGE_NONE]['#default_value'] = $default_currency;
+  }
+}
+
+/**
+* Set all billables for contracts that have to be billed
+*/
+function _erpal_contract_helper_check_payments() {
+  //get all contracts that have to be billed
+  $contract_nodes = _erpal_contract_helper_get_contracts_to_bill();
+
+  //create billables and set last and next payment date in field collection
+  foreach ($contract_nodes as $contract_node) {
+    $canceled = _erpal_contract_helper_contract_canceled($contract_node);
+    if ($canceled)
+      continue;
+    
+    $payment_entity = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['entity'];
+    
+    $service_category_tid = isset($payment_entity->field_service_category_term[LANGUAGE_NONE][0]['tid']) ? $payment_entity->field_service_category_term[LANGUAGE_NONE][0]['tid'] : false;
+    $expense_category_tid = isset($payment_entity->field_expense_category[LANGUAGE_NONE][0]['tid']) ? $payment_entity->field_expense_category[LANGUAGE_NONE][0]['tid'] : false;
+    $service_category_string = $service_category_tid ? taxonomy_term_load($service_category_tid)->name : '';
+    $expense_category_string = $expense_category_tid ? taxonomy_term_load($expense_category_tid)->name : '';
+    $subject_title = _erpal_contract_helper_get_billable_text();
+    $subject_title = token_replace($subject_title, array('subject' => $contract_node, 'service_category' => $service_category_string, 'expense_category' => $expense_category_string));
+    
+    $customer_nid = $payment_entity->field_customer_ref[LANGUAGE_NONE][0]['target_id'];
+    $subject_nid = $contract_node->nid;
+    $quantity = $payment_entity->field_payment_period[LANGUAGE_NONE][0]['value'];
+    $single_price = $payment_entity->field_price[LANGUAGE_NONE][0]['value'];
+    $currency = $payment_entity->field_currency[LANGUAGE_NONE][0]['value'];
+    $vat_rate = $payment_entity->field_vat_rate[LANGUAGE_NONE][0]['value'];
+    $date_delivery = $payment_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
+    $contractor_nid = $payment_entity->field_contractor_ref[LANGUAGE_NONE][0]['target_id'];
+    
+    //@TODO: this function should be moved to erpal core in order not to make erpal_contract depend on erpal project
+    _erpal_project_billable_save_billable($subject_title, $customer_nid, $subject_nid, $quantity, $single_price, $currency, $vat_rate, $date_delivery, false, $contractor_nid, $service_category_tid, $expense_category_tid, 'billable');
+
+    //now set the nodes last payment and next payment date
+    $payment_period = $payment_entity->field_payment_period[LANGUAGE_NONE][0]['value'];
+    $next_booking_date = _erpal_contract_helper_get_next_month_date($date_delivery, $payment_period);
+    $payment_entity->field_last_booking_date[LANGUAGE_NONE][0]['value'] = $date_delivery;
+    $payment_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'] = $next_booking_date;
+    $payment_entity->save(true); //save field collection entity but skip saving the host to avoid recursion
+  }
+}
+
+/**
+* Returns the next payment date. Try to add x month to the date offset. If this results a month where new_month - offset_month > x month we decrese days untill it matches.
+* @param unixtime offset the offset date where to add the period
+* @param integer period the period in month to add to the offset date
+*/
+function _erpal_contract_helper_get_next_month_date($offset, $period) {
+  $next_date = strtotime(date('Y-m-d 00:00:00', $offset)." +".$period." month");
+  $period = $period % 12; //take the modulo as the month repeat each year
+  $offset_month = date('m', $offset);
+  $next_month = date('m', $next_date);
+  $month_diff_matches = $next_month - $offset_month == $period;
+  
+  $c = 0;  //security to avoid endless loops
+  while (!$month_diff_matches && $c <= 3) {
+    $next_date = strtotime(date('Y-m-d 00:00:00', $next_date)." -1 day");
+    $next_month = date('m', $next_date);    
+    $month_diff_matches = $next_month - $offset_month == $period;
+    $c++;
+  }
+
+  return $next_date;
+}
+
+/**
+* Returns true if the contract node has already been canceled
+*/
+function _erpal_contract_helper_contract_canceled($contract_node) {
+  $date_start = $contract_node->field_date[LANGUAGE_NONE][0]['value'] ? $contract_node->field_date[LANGUAGE_NONE][0]['value'] : false;
+  $date_end = $contract_node->field_date[LANGUAGE_NONE][0]['value2'] ? $contract_node->field_date[LANGUAGE_NONE][0]['value2'] : false;
+
+  if (!$date_end || ($date_end && $date_start == $date_end) || strtotime($date_end) > time()) {
+    return false;
+  }
+  
+  watchdog('contract', 'canceled - '.$contract_node->nid);
+  return true; //must be already canceled
+}
+
+/**
+* If contract has budget information set, check if new budgets must be created a create them
+*/
+function _erpal_contract_helper_check_budgets() {
+  $contract_nodes = _erpal_contract_helper_get_contracts_to_budget();
+
+  //create billables and set last and next payment date in field collection
+  foreach ($contract_nodes as $contract_node) {
+    $canceled = _erpal_contract_helper_contract_canceled($contract_node);
+    if ($canceled)
+      continue;
+  
+    $budget_booking_entity = $contract_node->field_budget_booking[LANGUAGE_NONE][0]['entity'];
+    $budget_hours = isset($budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value']) ? $budget_booking_entity->field_budget_hours[LANGUAGE_NONE][0]['value'] : false;
+    $budget_destination_nid = isset($budget_booking_entity->field_budget_destination[LANGUAGE_NONE][0]['target_id']) ? $budget_booking_entity->field_budget_destination[LANGUAGE_NONE][0]['target_id'] : false;
+
+    //if no budget destination is available skipp this node
+    if (!$budget_destination_nid || !$budget_hours)
+      continue;
+
+    $next_budget_date = $budget_booking_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
+    //check if budget will expire
+    $expire_period = isset($budget_booking_entity->field_expire_period[LANGUAGE_NONE][0]['value']) ? $budget_booking_entity->field_expire_period[LANGUAGE_NONE][0]['value'] : false;
+    $date_from = $next_budget_date;
+
+    $date_till = false;
+    if ($expire_period) {
+      $date_till = date('Y-m-d 00:00:00', $date_from);
+      $date_till = strtotime($date_till.' +'.$expire_period.'month -1 second');
+    }
+
+    //now create a budget entity        
+    $budget_entity = budget_create_new($budget_hours, $date_from, $date_till);
+
+    //now load ALL destination nodes and add this one budget to the destination 
+    foreach ($budget_booking_entity->field_budget_destination[LANGUAGE_NONE] as $delta => $id_arr) {
+      $budget_destination_nid = $id_arr['target_id'];
+      _erpal_projects_helper_add_buget($budget_entity, $budget_destination_nid);
+    }
+    
+    //and now set the next budget date and last budget date
+    $last_budget_date = $budget_booking_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'];
+    $budget_booking_entity->field_last_booking_date[LANGUAGE_NONE][0]['value'] = $last_budget_date;
+    
+    $budget_period = $budget_booking_entity->field_budget_period[LANGUAGE_NONE][0]['value'];
+    $next_budget_date = date('Y-m-d 00:00:00', $last_budget_date);
+    $next_budget_date = strtotime($next_budget_date.' +'.$budget_period.'month');
+    $budget_booking_entity->field_next_booking_date[LANGUAGE_NONE][0]['value'] = $next_budget_date;
+    
+    //add the budget to the field collections budgets field
+    $budget_booking_entity->field_budgets[LANGUAGE_NONE][] = array('target_id' => $budget_entity->budget_id);
+    
+    $budget_booking_entity->save(true);  //save without saving host entity
+  }
+}
+
+/**
+* Return all contract nodes that must create budget next
+* only those contract nodes are relevant that have a budgeting target set
+*/
+function _erpal_contract_helper_get_contracts_to_budget() {
+  $contract_nodes = array();
+
+  //get all field collection items first
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'field_collection_item')
+  ->entityCondition('bundle', 'field_budget_booking')
+  ->fieldCondition('field_next_booking_date', 'value', time(), '<=')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+
+  $field_collections = array();
+  $field_collection_ids = array();
+  if (isset($result['field_collection_item'])) {
+    $field_collection_ids = array_keys($result['field_collection_item']);
+    $field_collections = entity_load('field_collection_item', $field_collection_ids);
+  }
+  
+  if (!count($field_collection_ids))
+    return $contract_nodes;
+  
+  //now get the nodes to each field collection
+  $query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_contract')
+    ->fieldCondition('field_budget_booking', 'value', $field_collection_ids)
+    ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $contract_nodes = entity_load('node', $nids);
+  }
+  
+  //now add the field collections to the node so we dont have to load them again later!
+  foreach ($contract_nodes as $delta=>$contract_node) {
+    $entity_id = $contract_nodes[$delta]->field_budget_booking[LANGUAGE_NONE][0]['value'];
+    $contract_nodes[$delta]->field_budget_booking[LANGUAGE_NONE][0]['entity'] = $field_collections[$entity_id];
+  }
+  
+  return $contract_nodes;
+}
+
+/**
+* Return all contract nodes that must be billed next
+*/
+function _erpal_contract_helper_get_contracts_to_bill() {
+  $contract_nodes = array();
+
+  //get all field collection items first
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'field_collection_item')
+  ->entityCondition('bundle', 'field_contract_payment')
+  ->fieldCondition('field_next_booking_date', 'value', time(), '<=')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+   
+  $field_collections = array();
+  $field_collection_ids = array();
+  if (isset($result['field_collection_item'])) {
+    $field_collection_ids = array_keys($result['field_collection_item']);
+    $field_collections = entity_load('field_collection_item', $field_collection_ids);
+  }
+ 
+  if (!count($field_collection_ids))
+    return $contract_nodes;
+ 
+  //now get the nodes to each field collection
+  $query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_contract')
+    ->fieldCondition('field_contract_payment', 'value', $field_collection_ids)
+    ->addMetaData('account', user_load(1)); // run the query as user 1
+  
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $contract_nodes = entity_load('node', $nids);
+  }
+  
+  //now add the field collections to the node so we dont have to load them again later!
+  foreach ($contract_nodes as $delta=>$contract_node) {
+    $entity_id = $contract_nodes[$delta]->field_contract_payment[LANGUAGE_NONE][0]['value'];
+    $contract_nodes[$delta]->field_contract_payment[LANGUAGE_NONE][0]['entity'] = $field_collections[$entity_id];
+  }
+  
+  return $contract_nodes;
+}
+
+/**
+* pre-Calculates cancelation dates for all contracts that have no end date set in the past and created date_item entites for that
+*/
+function _erpal_contract_helper_calculate_cancelation_dates() {
+  $active_contract_nids = _erpal_contract_helper_get_all_contracts();
+  
+  //now precalculate for each contract if not precalculated
+  $field_name_first_duration = 'field_contract_duration';
+  $field_name_repeating_duration = 'field_repeating_duration';
+
+  foreach ($active_contract_nids as $contract_nid) {
+
+    //check, if there is any cancelation data set
+    $contract_node = node_load($contract_nid);
+ 
+    //if contract has end date set (different from start date)
+    $canceled = _erpal_contract_helper_contract_canceled($contract_node);
+    if ($canceled)
+      continue;
+      
+    $field_cancelation_period = isset($contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period[LANGUAGE_NONE][0]['value'] : false;
+    
+    $field_cancelation_period_con = isset($contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period_con[LANGUAGE_NONE][0]['value'] : $field_cancelation_period;
+    
+    $period_unit = isset($contract_node->field_cancelation_period_unit[LANGUAGE_NONE][0]['value']) ? $contract_node->field_cancelation_period_unit[LANGUAGE_NONE][0]['value'] : false;
+    
+    $contract_duration = isset($contract_node->field_contract_duration[LANGUAGE_NONE][0]['value']) ? $contract_node->field_contract_duration[LANGUAGE_NONE][0]['value'] : false;
+    
+    $repeating_duration = isset($contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value']) ? $contract_node->field_repeating_duration[LANGUAGE_NONE][0]['value'] : $contract_duration;
+    
+    $start_date = isset($contract_node->field_date[LANGUAGE_NONE][0]['value']) ? $contract_node->field_date[LANGUAGE_NONE][0]['value'] : false;
+    if ($start_date)
+      $start_date = _date_item_as_unix_timestamp($start_date);    
+      
+    $end_date = isset($contract_node->field_date[LANGUAGE_NONE][0]['value2']) ? $contract_node->field_date[LANGUAGE_NONE][0]['value2'] : false;
+    if ($end_date)
+      $end_date = _date_item_as_unix_timestamp($end_date);  
+      
+    if ($start_date == $end_date)
+      $end_date = false; //if start and end are equal, no end date was set
+    
+    //at least we need a contract duration and a period unit and a start_offset
+    if (!$contract_duration || !$period_unit || !$start_date)
+      continue;
+    
+    //modify start date, add the first cancelation time
+    //calculate the end of the fist possible cancelation for the contractor, it is start (+duration) - cancelation_period
+    $first_cancelation = $contract_duration - $field_cancelation_period_con;
+    $first_cancelation_contractor = date('Y-m-d H:i:s', $start_date);
+    $first_cancelation_contractor = strtotime($first_cancelation_contractor.' +'.$first_cancelation.' '.$period_unit);
+    $first_cancelation_contractor = _date_item_as_unix_timestamp($first_cancelation_contractor);
+    
+    //and now for the customer
+    $first_cancelation = $contract_duration - $field_cancelation_period;
+    $first_cancelation_customer = date('Y-m-d H:i:s', $start_date);
+    $first_cancelation_customer = strtotime($first_cancelation_customer.' +'.$first_cancelation.' '.$period_unit);
+    $first_cancelation_customer = _date_item_as_unix_timestamp($first_cancelation_customer);
+    
+    //INFO: We calculate dates of date_item entites in such a way that we show the last day of cancelation in calendear.
+    
+    //INFO: repeat_start_date is the date from which the contract starts its repeating period after the first cancelation period has passed
+    $repeat_start_date = date('Y-m-d H:i:s', $start_date);
+    $repeat_start_date = strtotime($repeat_start_date.' +'.$contract_duration.' '.$period_unit);
+        
+    //calculate the other repeating cancelation times for customer
+    _erpal_contract_helper_cancelation_date_items_process($repeat_start_date, $field_cancelation_period, $repeating_duration, $period_unit, $contract_node, 'field_cancelation_period', array($first_cancelation_customer), $end_date);
+    
+    //calculate the other repeating cancelation times for contractor
+    _erpal_contract_helper_cancelation_date_items_process($repeat_start_date, $field_cancelation_period_con, $repeating_duration, $period_unit, $contract_node, 'field_cancelation_period_con', array($first_cancelation_contractor), $end_date);
+   
+  }
+
+}
+
+/**
+* creates a date item for the given 
+* @param $max_count if set, only that amount of date items will be created
+* @param $start_offset is the first date after the initial cancelation period
+*/
+function _erpal_contract_helper_cancelation_date_items_process($start_offset, $canelation_period, $duration, $duration_unit, $contract_node, $field_name, $additional_dates=array(), $date_canceled=false) {
+  
+  $date_str = date('Y-m-d H:i:s', $start_offset);
+  
+  $calculation_range_days = _erpal_contract_helper_cancelation_precalculate_range();
+  $max_calculation_date = strtotime($date_str.' +'.$calculation_range_days.' days');
+
+  $entity_type = 'node';
+  $bundle = 'erpal_contract';
+  
+  $field_data = array();
+  //now get all values in the date range and put them in the field_data array in the same way a date field does
+  
+  $current_date_unix = $start_offset;
+  $default_timezone = date_default_timezone();
+  $repeated = 0;  //to avoid endless loops!
+  while ($current_date_unix < $max_calculation_date && $repeated < 1000 && (!$date_canceled || $date_canceled > $current_date_unix)) {
+  
+    $current_date_sql = date('Y-m-d H:i:s', $current_date_unix);
+    $last_cancelation_day = strtotime($current_date_sql.' +'.$canelation_period.' '.$duration_unit.'s');   
+    $field_data[LANGUAGE_NONE][] = array(
+      'value' => $last_cancelation_day,
+      'value2' => false,
+      'timezone' => $default_timezone,
+      'offset' => false, //@TODO may be set value here?
+      'offset2' => false, //@TODO may be set value here?
+      'debug' => date('Y-m-d', $last_cancelation_day).'-'.$field_name,
+    );
+  
+    $current_date_unix = strtotime($current_date_sql.' +'.$duration.' '.$duration_unit.'s');    
+
+    $repeated++;
+  }
+
+  //now add additinal dates if available
+  foreach ($additional_dates as $a_date) {
+    $field_data[LANGUAGE_NONE][] = array(
+      'value' => _date_item_as_unix_timestamp($a_date, $default_timezone),
+      'value2' => false,
+      'timezone' => $default_timezone,
+      'offset' => false, //@TODO may be set value here?
+      'offset2' => false, //@TODO may be set value here?
+      'debug' => date('Y-m-d', _date_item_as_unix_timestamp($a_date, $default_timezone)).'-'.$field_name,
+    );
+  }
+//watchdog('contract_cancelation', print_r($field_data, true));
+  _date_item_update_date_items_process($contract_node, $field_name, $field_data, $entity_type, $bundle, true, 'simple_date');
+
+}
+
+/**
+* returns all contract nids that have no end date set bevore the given $date
+*/
+function _erpal_contract_helper_get_all_contracts($date=false) {
+  if (!$date)
+    $date = time();
+  
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'erpal_contract')
+    ->propertyCondition('status', 1)
+    ->range(0, 10)
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  $contract_nids = array();
+  if (isset($result['node'])) {
+    $contract_nids = array_keys($result['node']);
+  }
+  
+  return $contract_nids;
+}
+
+/**
+* returns true if the contract row means, the contract is canceled today. This function is calle in the contracl in progress anc closed view
+*/
+function _erpal_contract_helper_contract_view_filter_contract_is_closed($contract_nid) {
+  //query to check if the contract is canceled to day or not. A view cannot do this (from 14.07.2014) https://www.drupal.org/node/1635810
+  
+  $result = db_select('field_data_field_date', 'd')
+    ->fields('d', array('field_date_value', 'field_date_value2'))
+    ->condition('bundle', 'erpal_contract')
+    ->condition('entity_type', 'node')
+    ->condition('entity_id', $contract_nid)
+    ->execute()
+    ->fetchAssoc();
+  
+  //if end date is NOT EQUAL to start date AND end date IS LESS THAN TODAY we return true.
+  $start = $result['field_date_value'];
+  $end = $result['field_date_value2'];
+  
+  if ($start != $end && strtotime($end) <= time()) {
+    return true;
+  }
+  
+  return false;
+}

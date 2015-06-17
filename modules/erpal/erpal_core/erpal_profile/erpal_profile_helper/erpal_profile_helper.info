@@ -1,0 +1,16 @@
+core = "7.x"
+description = "ERPAL Profile Helper"
+name = "erpal_profile_helper"
+package = "ERPAL"
+php = "5.2.4"
+project = "erpal_profile_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_profile_helper.module
+
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_core"
+datestamp = "1433507327"
+

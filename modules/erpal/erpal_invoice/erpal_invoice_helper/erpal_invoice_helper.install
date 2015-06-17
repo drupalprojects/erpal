@@ -1,0 +1,179 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for all data saved in the erpal_invoice_helper module
+ */
+
+/**
+* Implements hook_enable
+*/
+function erpal_invoice_helper_enable() {
+  //set the type customer type for erpal billable module
+  variable_set('billable_customer_type', 'erpal_contact');
+}
+ 
+/**
+ * Implements hook_schema().
+ */
+function erpal_invoice_helper_schema() {
+  $schema = array();
+
+  $schema['erpal_invoice_defaults'] = array(
+    'description' => 'Store default settings for invoice for customers.',
+    'fields' => array(
+      'customer_nid' => array(
+        'description' => 'nid of the customer the defaults are saved for.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'address_id' => array(
+        'description' => 'The default address of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'shipping_address_id' => array(
+        'description' => 'The default shipping address of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'credit_period' => array(
+        'description' => 'The default credit period of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'skonto_percent' => array(
+        'description' => 'The default skonto in percent for the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'skonto_period' => array(
+        'description' => 'The default skonto period of the customer.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'notes' => array(
+        'description' => 'The default notes on invoices of the customer.',
+        'type' => 'text',
+      ),      
+      'currency' => array(
+        'type' => 'varchar', 
+        'length' => 10, 
+        'not null' => TRUE, 
+        'default' => '', 
+        'description' => 'Add customer currency'
+      ,)
+      
+    ),
+    'primary key' => array('customer_nid'), //only one default per customer id
+  );
+
+  return $schema;
+}
+
+function erpal_invoice_helper_update_7001() {
+  drupal_install_schema('erpal_invoice_helper');  //install schema if it is not already installed
+}
+
+/**
+* Update to delete field_pdf_file field and instances
+*/
+function erpal_invoice_helper_update_7002() {
+  //get the field
+  $field = field_info_field('field_pdf_file');
+  
+  if (!isset($field['id']))
+    return; //everything is already ok
+  
+  module_invoke($field['storage']['module'], 'field_storage_delete_field', $field);
+  $instances = field_read_instances(array('field_id' => $field['id']), array('include_inactive' => TRUE));
+  foreach ($instances as $instance) {
+    field_delete_instance($instance, FALSE);
+  }
+  try {
+    field_delete_field($field['field_name']);
+  } catch (Exception $e) {
+    //do nothing may be the field is already deleted.
+  }
+}
+
+/**
+* Add field for address addition to customer defaults
+*/
+function erpal_invoice_helper_update_7003() {
+  //check if field exists
+  if (!db_field_exists('erpal_invoice_defaults', 'address_addition')) {
+    db_add_field('erpal_invoice_defaults', 'address_addition', array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => '', 'description' => 'Add customer address additions'));
+  }
+}
+
+/**
+* Add field for currency to customer defaults
+*/
+function erpal_invoice_helper_update_7004() {
+  //check if field exists
+  if (!db_field_exists('erpal_invoice_defaults', 'currency')) {
+    db_add_field('erpal_invoice_defaults', 'currency', array('type' => 'varchar', 'length' => 10, 'not null' => TRUE, 'default' => '', 'description' => 'Add customer currency'));
+  }
+}
+
+/**
+* Add service category field instance to billables
+*/
+function erpal_invoice_helper_update_7005() {
+  /*
+  $instance = array(
+    'field_name' => 'field_service_category_term',
+    'entity_type' => 'billable',
+    'bundle' => 'billable',
+    'label' => 'Service category',
+  );
+  
+  field_create_instance($instance);
+  */
+  //Field will be transported by feature now
+}
+
+/**
+* Update to delete field_addition_to_address field and instances on invoice node
+*/
+function erpal_invoice_helper_update_7006() {
+  //get the field
+  $field = field_info_field('field_addition_to_address');
+
+  if (!isset($field['id']))
+    return; //everything is already ok
+  
+  try {
+    $instances = field_read_instances(array('field_id' => $field['id']), array('include_inactive' => TRUE));
+  } catch (Exception $e) {
+    //may be an exception in the hook
+  }  
+
+  foreach ($instances as $instance) {
+    if ($instance['entity_type'] == 'node' && $instance['bundle'] == 'erpal_invoice')
+      field_delete_instance($instance, FALSE);
+  }  
+}
+
+/**
+* Update to add shiping address to customer defaults
+*/
+function erpal_invoice_helper_update_7007() {
+  //check if field exists
+  if (!db_field_exists('erpal_invoice_defaults', 'shipping_address_id')) {
+    db_add_field('erpal_invoice_defaults', 'shipping_address_id', array('type' => 'int', 'not null' => TRUE,'unsigned' => TRUE,'default' => 0,));
+  }
+}

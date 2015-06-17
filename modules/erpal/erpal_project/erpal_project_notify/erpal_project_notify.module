@@ -1,0 +1,204 @@
+<?php
+/**
+ * @file
+ * Code for the ERPAL Project Notify feature.
+ */
+
+include_once 'erpal_project_notify.features.inc';
+
+/**
+* Implements hook_cron
+*/
+function erpal_project_notify_cron() {  
+  _erpal_project_notify_aggregate_messages();
+  _erpal_project_notify_notify_messages();
+}
+
+function erpal_project_notify_menu() {
+  
+  $items=array();
+  
+  $items['projects/notify/debug'] = array(
+    'page callback' => '_erpal_projects_notify_debug',
+    'access callback' => '_erpal_projects_notify_debug_access',
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+/**
+ * ONLY FOR DEBUGGING
+ */
+function _erpal_projects_notify_debug() {
+
+  _erpal_project_notify_aggregate_messages();
+  _erpal_project_notify_notify_messages();
+  return 'fertig';
+}
+function _erpal_projects_notify_debug_access() {
+  global $user;
+  
+  return $user->uid == 1;
+}
+/**
+ * END DEBUG
+ */
+
+/**
+ * Aggregates project messages to sendable messages
+ */
+function _erpal_project_notify_aggregate_messages() {
+  global $language;
+  //first get all messages to be aggregated and notified and group them by
+  //task and user
+  $query = new EntityFieldQuery();
+
+  //@TODO isempty or IS NULL this is not working with entity field query. As workarround we use db query
+  //alternative method would be filterin already aggregated messages in code. But this would
+  //be very inperformant on installations with many messages.  
+  $field_info = field_info_field('field_message_aggregate');
+  $sql_arr = $field_info['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
+  $field_name = array_keys($sql_arr); 
+  $field_name_aggregate = $field_name[0];
+  $value_field_aggregate = $sql_arr[$field_name_aggregate]['value'];
+  
+  $field_info = field_info_field('field_message_aggregator');
+  $sql_arr = $field_info['storage']['details']['sql']['FIELD_LOAD_CURRENT'];
+  $field_name = array_keys($sql_arr); 
+  $field_name_aggregator = $field_name[0];
+  $value_field_aggregator = $sql_arr[$field_name_aggregator]['target_id'];
+
+  $query = db_select('message', 'm')
+    ->fields('m');
+  $query->addField('a', $value_field_aggregate, 'aggregate');
+  $query->addField('ar', $value_field_aggregator, 'aggregator');
+  $query->leftJoin($field_name_aggregate, 'a', 'a.entity_id=m.mid');
+  $query->leftJoin($field_name_aggregator, 'ar', 'ar.entity_id=m.mid');
+  $query->condition("a.".$value_field_aggregate, true,'=');
+  $query->condition("ar.".$value_field_aggregator, NULL,'IS');
+ 
+  
+  $db_result = $query->execute();
+  $message_groups = array();
+  while ($row = $db_result->fetchAssoc()) {      
+    //group by task_ref, user, notify      
+    $entity = entity_load('message', array($row['mid']));
+    $message = $entity[$row['mid']];
+    $wrapper = entity_metadata_wrapper('message', $message);
+
+    $task_nid = $wrapper->field_task_ref->raw();
+    $project_nid = $wrapper->field_project_ref->raw();
+    $notify = $wrapper->field_message_notify->raw();
+    $uids = $wrapper->field_users->raw();
+    
+    foreach ($uids as $uid) {
+      $key = $task_nid."-".$notify."-".$uid;
+      $message_groups[$key]['metadata'] = array('uid' => $uid, 'task_nid' => $task_nid, 'notify' => $notify, 'project_nid' => $project_nid);
+      $message_groups[$key]['messages'][] = $message;
+    }
+  }
+
+  //for each user and each node create a new message of bundle task_notification_message
+  foreach ($message_groups as $key => $data) {
+    $metadata = $data['metadata'];
+    $messages_arr = $data['messages'];
+    
+    $message = message_create('task_notification_message', array('uid' => $metadata['uid']));
+    $wrapper = entity_metadata_wrapper('message', $message);    
+    $wrapper->save();  //save hier to get the mid to reference this message as aggregator
+    
+    $texts = array();
+    foreach ($messages_arr as $single_message) {
+       $single_wrapper = entity_metadata_wrapper('message', $single_message);          
+       $single_wrapper->field_message_aggregator->set($message); 
+       $single_wrapper->save();
+
+      $langcode = $language->language;
+      $local_text = $single_message->getText($langcode);
+
+      $local_text = /*trim($local_text) ? $local_text :*/ $single_message->getText('en');  //@TODO: LANGUAGE_NONE is not working yet, @see http://drupal.org/node/2006702
+      $texts[] = $local_text;      
+    }
+
+    $text = _erpal_project_notify_aggregate_text($texts);
+
+    $wrapper->field_aggregated_text->set(strip_tags($text));
+    $wrapper->field_user->set($metadata['uid']);
+    $wrapper->field_task_ref->set($metadata['task_nid']);    
+    $wrapper->field_project_ref->set($metadata['project_nid']);        
+    $wrapper->save();        
+  }
+}
+
+/**
+ * Defines how the aggregated text should look like
+ * if a text already exists, it will not be added.
+ */
+function _erpal_project_notify_aggregate_text($texts) {
+  $result = false;
+  foreach ($texts as $text) {
+    if (empty($result)) {
+      $result .= $text;
+    } else {  
+      if (strpos($result, $text) !== 0) {  //we dont want duplicate text-fragments!
+        $result .= $text;
+      }
+    }
+  }
+  return $result;
+}
+
+/**
+ * Send notifications to all messages that should notify but have not been process for notify yet.
+ */
+function _erpal_project_notify_notify_messages() {
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'message')
+    ->entityCondition('bundle', 'task_notification_message') //only these bundles should send notification
+    ->fieldCondition('field_message_notified', 'value', 0)
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  $messages = array();
+  if (isset($result['message'])) {
+    $mids = array_keys($result['message']);
+    $messages = entity_load('message', $mids);    
+  }
+  
+  foreach ($messages as $message) {
+    //send notification for this message and set it notified
+    $wrapper = entity_metadata_wrapper('message', $message);       
+    $wrapper->field_message_notified->set(true);
+    $wrapper->save();
+    
+    //now send it!
+    // Let message-notify deliver the email, and send the message for us.
+    // We pass in the options the field names, that will be used to capture
+    // the rendered message, and provide an email log.
+    $options = array(
+      'rendered fields' => array(
+        'message_notify_email_subject' => 'field_notification_subject',
+        'message_notify_email_body' => 'field_notification_body',
+      ),
+    );
+
+    // Get the list of languages
+    $languages = language_list();
+
+    // Set up the new language code
+    $new_lang_code = 'en';
+
+    // Make sure the required language object is actually set
+    if (isset($languages[$new_lang_code])) {
+      // Overwrite the global language object
+      global $language;
+      $language = $languages[$new_lang_code];
+    }
+    
+    message_notify_send_message($message, $options);
+
+  }
+}

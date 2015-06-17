@@ -1,0 +1,203 @@
+<?php
+
+define('ERPAL_CONTACTS_IMPORTER_FEEDS_IMPORT_TAB_URL', 'import/erpal-contacts-import');
+define('ERPAL_CONTACTS_IMPORTER_FEEDS_DELETE_TAB_URL', 'import/erpal-contacts-delete');
+define('ERPAL_CONTACTS_IMPORTER_ADD_CONTACT_TAB_URL',  'node/add/erpal-contact/importer');
+define('ERPAL_CONTACTS_IMPORTER_FILE_DIR',             'public://erpal_contacts_importer');
+
+include_once 'inc/common.inc';
+include_once 'mappers/field_communication.inc';
+include_once 'mappers/works_at_relation.inc';
+
+/**
+ * @file erpal_contacts_importer.module
+ *
+ * @author Jan Müler
+ * @copyright Bright Solutions GmbH 2014 (c)
+ *
+ * @date 2014s-08-06
+ */
+
+/**
+ * Implements hook_feeds_processor_targets_alter().
+ * @param $targets
+ * @param $entity_type
+ * @param $bundle_name
+ */
+function erpal_contacts_importer_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
+  if($entity_type == 'node' && $bundle_name == 'erpal_contact'){
+    $targets['erpal_contacts_importer_field_communication'] = array(
+      'name' => t('Communication field collection'),
+      'callback' => 'erpal_contacts_importer_feeds_processor_field_communication_target',
+      'description' => t('Import as field_communication Field Collection'),
+      'summary_callback' => 'erpal_contacts_importer_feeds_field_communication_summary_callback',
+      'form_callback' => 'erpal_contacts_importer_feeds_field_communication_form_callback',
+    );
+    $targets['erpal_contacts_importer_relation_works_at'] = array(
+      'name' => t('Works At Relation'),
+      'callback' => 'erpal_contacts_importer_feeds_processor_works_at_target',
+      'description' => t('Import as "works at" relation to a company contact.'),
+    );
+  }
+}
+
+/**
+ * Implements hook_menu()
+ *
+ * @return array
+ */
+function erpal_contacts_importer_menu() {
+  return array(
+    ERPAL_CONTACTS_IMPORTER_FEEDS_IMPORT_TAB_URL => array(
+      'title' => t('Import contacts'),
+      'description' => t('The single page to make all steps of ERPAL Contacts importing at once.'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('erpal_contacts_importer_form'),
+      'access callback' => 'feeds_page_access',
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 1,
+    ),
+
+    ERPAL_CONTACTS_IMPORTER_FEEDS_DELETE_TAB_URL => array(
+      'title' => t('Delete imported contacts'),
+      'description' => t('The single page to delete imported ERPAL Contacts at once.'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('erpal_contacts_importer_delete_form'),
+      'access callback' => 'feeds_page_access',
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 2,
+    ),
+
+    ERPAL_CONTACTS_IMPORTER_ADD_CONTACT_TAB_URL => array(
+      'title' => t('Import contacts'),
+      'description' => t('The single page to make all steps of ERPAL Contacts importing at once.'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('erpal_contacts_importer_form'),
+      'access callback' => 'feeds_page_access',
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 1,
+    ),
+
+  );
+}
+
+function erpal_contacts_importer_form($form, &$form_state) {
+  $mod_path = drupal_get_path('module', 'erpal_contacts_importer');
+  $url = base_path().$mod_path.'/erpal_contacts_importer.csv';
+  $demo_link = '<a href="'.$url.'">'.t('CSV template').'</a>';
+  
+  $message = t('The CSV file containing your contacts to import needs the format of the !demo_link.', array('!demo_link' => $demo_link));
+  drupal_set_message($message, 'warning');
+  
+  $form['single_file'] = array(
+    '#type' => 'file',
+    '#title' => 'The source CSV file to import',
+    '#title_display' => 'invisible',    
+  );
+  $form['button']['import'] = array(
+    '#type' => 'submit',
+    '#value' => t('Import'),
+  );
+  
+  $form['button']['delete'] = array (
+    '#type' => 'submit',
+    '#value' => t('Delete imported contacts'),
+    '#submit' => array('erpal_contacts_importer_delete_form_submit'),
+    '#limit_validation_errors' => array(),
+  );
+  return $form;
+}
+
+function erpal_contacts_importer_delete_form($form, &$form_state) {
+  $form['button']['delete'] = array (
+    '#type' => 'submit',
+    '#value' => t('Delete imported contacts'),
+  );
+  return $form;
+}
+
+/**
+ * Implements the validate handler
+ *
+ * @param $form
+ * @param $form_state
+ *
+ * @return none
+ */
+function erpal_contacts_importer_form_validate($form, &$form_state) {
+  $file_dir = ERPAL_CONTACTS_IMPORTER_FILE_DIR;
+
+  if (file_prepare_directory($file_dir, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+    // Note: Set first argument of 'file_save_upload()' to first level (first level ancestor) form ID.
+    $single_file = file_save_upload('single_file', array('file_validate_extensions' => array('csv')), $file_dir);
+    if (!$single_file) {
+      form_set_error('single_file', t('Can not save the file. Skipping the import.'));
+    }
+    else {
+      // Set file object to form_state, to process it later in submit handler
+      $form_state['values']['erpal_contacts_importer_single_file'] = $single_file;
+    }
+  } else {
+    form_set_error('single_file', t('Can not create a directory to save the file.'));
+  }
+}
+/**
+ * Implements the submit handler
+ *
+ * @param $form
+ * @param $form_state
+ *
+ * @return none
+ */
+function erpal_contacts_importer_delete_form_submit($form, &$form_state) {
+  foreach (_erpal_contacts_importer_get_nodes_importer_ids() as $importer_id) {
+    $feed = feeds_source($importer_id);
+    $feed->startClear();
+  }
+}
+/**
+ * Implements the submit handler
+ *
+ * @param $form
+ * @param $form_state
+ *
+ * @return none
+ */
+function erpal_contacts_importer_form_submit($form, &$form_state) {
+  if (isset($form_state['values']['erpal_contacts_importer_single_file']) &&
+        $single_file = $form_state['values']['erpal_contacts_importer_single_file']) {
+
+    foreach (_erpal_contacts_importer_get_importer_ids() as $importer_id) {
+      $feed = feeds_source($importer_id);
+
+      $config = array('FeedsFileFetcher' => array('source' => $single_file->uri));
+      $feed->addConfig($config);
+      $feed->save();
+
+      // Not using Batch API (complete import within current page load)
+      while (FEEDS_BATCH_COMPLETE != $feed->import());
+    }
+  }
+}
+/**
+ * Returns hardcoded feeds import ids
+ *
+ * @return array
+ */
+function _erpal_contacts_importer_get_importer_ids() {
+  return array(
+    'erpal_contact_nodes_contact_company',
+    'erpal_contact_nodes_contact_person',
+  );
+}
+/**
+ * Returns hardcoded feeds import ids to delete contact nodes
+ *
+ * @return array
+ */
+function _erpal_contacts_importer_get_nodes_importer_ids() {
+  return array(
+    'erpal_contact_nodes_contact_company',
+    'erpal_contact_nodes_contact_person',
+  );
+}

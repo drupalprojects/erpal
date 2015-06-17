@@ -1,0 +1,178 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for our entity
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function budget_schema() {
+  $schema = array();
+
+  $schema['budget'] = array(
+    'description' => 'The base table for budget entities.',
+    'fields' => array(
+      'budget_id' => array(
+        'description' => 'Primary Key: Identifier for a budget entity.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The {budget_type}.type of this budget entity.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'available_hours' => array(
+        'description' => 'Actually available hours at this budget',
+        'type' => 'float',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'total_hours' => array(
+        'description' => 'Initially total hours given at this budget',
+        'type' => 'float',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date_from' => array(
+        'description' => 'From this time the budget is available',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date_till' => array(
+        'description' => 'Till this time the budget is available',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the budget was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the budget was changed last time.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'data' => array(
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big',
+        'serialize' => TRUE,
+        'description' => 'A serialized array of additional data.',
+      ),
+    ),
+    'primary key' => array('budget_id'),
+    'indexes' => array(
+      'type' => array('type'),
+      'available' => array('date_from', 'date_till'),
+    ),
+    
+    $schema['budget_type'] = array(
+      'description' => 'Stores information about all defined budget types.',
+      'fields' => array(
+        'id' => array(
+          'type' => 'serial',
+          'not null' => TRUE,
+          'description' => 'Primary Key: Unique budget type ID.',
+        ),
+        'type' => array(
+          'description' => 'The machine-readable name of this budget type.',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => TRUE,
+        ),
+        'label' => array(
+          'description' => 'The human-readable name of this budget type.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'description' => array(
+          'description' => 'The description of this budget type.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+       
+      ) + entity_exportable_schema_fields(),
+      'primary key' => array('id'),
+      'unique keys' => array(
+        'type' => array('type'),
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+* First Update to change field type of available hours and total hours to float
+*/
+function budget_update_7001(&$sandbox) {
+
+  db_change_field('budget', 'available_hours', 'available_hours',
+    array(
+      'type' => 'float', 
+      'not null' => TRUE,
+      'description' => 'Actually available hours at this budget',
+      'default' => 0,
+    )  
+  );
+  
+  db_change_field('budget', 'total_hours', 'total_hours',
+    array(
+      'type' => 'float', 
+      'not null' => TRUE,
+      'description' => 'Initially total hours given at this budget',
+      'default' => 0,
+    )
+  );
+}
+
+/**
+* Change all flowt fields to double (float:big) fields, otherwise, we cannot save exact decimal values > 10000
+*/
+function budget_update_7002(&$sandbox) {
+  db_change_field('budget', 'available_hours', 'available_hours',
+    array(
+      'type' => 'float', 
+      'size' => 'big',
+      'not null' => TRUE,
+      'description' => 'Actually available hours at this budget',
+      'default' => 0,
+    )  
+  );
+  
+  db_change_field('budget', 'total_hours', 'total_hours',
+    array(
+      'type' => 'float', 
+      'not null' => TRUE,
+      'description' => 'Initially total hours given at this budget',
+      'default' => 0,
+    )
+  );
+}
+
+/**
+* Implements hook_update_n to add as new table to support bundles
+*/
+function budget_update_7003(&$sandbox) {
+  drupal_get_schema('budget_type', TRUE); //Rebuild Schema
+  $schema = budget_schema();
+  $table = $schema['budget_type']; 
+  db_create_table('budget_type', $table);
+}

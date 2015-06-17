@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_basic_ui feature.
+ */
+
+include_once('erpal_basic_ui.features.inc');
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_basic_ui_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'panels' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ds_layout_info().
+ */
+function erpal_basic_ui_ds_layout_info() {
+  $path = drupal_get_path('module', 'erpal_basic_ui');
+  $layouts = array(
+    'erpal_forms' => array(      
+      'path' => $path . '/ds_layouts/erpal_forms',
+      
+      'label' => t('ERPAL Forms'),
+      'regions' => array(
+        'left' => t('Left'),
+        'right' => t('Right'),
+        'advanced' => t('Advanced'),
+        'advancedleft' => t('Advanced Left'),
+        'advancedright' => t('Advanced Right')
+      ),
+      // Add this line if there is a default css file.
+      'css' => TRUE,
+      'form' => TRUE,
+    ),
+  );
+
+  return $layouts;
+}

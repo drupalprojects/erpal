@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_book feature.
+ */
+
+include_once 'erpal_book.features.inc';

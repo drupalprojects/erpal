@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file all functions needed for updates of the module
+ */
+
+/**
+* Implements hook_install
+*/ 
+function erpal_project_notify_install() {
+  _erpal_project_notify_elyisa_cron_defaults();
+}
+
+/**
+* Set elysia cron defaults
+*/
+function erpal_project_notify_update_7001() {
+  _erpal_project_notify_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_project_notify_elyisa_cron_defaults() {
+  $values = array('rule' => '*/5 * * * *');
+  elysia_cron_set('erpal_project_notify_cron', false, $values);
+}

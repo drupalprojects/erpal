@@ -1,0 +1,402 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_crm_helper module.
+ * This is needed by the feature_erpal_crm
+ */
+
+module_load_include('inc', 'erpal_crm_helper', 'inc/theme');
+ 
+/**
+* Implements hook_menu
+*/ 
+function erpal_crm_helper_menu(){
+
+  $items = array();
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_crm_helper_config_menu();
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+}
+
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_crm_helper_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'erpal_crm_helper') . '/views',
+  );
+}
+  
+/**
+* Implements hook_permission
+*/
+function erpal_crm_helper_permission(){
+  return array(
+    'config erpal crm' => array(
+      'title' => t('Administer ERPAL CRM'), 
+      'description' => t('Perform administration tasks for ERPAL CRM module.'),
+    ),
+    'reply mails erpal crm activity' => array(
+      'title'       => t('Mail reply from activity node'), 
+      'description' => t('Shows a mailto reply link for the specific user on activity nodes and the commtents of such nodes.'),
+    ),
+    'access activities view' => array(
+      'title' => t('Access activities view'), 
+      'description' => t('Allows the user to access the activities view'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_help().
+ */
+function erpal_crm_helper_help($path, $arg) {
+  switch ($path) {    
+    case 'admin/structure/taxonomy/%':
+      $vocab_name = $arg[3];      
+      if ($vocab_name == 'activity_status_terms')
+        _erpal_basic_helper_warn_semantic_not_covered_by_terms($vocab_name, 'field_simple_process_status');     
+  }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_crm_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_crm_activity_node_form') {
+    _erpal_crm_helper_field_status_term_set_default($form);
+    
+    _erpal_basic_helper_warn_semantic_not_covered_by_terms('activity_status_terms', 'field_simple_process_status');
+    
+    //only if node will be new created
+    $nid = $form['nid']['#value'];
+    if (!$nid) {
+      // set contact ref if given as an argument
+      if (isset($_GET['field_customer_ref'])) {
+        
+        // Customer node.
+        $customer_nid = $_GET['field_customer_ref'];
+        if(!$customer = node_load($customer_nid)) {
+          return FALSE;
+        }
+        if($customer->type != 'erpal_contact') {
+          return FALSE;
+        }
+        // Prepare entityreference string
+        $customer_string = _erpal_basic_helper_autocomplete_string_from_nid($customer_nid);
+        
+        // Get id of related company if relation exists and no end date set in 
+        // the relation field
+        $company_nid = erpal_basic_helper_get_company($customer_nid);
+
+        // If there is a relation (no end date set in the relation field) to a 
+        // company, we use this company as customer for the activity and the 
+        // person in the url is added to the other contacts field.
+        if ($company_nid) {
+          // Prepare entityreference string
+          $company_string = _erpal_basic_helper_autocomplete_string_from_nid($company_nid);
+          $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $company_string;
+          $form['field_contacts_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_string;
+        } 
+        // Add customer to the "Customer" field
+        else {
+          $form['field_customer_ref'][LANGUAGE_NONE][0]['target_id']['#default_value'] = $customer_string;
+        }
+      }
+    }
+  }
+}
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_crm_helper_node_presave($node) {
+  if ($node->type == 'erpal_crm_activity') {
+    _erpal_crm_helper_handle_activity_status_automation($node);
+  }
+}
+
+/**
+* check if there are some actions that should be processed on status change
+*/
+function _erpal_crm_helper_handle_activity_status_automation($node) {
+  $tid = !empty($node->field_activity_status_term[LANGUAGE_NONE][0]['tid']) ? $node->field_activity_status_term[LANGUAGE_NONE][0]['tid'] : false;
+  $tid_original = !empty($node->original->field_activity_status_term[LANGUAGE_NONE][0]['tid']) ? $node->original->field_activity_status_term[LANGUAGE_NONE][0]['tid'] : false;
+  $actions = _erpal_crm_helper_get_actions_by_tid($tid);
+
+  $next_contact_date = !empty($node->field_next_contact[LANGUAGE_NONE][0]['value']) ? $node->field_next_contact[LANGUAGE_NONE][0]['value'] : false;
+  $next_contact_date_original = !empty($node->original->field_next_contact[LANGUAGE_NONE][0]['value']) ? $node->original->field_next_contact[LANGUAGE_NONE][0]['value'] : false;
+  
+  $status_changed = $tid != $tid_original;
+  $date_changed = $next_contact_date != $next_contact_date_original;
+  if ($status_changed && !$date_changed && in_array('remove_next_contact', $actions)) {
+    //empty the next contact date
+    unset($node->field_next_contact[LANGUAGE_NONE]);
+  }
+}
+
+/**
+* Returns actions to a given activity status term id
+*/
+function _erpal_crm_helper_get_actions_by_tid($tid) {
+  $term = taxonomy_term_load($tid);
+  $actions = array();
+  if (!empty($term->field_activity_actions[LANGUAGE_NONE])) {    
+    foreach ($term->field_activity_actions[LANGUAGE_NONE] as $delta => $value) {
+      $actions[] = $value['value'];
+    }
+  }
+  
+  return $actions;
+}
+
+/**
+ * Get id of related company if relation exists and no end date set in the 
+ * relation field
+ * 
+ * @param int $customer_nid
+ *   Customer id
+ * 
+ * @return boolean|int
+ *   FALSE on faliture. Company id on success
+ */
+function erpal_basic_helper_get_company($customer_nid) {
+  // Get company.
+  $company = relation_get_related_entity('node', $customer_nid);
+
+  // Check company node
+  if (!isset($company->nid)) {
+    return FALSE;
+  }
+  // Check node type
+  if ($company->type != 'erpal_contact') {
+    return FALSE;
+  }
+
+  // Check if сщтефсе is company
+  $type = field_get_items('node', $company, 'field_contact_type');
+  if ($type[0]['value'] != 'company') {
+   return FALSE; 
+  }
+  
+  $company_nid = $company->nid;
+  
+  // Get id of relation between contacts
+  $query = db_select('field_data_endpoints', 'e');
+  $query->fields('e', array('entity_id'));
+  $query->condition('e.endpoints_entity_type', 'node');
+  
+  // Filter only contacts with target nids
+  $query->condition(
+   db_or()
+    ->condition('e.endpoints_entity_id', $customer_nid)
+    ->condition('e.endpoints_entity_id', $company_nid)
+  );
+  
+  $query->groupBy('e.entity_id');
+  $query->having('COUNT(*) > 1');
+
+  // Execute query
+  $rid = $query->execute()->fetchColumn();
+  if(!$rid) {
+    return FALSE;
+  }
+  $relation = relation_load($rid);
+
+  // Check if no end date set in the relation field.
+  if ($relation) {
+    $date = field_get_items('relation', $relation, 'field_date');
+    if (!isset($date[0]['value2']) || $date[0]['value'] == $date[0]['value2']) {
+      // Return $company_nid if relation between customer and company exists.
+      return $company_nid;
+    }
+  }
+}
+
+/**
+* Sets the default value of the field_activity_status_term
+*/
+function _erpal_crm_helper_field_status_term_set_default(&$form) {
+  if (isset($form['field_activity_status_term'][LANGUAGE_NONE]['#default_value'][0]))
+    return;
+   
+  $vid = _erpal_basic_helper_term_field_get_vid('field_activity_status_term'); 
+  $default_tid = _erpal_basic_helper_get_default_tid($vid);
+  if ($default_tid)
+    $form['field_activity_status_term'][LANGUAGE_NONE]['#default_value'][0] = $default_tid;
+}
+ 
+ 
+/**
+* Implements hook_node_validate
+*/
+function erpal_crm_helper_node_validate($node, $form, $form_state) {
+  
+  if ($node->type == 'erpal_crm_activity')
+    _erpal_crm_helper_crm_activity_validate($node, $form, $form_state);
+  
+}
+
+/**
+* Validates crm activity nodes
+*/
+function _erpal_crm_helper_crm_activity_validate($node, $form, $form_state) {
+  $next_contact_date = isset($node->field_next_contact[LANGUAGE_NONE][0]['value']) ? $node->field_next_contact[LANGUAGE_NONE][0]['value'] : false;
+
+  $next_contact_date_unix = strtotime($next_contact_date) + $node->field_next_contact[LANGUAGE_NONE][0]['offset'];
+  if ($next_contact_date_unix) {
+    //if set, it must be in the future    
+    if ($next_contact_date_unix < time())
+      form_error($form['field_next_contact'], t('If date for next contact is set, it must be in the future'));
+  }
+}
+
+
+/**
+* Helper function to create new activity link
+*/
+function _erpal_crm_helper_create_activity_link($q_arg = false, $query_arr = array(), $title=false){
+  if (!$q_arg)
+    $q = current_path();
+  else 
+    $q = $q_arg;
+  
+  if (!isset($query_arr['destination']) || $q_arg)
+    $query_arr['destination'] = $q;
+  
+  $title = t("Create new activity"); 
+  return l(
+    $title, "node/add/erpal-crm-activity", array(
+        'query' => $query_arr,
+    )
+  );
+}
+
+/**
+* Return the status field name for a activity
+*/
+function _erpal_crm_helper_get_status_field_name() {
+  return 'field_activity_status_term';
+}
+
+/**
+* Returns the status of a field combination, e.g. status and deadline of task or project
+* @TODO: This function is also used in project helpers task.inc which creates a dependency. 
+* This should be decoupled 
+*/
+function _erpal_crm_helper_get_date_status_state($date_unix, $status_term, $node=false, $field_name=false) {
+  
+  //get the term from the node.
+  if ($node && $field_name) {
+    $semantic_status = _erpal_basic_helper_get_tid_semantic($node, $field_name);
+  } else {  
+    $semantic_status = _erpal_basic_helper_get_term_semantic($status_term);
+  }
+
+  //date and state are set
+  if ($semantic_status == 'in_progress' && time() > $date_unix && $date_unix) {
+    return ERPAL_STATUS_ALERT;
+  }
+  
+  //only the state is set, NO date end
+  if ($semantic_status == 'completed') {
+    return ERPAL_STATUS_COMPLETED;
+  }
+  
+  return ERPAL_STATUS_NONE;
+}
+
+/**
+* Implements hook_preprocess_field
+*/
+function erpal_crm_helper_preprocess_field(&$variables) {
+  _erpal_crm_helper_preprocess_field_warnings($variables);  
+}
+
+/**
+* Implements hook_field_widget_form_alter
+*/
+function erpal_crm_helper_field_widget_form_alter(&$element, &$form_state, $context) {  
+  _erpal_crm_helper_preprocess_add_activity_status_semantic_status_class($element, $form_state, $context);
+}
+
+/**
+* Adds classes to the activity status form field to show or hide the loss reason according to the activity semantic status
+*/
+function _erpal_crm_helper_preprocess_add_activity_status_semantic_status_class(&$element, &$form_state, $context) {
+
+  if (!empty($element['#field_name']) && $element['#field_name'] == 'field_activity_lost_reasons') {
+    //get all terms that have semantic status set to "aborted"
+    $activity_status_terms_aborted = array();
+    $vocabulary = taxonomy_vocabulary_machine_name_load('activity_status_terms');
+    $terms = taxonomy_get_tree($vocabulary->vid);
+
+    foreach($terms as $term) {
+      $term = taxonomy_term_load($term->tid);      
+      $semantic_status = _erpal_basic_helper_get_term_semantic($term);
+      if ($semantic_status == 'aborted') {
+        $activity_status_terms_aborted[] = $term->tid;
+      }
+    }
+    
+    if (!empty($context['form']['#node_edit_form']) && $context['form']['#node_edit_form']) {
+      //the node edit form
+      //show the loss reason field only if the status has a term with semantic meaning "aborted" set
+      $element['#states'] = array(
+        // Show the settings when the clone tasks checkbox is checked.
+        'visible' => array(
+          ':input[id="edit-field-activity-status-term-und"]' => array('value' => $activity_status_terms_aborted),
+        ),
+      );
+    } 
+    
+    if (!empty($context['form']['#id']) && $context['form']['#id'] == 'comment-form') {
+      //the comment alter form
+      //show the loss reason field only if the status has a term with semantic meaning "aborted" set
+      $element['#states'] = array(
+        // Show the settings when the clone tasks checkbox is checked.
+        'visible' => array(         
+          ':input[id="edit-comment-alter-field-activity-status-term-und"]' => array('value' => $activity_status_terms_aborted),        
+        ),
+      );
+    }
+    
+          
+  }
+}
+
+
+/**
+* alter fields so they display warning colors
+*/
+function _erpal_crm_helper_preprocess_field_warnings(&$variables) {
+  $element = $variables['element'];
+  $object = isset($element['#object']) ? $element['#object'] : false;
+  
+  if (!$object)
+    return;
+
+  if ($element['#field_name'] == 'field_activity_status_term' || $element['#field_name'] == 'field_next_contact') {    
+  
+    //if semantic meaning is "in progress" and deadline is over current date, make red    
+    if (isset($object->type) && ($object->type == 'erpal_crm_activity')) {
+      $node = $object;
+      //get the status field name
+      $deadline = isset($node->field_next_contact[LANGUAGE_NONE][0]) ? $node->field_next_contact[LANGUAGE_NONE][0]['value'] : false;
+      
+      if ($deadline)
+        $deadline_unix = erpal_date_as_unix_timestamp($deadline);   
+      else
+        $deadline_unix = false;
+        
+      $status = _erpal_crm_helper_get_date_status_state($deadline_unix, false, $node, 'field_activity_status_term');
+      $variables['classes_array'][] = $status;
+    }
+  }
+}
+
+

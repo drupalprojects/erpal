@@ -1,0 +1,123 @@
+<?php
+
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_projects_relations_views_api() {
+  return array('api' => 3);
+}
+
+function erpal_projects_relations_form_alter(&$form, &$form_state, $form_id) {
+  // add project id into autocomplete path
+  if ($form_id == 'erpal_task_node_form' && !$form['nid']['#value']) {
+    if (isset($_GET['field_project_ref'])) {
+      $und = LANGUAGE_NONE;
+      if (isset($form['field_task_assigned_users'][$und][0])) {
+        $path = $form['field_task_assigned_users'][$und][0]['target_id']['#autocomplete_path'];
+        $path = str_replace('NULL', $_GET['field_project_ref'], $path);
+        $form['field_task_assigned_users'][$und][0]['target_id']['#autocomplete_path'] = $path;
+      }
+    }
+  }
+}
+
+/**
+ * gets uids of this node project team
+ * @param int $nid - node id
+ * @return array uids
+ */
+function _erpal_projects_relations_parent_team($id, $entity_type) {
+  // get current node     
+  $entity = entity_load($entity_type, array($id));
+
+  if (isset($entity[$id]))
+    $entity = $entity[$id];
+  else
+    return array();
+  
+  if ($entity_type == 'comment') {
+	//get the node from the comment
+	$node = node_load($entity->nid);
+  } elseif ($entity_type == 'node') {
+	$node = $entity;
+  }
+  
+  // get parent project id
+  if (!$pid = _erpal_projects_helper_has_project($node))
+    return array();
+
+  $users = _erpal_projects_relations_team($pid);
+  return $users;
+}
+
+function _erpal_projects_relations_team($pid) {
+  // get users of project team
+  $users = array();
+  // get project of node
+  if ($pid && $project = node_load($pid)) {
+    // get users of project team
+    if (!empty($project->field_project_team)) {
+      $project_wrapper = entity_metadata_wrapper('node', $pid);
+      if ($users_wrapper = $project_wrapper->field_project_team) {
+        foreach ($users_wrapper as $user_key => $user_value) {
+          $user = $users_wrapper[$user_key]->field_user->value();
+          if (!empty($user->name))
+            $users[$user->uid] = $user->name;
+        }
+      }
+    }
+  }
+  // TODO: get all users if there is no project
+  /* else {
+    $results = db_select('users', 'u')
+    ->fields('u', array('uid', 'name'))
+    ->execute();
+
+    foreach ($results as $result) {
+    if ($result->uid){
+    $users[$result->uid] = $result->name;
+    }
+    }
+    } */
+  return $users;
+}
+
+/**
+ * helper f-n. gets node nid by arguments
+ * @return int node id
+ */
+function _erpal_projects_relations_get_nid() {
+  $nid = '';
+  // edit or create page
+  if (arg(1) == 'autocomplete' && arg(6)) {
+    $nid = arg(6);
+    return $nid;
+  }
+  
+  if (isset($_GET['field_project_ref']) && ($_GET['field_project_ref'])) {
+    $nid = $_GET['field_project_ref'];  
+    return $nid;
+  }
+  
+  if (arg(1) && is_numeric(arg(1))) {
+    return arg(1);
+  }  
+  if (arg(0) == 'comment' && arg(1) == 'reply' && is_numeric(arg(3))) {
+    return arg(3); //return the comment ID
+  }
+  
+  return $nid;
+}
+
+/**
+ * helper f-n. gets target project nid by arguments
+ * @return int node id
+ */
+function _erpal_projects_relations_get_pid() {
+  $pid = '';
+  // views page
+  if (arg(0) == 'node' && arg(1)) {
+    $pid = arg(1);
+  }
+  return $pid;
+}

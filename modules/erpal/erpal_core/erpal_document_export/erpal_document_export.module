@@ -1,0 +1,187 @@
+<?php
+
+define('ERPAL_DOCUMENT_EXPORT_TYPE', 'document_export');
+
+define('TABLE_OF_CONTENTS_ID', 'word-table-of-contents');
+
+function erpal_document_export_get_toc_id(){
+  return TABLE_OF_CONTENTS_ID;
+}
+
+/**
+ * Implements hook_permission()
+ */
+function erpal_document_export_permission(){
+  return array(
+    'administer erpal document export' => array(
+      'title' => t('Administer ERPAL Document export'),
+    ),
+  );
+}
+
+/**
+* Implements hook_theme
+*/
+function erpal_document_export_theme() {
+  return array(   
+    'erpal_document_export_toc' => array(
+      'variables' => array(),
+      'template' => 'template/export_toc',
+    ),
+    'erpal_document_export_frontpage' => array(
+      'variables' => array(),
+      'template' => 'template/export_frontpage',
+    ),
+    'erpal_document_export_header' => array(
+      'variables' => array(),
+      'template' => 'template/export_header',
+    ),
+    'erpal_document_export_comment' => array(
+      'variables' => array(),
+      'template' => 'template/export_comment',
+    ),
+    'erpal_document_export_page' => array(
+      'variables' => array(),
+      'template' => 'template/export_page',
+    ),
+    
+  );
+}
+
+
+
+/**
+ * Implements hook_ctools_plugin_type()
+ */
+function erpal_document_export_ctools_plugin_type(){
+  return array(
+    'document_export' => array(
+      'cache' => FALSE,
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_ctools_plugin_directory()
+ * Tells ctools the place where we put our plugins
+ */
+function erpal_document_export_ctools_plugin_directory($module, $plugin){
+  if($module == 'erpal_document_export'){
+    return 'plugins/' . $plugin;
+  }
+}
+ 
+/**
+ * Returns an instance of the Plugin
+ * @param $name: Name of the plugin
+ * @param $options: array with content and options about the document that 
+ * should be created
+ */
+function erpal_document_export_get_plugin_instance($name, $options=array()){
+  ctools_include('plugins');
+  $plugin = ctools_get_plugins('erpal_document_export', ERPAL_DOCUMENT_EXPORT_TYPE, $name);
+  $class = ctools_plugin_get_class($plugin, 'handler');
+  
+  $instance;
+  
+  try{
+  	$instance = new $class($options);
+  } catch(Exception $e) {
+  	$instance = FALSE;
+  }
+  
+  return $instance;
+}
+
+/**
+ * Loads and returns all plugins for this module
+ */
+function erpal_document_export_get_plugin_list(){
+  module_load_include('inc', 'erpal_document_export', 'document_export');
+  ctools_include('plugins');
+  $plugins =  ctools_get_plugins('erpal_document_export', ERPAL_DOCUMENT_EXPORT_TYPE);
+  $plugin_list = array();
+  foreach ($plugins as $id => $plugin) {
+      $plugin_list[$id] = $plugin['type'];
+  }
+  return $plugin_list;
+}
+
+/**
+ * Returns the rendered html for a comment 
+ */
+function _erpal_document_export_get_comment($cid, $options){
+  $comment = comment_load($cid);
+  
+  $wrapper = entity_metadata_wrapper('comment', $comment);
+  $values['body'] = '';
+  
+  $body = field_get_items('comment', $comment, 'comment_body');
+  if ($body){
+    $values['body'] = $body[0]['value'];
+  }
+
+  $values['cid'] = $cid;
+  if ($options['export_plugin'] == 'document_odt_export') {
+    $values['title'] = $wrapper->subject->value();
+    $values['comment'] = TRUE;
+    return $values;
+  }
+  $values['subject'] = $wrapper->subject->value();
+  $html = theme('erpal_document_export_comment', $values);
+  return $html;
+}
+
+/**
+* Implements hook_form_alter to inject options into the basic settings form
+*/
+function erpal_document_export_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_basic_helper_config_form') {
+    //ensure first the print module injects its settings
+    erpal_print_form_alter($form, $form_state, $form_id);
+    _erpal_document_export_inject_basic_config_form($form);
+  }    
+}
+
+function _erpal_document_export_inject_basic_config_form(&$form) {
+  //company logo
+  $form['#attributes']['enctype'] = 'multipart/form-data';
+  $form['#submit'][] = '_erpal_document_export_inject_basic_config_form_submit';
+
+  $allowed_extensions = _erpal_print_logo_valid_extensions();
+
+  $document_fid = variable_get('document_export_odf_template_fid', false);
+  $file = false;
+  
+  if ($document_fid) {
+    $file = file_load($document_fid);
+  } 
+ 
+  $odt_extensions = array('odt');
+  $form['document_settings']['document_export_odf_temlate'] = array(
+    '#type' => 'managed_file',
+    '#weight' => -15,  //at the top of the page
+    '#title' => t('Odf template for export'),
+    '#description' => t('Upload your open document template file that contains your header and footer for document exports. Following extensions are allowed: !extensions', array('!extensions' => implode(',', $odt_extensions))),
+    '#upload_validators' => array('file_validate_extensions' => array(implode(' ', $odt_extensions))),
+    '#upload_location' => _erpal_print_logo_documents_upload_dir(),
+    '#default_value' => $file ? $file->fid : false,
+  ); 
+}
+
+/**
+* Submit handler for document logo file injection
+*/
+function _erpal_document_export_inject_basic_config_form_submit($form, $form_state)  {
+  $values = $form_state['values'];
+  $document_fid = $values['document_export_odf_temlate'];
+  variable_set('document_export_odf_template_fid', $document_fid);  //save phone number
+  if ($document_fid){  
+    //finalise the file!
+    $file = file_load($document_fid);
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+    file_usage_add($file, 'erpal_print', 'config', $file->fid); 
+  }
+}

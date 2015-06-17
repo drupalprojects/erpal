@@ -1,0 +1,144 @@
+<?php
+
+/**
+* @file helper functions for unit tests of module erpal_projects_billable
+*/
+
+/**
+* Creates a customer for testing
+*/
+function _erpal_projects_billable_test_create_contact() {
+  //create a Customer for the task
+  $contact = new stdClass();
+  $contact->field_contact_type['und'][0] = 'company';
+  $contact->language = LANGUAGE_NONE;
+  $contact->title = 'Kunden1';
+  $contact->type = 'erpal_contact';
+  node_object_prepare($contact);
+  node_save($contact);
+  
+  return $contact;
+}
+
+/**
+* Creates a project
+* @TODO @see erpal_projects_billable.test file @todo information. (We changed the status field to term reference field)
+*/
+function _erpal_projects_billable_test_create_project($pricing=array(), $status='inserted') {
+
+  $contact = _erpal_projects_billable_test_create_contact();
+  
+  //create a project
+  $project = new stdClass();    
+  $project->language = LANGUAGE_NONE;
+  $project->type = 'erpal_project';
+  $project->title = 'Testprojekt';
+  $project->field_customer_ref[LANGUAGE_NONE][]['target_id'] = $contact->nid;
+  $project->field_project_status[LANGUAGE_NONE][]['value'] = $status;
+  
+  node_object_prepare($project);
+  
+  //add a pricing field collection item entity
+  $values = array();
+  $values['field_name'] = 'field_pricing';      
+  $values['field_price_mode'][LANGUAGE_NONE][0]['value'] = $pricing['price_mode'];   
+  $values['field_price'][LANGUAGE_NONE][0]['value'] = $pricing['price'];   
+  $values['field_currency'][LANGUAGE_NONE][0]['value'] = $pricing['currency'];
+  $values['field_vat_rate'][LANGUAGE_NONE][0]['value'] = $pricing['vat_rate']; 
+  
+  //save the entity to link it to the host with its id, otherwise we dont have an id      
+  $pricing_collection = entity_create('field_collection_item', $values);
+  
+  // Attach the field_collection entity to the application node. This has to
+  // happen separately so that it actually works -- you can't just specify
+  // this via the $values array.
+  //@see http://drupal.org/node/1353926
+  $pricing_collection->setHostEntity('node', $project);
+  
+  $pricing_collection->save(true);
+
+  node_save($project); 
+  return $project;
+}
+
+/**
+* Creates a task
+*/
+function _erpal_projects_billable_test_create_task($pricing=array(), $status='inserted') {
+
+  $project = _erpal_projects_billable_test_create_project($pricing);
+  
+  //create a task
+  $task = new stdClass();    
+  $task->language = LANGUAGE_NONE;
+  $task->type = 'erpal_task';
+  $task->title = 'Testtask';
+  $task->field_project_ref[LANGUAGE_NONE][]['target_id'] = $project->nid;
+  $task->field_task_status[LANGUAGE_NONE][]['value'] = $status;
+  
+  node_object_prepare($task);
+  
+  //add a pricing field collection item entity
+  $values = array();
+  $values['field_name'] = 'field_pricing';      
+  $values['field_price_mode'][LANGUAGE_NONE][0]['value'] = $pricing['price_mode'];   
+  $values['field_price'][LANGUAGE_NONE][0]['value'] = $pricing['price'];   
+  $values['field_currency'][LANGUAGE_NONE][0]['value'] = $pricing['currency'];
+  $values['field_vat_rate'][LANGUAGE_NONE][0]['value'] = $pricing['vat_rate']; 
+  
+  //save the entity to link it to the host with its id, otherwise we dont have an id      
+  $pricing_collection = entity_create('field_collection_item', $values);
+  
+  // Attach the field_collection entity to the application node. This has to
+  // happen separately so that it actually works -- you can't just specify
+  // this via the $values array.
+  //@see http://drupal.org/node/1353926
+  $pricing_collection->setHostEntity('node', $task);
+  
+  $pricing_collection->save(true);
+
+  node_save($task); 
+  return $task;
+}
+
+
+/**
+* Creates a timetracking
+*/
+function _erpal_projects_billable_test_create_timetracking($time_h, $task) {
+  
+  //create a task
+  $tt = new stdClass();    
+  $tt->language = LANGUAGE_NONE;
+  $tt->type = 'erpal_timetracking';
+  $tt->title = 'Testzeiteintrag';
+  $tt->field_timetracking_subject[LANGUAGE_NONE][]['target_id'] = $task->nid;
+  $tt->field_date_time[LANGUAGE_NONE][0]['value'] = time();
+  $tt->field_date_time[LANGUAGE_NONE][0]['value2'] = time();
+  $tt->field_billing_duration[LANGUAGE_NONE][0]['value'] = $time_h;
+ 
+  node_object_prepare($tt);
+  node_save($tt); 
+  
+  return $tt;
+}
+
+/**
+* Checks if a billable has the right values according to pricing information and the given node
+*/
+function projectsbillable_check_billable($billable, $pricing, $node) {
+  return $billable->subject_nid == $node->nid && 
+      $billable->quantity == $pricing['quantity'] &&
+      $billable->single_price == $pricing['price'] &&
+      $billable->vat_rate == $pricing['vat_rate'] &
+      $billable->currency == $pricing['currency'] &&
+      $billable->customer_nid > 0;
+          //other calculated values of the billable are ensured in the billables module tests
+}
+
+/**
+* Returns all billables to a node
+*/
+function _erpal_projects_billable_test_get_billable($node) {
+  return _erpal_projects_billable_billables_by_subject_nid($node->nid, true);
+}

@@ -1,0 +1,10 @@
+name = ERPAL Calendar CRM
+description = Integrate CRM with calendar
+core = 7.x
+package = ERPAL
+version = 7.x-1.0-rc1
+project = erpal_calendar_crm
+dependencies[] = erpal_calendar
+dependencies[] = erpal_crm
+datestamp = 1433507610
+features[features_api][] = api:2

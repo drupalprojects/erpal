@@ -1,0 +1,553 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_employee_helper module.
+ */
+
+module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.entity');
+module_load_include('inc', 'erpal_employee_helper', 'inc/config');
+module_load_include('inc', 'erpal_employee_helper', 'inc/token');
+module_load_include('inc', 'erpal_employee_helper', 'inc/working_times.calc'); 
+
+/**
+* Implements hook_node_validate
+*/
+function erpal_employee_helper_node_validate($node, $form, &$form_state) {
+  if ($node->type == 'erpal_working_time') {
+    _erpal_employee_helper_node_validate_working_time($node, $form, $form_state);
+  }
+}
+
+/**
+* Validates a working time node called in @see erpal_employee_helper_node_validate
+*/
+function _erpal_employee_helper_node_validate_working_time($node, $form, &$form_state) {
+  
+  $working_time_type = $node->field_working_time_type[LANGUAGE_NONE][0]['value'];
+  if ($working_time_type != 'work')
+      return; //ensure one date range only for work type
+
+  $is_one_day = erpal_lib_date_field_validate_one_day($node, 'field_date_time', $form_state);
+  
+  if (!$is_one_day) {
+    form_set_error('field_date_time', t('Your working time must start and end at the same day.'));
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function erpal_employee_helper_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'erpal_employee_helper') . '/views',
+  );
+} 
+
+/**
+ * Implements hook_menu
+ */ 
+function erpal_employee_helper_menu(){
+
+	$items = array();
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_employee_helper_config_menu();
+  
+  //######## DEBUG ###########
+  $items['employee/test'] = array(
+    'page callback' => '_erpal_employee_helper_test',
+    'access callback' => '_erpal_employee_helper_test_access',
+  );
+  //####### END DEBUG ########
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+
+//########### ONLY FOR TEST AND DEBUGGING ############
+function _erpal_employee_helper_test() {
+  _erpal_employee_helper_calculate_working_times();
+}
+
+function _erpal_employee_helper_test_access() {
+  global $user;
+  return $user->uid == 1;
+}
+//####################################################
+
+/**
+* Implements hook_cron
+*/
+function erpal_employee_helper_cron() {
+  _erpal_employee_helper_calculate_working_times();
+}
+
+/**
+* Implements hook_entity_info to define own entities
+*/
+function erpal_employee_helper_entity_info() {
+  $return['working_times'] = array(
+    'label' => t('Calculated working times'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'WorkingTimes',
+    'controller class' => 'WorkingTimesController',
+    'base table' => 'working_times',
+    'file' => 'inc/working_times.entity.inc',
+    'fieldable' => false,
+    'entity keys' => array(
+      'id' => 'id',
+      'bundle' => 'type',
+    ),
+    'bundles' => array(
+      'year'=> array(
+        'label' => 'Year working times',
+      ),
+      'month'=> array(
+        'label' => 'Month working times',
+      ),
+      'offset'=> array(
+        'label' => 'Working times offset',
+      ),
+    ),
+    'label callback' => 'entity_class_label',
+    //'uri callback' => 'entity_class_uri',  //not accessible
+    'creation callback' => 'working_times_create',
+    'access callback' => 'working_times_access',
+    'module' => 'erpal_employee_helper',
+    // The information below is used by the BillableUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/working_times',
+      'file' => 'working_times.entity.inc',
+      'controller class' => 'WorkingTimesUIController',
+      'menu wildcard' => '%working_times',
+    ),
+    
+  );
+
+  return $return;
+}
+
+/**
+ * Determines whether the given user has access to a billable.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $billable
+ *   Optionally a billable or a billable type to check access for. If nothing is
+ *   given, access for all billables is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function working_times_access($op, $working_times = NULL, $account = NULL) {
+ 
+  return user_access($op.' working times offset');
+
+}
+
+/**
+* Implements hook_node_update
+*/
+function erpal_employee_helper_node_update($node) {
+  if ($node->type == 'erpal_working_time') {
+    _erpal_employee_helper_invalidate($node);
+    _erpal_employee_helper_update_date_item_category($node);
+  }
+}
+
+/**
+* Updates the tag of the date item
+*/
+function _erpal_employee_helper_update_date_item_category($node) {
+  static $processed = array();
+  
+  if (!empty($processed[$node->nid]))
+    return;
+    
+  $processed[$node->nid] = TRUE;  
+  
+  //first get all date items save to this field  
+  $date_items = _date_item_get_items('field_date_time', 'node', $node->nid);
+  foreach ($date_items as $date_item) {
+    _erpal_calendar_helper_set_tag($date_item);
+    //save the date item
+    entity_save('date_item', $date_item);
+  }
+}
+
+/**
+* Implements hook_node_delete
+*/
+function erpal_employee_helper_node_delete($node) {
+  if ($node->type == 'erpal_working_time') {
+    _erpal_employee_helper_invalidate($node);
+  }
+}
+
+/**
+* Implements hook_node_insert
+*/
+function erpal_employee_helper_node_insert($node) {
+  if ($node->type == 'erpal_working_time') {
+    _erpal_employee_helper_invalidate($node);
+  }
+}
+
+/**
+* Set all datasets "dirty" that are in the booking date of this working time node
+*/
+function _erpal_employee_helper_invalidate($node) {
+  $booking_time = $node->field_date_time[LANGUAGE_NONE][0]['value'];
+  $uid = $node->uid;
+  $month = date('m', $booking_time);
+  $year = date('Y', $booking_time);
+  
+  //loop through all working_times till the current month
+  $current_year = date('Y');
+  $current_month = date('m');
+  for($y=$year; $y<=$current_year; $y++) {
+    if ($y==$year) //on first loop start with the month of the node
+      $m_start = $month;
+    else
+      $m_start = 1; //otherwise begin at the first month
+   
+    for($m=$m_start; $m<=12; $m++) {
+      //get the year working_times
+      $working_times_entities = working_times_load_by_user('year', $uid, $year);
+      foreach ($working_times_entities as $working_times) {
+        $working_times->dirty = 1; 
+        $working_times->save();
+      }
+      
+      //get the month working_times
+      $working_times_entities = working_times_load_by_user('month', $uid, $year, $month);
+      foreach ($working_times_entities as $working_times) {
+        $working_times->dirty = 1; 
+        $working_times->save();
+      }
+    }
+  }
+  
+  
+}
+/**
+* Implements hook_permission
+*/
+function erpal_employee_helper_permission() {
+  return array(
+    'config erpal employee' => array(
+      'title' => t('Config ERPAL employee settings'), 
+      'description' => t('Allows the user to configure ERPAL employee module settings'),
+    ), 
+    'create working times offset' => array(
+      'title' => t('Creating working times offset'), 
+      'description' => t('Allows the user to create working times offset entities'),
+    ), 
+    'edit working times offset' => array(
+      'title' => t('Edit working times offset'), 
+      'description' => t('Allows the user to edit working times offset entities'),
+    ), 
+    'delete working times offset' => array(
+      'title' => t('Delete working times offset'), 
+      'description' => t('Allows the user to delete working times offset entities'),
+    ), 
+    'use working time prefill' => array(
+      'title' => t('Use working time prefill feature'), 
+      'description' => t('Allows the user to let the working time form be prefilled from time trackings.'),
+    ), 
+    'force working time matching' => array(
+      'title' => t('Force working time matching'), 
+      'description' => t('Forces the user to validate the working time compared with project time trackings.'),
+    ), 
+    //other permissions than entities
+    'view timekeeping' => array(
+      'title' => t('View timekeeping'), 
+      'description' => t('Allows the user to access the timekeeping page'),
+    ), 
+    'view any timekeeping' => array(
+      'title' => t('View any timekeeping'), 
+      'description' => t('Allows the user to access the page of any timekeeping'),
+    ),
+    'view any timekeeping' => array(
+      'title' => t('View any timekeeping'), 
+      'description' => t('Allows the user to access the page of any timekeeping'),
+    ),
+  );
+}
+
+/**
+* Implements hook_date_term_alter to alter a term set on an date_item entity. This hook is provided by the erpal_calendar_helper module.
+* @param $term_string the string that should be set as tag to the entity given in $context
+*/
+function erpal_employee_helper_date_term_alter(&$term_string, $context) {
+  $entity_type = $context['src']['type'];
+  $bundle = $context['src']['bundle'];
+  $entity = $context['src']['entity'];
+  
+  if ($entity_type == 'node' && $bundle == 'erpal_working_time') {
+    $working_time_type = $entity->field_working_time_type[LANGUAGE_NONE][0]['value'];
+    $types_to_tag = _erpal_employee_helper_get_working_time_types_date_item_creating();
+    if (in_array($working_time_type, $types_to_tag)) {
+      $term_string = _erpal_employee_helper_field_tag_working_time_type($working_time_type);
+    }
+  }
+}
+
+/**
+* Implements hook_form_alter
+*/
+function erpal_employee_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'erpal_calendar_helper_config_form') {
+    _erpal_employee_helper_alter_calendar_config_form($form, $form_state);
+  }
+  
+  if ($form_id == 'erpal_working_time_node_form') {
+    _erpal_employee_helper_prefill_working_time_from_time_tracking($form, $form_state);
+  }
+}
+
+/**
+* Prefills the working time form from timetrackings
+*/
+function _erpal_employee_helper_prefill_working_time_from_time_tracking(&$form, &$form_state) {
+  global $user;
+  $settings = _erpal_employee_helper_timetracking_settings();
+  
+  //get the date the user may have selected
+  $selected_date = !empty($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+  $selected_date = strtotime($selected_date);
+  
+  $date_from = strtotime(date('Y-m-d', $selected_date).' 00:00:00');
+  $date_till = strtotime(date('Y-m-d', $selected_date).' 23:59:59');  
+  $prefill_values = _erpal_employee_helper_calculate_working_time_prefill($user->uid, $date_from, $date_till);
+
+  //now pre-fill the working time form if wanted and only if it is not a node edit form
+  if ($settings['employee_prefill_from_timetrackings'] && empty($form['nid']['#value']) && user_access('use working time prefill')) {
+    //first set the start and end of the day.
+    if (!empty($prefill_values['work']['from'])) {
+      $form['field_date_time'][LANGUAGE_NONE][0]['#default_value']['value'] = $prefill_values['work']['from'];
+    }
+
+    if (!empty($prefill_values['work']['till'])) {
+      $form['field_date_time'][LANGUAGE_NONE][0]['#default_value']['value2'] = $prefill_values['work']['till'];
+    }
+    
+    //now the breaks    
+    $form['field_date_times'][LANGUAGE_NONE]['#max_delta'] = count($prefill_values['break']['ranges']);
+    $template_element = $form['field_date_times'][LANGUAGE_NONE][0];
+    foreach ($prefill_values['break']['ranges'] as $delta => $range) {
+      $form['field_date_times'][LANGUAGE_NONE][$delta] = $template_element;
+      $form['field_date_times'][LANGUAGE_NONE][$delta]['#default_value']['value'] = $range['from'];
+      $form['field_date_times'][LANGUAGE_NONE][$delta]['#default_value']['value2'] = $range['till'];
+    }
+    
+    $link = l(t("today's time trackings"), 'projects/timetrackings', array('query' => array('field_date_time_value[min][date]' => date('Y-m-d', $date_from), 'field_date_time_value[max][date]' => date('Y-m-d', $date_till), 'uid' => $user->name)));
+    drupal_set_message(t("Your working time is preselected from your !link. If you want to enter holidays for example, you can just ignore the prefilled fields.", array('!link' => "<strong>".$link."</strong>")));
+    
+    //build the links
+    $oneday_link = l(t('1 day'), 'node/add/erpal-working-time', array('query' => array('date' => date('Y-m-d', strtotime(date('Y-m-d').' -1 day')))));
+    $twodays_link = l(t('2 days'), 'node/add/erpal-working-time',array('query' => array('date' => date('Y-m-d', strtotime(date('Y-m-d').' -2 days')))));
+    $threedays_link = l(t('3 days'), 'node/add/erpal-working-time', array('query' => array('date' => date('Y-m-d', strtotime(date('Y-m-d').' -3 days')))));
+    
+    //add a link to prefill the form with another date.
+    $form['field_date_time']['#suffix'] = "<span class='form-item error'><strong>".t("Add your working time !oneday, !twodays or !threedays ago.", array("!oneday" => $oneday_link, "!twodays" => $twodays_link, "!threedays" => $threedays_link))."</strong></span>";
+  }
+  
+  $form['#validate'][] = '_erpal_employee_helper_validate_working_time';
+}
+
+/**
+* calculates the working times including breaks from the timetracking in the given date range, for the given user
+*/
+function _erpal_employee_helper_calculate_working_time_prefill($uid, $date_from_unix, $date_till_unix) {  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('bundle', 'erpal_timetracking');
+  $query->entityCondition('entity_type', 'node');
+  $query->propertyCondition('uid', $uid);
+  $query->fieldCondition('field_date_time', 'value', $date_from_unix, '>=');
+  $query->fieldCondition('field_date_time', 'value',  $date_till_unix, '<=');
+  $query->fieldOrderBy('field_date_time', 'value', 'ASC');
+  $query->addMetaData('account', user_load(1)); // Run the query as user 1
+   
+  $result = $query->execute();
+  
+  $ret = array('work' => array('duration' => FALSE, 'from' => FALSE, 'till' => FALSE), 'break' => array('duration' => FALSE, 'ranges' => array()));
+  if (isset($result['node'])) { 
+    $from = PHP_INT_MAX;
+    $till = 0;    
+    $last_till = 0;
+    $duration = 0;
+    $break_duration = 0;
+    $break_ranges = array();
+    $settings = _erpal_employee_helper_timetracking_settings();
+    //now process the ordered timetrackings to find the ranges    
+    foreach ($result['node'] as $nid => $tt_node) {
+      $tt_node = node_load($nid);
+      $date_unix = $tt_node->field_date_time[LANGUAGE_NONE][0];
+      $tt_duration_dec = $tt_node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+      $start = $date_unix['value'];
+      $end = $date_unix['value2'];
+      if ($from > $start) {
+        $from = $start;
+      }
+      
+      if ($till < $end) {
+        $till = $end;
+      }
+      
+      //save the interval ends to find the breaks
+      if (!$last_till) {
+        $last_till = $start; //if there was no timetracking before, we set the last end date to the first one.
+      }
+      
+      //get the break if there is one.
+      $break_duration_min = ($start - $last_till) / 60; //get it as minutes
+      $duration += $tt_duration_dec;  
+      
+      //check if the break duration is bigger than the min break value in the admin settings, of so, add the break range to the result
+      $min_break = $settings['employee_timetracking_min_break_time'];
+      if ($break_duration_min >= $min_break) {
+        //add it
+        $break_ranges[] = array('from' => $last_till, 'till' => $start);
+        $break_duration += $break_duration_min;
+      }            
+      
+      $last_till = $end;
+    }
+    
+    //fill the results array
+    $ret['work']['duration'] = $duration;
+    $ret['work']['from'] = $from;
+    $ret['work']['till'] = $till;
+    $ret['break']['ranges'] = $break_ranges;
+    
+    $ret['break']['duration'] = $break_duration / 60; //make it hours
+  }
+  
+  return $ret;
+}
+
+/**
+* Validates the working time if it matches the time tracking respecting a threshold from the admin settings
+*/
+function _erpal_employee_helper_validate_working_time(&$form, &$form_state) {
+  global $user;
+  
+  $values = $form_state['values'];
+  $settings = _erpal_employee_helper_timetracking_settings();
+  $threshold = !empty($settings['employee_timetracking_match_threshold']) ? $settings['employee_timetracking_match_threshold'] : 0;
+  $working_time_type = $values['field_working_time_type'][LANGUAGE_NONE][0]['value'];
+  
+  if ($threshold && $working_time_type == 'work' && user_access('force working time matching')) {    //only validate if a threshold is set and if the working_time_type is work
+    $date_from = $values['field_date_time'][LANGUAGE_NONE][0]['value'];
+    $date_till = $values['field_date_time'][LANGUAGE_NONE][0]['value2'];
+    
+    $date_from_query = strtotime(date('Y-m-d', $date_from).' 00:00:00');
+    $date_till_query = strtotime(date('Y-m-d', $date_till).' 23:59:59');  
+    $prefill_values = _erpal_employee_helper_calculate_working_time_prefill($user->uid, $date_from_query, $date_till_query);
+    $break_duration = $prefill_values['break']['duration'];
+    $tt_duration = $prefill_values['work']['duration'];
+    
+    //check if the entered working time matches the percentage threshold to the time trackings.
+    //the sum of all time trackings may be different from the working time if they overlap. So calculate the real working time to match it with the threshold. 
+    $working_time = ($date_till - $date_from) / (60 * 60);
+    
+    $working_time -= $break_duration; //substract the duration    
+    
+    $time_percent = round(($tt_duration / $working_time) * 100, 2);
+    if ($time_percent < $threshold) {
+      //validation error
+      $link = l(t("time trackings duration"), 'projects/timetrackings', array('query' => array('field_date_time_value[min][date]' => date('Y-m-d', $date_from), 'field_date_time_value[max][date]' => date('Y-m-d', $date_till), 'uid' => $user->name)));
+      form_set_error('field_date_time', t("Your entered working time (!wt h) and !link (!tt h) doesn't match !real_percent% of !threshold%", array('!threshold' => (int)$threshold, '!wt' => round($working_time, 2), '!tt' => round($tt_duration, 2), '!link' => $link, '!real_percent' => (int)$time_percent)));
+    }
+    
+  }
+}
+
+/**
+* Implements hook_create_date_item_alter provided by date_item module. So this modul can decide wether to create a date_item entity or not. Where the date_item entity should be created is written in $context
+*/
+function erpal_employee_helper_create_date_item_alter(&$create_items, &$context) {
+  $entity_type = $context['entity_type'];
+  $field_name = $context['field_name'];
+  $bundle = $context['bundle'];
+  $entity = $context['entity'];
+
+  if ($entity_type == 'node' && $bundle == 'erpal_working_time' && $field_name == 'field_date_time') {
+    $working_time_type = $entity->field_working_time_type[LANGUAGE_NONE][0]['value'];
+    $working_time_types_create_date_item = _erpal_employee_helper_get_working_time_types_date_item_creating();
+    
+    if (in_array($working_time_type, $working_time_types_create_date_item)) {
+      $create_items = true;
+      $context['date_item_type'] = 'simple_date';
+      $context['handle_range'] = 'range'; //means that the created date_item entities have the same start and end point. If we set this to "single", we have a date_item for start date and one for end date
+    }
+  }
+}
+
+/**
+* Returns the tag string for date entites from node type erpal_working_time with given type
+*/
+function _erpal_employee_helper_field_tag_working_time_type($type) {
+  return variable_get('erpal_employee_working_time_'.$type, $type);  //@TODO better to use the label of the field_value with the $type as default result
+}
+
+/**
+* callback to calculate the duration of a working time node
+*/
+function computed_field_field_duration_calc_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $date_field = $entity->field_date_time[LANGUAGE_NONE][0];
+  $working_time_sec = $date_field['value2'] - $date_field['value'];
+  
+  //now substract the breaks
+  $breaks = !empty($entity->field_date_times[LANGUAGE_NONE]) ? $entity->field_date_times[LANGUAGE_NONE] : array();
+  $total_break_sec = 0;
+  foreach ($breaks as $delta=>$value) {
+    $from = $value['value'];
+    $till = $value['value2'];
+    $break_sec = $till - $from;
+    $total_break_sec += $break_sec;
+  }
+  
+  $time_decimal = round(($working_time_sec - $total_break_sec) / (60 * 60), 2); //time in hours
+  $entity_field[0]['value'] = $time_decimal;
+}
+
+/**
+*  Callback to set the display of a calculated duration of a working time node
+*/
+function computed_field_field_duration_calc_display($field, $entity_field_item, $entity_lang, $langcode) {
+  
+  $value = $entity_field_item['value'];
+  $whole = floor($value);      // full part
+  $decimal_part = $value - $whole; // decimal part
+  //get decimal part in minutes
+  
+  $minutes = round(60 * $decimal_part);
+  return $whole.':'.$minutes.' '.t('hours');
+}
+
+/**
+* Return a detailled timetracking link for the working time row if the erpal_project ui module is enabled
+* This function is called in the timekeeping view
+*/
+function _erpal_employee_get_detailled_timetracking_link($view, $row, $data) {
+  if (!module_exists('erpal_project_ui') || $view->name !== 'working_time') {
+    return false;
+  }
+
+  //get the username and the time if the row with the given nid. Views php seams to have a bug and always shows the nid in each field
+  $name = $row->name;
+  $date = $data->field_field_date_time[0]['raw']['value'];
+  $long_format = 'Y-m-d'; //variable_get('date_format_long', 'l, F j, Y - H:i');
+  
+  $date = date($long_format, $date);
+
+  $link = l(t('Timetracking'), 'projects/timetrackings', array('query' => array('field_date_time_value[min][date]' => $date, 'field_date_time_value[max][date]' => $date, 'uid' => $name)));
+
+  return $link;
+}

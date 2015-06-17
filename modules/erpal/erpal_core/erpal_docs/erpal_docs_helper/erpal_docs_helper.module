@@ -1,0 +1,432 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_docs_helper module.
+*/
+
+module_load_include('inc', 'erpal_docs_helper', 'erpal_docs_helper.token');
+module_load_include('inc', 'erpal_docs_helper', 'inc/config');
+module_load_include('inc', 'erpal_docs_helper', 'inc/erpal_docs_helper_files');
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function erpal_docs_helper_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'erpal_docs_helper' || $module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+}  
+ 
+/**
+ * Implements of hook_views_api().
+ */
+function erpal_docs_helper_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'erpal_docs_helper') . '/views',
+  );
+}
+
+/**
+ * Implements hook_fileedit_upload_validator_alter
+ */
+function erpal_docs_helper_fileedit_upload_validator_alter(&$validators) {
+  //this adds the file extension set in this modules settings to be allowed be the upload validator.
+  $allowed_extensions = _erpal_docs_helper_doc_extensions();
+  $validators['file_validate_extensions'] = array(0 => $allowed_extensions); 
+  
+}
+
+/**
+* Implements hook_menu
+*/ 
+function erpal_docs_helper_menu(){
+
+  $items = array();
+  
+  require_once 'inc/config.inc';
+  $config_items = _erpal_docs_helper_config_menu();
+  
+  $items['erpal/file/%file/%'] = array(
+    'page callback' => '_erpal_docs_helper_stream_file',  
+    'page arguments' => array(2), //must be the file
+    'access callback' => '_erpal_docs_helper_stream_file_access',
+    'access arguments' => array(2, 3), //this is the access token, the drupal secret key
+  );
+  
+  $items = array_merge($items, $config_items);
+  return $items;
+} 
+ 
+/**
+* Implements hook_form_alter
+*/ 
+function erpal_docs_helper_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'field_ui_field_edit_form') {
+    if (isset($form['instance']['field_name']))
+      if ($form['instance']['field_name']['#value'] == 'field_docs_file')
+        _erpal_docs_helper_field_docs_file_field_settings_form_alter($form, $form_state, $form_id);
+  }
+
+}
+
+/**
+* Alter the docs fiel field to hide the file extension form element because users should change these settings in ERPAL docs settings
+*/
+function _erpal_docs_helper_field_docs_file_field_settings_form_alter(&$form, &$form_state, $form_id) {
+  
+  $erpal_docs_settings_link = l(t('ERPAL docs settings'), 'admin/erpal/docs');
+  $form['instance']['settings']['file_extensions'] = array(
+    '#type' => 'item',
+    '#markup' => t('Please set extensions for this field in !erpal_docs_settings_link', array('!erpal_docs_settings_link' => $erpal_docs_settings_link)),
+    '#title' => $form['instance']['settings']['file_extensions']['#title'],
+  );
+}
+ 
+/**
+* Implements hook_field_widget_form_alter
+*/
+function erpal_docs_helper_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (!isset($element[0]['#field_name']))
+    return;
+  if ($element[0]['#field_name'] != 'field_docs_file')
+    return;
+  
+  //now alter the docs file widget to add validation handler
+  _erpal_docs_helper_field_docs_file_widget_form_alter($element, $form_state, $context);
+} 
+
+/**
+* Alters the file docs widget to make users enter thei allowed file extensions without orriding a feature that brings the docs_file field
+*/
+function _erpal_docs_helper_field_docs_file_widget_form_alter(&$element, &$form_state, $context) {
+  unset($element[0]['#upload_validators']['file_validate_extensions']);
+  $allowed_extensions = _erpal_docs_helper_doc_extensions();
+  $element[0]['#upload_validators']['file_validate_extensions'][] = $allowed_extensions;
+  
+  //now theme the description again
+  $description = theme('file_upload_help', array('upload_validators' => $element[0]['#upload_validators']));
+
+  $element[0]['#description'] = $description;
+}
+
+ 
+/**
+* Implements hook_permission
+*/
+function erpal_docs_helper_permission() {
+  return array(
+    'access documents view' => array(
+      'title' => t('Access documents view'), 
+      'description' => t('Allows the user to access the documents view'),
+    ),
+    'config erpal docs' => array(
+      'title' => t('Configure the ERPAL docs feature'), 
+      'description' => t('Allows the user to configure the documents feature'),
+    ),
+  );
+} 
+ 
+/**
+* Implements hook_node_delete
+*/ 
+function erpal_docs_helper_node_delete($node) {
+  if ($node->type == 'erpal_file') {
+    _erpal_docs_helper_delete_file_of_file_node($node);
+  }
+}
+
+/**
+* Deletes the file of a file node and all its revisions
+*/
+function _erpal_docs_helper_delete_file_of_file_node($file_node) {
+  //We dont need to delete the file any more because drupal will delete all unused files if node is deleted.
+}
+ 
+/**
+* This function is called in header area of documents view
+*/
+function _erpal_docs_helper_view_documents_header_content()
+{
+  $q = current_path();
+  $add_erpal_activity =  _erpal_docs_helper_create_document_link();
+  
+  $my_content = array(
+    $add_erpal_activity,
+  );
+  
+  //ask all other modules for content in the header area of the view
+  $other_module_content = module_invoke_all('view_documents_header_content');
+  
+  $all_content = array_merge($other_module_content, $my_content);
+  
+  $content = '';
+  foreach ($all_content as $a_content) {
+    $content .= '<br>'.$a_content;
+  }
+  
+  return $content;
+}
+
+/**
+* Helper function to create new document link
+*/
+function _erpal_docs_helper_create_document_link($q_arg = false, $query_arr = array())
+{
+  if (!$q_arg)
+    $q = current_path();
+  else 
+    $q = $q_arg;
+  
+  if (!isset($query_arr['destination']) || $q_arg)
+    $query_arr['destination'] = $q;
+  
+  return l(
+    t("Create new document"), "node/add/erpal-file", array(
+        'query' => $query_arr,
+    )
+  );
+}
+
+/**
+* Feature erpal_docs provides the field_asset_files which references a node which has a file field to wrap the file.
+* This function adds a given file (given by path) to a given node. It will create a new erpal_file node or updates it
+* the given erpal_file node if one is set
+* @param $node the nodeto which we try to attach an file_node using the field_asset_files. 
+* @param $doc_file it is a object, this fid will be used to attach the file object to the file_node
+* @param $file_node if false a new file_node will be created. The file object will be attached to the
+    file_node and thei erpal_file_node itself will be referenced by the field_asset_files of the node param. 
+    if there is no field_asset_files nothing will be done
+* @param $file_field_name if set, this field will be used to attach the file
+* @return true (the created file node) if success otherwise false
+*/
+function _erpal_docs_attach_file($node, $doc_file, $file_node=false, $skip_save_parent=false, $file_field_name=false) {
+  if (!$file_node) {
+    $file_node = _erpal_docs_helper_file_node_create();  //create new file node
+  }
+  
+  $file_attached = false;
+  if (isset($file_node->field_docs_file[LANGUAGE_NONE]) && is_array($file_node->field_docs_file[LANGUAGE_NONE])) {
+    foreach($file_node->field_docs_file[LANGUAGE_NONE] as $delta => $fid) {
+      $fid = $fid['fid'];
+      if ($fid == $doc_file->fid)
+        $file_attached = true;
+    }
+  }
+  
+  if (!$file_attached) {
+    $file_node->field_docs_file[LANGUAGE_NONE][0] = array(
+      'fid' => $doc_file->fid,
+      'display' => 1,
+    );
+  }
+ 
+  //allways create a new revision for versioning
+  $file_node->revision = true;
+
+  node_save($file_node);
+
+  if (!$file_field_name)
+    $file_field_name = 'field_asset_files';
+  
+  //chek if this node is already referenced, if not reference the new node
+  $is_referenced = false;
+  if (isset($node->{$file_field_name}[LANGUAGE_NONE])) {
+    foreach ($node->{$file_field_name}[LANGUAGE_NONE] as $delta=>$nid) {
+      $nid = $nid['target_id'];
+      if ($nid == $file_node->nid)
+        $is_referenced = true;
+    }
+  }
+  
+  if (!$is_referenced) {
+    $target = array(
+      'target_id' => $file_node->nid,
+      'target_type' => 'node',
+    );
+    $node->{$file_field_name}[LANGUAGE_NONE][] = $target;
+  }
+  
+  if (!$skip_save_parent) {
+    field_attach_update('node', $node);
+    //clear cache
+    node_load($node->nid, NULL, true);
+  }
+
+  return $file_node;
+}
+
+/**
+* Returns a random URI in temporaray file schema
+*/ 
+function _erpal_docs_random_tmp_uri() {
+  $basename = substr(md5(uniqid()), 1, 8).".tmp";
+  $uri = 'temporary://'.$basename;
+  
+  return $uri;
+}
+
+/**
+* Simply creates a new erpal_file node
+* @param $save if true the node will be saved to the database
+*/
+function _erpal_docs_helper_file_node_create() {
+  global $user;
+  
+  $file_node = new stdClass();
+  $file_node->type = 'erpal_file';  
+  node_object_prepare($file_node);  
+  $file_node->uid = $user->uid;
+  $file_node->language = LANGUAGE_NONE;
+  $file_node->status = 1; //published
+  
+  return $file_node;
+}
+
+/**
+* Returns the filed instance which is responsible for storing the file (field_docs_file)
+* @return an array with key info (describing the field information) and instance (describing the field instance)
+*/
+function _erpal_docs_file_field_instance() {
+  //load the field to get the destination of the files
+  $fileField = 'field_docs_file';
+  $fields = field_info_fields();
+  $field_info = field_info_field($fileField);    
+  $field_instance = field_info_instance('node', $fileField, 'erpal_file');
+  
+  return array('info' => $field_info, 'instance' => $field_instance);
+}
+
+
+/**
+* Return the URI Schema of the field_docs_file attached to erpal_file content type
+* @param $no_destination_folder if true only the uri schema is returned, otherwise the whole uri with the destination folder
+*/
+function _erpal_docs_uri_schema($no_destination_folder=false) {
+  //load the field to get the destination of the files
+  $field_instance = _erpal_docs_file_field_instance();
+  $field_info = $field_instance['info'];
+  $field_instance = $field_instance['instance'];
+  
+  $uri_schema = $field_info['settings']['uri_scheme'];
+  
+  return $uri_schema;
+}
+
+/**
+* Function returns the URI for a folder for all documents wrapped by a erpal_file
+*/
+function _erpal_docs_folder_uri() {
+  $uri_schema = _erpal_docs_uri_schema();
+
+  $field_instance = _erpal_docs_file_field_instance();
+  $field_info = $field_instance['info'];
+  $field_instance = $field_instance['instance'];
+  $destination = $field_instance['settings']['file_directory'];  
+  
+  $final_uri = $uri_schema."://".$destination;
+  $drupal_file_path_abs = drupal_realpath($final_uri);
+  file_prepare_directory($final_uri,  FILE_CREATE_DIRECTORY & FILE_MODIFY_PERMISSIONS);
+  
+  return $final_uri;
+  
+}
+
+/**
+* Creates a file base name after convention.
+* @param $title the title of a filename which will be ambedded in the pattern for filenames
+* @param $stype the filetype added to title to build the filename
+*/
+function _erpal_docs_make_filename($title, $type) {
+  //@TODO - kill all special chars
+  
+  $title = str_replace(' ', '_', $title);
+  
+  return $title.".".$type;
+}
+
+/**
+* Cause all files are private in ERPAL, we need to provide this callback to make files accessible with the drupal private key token. This is needed for PDF export e.g
+*/
+function _erpal_docs_helper_stream_file($file) {
+
+  $uri = $file->uri;
+  $abs_filename = drupal_realpath($uri);
+  $mime = $file->filemime;
+
+  header("Content-Type: ".$mime);
+  header('Content-Length: ' . filesize($abs_filename));
+
+  readfile($abs_filename);
+  exit(0);
+}
+
+/**
+* Validates access to stream a private file, only, if the drupal secret key is given
+*/
+function _erpal_docs_helper_stream_file_access($file, $token) {
+  $private_key = drupal_get_private_key();
+
+  return $token == $private_key && isset($file->fid) && $file->fid;
+}
+
+/**
+ * Get nids of all node entity referers of target entity
+ * 
+ * @param int $target_entity_type
+ *   target entity type
+ * @param int $target_bundle
+ *   target entity bundle
+ * @param int $id
+ *   target entity id
+ * 
+ * @return array
+ *   array of nids of all entity referer nodes
+ */
+function _erpal_docs_helper_refererers_nids($id, $target_bundle, $target_entity_type = 'node') {
+  $nids = $field_names = array();
+
+  // Get all entityreference field names
+  $query = db_select('field_config', 'f');
+  $query->fields('f', array('field_name'));
+  $query->condition('f.type', 'entityreference');
+  $query->distinct();
+  $rows = $query->execute();
+
+  foreach ($rows as $row) {
+    $field_name = $row->field_name;
+    $field_info = field_info_field($field_name);
+    if(!isset($field_info['settings']['target_type'])){
+      continue;
+    }
+    if($field_info['settings']['target_type'] != $target_entity_type){
+      continue;
+    }
+    if(!isset($field_info['settings']['handler_settings']['target_bundles'])){
+      continue;
+    }
+    $target_bundles = $field_info['settings']['handler_settings']['target_bundles'];
+    if(in_array($target_bundle, $target_bundles)){
+      $field_names[] = $field_name;
+    }
+  }
+  
+  // Loop all entityreference fields
+  foreach ($field_names as $field_name) {
+    $table = 'field_data_' . $field_name;
+    $target_id = $field_name . '_target_id';
+
+    $query = db_select($table, 'f');
+    $query->fields('f', array('entity_id'));
+    $query->condition('entity_type', 'node');
+    $query->condition($target_id, $id);
+    $query->distinct();
+    $rows = $query->execute();
+
+    foreach ($rows as $row) {
+      $nids[$row->entity_id] = $row->entity_id;
+    }
+  }
+
+  return $nids;
+}

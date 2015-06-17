@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * @file
+ * Simpletest case for erpal_project module.
+ *
+ * Verify example module functionality.
+ * 
+ * @author Oskar Bechtold <bechtold@brightsolutions.de> and Jan Müller <j.mueller@brightsolutions.de>
+ */
+
+/**
+ * Functionality tests for epal_project module.
+ */
+class EpalProjectTestCase extends DrupalWebTestCase {
+  protected $contact;
+  protected $statusterm;
+  protected $priorityterm;
+
+  public static function getInfo() {
+    return array(
+        'name' => 'Erpal Project Test Case',
+        'description' => 'Verify the custom node type (project, ticket, task, timetracking) creation.',
+        'group' => 'Erpal',
+    );
+  }
+
+  function setUp() {
+    // Enable the module.
+    $this->profile = 'erpal';
+    parent::setUp();
+    
+    $contact = new stdClass();
+    $contact->title = 'contact1';
+    $contact->field_contact_type['und'][0]['value'] = 'company';
+    $contact->type = 'erpal_contact';
+    node_save($contact);
+    $this->contact = $contact;
+    
+    $statusvocab = taxonomy_vocabulary_machine_name_load('project_status_terms');
+    $statustree = taxonomy_get_tree($statusvocab->vid);
+    $this->statusterm = reset($statustree);
+    
+    $priorityvocab = taxonomy_vocabulary_machine_name_load('priority_terms');
+    $prioritytree = taxonomy_get_tree($priorityvocab->vid);
+    $this->priorityterm = reset($prioritytree);
+    $this->verbose($this->priorityterm);
+  }
+
+  /**
+   * test if erpal_project module is set up correctly
+   */
+//  function testErpalProjectSetUp() {
+//    $this->verbose('test');
+//    $this->assertTrue(module_exists('erpal_project'),'erpal_project module is set up and enabled');
+//  }
+
+  /**
+   * Verify the functionality of the example module.
+   */
+  function testProjectCreation() {
+    // Create and login user.
+    $account = $this->drupalCreateUser(array('access content', 'create erpal_project content'));
+    $this->drupalLogin($account);
+
+    // Create a new node. The image makes it more complicated, so skip it.
+    $edit = array(
+        'title' => 'Test Project',
+        'body[und][0][value]' => '<p>Project Test Body</p>',
+        'field_customer_ref[und][0][target_id]' => $this->contact->title.' ('.$this->contact->nid.')',
+        'field_project_status_term[und][0][tid]' => $this->statusterm->vid,
+        'field_priority_term[und][0][tid]' => $this->priorityterm->vid,
+        
+
+//        'body[und][0][format]' => 'full_html',
+//        'field_date[und][0][value2][date]' => '30.03.2013',
+//        'field_date[und][0][value][date]' => '31.03.2013',
+//        'field_pricing[und][0][field_budget_time_billing][und]' => 'billable',
+//        'field_pricing[und][0][field_currency][und]' => 'EUR',
+//        'field_pricing[und][0][field_price][und][0][value]' => 123,
+//        'field_pricing[und][0][field_vat_rate][und]' => 19,
+//        'op'=> 'save'
+        
+        
+    );
+    $this->drupalPost('node/add/erpal_project', $edit, t('Save'));
+    $this->assertText("Project " . $edit['title'] . " has been created", "Found node creation message");
+//    $this->assertPattern("/The colors available.*red.*green.*blue/", "Correct 'colors available' on node page");
+
+    // Look on the examples page to make sure it shows up there also.
+//    $this->drupalGet('examples/node_example');
+//    $this->assertText($edit['title'], "Found random title string");
+//    $this->assertPattern("/red.*green.*blue/", "Correct 'colors available' on node example page");
+  }
+
+}

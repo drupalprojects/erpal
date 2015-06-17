@@ -1,0 +1,37 @@
+<?php
+/**
+ * @file
+ * Code for the ERPAL project release UI feature.
+ */
+
+include_once 'erpal_project_release_ui.features.inc';
+
+/**
+* Implements hook_permission
+*/
+function erpal_project_release_ui_permission() {
+  return array(
+    'view project releases' => array(
+      'title' => t('View releases of projects'),
+      'description' => t('Allows the user to acces the releases view of projects.'),
+    ),
+  );
+}
+
+/**
+* Implements hook_custom_node_content_block_content to add custom node content to a panel
+*/
+function erpal_project_release_ui_custom_node_content_block_content($node) {
+  
+  if ($node->type == 'erpal_task') {
+    //in a task we want to show in which release the task was delivered. We dont add this to a panel, because the task panel should not need the release module as dependency. This would happen if we just add the field_release_ref to the panel because this field was added by erpal_project_release module
+    $display = array('type' => 'entityreference_typed_label', 'settings' => array('link' => true));
+    $output = field_view_field('node', $node, 'field_release_ref', $display);
+    $html = drupal_render($output);
+    return array(array(
+      '#type' => 'markup',
+      '#markup' => $html, //$entity_link,
+      '#weight' => 10,
+    )); 
+  }
+}

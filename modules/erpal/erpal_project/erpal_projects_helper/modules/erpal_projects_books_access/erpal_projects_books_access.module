@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Drupal needs this blank file.
+ */
+
+module_load_include('inc', 'erpal_projects_books_access', 'inc/custom');

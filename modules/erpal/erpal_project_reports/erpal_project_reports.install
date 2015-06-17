@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file all functions needed for updates of the module
+ */
+
+/**
+* Implements hook_install
+*/ 
+function erpal_project_reports_install() {
+  _erpal_project_reports_elyisa_cron_defaults();
+}
+
+/**
+* Set elysia cron defaults
+*/
+function erpal_project_reports_update_7001() {
+  _erpal_project_reports_elyisa_cron_defaults();
+}
+
+/**
+* Set the eylsia cron default rule for this module
+*/
+function _erpal_project_reports_elyisa_cron_defaults() {
+  $values = array('rule' => '0 */6 * * *');
+  elysia_cron_set('erpal_project_reports_cron', false, $values);
+}
+
+/**
+* Removed unused fields of reports entity
+*/
+
+function erpal_project_reports_update_7002() {
+  //delete only instances of some fields
+  $instance = field_info_instance('erpal_reports', 'field_customer_ref', 'erpal_project_active_projects_reports');  
+  field_delete_instance($instance);     
+  $instance = field_info_instance('erpal_reports', 'field_customer_category', 'erpal_project_active_projects_reports');   
+  field_delete_instance($instance);
+  
+  $instance = field_info_instance('erpal_reports', 'field_project_ref', 'erpal_project_management_reports');    
+  field_delete_instance($instance);
+  
+  $instance = field_info_instance('erpal_reports', 'field_customer_ref', 'erpal_project_profit_margin_reports');  
+  field_delete_instance($instance);  
+  $instance = field_info_instance('erpal_reports', 'field_project_ref', 'erpal_project_profit_margin_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_service_category_term', 'erpal_project_profit_margin_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_customer_category', 'erpal_project_profit_margin_reports');  
+  field_delete_instance($instance);
+    
+  $instance = field_info_instance('erpal_reports', 'field_project_ref', 'erpal_project_timetracking_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_customer_category', 'erpal_project_timetracking_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_customer_ref', 'erpal_project_timetracking_reports');  
+  field_delete_instance($instance);  
+  $instance = field_info_instance('erpal_reports', 'field_project_tags', 'erpal_project_timetracking_reports');  
+  field_delete_instance($instance);
+  $instance = field_info_instance('erpal_reports', 'field_task_assigned_users', 'erpal_project_timetracking_reports');  
+  field_delete_instance($instance);
+  
+  
+  //now delete complete fields
+  field_delete_field('field_erp_prj_tt_rep_dim_cust');
+  field_delete_field('field_erp_prj_tt_rep_dim_cuscat');
+  field_delete_field('field_erp_prj_tt_rep_dim_user');
+  field_delete_field('field_erp_prj_tt_rep_dim_prj');
+  field_delete_field('field_erp_prj_tt_rep_dim_cust');
+  field_delete_field('field_erp_prj_tt_rep_dim_cuscat');
+  field_delete_field('field_erp_prj_tt_rep_dim_tascat');
+  field_delete_field('field_erp_prj_tt_rep_dim_user');  
+  field_delete_field('field_projet_role_rel_tags');  
+}

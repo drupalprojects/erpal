@@ -1,0 +1,540 @@
+<?php
+
+/**
+* Handle all installtion process functions
+*/
+
+/**
+* Implements hook_install
+*/
+function erpal_basic_helper_install() {
+  //add date formats
+  _erpal_basic_helper_insert_format_types();
+}
+
+/**
+* Add date formats for ERPAL to be more flexible in date time display
+*/
+function erpal_basic_helper_update_7001() {
+  _erpal_basic_helper_insert_format_types();
+}
+
+/**
+* Do some datebase refactoring because of deleted rel module
+*/
+function erpal_basic_helper_update_7002() {
+  db_query("DELETE FROM {system} WHERE name = 'rel'");
+  cache_clear_all(); //clear cache so the system will forget the rel module
+}
+
+function erpal_basic_helper_update_7003(){
+  
+}
+
+/**
+ * Set views saved searches settings
+ */
+function erpal_basic_helper_update_7004(){
+  $views = array(
+    'assigned_tasks', 
+    'crm_activities',
+    'full_calendar', 
+    'projects', 
+    'tasks', 
+    'tickets', 
+    'timetrackings', 
+    'working_time', 
+    'working_times', 
+  );
+  variable_set('views_savedsearches', $views);
+}
+
+/**
+* Insert neccessary date formats if they don't exist
+*/
+function _erpal_basic_helper_insert_format_types() {
+  //insert date and time format if they dont exist
+  _erpal_basic_helper_ensure_format('Y-m-d');
+  _erpal_basic_helper_ensure_format('Y-m-d H:i');
+  
+  //now add these formats to the format types that we need
+  _erpal_basic_helper_ensure_format_type('ERPAL date', 'erpal_date', 'Y-m-d');
+  _erpal_basic_helper_ensure_format_type('ERPAL date time', 'erpal_date_time', 'Y-m-d H:i');
+    
+}
+
+/**
+* Make sure that a format type with the given name exists. If it doesn't exist, we add it with the given date format
+*/
+function _erpal_basic_helper_ensure_format_type($readable_name, $machine_name, $format_string) {
+  $types = system_get_date_types();
+  if (!in_array(trim($machine_name), array_keys($types))) {
+    //type doesn't exist, so we create it.
+    $format_type = array();
+    $format_type['title'] = $readable_name;
+    $format_type['type'] = $machine_name;
+    $format_type['locked'] = 0;
+    $format_type['is_new'] = 1;
+    system_date_format_type_save($format_type);
+    variable_set('date_format_' . $machine_name, $format_string);
+  }
+
+}
+
+/**
+* Returns the date format id for a given format, if it doesn't exist, it will be created (if param create_if_not_exists is set)
+*/
+function _erpal_basic_helper_ensure_format($format_string, $create_if_not_exists = true) {
+  $formats = system_get_date_formats('custom');
+  $format_exists = false;
+  if (is_array($formats)) {
+    if (array_key_exists($format_string, $formats)) {
+      $format_exists = $formats[$format_string]['dfid'];
+    }
+  }
+
+  if ($format_exists)
+    return $format_exists;
+
+  if (!$create_if_not_exists)
+    return false;
+
+  //format doesn't exist here so create it.
+  $format = array();
+  $format['format'] = $format_string;
+  $format['type'] = 'custom';
+  $format['locked'] = 0;
+
+  $format['is_new'] = 1;
+  system_date_format_save($format);
+
+  //and again get the dfid of the new format
+  $formats = system_get_date_formats('custom');
+  $format_exists = false;
+  if (is_array($formats)) {
+    if (array_key_exists($format_string, $formats)) {
+      $format_exists = $formats[$format_string]['dfid'];
+    }
+  }
+
+  return $format_exists;
+}
+
+/**
+* Update multiselect widget settings to enable filter search
+*/
+function erpal_basic_helper_update_7005(&$sandbox) {
+  variable_set('jquery_ui_multiselect_widget_filter', true);
+}
+
+/**
+* Enable createclass module
+*/
+function erpal_basic_helper_update_7006(&$sandbox) {
+  module_enable(array('createclass', 'boxjs', 'filejs'));
+}
+
+/**
+* Migrate contact communication data to the new structure. This may take several minutes!
+*/
+function erpal_basic_helper_update_7007(&$sandbox) {
+  //for every contact get all communication entities like links, emails and so on and migrate them to the new communication field collection
+
+  //ensure we have already created  the communication categories
+  module_load_include('inc', 'erpal_basic', 'erpal_basic.features.taxonomy');
+  $taxonomies = erpal_basic_taxonomy_default_vocabularies();
+  $communication_categories = $taxonomies['communication_categories'];
+  $vocabulary_exists = taxonomy_vocabulary_machine_name_load('communication_categories');
+  if (empty($vocabulary_exists)) {
+    taxonomy_vocabulary_save((object)$communication_categories);
+  }
+  
+  //first ensure we have the communication field already added, otherwise it will be added only by the features
+  //so we create all fields of the basic feature
+  module_load_include('inc', 'erpal_basic', 'erpal_basic.features.field_instance');
+  module_load_include('inc', 'erpal_basic', 'erpal_basic.features.field_base');  
+  
+  $instances = erpal_basic_field_default_field_instances();
+  $fields = erpal_basic_field_default_field_bases();
+  
+  // Create the fields if they don't exist
+  foreach ($fields as $field) {
+    $info = field_info_field($field['field_name']);
+    if (empty($info)) {
+      field_create_field($field);
+    }
+  }
+
+  foreach ($instances as $instance) {
+    try {
+      $info_instance = field_info_instance($instance['entity_type'], $instance['field_name'], $instance['bundle']);
+      if (empty($info_instance)) {
+        field_create_instance($instance);
+      }
+    } catch (Exception $e) {
+      //may be it just already exists
+    }
+  }  
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'erpal_contact')
+  ->addMetaData('account', user_load(1)); // run the query as user 1
+
+  $steps = 25;
+  $sandbox['#finished'] = 0;
+  // Multi-part update.
+  if (!isset($sandbox['node_from'])) {
+    cache_clear_all();
+    $sandbox['node_from'] = 0;
+    $sandbox['node_count'] = $query->count()->execute();
+  }
+  else {
+    $sandbox['#finished'] = $sandbox['node_from']/$sandbox['node_count'];
+
+    //update;
+    $query->range($sandbox['node_from'], $steps);
+    $result = $query->execute();
+    
+    $sandbox['node_from'] += $steps;
+    _erpal_basic_helper_install_update_communitcation($result);
+    
+    if ($sandbox['node_from'] >= $sandbox['node_count']) {
+      $sandbox['#finished'] = 1;
+//die('DONE'); //DEBUG
+      return t('Contact communication structure updated for contacts. If you want to delete all migrated fields, please go to !link if you dont need the old fields.', array('!link' => l(t('Remove and delete contact fields'), 'erpal/migrate/delete-fields')));
+    }
+  }
+
+}
+
+/**
+* Migrate the next nodes in result of query, for the batch operation
+*/
+function _erpal_basic_helper_install_update_communitcation($result) {
+  
+  if (isset($result['node'])) {
+    $contact_nids = array_keys($result['node']);
+    cache_clear_all();   //without this the nodes metadata wrappers will not have the fields data ...
+    foreach ($contact_nids as $nid) {
+      $contact_node = node_load($nid);
+      
+      //migrate fax numbers
+      $contact = entity_metadata_wrapper('node', $contact_node);
+      
+      //migrate fax      
+      try {
+        $fax = $contact->field_fax->value();
+      } catch (Exception $e) {
+        $fax = array();
+      }
+      
+      if (count($fax)) {
+        foreach ($fax as $number) {
+          _erpal_basic_contact_install_add_communication($contact_node, 'phone', $number, 'fax');
+        }
+      }
+      
+      //migrate email
+      try {
+        $email = $contact->field_email->value();
+      } catch (Exception $e) {
+        $email = array();
+      }
+      
+      if (count($email)) {
+        foreach ($email as $number) {
+          _erpal_basic_contact_install_add_communication($contact_node, 'mail', $number);
+        }
+      }
+      
+      //migrate phone now
+      try {
+        $phone = $contact->field_phone->value();
+      } catch (Exception $e) {
+        $phone = array();
+      }
+   
+      if (!is_array($phone))
+        $phone = array($phone);
+      if (count($phone)) {
+        foreach ($phone as $phone_collection) {
+          //this is a field collection          
+          try {
+            $phone_collection_w = entity_metadata_wrapper('field_collection_item', $phone_collection);
+            $number = $phone_collection_w->field_phone_number->value();
+            $number_normalized = $phone_collection_w->field_phone_number_normalized->value();
+            $term = $phone_collection_w->field_number_type_terms->value();
+          } catch (Exception $e) {
+            $number = false;
+          }          
+
+          $term_name = false;
+          if ($number) {
+            if ($term) {
+              $term_name = $term->name;                  
+            }
+            
+            _erpal_basic_contact_install_add_communication($contact_node, 'phone', $number, $term_name, $number_normalized);
+          }
+        }
+      }
+      
+      //migrate skype
+      try {
+        $skype = $contact->field_skype->value();
+      } catch (Exception $e) {
+        $skype = array();
+      }
+      
+      if (!is_array($skype))
+        $skype = array($skype);
+      if (count($skype)) {
+        foreach ($skype as $number) {
+          _erpal_basic_contact_install_add_communication($contact_node, 'phone', $number, 'skype');
+        }
+      }
+    
+      //migrate xing
+      try {
+        $xing = $contact->field_xing->value();
+      } catch (Exception $e) {
+        $xing = array();
+      }
+      
+      if (!empty($xing['url'])) {
+        _erpal_basic_contact_install_add_communication($contact_node, 'link', $xing['url'], 'xing');
+      }
+      
+      //website migration
+      try {
+        $web = $contact->field_website->value();
+      } catch (Exception $e) {
+        $web = array();
+      }
+      
+      if (!empty($web['url'])) {
+        _erpal_basic_contact_install_add_communication($contact_node, 'link', $web['url'], 'website');
+      }
+      
+      //migrate facebook
+      try {
+        $fb = $contact->field_facebook->value();
+      } catch (Exception $e) {
+        $fb = array();
+      }
+      
+      if (!empty($fb['url'])) {
+        _erpal_basic_contact_install_add_communication($contact_node, 'link', $fb['url'], 'facebook');
+      }
+      
+      //migrate twitter
+      try {
+        $twitter = $contact->field_twitter->value();
+      } catch (Exception $e) {
+        $twitter = array();
+      }
+      
+      if (!empty($twitter['url'])) {
+        _erpal_basic_contact_install_add_communication($contact_node, 'link', $twitter['url'], 'twitter');
+      }
+      
+      //migrate google+
+      try {
+        $google = $contact->field_google_plus->value();
+      } catch (Exception $e) {
+        $google = array();
+      }
+      
+      if (!empty($google['url'])) {
+        _erpal_basic_contact_install_add_communication($contact_node, 'link', $google['url'], 'google+');
+      }
+
+      //prepare the field collection
+      /*
+      $field = false;
+      $instance = false;
+      $langcode = LANGUAGE_NONE;
+      $items = $contact_node->field_communication[LANGUAGE_NONE];
+      field_collection_field_presave('node', $contact_node, $field, $instance, $langcode, $items);
+      */
+      field_attach_update('node', $contact_node);
+      entity_get_controller('node')->resetCache(array($contact_node->nid));
+      //node_save($contact_node);
+
+    }
+  }
+}
+
+/**
+* Adds a new communication field collection to the node
+*/
+function _erpal_basic_contact_install_add_communication($contact_node, $type, $address, $category=false, $number_normalized=false) {
+
+  //only add the field collection if it has a value set as address
+  if (empty($address))
+    return false;
+
+  $collection = entity_create('field_collection_item', array('field_name' => 'field_communication'));
+  $collection->setHostEntity('node', $contact_node, LANGUAGE_NONE, FALSE); //dont link the host entity to a field yet
+  $collection_wrapper = entity_metadata_wrapper('field_collection_item', $collection);
+  $collection_wrapper->field_communication_type->set($type);
+  $collection_wrapper->field_communication_address->set($address);
+  
+  if ($category) {
+    $tid = _erpal_basic_contact_install_check_and_create_term($category, 'communication_categories');
+    $collection_wrapper->field_communication_category->set($tid);
+  }
+  
+  if ($number_normalized) {
+    $collection_wrapper->field_phone_number_normalized->set($number_normalized);
+  }
+
+  $collection->save(TRUE);
+
+  $contact_node->field_communication[LANGUAGE_NONE][] = array('value' => $collection->item_id,'revision_id' => $collection->revision_id);
+
+  return $collection;
+}
+
+
+function _erpal_basic_contact_install_check_and_create_term($term_name, $vocabulary_name) {
+  //check if there is a term for this vocabulary, if not, create it
+  $term = taxonomy_get_term_by_name($term_name, $vocabulary_name);
+  $term = reset($term);
+
+  if ($term && !empty($term->tid)) {
+    $tid = $term->tid;
+  }
+  else {
+    $term = new stdClass();
+    $term->name = $term_name;
+    $vocab = taxonomy_vocabulary_machine_name_load($vocabulary_name);
+    $term->vid = $vocab->vid;
+    taxonomy_term_save($term);
+    $tid = $term->tid;
+  }
+  return $tid;
+}
+/**
+* Remove some comments fields as we now use comment alter to change node fields
+*/
+function erpal_basic_helper_update_7008(&$sandbox) {
+  module_load_include('inc', 'erpal_basic_helper', 'erpal_basic_helper.install');
+ 
+  $sandbox['#finished'] = 0;
+
+  //if not done, enable the comment alter module!
+  if (!module_exists('comment_alter'))
+    module_enable(array('comment_alter'));
+  
+  //remove the comment diff field from the cne module but migrate to the new structure before.
+  $message = _erpal_basic_helper_install_migrate_comment_diff($sandbox);
+
+  //only if multistep migration is finished, remove the fields
+  if (!empty($sandbox['#finished']) && $sandbox['#finished']) { 
+    $instance = field_info_instance('comment', 'field_contacts_ref', 'comment_node_erpal_crm_activity');
+    field_delete_instance($instance);
+
+    $instance = field_info_instance('comment', 'field_asset_files', 'comment_node_erpal_crm_activity');
+    field_delete_instance($instance);
+    
+    //after the migration, remove the comment diff field
+    $instance = field_info_instance('comment', 'field_comment_diff', 'comment_node_erpal_crm_activity');
+    field_delete_instance($instance);
+    
+    $instance = field_info_instance('comment', 'field_asset_files', 'comment_node_erpal_task');
+    field_delete_instance($instance);
+    
+    //remove comment diff, task comments have already been migrated before.
+    $instance = field_info_instance('comment', 'field_comment_diff', 'comment_node_erpal_task');
+    field_delete_instance($instance);
+    
+    //remove the cne and nodechanges module from system table to avoid performance slow down in bootstrap
+    db_query("DELETE FROM {system} WHERE name='cne'");
+    db_query("DELETE FROM {system} WHERE name='nodechanges'");
+    
+    return $message;
+  }
+  
+}
+
+
+/**
+* Manage update dependencies
+*/
+function erpal_basic_helper_update_dependencies() {
+  $dependencies['erpal_basic_helper'][7007] = array(
+    'erpal_projects_billable' => 7001, 
+  );
+
+  return $dependencies;
+}
+
+/**
+* Migrate relation inline form to relation add module
+*/
+function erpal_basic_helper_update_7009(&$sandbox) {
+  //as the data structure will not change, we will just modify the field base in the field_config table. This will break nothing but features cannot change existing fields
+  db_update('field_config')
+    ->fields(array('type' => 'relation_add', 'module' => 'relation_add')) 
+    ->condition('field_name', 'field_contact_relations')
+    ->execute();
+}
+
+/**
+* Enable the language field module
+*/
+function erpal_basic_helper_update_7010(&$sandbox) {
+  module_enable(array('languagefield'));
+}
+
+/**
+* Enable the views calc distinct module
+*/
+function erpal_basic_helper_update_7011(&$sandbox) {
+  module_enable(array('views_calc_distinct'));
+}
+
+/**
+* Enable the relation view formatter module
+*/
+function erpal_basic_helper_update_7012(&$sandbox) {
+  module_enable(array('relation_view_formatter'));
+}
+
+/**
+* Update to jquery version 1.8
+*/
+function erpal_basic_helper_update_7013(&$sandbox) {
+  variable_set('jquery_update_jquery_version', '1.8');
+}
+
+/**
+* Enable the diff module and set diff view to "not admin" area
+*/
+function erpal_basic_helper_update_7014(&$sandbox) {
+  module_enable(array('diff_views'));
+  variable_set('diff_admin_path_node', FALSE);
+}
+
+/**
+* Added users default image.
+*/
+function erpal_basic_helper_update_7015(&$sandbox) {
+  variable_set('user_picture_default', 'profiles/erpal/files/graphics/erpal_default_avatar.png');
+}
+
+/**
+* Add default field to the contact image field
+*/
+function erpal_basic_helper_update_7016(&$sandbox) {
+  $instance = field_info_instance('node', 'field_contact_image', 'erpal_contact');
+  //save the default image first to get the file id
+  $handle = fopen('profiles/erpal/files/graphics/contact_default_image.png', 'r');
+  $file = file_save_data($handle, 'public://contact_default_image.png');  
+  fclose($handle);  
+  $instance['settings']['default_image'] = $file->fid;
+  field_update_instance($instance);
+  variable_set('erpal_contact_default_image_fid', $file->fid);
+}

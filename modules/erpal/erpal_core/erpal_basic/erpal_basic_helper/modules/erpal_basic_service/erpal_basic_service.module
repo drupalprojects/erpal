@@ -1,0 +1,686 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_basic_service module.
+ * ERPAL basic service adds services integration to allow data transfer for external apps
+ */
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_basic_service_services_resources() {
+  
+  return array(
+    'contact-relation' => array(
+      'index' => array(
+        'help' => 'Retrieves the index of contact relations',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'callback' => '_erpal_basic_service_contact_relation_index',
+        'access callback' => '_erpal_basic_service_contact_relation_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'Deliver data from nth element, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'Deliver the contact with detailed information, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => FALSE,
+          )
+        ),
+      ),
+      'retrieve' => array(
+        'help' => 'Retrieves a contact relation',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'callback' => '_erpal_basic_service_contact_relation_retrieve',
+        'access callback' => '_erpal_basic_service_contact_relation_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name'        => 'rid',
+            'type'        => 'int',
+            'description' => 'The database ID of a relation',
+            'source'      => array('path' => 0), 
+            'optional'    => TRUE,
+          )
+        ),
+      ),
+      'delete' => array(
+        'help' => 'Deletes a contact relation',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'callback' => '_erpal_basic_service_contact_relation_delete',
+        'access callback' => '_erpal_basic_service_contact_relation_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'access arguments' => array('delete'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name'        => 'rid',
+            'type'        => 'int',
+            'description' => 'The database ID of a relation',
+            'source'      => array('path' => 0), 
+            'optional'    => TRUE,
+          )
+        ),
+      ),
+      'create' => array(
+        'help' => 'Creates a contact relation',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'callback' => '_erpal_basic_service_contact_relation_create',
+        'access callback' => '_erpal_basic_service_contact_relation_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'relation',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The contact relation data to create',
+            'type' => 'array',
+          ),
+        ),
+      ),
+      'update' => array(
+        'help' => 'Updates a contact relation',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'callback' => '_erpal_basic_service_contact_relation_update',
+        'access callback' => '_erpal_basic_service_contact_relation_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact_relation'),
+        'access arguments' => array('update'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name'        => 'id',
+            'type'        => 'int',
+            'description' => 'The id of the contact to update',
+            'source'      => array('path' => 0),
+            'optional'    => TRUE,
+          ),
+          array(
+            'name'        => 'relation',
+            'optional'    => FALSE,
+            'source'      => 'data',
+            'description' => 'The contact relation data to create',
+            'type'        => 'array',
+          ),
+        ),
+      )
+    ),
+    'contact' => array(
+      'retrieve' => array(
+        'help' => 'Retrieves a contact',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'callback' => '_erpal_basic_service_contact_retrieve',
+        'access callback' => '_erpal_basic_service_contact_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the contact to get',
+            'source' => array('path' => 0), //counted from the end, so param = 0 is the last arg in the url!
+            'optional' => TRUE,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'includes details with the contact, defaults to true.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes with the contact, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+      'create' => array(
+        'help'                    => 'Creates a contact',
+        'file'                    => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'callback'                => '_erpal_basic_service_contact_create',
+        'access callback'         => '_erpal_basic_service_contact_access',
+        'access callback file'    => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'access arguments'        => array('create'),
+        'access arguments append' => TRUE,
+        'args'                    => array(
+          array(
+            'name'        => 'contact',
+            'optional'    => FALSE,
+            'source'      => 'data',
+            'description' => 'The contact node data to create',
+            'type'        => 'array',
+          ),
+        ),
+      ),
+      'update' => array(
+        'help' => 'Updates a contact',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'callback' => '_erpal_basic_service_contact_update',
+        'access callback' => '_erpal_basic_service_contact_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'access arguments' => array('update'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the contact to update',
+            'source' => array('path' => 0),
+            'optional' => TRUE,
+          ),
+          array(
+            'name' => 'contact',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The contact node data to update with',
+            'type' => 'array',
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'Retrieves a listing of contacts filterable',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'callback' => '_erpal_basic_service_contact_index',
+        'access callback' => '_erpal_basic_service_contact_access',
+        'access arguments' => array('view'),
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/contact'),
+        'access arguments append' => FALSE,
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'Deliver data from nth element, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'Deliver the contact with detailed information, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => FALSE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes with the contact, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+    ),
+    'erpal_comment' => array(
+      'create' => array(
+        'help' => 'Creates a comment',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'callback' => '_erpal_basic_service_comment_create',
+        'access callback' => '_erpal_basic_service_comment_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'nid',
+            'type' => 'int',
+            'optional' => FALSE,
+            'source' => array('path' => 0), //counted from the end, so param = 0 is the last arg in the url!
+            'description' => 'the node id to comment on',
+          ),
+          array(
+            'name' => 'data',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'the comment to create',
+            'type' => 'array',
+          ),
+        ),
+      ),
+      'update' => array(
+        'help' => 'Updates a comment',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'callback' => '_erpal_basic_service_comment_update',
+        'access callback' => '_erpal_basic_service_comment_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'access arguments' => array('update'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'nid',
+            'type' => 'int',
+            'description' => 'the id of the node of which the comment to update',
+            'source' => array('path' => 0),
+            'optional' => FALSE,
+          ),
+          array(
+            'name' => 'cid',
+            'type' => 'int',
+            'description' => 'the id of the comment to update',
+            'source' => array('path' => 1),
+            'optional' => FALSE,
+          ),
+          array(
+            'name' => 'comment',
+            'optional' => TRUE,
+            'source' => 'data',
+            'description' => 'the updated comment',
+            'type' => 'array',
+          ),
+        ),
+      ),
+      'retrieve' => array(
+        'help' => 'Retrieves a comment',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'callback' => '_erpal_basic_service_comment_retrieve',
+        'access callback' => '_erpal_basic_service_comment_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'string',
+            'description' => 'The id of the node (OR the type of entity) whose comments to get',
+            'source' => array('path' => 0),
+            'optional' => TRUE,
+            'default value' => '',
+          ),
+          array(
+            'name' => 'cid',
+            'type' => 'int',
+            'description' => 'the comment id to retrieve',
+            'source' => array('path' => 1),
+            'optional' => TRUE,
+            'default value' => '',
+          ),
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'denotes the starting point from which to fetch results',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'denotes the number of result items to return',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'denotes the timestamp to filter results for',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'includes details with the comment, defaults to true.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes with the comment, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'retrieves comments for all supported types',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'callback' => '_erpal_basic_service_comment_index',
+        'access callback' => '_erpal_basic_service_comment_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/comment'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'denotes the starting point from which to fetch results',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'denotes the number of result items to return',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'denotes the timestamp to filter results for',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'includes details with the comment, defaults to true.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes with the comment, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+    ),
+    'erpal_user' => array(
+      'retrieve' => array(
+        'help' => 'retrieves a user',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/user'),
+        'callback' => '_erpal_basic_service_user_retrieve',
+        'access callback' => '_erpal_basic_service_user_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/user'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'uid',
+            'type' => 'int',
+            'description' => 'The id of the user to get',
+            'source' => array('path' => 0), //counted from the end, so param = 0 is the last arg in the url!
+            'optional' => TRUE,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'includes details with the contact, defaults to true.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes with the contact, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+      'index' => array(
+        'help' => 'retrieves users',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/user'),
+        'callback' => '_erpal_basic_service_user_index',
+        'access callback' => '_erpal_basic_service_user_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/user'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'denotes the starting point from which to fetch results',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'denotes the number of result items to return',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'denotes the timestamp to filter results for',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'includes details, defaults to true.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+    ),
+    'erpal_permission' => array(
+      'retrieve' => array(
+        'help' => 'retrieves a user',
+        'file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/permission'),
+        'callback' => '_erpal_basic_service_permission_retrieve',
+        'access callback' => '_erpal_basic_service_permission_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_basic_service', 'name' => 'inc/permission'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'uid',
+            'type' => 'int',
+            'description' => 'the id of the user to fetch the permissions for',
+            'source' => array('path' => 0),
+            'optional' => TRUE,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_basic_service_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+    );
+  }
+}
+
+/**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_basic_service_default_services_endpoint() {
+
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'erpal_basic_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/basic';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'rest_server' => array(
+      'formatters' => array(
+        'bencode' => TRUE,
+        'json' => TRUE,
+        'php' => TRUE,
+        'rss' => TRUE,
+        'xml' => TRUE,
+        'yaml' => TRUE,
+        'jsonp' => FALSE,
+      ),
+      'parsers' => array(
+        'application/json' => TRUE,
+        'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
+        'application/x-yaml' => TRUE,
+        'multipart/form-data' => TRUE,
+      ),
+    ),
+  );
+  $endpoint->resources = array(
+    'contact' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ),
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+        'update' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'contact-relation' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ), 
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'update' => array(
+          'enabled' => 1,
+        ),
+        'delete' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'erpal_comment' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'create' => array(
+          'enabled' => 1,
+        ),
+        'update' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'erpal_user' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'erpal_permission' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+
+  $endpoints[$endpoint->name] = $endpoint;
+
+  return $endpoints;
+}

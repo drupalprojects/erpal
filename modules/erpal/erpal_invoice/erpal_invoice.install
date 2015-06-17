@@ -1,0 +1,50 @@
+<?php 
+
+/**
+* @file handle updates for erpal invoices
+*/
+
+/**
+* Update vat field to decimal instead of integer
+*/
+function erpal_invoice_update_7001(&$sandbox) {
+  // field_update_field(array('field_name' => 'field_vat_rate', 'type' =>'list_float'));
+  // with data already existing, we can't use field_update_field
+  db_change_field('field_data_field_vat_rate', 'field_vat_rate_value', 'field_vat_rate_value', array('type'=>'numeric','precision'=>'6','scale'=>'3'));
+  db_change_field('field_revision_field_vat_rate', 'field_vat_rate_value', 'field_vat_rate_value', array('type'=>'numeric','precision'=>'6','scale'=>'3'));
+  db_query("UPDATE  {field_config} SET `type` = 'list_float' WHERE `field_name`='field_vat_rate'");
+  
+  db_change_field('field_data_field_buy_vat_rate', 'field_buy_vat_rate_value', 'field_buy_vat_rate_value', array('type'=>'numeric','precision'=>'6','scale'=>'3'));
+  db_change_field('field_revision_field_buy_vat_rate', 'field_buy_vat_rate_value', 'field_buy_vat_rate_value', array('type'=>'numeric','precision'=>'6','scale'=>'3'));
+  db_query("UPDATE {field_config} SET `type` = 'list_float' WHERE `field_name`='field_buy_vat_rate'");
+}
+
+/**
+* Update default vat rate
+*/
+function erpal_invoice_update_7002(&$sandbox) {
+  $vat_rate = variable_get('erpal_invoice_default_vat_rate', '19.000');
+  variable_set('erpal_invoice_default_vat_rate', number_format($vat_rate, 3));
+}
+
+/**
+* Update saldo field to decimal instead of float
+*/
+function erpal_invoice_update_7003(&$sandbox) {
+  db_change_field('field_data_field_saldo', 'field_saldo_value', 'field_saldo_value', array('type'=>'numeric','precision'=>'10','scale'=>'2'));
+  db_change_field('field_revision_field_saldo', 'field_saldo_value', 'field_saldo_value', array('type'=>'numeric','precision'=>'10','scale'=>'2'));
+  db_query("UPDATE  {field_config} SET `type` = 'number_decimal' WHERE `field_name`='field_saldo'");
+  
+  // we just need to add precision and scale to the field config settings:
+  $data = unserialize(db_query("SELECT data FROM {field_config} WHERE field_name = 'field_saldo'")->fetchField());
+  $data['settings']['precision'] = 10;
+  $data['settings']['scale'] = 2;
+
+  db_update('field_config')
+  ->fields(array('data' => serialize($data)))
+  ->condition('field_name', 'field_saldo')
+  ->execute();
+
+  // Clear caches.
+  field_cache_clear(TRUE);
+}

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_contract feature.
+ */
+
+include_once 'erpal_contract_ui.features.inc';

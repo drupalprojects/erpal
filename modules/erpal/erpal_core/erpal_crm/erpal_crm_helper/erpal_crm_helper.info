@@ -1,0 +1,18 @@
+core = "7.x"
+description = "ERPAL CRM Helper"
+name = "erpal_crm_helper"
+package = "ERPAL CRM"
+php = "5.2.4"
+project = "erpal_crm_helper"
+version = "7.x-1.0-dev"
+
+files[] = erpal_crm_helper.module
+files[] = inc/config.inc
+files[] = views/erpal_crm_helper.views.inc
+files[] = views/erpal_crm_helper_handler_filter_contact_activities.inc
+; Information added by Drupal.org packaging script on 2015-06-05
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "erpal_core"
+datestamp = "1433507327"
+

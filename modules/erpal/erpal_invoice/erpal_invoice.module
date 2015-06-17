@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the erpal_invoice feature module.
+ */
+
+include_once('erpal_invoice.features.inc');

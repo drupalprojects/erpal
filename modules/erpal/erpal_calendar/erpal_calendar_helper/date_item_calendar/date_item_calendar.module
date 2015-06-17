@@ -1,0 +1,168 @@
+<?php
+
+/**
+ * @file
+ * Module file for date_item_calendar.
+ */
+
+/**
+ * Implements hook_entity_presave
+ */
+function date_item_calendar_entity_presave($entity, $type) {
+  // Synchronize date_from and date_till values with field_date_item_date field
+  if ($type == 'date_item') {
+    // Sync when node was changed (when date_items_update is present)
+    if ($entity->date_items_update) {
+      $update = FALSE;
+
+      // date_from
+      $l = LANGUAGE_NONE;
+      if (_date_item_calendar_needs_update($entity, 'value', 'date_from', $l)) {
+        $entity->field_date_item_date[$l][0]['value'] = $entity->date_from;
+        $update = TRUE;
+      }
+      // date_till
+      if (_date_item_calendar_needs_update($entity, 'value2', 'date_till', $l)) {
+        $entity->field_date_item_date[$l][0]['value2'] = $entity->date_till;
+        $update = TRUE;
+      }
+
+      if ($update)
+        return $entity;
+    }
+    // Sync when date_item entity was changed
+    else {
+      $update = FALSE;
+
+      // date_from
+      $l = LANGUAGE_NONE;
+      if (_date_item_calendar_entity_needs_update($entity, 'value', 'date_from', $l)) {
+        $entity->date_from = $entity->field_date_item_date[$l][0]['value'];
+        $update = TRUE;
+      }
+      // date_till
+      if (_date_item_calendar_entity_needs_update($entity, 'value2', 'date_till', $l)) {
+        $entity->date_till = $entity->field_date_item_date[$l][0]['value2'];
+        $update = TRUE;
+      }
+
+      if ($update)
+        return $entity;
+    }
+  }
+}
+
+/**
+ * helper function that checks if date fields of date_item entity need update
+ */
+function _date_item_calendar_needs_update($entity, $value, $date_field, $l) {
+  if (!isset($entity->{$date_field}))
+    return FALSE;
+
+  if (!isset($entity->field_date_item_date[$l][0][$value]))
+    return TRUE;
+
+  if ($entity->field_date_item_date[$l][0][$value] != $entity->{$date_field}) {
+    return TRUE;
+  }
+}
+
+function _date_item_calendar_entity_needs_update($entity, $value, $date_field, $l) {
+  if (!isset($entity->field_date_item_date[$l][0][$value]))
+    return FALSE;
+
+  if (!isset($entity->{$date_field}))
+    return TRUE;
+
+  if ($entity->field_date_item_date[$l][0][$value] != $entity->{$date_field}) {
+    return TRUE;
+  }
+}
+
+/**
+ * Implements hook_fullcalendar_editable_alter
+ */
+function date_item_calendar_fullcalendar_editable_alter(&$editable, $entity, $view) {
+  if ($src_entity = $entity->src_entity()) {
+    global $user;
+    if (entity_access('view', $entity->src_type, $src_entity, $user)) {
+      if (entity_access('update', $entity->src_type, $src_entity, $user)) {
+        $editable = 1;
+        return;
+      }
+    }
+  }
+  $editable = 0;
+}
+
+/**
+ * Implements hook_views_post_execute
+ */
+function date_item_calendar_views_post_execute($view) {
+  if ($view->plugin_name == 'fullcalendar') {
+    if (!empty($view->result)) {
+      $ids = array();
+      foreach ($view->result as $date_item) {
+        if (isset($date_item->date_item_id)) {
+          $date_item_id = $date_item->date_item_id;
+          if (date_item_calendar_date_is_repeat($date_item_id)){
+            $ids[] = $date_item->date_item_id;
+          }
+        }
+      }
+      if(empty($ids))
+        $ids[] = 0;
+      drupal_add_js(array(
+        'date_item_calendar_not_resizable' => $ids
+        ), 'setting');
+    }
+  }
+}
+
+/**
+ * check if date_item is repeat date
+ * 
+ * @param object $date_item_id
+ *   target date_item ID
+ * 
+ * @return boolean
+ *   TRUE is entity field is repeat date
+ */
+function date_item_calendar_date_is_repeat($date_item_id) {
+  if (!$date_item = date_item_load($date_item_id)) {
+    return FALSE;
+  }
+  if (empty($date_item->src_field_name)) {
+    return FALSE;
+  }
+  if(!$src_entity = $date_item->src_entity()) {
+    return FALSE;
+  }
+  $field_name = $date_item->src_field_name;
+  $entity_type = $date_item->src_type;
+
+  return _date_item_is_repeat_field($entity_type, $src_entity, $field_name);
+}
+
+/**
+ * Implements hook_fullcalendar_options_info().
+ */
+function date_item_calendar_fullcalendar_options_info() {
+  return array(
+    'date_item_calendar' => array(
+      'name' => t('date_item_calendar'),
+      'js' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function date_item_calendar_views_query_alter($view, &$query) {
+  if($view->name == 'full_calendar' && $view->current_display == 'full_calendar_own_dates') {
+    if(isset($query->table_queue['node_date_item__field_data_field_date_type']['join']->type)) {
+      $query->table_queue['node_date_item__field_data_field_date_type']['join']->type = 'LEFT';
+    }
+  }
+}

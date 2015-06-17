@@ -1,0 +1,162 @@
+<?php
+
+/**
+ * @file
+ * Install for a payment entity - need to create the base table for our payment entity.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function payment_schema() {
+  $schema = array();
+  $schema['payment'] = array(
+    'description' => 'The base table for our payment entity.',
+      'fields' => array(
+        'pid' => array(
+          'description' => 'Primary key of the payment entity.',
+          'type' => 'serial',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'subject' => array(
+          'description' => 'A subject of the payment entity.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'type' => array(
+          'description' => 'The bundle type',
+          'type' => 'text',
+          'size' => 'medium',
+          'not null' => TRUE
+        ),
+        'date' => array(
+          'description' => 'The Unix timestamp of the payment creation time.',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'value' => array(
+          'description' => 'The value that is paid',
+          'type' => 'float',
+          'size' => 'big',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'currency' => array(
+          'description' => 'The value that is paid',
+          'type' => 'varchar',
+          'length' => 5,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'created' => array(
+          'description' => 'The Unix timestamp of the payment entity creation time.',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'settings' => array(
+          'type' => 'blob',
+          'description' => 'A serialized array of settings of payment.',
+          'serialize' => TRUE,
+          'serialized default' => 'a:0:{}',
+        ),
+      ),
+    'primary key' => array('pid'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function payment_install() {
+  _field_info_collate_fields(TRUE);
+  _field_info_collate_types(TRUE);
+  if (!field_info_field('field_saldo')) {
+    $field = array(
+      'field_name'   => 'field_saldo',
+      'type'         => 'number_float',
+      'translatable' => FALSE,
+      // Although we would prefer to not allow deleting this field, we can not
+      // lock it, as it will not allow adding it to other bundles.
+      'locked'       => FALSE,
+    );
+    $field = field_create_field($field);
+  }
+  if (!field_info_instance('payment', 'field_saldo', 'booked_payment')) {
+    $instance = array(
+      'field_name'  => 'field_saldo',
+      'bundle'      => 'booked_payment',
+      'entity_type' => 'payment',
+      'label'       => st('Saldo'),
+      'required'    => FALSE,
+      'widget' => array(
+        'module' => 'field_extrawidgets',
+        'type'   => 'field_extrawidgets_read_only',
+        'weight' => -1,
+      ),
+    );
+    field_create_instance($instance);
+  }
+  
+  if (!field_info_field('field_payer')) {
+    $field = array(
+      'field_name'   => 'field_payer',
+      'type'         => 'entityreference',
+      'translatable' => FALSE,
+      // Although we would prefer to not allow deleting this field, we can not
+      // lock it, as it will not allow adding it to other bundles.
+      'locked'       => FALSE,
+      'settings' => array(
+        'target_type' => 'node',
+        'handler' => 'base',
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'erpal_contact' => 'erpal_contact'
+          ),
+        ),
+      ),
+    );
+    $field = field_create_field($field);
+  }
+  if (!field_info_instance('payment', 'field_payer', 'booked_payment')) {
+    $instance = array(
+      'field_name'  => 'field_payer',
+      'bundle'      => 'booked_payment',
+      'entity_type' => 'payment',
+      'label'       => st('Payer'),
+      'required'    => FALSE,
+      'widget' => array(
+        'type' => 'options_select',
+        'weight' => 0,
+      ),
+    );
+    field_create_instance($instance);
+  }
+
+}
+
+/*
+ * Implements hook_uninstall().
+ */
+function payment_uninstall() {
+  field_attach_delete_bundle('payment' , 'booked_payment');
+}
+
+/**
+ * Added new field for payment settings.
+ */
+function payment_update_7002() {
+  $settings = array(
+    'type' => 'blob',
+    'description' => 'A serialized array of settings of payment.',
+    'serialize' => TRUE,
+    'serialized default' => 'a:0:{}',
+  );
+  db_add_field('payment', 'settings', $settings);
+}

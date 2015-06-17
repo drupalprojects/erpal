@@ -1,0 +1,227 @@
+<?php
+/**
+* @file
+* Code for the erpal_crm_service module.
+* ERPAL CRM service adds services integration to allow data transfer for external apps
+*/
+
+/**
+ * Implementation of hook_services_resources().
+ */
+function erpal_crm_service_services_resources() {
+  return array(
+    'crm_activity' => array(
+      'retrieve' => array(
+        'help' => 'retrieves an activity',
+        'file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'callback' => '_erpal_crm_service_crm_activity_retrieve',
+        'access callback' => '_erpal_crm_service_crm_activity_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'access arguments' => array('view'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the activity to get',
+            'source' => array('path' => 0),  //counted from the end, so param = 0 is the last arg in the url!
+            'optional' => TRUE,
+          ),          
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'includes details with the activity, defaults to true.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => TRUE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes with the activity, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+      'create' => array(
+        'help' => 'Creates a crm activity',
+        'file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'callback' => '_erpal_crm_service_crm_activity_create',
+        'access callback' => '_erpal_crm_service_crm_activity_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'crm_activity',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The activity node data to create',
+            'type' => 'array',
+          ),         
+        ),
+      ),
+      'update' => array(
+        'help' => 'updates a crm activity',
+        'file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'callback' => '_erpal_crm_service_crm_activity_update',
+        'access callback' => '_erpal_crm_service_crm_activity_access',
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'access arguments' => array('create'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The id of the activity to update',
+            'source' => array('path' => 0),
+            'optional' => TRUE,
+          ),          
+          array(
+            'name' => 'data',
+            'optional' => FALSE,
+            'source' => 'data',
+            'description' => 'The activity node data to update',
+            'type' => 'array',
+          ),         
+        ),
+      ),
+      'index' => array(
+        'help' => 'Retrieves a listing of activities filterable',
+        'file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'callback' => '_erpal_crm_service_crm_activity_index',
+        'access callback' => '_erpal_crm_service_crm_activity_access',
+        'access arguments' => array('view'),
+        'access callback file' => array('type' => 'inc', 'module' => 'erpal_crm_service', 'name' => 'inc/activity'),
+        'access arguments append' => TRUE,
+        'args' => array(
+          array(
+            'name' => 'start',
+            'type' => 'int',
+            'description' => 'Deliver data from nth element, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'start'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'count',
+            'type' => 'int',
+            'description' => 'Deliver n elements, defaults to PHP_INT_MAX.',
+            'optional' => TRUE,
+            'source' => array('param' => 'count'),
+            'default value' => PHP_INT_MAX,
+          ),
+          array(
+            'name' => 'changed_since',
+            'type' => 'int',
+            'description' => 'Deliver elements changed or created after UNIX-Timestamp t, defaults to 0.',
+            'optional' => TRUE,
+            'source' => array('param' => 'changed_since'),
+            'default value' => 0,
+          ),
+          array(
+            'name' => 'details',
+            'type' => 'boolean',
+            'description' => 'Deliver the activity with detailed information, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'details'),
+            'default value' => FALSE,
+          ),
+          array(
+            'name' => 'include_children',
+            'type' => 'boolean',
+            'description' => 'includes child nodes with the activity, defaults to false.',
+            'optional' => TRUE,
+            'source' => array('param' => 'include_children'),
+            'default value' => FALSE,
+          ),
+        ),
+      ),
+    ),  
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function erpal_crm_service_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array(
+      'version' => 3,
+    );
+  }
+}
+
+ /**
+ * Implements hook_default_services_endpoint().
+ */
+function erpal_crm_service_default_services_endpoint() {
+  
+  $endpoint = new stdClass();
+  $endpoint->disabled = FALSE; /* Edit this to true to make a default endpoint disabled initially */
+  $endpoint->api_version = 3;
+  $endpoint->name = 'erpal_crm_rest';
+  $endpoint->server = 'rest_server';
+  $endpoint->path = 'rest/activity';
+  $endpoint->authentication = array(
+    'services' => 'services',
+  );
+  $endpoint->server_settings = array(
+    'rest_server' => array(
+      'formatters' => array(
+        'bencode' => TRUE,
+        'json' => TRUE,
+        'php' => TRUE,
+        'rss' => TRUE,
+        'xml' => TRUE,
+        'yaml' => TRUE,
+        'jsonp' => FALSE,
+      ),
+      'parsers' => array(
+        'application/json' => TRUE,
+        'application/vnd.php.serialized' => TRUE,
+        'application/x-www-form-urlencoded' => TRUE,
+        'application/x-yaml' => TRUE,
+        'multipart/form-data' => TRUE,
+      ),
+    ),
+  );
+  $endpoint->resources = array(
+    'crm_activity' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => 1,
+        ),        
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
+        'update' => array(
+          'enabled' => 1,
+        ),
+        'index' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'user' => array(
+      'actions' => array(
+        'login' => array(
+          'enabled' => 1,
+        ),
+        'logout' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+  );
+  $endpoint->debug = 0;
+
+
+  $endpoints[$endpoint->name] = $endpoint;
+
+  return $endpoints;
+}
+
+ 
