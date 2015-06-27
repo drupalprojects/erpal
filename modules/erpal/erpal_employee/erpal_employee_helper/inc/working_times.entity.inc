@@ -82,7 +82,7 @@ function working_times_delete(WorkingTimes $working_times) {
 
 
 /**
- * Delete multiple working_timess.
+ * Delete multiple working_times.
  *
  * @param $working_times_ids
  *   An array of working_times IDs.
