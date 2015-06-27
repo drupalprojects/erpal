@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Install, update and uninstall functions for the erpal install profile.
+ * Install, update and uninstall functions for the ERPAL install profile.
  */
  
 /**
@@ -13,11 +13,6 @@
  */
 function erpal_update_7001(){
   return; //@TODO: Need to replace by erpal_taxonomy_add functions
-  require_once('erpal_taxonomy.inc');
-  _erpal_taxonomy_prepare_directory();
-  _erpal_taxonomy_create_task_type_vocabulary();
-  _erpal_taxonomy_create_priority_vocabulary();
-  _erpal_taxonomy_create_task_status_vocabulary();
   
 }
 
