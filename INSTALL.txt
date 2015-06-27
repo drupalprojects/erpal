@@ -12,6 +12,7 @@ How to install ERPAL using drush make:
 - Please set your mySQL to max_allowed_packet=20MB in your my.ini
 - For more up to date system requirements please check out the project page at https://drupal.org/project/erpal
 - Code is tested with PHP 5.4
+- Ensure to have APC installed to cache PHP code and increase page speed
 
 
 ######## Install with Drush make ##########
