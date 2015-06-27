@@ -1,5 +1,5 @@
 core = "7.x"
-description = "ERPAL Book Helper module"
+description = "Helper functions for the ERPAL Book module"
 name = "erpal_book_helper"
 package = "ERPAL Book Helper"
 php = "5.2.4"
@@ -12,10 +12,3 @@ files[] = inc/book.token.inc
 files[] = inc/config.inc
 files[] = views/erpal_book_helper.views.inc
 files[] = views/erpal_book_helper_handler_filter_erpal_book.inc
-
-; Information added by Drupal.org packaging script on 2015-06-05
-version = "7.x-1.0-rc1"
-core = "7.x"
-project = "erpal_book"
-datestamp = "1433507602"
-
