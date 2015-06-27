@@ -1,5 +1,5 @@
 core = "7.x"
-description = "ERPAL Invoice Helper"
+description = "Helper functions for the ERPAL invoice module"
 name = "erpal_invoice_helper"
 package = "ERPAL"
 php = "5.2.4"
@@ -16,10 +16,3 @@ files[] = erpal_invoice_helper.install
 files[] = inc/config.inc
 files[] = inc/theme.inc
 files[] = views/erpal_invoice_helper.views.inc
-
-; Information added by Drupal.org packaging script on 2015-06-05
-version = "7.x-1.0-rc1"
-core = "7.x"
-project = "erpal_invoice"
-datestamp = "1433507923"
-
