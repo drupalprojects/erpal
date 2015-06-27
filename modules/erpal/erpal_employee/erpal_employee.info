@@ -1,5 +1,5 @@
 name = ERPAL Employee
-description = ERPAL Employee Module
+description = Features to manage employee timekeeping
 core = 7.x
 package = ERPAL
 version = 7.x-1.0-rc1
