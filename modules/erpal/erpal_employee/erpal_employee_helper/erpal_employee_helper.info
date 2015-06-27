@@ -1,5 +1,5 @@
 core = "7.x"
-description = "ERPAL Employee Helper provides helps the erpal employee feature."
+description = "ERPAL Employee Helper provides helper functions for the erpal employee feature."
 name = "erpal_employee_helper"
 package = "ERPAL Employee helper"
 php = "5.2.4"
