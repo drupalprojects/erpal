@@ -20,7 +20,7 @@ How to install ERPAL using drush make:
 1. Clone this repository - Success!
 
 // FOR WINDOWS 
-If you want to install on windows make sure you have the newest dev release of "Drush 5.x".
+If you want to install ERPAL on windows make sure you have the newest dev release of "Drush 5.x".
 You can download it here: http://drupal.org/project/drush
 Replace your existing drush files in "C:/Program Data/Drush" with the downloaded ones.
 Make sure, drush is set as a path variable in windows:
