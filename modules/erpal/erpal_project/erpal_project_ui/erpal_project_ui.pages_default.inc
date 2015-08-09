@@ -267,6 +267,7 @@ function erpal_project_ui_default_page_manager_handlers() {
     $pane->cache = array();
     $pane->style = array(
       'settings' => array(
+        'pane_title' => 'Budgets',
         'pane_collapsed' => 1,
       ),
       'style' => 'collapsible',
