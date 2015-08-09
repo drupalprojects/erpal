@@ -165,6 +165,7 @@ function erpal_book_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => 'General',
       ),
       'style' => 'collapsible',
     );
@@ -193,6 +194,7 @@ function erpal_book_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => 'Page information',
       ),
       'style' => 'collapsible',
     );
@@ -376,6 +378,7 @@ function erpal_book_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => 'General',
       ),
       'style' => 'collapsible',
     );
@@ -404,6 +407,7 @@ function erpal_book_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => 'Page information',
       ),
       'style' => 'collapsible',
     );

@@ -281,6 +281,7 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => 'General fields',
       ),
       'style' => 'collapsible',
     );
@@ -309,6 +310,7 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => 'Detailed fields',
       ),
       'style' => 'collapsible',
     );
@@ -341,6 +343,7 @@ function erpal_invoice_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => 'Invoice PDF',
       ),
       'style' => 'collapsible',
     );

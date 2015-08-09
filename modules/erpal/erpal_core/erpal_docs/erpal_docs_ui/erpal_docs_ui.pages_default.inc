@@ -239,6 +239,7 @@ function erpal_docs_ui_default_page_manager_handlers() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
+        'pane_title' => '',
       ),
       'style' => 'collapsible',
     );
