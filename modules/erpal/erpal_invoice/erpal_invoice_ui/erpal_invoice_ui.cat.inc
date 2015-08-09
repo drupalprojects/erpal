@@ -418,7 +418,7 @@ function erpal_invoice_ui_cat_items_settings_info() {
         'css_id' => '',
         'css_class' => '',
         'active' => TRUE,
-      ),      
+      ),
     ),
     'cat_tabs' => array(
       0 => array(

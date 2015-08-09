@@ -314,4 +314,4 @@ libraries[screenshot_paste][download][url] = "https://github.com/brightsolutions
 ;libraries[dhtmlxgantt][download][url] = "http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip"
 
 ; Themes
-projects[adaptivetheme][version] = "3.1"
+projects[adaptivetheme][version] = "3.2"

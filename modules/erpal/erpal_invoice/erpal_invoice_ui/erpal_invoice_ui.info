@@ -2,7 +2,7 @@ name = ERPAL Invoice UI
 description = ERPAL Invoice UI Module
 core = 7.x
 package = ERPAL UI
-version = 7.x-1.8-dev
+version = 7.x-1.0-rc1
 project = erpal_invoice_ui
 dependencies[] = better_exposed_filters
 dependencies[] = cat
@@ -25,6 +25,7 @@ dependencies[] = views
 dependencies[] = views_bulk_operations
 dependencies[] = views_calc
 dependencies[] = views_content
+datestamp = 1433507923
 features[cat_items][] = erpal_contacts_contact_view_invoices
 features[cat_items][] = erpal_contacts_invoice_defaults
 features[cat_items][] = erpal_invoice_edit_payment
@@ -80,10 +81,3 @@ features[variable][] = pm_existing_pages_disabled_payment_view
 features[views_view][] = billables
 features[views_view][] = invoices
 features[views_view][] = payment
-
-; Information added by Drupal.org packaging script on 2015-06-05
-version = "7.x-1.0-rc1"
-core = "7.x"
-project = "erpal_invoice"
-datestamp = "1433507923"
-

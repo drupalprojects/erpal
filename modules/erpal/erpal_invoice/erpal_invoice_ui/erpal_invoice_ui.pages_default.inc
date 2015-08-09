@@ -700,6 +700,7 @@ function erpal_invoice_ui_default_page_manager_pages() {
     $pane->cache = array();
     $pane->style = array(
       'settings' => array(
+		'pane_title' => 'Invoices date',
         'pane_collapsed' => 1,
       ),
       'style' => 'collapsible',
@@ -956,6 +957,7 @@ function erpal_invoice_ui_default_page_manager_pages() {
     $pane->cache = array();
     $pane->style = array(
       'settings' => array(
+        'pane_title' => 'Invoices date',
         'pane_collapsed' => 1,
       ),
       'style' => 'collapsible',
