@@ -1079,7 +1079,7 @@ function erpal_project_ui_default_panels_mini() {
     $pane->style = array(
       'settings' => array(
         'pane_collapsed' => 0,
-        'pane_title' => '',
+        'pane_title' => 'Pricing',
       ),
       'style' => 'collapsible',
     );
