@@ -37,12 +37,19 @@ function erpal_contract_helper_permission() {
 /**
 * Implements hook_node_presave
 */
-function erpal_contract_helper_node_presave($node) {
+function erpal_contract_helper_node_insert_post($node) {
   if ($node->type == 'erpal_contract')
     _erpal_contract_helper_recalculate_contract($node);
-    
-  
 }
+
+/**
+* Implements hook_node_presave
+*/
+function erpal_contract_helper_node_update_post($node) {
+  if ($node->type == 'erpal_contract')
+    _erpal_contract_helper_recalculate_contract($node);
+}
+
 
 /**
 * Implementes hook_field_attach_validate() 
@@ -104,6 +111,7 @@ function _erpal_contract_helper_recalculate_contract($contract_node) {
   
   //calculate payment dates
   $payment_entity_id = $contract_node->field_contract_payment[LANGUAGE_NONE][0]['value'];
+  
   $payment_fields = entity_load('field_collection_item', array($payment_entity_id));
   $payment_fields = $payment_fields[$payment_entity_id];
   $payment_type = $payment_fields->field_payment_type[LANGUAGE_NONE][0]['value'];
@@ -121,7 +129,8 @@ function _erpal_contract_helper_recalculate_contract($contract_node) {
     
     //update next booking field   
     $payment_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] = strtotime($next_booking);
-    $payment_fields->save(true);  //skip saving of host entity    
+    $payment_fields->save(true);  //skip saving of host entity   
+    $contract_node->post_resave = TRUE;    
   }
 
   //calculate budget dates
@@ -130,7 +139,7 @@ function _erpal_contract_helper_recalculate_contract($contract_node) {
     $budget_fields = entity_load('field_collection_item', array($budget_entity_id));
     $budget_fields = $budget_fields[$budget_entity_id];
     
-    $budget_period = $budget_fields->field_budget_period[LANGUAGE_NONE][0]['value'];
+    $budget_period = !empty($budget_fields->field_budget_period[LANGUAGE_NONE][0]['value']) ? $budget_fields->field_budget_period[LANGUAGE_NONE][0]['value'] : 0;
     $last_booking = isset($budget_fields->field_last_booking_date[LANGUAGE_NONE][0]['value']) ? $budget_fields->field_last_booking_date[LANGUAGE_NONE][0]['value'] : false;
     $next_booking = isset($budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value']) ? $budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] : false;
     
@@ -139,7 +148,8 @@ function _erpal_contract_helper_recalculate_contract($contract_node) {
       
       //update next booking field    
       $budget_fields->field_next_booking_date[LANGUAGE_NONE][0]['value'] = strtotime($next_booking);
-      $budget_fields->save(true);  //skip saving of host entity    
+      $budget_fields->save(true);  //skip saving of host entity  
+      $contract_node->post_resave = TRUE;
     }
   }
 }
