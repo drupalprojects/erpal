@@ -131,53 +131,6 @@ function erpal_contract_ui_default_page_manager_handlers() {
     $display->content['new-c44b5b85-74f0-56e4-c17e-3c6a15e3299c'] = $pane;
     $display->panels['sidebar_second_left'][1] = 'new-c44b5b85-74f0-56e4-c17e-3c6a15e3299c';
     $pane = new stdClass();
-    $pane->pid = 'new-fa3436a7-e353-3584-fdda-360a36de23cf';
-    $pane->panel = 'sidebar_second_left';
-    $pane->type = 'panels_mini';
-    $pane->subtype = 'body_and_comments';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'context' => array(
-        0 => 'argument_entity_id:node_1',
-      ),
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 3;
-    $pane->locks = array();
-    $pane->uuid = 'fa3436a7-e353-3584-fdda-360a36de23cf';
-    $display->content['new-fa3436a7-e353-3584-fdda-360a36de23cf'] = $pane;
-    $display->panels['sidebar_second_left'][2] = 'new-fa3436a7-e353-3584-fdda-360a36de23cf';
-    $pane = new stdClass();
-    $pane->pid = 'new-6230d94d-4d1f-42d4-fd2f-8fc05957e172';
-    $pane->panel = 'sidebar_second_right';
-    $pane->type = 'custom_node_content';
-    $pane->subtype = 'custom_node_content';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'types' => array(),
-      'field_name' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $pane->uuid = '6230d94d-4d1f-42d4-fd2f-8fc05957e172';
-    $display->content['new-6230d94d-4d1f-42d4-fd2f-8fc05957e172'] = $pane;
-    $display->panels['sidebar_second_right'][0] = 'new-6230d94d-4d1f-42d4-fd2f-8fc05957e172';
-    $pane = new stdClass();
     $pane->pid = 'new-6cbac466-b1f1-3bc4-e1a3-d3d1b4f6d5f6';
     $pane->panel = 'sidebar_second_left';
     $pane->type = 'panels_mini';
@@ -201,7 +154,54 @@ function erpal_contract_ui_default_page_manager_handlers() {
     $pane->locks = array();
     $pane->uuid = '6cbac466-b1f1-3bc4-e1a3-d3d1b4f6d5f6';
     $display->content['new-6cbac466-b1f1-3bc4-e1a3-d3d1b4f6d5f6'] = $pane;
-    $display->panels['sidebar_second_left'][3] = 'new-6cbac466-b1f1-3bc4-e1a3-d3d1b4f6d5f6';
+    $display->panels['sidebar_second_left'][2] = 'new-6cbac466-b1f1-3bc4-e1a3-d3d1b4f6d5f6';
+    $pane = new stdClass();
+    $pane->pid = 'new-fa3436a7-e353-3584-fdda-360a36de23cf';
+    $pane->panel = 'sidebar_second_left';
+    $pane->type = 'panels_mini';
+    $pane->subtype = 'body_and_comments';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'context' => array(
+        0 => 'argument_entity_id:node_1',
+      ),
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $pane->locks = array();
+    $pane->uuid = 'fa3436a7-e353-3584-fdda-360a36de23cf';
+    $display->content['new-fa3436a7-e353-3584-fdda-360a36de23cf'] = $pane;
+    $display->panels['sidebar_second_left'][3] = 'new-fa3436a7-e353-3584-fdda-360a36de23cf';
+    $pane = new stdClass();
+    $pane->pid = 'new-6230d94d-4d1f-42d4-fd2f-8fc05957e172';
+    $pane->panel = 'sidebar_second_right';
+    $pane->type = 'custom_node_content';
+    $pane->subtype = 'custom_node_content';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'types' => array(),
+      'field_name' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '6230d94d-4d1f-42d4-fd2f-8fc05957e172';
+    $display->content['new-6230d94d-4d1f-42d4-fd2f-8fc05957e172'] = $pane;
+    $display->panels['sidebar_second_right'][0] = 'new-6230d94d-4d1f-42d4-fd2f-8fc05957e172';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
