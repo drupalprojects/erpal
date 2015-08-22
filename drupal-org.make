@@ -4,7 +4,7 @@ api = 2
 
 ;;;;;;;;;;;;;;;;;;;;Erpal Contributed Themes
 projects[erpal_theme][type] = "theme"
-projects[erpal_theme][version] = "1.0-rc1"
+projects[erpal_theme][version] = "1.0"
 
 ;;;;;;;;;;;;;;;;;;;;Contribs
 
