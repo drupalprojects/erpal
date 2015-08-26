@@ -92,6 +92,7 @@ projects[editablefields][download][revision] = "bcfa4d111add31985eda8fbc0382cc7f
 
 projects[entity][version] = "1.6"
 projects[entity][subdir] = "contrib"
+projects[entity][patch][] = "http://www.drupal.org/files/issues/entity-translatable_fields_not_overriding_und_with_empty_values-1782134-13.patch"
 
 projects[entitycache][version] = "1.2"
 projects[entitycache][subdir] = "contrib"
