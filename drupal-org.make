@@ -201,6 +201,7 @@ projects[relation][subdir] = "contrib"
 
 projects[relation_add][version] = "1.4"
 projects[relation_add][subdir] = "contrib"
+projects[relation_add][patch][] = "http://www.drupal.org/files/issues/relation_add-default-filtering-all-2446575-1.patch"
 
 projects[relation_dialog][version] = "1.0"
 projects[relation_dialog][subdir] = "contrib"
