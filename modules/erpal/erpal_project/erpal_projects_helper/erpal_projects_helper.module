@@ -1452,6 +1452,21 @@ function erpal_projects_helper_node_insert($node){
 }
 
 /**
+* returns timetrackings nids by given tasks nids
+* returns timetracking nids.
+*/
+function _erpal_projects_helper_get_timetrackings_by_tasks($nids) {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('type', 'erpal_timetracking')
+    ->fieldCondition('field_timetracking_subject', 'target_id', $nids)
+    ->execute();
+    
+  $nids = !empty($result['node']) ? array_keys($result['node']) : array();
+  return $nids;
+}
+
+/**
 * Invalidates all cached when a timetracking node changes
 *@param $timetracking_node the timetraking node that will invalidate the cache
 */ 

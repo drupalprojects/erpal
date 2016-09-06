@@ -17,6 +17,14 @@ function erpal_projects_helper_views_data() {
           'handler' => 'erpal_projects_helper_handler_filter_erpal_projects',
         )
       ),
+      'billables_by_project' => array(
+        'group' => t('Billables'),
+        'title' => t('Billables by projects'),
+        'help' => t('Chooses billables IDs by a given project'),
+        'argument' => array(
+          'handler' => 'erpal_projects_helper_handler_argument_billables_by_projects',
+        ),       
+      ),
       'operations' => array(
         'field' => array(
           'title' => t('Projects quick links'),
