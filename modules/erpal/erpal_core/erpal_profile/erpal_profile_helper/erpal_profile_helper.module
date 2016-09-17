@@ -16,6 +16,8 @@ function erpal_profile_helper_field_attach_validate($entity_type, $entity, &$err
   
   if ($entity_type == 'profile2') {
     //validate that the referenced contact is not already referenced by another userd profile
+    //UPDATE 17.09.2016: We've found out that this makes no sence as we want multiple employees from a partner to create timetracking billables with their company as contractor. For this reason all employees need to hagve the same contact linked.
+    return; 
     $contact_nid = 0;
     $new_errors = array();
     if (isset($entity->field_contact_ref[LANGUAGE_NONE][0]['target_id'])) {
