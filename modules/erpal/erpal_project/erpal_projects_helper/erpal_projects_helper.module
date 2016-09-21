@@ -1467,6 +1467,96 @@ function _erpal_projects_helper_get_timetrackings_by_tasks($nids) {
 }
 
 /**
+* returns all contracts related to the project. Either if the contract references the project itself, references a task of the project or references an activity that the project references.
+*/
+function _erpal_projects_helper_get_contracts_of_project($project_nid) {  
+  //get tasks of this project
+  $task_nids = _erpal_projects_helper_get_tasks_by_project($project_nid);
+  //get contracts that reference this project
+  $contract_ref_nids = array_merge($task_nids, array($project_nid));
+  $contract_nids = array();
+
+  if (!empty($contract_ref_nids)) {
+    $contract_nids = _erpal_projects_helper_get_contracts_by_task_or_project(array($contract_ref_nids));
+  }
+  
+  //ATTENTION for the reports: There might be multiple projects for one contract. We will then have the same billable counting for multiple projects which increases our revenue which is wrong.
+  //so we only count the first project.
+  //we need to check this if we have a contract with multiple targets, the we remove all others than the first project we find. This gives us a list of all projects that are the only ones referenced by the contract or the first on.
+  //with this projects we get the contracts again which is the final amount of contracts.
+  //of multiple contracts reference the same project, thats OK and sums up the revenue of  the project. The revenue of multiple projects can go to one contract, but the revenue for one contract can only go to one project 
+  //which is the first one referenced.   
+  $whitelist_contract_nids = array();
+  foreach ($contract_nids as $contract_nid) {
+    $contract_node = node_load($contract_nid);
+    $contract_node_w = entity_metadata_wrapper('node', $contract_node);
+    $target_fc = $contract_node_w->field_budget_booking->value();
+    
+    //if the FIRST budget target of the contracts field collection references a one of the task or project nids, the contract will be added to the white list. All others will not be added.
+    $budget_dest_nid = $target_fc->field_budget_destination[LANGUAGE_NONE][0]['target_id'];
+    if (in_array($budget_dest_nid, $contract_ref_nids)) {
+      $whitelist_contract_nids[] = $contract_nid;
+    }
+  }
+  
+  //now get contracts that reference the same activity as the project does.
+  $project_node = node_load($project_nid);
+  $activity_nid = !empty($project_node->field_activity_ref[LANGUAGE_NONE][0]['target_id']) ? $project_node->field_activity_ref[LANGUAGE_NONE][0]['target_id'] : FALSE;
+  $contract_activity_nids = array();
+  if (!empty($activity_nid)) {
+    $contract_activity_nids = _erpal_projects_helper_get_contracts_by_activities(array($activity_nid));
+  }
+  
+  $contract_nids = array_merge($whitelist_contract_nids, $contract_activity_nids);
+
+  return $contract_nids;
+}
+
+/**
+* Returns all project nids that reference one of the given activity nids
+* @param array $activity_nids an array of activity nids that the contract should reference
+*/
+function _erpal_projects_helper_get_contracts_by_activities($activity_nids) {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('type', 'erpal_contract')
+    ->fieldCondition('field_activity_ref', 'target_id', $activity_nids)
+    ->execute();
+
+  $nids = !empty($result['node']) ? array_keys($result['node']) : array();
+  return $nids;
+
+}
+
+/**
+* Returns all contract nids that reference a project or a task of the project
+* @param array $ref_nids the task or project nid the contract should reference
+*/
+function _erpal_projects_helper_get_contracts_by_task_or_project($ref_nids) {
+  //first, get all budget booking field collections of contracts that refernce the ref_nid
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'field_collection_item')
+    ->propertyCondition('field_name', 'field_budget_booking')
+    ->fieldCondition('field_budget_destination', 'target_id', $ref_nids)
+    ->execute();
+
+  $fc_ids = !empty($result['field_collection_item']) ? array_keys($result['field_collection_item']) : array();
+  
+  //now we have the field collection items...get their contracts!
+  $nids = array();
+  if (!empty($fc_ids)) {
+    $query = new EntityFieldQuery();
+    $result = $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('type', 'erpal_contract')
+      ->fieldCondition('field_budget_booking', 'value', $fc_ids)
+      ->execute();
+
+    $nids = !empty($result['node']) ? array_keys($result['node']) : array();
+  }
+  return $nids;
+}
+
+/**
 * Invalidates all cached when a timetracking node changes
 *@param $timetracking_node the timetraking node that will invalidate the cache
 */ 

@@ -107,17 +107,33 @@ class erpal_projects_helper_handler_argument_billables_by_projects extends views
     $this->query->distinct = 1; // distinct condition
     
     //get all billables of the project directly.
-    $project_billables = _billable_get_billables_by_subject(array($nid));
+    $project_billables = array();
+    if (!empty($nid)) {
+      $project_billables = _billable_get_billables_by_subject(array($nid));
+    }
     
     //get all billables of tasks of this project.
     $task_nids = _erpal_projects_helper_get_tasks_by_project($nid);
-    $task_billables = _billable_get_billables_by_subject($task_nids);
+    $task_billables = array();
+    if (!empty($task_nids)) {
+      $task_billables = _billable_get_billables_by_subject($task_nids);
+    }
   
     //get all billables of timetrackings of this project which have no parent task (only those are included in invoices).
     $timetracking_nids = _erpal_projects_helper_get_timetrackings_by_tasks($task_nids);
-    $tt_billables = _billable_get_billables_by_subject($timetracking_nids);    
+    $tt_billables = array();
+    if (!empty($timetracking_nids)) {
+      $tt_billables = _billable_get_billables_by_subject($timetracking_nids);    
+    }
     
-    $billable_ids = array_merge($project_billables, $task_billables, $tt_billables);
+    //get all billables of contracts of the project or task or the common activity of the project and the contract
+    $contract_nids = _erpal_projects_helper_get_contracts_of_project($nid);
+    $contract_billables = array();
+    if (!empty($contract_nids)) {
+      $contract_billables = _billable_get_billables_by_subject($contract_nids);    
+    }
+    
+    $billable_ids = array_merge($project_billables, $task_billables, $tt_billables, $contract_billables);
     
     //get all entity IDs of a given project and add them to the where condition.
     $billable_ids = array_unique($billable_ids);
