@@ -348,6 +348,16 @@ function _erpal_employee_helper_prefill_working_time_from_time_tracking(&$form, 
     $link = l(t("today's time trackings"), 'projects/timetrackings', array('query' => array('field_date_time_value[min][date]' => date('Y-m-d', $date_from), 'field_date_time_value[max][date]' => date('Y-m-d', $date_till), 'uid' => $user->name)));
     drupal_set_message(t("Your working time is preselected from your !link. If you want to enter holidays for example, you can just ignore the prefilled fields.", array('!link' => "<strong>".$link."</strong>")));
     
+    //check if there are overlapping timetrackings that need to be corrected!
+    $overlappings = _erpal_employee_get_overlapping_timetrackings($user->uid, $date_from, $date_till);
+    
+    if (!empty($overlappings)) {
+      //show an error
+      $message = _erpal_employee_get_overlapping_message($overlappings);
+      
+      drupal_set_message($message, 'error');
+    }
+    
     //build the links
     $oneday_link = l(t('1 day'), 'node/add/erpal-working-time', array('query' => array('date' => date('Y-m-d', strtotime(date('Y-m-d').' -1 day')))));
     $twodays_link = l(t('2 days'), 'node/add/erpal-working-time',array('query' => array('date' => date('Y-m-d', strtotime(date('Y-m-d').' -2 days')))));
@@ -361,9 +371,29 @@ function _erpal_employee_helper_prefill_working_time_from_time_tracking(&$form, 
 }
 
 /**
-* calculates the working times including breaks from the timetracking in the given date range, for the given user
+* Returns a message to give a hint about overlapping timetrackings
 */
-function _erpal_employee_helper_calculate_working_time_prefill($uid, $date_from_unix, $date_till_unix) {  
+function _erpal_employee_get_overlapping_message($overlappings) {
+  $items = array();
+  foreach ($overlappings as $arr) {
+    $text = date('Y-m-d H:i:s', $arr['start']).' - '.date('Y-m-d H:i:s', $arr['end']);
+    $items[] = l($text, 'node/'.$arr['nid']);
+  }
+  
+  if (empty($items))
+    return FALSE;
+  
+  $item_list = theme('item_list', array('items' => $items));
+
+  $msg = t('The following time trackings overlap. Please correct the following items to finalize your working time: !items', array('!items' => $item_list));
+  
+  return $msg;
+}
+
+/**
+* Returns the working time by a given suer in a given date range
+*/
+function _erpal_employee_get_ordered_timetrackings_in_range($uid, $date_from_unix, $date_till_unix) {
   $query = new EntityFieldQuery();
   $query->entityCondition('bundle', 'erpal_timetracking');
   $query->entityCondition('entity_type', 'node');
@@ -372,9 +402,56 @@ function _erpal_employee_helper_calculate_working_time_prefill($uid, $date_from_
   $query->fieldCondition('field_date_time', 'value',  $date_till_unix, '<=');
   $query->fieldOrderBy('field_date_time', 'value', 'ASC');
   $query->addMetaData('account', user_load(1)); // Run the query as user 1
-   
+
   $result = $query->execute();
   
+  return $result;
+}
+
+/**
+* Returns overlapping timetrackings
+*/
+function _erpal_employee_get_overlapping_timetrackings($uid, $date_from_unix, $date_till_unix) {
+  $tt = _erpal_employee_get_ordered_timetrackings_in_range($uid, $date_from_unix, $date_till_unix);
+  
+  $tt_short = array();
+  foreach ($tt['node'] as $nid => $tt_node) {
+    $tt_node = node_load($nid);
+    $date_unix = $tt_node->field_date_time[LANGUAGE_NONE][0];
+    $tt_duration_dec = $tt_node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
+    $start = $date_unix['value'];
+    $end = $date_unix['value2'];
+    
+    $tt_short[] = array('start' => $start, 'end' => $end, 'nid' => $nid);
+  }
+  
+  //no compare each tt with each tt
+  $overlappings = array();
+  $processed_nids = array();
+  foreach ($tt_short as $tt_arr) {
+    //now check, if this tt arr content overlaps with another one which is not exactly the same
+    $processed_nids[$tt_arr['nid']] = TRUE;
+    foreach ($tt_short as $tt_arr2) {
+      if (!empty($processed_nids[$tt_arr2['nid']]))
+        continue;
+        
+      if ($tt_arr2['start'] < $tt_arr['end']) {
+        //a time tracking that is "later" created, reaches into the range of a previous timetracking
+        $overlappings[$tt_arr2['nid']] = $tt_arr2;
+        $overlappings[$tt_arr['nid']] = $tt_arr;
+      }
+    }
+  }
+  
+  return $overlappings;
+}
+
+/**
+* calculates the working times including breaks from the timetracking in the given date range, for the given user
+*/
+function _erpal_employee_helper_calculate_working_time_prefill($uid, $date_from_unix, $date_till_unix) {  
+  $result = _erpal_employee_get_ordered_timetrackings_in_range($uid, $date_from_unix, $date_till_unix);
+
   $ret = array('work' => array('duration' => FALSE, 'from' => FALSE, 'till' => FALSE), 'break' => array('duration' => FALSE, 'ranges' => array()));
   if (isset($result['node'])) { 
     $from = PHP_INT_MAX;
@@ -391,6 +468,7 @@ function _erpal_employee_helper_calculate_working_time_prefill($uid, $date_from_
       $tt_duration_dec = $tt_node->field_timetracking_duration[LANGUAGE_NONE][0]['value'];
       $start = $date_unix['value'];
       $end = $date_unix['value2'];
+      
       if ($from > $start) {
         $from = $start;
       }
@@ -428,6 +506,13 @@ function _erpal_employee_helper_calculate_working_time_prefill($uid, $date_from_
     $ret['break']['duration'] = $break_duration / 60; //make it hours
   }
   
+  //now cross check the breaks, we want to avoid overlappings which cause to many breaks.
+  foreach ($ret['break']['ranges'] as $break_arr) {
+    //iterate through the time trackings again.
+    //if there is a break that
+  }
+  
+  
   return $ret;
 }
 
@@ -463,9 +548,20 @@ function _erpal_employee_helper_validate_working_time(&$form, &$form_state) {
       //validation error
       $link = l(t("time trackings duration"), 'projects/timetrackings', array('query' => array('field_date_time_value[min][date]' => date('Y-m-d', $date_from), 'field_date_time_value[max][date]' => date('Y-m-d', $date_till), 'uid' => $user->name)));
       form_set_error('field_date_time', t("Your entered working time (!wt h) and !link (!tt h) doesn't match !real_percent% of !threshold%", array('!threshold' => (int)$threshold, '!wt' => round($working_time, 2), '!tt' => round($tt_duration, 2), '!link' => $link, '!real_percent' => (int)$time_percent)));
-    }
+    }    
     
+    //check if there are overlapping timetrackings that need to be corrected!
+    $overlappings = _erpal_employee_get_overlapping_timetrackings($user->uid, $date_from, $date_till);
+    
+    if (!empty($overlappings)) {
+      //show an error
+      $message = _erpal_employee_get_overlapping_message($overlappings);
+      
+      form_set_error('field_date_time', $message);
+    }
+
   }
+  
 }
 
 /**
