@@ -18,7 +18,7 @@ function _erpal_employee_helper_calculate_working_times() {
 
   //get all user IDs
   $uids = _erpal_profile_helper_get_users(); //loads only active users
-  
+
   //loop through all users
   foreach ($uids as $uid) {      
     
@@ -203,10 +203,10 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
       $range_till = "$ldom 23:59:59";
       $date_till_unix = strtotime($range_till);
       $contract = _erpal_profile_helper_get_current_contract($uid, array(), $date_till_unix, 'full_employee');
-   
+       
       if (!$contract)
         continue;
-
+  
       //get the time the user must work according to his contract
       $working_days_unix = array();  //this will be filled with all days where the user has to work
       $must_working_time_h = _erpal_employee_helper_get_must_working_time($uid, $year, $month, $working_days_unix);
@@ -295,6 +295,21 @@ function _erpal_employee_helper_recalculate_month($uid, $from_year, $to_year, $f
           $current_holidays_available_this_month = _erpal_employee_get_holidays_available($uid, $year, $month, 'month', $year_month_unix, TRUE);        
           //add holidays of the new year according to the contract
           $current_holidays_available = $current_holidays_available_this_month;  
+          
+          //if it was the users first month BUT there was another previous contract (so the contract changed in the year), IF the holiday amount does not change, we need to continue with the remaining holidays from the previous month.
+          //so we need to get the starting date of the new contract -1 day and get the remaining holidays of this previous month. 
+          //@TODO BUT (also see previous TODO above) if the holidays are not the same in the previous and the current contract. Then we need to calculate the rest holidays in the last month and respect the total duration and then add the holidays from the new contract respecting the start date.
+          $previous_contract_date_since = $contract['valid_since'] - 86400; //-1 day
+          $prev_year = date('Y', $previous_contract_date_since);
+          $prev_month = date('m', $previous_contract_date_since);
+          
+          $last_contract = _erpal_profile_helper_get_current_contract($uid, array(), $previous_contract_date_since, 'full_employee');
+          if (!empty($last_contract) && $contract['holiday_per_year'] == $last_contract['holiday_per_year']) {
+            $prev_working_times_entity = working_times_load_by_user('month', $uid, $prev_year, $prev_month);
+            $prev_working_times_entity = array_values($prev_working_times_entity);
+            $prev_working_times_entity = $prev_working_times_entity[0];
+            $current_holidays_available = $prev_working_times_entity->holidays_available;
+          }
         }
       }  
       
@@ -519,13 +534,11 @@ function _erpal_employee_get_holidays_available($uid, $year, $month, $type, $val
   } else {
      
     if (!$deny_from_contract) {      
-      //get the contract and take the holidays relative to the current month because holidays are for one complete year, but if users contract started in the middle of the year, he only should have a part (half in this case) of that total holidays
+      //get the contract and take the holidays relative to the current month because holidays are for one complete year, but if users contract started in the middle of the year, he only should have a part (half in this case) of that total holidays.      
       $contract_data = _erpal_profile_helper_get_current_contract($uid, array(), $valid_till_unix, 'full_employee');
-      $total_holidays = $contract_data['holiday_per_year'];
-     
-      $valid_since_unix = $contract_data['valid_since'];
-      $valid_since_str = date('Y-m-d', $valid_since_unix);
-     
+      $total_holidays = $contract_data['holiday_per_year'];     
+      $valid_since_unix = $contract_data['valid_since'];      
+      
       //check if this is the month where the users contract started
       if (date('Y', $valid_since_unix) == date('Y', $valid_till_unix)) {      
         $valid_since_day_in_year = date('z', $valid_since_unix);      
