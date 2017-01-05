@@ -413,7 +413,7 @@ function _erpal_employee_get_ordered_timetrackings_in_range($uid, $date_from_uni
 */
 function _erpal_employee_get_overlapping_timetrackings($uid, $date_from_unix, $date_till_unix) {
   $tt = _erpal_employee_get_ordered_timetrackings_in_range($uid, $date_from_unix, $date_till_unix);
-  
+  $overlapping_tolerance_sec = 30; //30 seconds overlapping tolerance is ok.
   $tt_short = array();
   foreach ($tt['node'] as $nid => $tt_node) {
     $tt_node = node_load($nid);
@@ -425,7 +425,7 @@ function _erpal_employee_get_overlapping_timetrackings($uid, $date_from_unix, $d
     $tt_short[] = array('start' => $start, 'end' => $end, 'nid' => $nid);
   }
   
-  //no compare each tt with each tt
+  //now compare each tt with each tt
   $overlappings = array();
   $processed_nids = array();
   foreach ($tt_short as $tt_arr) {
@@ -435,7 +435,7 @@ function _erpal_employee_get_overlapping_timetrackings($uid, $date_from_unix, $d
       if (!empty($processed_nids[$tt_arr2['nid']]))
         continue;
         
-      if ($tt_arr2['start'] < $tt_arr['end']) {
+      if ($tt_arr2['start'] + $overlapping_tolerance_sec < $tt_arr['end']) {
         //a time tracking that is "later" created, reaches into the range of a previous timetracking
         $overlappings[$tt_arr2['nid']] = $tt_arr2;
         $overlappings[$tt_arr['nid']] = $tt_arr;
