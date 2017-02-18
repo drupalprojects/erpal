@@ -70,7 +70,7 @@ function erpal_basic_ui_cat_items_settings_info() {
     'reusable' => 0,
     'cat_remove' => array(),
   );
-  $cat_item->weight = 5;
+  $cat_item->weight = 47;
   $export['all_nodes_aul_manage'] = $cat_item;
 
   $cat_item = new stdClass();
@@ -119,7 +119,7 @@ function erpal_basic_ui_cat_items_settings_info() {
       ),
     ),
   );
-  $cat_item->weight = 0;
+  $cat_item->weight = 21;
   $export['delete_log_tab'] = $cat_item;
 
   $cat_item = new stdClass();
@@ -606,7 +606,7 @@ function erpal_basic_ui_cat_items_settings_info() {
       ),
     ),
   );
-  $cat_item->weight = 4;
+  $cat_item->weight = 46;
   $export['node_disable_general_tabs'] = $cat_item;
 
   return $export;

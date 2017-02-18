@@ -134,7 +134,7 @@ function erpal_crm_ui_cat_items_settings_info() {
     'reusable' => 0,
     'cat_remove' => array(),
   );
-  $cat_item->weight = -87;
+  $cat_item->weight = -83;
   $export['erpal_activities_aul_activity'] = $cat_item;
 
   $cat_item = new stdClass();
@@ -179,7 +179,7 @@ function erpal_crm_ui_cat_items_settings_info() {
     'reusable' => 0,
     'cat_remove' => array(),
   );
-  $cat_item->weight = -90;
+  $cat_item->weight = -89;
   $export['erpal_activities_create_activity'] = $cat_item;
 
   $cat_item = new stdClass();
@@ -248,7 +248,7 @@ function erpal_crm_ui_cat_items_settings_info() {
     'reusable' => 0,
     'cat_remove' => array(),
   );
-  $cat_item->weight = -88;
+  $cat_item->weight = -84;
   $export['erpal_activities_edit_activity'] = $cat_item;
 
   $cat_item = new stdClass();
@@ -317,7 +317,7 @@ function erpal_crm_ui_cat_items_settings_info() {
     'reusable' => 0,
     'cat_remove' => array(),
   );
-  $cat_item->weight = -89;
+  $cat_item->weight = -87;
   $export['erpal_activities_view_activity'] = $cat_item;
 
   return $export;

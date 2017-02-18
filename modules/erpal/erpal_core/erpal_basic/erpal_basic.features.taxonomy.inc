@@ -17,6 +17,14 @@ function erpal_basic_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => 0,
     ),
+    'business_type' => array(
+      'name' => 'Business type',
+      'machine_name' => 'business_type',
+      'description' => '',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => 0,
+    ),
     'communication_categories' => array(
       'name' => 'Communication categories',
       'machine_name' => 'communication_categories',
@@ -60,6 +68,14 @@ function erpal_basic_taxonomy_default_vocabularies() {
     'salutation_terms' => array(
       'name' => 'Salutation terms',
       'machine_name' => 'salutation_terms',
+      'description' => '',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => 0,
+    ),
+    'sector' => array(
+      'name' => 'Sector',
+      'machine_name' => 'sector',
       'description' => '',
       'hierarchy' => 0,
       'module' => 'taxonomy',

@@ -60,7 +60,6 @@ function erpal_basic_ui_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Contacts');
-  t('Log out');
   t('User account');
 
 

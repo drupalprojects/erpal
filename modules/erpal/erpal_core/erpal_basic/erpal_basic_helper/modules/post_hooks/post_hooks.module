@@ -35,40 +35,6 @@ function post_hooks_entity_delete($entity, $entity_type) {
 }
 
 /**
- * Implements hook_entity_update
- */
-function post_hooks_node_update($node) {
-
-  if (empty($node->post_resaving)) {
-    module_invoke_all('node_update_post', $node);
-  }
-  
-  if (!empty($node->post_resave)) {    
-    $node->post_resaving = TRUE;
-    $node->post_resave = FALSE;
-    node_save($node);   
-    $node->post_resaving = FALSE;    
-  }
-}
-
-/**
- * Implements hook_entity_delete
- */
-function post_hooks_node_insert($node) {
-  if (empty($node->post_resaving)) {
-    module_invoke_all('node_insert_post', $node);
-  }
-  
-  if (!empty($node->post_resave)) {    
-    $node->post_resaving = TRUE;
-    $node->post_resave = FALSE;
-    $node->is_new = FALSE;
-    node_save($node);   
-    $node->post_resaving = FALSE;    
-  }
-}
-
-/**
 * Implements hook_form_alter
 */
 function post_hooks_form_alter(&$form, &$form_state, $form_id) {  
