@@ -155,11 +155,7 @@ class erpal_projects_helper_handler_argument_billables_by_projects extends views
       
       $billable_ids = array_diff($billable_ids, $to_remove_billable_ids);
     }
-
-    if (!empty($billable_ids)) {
-      $this->query->add_where('billable', "billable.billable_id", $billable_ids, 'IN');
-    }
-
+    $this->query->add_where('billable', "billable.billable_id", $billable_ids, 'IN');
   }
 
 }
