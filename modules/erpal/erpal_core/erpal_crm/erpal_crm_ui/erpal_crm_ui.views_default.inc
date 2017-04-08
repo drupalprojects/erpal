@@ -325,6 +325,10 @@ function erpal_crm_ui_views_default_views() {
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['table'] = 'field_data_field_contacts_ref';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['field'] = 'field_contacts_ref_target_id';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['id'] = 'field_account_manager_target_id';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['table'] = 'field_data_field_account_manager';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['field'] = 'field_account_manager_target_id';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -379,27 +383,23 @@ function erpal_crm_ui_views_default_views() {
     'scale' => '2',
     'prefix_suffix' => 1,
   );
-  /* Field: Content: Prospect Quality */
-  $handler->display->display_options['fields']['field_chance']['id'] = 'field_chance';
-  $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
-  $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
-  $handler->display->display_options['fields']['field_chance']['type'] = 'editable';
-  $handler->display->display_options['fields']['field_chance']['settings'] = array(
-    'click_to_edit' => 0,
-    'click_to_edit_style' => 'button',
-    'empty_text' => '',
-    'fallback_format' => 'list_default',
-  );
   /* Field: Content: Origin */
   $handler->display->display_options['fields']['field_activity_origin']['id'] = 'field_activity_origin';
   $handler->display->display_options['fields']['field_activity_origin']['table'] = 'field_data_field_activity_origin';
   $handler->display->display_options['fields']['field_activity_origin']['field'] = 'field_activity_origin';
-  $handler->display->display_options['fields']['field_activity_origin']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_activity_origin']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_activity_origin']['settings'] = array(
     'click_to_edit' => 0,
     'click_to_edit_style' => 'button',
     'empty_text' => '',
     'fallback_format' => 'taxonomy_term_reference_link',
+  );
+  /* Field: Content: Account manager */
+  $handler->display->display_options['fields']['field_account_manager']['id'] = 'field_account_manager';
+  $handler->display->display_options['fields']['field_account_manager']['table'] = 'field_data_field_account_manager';
+  $handler->display->display_options['fields']['field_account_manager']['field'] = 'field_account_manager';
+  $handler->display->display_options['fields']['field_account_manager']['settings'] = array(
+    'link' => 0,
   );
   /* Sort criterion: Content: Updated/commented date */
   $handler->display->display_options['sorts']['last_updated']['id'] = 'last_updated';
@@ -542,6 +542,31 @@ function erpal_crm_ui_views_default_views() {
     9 => 0,
     10 => 0,
   );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'field_account_manager_target_id';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Account manager';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+  );
 
   /* Display: Next activities pane */
   $handler = $view->new_display('panel_pane', 'Next activities pane', 'panel_pane_2');
@@ -569,6 +594,10 @@ function erpal_crm_ui_views_default_views() {
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['table'] = 'field_data_field_contacts_ref';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['field'] = 'field_contacts_ref_target_id';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['id'] = 'field_account_manager_target_id';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['table'] = 'field_data_field_account_manager';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['field'] = 'field_account_manager_target_id';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -705,6 +734,31 @@ function erpal_crm_ui_views_default_views() {
     9 => 0,
     10 => 0,
   );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'field_account_manager_target_id';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Account manager';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+  );
   $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: Missed activities pane */
@@ -733,6 +787,10 @@ function erpal_crm_ui_views_default_views() {
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['table'] = 'field_data_field_contacts_ref';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['field'] = 'field_contacts_ref_target_id';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['id'] = 'field_account_manager_target_id';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['table'] = 'field_data_field_account_manager';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['field'] = 'field_account_manager_target_id';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
@@ -867,6 +925,31 @@ function erpal_crm_ui_views_default_views() {
     9 => 0,
     10 => 0,
   );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'field_account_manager_target_id';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Account manager';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+  );
   $handler->display->display_options['inherit_panels_path'] = '1';
 
   /* Display: Activities view pane */
@@ -887,6 +970,10 @@ function erpal_crm_ui_views_default_views() {
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['id'] = 'field_contacts_ref_target_id';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['table'] = 'field_data_field_contacts_ref';
   $handler->display->display_options['relationships']['field_contacts_ref_target_id']['field'] = 'field_contacts_ref_target_id';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['id'] = 'field_account_manager_target_id';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['table'] = 'field_data_field_account_manager';
+  $handler->display->display_options['relationships']['field_account_manager_target_id']['field'] = 'field_account_manager_target_id';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -942,27 +1029,23 @@ function erpal_crm_ui_views_default_views() {
     'scale' => '2',
     'prefix_suffix' => 1,
   );
-  /* Field: Content: Prospect Quality */
-  $handler->display->display_options['fields']['field_chance']['id'] = 'field_chance';
-  $handler->display->display_options['fields']['field_chance']['table'] = 'field_data_field_chance';
-  $handler->display->display_options['fields']['field_chance']['field'] = 'field_chance';
-  $handler->display->display_options['fields']['field_chance']['type'] = 'editable';
-  $handler->display->display_options['fields']['field_chance']['settings'] = array(
-    'click_to_edit' => 0,
-    'click_to_edit_style' => 'button',
-    'empty_text' => '',
-    'fallback_format' => 'list_default',
-  );
   /* Field: Content: Origin */
   $handler->display->display_options['fields']['field_activity_origin']['id'] = 'field_activity_origin';
   $handler->display->display_options['fields']['field_activity_origin']['table'] = 'field_data_field_activity_origin';
   $handler->display->display_options['fields']['field_activity_origin']['field'] = 'field_activity_origin';
-  $handler->display->display_options['fields']['field_activity_origin']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_activity_origin']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_activity_origin']['settings'] = array(
     'click_to_edit' => 0,
     'click_to_edit_style' => 'button',
     'empty_text' => '',
     'fallback_format' => 'taxonomy_term_reference_link',
+  );
+  /* Field: Content: Account manager */
+  $handler->display->display_options['fields']['field_account_manager']['id'] = 'field_account_manager';
+  $handler->display->display_options['fields']['field_account_manager']['table'] = 'field_data_field_account_manager';
+  $handler->display->display_options['fields']['field_account_manager']['field'] = 'field_account_manager';
+  $handler->display->display_options['fields']['field_account_manager']['settings'] = array(
+    'link' => 0,
   );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
@@ -1090,6 +1173,31 @@ function erpal_crm_ui_views_default_views() {
     9 => 0,
     10 => 0,
   );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'field_account_manager_target_id';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Account manager';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    6 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+  );
   $handler->display->display_options['inherit_panels_path'] = '1';
   $translatables['crm_activities'] = array(
     t('Master'),
@@ -1109,6 +1217,7 @@ function erpal_crm_ui_views_default_views() {
     t('This contact has no activities'),
     t('customer'),
     t('Content entity referenced from field_contacts_ref'),
+    t('User entity referenced from field_account_manager'),
     t('Activity title'),
     t('Customer'),
     t('Status'),
@@ -1116,8 +1225,8 @@ function erpal_crm_ui_views_default_views() {
     t('Last update'),
     t('Next contact'),
     t('Volume'),
-    t('Prospect Quality'),
     t('Origin'),
+    t('Account manager'),
     t('All'),
     t('Title'),
     t('Participants'),

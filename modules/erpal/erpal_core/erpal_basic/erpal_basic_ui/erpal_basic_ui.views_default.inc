@@ -327,7 +327,7 @@ function erpal_basic_ui_views_default_views() {
     'empty_text' => '',
     'fallback_format' => 'taxonomy_term_reference_link',
   );
-  /* Field: Field: Customer Category */
+  /* Field: Content: Customer Category */
   $handler->display->display_options['fields']['field_customer_category']['id'] = 'field_customer_category';
   $handler->display->display_options['fields']['field_customer_category']['table'] = 'field_data_field_customer_category';
   $handler->display->display_options['fields']['field_customer_category']['field'] = 'field_customer_category';
@@ -468,7 +468,7 @@ function erpal_basic_ui_views_default_views() {
   $handler->display->display_options['filters']['field_target_audience_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_target_audience_tid']['vocabulary'] = 'target_audience_terms';
   $handler->display->display_options['filters']['field_target_audience_tid']['error_message'] = FALSE;
-  /* Filter criterion: Field: Customer Category (field_customer_category) */
+  /* Filter criterion: Content: Customer Category (field_customer_category) */
   $handler->display->display_options['filters']['field_customer_category_value']['id'] = 'field_customer_category_value';
   $handler->display->display_options['filters']['field_customer_category_value']['table'] = 'field_data_field_customer_category';
   $handler->display->display_options['filters']['field_customer_category_value']['field'] = 'field_customer_category_value';
@@ -982,7 +982,7 @@ function erpal_basic_ui_views_default_views() {
   $handler->display->display_options['fields']['relation_type']['id'] = 'relation_type';
   $handler->display->display_options['fields']['relation_type']['table'] = 'relation';
   $handler->display->display_options['fields']['relation_type']['field'] = 'relation_type';
-  /* Field: Relation: Role in project */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_projet_role_rel_tags']['id'] = 'field_projet_role_rel_tags';
   $handler->display->display_options['fields']['field_projet_role_rel_tags']['table'] = 'field_data_field_projet_role_rel_tags';
   $handler->display->display_options['fields']['field_projet_role_rel_tags']['field'] = 'field_projet_role_rel_tags';
@@ -1032,7 +1032,7 @@ function erpal_basic_ui_views_default_views() {
     t('Changed'),
     t('Created'),
     t('Tags'),
-    t('Role in project'),
+    t('Broken handler field_data_field_projet_role_rel_tags.field_projet_role_rel_tags'),
     t('View panes'),
   );
   $export['relations_view'] = $view;

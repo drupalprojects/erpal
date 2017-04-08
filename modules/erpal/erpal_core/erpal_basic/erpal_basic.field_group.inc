@@ -100,6 +100,8 @@ function erpal_basic_field_group_info() {
       10 => 'field_languages',
       11 => 'field_target_audience',
       12 => 'field_salutation',
+      13 => 'field_business_sector',
+      14 => 'field_business_type',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -222,6 +224,7 @@ function erpal_basic_field_group_info() {
     'children' => array(
       0 => 'field_legal_other',
       1 => 'body',
+      2 => 'field_invoice_notes',
     ),
     'format_type' => 'div',
     'format_settings' => array(

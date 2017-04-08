@@ -43,8 +43,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_addresses-field_addition_to_address'
+  // Exported field_instance: 'field_collection_item-field_addresses-field_addition_to_address'
   $field_instances['field_collection_item-field_addresses-field_addition_to_address'] = array(
     'bundle' => 'field_addresses',
     'comment_enabled' => 0,
@@ -86,8 +85,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_addresses-field_address_name'
+  // Exported field_instance: 'field_collection_item-field_addresses-field_address_name'
   $field_instances['field_collection_item-field_addresses-field_address_name'] = array(
     'bundle' => 'field_addresses',
     'comment_enabled' => 0,
@@ -129,8 +127,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_addresses-field_address_type_terms'
+  // Exported field_instance: 'field_collection_item-field_addresses-field_address_type_terms'
   $field_instances['field_collection_item-field_addresses-field_address_type_terms'] = array(
     'bundle' => 'field_addresses',
     'comment_enabled' => 0,
@@ -216,8 +213,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_addresses-field_country_term'
+  // Exported field_instance: 'field_collection_item-field_addresses-field_country_term'
   $field_instances['field_collection_item-field_addresses-field_country_term'] = array(
     'bundle' => 'field_addresses',
     'default_value' => NULL,
@@ -255,8 +251,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_addresses-field_street'
+  // Exported field_instance: 'field_collection_item-field_addresses-field_street'
   $field_instances['field_collection_item-field_addresses-field_street'] = array(
     'bundle' => 'field_addresses',
     'default_value' => NULL,
@@ -304,8 +299,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_addresses-field_zip_code'
+  // Exported field_instance: 'field_collection_item-field_addresses-field_zip_code'
   $field_instances['field_collection_item-field_addresses-field_zip_code'] = array(
     'bundle' => 'field_addresses',
     'default_value' => NULL,
@@ -353,8 +347,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_bank_accounts-field_bank_account_number'
+  // Exported field_instance: 'field_collection_item-field_bank_accounts-field_bank_account_number'
   $field_instances['field_collection_item-field_bank_accounts-field_bank_account_number'] = array(
     'bundle' => 'field_bank_accounts',
     'default_value' => NULL,
@@ -388,8 +381,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_bank_accounts-field_bank_name'
+  // Exported field_instance: 'field_collection_item-field_bank_accounts-field_bank_name'
   $field_instances['field_collection_item-field_bank_accounts-field_bank_name'] = array(
     'bundle' => 'field_bank_accounts',
     'default_value' => NULL,
@@ -423,8 +415,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_bank_accounts-field_bank_number'
+  // Exported field_instance: 'field_collection_item-field_bank_accounts-field_bank_number'
   $field_instances['field_collection_item-field_bank_accounts-field_bank_number'] = array(
     'bundle' => 'field_bank_accounts',
     'default_value' => NULL,
@@ -458,8 +449,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_bank_accounts-field_iban'
+  // Exported field_instance: 'field_collection_item-field_bank_accounts-field_iban'
   $field_instances['field_collection_item-field_bank_accounts-field_iban'] = array(
     'bundle' => 'field_bank_accounts',
     'default_value' => NULL,
@@ -493,8 +483,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_bank_accounts-field_swift'
+  // Exported field_instance: 'field_collection_item-field_bank_accounts-field_swift'
   $field_instances['field_collection_item-field_bank_accounts-field_swift'] = array(
     'bundle' => 'field_bank_accounts',
     'default_value' => NULL,
@@ -528,8 +517,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_communication-field_communication_address'
+  // Exported field_instance: 'field_collection_item-field_communication-field_communication_address'
   $field_instances['field_collection_item-field_communication-field_communication_address'] = array(
     'bundle' => 'field_communication',
     'comment_enabled' => 0,
@@ -566,8 +554,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_communication-field_communication_category'
+  // Exported field_instance: 'field_collection_item-field_communication-field_communication_category'
   $field_instances['field_collection_item-field_communication-field_communication_category'] = array(
     'bundle' => 'field_communication',
     'comment_enabled' => 0,
@@ -603,8 +590,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_communication-field_communication_type'
+  // Exported field_instance: 'field_collection_item-field_communication-field_communication_type'
   $field_instances['field_collection_item-field_communication-field_communication_type'] = array(
     'bundle' => 'field_communication',
     'comment_enabled' => 0,
@@ -638,8 +624,7 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'field_collection_item-field_communication-field_phone_number_normalized'
+  // Exported field_instance: 'field_collection_item-field_communication-field_phone_number_normalized'
   $field_instances['field_collection_item-field_communication-field_phone_number_normalized'] = array(
     'bundle' => 'field_communication',
     'comment_enabled' => 0,
@@ -708,7 +693,7 @@ function erpal_basic_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 16,
+        'weight' => 19,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1127,6 +1112,124 @@ function erpal_basic_field_default_field_instances() {
         'year_range' => '-100:+0',
       ),
       'type' => 'date_popup',
+      'weight' => 19,
+    ),
+  );
+
+  // Exported field_instance: 'node-erpal_contact-field_business_sector'
+  $field_instances['node-erpal_contact-field_business_sector'] = array(
+    'bundle' => 'erpal_contact',
+    'comment_alter' => 0,
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 34,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'in_activity' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'node_view' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 12,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_business_sector',
+    'label' => 'Sector',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+      ),
+      'type' => 'options_select',
+      'weight' => 15,
+    ),
+  );
+
+  // Exported field_instance: 'node-erpal_contact-field_business_type'
+  $field_instances['node-erpal_contact-field_business_type'] = array(
+    'bundle' => 'erpal_contact',
+    'comment_alter' => 0,
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 35,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'in_activity' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'node_view' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 14,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_business_type',
+    'label' => 'Business type',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+      ),
+      'type' => 'options_select',
       'weight' => 17,
     ),
   );
@@ -1182,7 +1285,7 @@ function erpal_basic_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_view',
-        'weight' => 17,
+        'weight' => 20,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1423,9 +1526,7 @@ function erpal_basic_field_default_field_instances() {
       'module' => 'relation_add',
       'settings' => array(
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
-        'relation_endpoint_bundle_display' => FALSE,
         'relation_endpoint_custom_label' => '',
-        'relation_endpoint_iso_language_codes' => 0,
         'relation_endpoint_label' => 'Contact',
         'relation_endpoint_label_delta' => 0,
         'relation_endpoint_search_by_id' => 0,
@@ -1474,7 +1575,7 @@ function erpal_basic_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 14,
+        'weight' => 17,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1499,7 +1600,7 @@ function erpal_basic_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 16,
+      'weight' => 18,
     ),
   );
 
@@ -1610,7 +1711,7 @@ function erpal_basic_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 13,
+        'weight' => 16,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1631,7 +1732,7 @@ function erpal_basic_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 20,
+      'weight' => 22,
     ),
   );
 
@@ -1763,6 +1864,99 @@ function erpal_basic_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-erpal_contact-field_invoice_notes'
+  $field_instances['node-erpal_contact-field_invoice_notes'] = array(
+    'bundle' => 'erpal_contact',
+    'comment_alter' => 0,
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Informationen die für die Rechnungsstellung bei diesem Kunden beachtet werden müssen.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 33,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'in_activity' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'node_view' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_invoice_notes',
+    'label' => 'Invoice Notes',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'ds_code' => 'ds_code',
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'ds_code' => array(
+              'weight' => 12,
+            ),
+            'filtered_html' => array(
+              'weight' => -9,
+            ),
+            'full_html' => array(
+              'weight' => -10,
+            ),
+            'php_code' => array(
+              'weight' => -7,
+            ),
+            'plain_text' => array(
+              'weight' => -8,
+            ),
+          ),
+        ),
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 8,
+    ),
+  );
+
   // Exported field_instance: 'node-erpal_contact-field_languages'
   $field_instances['node-erpal_contact-field_languages'] = array(
     'bundle' => 'erpal_contact',
@@ -1821,7 +2015,7 @@ function erpal_basic_field_default_field_instances() {
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
       ),
       'type' => 'options_select',
-      'weight' => 18,
+      'weight' => 20,
     ),
   );
 
@@ -1925,7 +2119,7 @@ function erpal_basic_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 15,
+        'weight' => 18,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2040,9 +2234,10 @@ function erpal_basic_field_default_field_instances() {
       ),
       'node_view' => array(
         'label' => 'above',
+        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2065,7 +2260,7 @@ function erpal_basic_field_default_field_instances() {
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
       ),
       'type' => 'options_select',
-      'weight' => 15,
+      'weight' => 16,
     ),
   );
 
@@ -2108,7 +2303,7 @@ function erpal_basic_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2134,12 +2329,11 @@ function erpal_basic_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 19,
+      'weight' => 21,
     ),
   );
 
-  // Exported field_instance:
-  // 'taxonomy_term-address_types-field_is_default_term'
+  // Exported field_instance: 'taxonomy_term-address_types-field_is_default_term'
   $field_instances['taxonomy_term-address_types-field_is_default_term'] = array(
     'bundle' => 'address_types',
     'comment_enabled' => 0,
@@ -2263,6 +2457,7 @@ function erpal_basic_field_default_field_instances() {
   t('Bank name');
   t('Bank number');
   t('Birthday');
+  t('Business type');
   t('Categorise this contact');
   t('Category');
   t('City');
@@ -2283,6 +2478,8 @@ function erpal_basic_field_default_field_instances() {
   t('Gender');
   t('IBAN');
   t('Image');
+  t('Informationen die für die Rechnungsstellung bei diesem Kunden beachtet werden müssen.');
+  t('Invoice Notes');
   t('Is default');
   t('Languages');
   t('Last name');
@@ -2294,6 +2491,7 @@ function erpal_basic_field_default_field_instances() {
   t('Postal Code');
   t('SWIFT');
   t('Salutation');
+  t('Sector');
   t('Street');
   t('Target audience');
   t('Tax ID');
