@@ -24,7 +24,15 @@ function erpal_projects_helper_views_data() {
         'argument' => array(
           'handler' => 'erpal_projects_helper_handler_argument_billables_by_projects',
         ),       
-      ),
+      ),      
+      'billables_by_project_skipp_grouped' => array(
+        'group' => t('Billables'),
+        'title' => t('Billables by projects without grouped parents'),
+        'help' => t('Chooses billables IDs by a given project and exclude parents billables'),
+        'argument' => array(
+          'handler' => 'erpal_projects_helper_handler_argument_billables_by_projects_exclude_parents',
+        ),       
+      ), 
       'operations' => array(
         'field' => array(
           'title' => t('Projects quick links'),

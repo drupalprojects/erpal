@@ -90,7 +90,7 @@ class erpal_projects_helper_handler_argument_billables_by_projects extends views
   /**
    * Clear query alter
    */
-  function query($group_by = FALSE) {
+  function query($group_by = FALSE) {    
     if (!$nid = $this->argument) // check arg, we need a project nid
       return;
 
@@ -106,7 +106,128 @@ class erpal_projects_helper_handler_argument_billables_by_projects extends views
     //$alias = $this->table_alias;
     $this->query->distinct = 1; // distinct condition
     
-    //get all billables of the project directly.
+    $billable_ids = erpal_projects_helper_get_billables_by_subjects_for_views_handlers($nid);
+    if (!empty($billable_ids)) {
+      //remove all billables that have a parent billable but add the billable_id of the parent billable instead (as this is the one that represents the revenue of all grouped sub billables.
+      $a_query = db_select('billable', 'b');    
+      $a_query->condition('b.parent_billable', 0, '>');
+      $a_query->condition('b.billable_id', $billable_ids, 'IN');
+      $a_query->fields('b', array('parent_billable', 'billable_id'));
+
+      $result = $a_query->execute();
+      $to_remove_billable_ids = array();   
+      foreach ($result as $record) {
+        //get the parent billable ids to add them
+        $to_remove_billable_ids[] = $record->billable_id;
+        $billable_ids[] = $record->parent_billable;
+        //and remove the billable_ids that have a parent from the billable_ids array, we don't want to include them in the query.
+      }
+      
+      $billable_ids = array_diff($billable_ids, $to_remove_billable_ids);
+    }
+
+    $this->query->add_where('billable', "billable.billable_id", $billable_ids, 'IN');
+  }
+
+}
+
+/**
+* Similar to @see erpal_projects_helper_handler_argument_billables_by_projects but this one
+* The previous function returns only the parent billables, not child billables if they are grouped as the parent represents the revenue of the child.
+* This handler shows only the child billables as we want to have revenue details (for contracters) and not the parent billables.
+*/
+class erpal_projects_helper_handler_argument_billables_by_projects_exclude_parents extends views_handler_argument {
+
+  /**
+   * Clear query alter
+   */
+  function query($group_by = FALSE) {
+    
+    if (!$nid = $this->argument) // check arg, we need a project nid
+      return;
+
+    if (!$node = node_load($nid)) // check in node exists
+      return;
+
+    // check if node is erpal_project
+    if ($node->type != 'erpal_project')
+      return;
+
+    // prepare table
+    $this->ensure_my_table();
+    //$alias = $this->table_alias;
+    $this->query->distinct = 1; // distinct condition
+    
+    $billable_ids = erpal_projects_helper_get_billables_by_subjects_for_views_handlers($nid);
+    if (!empty($billable_ids)) {
+      //remove all billables that are a parent billable but add the child billable_ids of the parent billable instead.
+      $a_query = db_select('billable', 'b');    
+      $a_query->condition('b.parent_billable', 0, '>');
+      $a_query->condition('b.billable_id', $billable_ids, 'IN');
+      $a_query->fields('b', array('parent_billable', 'billable_id'));
+      $result = $a_query->execute();
+      
+      $parent_ids = array();
+      $to_remove_billable_ids = array();   
+      $parents_children = array();
+      foreach ($result as $record) {
+        //get the parent billable ids to add them
+        $to_remove_billable_ids[] = $record->parent_billable;        
+        $parent_ids[] = $record->parent_billable;   
+        $parents_children[$record->parent_billable][] = $record->billable_id;
+      }
+      
+      $billable_ids = array_diff($billable_ids, $to_remove_billable_ids);
+    }
+
+    //if the filter "Billed" is set, we remove billables that that have a parent billable that is not billed.
+    //if the filter "Billed" is NOT set, we remove billables that that have a parent billable that IS billed.
+    if (isset($this->view->exposed_input['billed'])) {
+      $filter_billed = $this->view->exposed_input['billed'];
+      
+      //get all parent billables that match the billed filter
+      $a_query = db_select('billable', 'b');          
+      $a_query->condition('b.billable_id', $parent_ids, 'IN');
+      $a_query->condition('b.billed', $filter_billed);
+      $a_query->fields('b', array('parent_billable', 'billable_id'));
+      $result = $a_query->execute();
+      
+      //now remove those billables from the result set ($billable_ids) that do have a parent billable set that is NOT in this result
+      $result_billable_ids = array();
+
+      foreach ($result as $record) {
+        //here we get all parent billables that match the filter.
+        $result_billable_ids[] = $parents_children[$record->billable_id];
+      }
+      
+      //now add again those billables that don't have a parent.
+      $a_query = db_select('billable', 'b');    
+      $a_query->condition('b.parent_billable', 1, '!=');
+      $a_query->condition('b.billable_id', $billable_ids, 'IN');
+      $a_query->fields('b', array('parent_billable', 'billable_id'));
+      $result = $a_query->execute();
+      
+      foreach ($result as $record) {
+        $result_billable_ids[] = $record->billable_id;        
+      }
+      
+      $this->query->add_where('billable', "billable.billable_id", $result_billable_ids, 'IN');
+      return;
+      
+    }
+    
+    $this->query->add_where('billable', "billable.billable_id", $billable_ids, 'IN');
+  }
+
+}
+
+/**
+* Return all billables by project etc, used by views filter handlers 
+* @see erpal_projects_helper_handler_argument_billables_by_projects_exclude_parents
+* @see erpal_projects_helper_handler_argument_erpal_projects
+*/
+function erpal_projects_helper_get_billables_by_subjects_for_views_handlers($nid) {
+  //get all billables of the project directly.
     $project_billables = array();
     if (!empty($nid)) {
       $project_billables = _billable_get_billables_by_subject(array($nid));
@@ -137,28 +258,10 @@ class erpal_projects_helper_handler_argument_billables_by_projects extends views
     
     //get all entity IDs of a given project and add them to the where condition.
     $billable_ids = array_unique($billable_ids);
-    if (!empty($billable_ids)) {
-      //remove all billables that have a parent billable but add the billable_id of the parent billable instead (as this is the one that represents the revenue of all grouped sub billables.
-      $a_query = db_select('billable', 'b');    
-      $a_query->condition('b.parent_billable', 0, '>');
-      $a_query->condition('b.billable_id', $billable_ids, 'IN');
-      $a_query->fields('b', array('parent_billable', 'billable_id'));
-
-      $result = $a_query->execute();
-      $to_remove_billable_ids = array();   
-      foreach ($result as $record) {
-        //get the parent billable ids to add them
-        $to_remove_billable_ids[] = $record->billable_id;
-        $billable_ids[] = $record->parent_billable;
-        //and remove the billable_ids that have a parent from the billable_ids array, we don't want to include them in the query.
-      }
-      
-      $billable_ids = array_diff($billable_ids, $to_remove_billable_ids);
-    }
-    $this->query->add_where('billable', "billable.billable_id", $billable_ids, 'IN');
-  }
-
+    
+    return $billable_ids;
 }
+
 
 /**
  * "Show items of child tasks" erpal_docs_helper filter
